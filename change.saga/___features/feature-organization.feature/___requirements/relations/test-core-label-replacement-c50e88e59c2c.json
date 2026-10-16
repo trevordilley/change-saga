@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-label-replacement-c50e88e59c2c",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-label-replacement",
+  "to": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:preserve-or-clear",
+  "scope": "self",
+  "rationale": "Steps check-nonempty-replacement define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-label-replacement:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:18:36.989285Z",
+  "request_id": "test-core-label-replacement-c50e88e59c2c"
+}

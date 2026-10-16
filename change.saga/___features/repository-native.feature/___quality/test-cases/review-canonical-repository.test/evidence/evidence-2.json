@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-canonical-repository",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-canonical-repository:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "canonical",
+    "record"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/cli.go",
+      "start": 1587,
+      "end": 1597,
+      "digest": "sha256:399627bf863d1464fa2aeb3300f753ffe568d1d21d62a86a3d468a3ed2e2c30b"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/cli.go",
+      "start": 615,
+      "end": 615,
+      "digest": "sha256:f200567025fd374487e46f64cacfcb431e9a73d53fadfb8db0dd945b56f7d2b0"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-canonical-repository-evidence-2"
+}

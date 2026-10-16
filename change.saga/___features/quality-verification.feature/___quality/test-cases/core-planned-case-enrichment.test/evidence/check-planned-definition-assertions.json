@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-planned-definition-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-planned-definition"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/quality/definition_test.go",
+      "start": 15,
+      "end": 25,
+      "digest": "sha256:92c2c198d705a5da31fba79582772bf3654a1053db0b05aa980e09e73949ae3f"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/quality-definitions.spec.ts",
+      "start": 25,
+      "end": 42,
+      "digest": "sha256:480d55633307af1668c3f059ba6dd1541c0e3a1fce2a3953c08b4e0434e6b2ab"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-planned-case-enrichment-check-planned-definition-assertions"
+}

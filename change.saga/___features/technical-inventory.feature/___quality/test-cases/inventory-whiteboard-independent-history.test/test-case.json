@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "inventory-whiteboard-independent-history",
+  "created_at": "2026-10-16T23:21:10Z",
+  "request_id": "saga-definition-inventory-whiteboard-independent-history"
+}

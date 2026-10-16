@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "review-isolation",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-review-isolation",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-review-isolation:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "review"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 237,
+      "end": 245,
+      "digest": "sha256:692f16fba67fb509713a989e7a1c5543ca8f39f8cda3c69abae78b505bce6fb2"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reconcile-review-isolation-review-isolation"
+}

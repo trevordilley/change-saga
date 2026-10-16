@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "one-encoder",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-query-versioned-envelope",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-query-versioned-envelope:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "success",
+    "failure"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query.go",
+      "start": 984,
+      "end": 1016,
+      "digest": "sha256:dbcedc8cd1cc31d7c88bfd8925184268a6ad11eb035a9194d198f9984e7c34fb"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-query-versioned-envelope-one-encoder"
+}

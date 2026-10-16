@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "inventory-all-kind-context-matrix",
+  "created_at": "2026-10-16T23:21:18Z",
+  "request_id": "saga-definition-inventory-all-kind-context-matrix"
+}

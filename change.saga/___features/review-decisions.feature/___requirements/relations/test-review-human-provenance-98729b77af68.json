@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-review-human-provenance-98729b77af68",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:review-human-provenance",
+  "to": "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:human",
+  "scope": "self",
+  "rationale": "Steps report, display define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:review-human-provenance:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:delegated-ai-attribution:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:41.52758Z",
+  "request_id": "test-review-human-provenance-98729b77af68"
+}

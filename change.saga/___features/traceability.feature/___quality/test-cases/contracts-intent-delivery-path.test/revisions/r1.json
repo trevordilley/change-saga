@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path",
+  "parents": [],
+  "title": "Expose integrated evidence on a declared implementation path",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use livingFixture checkout/fast with current design and work relations; record an integrated merge before querying."
+  ],
+  "steps": [
+    {
+      "id": "delivered",
+      "action": "Query checkout traceability after recording an integrated merge.",
+      "expected_result": "The criterion is delivered and exposes one git-oid immutable evidence reference.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths"
+      ]
+    }
+  ],
+  "expected_result": "The declared path reaches one immutable git-oid evidence reference.",
+  "created_at": "2026-10-16T23:23:01Z",
+  "request_id": "saga-definition-contracts-intent-delivery-path"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-term-revision-health",
+  "parents": [],
+  "title": "Identify the exact term revision affected by source changes",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "A fresh term r1 links an exact source constant; change that constant without appending any new term revision."
+  ],
+  "steps": [
+    {
+      "id": "check-affected-term-revision",
+      "action": "Before appending the corrected term revision, inspect health for the stale defining-code reference.",
+      "expected_result": "The stale record identifies the exact affected term revision as well as the term identity.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:shared-product-language:criterion:code-currency"
+      ]
+    }
+  ],
+  "expected_result": "Identify the exact term revision affected by source changes.",
+  "created_at": "2026-10-16T23:19:02Z",
+  "request_id": "saga-definition-core-term-revision-health"
+}

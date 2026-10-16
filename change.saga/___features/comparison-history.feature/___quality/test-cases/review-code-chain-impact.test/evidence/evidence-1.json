@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-code-chain-impact",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-code-chain-impact:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "code",
+    "chain"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/layers_test.go",
+      "start": 89,
+      "end": 114,
+      "digest": "sha256:8895e536e81d14a3be7bd975dabb48f014831fbaa3a8e27aa17cc2489ecd57ff"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-code-chain-impact-evidence-1"
+}

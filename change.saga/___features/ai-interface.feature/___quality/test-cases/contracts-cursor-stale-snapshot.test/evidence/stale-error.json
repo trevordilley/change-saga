@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "stale-error",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-stale-snapshot",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-cursor-stale-snapshot:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "issue",
+    "advance"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query_integration_test.go",
+      "start": 159,
+      "end": 164,
+      "digest": "sha256:9fa9b589ec86defb2efc4b58fc426002c5acb8f3902585c9d2e52cdec260ed96"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query_integration_test.go",
+      "start": 186,
+      "end": 190,
+      "digest": "sha256:3bda9aa8c781634b6c8b2fc8fb90545c2ed7af476d520abedba6953978e87bc1"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-cursor-stale-snapshot-stale-error"
+}

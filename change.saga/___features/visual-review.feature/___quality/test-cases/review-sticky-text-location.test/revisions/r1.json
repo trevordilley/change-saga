@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-sticky-text-location",
+  "parents": [],
+  "title": "Place text at a selected visual location",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Open pr-1 greeting slide and show annotation tools."
+  ],
+  "steps": [
+    {
+      "id": "place",
+      "action": "Choose Sticky note, click at 40% slide width/height, enter Original note and save.",
+      "expected_result": "A visible note reads Original note.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:text-annotation:criterion:text-overlay"
+      ]
+    },
+    {
+      "id": "location",
+      "action": "Inspect the note position before and after reload and viewport resize.",
+      "expected_result": "It remains anchored at the chosen normalized location over the slide.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:text-annotation:criterion:text-overlay"
+      ]
+    }
+  ],
+  "expected_result": "It remains anchored at the chosen normalized location over the slide.",
+  "created_at": "2026-10-16T23:22:10Z",
+  "request_id": "saga-definition-review-sticky-text-location"
+}

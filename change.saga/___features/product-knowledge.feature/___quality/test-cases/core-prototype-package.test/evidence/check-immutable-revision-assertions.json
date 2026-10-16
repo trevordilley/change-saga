@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-immutable-revision-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-prototype-package",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-prototype-package:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-immutable-revision"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 38,
+      "end": 74,
+      "digest": "sha256:477dad6a46efbbbc3b5e7a8a90ccdfcba52b2d5b357419daff31a25e0288fefd"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-prototype-package-check-immutable-revision-assertions"
+}

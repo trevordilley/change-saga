@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-baseline-boundaries-3bc71809aa9a",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+  "scope": "self",
+  "rationale": "Steps conflicts define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:59.834893Z",
+  "request_id": "test-inventory-baseline-boundaries-3bc71809aa9a"
+}

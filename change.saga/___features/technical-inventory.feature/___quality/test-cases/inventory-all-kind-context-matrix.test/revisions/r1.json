@@ -1,0 +1,58 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-all-kind-context-matrix",
+  "parents": [],
+  "title": "Discover all inventory kinds and preserve their selected revision context",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Disposable format-2 Saga with one System, Component and data entity in each of these states: code-free proposed; implemented with exact current evidence; legacy unspecified; historical selected pin; conflicting heads. Give each a distinct description, known stable identity and declared feature Item use. Retain named comparison baseline/head and a second unrelated feature."
+  ],
+  "steps": [
+    {
+      "id": "discover",
+      "action": "Query public inventory for each kind and page both records and unresolved records to completion. Compare each row to the authored fixture.",
+      "expected_result": "Each resolvable row exposes exact identity, description, selected revision intent and code health; unspecified is not inferred as proposed or implemented; historical/conflicted records remain identified.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:discover-definitions",
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results"
+      ]
+    },
+    {
+      "id": "filters",
+      "action": "Apply proposed and new filters independently and together, restrict by the fixture feature, and inspect declared scope_paths and comparison fields. Repeat without a comparison.",
+      "expected_result": "All three explicitly proposed kinds are returned with their selected states, unrelated proposals are excluded, implemented-new identities remain new, baseline/head are named, and baseline-free results invent no newness.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-proposed",
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new"
+      ]
+    },
+    {
+      "id": "navigate",
+      "action": "From System membership and data-entity holder/relationship pins follow exact definitions, code references and inventory-uses to feature/deck/slide/Item.",
+      "expected_result": "Each declared hop resolves the recorded revision and source commit/path/range; reverse usage names every originating context without inventing missing links.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
+        "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses",
+        "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation"
+      ]
+    },
+    {
+      "id": "successors",
+      "action": "For each implemented kind, publish a proposed successor under its existing stable identity using the implemented revision as baseline; pin baseline through its exact committed view and successor from a new design.",
+      "expected_result": "Both baseline and proposed successor remain readable under one identity and deck references distinguish their exact revisions.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor"
+      ]
+    }
+  ],
+  "expected_result": "Both baseline and proposed successor remain readable under one identity and deck references distinguish their exact revisions.",
+  "created_at": "2026-10-16T23:21:18Z",
+  "request_id": "saga-definition-inventory-all-kind-context-matrix"
+}

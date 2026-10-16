@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-criterion-prose-currency",
+  "parents": [],
+  "title": "Reassess changed criterion prose",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "For each title, overview and subtext variant, use a fresh story revision with two criteria and pins to the story and both criteria."
+  ],
+  "steps": [
+    {
+      "id": "check-reassess",
+      "action": "Change only the criterion title, overview or subtext while keeping a sibling criterion unchanged.",
+      "expected_result": "Pins to the changed criterion and story need reassessment; the unchanged sibling carries forward.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:read-authored-criterion-context:criterion:reassess"
+      ]
+    }
+  ],
+  "expected_result": "Reassess changed criterion prose.",
+  "created_at": "2026-10-16T23:18:53Z",
+  "request_id": "saga-definition-core-criterion-prose-currency"
+}

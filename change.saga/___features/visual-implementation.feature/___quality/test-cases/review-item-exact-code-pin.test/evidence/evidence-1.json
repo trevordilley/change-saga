@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-item-exact-code-pin",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-item-exact-code-pin:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "cover"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/slides_test.go",
+      "start": 160,
+      "end": 166,
+      "digest": "sha256:1a2340dad90f5680488143c4ed43057faea59e64af5c80103002e39b01cbb2ca"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-item-exact-code-pin-evidence-1"
+}

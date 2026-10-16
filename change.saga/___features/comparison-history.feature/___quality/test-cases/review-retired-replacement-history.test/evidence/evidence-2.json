@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-retired-replacement-history",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-retired-replacement-history:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "replace"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/changeview/layers.go",
+      "start": 355,
+      "end": 358,
+      "digest": "sha256:cfe86d3881393c0e2fb08368fc05996060b85fd80d70fc3e604624b4610b7c2d"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-retired-replacement-history-evidence-2"
+}

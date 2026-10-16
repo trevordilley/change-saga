@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-code-controls",
+  "parents": [],
+  "title": "Inspect intent and code independently from one Item",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use implementation-deck browser fixture with surprise Item referencing src/app.go; add an explains relation from that Item to Understand a request."
+  ],
+  "steps": [
+    {
+      "id": "story",
+      "action": "Open the Item details and choose its Story control.",
+      "expected_result": "Both Story and Code controls exist; Linked stories drawer shows the one linked story and authored rationale.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls",
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+      ]
+    },
+    {
+      "id": "code",
+      "action": "Close Linked stories, reopen Item details and choose Code.",
+      "expected_result": "Linked code drawer opens for the Item.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls"
+      ]
+    },
+    {
+      "id": "exclusive",
+      "action": "Inspect each drawer while opening it in turn.",
+      "expected_result": "Story drawer contains only corresponding intent and Code drawer only corresponding code, without unrelated drawer content.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls"
+      ]
+    }
+  ],
+  "expected_result": "Story drawer contains only corresponding intent and Code drawer only corresponding code, without unrelated drawer content.",
+  "created_at": "2026-10-16T23:21:54Z",
+  "request_id": "saga-definition-review-story-code-controls"
+}

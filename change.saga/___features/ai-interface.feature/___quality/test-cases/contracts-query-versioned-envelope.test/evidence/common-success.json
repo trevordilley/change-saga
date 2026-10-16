@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "common-success",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-query-versioned-envelope",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-query-versioned-envelope:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "success"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query_envelope_test.go",
+      "start": 22,
+      "end": 42,
+      "digest": "sha256:97c4dc2ab7c0227043803aaf10758a3a15f92be5ee4e3fa18702f2acc1ad67f3"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query_integration_test.go",
+      "start": 98,
+      "end": 110,
+      "digest": "sha256:fed373aa731d9d1e145ca5bbe38200084f76d3d3b60dd12a0b1cb5b8400f297a"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-query-versioned-envelope-common-success"
+}

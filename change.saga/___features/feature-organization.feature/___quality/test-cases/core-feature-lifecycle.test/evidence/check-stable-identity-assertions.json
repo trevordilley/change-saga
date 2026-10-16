@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-stable-identity-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-feature-lifecycle",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-feature-lifecycle:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-stable-identity"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/feature_plan_test.go",
+      "start": 69,
+      "end": 85,
+      "digest": "sha256:4230996fcf7bd4a59a77c5cca2d04495288d7e4f526da292ba95c1d7ec83b05d"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/roadmap.spec.ts",
+      "start": 46,
+      "end": 50,
+      "digest": "sha256:ff90fd2ccbf2c6f561b20357041ea90cc3d1efc07b2b3fc16fdca60153141c43"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-feature-lifecycle-check-stable-identity-assertions"
+}

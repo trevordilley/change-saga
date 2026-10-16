@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-canonical-navigation",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-erd-canonical-navigation:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "same-pin"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 249,
+      "end": 266,
+      "digest": "sha256:e1587a3d1ad9892e764bf34dfc0e2e0f2424cfa28007f3da519b6a9b7d97f71b"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-erd-canonical-navigation-evidence-2"
+}

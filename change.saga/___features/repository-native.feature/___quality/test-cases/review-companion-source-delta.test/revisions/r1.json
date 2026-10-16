@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-companion-source-delta",
+  "parents": [],
+  "title": "Read source changes from the intended checkout while Saga lives in a separate repository",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Create source repository with queue.go and separate documentation repository containing shop Saga; sync documentation to the source baseline."
+  ],
+  "steps": [
+    {
+      "id": "compare",
+      "action": "Change and commit queue.go in source with reason Retry enqueue; update and sync the companion documentation, then read status --repo SOURCE --against main.",
+      "expected_result": "Opening is companion and its cursor equals source head; queue-design is affected by code with reason Retry enqueue from the source repository.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout"
+      ]
+    }
+  ],
+  "expected_result": "Opening is companion and its cursor equals source head; queue-design is affected by code with reason Retry enqueue from the source repository.",
+  "created_at": "2026-10-16T23:22:24Z",
+  "request_id": "saga-definition-review-companion-source-delta"
+}

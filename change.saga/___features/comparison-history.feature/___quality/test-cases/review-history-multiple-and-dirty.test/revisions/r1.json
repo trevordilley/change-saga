@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-history-multiple-and-dirty",
+  "parents": [],
+  "title": "Distinguish committed event history from uncommitted record changes",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Commit one record with reason A, revise it and commit reason B; keep known commit hashes and parent boundaries."
+  ],
+  "steps": [
+    {
+      "id": "clean",
+      "action": "Query its history while clean.",
+      "expected_result": "Both authored changes have their commit reasons; uncommitted is false.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-change-history:criterion:commit-context"
+      ]
+    },
+    {
+      "id": "dirty",
+      "action": "Make an uncommitted revision through the public authoring command and query history again.",
+      "expected_result": "Committed events and reasons are unchanged; uncommitted is true.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-change-history:criterion:commit-context"
+      ]
+    },
+    {
+      "id": "boundaries",
+      "action": "Inspect each committed event with a resolvable prior boundary.",
+      "expected_result": "Every open command names the correct against and head for its change.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-change-history:criterion:reopen-comparison"
+      ]
+    }
+  ],
+  "expected_result": "Every open command names the correct against and head for its change.",
+  "created_at": "2026-10-16T23:21:35Z",
+  "request_id": "saga-definition-review-history-multiple-and-dirty"
+}

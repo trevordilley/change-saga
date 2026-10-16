@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-details-stale-invalid",
+  "parents": [],
+  "title": "Expose stale and invalid Item intent links",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use exact Item relation fixture with one story relation and one criterion relation.",
+    "Use disposable test fixtures only: public authoring can create a stale pin after a valid revision, but rejects a nonexistent target. Invalid-endpoint browser fixture support remains unproven."
+  ],
+  "steps": [
+    {
+      "id": "stale",
+      "action": "Change the stored source content pin to a nonmatching digest and make the second target missing in the test fixture; rebuild the story projection.",
+      "expected_result": "The first link is stale and the missing-target link is invalid.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+      ]
+    },
+    {
+      "id": "drawer",
+      "action": "In a browser, inspect an Item relation made stale by a supported public revision.",
+      "expected_result": "The link is visibly stale and retains story/criterion and rationale context.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+      ]
+    },
+    {
+      "id": "invalid-drawer",
+      "action": "With an explicitly supplied malformed or externally broken disposable reader fixture, inspect the missing-endpoint Item link; first establish that the reader supports loading this fixture.",
+      "expected_result": "If the broken document can be loaded, the drawer exposes invalid currency rather than hiding or presenting the link as current. Public authoring continues to reject missing endpoints.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+      ]
+    }
+  ],
+  "expected_result": "Stale and invalid links remain distinguishable; invalid-fixture browser feasibility is an open verification gap.",
+  "created_at": "2026-10-16T23:21:58Z",
+  "request_id": "saga-definition-review-story-details-stale-invalid"
+}

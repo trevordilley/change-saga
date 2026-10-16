@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-decision-code-stale",
+  "parents": [],
+  "title": "Name the exact changed code that invalidates a decision",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Approve queue whose Item references queue.go line 3, then commit the decision."
+  ],
+  "steps": [
+    {
+      "id": "change-code",
+      "action": "Change queue.go line 3, commit, and read the report.",
+      "expected_result": "queue decision is out_of_date with a reason naming queue.go lines 3-3.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:review-decision-freshness:criterion:out-of-date"
+      ]
+    }
+  ],
+  "expected_result": "queue decision is out_of_date with a reason naming queue.go lines 3-3.",
+  "created_at": "2026-10-16T23:21:44Z",
+  "request_id": "saga-definition-review-decision-code-stale"
+}

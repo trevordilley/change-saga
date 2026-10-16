@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-details-stale-invalid",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-story-details-stale-invalid:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "stale"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/storylinks.go",
+      "start": 144,
+      "end": 150,
+      "digest": "sha256:5b448d08e0736f9f36a6f5004066a915d8be16d108e1977b3a464770d646c07f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-story-details-stale-invalid-evidence-2"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-known-reasons-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-definition-known-uncertainty",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-definition-known-uncertainty:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-known-reasons"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 336,
+      "end": 371,
+      "digest": "sha256:032f48b8d7db6c472f3b82bbecc2e62f5812779c2d517d3776818db3d23987ce"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 375,
+      "end": 396,
+      "digest": "sha256:d93f9b6d75ccb7da9088b40827729259a198bfaa59d2e931757f24e2574266f2"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-definition-known-uncertainty-check-known-reasons-assertions"
+}

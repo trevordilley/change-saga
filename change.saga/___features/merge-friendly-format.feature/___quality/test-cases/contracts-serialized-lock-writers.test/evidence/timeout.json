@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "timeout",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "timeout"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/store/store_test.go",
+      "start": 167,
+      "end": 178,
+      "digest": "sha256:2486ecfa58373dea172f0168783fae12fd11649c1760072cc632e3154df94d8b"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-serialized-lock-writers-timeout"
+}

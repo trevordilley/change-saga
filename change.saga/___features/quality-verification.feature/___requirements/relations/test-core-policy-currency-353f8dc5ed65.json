@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-policy-currency-353f8dc5ed65",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-policy-currency",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:policy-currency",
+  "scope": "self",
+  "rationale": "Steps check-policy-currency define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-policy-currency:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-policy:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:51.399009Z",
+  "request_id": "test-core-policy-currency-353f8dc5ed65"
+}

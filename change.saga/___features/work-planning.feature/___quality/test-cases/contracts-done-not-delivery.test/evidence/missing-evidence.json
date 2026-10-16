@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "missing-evidence",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-done-not-delivery",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-done-not-delivery:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "done"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 488,
+      "end": 492,
+      "digest": "sha256:3dd5096505d57276e27a8284c74c7cc102606431b34187c062c54a9a9ed81af8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-done-not-delivery-missing-evidence"
+}

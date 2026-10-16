@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-exact-deprecation",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-exact-deprecation:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "scope",
+    "neighbor"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/deprecations_test.go",
+      "start": 64,
+      "end": 86,
+      "digest": "sha256:eebfb196fdbef9ead51730381415dd3dea34ae0915f399326e5b89fa6a5f94f5"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-exact-deprecation-evidence-1"
+}

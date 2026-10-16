@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-details-current",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-story-details-current:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "details"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/implementation-deck.spec.ts",
+      "start": 119,
+      "end": 125,
+      "digest": "sha256:8fb6ed205187f8987e400c06491a0d1f2a75d1d114d91fb3af74cfbff7a87b59"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-story-details-current-evidence-2"
+}

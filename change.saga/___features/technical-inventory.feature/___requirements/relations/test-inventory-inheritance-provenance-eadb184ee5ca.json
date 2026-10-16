@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-inheritance-provenance-eadb184ee5ca",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-inheritance-provenance",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+  "scope": "self",
+  "rationale": "Steps paths define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-inheritance-provenance:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:02.00986Z",
+  "request_id": "test-inventory-inheritance-provenance-eadb184ee5ca"
+}

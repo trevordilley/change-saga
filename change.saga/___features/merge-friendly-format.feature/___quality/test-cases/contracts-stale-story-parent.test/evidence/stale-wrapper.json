@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "stale-wrapper",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "reject"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 208,
+      "end": 224,
+      "digest": "sha256:f909bd6ace1ab67e0abca524781aa0e015d0ed81a262694bce852b83992c5c0c"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-stale-story-parent-stale-wrapper"
+}

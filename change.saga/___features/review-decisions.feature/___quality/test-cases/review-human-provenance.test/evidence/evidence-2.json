@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-human-provenance",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-human-provenance:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "display"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/reviews.go",
+      "start": 1142,
+      "end": 1146,
+      "digest": "sha256:7dddf4d40247717b3605ced387f6d9419aa431e3de21adf2131f7f800bd4b270"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-human-provenance-evidence-2"
+}

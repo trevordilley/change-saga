@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-history-replacement",
+  "parents": [],
+  "title": "Read the introducing replacement event and reopen its comparison",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Create and commit the SQS-to-Postgres replacement fixture used by TestReplacedSlidePairsWithItsReplacementAndItsReason."
+  ],
+  "steps": [
+    {
+      "id": "history",
+      "action": "Query history for the Postgres slide.",
+      "expected_result": "Its introducing event names the replacement commit reason and Replaced names the SQS slide.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-change-history:criterion:commit-context",
+        "urn:change-saga:change-saga:story:record-change-history:criterion:replacement-context"
+      ]
+    },
+    {
+      "id": "open",
+      "action": "Inspect the introducing event open command.",
+      "expected_result": "It contains --against the nonempty prior boundary and --head the introducing commit.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-change-history:criterion:reopen-comparison"
+      ]
+    }
+  ],
+  "expected_result": "It contains --against the nonempty prior boundary and --head the introducing commit.",
+  "created_at": "2026-10-16T23:21:33Z",
+  "request_id": "saga-definition-review-history-replacement"
+}

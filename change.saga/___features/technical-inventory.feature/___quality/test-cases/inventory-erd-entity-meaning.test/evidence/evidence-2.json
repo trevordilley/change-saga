@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-entity-meaning",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-erd-entity-meaning:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "payload"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 144,
+      "end": 160,
+      "digest": "sha256:6f7f74735fdd689613cf0a77ab57b4d64006618fc9b5662085bf0fd3e480227f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-erd-entity-meaning-evidence-2"
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "two-page-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-pages",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-cursor-pages:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "first",
+    "last"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/reviewapp/session_test.go",
+      "start": 53,
+      "end": 62,
+      "digest": "sha256:596b86507e9189fdb12ebb0b2a1a70f2c0865895d26b17bf2f8c19041db1513d"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-cursor-pages-two-page-assertions"
+}

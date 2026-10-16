@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-summary-scope",
+  "parents": [],
+  "title": "Count distinct exact-Item stories and isolate legacy links",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "One slide Item has active whole-story and criterion links to the same story; also include legacy slide/deck links, an unrelated Item link and superseded link."
+  ],
+  "steps": [
+    {
+      "id": "summary",
+      "action": "Render the slide story summary and Item controls.",
+      "expected_result": "Count is one; two exact links remain; two legacy links are separate and show Needs element assignment.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:summary-scope"
+      ]
+    },
+    {
+      "id": "legacy-only",
+      "action": "Retain only the legacy deck and slide relations and render again.",
+      "expected_result": "Story count is zero and no Item story control inherits the broad links.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:summary-scope"
+      ]
+    }
+  ],
+  "expected_result": "Story count is zero and no Item story control inherits the broad links.",
+  "created_at": "2026-10-16T23:21:59Z",
+  "request_id": "saga-definition-review-story-summary-scope"
+}

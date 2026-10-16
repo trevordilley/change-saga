@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-stale-design",
+  "parents": [],
+  "title": "Expose stale links when design content changes",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use livingFixture checkout/fast with the two design-pinned relations from createDeliveryItem."
+  ],
+  "steps": [
+    {
+      "id": "change",
+      "action": "Replace checkout-design content with revised design text and reopen the session.",
+      "expected_result": "The design digest differs from the relation pins."
+    },
+    {
+      "id": "stale",
+      "action": "Query relations with state=stale.",
+      "expected_result": "Both dependent relations are returned with reason content digest changed.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths"
+      ]
+    }
+  ],
+  "expected_result": "Changed design content makes dependent pins visibly stale.",
+  "created_at": "2026-10-16T23:23:03Z",
+  "request_id": "saga-definition-contracts-intent-stale-design"
+}

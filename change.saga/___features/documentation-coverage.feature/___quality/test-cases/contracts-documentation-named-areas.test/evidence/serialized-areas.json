@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "serialized-areas",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-documentation-named-areas",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-documentation-named-areas:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "areas"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/areas/areas_test.go",
+      "start": 115,
+      "end": 130,
+      "digest": "sha256:cbbe8940bcd7133f17ce2dfee9b55d2468d077759a4ce2bd3b62bbc6d17f5485"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-documentation-named-areas-serialized-areas"
+}

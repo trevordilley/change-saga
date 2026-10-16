@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-cursor-context-rejection-d2ec9f4974bd",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection",
+  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context",
+  "scope": "self",
+  "rationale": "Steps reject, retryability define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:22:37.619106Z",
+  "request_id": "test-contracts-cursor-context-rejection-d2ec9f4974bd"
+}

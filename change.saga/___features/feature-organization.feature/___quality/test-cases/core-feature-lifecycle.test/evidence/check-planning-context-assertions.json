@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-planning-context-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-feature-lifecycle",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-feature-lifecycle:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-planning-context"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/roadmap.spec.ts",
+      "start": 26,
+      "end": 32,
+      "digest": "sha256:fb67c76f9b80ccb56fe4b8230b4912a5f13389e95382ad4540c6a7663bc0147f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-feature-lifecycle-check-planning-context-assertions"
+}

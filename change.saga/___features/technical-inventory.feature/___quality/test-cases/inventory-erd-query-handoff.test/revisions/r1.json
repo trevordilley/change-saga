@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-query-handoff",
+  "parents": [],
+  "title": "Retrieve design-specific ERD changes and their implementation context",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Disposable format-2 Saga using the PDF inventory fixture: implemented PDF report held by Record store, proposed JSON PDF job held by Job queue, report-to-job production relationship, application ERD, and pdf-jobs overlay; the reporting ERD also includes a job association with owner 0..many and destination unknown.",
+    "Prepare a committed baseline and selected design with an added code-free entity, an edited relationship and an unrelated proposal in another feature; record exact design, feature, baseline and head identities."
+  ],
+  "steps": [
+    {
+      "id": "changes",
+      "action": "Use public inventory/whiteboard queries for the selected design or named comparison and inspect added/changed entities and relationships.",
+      "expected_result": "Both entity additions and relationship edits are discoverable with stable identities even without code evidence.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:query-changes"
+      ]
+    },
+    {
+      "id": "scope",
+      "action": "Restrict the proposed results to the selected design/feature and inspect declared scope paths.",
+      "expected_result": "Related entities and relationships are returned with the declared links proving scope; unrelated proposals are excluded.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap"
+      ]
+    },
+    {
+      "id": "handoff",
+      "action": "Follow each returned design pin and current evidence link.",
+      "expected_result": "The committed design remains readable and required work, existing implementation and unresolved knowledge are distinguishable.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:handoff-context"
+      ]
+    }
+  ],
+  "expected_result": "The committed design remains readable and required work, existing implementation and unresolved knowledge are distinguishable.",
+  "created_at": "2026-10-16T23:20:00Z",
+  "request_id": "saga-definition-inventory-erd-query-handoff"
+}

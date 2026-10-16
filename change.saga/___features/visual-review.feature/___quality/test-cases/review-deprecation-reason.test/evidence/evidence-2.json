@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-reason",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-deprecation-reason:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "replacement"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/deprecations.go",
+      "start": 182,
+      "end": 184,
+      "digest": "sha256:2fac5cbf5067ba82868b595f8f6d476c7f4a16baf36c7cf359a261b6b3880488"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-deprecation-reason-evidence-2"
+}

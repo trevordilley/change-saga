@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-slide-snapshot",
+  "parents": [],
+  "title": "Repair a transaction-managed slide from its complete snapshot",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use newSlideTransactionFixture, publish the initial complete slide and then commit a behavior change in service.go."
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "action": "Reconcile and inspect the evidence task; execute its query slide inspection route.",
+      "expected_result": "Route is query slide followed by apply-slide and repin; query returns the exact authoring snapshot from initial publication.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop"
+      ]
+    },
+    {
+      "id": "update",
+      "action": "Submit a complete desired slide update using that snapshot and changed exact code reference; reconcile again.",
+      "expected_result": "The update succeeds and stale currency is zero.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop"
+      ]
+    }
+  ],
+  "expected_result": "The repair loop retains complete-slide concurrency guards.",
+  "created_at": "2026-10-16T23:23:24Z",
+  "request_id": "saga-definition-contracts-reconcile-slide-snapshot"
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-successor-roadmap",
+  "parents": [],
+  "title": "Keep a proposed successor discoverable after delivery",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Disposable Saga with baseline commit before a new identity, proposed r1, implemented r2 supported by exact evidence, and same-identity proposed successor r3 against r2; retain a comparison head and a separate conflicted entity."
+  ],
+  "steps": [
+    {
+      "id": "implemented",
+      "action": "Query proposed work at r2 and new entities against the recorded baseline/head.",
+      "expected_result": "r2 is absent from proposed results but the identity remains new in the comparison.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:remaining-roadmap"
+      ]
+    },
+    {
+      "id": "successor",
+      "action": "Query proposed work after r3 and inspect unresolved records and saved baseline.",
+      "expected_result": "r3 is discoverable as proposed, r2 remains implemented, and conflicts are visible without choosing a winner.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:remaining-roadmap"
+      ]
+    }
+  ],
+  "expected_result": "r3 is discoverable as proposed, r2 remains implemented, and conflicts are visible without choosing a winner.",
+  "created_at": "2026-10-16T23:20:43Z",
+  "request_id": "saga-definition-inventory-successor-roadmap"
+}

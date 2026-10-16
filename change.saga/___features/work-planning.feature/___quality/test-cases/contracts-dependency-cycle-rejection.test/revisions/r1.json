@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-dependency-cycle-rejection",
+  "parents": [],
+  "title": "Reject a dependency that closes a cycle",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Create storage, query and viewer work items; persist storage→query progress_done and query→viewer merge_integrated dependencies."
+  ],
+  "steps": [
+    {
+      "id": "cycle",
+      "action": "Attempt viewer→storage progress_done dependency with ID cycle.",
+      "expected_result": "Creation reports dependency cycle.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:acyclic"
+      ]
+    },
+    {
+      "id": "unchanged",
+      "action": "Reload the plan and inspect the attempted destination.",
+      "expected_result": "cycle was not published and exactly the two original dependencies remain.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:acyclic"
+      ]
+    }
+  ],
+  "expected_result": "A rejected cycle cannot leak into the persisted plan.",
+  "created_at": "2026-10-16T23:22:57Z",
+  "request_id": "saga-definition-contracts-dependency-cycle-rejection"
+}

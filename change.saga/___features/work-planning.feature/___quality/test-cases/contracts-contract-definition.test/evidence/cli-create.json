@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "cli-create",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-contract-definition",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-contract-definition:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "create"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/living_mutation_test.go",
+      "start": 509,
+      "end": 519,
+      "digest": "sha256:df90ce6258a63192a17799c50dbd4cfd590936dd222bd51137597ba4bb1669e4"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-contract-definition-cli-create"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-reconcile-selected-head-a5164fbfa6bb",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-reconcile-selected-head",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+  "scope": "self",
+  "rationale": "Steps head define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-selected-head:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:23:21.371618Z",
+  "request_id": "test-contracts-reconcile-selected-head-a5164fbfa6bb"
+}

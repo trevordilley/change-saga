@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-historical-pins",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-whiteboard-historical-pins:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "child"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/whiteboard_test.go",
+      "start": 73,
+      "end": 86,
+      "digest": "sha256:a6b16ea61d9a43518e4b84e75fd92dd1e4f7f09b4b1c144db386f9494717fc82"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-whiteboard-historical-pins-evidence-1"
+}

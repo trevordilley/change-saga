@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-rectangle-place-resize",
+  "parents": [],
+  "title": "Place and resize a rectangular review annotation",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Open greeting slide in pr-1 with annotation toolbar and a writable review."
+  ],
+  "steps": [
+    {
+      "id": "draw",
+      "action": "Choose Rectangle and drag from 32%,28% to 62%,58%; enter a comment and save.",
+      "expected_result": "A visible rectangle annotation with normalized numeric coordinates is saved.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:visual-annotation:criterion:shapes"
+      ]
+    },
+    {
+      "id": "resize",
+      "action": "Select its stroke and drag the resize handle outward.",
+      "expected_result": "Saved width and height both increase.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:visual-annotation:criterion:shapes"
+      ]
+    }
+  ],
+  "expected_result": "Saved width and height both increase.",
+  "created_at": "2026-10-16T23:22:11Z",
+  "request_id": "saga-definition-review-rectangle-place-resize"
+}

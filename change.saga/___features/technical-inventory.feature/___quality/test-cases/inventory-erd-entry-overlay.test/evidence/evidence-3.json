@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "overlay"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/technical_erd.go",
+      "start": 253,
+      "end": 270,
+      "digest": "sha256:6053fb75a21f71fc64828fb6dd2d7ad5967469a4ff60ba37d6a0d1b6e8619525"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-erd-entry-overlay-evidence-3"
+}

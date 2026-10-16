@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "stale-reason",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "stale"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/coverage/axes_test.go",
+      "start": 162,
+      "end": 168,
+      "digest": "sha256:24bc04c09efc2c62ee67babdf011438f71889149e127041392c70f585037a4cf"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-criterion-axis-reasons-stale-reason"
+}

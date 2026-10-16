@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "progress-projection",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-progress-history-heads",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-progress-history-heads:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "history"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 225,
+      "end": 230,
+      "digest": "sha256:2f6c7ed334c2298b67fb0d9f7b8ab7756825d5ccdccbd08e7d04d73de78f7420"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-progress-history-heads-progress-projection"
+}

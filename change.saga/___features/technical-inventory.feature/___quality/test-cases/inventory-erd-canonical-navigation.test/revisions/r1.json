@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-canonical-navigation",
+  "parents": [],
+  "title": "Open the same canonical entity from drawing and directory",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use the public CLI-authored PDF job/report ERD fixture from the browser test; report is drawn and job is directory-only."
+  ],
+  "steps": [
+    {
+      "id": "directory",
+      "action": "Open Data model and inspect its sidebar entity directory.",
+      "expected_result": "Application data, PDF job and PDF report are discoverable.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory"
+      ]
+    },
+    {
+      "id": "same-pin",
+      "action": "Activate the report drawing by keyboard, close it, and activate the report directory explanation control.",
+      "expected_result": "Both open report revision r1; closing restores drawing focus and the undrawn proposed job remains in the directory.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+        "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code"
+      ]
+    },
+    {
+      "id": "named-board",
+      "action": "Repeat entity discovery from the currently assigned ERD named whiteboard and its directory, if provided; compare diagram/directory entity pins.",
+      "expected_result": "The current ERD entry exposes an expandable entity directory and both routes reach the same canonical definition; record a gap if the named-board surface only provides instance focus.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory"
+      ]
+    }
+  ],
+  "expected_result": "The current ERD entry exposes an expandable entity directory and both routes reach the same canonical definition; record a gap if the named-board surface only provides instance focus.",
+  "created_at": "2026-10-16T23:07:19Z",
+  "request_id": "saga-definition-inventory-erd-canonical-navigation"
+}

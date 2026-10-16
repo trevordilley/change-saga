@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-review-saved-view",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-review-saved-view:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "historical"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/inventory_item_test.go",
+      "start": 111,
+      "end": 127,
+      "digest": "sha256:febd4f1351f456603cd91a98b2ba55d20618fc0479833cb5d016c6f9472aa57d"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-review-saved-view-evidence-3"
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-source-relocation",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-source-relocation:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "companion",
+    "inside"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/reviewapp/session.go",
+      "start": 110,
+      "end": 120,
+      "digest": "sha256:e3d0672a9d963ff3e74e30f604ed3244cced6792dc96e02c4c66e9caf5267c6a"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-source-relocation-evidence-2"
+}

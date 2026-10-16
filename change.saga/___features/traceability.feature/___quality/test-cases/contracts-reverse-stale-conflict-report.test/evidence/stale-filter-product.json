@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "stale-filter-product",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "stale-filter"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 547,
+      "end": 551,
+      "digest": "sha256:e57b0ce0e30b787135e45e764c156831b9cf37a8c36997566b8a12d2d22e67a4"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reverse-stale-conflict-report-stale-filter-product"
+}

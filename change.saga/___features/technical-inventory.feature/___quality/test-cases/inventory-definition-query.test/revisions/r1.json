@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-definition-query",
+  "parents": [],
+  "title": "Read canonical definitions, exact code and stale link health",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use TestInventoryPublic fixture: store/reader Components and FeatureFlag System with flags.go evidence pinned at line 2, then revise store while retaining the System member pin."
+  ],
+  "steps": [
+    {
+      "id": "code",
+      "action": "Query inventory and inspect the first current revision's code.",
+      "expected_result": "Evidence retains the original full commit and digest.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:discover-definitions",
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation"
+      ]
+    },
+    {
+      "id": "link",
+      "action": "Query the System with --history after revising store.",
+      "expected_result": "The saved member pin reports stale instead of silently following the newer Component.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+        "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding"
+      ]
+    },
+    {
+      "id": "drift",
+      "action": "Change flags.go line 2 in the disposable source, commit, and query store.",
+      "expected_result": "Code health reports stale after the selected source bytes change.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+        "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding"
+      ]
+    }
+  ],
+  "expected_result": "Code health reports stale after the selected source bytes change.",
+  "created_at": "2026-10-16T23:20:08Z",
+  "request_id": "saga-definition-inventory-definition-query"
+}

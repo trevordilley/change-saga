@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-definition-coverage",
+  "parents": [],
+  "title": "Assess verification definitions without requiring execution",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use the quality status fixture with accepted criteria, required kinds, proposed/active cases, stale mappings, an excluded criterion and no run dependency."
+  ],
+  "steps": [
+    {
+      "id": "check-required-kinds",
+      "action": "Inspect the accepted criterion requiring positive, negative and edge definitions, with positive absent and negative/edge present.",
+      "expected_result": "Positive is missing while negative and edge are covered.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
+        "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty"
+      ]
+    },
+    {
+      "id": "check-planned-without-runs",
+      "action": "Remove all run metadata from the status fixture; then set cases to proposed and inspect the case without evidence.",
+      "expected_result": "The proposed case without evidence covers verification intent; removing runs leaves assembled status unchanged.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof"
+      ]
+    }
+  ],
+  "expected_result": "Assess verification definitions without requiring execution.",
+  "created_at": "2026-10-16T23:17:07Z",
+  "request_id": "saga-definition-core-definition-coverage"
+}

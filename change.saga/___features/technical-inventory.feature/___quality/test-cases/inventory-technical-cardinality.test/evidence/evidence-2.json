@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-cardinality",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-technical-cardinality:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "unknown"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 115,
+      "end": 123,
+      "digest": "sha256:d9bef3969bc9cf4c6ba98566db751d66652137c145d045557daa96be65d37c91"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-technical-cardinality-evidence-2"
+}

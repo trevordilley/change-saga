@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "parent-set-guard",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-all-story-heads",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-all-story-heads:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "omit"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/mutation.go",
+      "start": 140,
+      "end": 142,
+      "digest": "sha256:2eb05bcd466ff4961365e59f2ed5d7e40161d5b04fde84e32afd65550a23d2b7"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reconcile-all-story-heads-parent-set-guard"
+}

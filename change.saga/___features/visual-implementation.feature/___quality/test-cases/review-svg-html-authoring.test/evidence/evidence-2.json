@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-svg-html-authoring",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-svg-html-authoring:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "html"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/slides_test.go",
+      "start": 133,
+      "end": 146,
+      "digest": "sha256:65937d41c4c6f3b9e6fa7136bbcd949da3c460732d389c268dee53c18df9dba8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-svg-html-authoring-evidence-2"
+}

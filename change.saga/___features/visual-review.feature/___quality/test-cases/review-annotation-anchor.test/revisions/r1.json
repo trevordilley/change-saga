@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-annotation-anchor",
+  "parents": [],
+  "title": "Keep an annotation attached to its slide through resizing and navigation",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Save a rectangle on greeting in a review also containing theme."
+  ],
+  "steps": [
+    {
+      "id": "resize-window",
+      "action": "Switch from desktop to 390px viewport.",
+      "expected_result": "Annotation remains visible and its width relative to slide matches saved normalized width.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:visual-annotation:criterion:anchored"
+      ]
+    },
+    {
+      "id": "navigate",
+      "action": "Select theme, then return to greeting and reload.",
+      "expected_result": "The mark appears only on greeting in the original relative position.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:visual-annotation:criterion:anchored"
+      ]
+    }
+  ],
+  "expected_result": "The mark appears only on greeting in the original relative position.",
+  "created_at": "2026-10-16T23:22:12Z",
+  "request_id": "saga-definition-review-annotation-anchor"
+}

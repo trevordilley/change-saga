@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "managed-route",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-slide-snapshot",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-slide-snapshot:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "inspect"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/reconciliation.go",
+      "start": 590,
+      "end": 602,
+      "digest": "sha256:a88de70442bd84af0728835385803dca10a6d6d6fdfed283c52d9337383d91e5"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reconcile-slide-snapshot-managed-route"
+}

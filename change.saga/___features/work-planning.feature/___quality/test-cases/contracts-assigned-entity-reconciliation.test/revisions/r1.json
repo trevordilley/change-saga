@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-assigned-entity-reconciliation",
+  "parents": [],
+  "title": "Update an assigned entity roadmap without erasing proposal or assignment history",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Once public entity assignment exists, W owns proposed entity E and requires integration/review evidence; E has one proposal revision and W has an existing portable assignment. No required merge is integrated."
+  ],
+  "steps": [
+    {
+      "id": "implement",
+      "action": "Record exact implementation code evidence for E through its public entity operation, then query entity history and W assignment.",
+      "expected_result": "Entity roadmap exposes implemented evidence while original proposal and assignment history remain intact.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:entity-reconciliation"
+      ]
+    },
+    {
+      "id": "gates",
+      "action": "Query W integration and review readiness with only E completed.",
+      "expected_result": "Required integration/review evidence is still missing and entity completion does not satisfy those requirements.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:entity-reconciliation"
+      ]
+    }
+  ],
+  "expected_result": "Entity realization advances the roadmap while delivery obligations remain independent.",
+  "created_at": "2026-10-16T23:23:46Z",
+  "request_id": "saga-definition-contracts-assigned-entity-reconciliation"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-feature-grouping-bcc0ce7a5e14",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-feature-grouping",
+  "to": "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:membership-without-copying",
+  "scope": "self",
+  "rationale": "Steps check-membership-without-copying, check-canonical-group-links define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-feature-grouping:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:group-feature-views-independently:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:16:44.951977Z",
+  "request_id": "test-core-feature-grouping-bcc0ce7a5e14"
+}

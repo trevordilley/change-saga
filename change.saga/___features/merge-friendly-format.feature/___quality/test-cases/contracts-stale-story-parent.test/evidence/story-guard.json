@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "story-guard",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "full-revision"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/mutation.go",
+      "start": 140,
+      "end": 142,
+      "digest": "sha256:2eb05bcd466ff4961365e59f2ed5d7e40161d5b04fde84e32afd65550a23d2b7"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/mutation.go",
+      "start": 154,
+      "end": 160,
+      "digest": "sha256:aa22fe533f17a0be6bc8d43cf5a71fdadcccc798d9f8e7b7c896b010d3c9c94d"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-stale-story-parent-story-guard"
+}

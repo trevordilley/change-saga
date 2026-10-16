@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-reconcile-currency-regression-0a24193037f2",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-reconcile-currency-regression",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+  "scope": "self",
+  "rationale": "Steps regression define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-currency-regression:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:23:16.272117Z",
+  "request_id": "test-contracts-reconcile-currency-regression-0a24193037f2"
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-scope",
+  "parents": [],
+  "title": "Compare app, Git and feature scopes explicitly",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use two named features one/two with one owned changed line each, one unowned changed line, and health problems in both features.",
+    "Intent clarification pending: the current evaluator includes unowned lines in every feature. The planned feature check retains the recorded only-named-feature requirement and may expose this difference."
+  ],
+  "steps": [
+    {
+      "id": "app",
+      "action": "Evaluate areas directly with ScopeApp, code targets item:a/item:b, one active story linked only from item:a, and no diff.",
+      "expected_result": "Implementation has no diff obligation, stories count two code targets with one covered, and design has one uncovered story.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+      ]
+    },
+    {
+      "id": "change",
+      "action": "Read check --against main.",
+      "expected_result": "Scope is change, based on the selected Git comparison.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+      ]
+    },
+    {
+      "id": "feature",
+      "action": "Evaluate areas directly with ScopeChange, Feature one, owned atoms for one/two, an unowned atom, and health problems for each feature.",
+      "expected_result": "Only feature-one facts contribute to feature-one obligations and health; feature-two and unowned facts are not attributed to feature one.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+      ]
+    },
+    {
+      "id": "public-scope",
+      "action": "Run check with no scope flag, --against main and --feature one respectively on the corresponding authored fixture.",
+      "expected_result": "No flags select app; --against selects the comparison; --feature one evaluates only feature-one facts.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+      ]
+    }
+  ],
+  "expected_result": "Each selector evaluates its recorded scope; the unowned-line difference remains an explicit unresolved product question.",
+  "created_at": "2026-10-16T23:23:33Z",
+  "request_id": "saga-definition-contracts-selected-coverage-scope"
+}

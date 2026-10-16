@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "cursor-check",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "reject",
+    "retryability"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/session.go",
+      "start": 294,
+      "end": 303,
+      "digest": "sha256:b1b95ab1234814ff2374f05d900394cd13ac692f104f568024ed5a48f1ba6be5"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/session.go",
+      "start": 331,
+      "end": 336,
+      "digest": "sha256:a22e02c6de9fe97a8de976bd8f41eecc27e5ecd192eaaf0d8d0c7c635202d917"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-cursor-context-rejection-cursor-check"
+}

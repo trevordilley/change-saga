@@ -1,0 +1,52 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery",
+  "parents": [],
+  "title": "Discover operation usage, pagination and stable errors",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "No Saga need be opened for discovery; use the query schema/spec operations advertised by CLI help."
+  ],
+  "steps": [
+    {
+      "id": "paths",
+      "action": "For each operation enumerated by TestQuerySchemaDescribesEveryResponseWithoutOpeningSession, decode query schema OP.",
+      "expected_result": "Operation identity, expected data path and cursor counted/total paths match the table.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery"
+      ]
+    },
+    {
+      "id": "records",
+      "action": "Read schema for personas, persona-references, terms, term-references and spec --json.",
+      "expected_result": "Schema has usage and cursor pagination; independent reference conflict pagination is described; spec has the versioned query schema and persona/reference operations.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery"
+      ]
+    },
+    {
+      "id": "schema",
+      "action": "For every query operation inspect query schema OP and query OP --help.",
+      "expected_result": "Purpose, usage/input flags, data paths and pagination metadata are published.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery"
+      ]
+    },
+    {
+      "id": "spec",
+      "action": "Inspect spec --json and query help stable error discovery.",
+      "expected_result": "All operations and their input shapes are discoverable with stable error code/retryability contracts.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery"
+      ]
+    }
+  ],
+  "expected_result": "An AI client can discover the supported contract without scraping storage or prose results.",
+  "created_at": "2026-10-16T23:23:37Z",
+  "request_id": "saga-definition-contracts-query-operation-discovery"
+}

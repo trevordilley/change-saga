@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-usage-navigation",
+  "parents": [],
+  "title": "Navigate entity documentation to the referencing slide and Item",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use technical-inventory-ui fixture with FeatureFlag System and checkout-flag/shared Item; preserve the exact original slide URL."
+  ],
+  "steps": [
+    {
+      "id": "definition",
+      "action": "Open FeatureFlag from the directory and read explanation and usages.",
+      "expected_result": "Canonical r1 opens, interaction explanation is visible, and usage names shared.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
+        "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses"
+      ]
+    },
+    {
+      "id": "navigate",
+      "action": "Follow shared usage, open the Item's definition, then close the drawer.",
+      "expected_result": "The checkout-flag slide opens; the Item opens System r1; closing restores the Item control and original slide URL.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:navigate-usage"
+      ]
+    },
+    {
+      "id": "currency",
+      "action": "Revise System to r2, visit r1 and inspect its usages, then choose current definition.",
+      "expected_result": "r1 and its usages visibly report stale; current definition opens r2 without silently substituting it for r1.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation"
+      ]
+    }
+  ],
+  "expected_result": "r1 and its usages visibly report stale; current definition opens r2 without silently substituting it for r1.",
+  "created_at": "2026-10-16T23:20:51Z",
+  "request_id": "saga-definition-inventory-usage-navigation"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-history-separation",
+  "parents": [],
+  "title": "Keep legacy runs in explicit history",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A separate case has current implementation evidence and a historical failed run with summary and inert command text."
+  ],
+  "steps": [
+    {
+      "id": "check-history-boundary",
+      "action": "Read the Quality definition query, explicit history query and case reader.",
+      "expected_result": "Definition output has no run data, history exposes legacy result metadata, and the reader omits the historical summary and command.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin"
+      ]
+    }
+  ],
+  "expected_result": "Keep legacy runs in explicit history.",
+  "created_at": "2026-10-16T23:19:16Z",
+  "request_id": "saga-definition-core-quality-history-separation"
+}

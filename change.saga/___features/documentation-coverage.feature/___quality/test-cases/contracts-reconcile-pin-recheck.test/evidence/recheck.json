@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "recheck",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-pin-recheck",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-pin-recheck:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "repair"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 91,
+      "end": 99,
+      "digest": "sha256:330b11204eb4beb7ea968b808128be1f714e8a2804c2062c3bbe8d5c9d810368"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reconcile-pin-recheck-recheck"
+}

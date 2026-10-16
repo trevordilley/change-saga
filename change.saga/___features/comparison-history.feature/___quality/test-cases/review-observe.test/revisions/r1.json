@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-observe",
+  "parents": [],
+  "title": "Observe the selected committed head without comparison layers",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "A committed source checkout contains a valid Saga and a known head H."
+  ],
+  "steps": [
+    {
+      "id": "observe",
+      "action": "Read status without --against at default HEAD.",
+      "expected_result": "Mode is observe, comparison layers are absent, and changed-line total is zero.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:comparison-context:criterion:observe-zero-diff"
+      ]
+    },
+    {
+      "id": "selected-head",
+      "action": "Repeat with --head H selecting an older committed head.",
+      "expected_result": "The reported head is H, mode is observe, and layers and changed-line total remain empty.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:comparison-context:criterion:observe-zero-diff"
+      ]
+    }
+  ],
+  "expected_result": "The reported head is H, mode is observe, and layers and changed-line total remain empty.",
+  "created_at": "2026-10-16T23:21:25Z",
+  "request_id": "saga-definition-review-observe"
+}

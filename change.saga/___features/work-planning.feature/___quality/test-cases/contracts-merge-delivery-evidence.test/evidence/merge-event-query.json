@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "merge-event-query",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-merge-delivery-evidence",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-merge-delivery-evidence:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "query"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 239,
+      "end": 244,
+      "digest": "sha256:75cb0ecbd5594f62dfd72405152bf34ed41bdfeb9df7cc9f369a94453fd662d5"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/workplan/model.go",
+      "start": 210,
+      "end": 218,
+      "digest": "sha256:f1220b91a8a05dfc0f62c9336136e7cb82abbb8b0ae385cde9ac8f054e080dd9"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-merge-delivery-evidence-merge-event-query"
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-summary-scope",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-story-summary-scope:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "summary",
+    "legacy-only"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/storylinks.go",
+      "start": 34,
+      "end": 44,
+      "digest": "sha256:ce4521ba46d15c28de6df6a507f8cee87d3c112a8e960847f209b9c4958d7c6f"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/storylinks.go",
+      "start": 114,
+      "end": 121,
+      "digest": "sha256:e0be1125d5782d844890536c73e51977b09f8ba1cf6bed2dcbac1e0cafdca923"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/storylinks.go",
+      "start": 150,
+      "end": 160,
+      "digest": "sha256:69c7f5dd29f2f2b4cd7993dc14e345faea068d91089e00f2ec76ae22f92f015a"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-story-summary-scope-evidence-3"
+}

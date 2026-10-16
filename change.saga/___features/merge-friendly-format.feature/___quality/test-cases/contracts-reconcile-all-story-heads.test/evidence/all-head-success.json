@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "all-head-success",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-all-story-heads",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-all-story-heads:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "merge"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 58,
+      "end": 71,
+      "digest": "sha256:d32a2c7902eb204203534ee07d79f04385bb8daaade80bcb4c0c3bc294aa503f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reconcile-all-story-heads-all-head-success"
+}

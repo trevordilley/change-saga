@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-required-kinds-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-policies",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-quality-policies:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-required-kinds"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/quality/mutation_test.go",
+      "start": 361,
+      "end": 396,
+      "digest": "sha256:2291ebdcd13ac3e740e40ad04ac24cf668de998ab5ed8e26ff3f292034700f0d"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 327,
+      "end": 335,
+      "digest": "sha256:f324fcd1eb157d98243b647ec3deb5825a52eb3779750a978233f75f9d114ea6"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-quality-policies-check-required-kinds-assertions"
+}

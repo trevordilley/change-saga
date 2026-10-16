@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "existing-choice",
+    "context"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/reconciliation_inventory.go",
+      "start": 193,
+      "end": 212,
+      "digest": "sha256:4bd41b5397fe710c64a4c1a5d7858d81a10cec1e8102578eb4fe28d59ae934dc"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-unreferenced-choice-evidence-2"
+}

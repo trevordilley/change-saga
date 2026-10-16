@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-instance-focus",
+  "parents": [],
+  "title": "Focus exact instances within a named whiteboard",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Navigation browser fixture has repeated local ERD frames a-first and z-copy plus remote frame; board remains one document."
+  ],
+  "steps": [
+    {
+      "id": "instances",
+      "action": "Focus a-first, select z-copy, then navigate backward and forward and reload.",
+      "expected_result": "URL/focus values select the exact instances, history restores them, and the same board DOM survives camera navigation.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:focus"
+      ]
+    },
+    {
+      "id": "section",
+      "action": "Open /technical/whiteboards/architecture?revision=r1\u0026focus=area with a named native section area.",
+      "expected_result": "The historical named board and section are rendered with a revision-preserving focus link.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:focus"
+      ]
+    }
+  ],
+  "expected_result": "The historical named board and section are rendered with a revision-preserving focus link.",
+  "created_at": "2026-10-16T23:21:13Z",
+  "request_id": "saga-definition-inventory-whiteboard-instance-focus"
+}

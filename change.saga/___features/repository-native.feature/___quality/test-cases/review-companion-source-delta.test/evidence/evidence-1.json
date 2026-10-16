@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-companion-source-delta",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-companion-source-delta:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "compare"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/layers_test.go",
+      "start": 504,
+      "end": 516,
+      "digest": "sha256:3f0975b50927aebf556d39d201112ba58f780f0ec3596e37ab9c1d77aa9b0af7"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/layers_test.go",
+      "start": 524,
+      "end": 531,
+      "digest": "sha256:95a8fbae334a2ee00940b9f2df3ca351c981a3955e5ce2d0065c979aaa742448"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-companion-source-delta-evidence-1"
+}

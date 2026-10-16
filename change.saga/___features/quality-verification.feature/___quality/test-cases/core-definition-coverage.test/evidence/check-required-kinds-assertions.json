@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-required-kinds-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-definition-coverage",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-definition-coverage:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-required-kinds"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 318,
+      "end": 335,
+      "digest": "sha256:0d30fa3b6519aa7cbc1414ffc8c5c4043404bb6c0fa5cdf2f6269ed8909d11a2"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-definition-coverage-check-required-kinds-assertions"
+}

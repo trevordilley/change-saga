@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "next",
+    "previous-anchor"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/appjs.go",
+      "start": 128,
+      "end": 159,
+      "digest": "sha256:a89c453fbd8731c1ea0a60d9e3359d22a9aceb0491614c9a19246ddeba23a9c4"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-bounded-deck-navigation-evidence-3"
+}

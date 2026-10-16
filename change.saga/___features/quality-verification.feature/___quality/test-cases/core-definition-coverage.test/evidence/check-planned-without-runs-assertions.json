@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-planned-without-runs-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-definition-coverage",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-definition-coverage:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-planned-without-runs"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 562,
+      "end": 585,
+      "digest": "sha256:48ac14e80c04349723ec953cb0861e26580f1a0c6786522028b788c76eed8179"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-definition-coverage-check-planned-without-runs-assertions"
+}

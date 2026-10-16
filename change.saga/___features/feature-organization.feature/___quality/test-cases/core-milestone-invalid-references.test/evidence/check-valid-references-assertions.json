@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-valid-references-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-milestone-invalid-references",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-milestone-invalid-references:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-valid-references"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/classifications_test.go",
+      "start": 82,
+      "end": 91,
+      "digest": "sha256:26aee8d13fca0153a52afc549bfde908849afccf2d0cced635a7c8a954874a77"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-milestone-invalid-references-check-valid-references-assertions"
+}

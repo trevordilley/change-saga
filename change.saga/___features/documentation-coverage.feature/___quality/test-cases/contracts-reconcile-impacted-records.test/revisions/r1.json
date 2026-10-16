@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-impacted-records",
+  "parents": [],
+  "title": "Find declared-link reassessment after code and requirement-only changes",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use shopSaga with story pay, design queue-design and a charge quality definition verifying pay/charged. Use separate branches for a queue code change and story r2 wording change."
+  ],
+  "steps": [
+    {
+      "id": "code",
+      "action": "Change queue behavior and reconcile against main.",
+      "expected_result": "The queue includes a story reassessment and the stale evidence repair.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:explain-impact"
+      ]
+    },
+    {
+      "id": "requirement",
+      "action": "Change only story pay wording/criterion and reconcile.",
+      "expected_result": "No code change/currency staleness is fabricated; queue includes story, design, relation and test case, with traceability inspection and relation-repin route.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:explain-impact"
+      ]
+    },
+    {
+      "id": "reasons",
+      "action": "Inspect Because on each implicated record.",
+      "expected_result": "Each reassessment names the declaring relation or requirement-change cause, and unrelated records are not claimed as impacted.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:explain-impact"
+      ]
+    }
+  ],
+  "expected_result": "Reassessment follows declared links even when the change contains no source edits.",
+  "created_at": "2026-10-16T23:23:21Z",
+  "request_id": "saga-definition-contracts-reconcile-impacted-records"
+}

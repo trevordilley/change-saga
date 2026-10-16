@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-added-records",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-added-records:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "added"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/changeview/layers.go",
+      "start": 340,
+      "end": 346,
+      "digest": "sha256:6fec6a37635d3e142369a2db240fbf4743710bea342e24970cf799f8295dc6b0"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-added-records-evidence-2"
+}

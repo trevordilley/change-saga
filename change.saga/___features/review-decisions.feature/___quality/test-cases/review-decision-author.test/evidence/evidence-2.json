@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-decision-author",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-decision-author:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "other"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 474,
+      "end": 485,
+      "digest": "sha256:a596fcb14d7e4d218a6db4c34d576dce2b8ed5960ae5fdf41834a5d24d2e5601"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-decision-author-evidence-2"
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-feature-priority",
+  "parents": [],
+  "title": "Order ranked and unranked planned features",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Fresh planned features have priorities 1, 2 and 0."
+  ],
+  "steps": [
+    {
+      "id": "check-priority-order",
+      "action": "Inspect the roadmap containing priorities 1, 2 and 0.",
+      "expected_result": "Positive priorities ascend; the zero-priority feature follows ranked features.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:priority-order"
+      ]
+    },
+    {
+      "id": "check-equal-priority-order",
+      "action": "Create two additional planned features with equal priority 3 in a known sequence, then inspect their relative order.",
+      "expected_result": "Their relative order follows creation order.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:priority-order"
+      ]
+    }
+  ],
+  "expected_result": "Order ranked and unranked planned features.",
+  "created_at": "2026-10-16T23:18:37Z",
+  "request_id": "saga-definition-core-feature-priority"
+}

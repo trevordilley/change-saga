@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness",
+  "parents": [],
+  "title": "Expose changed definitions and keep commands inert",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A separate case has implementation evidence; record a legacy failed run whose command would create a marker file if executed."
+  ],
+  "steps": [
+    {
+      "id": "check-inert-command",
+      "action": "Read the definition and history after recording the command; inspect the marker path.",
+      "expected_result": "The definition remains linked, history retains failed as metadata, and the marker does not exist.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness",
+        "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin"
+      ]
+    },
+    {
+      "id": "check-definition-staleness",
+      "action": "Revise the case definition while retaining old evidence, then inspect the query and reader.",
+      "expected_result": "The evidence and step mapping report staleness with the test-revision-changed reason.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness"
+      ]
+    }
+  ],
+  "expected_result": "Expose changed definitions and keep commands inert.",
+  "created_at": "2026-10-16T23:19:26Z",
+  "request_id": "saga-definition-core-quality-definition-staleness"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-requirement-ownership",
+  "parents": [],
+  "title": "Identify the owner of feature-filtered requirements",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Two features own distinct stories in the query fixture."
+  ],
+  "steps": [
+    {
+      "id": "check-feature-in-query",
+      "action": "Query requirements with the second feature URN filter.",
+      "expected_result": "Only that feature’s stories are returned and each row names its owning feature.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:requirements-feature-scope:criterion:feature-in-query"
+      ]
+    }
+  ],
+  "expected_result": "Identify the owner of feature-filtered requirements.",
+  "created_at": "2026-10-16T23:16:57Z",
+  "request_id": "saga-definition-core-requirement-ownership"
+}

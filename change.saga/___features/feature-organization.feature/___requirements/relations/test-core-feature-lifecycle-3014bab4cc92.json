@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-feature-lifecycle-3014bab4cc92",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-feature-lifecycle",
+  "to": "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:planning-context",
+  "scope": "self",
+  "rationale": "Steps check-planning-context, check-planned-design-context, check-built-design-context define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-feature-lifecycle:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:16:46.94188Z",
+  "request_id": "test-core-feature-lifecycle-3014bab4cc92"
+}

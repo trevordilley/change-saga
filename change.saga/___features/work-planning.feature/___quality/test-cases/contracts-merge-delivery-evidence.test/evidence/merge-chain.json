@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "merge-chain",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-merge-delivery-evidence",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-merge-delivery-evidence:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "record"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/living_mutation_test.go",
+      "start": 556,
+      "end": 565,
+      "digest": "sha256:5097799c0e09ab59e155d5a0f9634474533c8c637a9dd4a609760d43771d2701"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/living_mutation_test.go",
+      "start": 568,
+      "end": 589,
+      "digest": "sha256:341cbc99b8a07bdb414b3adf28632c1ae2ef71127c5b2e1c86d59ca471cdecce"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-merge-delivery-evidence-merge-chain"
+}

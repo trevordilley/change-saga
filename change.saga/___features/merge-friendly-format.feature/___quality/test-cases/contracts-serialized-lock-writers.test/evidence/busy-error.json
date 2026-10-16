@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "busy-error",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "timeout"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/store/store.go",
+      "start": 395,
+      "end": 408,
+      "digest": "sha256:b9c739d793ded5772320d0fb407ce92b22f265e7e3542bbdf8ed547d44c06aae"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-serialized-lock-writers-busy-error"
+}

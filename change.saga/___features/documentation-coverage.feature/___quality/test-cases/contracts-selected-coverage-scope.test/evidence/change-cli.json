@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "change-cli",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-scope",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-scope:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "change"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/check_test.go",
+      "start": 52,
+      "end": 58,
+      "digest": "sha256:bf6bc4fe372c3e08eaf91eb060efa30a2582b480826581180c868750965018b5"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-selected-coverage-scope-change-cli"
+}

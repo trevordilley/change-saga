@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "revision"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/layers_test.go",
+      "start": 122,
+      "end": 138,
+      "digest": "sha256:cd61de834fdca3dc6033aa58607211095a90d3055e31936a91d01a39a2a9abd0"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-revised-record-and-pin-evidence-1"
+}

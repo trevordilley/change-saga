@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "area-counts",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-documentation-named-areas",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-documentation-named-areas:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "areas"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/areas/areas_test.go",
+      "start": 24,
+      "end": 40,
+      "digest": "sha256:26070f2503f85c07fa1cc8aa08d250d9f1dd250400c26b50f838648dbd0f8325"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-documentation-named-areas-area-counts"
+}

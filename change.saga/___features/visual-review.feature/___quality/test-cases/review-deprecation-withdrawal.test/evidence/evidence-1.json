@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "withdraw",
+    "immutable"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/deprecations_test.go",
+      "start": 116,
+      "end": 128,
+      "digest": "sha256:3ff1fcdd2b82cc98de7b5f84c21f8fc065db8906c01447004f853262e854e6e9"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-deprecation-withdrawal-evidence-1"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-run-outcome-matrix",
+  "parents": [],
+  "title": "Keep all definition surfaces independent of legacy execution",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Use independent copies of one identical case/evidence fixture; vary only run records across missing, passing, failing, blocked, skipped, stale and conflicting states."
+  ],
+  "steps": [
+    {
+      "id": "check-all-surfaces",
+      "action": "Compare Quality coverage, readiness, health and the definition reader across every run-state copy; inspect explicit history separately.",
+      "expected_result": "Coverage, readiness, health and definition reader are identical across run states; immutable legacy records remain accessible only as inert history.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin"
+      ]
+    }
+  ],
+  "expected_result": "Keep all definition surfaces independent of legacy execution.",
+  "created_at": "2026-10-16T23:19:19Z",
+  "request_id": "saga-definition-core-quality-run-outcome-matrix"
+}

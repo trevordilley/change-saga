@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-decision-replacement-history",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-decision-replacement-history:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "replace",
+    "history"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 176,
+      "end": 190,
+      "digest": "sha256:581917d7b2f396816316ed6c4c677518b680bbf5b6b08a06abaecad55a4b7988"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 227,
+      "end": 251,
+      "digest": "sha256:b7a832837864dd4f075c78950ae89421e4e515f6633748bd39c568f5d41ef846"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-decision-replacement-history-evidence-2"
+}

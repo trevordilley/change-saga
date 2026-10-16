@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons",
+  "parents": [],
+  "title": "Resolve each required axis to linked, excluded or a reasoned gap",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use accepted refund/deadline criterion, one current UX link, one current UI exclusion and one stale implementation link with reason source content digest changed."
+  ],
+  "steps": [
+    {
+      "id": "project",
+      "action": "Project all six required axes for the criterion.",
+      "expected_result": "Exactly one linked, one excluded and four gaps; linked cells have links, excluded cells have current exclusion, every gap has reasons.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:criterion-axis-reasons"
+      ]
+    },
+    {
+      "id": "stale",
+      "action": "Inspect the implementation cell.",
+      "expected_result": "It is a gap with stale state, one stale pin and the original digest-change reason.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:criterion-axis-reasons"
+      ]
+    }
+  ],
+  "expected_result": "Each criterion/axis obligation is explicit and every missing obligation is explained.",
+  "created_at": "2026-10-16T23:23:07Z",
+  "request_id": "saga-definition-contracts-criterion-axis-reasons"
+}

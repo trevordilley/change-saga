@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "snapshot-guard",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-stale-snapshot",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-cursor-stale-snapshot:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "advance"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/session.go",
+      "start": 301,
+      "end": 303,
+      "digest": "sha256:edce36b35c44837390a121b42d2c603a88621dec8991117b37c9335e2752719f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-cursor-stale-snapshot-snapshot-guard"
+}

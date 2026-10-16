@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-label-replacement",
+  "parents": [],
+  "title": "Replace a nonempty label set",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "A fresh feature is assigned DevOps and Reliability; a third shared label Operations exists."
+  ],
+  "steps": [
+    {
+      "id": "check-nonempty-replacement",
+      "action": "Supply only Operations as the new label set.",
+      "expected_result": "The feature has exactly Operations; DevOps and Reliability assignments are removed.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:preserve-or-clear"
+      ]
+    }
+  ],
+  "expected_result": "Replace a nonempty label set.",
+  "created_at": "2026-10-16T23:18:30Z",
+  "request_id": "saga-definition-core-label-replacement"
+}

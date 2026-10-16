@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-definition-staleness-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-definition-staleness"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/quality-definitions.spec.ts",
+      "start": 65,
+      "end": 71,
+      "digest": "sha256:206b628dd68121ab01c6e6a3adb497fb8e91f22139a65ff1533503d77f54fab5"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-quality-definition-staleness-check-definition-staleness-assertions"
+}

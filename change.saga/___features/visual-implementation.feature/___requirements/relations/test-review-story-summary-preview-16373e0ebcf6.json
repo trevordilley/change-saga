@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-review-story-summary-preview-16373e0ebcf6",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:review-story-summary-preview",
+  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:summary-preview",
+  "scope": "self",
+  "rationale": "Steps hover, unhover, focus, blur define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:review-story-summary-preview:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:diagram-element-intent:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:22:02.13346Z",
+  "request_id": "test-review-story-summary-preview-16373e0ebcf6"
+}

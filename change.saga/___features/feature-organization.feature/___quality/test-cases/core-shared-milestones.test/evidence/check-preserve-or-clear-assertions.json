@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-preserve-or-clear-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-shared-milestones",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-shared-milestones:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-preserve-or-clear"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/classifications_test.go",
+      "start": 77,
+      "end": 81,
+      "digest": "sha256:533bf3478755b2ce824cde6890c1d43ecab603207ba97502a716dd07b0d9c16a"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/classifications_test.go",
+      "start": 92,
+      "end": 96,
+      "digest": "sha256:3c52749083a23472185518bc8dbcc664ca73a01ebc4a3805029e939986f371d8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-shared-milestones-check-preserve-or-clear-assertions"
+}

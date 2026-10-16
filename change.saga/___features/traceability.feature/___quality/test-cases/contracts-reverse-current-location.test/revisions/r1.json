@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reverse-current-location",
+  "parents": [],
+  "title": "Resolve current code locations back to persisted intent",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use code evidence pinned to refund.go lines 3-4 at base, remapped to lines 5-6 at head, and an accepted criterion linked by an explains relation to the evidence-owning Item."
+  ],
+  "steps": [
+    {
+      "id": "match",
+      "action": "Resolve a head location at refund.go line 6 against the remapped evidence.",
+      "expected_result": "It matches with a current locator, and does not match another commit when no locator is available.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path"
+      ]
+    },
+    {
+      "id": "query",
+      "action": "Query traceability --ref using the head location through every page.",
+      "expected_result": "The result returns the exact criterion, owning evidence Item and persisted path to the matching reference, without unrelated paths.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path"
+      ]
+    }
+  ],
+  "expected_result": "Current source locations are a reproducible entry point to documented intent.",
+  "created_at": "2026-10-16T23:23:28Z",
+  "request_id": "saga-definition-contracts-reverse-current-location"
+}

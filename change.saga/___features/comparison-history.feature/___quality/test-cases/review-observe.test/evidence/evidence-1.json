@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-observe",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-observe:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "observe"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/layers_test.go",
+      "start": 149,
+      "end": 158,
+      "digest": "sha256:9432d278f5a8f458f600290047246940ea0c877b72d429e07d3e5924b22f5cdc"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-observe-evidence-1"
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-query-usages",
+  "parents": [],
+  "title": "Follow declared reverse usages to their implementation Items",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use newInventoryQueryFixture with store declared by flags System, a feature Item referencing flags, and unused later Component."
+  ],
+  "steps": [
+    {
+      "id": "direct",
+      "action": "Query inventory-uses for store with default depth.",
+      "expected_result": "The direct System member use is returned and depth_cut is true.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:usage-navigation"
+      ]
+    },
+    {
+      "id": "transitive",
+      "action": "Query store uses at depth 1 with limit 1 and follow the returned cursor; then filter implementation_item.",
+      "expected_result": "The second page has the same snapshot, implementation Item role, feature identity, two-hop path and slide identity.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:usage-navigation",
+        "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses"
+      ]
+    },
+    {
+      "id": "absence",
+      "action": "Query later's uses and inspect subject/completeness.",
+      "expected_result": "Zero uses is confirmed only with exists=true and complete=true.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results"
+      ]
+    }
+  ],
+  "expected_result": "Zero uses is confirmed only with exists=true and complete=true.",
+  "created_at": "2026-10-16T23:20:20Z",
+  "request_id": "saga-definition-inventory-query-usages"
+}

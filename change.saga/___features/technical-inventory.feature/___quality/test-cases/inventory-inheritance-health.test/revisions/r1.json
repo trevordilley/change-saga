@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-inheritance-health",
+  "parents": [],
+  "title": "Keep stale selections visible while excluding them from coverage",
+  "coverage_kinds": [
+    "negative",
+    "edge"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use inherited_test fixture with store selection 14-40; separately use format-2 PDF fixture to distinguish containing-evidence change outside selected lines from a selected-byte change."
+  ],
+  "steps": [
+    {
+      "id": "selected-drift",
+      "action": "Commit an edit at store.go line 20 and reevaluate the selection and inherited coverage.",
+      "expected_result": "The selection reports selected-bytes stale, attaches nothing and contributes zero coverage.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+      ]
+    },
+    {
+      "id": "stale-pin",
+      "action": "At the original source head, supersede the pinned System r1 and resolve the saved selection.",
+      "expected_result": "The noncurrent path remains reportable and inherits nothing.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+      ]
+    },
+    {
+      "id": "overlap",
+      "action": "In a fresh fixture add two valid selections covering 14-40 and 30-50, then inspect total inherited coverage.",
+      "expected_result": "The union contributes 37 lines and overlap contributes no duplicate covered count.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+      ]
+    }
+  ],
+  "expected_result": "The union contributes 37 lines and overlap contributes no duplicate covered count.",
+  "created_at": "2026-10-16T23:21:03Z",
+  "request_id": "saga-definition-inventory-inheritance-health"
+}

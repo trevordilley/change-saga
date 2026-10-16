@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-done-not-delivery",
+  "parents": [],
+  "title": "Keep done work undelivered until immutable evidence exists",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use livingFixture with accepted checkout/fast and declared design/work path; record done progress without an integrated merge."
+  ],
+  "steps": [
+    {
+      "id": "done",
+      "action": "Query traceability for checkout.",
+      "expected_result": "Delivered is false and immutable_evidence_missing is reported.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:done-is-not-delivery"
+      ]
+    },
+    {
+      "id": "evidence",
+      "action": "Record integrated merge, reopen and query checkout traceability.",
+      "expected_result": "Delivered is true with one git-oid evidence reference.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:done-is-not-delivery"
+      ]
+    },
+    {
+      "id": "readiness",
+      "action": "Read public readiness before and after immutable evidence is introduced.",
+      "expected_result": "Done alone does not satisfy peer-review readiness.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:done-is-not-delivery"
+      ]
+    }
+  ],
+  "expected_result": "Progress does not stand in for immutable delivery evidence.",
+  "created_at": "2026-10-16T23:23:43Z",
+  "request_id": "saga-definition-contracts-done-not-delivery"
+}

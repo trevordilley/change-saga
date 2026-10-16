@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-no-approval-side-effects-d6e079f01283",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-no-approval-side-effects",
+  "to": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal",
+  "scope": "self",
+  "rationale": "Steps implement, isolation define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-no-approval-side-effects:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:20:40.321849Z",
+  "request_id": "test-inventory-no-approval-side-effects-d6e079f01283"
+}

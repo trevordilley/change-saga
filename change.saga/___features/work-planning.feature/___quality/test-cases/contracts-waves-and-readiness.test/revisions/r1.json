@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-waves-and-readiness",
+  "parents": [],
+  "title": "Read ordered waves without creating implicit wave barriers",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Create earlier wave order 10 and later wave order 20; put incomplete item A in earlier and independent item B in later; both items have one definition and progress head and no explicit dependencies."
+  ],
+  "steps": [
+    {
+      "id": "waves",
+      "action": "Query waves and work-items through every page.",
+      "expected_result": "Wave order is earlier then later and each item exposes its assigned wave identity.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:ordered-waves"
+      ]
+    },
+    {
+      "id": "ready",
+      "action": "Read work-items for B while A remains incomplete.",
+      "expected_result": "B is ready and has no dependency blockers; earlier-wave progress has no effect.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:no-wave-barrier"
+      ]
+    }
+  ],
+  "expected_result": "Waves coordinate ordering without becoming dependency gates.",
+  "created_at": "2026-10-16T23:22:50Z",
+  "request_id": "saga-definition-contracts-waves-and-readiness"
+}

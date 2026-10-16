@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "reject"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/whiteboard_documents_test.go",
+      "start": 63,
+      "end": 70,
+      "digest": "sha256:e770659a6fdcb3cf58d20464b468d39aac34d6448c41173d0938ac070c5a8874"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-whiteboard-stale-parent-evidence-1"
+}

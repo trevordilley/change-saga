@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "selected",
+    "return"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 268,
+      "end": 292,
+      "digest": "sha256:eca5a0caaf0b9600f62a083f052664efe3ca3ce9a68a01ad0a2ad638ac873376"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-selected-code-roundtrip-evidence-1"
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency",
+  "parents": [],
+  "title": "Keep verifies links pinned when criterion content changes",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "A separate case verifies a specific criterion revision; preserve the original relation pin."
+  ],
+  "steps": [
+    {
+      "id": "check-criterion-pin",
+      "action": "Change the statement of that exact criterion while preserving its identity, then inspect the verifies relation.",
+      "expected_result": "The relation keeps its old pin and reports the changed criterion stale.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-test-proof:criterion:criterion-pin"
+      ]
+    },
+    {
+      "id": "check-conscious-repin",
+      "action": "Explicitly repin the relation to the changed criterion revision and inspect it again.",
+      "expected_result": "The mapping becomes current only after the deliberate repin.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-test-proof:criterion:criterion-pin"
+      ]
+    }
+  ],
+  "expected_result": "Keep verifies links pinned when criterion content changes.",
+  "created_at": "2026-10-16T23:19:30Z",
+  "request_id": "saga-definition-core-criterion-verifies-currency"
+}
