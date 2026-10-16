@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -62,6 +63,10 @@ func skipOutlineDirectory(rel, base string) bool {
 }
 
 func outlineFile(rel, base string) bool {
+	if base == applayout.FeaturePlanName {
+		parts := strings.Split(rel, "/")
+		return len(parts) == 3 && parts[0] == applayout.FeaturesDir && strings.HasSuffix(parts[1], applayout.FeatureSuffix)
+	}
 	switch base {
 	case "saga.json", "chapter.json", "section.json", "fragment.json":
 		return true

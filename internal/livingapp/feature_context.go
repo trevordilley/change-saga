@@ -29,6 +29,7 @@ type FeatureContextPage struct {
 }
 
 type FeatureContextFeature struct {
+	Plan        applayout.FeaturePlan   `json:"plan"`
 	URN         string                  `json:"urn"`
 	ID          string                  `json:"id"`
 	Title       string                  `json:"title"`
@@ -185,7 +186,7 @@ func (s *session) featureContextResult(query Query) (Result, error) {
 	pageStories := append([]FeatureContextStory{}, selected[start:end]...)
 	pageEndpoints := endpointSet(pageStories)
 	relations := s.contextRelations(pageEndpoints)
-	featureSummary := FeatureContextFeature{URN: applayout.FeatureURN(s.requirements.SagaID, feature.ID), ID: feature.ID, Title: feature.Title}
+	featureSummary := FeatureContextFeature{Plan: feature.Plan, URN: applayout.FeatureURN(s.requirements.SagaID, feature.ID), ID: feature.ID, Title: feature.Title}
 	if s.saga != nil {
 		if overview := s.saga.FindFeature(feature.ID).Overview(); overview != nil {
 			featureSummary.Overview = &FeatureContextOverview{Target: overview.Target, Path: overview.Path, MediaType: overview.MediaType}

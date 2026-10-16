@@ -516,6 +516,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /feature-themes", application.page)
 	page("GET /feature-themes/{theme}", application.page)
 	page("GET /features", application.page)
+	page("GET /roadmap", application.page)
 	page("GET /tests/{test}", application.page)
 	page("GET /", application.page)
 	page("GET /reviews", application.reviewIndex)
@@ -1207,6 +1208,8 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "feature-themes"}, true
 	case strings.HasPrefix(path, "/feature-themes/") && r.PathValue("theme") != "":
 		return appRoute{kind: "feature-theme", id: r.PathValue("theme")}, true
+	case path == "/roadmap":
+		return appRoute{kind: "roadmap"}, true
 	case path == "/features":
 		return appRoute{kind: "features"}, true
 	case strings.HasPrefix(path, "/features/") && r.PathValue("feature") != "":
@@ -1415,8 +1418,8 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// kept about the reader.
 	data.PageFeature = pageFeature(route, requirementsView, tests)
 	data.FeatureGrouping = featureGrouping(r, document)
-	if route.kind == "features" {
-		data.Features = groupedFeaturesDirectory(document, graph, data.PageFeature, directoryQuery(r), data.FeatureGrouping)
+	if route.kind == "features" || route.kind == "roadmap" {
+		data.Features = featureCollectionDirectory(document, graph, data.PageFeature, directoryQuery(r), data.FeatureGrouping, route.kind == "roadmap")
 	}
 	onboarding := onboardingHref(document)
 	// The inventory is small, identity-only reading here: no code resolves.

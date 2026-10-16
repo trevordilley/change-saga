@@ -134,12 +134,14 @@ func Feature(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("feature", []string{"add", "set-overview"}, out)
+		return livingFamilyHelp("feature", []string{"add", "set-overview", "set-plan"}, out)
 	}
 	var err error
 	switch args[0] {
 	case "add":
 		err = featureAdd(ctx, args[1:], out)
+	case "set-plan":
+		err = featureSetPlan(args[1:], out)
 	case "set-overview":
 		err = setOverviewPart(ctx, overviewPart{command: "feature set-overview", pkg: applayout.FeatureOverview, title: "Overview", order: -100, feature: true}, args[1:], out, os.Stdin)
 	default:
@@ -157,6 +159,9 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 	id := flags.String("id", "", "stable feature id")
 	title := flags.String("title", "", "feature title: the product domain it covers")
 	description := flags.String("description", "", "what the domain covers")
+	status := flags.String("status", "built", "planned for Roadmap, built for Features")
+	milestone := flags.String("milestone", "", "optional version or milestone label")
+	priority := flags.Int("priority", 0, "lower positive numbers come first; zero is unranked")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -173,6 +178,10 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 	if *requestID != "" && !applayout.ValidID(*requestID) {
 		return fmt.Errorf("--request-id must be a stable identifier")
 	}
+	plan := applayout.FeaturePlan{Schema: applayout.FeaturePlanSchemaURL, Version: 5, Status: *status, Milestone: strings.TrimSpace(*milestone), Priority: *priority}
+	if err := plan.Validate(); err != nil {
+		return err
+	}
 	urn := applayout.FeatureURN(manifest.ID, *id)
 	path := applayout.FeatureRel(*id)
 	var replayed bool
@@ -182,7 +191,7 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 			return err
 		}
 		if existing, ok := applayout.Find(features, *id); ok {
-			if *requestID != "" && existing.RequestID == *requestID && existing.Title == strings.TrimSpace(*title) && existing.Description == strings.TrimSpace(*description) {
+			if *requestID != "" && existing.RequestID == *requestID && existing.Title == strings.TrimSpace(*title) && existing.Description == strings.TrimSpace(*description) && existing.Plan.State() == plan.Status && existing.Plan.Milestone == plan.Milestone && existing.Plan.Priority == plan.Priority {
 				replayed = true
 				return nil
 			}
@@ -191,7 +200,7 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 		_, err = applayout.WriteFeature(root, applayout.FeatureManifest{
 			ID: *id, Title: strings.TrimSpace(*title), Description: strings.TrimSpace(*description),
 			CreatedAt: time.Now().UTC(), RequestID: *requestID,
-		})
+		}, plan)
 		return err
 	})
 	if err != nil {

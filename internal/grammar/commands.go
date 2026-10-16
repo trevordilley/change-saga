@@ -125,7 +125,7 @@ var commands = []Command{
 		Summary: "add a durable product domain; it holds its own stories, design, quality, work plan, and implementation deck",
 		Flags: []Flag{
 			required("id", "ID", "stable feature id"), required("title", "TEXT", "the product domain the feature covers"),
-			optional("description", "TEXT", "what the domain covers"), requestIDFlag, jsonFlag,
+			optional("description", "TEXT", "what the domain covers"), optional("status", "planned|built", "planned work appears on Roadmap; defaults to built"), optional("milestone", "TEXT", "optional version or milestone"), optional("priority", "N", "lower positive numbers come first; zero means unranked"), requestIDFlag, jsonFlag,
 		},
 		Positionals: sagaOnly,
 	},

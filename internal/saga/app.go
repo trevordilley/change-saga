@@ -13,10 +13,11 @@ import (
 // the app-wide Section tree holds, so target indexes see one tree while
 // readers keep the grouping.
 type Feature struct {
-	ID     string `json:"id"`
-	Title  string `json:"title"`
-	Path   string `json:"path"`
-	Target string `json:"target"`
+	Plan   applayout.FeaturePlan `json:"plan"`
+	ID     string                `json:"id"`
+	Title  string                `json:"title"`
+	Path   string                `json:"path"`
+	Target string                `json:"target"`
 	// Report holds the feature's own chapters and fragments.
 	Report *Section `json:"report"`
 	// Design holds the chapters and fragments loaded from its ___design.
@@ -112,7 +113,7 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 		addIssue(validation, "error", applayout.FeaturesDir, featureErr.Error())
 	}
 	for _, value := range applayout.InCreationOrder(features) {
-		feature := &Feature{ID: value.ID, Title: value.Title, Path: value.Rel, Target: applayout.FeatureURN(manifest.ID, value.ID)}
+		feature := &Feature{Plan: value.Plan, ID: value.ID, Title: value.Title, Path: value.Rel, Target: applayout.FeatureURN(manifest.ID, value.ID)}
 		report, err := loadSection(root, value.Dir, manifest, featureHierarchy, options, validation)
 		if err != nil {
 			return app, nil, err

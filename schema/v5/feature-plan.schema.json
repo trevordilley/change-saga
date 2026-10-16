@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/feature-plan.schema.json",
+  "title": "Feature plan",
+  "description": "Mutable planning metadata beside immutable feature.json. Git preserves history. An absent plan uses built placement for compatibility.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "status"],
+  "properties": {
+    "$schema": {"const": "https://changesaga.dev/schema/v5/feature-plan.schema.json"},
+    "version": {"const": 5},
+    "status": {"enum": ["planned", "built"]},
+    "priority": {"type": "integer", "minimum": 0, "maximum": 1000000, "description": "Lower positive numbers come first; zero or omission means unranked."},
+    "milestone": {"type": "string", "maxLength": 1000, "pattern": "^[^\\r\\n]*$"}
+  }
+}

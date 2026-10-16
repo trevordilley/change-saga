@@ -117,8 +117,9 @@ var commandUsage = map[string]string{
 	"feature-theme set-overview": "change-saga feature-theme set-overview --theme ID|URN (--text MARKDOWN | --source FILE|-) [--json] <saga>",
 	"feature-theme set-features": "change-saga feature-theme set-features --theme ID|URN [--feature ID|URN...] [--json] <saga>",
 
-	"feature":                       "change-saga feature <add|set-overview> [flags] <saga>",
+	"feature":                       "change-saga feature <add|set-overview|set-plan> [flags] <saga>",
 	"feature set-overview":          "change-saga feature set-overview --feature ID|URN (--text MARKDOWN | --source FILE|-) [--subtext TEXT] [--abstract MARKDOWN] [--json|--quiet] <saga>",
+	"feature set-plan":              "change-saga feature set-plan --feature ID|URN [--status planned|built] [--milestone TEXT] [--priority N] [--json] <saga>",
 	"feature add":                   "change-saga feature add --id ID --title TEXT [--description TEXT] [flags] <saga>",
 	"overview":                      "change-saga overview <set-pitch|set-description|set-data-model|set-technical-design> [flags] <saga>",
 	"overview set-pitch":            "change-saga overview set-pitch (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",

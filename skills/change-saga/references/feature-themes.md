@@ -32,3 +32,8 @@ themes exist), and Persona. Theme is the default grouping when available; this
 display preference never authorizes creating themes. Smaller sets stay flat.
 Persona membership derives from current story personas including proposed
 stories. Keep ungrouped features visible and preserve their canonical links.
+
+Themes can group both planned and built features. The Features and Roadmap
+sections filter the same membership records by explicit feature planning status;
+never duplicate a feature or a theme to move work between them. Roadmap uses the
+same grouping controls, including None, and keeps ungrouped work visible.

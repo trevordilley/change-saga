@@ -291,6 +291,18 @@ strings clear it. Stories and criteria use `--subtext`, their full `statement`
 as the abstract, and `--overview` for the body. Do not shorten the requirement to
 make it fit. Existing `overview` CLI fields still author that essay.
 
+Features and Roadmap share the same feature records, Essay pages, stories, and
+optional theme memberships. Features shows built capabilities; Roadmap shows
+planned capabilities. Use `feature add --status planned` for future work and
+`feature set-plan --feature ID --status planned|built` to move an existing
+feature without changing its identity or content. `--priority N` ranks work
+(lower positive numbers first; zero is unranked), and `--milestone TEXT` is an
+optional version or other target label. Preserve omitted fields; explicit empty
+milestone clears it. Do not infer built status from accepted stories or coverage,
+or invent priorities or milestones. `query roadmap` discovers planned work with
+snapshot-bound pagination; ordinary `query context --feature ID` includes its
+plan. Existing features without a plan retain built placement for compatibility.
+
 Features are durable product domains, not changes. A story may move between
 features without changing its identity. Declare adjacent semantic links and
 let queries infer longer paths: story to persona, design or test case to story

@@ -602,6 +602,14 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 
 .essay-subtext.essay-body{margin:8px 0 0}.essay-subtext .fragment-markdown{font:400 15px/1.5 var(--ui);color:var(--muted)}
 
+.feature-plan{display:flex;flex-wrap:wrap;gap:12px 28px;margin:20px 0;color:var(--ink)}.feature-plan dt{font-size:12px;color:var(--muted)}.feature-plan dd{margin:4px 0 0;font-size:14px}
+.doc-tree>.doc-node:has(>[data-nav-row="nav-roadmap"]){margin-top:18px}
+[data-nav-row="nav-roadmap"]>.doc-link{font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+#nav-roadmap>.doc-node>.doc-row>.doc-link{color:var(--ink);font-size:13px;font-weight:550}
+#nav-roadmap>.doc-node:has(>.doc-children:not([hidden])){margin-block:6px 12px;padding-block:5px;border-block:1px solid var(--line-soft)}
+#nav-roadmap>.doc-node:has(>.doc-children:not([hidden]))>.doc-row>.doc-link{font-weight:650}
+#nav-roadmap>.doc-node>.doc-children>.doc-group>.doc-row>.doc-link{font:600 11px/1.4 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:10px}
+
 /* Sections and fragments ------------------------------------------------- */
 .section{scroll-margin-top:calc(var(--top) + 12px);margin:22px 0}
 .section .section{margin-left:0;padding-left:14px;border-left:1px solid var(--line-soft)}

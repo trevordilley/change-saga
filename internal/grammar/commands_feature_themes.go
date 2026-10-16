@@ -1,6 +1,9 @@
 package grammar
 
 func init() {
+	commands = append(commands, Command{Name: "feature set-plan", Status: StatusImplemented, Mutates: true, Writes: []string{"feature-plan"}, Usage: "change-saga feature set-plan --feature ID|URN [--status planned|built] [--milestone TEXT] [--priority N] [--json] <saga>", Summary: "set product planning metadata without changing feature identity, stories, or history", Flags: []Flag{required("feature", "ID|URN", "existing feature"), optional("status", "planned|built", "Roadmap or Features; omitted preserves it"), optional("milestone", "TEXT", "version or milestone; empty clears it"), optional("priority", "N", "lower positive numbers come first; zero clears it"), jsonFlag}, Positionals: sagaOnly})
+	resources = append(resources, Resource{Kind: "feature-plan", URN: "urn:change-saga:<saga>:feature:<feature>", Storage: "___features/<feature>.feature/plan.json", Schema: schemaBase + "v5/feature-plan.schema.json", Versions: []int{5}, History: "editable current snapshot; Git preserves planning history", Writers: []string{"feature add", "feature set-plan"}, Notes: "planned features appear on Roadmap; built features appear on Features; absent plan preserves legacy built placement; priority and milestone are explicit product intent, never inferred from coverage"})
+
 	for _, op := range []string{"add", "set-overview", "set-features"} {
 		flags := []Flag{jsonFlag}
 		usage := "change-saga feature-theme " + op

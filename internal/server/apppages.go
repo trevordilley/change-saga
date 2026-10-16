@@ -392,6 +392,7 @@ func sortedStories(stories []requirements.Story) []requirements.Story {
 // ----- Feature -----
 
 type featurePageView struct {
+	Plan        applayout.FeaturePlan
 	Abstract    string
 	ID          string
 	Target      string
@@ -450,7 +451,7 @@ func (graph *appGraph) featurePage(id string) (*featurePageView, error) {
 	if feature == nil {
 		return nil, errAppPageNotFound
 	}
-	view := &featurePageView{ID: feature.ID, Target: feature.Target, Title: feature.Title}
+	view := &featurePageView{Plan: feature.Plan, ID: feature.ID, Target: feature.Target, Title: feature.Title}
 	if manifest, ok := applayout.Find(graph.requirements.Features, id); ok {
 		view.Description = manifest.Description
 		view.Abstract = manifest.Description

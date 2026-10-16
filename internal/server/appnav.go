@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -124,6 +125,11 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	// Both sides remain in the persistent shell; navigation state hides the
 	// other side's rows when the reader switches tabs.
 	features, reviews := makeFeaturesNav(sources, deckRows), makeReviewsNav(document, sources.mergedReviews)
+	roadmap := makeFeatureCollectionNav(sources, deckRows, true)
+	if sources.reviewSide {
+		roadmap.Hidden, roadmap.dormant = true, true
+		clearActiveNav(roadmap.Children)
+	}
 	other := reviews
 	if sources.reviewSide {
 		other = features
@@ -138,8 +144,8 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	other.Hidden, other.dormant = true, true
 	clearActiveNav(other.Children)
 	navigation := []*navNodeView{overview}
-	for _, section := range []*navNodeView{features, reviews} {
-		if len(section.Children) > 0 {
+	for _, section := range []*navNodeView{features, roadmap, reviews} {
+		if len(section.Children) > 0 || section == roadmap {
 			navigation = append(navigation, section)
 		}
 	}
@@ -222,10 +228,18 @@ func onPage(path string, nodes []*navNodeView) []*navNodeView {
 // feature the reader is inside opens over its authored places; the rest stay
 // shut over theirs. An app with no features omits the section.
 func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
-	document := sources.document
+	return makeFeatureCollectionNav(sources, deckRows, false)
+}
+
+func makeFeatureCollectionNav(sources appNavSources, deckRows map[string]*navNodeView, planned bool) *navNodeView {
+	document := featureCollection(sources.document, planned)
+	sources.document = document
 	section := navSection("Features", featuresIndexHref, "nav-features", "product", nil)
-	if len(document.Features) >= featureGroupingMinimum {
-		section.FeatureGrouping = &featureGroupingView{Mode: sources.featureGrouping, HasThemes: len(document.FeatureThemes) > 0}
+	if planned {
+		section.Title, section.Href, section.NodeID = "Roadmap", "/roadmap", "nav-roadmap"
+	}
+	if len(document.Features) >= featureGroupingMinimum || (planned && len(document.Features) > 0) {
+		section.FeatureGrouping = &featureGroupingView{Path: section.Href, Mode: sources.featureGrouping, HasThemes: len(document.FeatureThemes) > 0}
 	}
 	if len(document.Features) == 0 {
 		return section
@@ -240,6 +254,17 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 			}
 		}
 		node := makeFeatureNav(sources, feature, rows)
+		if planned {
+			if feature.Plan.Priority > 0 {
+				node.Note = "Priority " + strconv.Itoa(feature.Plan.Priority)
+			}
+			if feature.Plan.Milestone != "" {
+				if node.Note != "" {
+					node.Note += " · "
+				}
+				node.Note += feature.Plan.Milestone
+			}
+		}
 		if prefix != "" {
 			node = cloneGroupNav(node, prefix)
 		}
@@ -253,7 +278,10 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 	if mode == "theme" || mode == "persona" {
 		for _, group := range featureGroups(document, sources.requirements, mode) {
 			prefix := "group-" + domID(group.ID) + "--"
-			parent := navSection(group.Title, group.Href, "nav-group-"+domID(group.ID), "product", nil)
+			if planned {
+				prefix = "roadmap-" + prefix
+			}
+			parent := navSection(group.Title, group.Href, section.NodeID+"-group-"+domID(group.ID), "product", nil)
 			parent.Expanded = true
 			for _, feature := range group.Features {
 				add(parent, feature, prefix)
@@ -463,6 +491,7 @@ func featureTitle(feature *saga.Feature) string {
 
 // featureLinkView is one feature as a title and a link to its page.
 type featureLinkView struct {
+	Plan    applayout.FeaturePlan
 	ID      string
 	Title   string
 	Href    string
@@ -475,7 +504,7 @@ func featureLinks(document *saga.Saga, current string) []featureLinkView {
 	links := make([]featureLinkView, 0, len(document.Features))
 	for _, feature := range document.Features {
 		links = append(links, featureLinkView{
-			ID: feature.ID, Title: featureTitle(feature), Href: featureHref(feature.ID),
+			Plan: feature.Plan, ID: feature.ID, Title: featureTitle(feature), Href: featureHref(feature.ID),
 			Current: feature.ID == current,
 		})
 	}

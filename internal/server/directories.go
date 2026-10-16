@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
@@ -216,10 +217,11 @@ func termsDirectory(document requirements.Document, places map[string][]termPlac
 // featuresDirectory is every feature with what it holds. The counts are facts and
 // never a score: a feature with nothing in it is listed like any other, and the
 // feature the reader is already inside is marked rather than ranked.
-func featuresDirectory(document *saga.Saga, graph *appGraph, current, query string) *directoryView {
+func featuresDirectory(document *saga.Saga, graph *appGraph, current, query string, planned ...bool) *directoryView {
+	roadmap := len(planned) > 0 && planned[0]
 	view := &directoryView{
 		ID: "features", Title: "Features", Action: "/features",
-		Lede:  "Every durable area of the product, in the order they were introduced. Each one opens a page holding its stories, its design, its quality, and its implementation.",
+		Lede:  "Features that have been built. Each feature holds its essay, stories, design, quality, and implementation.",
 		Label: "Filter features", Noun: "feature", Nouns: "features",
 		Columns: []directoryColumn{
 			{Title: "Feature"}, {Title: "Description", Wide: true},
@@ -230,13 +232,28 @@ func featuresDirectory(document *saga.Saga, graph *appGraph, current, query stri
 		Empty:   "No features yet.",
 		Command: "change-saga feature add",
 	}
+	if roadmap {
+		view.ID, view.Title, view.Action = "roadmap", "Roadmap", "/roadmap"
+		view.Label = "Filter roadmap"
+		view.Lede = "Features we plan to build, in product priority order. Lower priority numbers come first; unranked work follows. Milestones are optional targets."
+		view.Empty = "No planned features yet."
+		view.Command = "change-saga feature add --status planned"
+		view.Columns = []directoryColumn{{Title: "Feature"}, {Title: "Priority", Numeric: true}, {Title: "Milestone"}, {Title: "Description", Wide: true}, {Title: "Stories", Numeric: true}}
+	}
 	for _, row := range featureRows(document, graph, current) {
-		view.addRow(directoryRow{Key: row.ID, Current: row.Current, Cells: []directoryCell{
-			{Text: row.Title, Href: row.Href, Note: row.ID},
-			textCell(summarise(row.Description, 120)),
-			countCell(row.Stories), countCell(row.Accepted), countCell(row.WithDesign),
-			countCell(row.TestCases), countCell(row.Slides),
-		}})
+		cells := []directoryCell{{Text: row.Title, Href: row.Href, Note: row.ID}, textCell(summarise(row.Description, 120)), countCell(row.Stories), countCell(row.Accepted), countCell(row.WithDesign), countCell(row.TestCases), countCell(row.Slides)}
+		if roadmap {
+			priority := gapCell("Unranked")
+			if row.Plan.Priority > 0 {
+				priority = countCell(row.Plan.Priority)
+			}
+			milestone := textCell(row.Plan.Milestone)
+			if row.Plan.Milestone == "" {
+				milestone = gapCell("Not assigned")
+			}
+			cells = []directoryCell{cells[0], priority, milestone, cells[1], cells[2]}
+		}
+		view.addRow(directoryRow{Key: row.ID, Current: row.Current, Cells: cells})
 	}
 	view.apply(query)
 	return view
@@ -244,6 +261,7 @@ func featuresDirectory(document *saga.Saga, graph *appGraph, current, query stri
 
 // featureIndexRow is one feature's counts, as the directory states them.
 type featureIndexRow struct {
+	Plan        applayout.FeaturePlan
 	ID          string
 	Title       string
 	Href        string
@@ -264,7 +282,7 @@ func featureRows(document *saga.Saga, graph *appGraph, current string) []feature
 	}
 	for _, choice := range featureLinks(document, current) {
 		row := featureIndexRow{
-			ID: choice.ID, Title: choice.Title, Href: choice.Href,
+			Plan: choice.Plan, ID: choice.ID, Title: choice.Title, Href: choice.Href,
 			Description: descriptions[choice.ID], Current: choice.Current,
 		}
 		for _, story := range graph.requirements.Stories {

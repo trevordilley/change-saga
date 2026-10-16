@@ -20,12 +20,20 @@ func validFeatureGrouping(value string) bool {
 const featureGroupingMinimum = 4
 
 type featureGroupingView struct {
+	Path      string
 	Mode      string
 	HasThemes bool
 }
 
+func (v featureGroupingView) Action() string {
+	if v.Path == "" {
+		return "/features"
+	}
+	return v.Path
+}
+
 func featureGrouping(r *http.Request, document *saga.Saga) string {
-	if len(document.Features) < featureGroupingMinimum {
+	if len(document.Features) < featureGroupingMinimum && len(featureCollection(document, true).Features) == 0 {
 		return "all"
 	}
 	available := func(value string) bool {
@@ -66,7 +74,9 @@ func featureGroups(document *saga.Saga, records requirements.Document, mode stri
 					seen[feature.ID] = true
 				}
 			}
-			groups = append(groups, group)
+			if len(group.Features) > 0 {
+				groups = append(groups, group)
+			}
 		}
 	} else if mode == "persona" {
 		for _, persona := range records.Personas {
@@ -93,7 +103,9 @@ func featureGroups(document *saga.Saga, records requirements.Document, mode stri
 					seen[feature.ID] = true
 				}
 			}
-			groups = append(groups, group)
+			if len(group.Features) > 0 {
+				groups = append(groups, group)
+			}
 		}
 	}
 	remaining := featureGroup{ID: "ungrouped", Title: "Ungrouped"}
@@ -120,8 +132,8 @@ func cloneGroupNav(node *navNodeView, prefix string) *navNodeView {
 	return &result
 }
 
-func groupedFeaturesDirectory(document *saga.Saga, graph *appGraph, current, query, mode string) *directoryView {
-	view := featuresDirectory(document, graph, current, "")
+func groupedFeaturesDirectory(document *saga.Saga, graph *appGraph, current, query, mode string, planned ...bool) *directoryView {
+	view := featuresDirectory(document, graph, current, "", planned...)
 	if mode == "all" {
 		view.apply(query)
 		return view
@@ -133,7 +145,7 @@ func groupedFeaturesDirectory(document *saga.Saga, graph *appGraph, current, que
 	view.Columns = append([]directoryColumn{{Title: map[string]string{"theme": "Theme", "persona": "Persona"}[mode]}}, view.Columns...)
 	view.Rows, view.Total = nil, 0
 	view.Noun, view.Nouns = "membership", "memberships"
-	view.Lede = "Features grouped by " + mode + ". A feature can appear in several groups; every row opens the same feature. Ungrouped features remain visible."
+	view.Lede += " Grouped by " + mode + "; a feature can belong to several groups. Ungrouped features remain visible."
 	for _, group := range featureGroups(document, graph.requirements, mode) {
 		for _, feature := range group.Features {
 			row := rows[feature.ID]
@@ -165,7 +177,7 @@ func featureThemePage(document *saga.Saga, id string) (*featureThemePageView, er
 	for _, feature := range document.Features {
 		for _, ref := range theme.Features {
 			if ref == feature.Target {
-				view.Features = append(view.Features, featureLinkView{ID: feature.ID, Title: feature.Title, Href: featureHref(feature.ID)})
+				view.Features = append(view.Features, featureLinkView{Plan: feature.Plan, ID: feature.ID, Title: feature.Title, Href: featureHref(feature.ID)})
 				break
 			}
 		}

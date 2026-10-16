@@ -149,6 +149,7 @@ type FeatureManifest struct {
 
 // Feature is one loaded feature directory.
 type Feature struct {
+	Plan FeaturePlan `json:"plan"`
 	FeatureManifest
 	// Dir is the absolute feature directory.
 	Dir string
@@ -229,7 +230,11 @@ func Features(root string) ([]Feature, error) {
 		if manifest.ID != id {
 			return nil, fmt.Errorf("%s/%s: feature id %q must match its directory", rel, FeatureManifestName, manifest.ID)
 		}
-		features = append(features, Feature{FeatureManifest: manifest, Dir: filepath.Join(dir, name), Rel: rel})
+		plan, err := readFeaturePlan(filepath.Join(dir, name))
+		if err != nil {
+			return nil, fmt.Errorf("%s/%s: %w", rel, FeaturePlanName, err)
+		}
+		features = append(features, Feature{Plan: plan, FeatureManifest: manifest, Dir: filepath.Join(dir, name), Rel: rel})
 	}
 	sort.Slice(features, func(i, j int) bool { return features[i].ID < features[j].ID })
 	return features, nil
@@ -388,7 +393,14 @@ func ReadStrictJSON(path string, target any) error {
 
 // WriteFeature creates the feature directory and its manifest. It is the one writer
 // of feature.json, shared by the CLI and test fixtures.
-func WriteFeature(root string, manifest FeatureManifest) (Feature, error) {
+func WriteFeature(root string, manifest FeatureManifest, plans ...FeaturePlan) (Feature, error) {
+	plan := FeaturePlan{Status: "built"}
+	if len(plans) > 0 {
+		plan = plans[0]
+		if err := plan.Validate(); err != nil {
+			return Feature{}, err
+		}
+	}
 	if manifest.Schema == "" {
 		manifest.Schema = FeatureSchemaURL
 	}
@@ -410,6 +422,11 @@ func WriteFeature(root string, manifest FeatureManifest) (Feature, error) {
 		if err := os.Chmod(stage, 0o755); err != nil {
 			return err
 		}
+		if len(plans) > 0 {
+			if err := store.WriteJSON(filepath.Join(stage, FeaturePlanName), plan, true); err != nil {
+				return err
+			}
+		}
 		return store.WriteJSON(filepath.Join(stage, FeatureManifestName), manifest, true)
 	})
 	if errors.Is(err, fs.ErrExist) {
@@ -418,7 +435,7 @@ func WriteFeature(root string, manifest FeatureManifest) (Feature, error) {
 	if err != nil {
 		return Feature{}, err
 	}
-	return Feature{FeatureManifest: manifest, Dir: dir, Rel: FeatureRel(manifest.ID)}, nil
+	return Feature{Plan: plan, FeatureManifest: manifest, Dir: dir, Rel: FeatureRel(manifest.ID)}, nil
 }
 
 // RejectFeatureRootsAtAppRoot refuses the single-change layout, in which

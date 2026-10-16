@@ -1,0 +1,51 @@
+import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
+import { runCLI, startSagaServer, stopSagaServer } from "../support/fixture-builder.js";
+
+test("Roadmap reuses feature essays, stories and themes and preserves links when built", async ({page,sagaRepositories:repo},testInfo)=>{
+ const cli=(...args:string[])=>{const result=runCLI(repo,[...args,repo.sagaRoot]);expect(result.status,result.stdout+result.stderr).toBe(0);};
+ for(const [id,title,priority] of [["later","Later work","2"],["next","Next priority","1"],["someday","Unranked work","0"]]) cli("feature","add","--id",id,"--title",title,"--status","planned","--priority",priority);
+ cli("feature","set-plan","--feature","next","--milestone","v2 Launch");
+ cli("feature","set-overview","--feature","next","--subtext","The next planned capability.","--abstract","A clear outcome for the team.","--text","## Approach\n\nUse the **same feature model** throughout delivery.");
+ cli("story","add","--feature","next","--id","next-story","--revision","r1","--event","proposed","--title","Use the next capability","--statement","As a reader I can use the next capability","--criterion","works=The planned outcome is observable.");
+ cli("feature-theme","add","--id","growth","--title","Product growth","--text","Bring related capabilities together.","--feature","next","--feature","wave-one");
+ const server=await startSagaServer(repo);
+ try {
+  await page.goto(server.baseURL+"/roadmap?group=all");await waitForSettledSaga(page);
+  const roadmap=page.locator('[data-directory="roadmap"]');
+  await expect(page.getByRole('heading',{name:'Roadmap',exact:true})).toBeVisible();
+  expect(await roadmap.locator('[data-directory-row]').evaluateAll(rows=>rows.map(r=>r.getAttribute('data-directory-row')))).toEqual(['next','later','someday']);
+  await expect(roadmap.locator('[data-directory-row="next"]')).toContainText('v2 Launch');
+  await expect(page.locator('#nav-features').getByRole('link',{name:'Next priority',exact:true})).toHaveCount(0);
+  await expect(page.locator('#nav-roadmap').getByRole('link',{name:'Next priority',exact:true})).toBeVisible();
+  await page.screenshot({path:testInfo.outputPath('roadmap-desktop.png')});
+  await roadmap.getByRole('searchbox').fill('v2 Launch');
+  await expect(roadmap.locator('[data-directory-row]:visible')).toHaveCount(1);
+  await page.goto(server.baseURL+'/roadmap?q=v2%20Launch&group=all');await waitForSettledSaga(page);
+  await expect(roadmap.locator('[data-directory-row]:visible')).toHaveCount(1);
+  await roadmap.getByRole('link',{name:'Next priority',exact:true}).click();
+  await expect(page).toHaveURL(server.baseURL+'/features/next');
+  await expect(page.locator('[data-feature-overview] strong')).toHaveText('same feature model');
+  await expect(page.locator('[data-essay-subtext]')).toHaveText('The next planned capability.');
+  await expect(page.locator('[data-feature-plan]')).toContainText('v2 Launch');
+  await page.locator('[data-feature-stories]').getByRole('link',{name:'Use the next capability'}).click();
+  await expect(page.locator('#nav-roadmap').getByRole('link',{name:'Use the next capability',exact:true})).toHaveAttribute('aria-current','page');
+  await page.goto(server.baseURL+'/roadmap?group=theme');await waitForSettledSaga(page);
+  await expect(page.locator('#nav-roadmap').getByRole('link',{name:'Product growth',exact:true})).toBeVisible();
+  await expect(page.locator('#nav-roadmap').getByText('Ungrouped',{exact:true})).toBeVisible();
+  expect(await page.locator('[id]').evaluateAll(nodes=>nodes.map(n=>n.id).filter((id,i,ids)=>ids.indexOf(id)!==i))).toEqual([]);
+  await expectNoSeriousAccessibilityViolations(page,'[data-directory-page="roadmap"]');
+  await page.setViewportSize({width:390,height:844});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:testInfo.outputPath('roadmap-mobile.png')});
+  await page.setViewportSize({width:1440,height:1000});
+  cli('feature','set-plan','--feature','next','--status','built');
+  await page.goto(server.baseURL+'/features?group=all');await waitForSettledSaga(page);
+  await expect(page.locator('[data-directory="features"]').getByRole('link',{name:'Next priority',exact:true})).toBeVisible();
+  await expect(page.locator('#nav-roadmap').getByRole('link',{name:'Next priority',exact:true})).toHaveCount(0);
+  await page.goto(server.baseURL+'/features/next');await waitForSettledSaga(page);
+  await expect(page.locator('[data-feature-overview] strong')).toHaveText('same feature model');
+  await expect(page.locator('[data-feature-stories]').getByRole('link',{name:'Use the next capability'})).toBeVisible();
+  await expect(page.locator('[data-feature-plan]')).toContainText('Built');
+  await expect(page.locator('[data-feature-plan]')).toContainText('v2 Launch');
+ } finally {await stopSagaServer(server);}
+});

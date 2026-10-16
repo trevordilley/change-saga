@@ -218,7 +218,7 @@ func TestProductNavigationSitsInsideEveryFeatureBelowItsReportOutline(t *testing
 		{Kind: "chapter", ID: "evidence", Title: "Evidence", Target: saga.ChapterTarget(appNavSaga, "evidence")},
 	}
 	nodes := makeAppNavTree(sources)
-	if got, want := topTitles(nodes), "Overview|Features"; got != want {
+	if got, want := topTitles(nodes), "Overview|Features|Roadmap"; got != want {
 		t.Fatalf("sidebar = %s, want %s", got, want)
 	}
 	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Stories|Technical"; got != want {

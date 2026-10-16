@@ -219,8 +219,12 @@ func (b *inventoryBuilder) add(node *Node) *Node {
 
 func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 	for _, feature := range inputs.Features {
+		files := []string{applayout.FeatureRel(feature.ID) + "/" + applayout.FeatureManifestName}
+		if feature.Plan.Schema != "" {
+			files = append(files, applayout.FeatureRel(feature.ID)+"/"+applayout.FeaturePlanName)
+		}
 		b.add(&Node{URN: applayout.FeatureURN(b.sagaID, feature.ID), Kind: KindFeature, Title: feature.Title, Feature: feature.ID,
-			Files: []string{applayout.FeatureRel(feature.ID) + "/" + applayout.FeatureManifestName}, Text: feature.Title + "\n\n" + feature.Description})
+			Files: files, State: feature.Plan.State(), Text: feature.Title + "\n\n" + feature.Description})
 	}
 	for _, persona := range inputs.Personas {
 		urn, _ := requirements.PersonaURN(b.sagaID, persona.Identity.ID)

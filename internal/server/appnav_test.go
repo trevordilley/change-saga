@@ -161,7 +161,7 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 		{ReviewManifest: saga.ReviewManifest{ID: "untitled"}},
 	}
 
-	if got, want := topTitles(shownNav(makeAppNavTree(sources))), "Overview|Features"; got != want {
+	if got, want := topTitles(shownNav(makeAppNavTree(sources))), "Overview|Features|Roadmap"; got != want {
 		t.Fatalf("documentation sidebar = %s, want %s", got, want)
 	}
 
@@ -268,10 +268,10 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.pageFeature = "billing"
 	nodes := makeAppNavTree(sources)
-	if got, want := topTitles(nodes), "Overview|Features"; got != want {
+	if got, want := topTitles(nodes), "Overview|Features|Roadmap"; got != want {
 		t.Fatalf("app-level list = %s, want %s", got, want)
 	}
-	wantIDs := []string{"nav-overview", "nav-features"}
+	wantIDs := []string{"nav-overview", "nav-features", "nav-roadmap"}
 	for index, node := range nodes {
 		if node.NodeID != wantIDs[index] {
 			t.Fatalf("app place %q has node ID %q, want %q", node.Title, node.NodeID, wantIDs[index])
@@ -392,7 +392,7 @@ func TestEveryFeatureIsARowAndOnlyThePagesFeatureOpens(t *testing.T) {
 	}
 }
 
-func TestEmptyAppHidesEmptyPlaces(t *testing.T) {
+func TestEmptyAppKeepsRoadmapAvailable(t *testing.T) {
 	t.Parallel()
 	page, _, err := makeRequirementsSurface(requirements.Document{SagaID: appNavSaga}, requirementRoute{})
 	if err != nil {
@@ -403,7 +403,7 @@ func TestEmptyAppHidesEmptyPlaces(t *testing.T) {
 		requirements: requirements.Document{SagaID: appNavSaga},
 		page:         page,
 	})
-	if got, want := topTitles(nodes), "Overview"; got != want {
+	if got, want := topTitles(nodes), "Overview|Roadmap"; got != want {
 		t.Fatalf("empty app-level list = %s, want %s", got, want)
 	}
 	overview := findNav(t, nodes, "Overview")
