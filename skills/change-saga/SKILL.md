@@ -77,7 +77,13 @@ before drawing slides; nothing else is needed.
    ownership constraint, a tradeoff or rejected alternative, failure and
    recovery behavior). Surprises are what a reviewer most needs to see; the
    rest of the deck is the model that makes them legible. Plan one slide per
-   idea, usually two to six; never one slide per file.
+   reviewer question, never one per file. Read
+   [visual storytelling](references/visual-storytelling.md): connect the user
+   outcome, ownership, mechanism and consequences into an argument. Use enough
+   slides to explain the change; do not compress a broad review into a fixed count.
+   Make named sections, semantic color and useful on-canvas explanations show
+   where things fit. Finish and inspect one representative visual before scaling
+   out; reuse its visual language rather than copying its layout onto every slide.
 4. For each slide, write one request: a `"diagram"` source (explicitly
    positioned nodes, edges, and groups the CLI renders to SVG) and an Item for
    each element that explains part of the change. Publish it with `change-saga
@@ -112,7 +118,10 @@ before drawing slides; nothing else is needed.
    lists the surprises called out, marking any with no code evidence; `change-saga check --covers review --against BASE
    change.saga` exits 0 once every changed line is explained. Run
    `change-saga diagram check --review ID change.saga` and `change-saga
-   validate change.saga`.
+   validate change.saga`. Run `change-saga visual-qa --review ID change.saga`
+   and inspect the rendered slides and contact sheet: readable text, meaningful
+   section boundaries, explicit flows, visible consequences and a coherent story.
+   Mechanical success does not establish that the slides explain the change.
 8. Check every sentence; this is the one check the tool cannot do. Have a
    fresh-context reader, ideally a sub-agent that did not write the deck,
    read each slide's `diagram describe --review ID --slide SLIDE`: every

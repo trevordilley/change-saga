@@ -12,6 +12,10 @@ tool, and what they have to do about it.
 
 ### Added
 
+- Visual storytelling guidance for first-time Saga authors: connected review
+  narratives, named ownership sections, consistent semantic colors, concrete
+  examples, and readable slide/whiteboard detail with visual calibration.
+
 - Compact deprecation badges and element markers with hover/focus previews,
   on-demand details in a narrow side panel, page discovery, and a searchable Saga-wide list. Whiteboard
   annotations no longer cover the canvas with expanded warning panels.

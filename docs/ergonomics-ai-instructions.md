@@ -24,6 +24,12 @@ authoring workflow. The generated query-operation block in the authoring
 skill's `references/query.md` remains owned by the CLI query registry and its
 existing regeneration test.
 
+Visual authoring routes through `references/diagrams.md` to the bundled
+`references/visual-storytelling.md`. The review fast path also links it directly
+before publication. It supplies storyboards, semantic section/color conventions,
+worked composition examples, and a representative-visual calibration pass so a
+fresh author does not treat the minimal API example as the finished design standard.
+
 ## Mandatory contract and routing
 
 `SKILL.md` retains the invariants that apply to every task:

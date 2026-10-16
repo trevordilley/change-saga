@@ -114,6 +114,13 @@ old drawings beside one another is only an intermediate migration step.
 
 ## Reading at different scales
 
+Apply the shared [visual storytelling guidance](../skills/change-saga/references/visual-storytelling.md)
+before laying out the board. Begin with the questions a reader needs answered,
+then use named, colored ownership regions, a concrete journey across them, and
+focused detail. Calibrate one representative region in the viewer before
+extending the board. Color, sectionality and visible explanations should make
+where things fit apparent without opening every inspector.
+
 The opening view explains the overall model with legible titles, summaries,
 callouts and meaningful relationships. It gives readers a direction and context.
 It does not need to show every part of the document at once. Fit-to-board is an

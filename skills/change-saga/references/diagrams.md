@@ -6,6 +6,12 @@ claim, or verification. Read [query.md](query.md) first when a Saga already
 exists. Use `change-saga --help`, command `-h`, and `change-saga spec --json`
 for current syntax.
 
+Before storyboarding, read [visual storytelling](visual-storytelling.md) for
+the first-draft standard: named ownership sections, meaningful color, visible
+mechanisms and consequences, concrete examples, and a connected deck narrative.
+Its worked compositions apply to slides and whiteboards; the API example below
+shows publication mechanics, not the target depth of a finished review.
+
 ## Choose the artifact
 
 Technical design is one approach essay plus three whiteboards: ERD (`data-model`),
@@ -41,7 +47,7 @@ app without owning code. Requirements, prototypes, and design are not slides. Re
 implemented features belong in actual Product story records (see
 [stories.md](stories.md)); deck Items may reference those stories.
 
-Every deck has an Overview: an authored report combining explanation, tables,
+Every deck opens with an Essay: an authored report combining explanation, tables,
 and visualizations. A Technical deck's overview is the detailed implementation
 account that its slides make digestible through diagrams and explanation. Explain responsibilities, data models, execution
 paths, invariants, failure handling, and tradeoffs with enough depth to work on
@@ -406,7 +412,7 @@ one surprise:
       {"id": "miss", "kind": "edge", "from": "cache", "to": "database", "head": "arrow",
        "points": [{"x": 420, "y": 295}, {"x": 760, "y": 295}], "label": "on a miss",
        "label_box": {"x": 520, "y": 255, "width": 140, "height": 28}, "style": "secondary",
-       "note": "A miss reads the row and **writes it back** with a 5-minute TTL; a database error reaches the caller and is not cached."}
+       "note": "A miss reads the row and **writes it back** with a 60-second TTL; a database error reaches the caller and is not cached."}
     ]
   },
   "items": [
@@ -446,7 +452,8 @@ describe` or `query slide`, and check them with `diagram check` and
 ## Compose semantic, reviewable visuals
 
 One slide carries one intent, one takeaway of at most 180 characters, and one
-bounded 16:9 composition. Use 1-7 primary semantic Items on a standard slide.
+bounded 16:9 composition. Aim for 1-7 primary semantic Items on a standard slide;
+this is a focus guideline, not a reason to strip away explanatory structure.
 Every non-decorative node, edge, region, transition, statement, risk, metric,
 example, and callout belongs in `reading_order`, with a label, a semantic
 description that stands without the picture, and an element or normalized
@@ -454,9 +461,11 @@ region selector.
 
 Only Items own deck code evidence. Deck- and slide-level coverage is refused.
 A callout may name another Item with `--about` and may own exact evidence for
-its claim. Keep callout bodies at most 240 characters. If the slide needs a
-paragraph or more than seven primary Items, split the argument or choose a
-better composition; do not hide prose in SVG or HTML.
+its claim. Keep callout bodies at most 240 characters. Short explanatory
+paragraphs belong beside the mechanisms they explain. If several competing
+ideas or too many primary Items make the slide hard to read, split at a reviewer
+question or choose a better composition; do not replace explanation with labels
+or move the essential story into hover notes.
 
 Show a concrete input, important intermediate state, output or side effect,
 and a consequential edge or failure path where relevant. At 1280x720 and
