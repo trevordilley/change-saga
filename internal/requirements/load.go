@@ -141,6 +141,9 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if err := loadFlags(&document); err != nil {
 		return Document{}, err
 	}
+	if err := loadDeprecations(&document); err != nil {
+		return Document{}, err
+	}
 	if err := loadTerms(&document); err != nil {
 		return Document{}, err
 	}

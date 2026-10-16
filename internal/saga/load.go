@@ -748,7 +748,7 @@ func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
 		switch name {
 		case CodeDirName, ReviewsDir, "___claims", "___verifications", MergesDir,
 			applayout.OverviewDir, applayout.PersonasDir, applayout.DesignSystemDir,
-			applayout.FeatureThemesDir, applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.FeaturesDir, "___inventory", applayout.WhiteboardsDir:
+			applayout.FeatureThemesDir, applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.FeaturesDir, "___inventory", "___deprecations", applayout.WhiteboardsDir:
 			return true
 		}
 		return false

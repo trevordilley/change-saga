@@ -78,8 +78,11 @@ func validateV5Matrix(problems *validationErrors, relation Relation, from, to en
 			require(relation.ToRevision != "", "a target criterion revision pin")
 		}
 	case RelationExplains:
-		require(isVisual(from.Kind) && isRequirement(to.Kind), "a deck, slide, or Item source and story or criterion target")
+		require((isVisual(from.Kind) || from.Kind == endpointDeprecation) && isRequirement(to.Kind), "a deck, slide, Item or deprecation source and story or criterion target")
 		require(relation.ToRevision != "", "a target story revision pin")
+		if from.Kind == endpointDeprecation {
+			require(relation.FromRevision != "", "a source deprecation revision pin")
+		}
 	case RelationVerifies:
 		require((from.Kind == endpointClaim || from.Kind == endpointVerification || from.Kind == endpointTestCase) && to.Kind == endpointCriterion, "a claim, verification, or test-case source and criterion target")
 		require(relation.ToRevision != "", "a target criterion revision pin")
@@ -103,7 +106,7 @@ func validateV5Matrix(problems *validationErrors, relation Relation, from, to en
 // content digest, and immutable endpoints carry no pin.
 func validateV5EndpointPins(problems *validationErrors, side string, endpoint endpoint, revision, digest string) {
 	switch endpoint.Kind {
-	case endpointStory, endpointCriterion, endpointWorkItem, endpointTestCase, endpointWave, endpointContract:
+	case endpointDeprecation, endpointStory, endpointCriterion, endpointWorkItem, endpointTestCase, endpointWave, endpointContract:
 		if revision != "" && !pinsEndpointRevision(endpoint, revision) {
 			problems.add("%s_revision does not pin the %s endpoint", side, endpoint.Kind)
 		}
@@ -124,6 +127,9 @@ func validateV5EndpointPins(problems *validationErrors, side string, endpoint en
 // pinsEndpointRevision reports whether revision is a revision URN of the
 // endpoint's own definition (a criterion is pinned by its story's revision).
 func pinsEndpointRevision(endpoint endpoint, revision string) bool {
+	if endpoint.Kind == endpointDeprecation {
+		return parseMemberURN(endpoint.SagaID, "deprecation", endpoint.ID, "revision", revision) != ""
+	}
 	if endpoint.Kind == endpointTestCase {
 		ref, err := qualityid.Parse(revision)
 		return err == nil && ref.Kind == qualityid.KindRevision && ref.SagaID == endpoint.SagaID && ref.TestCaseID == endpoint.ID

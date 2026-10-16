@@ -26,6 +26,10 @@
   },
   "allOf": [
     {
+      "if": { "properties": { "from": { "$ref": "#/$defs/deprecation_urn" }, "type": { "const": "explains" } }, "required": ["from", "type"] },
+      "then": { "required": ["from_revision"], "properties": { "scope": { "const": "self" } } }
+    },
+    {
       "if": { "properties": { "state": { "const": "superseded" } }, "required": ["state"] },
       "then": { "required": ["superseded_at"] },
       "else": { "not": { "anyOf": [{ "required": ["superseded_at"] }, { "required": ["supersede_request_id"] }] } }
@@ -67,7 +71,7 @@
     {
       "if": { "properties": { "type": { "const": "explains" } }, "required": ["type"] },
       "then": {
-        "properties": { "from": { "$ref": "#/$defs/visual_urn" }, "to": { "$ref": "#/$defs/requirement_urn" } },
+        "properties": { "from": { "oneOf": [{ "$ref": "#/$defs/visual_urn" }, { "$ref": "#/$defs/deprecation_urn" }] }, "to": { "$ref": "#/$defs/requirement_urn" } },
         "required": ["to_revision"]
       }
     },
@@ -90,6 +94,7 @@
       "if": { "properties": { "type": { "const": "supersedes" } }, "required": ["type"] },
       "then": {
         "oneOf": [
+          { "properties": { "from": { "$ref": "#/$defs/deprecation_urn" }, "to": { "$ref": "#/$defs/deprecation_urn" } } },
           { "properties": { "from": { "$ref": "#/$defs/story_urn" }, "to": { "$ref": "#/$defs/story_urn" } } },
           { "properties": { "from": { "$ref": "#/$defs/criterion_urn" }, "to": { "$ref": "#/$defs/criterion_urn" } } },
           { "properties": { "from": { "$ref": "#/$defs/chapter_urn" }, "to": { "$ref": "#/$defs/chapter_urn" } } },
@@ -146,6 +151,7 @@
     }
   ],
   "$defs": {
+    "deprecation_urn": {"type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:deprecation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
     "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
     "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
     "story_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
@@ -175,10 +181,11 @@
     "quality_policy_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:quality-policy:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
     "coverage_exception_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:coverage-exception:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
     "verifier_urn": { "oneOf": [{ "$ref": "#/$defs/claim_urn" }, { "$ref": "#/$defs/verification_urn" }, { "$ref": "#/$defs/test_case_urn" }] },
-    "revision_only_urn": { "oneOf": [{ "$ref": "#/$defs/requirement_urn" }, { "$ref": "#/$defs/work_item_urn" }, { "$ref": "#/$defs/test_case_urn" }, { "$ref": "#/$defs/wave_urn" }, { "$ref": "#/$defs/contract_urn" }] },
+    "revision_only_urn": { "oneOf": [{ "$ref": "#/$defs/deprecation_urn" }, { "$ref": "#/$defs/requirement_urn" }, { "$ref": "#/$defs/work_item_urn" }, { "$ref": "#/$defs/test_case_urn" }, { "$ref": "#/$defs/wave_urn" }, { "$ref": "#/$defs/contract_urn" }] },
     "immutable_urn": { "oneOf": [{ "$ref": "#/$defs/claim_urn" }, { "$ref": "#/$defs/verification_urn" }, { "$ref": "#/$defs/citation_urn" }, { "$ref": "#/$defs/relation_urn" }, { "$ref": "#/$defs/dependency_urn" }, { "$ref": "#/$defs/quality_policy_urn" }, { "$ref": "#/$defs/coverage_exception_urn" }] },
     "endpoint_urn": {
       "oneOf": [
+        { "$ref": "#/$defs/deprecation_urn" },
         { "$ref": "#/$defs/requirement_urn" },
         { "$ref": "#/$defs/design_urn" },
         { "$ref": "#/$defs/work_item_urn" },
@@ -194,7 +201,7 @@
     },
     "revision_urn": {
       "type": "string",
-      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|wave|work-item|contract|test-case):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|wave|work-item|contract|test-case|deprecation):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
     }
   }
 }

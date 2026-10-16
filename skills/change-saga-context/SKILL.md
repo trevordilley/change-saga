@@ -112,3 +112,17 @@ When authoring starts, update the affected records and preserve their identities
 a request to document one feature does not require onboarding the whole
 repository. Reading a Saga never authorizes implementation, publication,
 review decisions, or unrelated documentation changes.
+
+
+## Check recorded deprecations
+
+For “what is deprecated?”, enumerate `change-saga query deprecations --saga PATH`
+to completion. For one content identity add `--target URN`; for code use
+`--ref COMMIT:PATH#LSTART-LEND`. Discover the response with `query schema deprecations`.
+Report authored scope, reason, lifecycle, all conflicting heads, exact evidence
+and target/code health. Content annotations and related code never establish code
+deprecation. An uncertain same-path match is not verified line overlap; withdrawn,
+stale, missing and provisional assertions remain explicitly qualified. No records
+means “no recorded deprecation”, not “not deprecated”. Optional story relations
+may be historical or retired; neither their existence nor activity is required.
+This read-only skill never withdraws or revises an assertion on its own.

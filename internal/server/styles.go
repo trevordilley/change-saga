@@ -16,6 +16,10 @@ var (
 // metadata, quiet reading surfaces and hairline separators, and controls that stay
 // invisible until the reviewer hovers or focuses the thing they belong to.
 var pageStyles = `
+.deprecation-panel{margin:10px 0;padding:10px 14px;border:1px solid var(--warning-line);border-radius:8px;background:var(--warning-bg);font:13px/1.5 var(--ui);overflow-wrap:anywhere}
+.deprecation-panel p{margin:6px 0}.deprecation-panel code{font-size:11px}.deprecation-record>summary{cursor:pointer}.deprecation-record+.deprecation-record{margin-top:10px;padding-top:10px;border-top:1px solid var(--warning-line)}
+.deprecation-record[data-deprecation-state="withdrawn"]{opacity:.8}.deprecation-evidence{padding-left:20px}.whiteboard-deprecations{position:absolute;right:16px;top:16px;z-index:5;max-width:min(440px,45vw);max-height:40%;overflow:auto}.whiteboard-deprecations:empty{display:none}
+
 .feature-menu{position:relative;flex:none;margin-left:auto}
 .feature-menu>summary{display:grid;place-items:center;width:30px;height:30px;list-style:none;border-radius:6px;color:var(--muted);font:700 20px/1 var(--ui);cursor:pointer}
 .feature-menu>summary::-webkit-details-marker{display:none}

@@ -19,6 +19,7 @@ import (
 // references lead to the existing, independently readable pinned definitions.
 type whiteboardView struct {
 	ID, Href, CurrentHref string
+	DeprecationTarget     string
 	History               []whiteboardRevisionView
 	Metadata              string
 	Viewport              string
@@ -80,7 +81,8 @@ func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revi
 		return &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	enhanced, capabilities := a.enhanceWhiteboardSources(inventory, resolved, template.HTML(visual))
-	view := &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	boardTarget, _ := requirements.WhiteboardURN(inventory.SagaID, id)
+	view := &whiteboardView{DeprecationTarget: boardTarget, ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
 	if resolved.Revision.Document.Viewport != nil {
 		camera, _ := json.Marshal(resolved.Revision.Document.Viewport)
 		view.Viewport = string(camera)
@@ -266,6 +268,7 @@ const whiteboardTemplates = `
 <section class="whiteboard whiteboard-canvas" data-whiteboard-view data-whiteboard-id="{{.ID}}" data-whiteboard-url="{{.Href}}" data-whiteboard-revision="{{.Revision}}" data-technical-page="{{if eq .ID "data-model"}}erd{{else}}whiteboard{{end}}"{{if eq .ID "data-model"}} data-technical-data-model{{end}} aria-label="{{.Name}} whiteboard">
 <div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}{{range .Notes}}<template data-diagram-note-template="{{.Path}}">{{template "element-note-popover" .Popover}}</template>{{end}}</div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
+<div class="whiteboard-deprecations whiteboard-overlay" data-deprecation-load hx-get="/api/deprecations?target={{urlquery .DeprecationTarget}}&amp;children=1&amp;revision={{urlquery .Revision}}" hx-trigger="load" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Whiteboard{{end}}</h1>
 <details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">

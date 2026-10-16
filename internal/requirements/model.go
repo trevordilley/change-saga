@@ -199,15 +199,16 @@ func (story Story) RevisionConflict() bool  { return len(story.RevisionHeads) > 
 func (story Story) LifecycleConflict() bool { return len(story.LifecycleHeads) > 1 }
 
 type Document struct {
-	Root      string
-	SagaID    string
-	Features  []applayout.Feature
-	Personas  []Persona
-	Flags     []Flag
-	Terms     []Term
-	Stories   []Story
-	Citations []Citation
-	Relations []Relation
+	Deprecations []Deprecation
+	Root         string
+	SagaID       string
+	Features     []applayout.Feature
+	Personas     []Persona
+	Flags        []Flag
+	Terms        []Term
+	Stories      []Story
+	Citations    []Citation
+	Relations    []Relation
 }
 
 // StaleInputs supplies current values owned outside this package. Keys are

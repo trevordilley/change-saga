@@ -90,6 +90,14 @@ func relationCurrencies(root string) ([]requirements.RelationCurrency, error) {
 // currentRevisionHead returns the unique current revision of a revision-pinned
 // endpoint, or explains why a pin cannot be defaulted.
 func (heads relationHeads) currentRevisionHead(endpoint string) (string, bool, error) {
+	if id, err := requirements.ParseDeprecationURN(heads.document.SagaID, endpoint); err == nil {
+		dep := heads.document.FindDeprecation(id)
+		if dep == nil {
+			return "", true, fmt.Errorf("deprecation does not exist")
+		}
+		return uniqueRevisionHead(endpoint, dep.RevisionHeads)
+	}
+
 	if ref, err := qualityid.Parse(endpoint); err == nil && ref.Kind == qualityid.KindTestCase {
 		testCase, ok := heads.testCases[ref.ID]
 		if !ok {
