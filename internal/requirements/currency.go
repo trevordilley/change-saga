@@ -370,6 +370,9 @@ func compareAcross(byRevision map[string]string, pinned, current, unchanged, cha
 // or a test must verify, so none of them ages a relation.
 func obligationOf(revision Revision) string {
 	parts := []string{strconv.Quote(revision.Title), strconv.Quote(revision.Statement), strconv.Quote(revision.Overview)}
+	if revision.Subtext != "" {
+		parts = append(parts, "subtext:"+strconv.Quote(revision.Subtext))
+	}
 	for _, criterion := range revision.AcceptanceCriteria {
 		parts = append(parts, strconv.Quote(criterion.ID), criterionObligation(criterion))
 	}
@@ -403,5 +406,9 @@ func sortedCopy(values []string) []string {
 // Include authored explanation when assessing evidence: a changed boundary or
 // example can change the obligation even when the one-line statement is stable.
 func criterionObligation(criterion Criterion) string {
-	return strings.Join([]string{strconv.Quote(criterion.Title), strconv.Quote(criterion.Statement), strconv.Quote(criterion.Overview)}, "\n")
+	parts := []string{strconv.Quote(criterion.Title), strconv.Quote(criterion.Statement), strconv.Quote(criterion.Overview)}
+	if criterion.Subtext != "" {
+		parts = append(parts, "subtext:"+strconv.Quote(criterion.Subtext))
+	}
+	return strings.Join(parts, "\n")
 }

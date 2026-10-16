@@ -29,6 +29,8 @@
       "minLength": 1,
       "maxLength": 1000
     },
+    "subtext": { "type": "string" },
+    "abstract": { "type": "string" },
     "overview": {
       "type": "string",
       "minLength": 1,

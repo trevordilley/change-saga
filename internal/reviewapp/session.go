@@ -591,7 +591,7 @@ func (s *session) ReadFragment(ctx context.Context, query FragmentQuery) (Fragme
 		}
 		landmarks = append(landmarks, row)
 	}
-	result := FragmentContent{Target: query.Target, ID: entry.fragment.ID, Title: entry.node.Title, MediaType: entry.fragment.MediaType, Content: chunk, Assets: append([]AssetSummary{}, value.assets...), Landmarks: landmarks}
+	result := FragmentContent{Subtext: entry.fragment.Subtext, Abstract: entry.fragment.Abstract, Target: query.Target, ID: entry.fragment.ID, Title: entry.node.Title, MediaType: entry.fragment.MediaType, Content: chunk, Assets: append([]AssetSummary{}, value.assets...), Landmarks: landmarks}
 	if entry.fragment.SlideMeta != nil {
 		result.Intent = entry.fragment.SlideMeta.Intent
 		result.Layout = entry.fragment.SlideMeta.Layout

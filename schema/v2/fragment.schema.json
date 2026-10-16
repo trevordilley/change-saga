@@ -9,6 +9,8 @@
     "version": { "const": 2 },
     "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
     "title": { "type": "string" },
+    "subtext": { "type": "string" },
+    "abstract": { "type": "string" },
     "media_type": {
       "type": "string",
       "pattern": "^(text/(markdown|html|plain)|image/[A-Za-z0-9.+-]+)$"

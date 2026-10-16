@@ -18,6 +18,7 @@
     },
     "title": { "type": "string", "minLength": 1, "description": "Short authored value used as the navigation title. Existing authored titles are preserved verbatim." },
     "statement": { "type": "string", "minLength": 1, "description": "Full authored need, normally As a <persona> I can <value>; no enforced syntax or inferred persona." },
+    "subtext": { "type": "string" },
     "overview": { "type": "string", "description": "Optional authored Markdown description, purpose and rationale. Omission in a complete revision means no overview." },
     "priority": { "type": "string", "maxLength": 128 },
     "personas": {
@@ -43,6 +44,7 @@
           "id": { "$ref": "#/$defs/id" },
           "statement": { "type": "string", "minLength": 1 },
           "title": { "type": "string", "description": "Optional short authored navigation title; the full statement remains visible." },
+          "subtext": { "type": "string" },
           "overview": { "type": "string", "description": "Optional Markdown rationale, examples and boundaries; part of the criterion obligation." }
         }
       }

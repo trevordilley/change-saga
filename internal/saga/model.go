@@ -51,6 +51,8 @@ type Manifest struct {
 // DeckOverview is an authored Markdown report whose references only navigate
 // existing slides and Items. It never owns code evidence.
 type DeckOverview struct {
+	Subtext     string               `json:"subtext,omitempty"`
+	Abstract    string               `json:"abstract,omitempty"`
 	Body        string               `json:"body"`
 	Annotations []OverviewAnnotation `json:"annotations,omitempty"`
 }
@@ -215,6 +217,8 @@ type Section struct {
 }
 
 type FragmentManifest struct {
+	Subtext    string `json:"subtext,omitempty"`
+	Abstract   string `json:"abstract,omitempty"`
 	Version    int    `json:"version"`
 	ID         string `json:"id"`
 	Title      string `json:"title,omitempty"`
@@ -224,6 +228,8 @@ type FragmentManifest struct {
 }
 
 type Fragment struct {
+	Subtext    string         `json:"subtext,omitempty"`
+	Abstract   string         `json:"abstract,omitempty"`
 	Path       string         `json:"path"`
 	Directory  string         `json:"-"`
 	ID         string         `json:"id"`

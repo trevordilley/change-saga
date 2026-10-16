@@ -147,6 +147,7 @@ func groupedFeaturesDirectory(document *saga.Saga, graph *appGraph, current, que
 }
 
 type featureThemePageView struct {
+	Subtext, Abstract string
 	ID, Target, Title string
 	Body              template.HTML
 	Features          []featureLinkView
@@ -159,6 +160,7 @@ func featureThemePage(document *saga.Saga, id string) (*featureThemePageView, er
 		return nil, errAppPageNotFound
 	}
 	view := &featureThemePageView{ID: theme.ID, Title: theme.Title, Target: theme.Target}
+	view.Subtext, view.Abstract = theme.Subtext, theme.Abstract
 	view.Body = overviewMarkdown(theme.Overview, &deckOverviewView{DOMID: "theme-overview-" + domID(theme.Target)})
 	for _, feature := range document.Features {
 		for _, ref := range theme.Features {

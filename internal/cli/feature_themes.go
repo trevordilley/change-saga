@@ -44,6 +44,8 @@ func featureThemeMutation(args []string, out io.Writer) error {
 	} else {
 		flags.StringVar(&id, "theme", "", "product theme id or URN")
 	}
+	subtext := flags.String("subtext", "", "one-line essay subtext")
+	abstract := flags.String("abstract", "", "Markdown abstract, separate from the essay body")
 	if op != "set-features" {
 		flags.StringVar(&body, "text", "", "authored Markdown overview and rationale")
 		flags.StringVar(&source, "source", "", "Markdown file or - for standard input")
@@ -79,6 +81,11 @@ func featureThemeMutation(args []string, out io.Writer) error {
 	}
 	if op != "set-features" && strings.TrimSpace(body) == "" {
 		return fmt.Errorf("an authored Markdown overview is required (--text or --source)")
+	}
+	given := map[string]bool{}
+	flags.Visit(func(f *flag.Flag) { given[f.Name] = true })
+	if op == "set-features" && (given["subtext"] || given["abstract"]) {
+		return fmt.Errorf("essay metadata belongs to set-overview")
 	}
 	root := flags.Arg(0)
 	manifest, err := saga.ReadManifest(root)
@@ -121,7 +128,7 @@ func featureThemeMutation(args []string, out io.Writer) error {
 		if existing == nil && len(themes) >= applayout.MaxFeatures {
 			return fmt.Errorf("maximum of %d feature themes reached", applayout.MaxFeatures)
 		}
-		value := applayout.FeatureTheme{Schema: applayout.FeatureThemeSchemaURL, Version: 5, ID: themeID, Title: strings.TrimSpace(title), Overview: body, Features: refs, CreatedAt: time.Now().UTC()}
+		value := applayout.FeatureTheme{Schema: applayout.FeatureThemeSchemaURL, Version: 5, ID: themeID, Title: strings.TrimSpace(title), Overview: body, Subtext: *subtext, Abstract: *abstract, Features: refs, CreatedAt: time.Now().UTC()}
 		if op != "add" {
 			if existing == nil {
 				return fmt.Errorf("feature theme %q does not exist", themeID)
@@ -129,6 +136,12 @@ func featureThemeMutation(args []string, out io.Writer) error {
 			value = *existing
 			if op == "set-overview" {
 				value.Overview = body
+				if given["subtext"] {
+					value.Subtext = *subtext
+				}
+				if given["abstract"] {
+					value.Abstract = *abstract
+				}
 			} else {
 				value.Features = refs
 			}
@@ -217,6 +230,7 @@ func queryFeatureThemes(args []string, out io.Writer) error {
 		record := featureThemeQueryRecord{ID: theme.ID, Target: theme.Target, Title: theme.Title, Path: theme.Path, FeatureCount: len(theme.Features), Decks: []featureThemeDeckSummary{}}
 		if *selector != "" {
 			record.Overview = theme.Overview
+			record.Subtext, record.Abstract = theme.Subtext, theme.Abstract
 			record.Features = &theme.Features
 		}
 		for _, deck := range theme.Decks {
@@ -235,6 +249,8 @@ func queryFeatureThemes(args []string, out io.Writer) error {
 // Lists carry compact discovery metadata; a selected theme includes its authored
 // overview and memberships. Slides stay in the normal deck/slide query surface.
 type featureThemeQueryRecord struct {
+	Subtext      string                    `json:"subtext,omitempty"`
+	Abstract     string                    `json:"abstract,omitempty"`
 	ID           string                    `json:"id"`
 	Target       string                    `json:"target"`
 	Title        string                    `json:"title"`

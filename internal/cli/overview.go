@@ -2,6 +2,8 @@ package cli
 
 import (
 	"context"
+	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -67,6 +69,8 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 	if part.feature {
 		feature = flags.String("feature", "", "feature ID or canonical URN")
 	}
+	subtext := flags.String("subtext", "", "one-line subtext beneath the essay title; omitted preserves it")
+	abstract := flags.String("abstract", "", "Markdown abstract, separate from the essay body; omitted preserves it")
 	text := flags.String("text", "", "the Markdown content")
 	source := flags.String("source", "", "a Markdown file, or - for standard input")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
@@ -110,6 +114,11 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 	if !strings.HasSuffix(string(data), "\n") {
 		data = append(data, '\n')
 	}
+	given := map[string]bool{}
+	flags.Visit(func(value *flag.Flag) { given[value.Name] = true })
+	if strings.ContainsAny(*subtext, "\r\n") {
+		return fmt.Errorf("--subtext must be one line")
+	}
 	result := fragmentContentOutput{OK: true, Bytes: len(data)}
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
 		fragment := document.OverviewPart(part.pkg)
@@ -136,7 +145,7 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 				}
 			}
 			manifest := saga.FragmentManifest{
-				Version: saga.CurrentVersion, ID: id,
+				Version: saga.CurrentVersion, ID: id, Subtext: *subtext, Abstract: *abstract,
 				Title: part.title, MediaType: "text/markdown", Entrypoint: "content.md", Order: part.order,
 			}
 			dir := filepath.Join(document.Root, filepath.FromSlash(rel))
@@ -160,7 +169,26 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 		if info, err := os.Lstat(entrypoint); err == nil && info.Mode()&os.ModeSymlink != 0 {
 			return fmt.Errorf("fragment entrypoint must not be a symlink")
 		}
-		if err := store.WriteFile(entrypoint, data, 0o644, false); err != nil {
+		writes := []store.WriteBatchEntry{{Path: entrypoint, Data: data}}
+		if given["subtext"] || given["abstract"] {
+			manifestPath := filepath.Join(fragment.Directory, "fragment.json")
+			var manifest saga.FragmentManifest
+			if err := readStrictJSONPath(manifestPath, &manifest); err != nil {
+				return err
+			}
+			if given["subtext"] {
+				manifest.Subtext = *subtext
+			}
+			if given["abstract"] {
+				manifest.Abstract = *abstract
+			}
+			encoded, err := json.MarshalIndent(manifest, "", "  ")
+			if err != nil {
+				return err
+			}
+			writes = append(writes, store.WriteBatchEntry{Path: manifestPath, Data: append(encoded, '\n')})
+		}
+		if err := store.WriteBatch(writes); err != nil {
 			return err
 		}
 		result.Target = fragment.Target

@@ -12,7 +12,7 @@ func init() {
 			usage += " --theme ID|URN"
 		}
 		if op != "set-features" {
-			flags = append(flags, optional("text", "MARKDOWN", "authored Markdown overview"), optional("source", "FILE|-", "Markdown source, or standard input"))
+			flags = append(flags, optional("text", "MARKDOWN", "authored Markdown overview"), optional("source", "FILE|-", "Markdown source, or standard input"), optional("subtext", "TEXT", "one-line essay subtext"), optional("abstract", "MARKDOWN", "separate essay abstract"))
 			usage += " (--text MARKDOWN | --source FILE|-)"
 		}
 		if op != "set-overview" {

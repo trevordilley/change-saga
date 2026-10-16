@@ -1,7 +1,5 @@
 # Technical design: a repository is the durable model {#technical-design-a-repository-is-the-durable-model}
 
-Change Saga is a local Go application that keeps product knowledge and review explanations beside source code. The durable state is a directory of small, versioned records and authored assets committed to Git. A compiled CLI writes those records, projects bounded JSON for coding tools, and starts a loopback HTTP server for the browser reader. The same repository can therefore be inspected from a terminal, reviewed visually, and merged through ordinary Git workflows.
-
 Read the design in three views:
 
 - [ERD](/technical/erd) explains the logical records, ownership and optionality. These are file-backed entities, not SQL tables.

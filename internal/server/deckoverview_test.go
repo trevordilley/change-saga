@@ -21,6 +21,8 @@ func overviewFixture() *saga.Deck {
 
 func TestDeckOverviewRendersStructuredReportAndResolvedEvidence(t *testing.T) {
 	deck := overviewFixture()
+	deck.Overview.Subtext = "Follow a request from entry to response."
+	deck.Overview.Abstract = "A **single handler** owns dispatch. <script>unsafe()</script>"
 	view := makeDeckOverview(deck)
 	if view.Generated || len(view.References) != 1 {
 		t.Fatalf("authored report lost: %#v", view)
@@ -33,7 +35,7 @@ func TestDeckOverviewRendersStructuredReportAndResolvedEvidence(t *testing.T) {
 	if err := serverTemplate(t).ExecuteTemplate(&out, "deck-overview", view); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"<table>", "<td>Dispatch</td>", `/f/flow/assets/flow.svg`, `href="#` + ref.DOMID + `"`, `aria-label="Essay references"`, "Request handler", "src/handler.go", "annotation:literal", "&lt;script&gt;"} {
+	for _, want := range []string{"data-essay-subtext", "Follow a request from entry to response.", "data-essay-abstract", "<strong>single handler</strong>", "data-essay-body", "<table>", "<td>Dispatch</td>", `/f/flow/assets/flow.svg`, `href="#` + ref.DOMID + `"`, `aria-label="Essay references"`, "Request handler", "src/handler.go", "annotation:literal", "&lt;script&gt;"} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("missing %q in %s", want, out.String())
 		}

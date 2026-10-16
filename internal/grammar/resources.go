@@ -66,7 +66,7 @@ var resources = []Resource{
 		Kind: "feature-overview", URN: "urn:change-saga:<saga>:fragment:<id>", Storage: "___features/<feature>.feature/overview.fragment/{fragment.json,content.md}",
 		Schema: schemaBase + "v5/feature-overview.schema.json", Versions: []int{5}, History: "current authored Markdown content; Git holds history",
 		Writers: []string{"feature set-overview", "set-fragment-content"},
-		Notes:   "optional normal report fragment for description, purpose and rationale; newly generated IDs are feature-qualified; existing fragment IDs and immutable feature.json never change",
+		Notes:   "optional Essay with one-line subtext, separate Markdown abstract, and prose body for purpose and rationale; newly generated IDs are feature-qualified; existing fragment IDs and immutable feature.json never change",
 	},
 	{
 		Kind: "overview-pitch", URN: "urn:change-saga:<saga>:fragment:<saga>-pitch", Storage: "___overview/pitch.fragment/{fragment.json,content.md}",
@@ -84,7 +84,7 @@ var resources = []Resource{
 		Kind: "overview-technical-design", URN: "urn:change-saga:<saga>:fragment:<saga>-technical-design", Storage: "___overview/technical-design.fragment/{fragment.json,content.md}",
 		Schema: schemaBase + "v2/fragment.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
 		Writers: []string{"overview set-technical-design"},
-		Notes:   "technical-design approach essay; supporting pages use technical-design-<page>.fragment; links to ERD, Infrastructure and Data flows whiteboards",
+		Notes:   "technical-design Essay: title, optional one-line subtext, separate Markdown abstract, and unframed body; supporting pages use technical-design-<page>.fragment; links to ERD, Infrastructure and Data flows whiteboards",
 	},
 	{
 		Kind: "overview-data-model", URN: "urn:change-saga:<saga>:fragment:<saga>-data-model", Storage: "___overview/data-model.fragment/{fragment.json,content.md}",
@@ -162,7 +162,7 @@ var resources = []Resource{
 		Kind: "criterion", URN: "urn:change-saga:<saga>:story:<story>:criterion:<criterion>", Storage: "inside every story revision's acceptance_criteria",
 		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{5}, History: "stable id across revisions; a removed id is never reused",
 		Writers: []string{"criterion add", "criterion revise", "criterion remove"},
-		Notes:   "inherits the story lifecycle; optional title and Markdown overview accompany the required statement; active only while present in the unique current story revision",
+		Notes:   "inherits the story lifecycle; optional title, one-line subtext and Markdown essay body accompany the required statement (the abstract); active only while present in the unique current story revision",
 	},
 	{
 		Kind: "citation", URN: "urn:change-saga:<saga>:citation:<citation>", Storage: "___features/<feature>.feature/___requirements/citations/<citation>.json",

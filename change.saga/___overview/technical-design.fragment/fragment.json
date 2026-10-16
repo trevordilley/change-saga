@@ -1,4 +1,6 @@
 {
+  "subtext": "How a repository becomes a durable model of an application.",
+  "abstract": "Change Saga is a local Go application that keeps product knowledge and review explanations beside source code. The durable state is a directory of small, versioned records and authored assets committed to Git. A compiled CLI writes those records, projects bounded JSON for coding tools, and starts a loopback HTTP server for the browser reader. The same repository can therefore be inspected from a terminal, reviewed visually, and merged through ordinary Git workflows.",
   "version": 2,
   "id": "change-saga-technical-design",
   "title": "Technical design",

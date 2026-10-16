@@ -29,6 +29,8 @@ type designFileDigest struct {
 }
 
 type designFragmentDigest struct {
+	Subtext    string             `json:"subtext,omitempty"`
+	Abstract   string             `json:"abstract,omitempty"`
 	Version    int                `json:"version"`
 	ID         string             `json:"id"`
 	Title      string             `json:"title,omitempty"`
@@ -145,7 +147,7 @@ func digestDesignFragment(fragment *Fragment, result map[string]string) (string,
 		return "", fmt.Errorf("digest design fragment %q: %w", fragment.Target, err)
 	}
 	base, err := canonicalDesignDigest("fragment-content-v1", designFragmentDigest{
-		Version: ComponentVersion, ID: fragment.ID, Title: fragment.Title, MediaType: fragment.MediaType,
+		Version: ComponentVersion, ID: fragment.ID, Title: fragment.Title, Subtext: fragment.Subtext, Abstract: fragment.Abstract, MediaType: fragment.MediaType,
 		Entrypoint: fragment.Entrypoint, Order: fragment.Order, Files: files,
 	})
 	if err != nil {

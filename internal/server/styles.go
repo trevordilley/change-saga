@@ -587,6 +587,21 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .chapter-body{padding:2px 0 22px 28px}
 .chapter-body[hidden]{display:none}
 
+/* Essay: title, subtext, abstract, then unframed prose. */
+.essay-subtext{margin:8px 0 0;color:var(--muted);font:400 15px/1.5 var(--ui);max-width:74ch;overflow-wrap:anywhere}
+.essay-abstract,.criterion-page>.requirement-need.essay-abstract,.requirement-story-page>.requirement-need.essay-abstract{margin:24px 0 32px;padding:2px 0 2px 20px;border:0;border-left:3px solid var(--accent);border-radius:0;background:transparent;box-shadow:none;max-width:74ch;overflow-wrap:anywhere}
+.essay-abstract .fragment-markdown,.essay-abstract>p{font:400 17px/1.7 var(--ui);color:var(--ink)}
+.essay-abstract p:first-child{margin-top:0}.essay-abstract p:last-child{margin-bottom:0}
+.essay-body,.criterion-page>.authored-overview.essay-body,.feature-page>.authored-overview.essay-body,.requirement-story-page>.authored-overview.essay-body,.reading-surface.essay-body{margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;max-width:78ch}
+.essay-abstract .fragment,.essay-abstract .fragment.active-fragment,.essay-body .fragment,.essay-body .fragment.active-fragment{margin:0;padding:0;border:0;background:transparent;box-shadow:none}
+.essay-body .fragment-markdown{font:400 16px/1.8 var(--ui);max-width:74ch;overflow-wrap:anywhere}
+.essay-body .fragment-markdown h3{font:650 22px/1.4 var(--ui);color:var(--ink);margin:1.6em 0 .6em}
+.essay-body .fragment-markdown h4{font:650 19px/1.4 var(--ui);color:var(--ink);margin:1.4em 0 .6em}
+.essay-body .fragment-markdown>:first-child{margin-top:0}
+@media(max-width:640px){.essay-abstract,.criterion-page>.requirement-need.essay-abstract,.requirement-story-page>.requirement-need.essay-abstract{padding-left:14px}.essay-subtext{font-size:14px}.essay-body .fragment-markdown{font-size:15px}}
+
+.essay-subtext.essay-body{margin:8px 0 0}.essay-subtext .fragment-markdown{font:400 15px/1.5 var(--ui);color:var(--muted)}
+
 /* Sections and fragments ------------------------------------------------- */
 .section{scroll-margin-top:calc(var(--top) + 12px);margin:22px 0}
 .section .section{margin-left:0;padding-left:14px;border-left:1px solid var(--line-soft)}

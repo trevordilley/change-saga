@@ -392,6 +392,7 @@ func sortedStories(stories []requirements.Story) []requirements.Story {
 // ----- Feature -----
 
 type featurePageView struct {
+	Abstract    string
 	ID          string
 	Target      string
 	Title       string
@@ -452,12 +453,16 @@ func (graph *appGraph) featurePage(id string) (*featurePageView, error) {
 	view := &featurePageView{ID: feature.ID, Target: feature.Target, Title: feature.Title}
 	if manifest, ok := applayout.Find(graph.requirements.Features, id); ok {
 		view.Description = manifest.Description
+		view.Abstract = manifest.Description
 	}
 	scope := viewScope{}.shell()
 	if feature.Report != nil && (len(feature.Report.Fragments) > 0 || len(feature.Report.Children) > 0) {
 		view.Report = makeSectionView(feature.Report, scope)
 		if overview := feature.Overview(); overview != nil {
 			view.Overview = makeFragmentView(overview, scope)
+			if overview.Abstract != "" {
+				view.Abstract = overview.Abstract
+			}
 			remaining := view.Report.FragmentViews[:0]
 			for _, fragment := range view.Report.FragmentViews {
 				if fragment.Target != overview.Target {

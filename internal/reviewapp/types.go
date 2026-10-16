@@ -216,6 +216,8 @@ type AssetSummary struct {
 }
 
 type FragmentContent struct {
+	Subtext           string             `json:"subtext,omitempty"`
+	Abstract          string             `json:"abstract,omitempty"`
 	Front             []string           `json:"front,omitempty"`
 	Target            string             `json:"target"`
 	ID                string             `json:"id"`

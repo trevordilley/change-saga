@@ -25,7 +25,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 	}
 	revision := Revision{
 		Schema: RevisionSchemaURL, Version: Version, ID: input.RevisionID, Story: storyID, Parents: []string{},
-		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Overview: input.Overview, Priority: strings.TrimSpace(input.Priority),
+		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Overview: input.Overview, Subtext: input.Subtext, Priority: strings.TrimSpace(input.Priority),
 		Personas: copyStrings(input.Personas), Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: createdAt, RequestID: input.RequestID,
 	}
 	event := LifecycleEvent{
@@ -111,7 +111,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 	}
 	revision := Revision{
 		Schema: RevisionSchemaURL, Version: Version, ID: input.ID, Story: input.Story, Parents: copyStrings(input.Parents),
-		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Overview: input.Overview, Priority: strings.TrimSpace(input.Priority),
+		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Overview: input.Overview, Subtext: input.Subtext, Priority: strings.TrimSpace(input.Priority),
 		Personas: copyStrings(input.Personas), Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
 	}
 	if err := validateRevision(revision, sagaID, storyRef.ID); err != nil {
@@ -176,7 +176,7 @@ func AddCriterion(root, sagaID string, input AddCriterionInput) (MutationResult,
 	return mutateCriterion(root, sagaID, criterionMutation{
 		kind: criterionAdd, story: input.Story, parent: input.Parent, revisionID: input.RevisionID,
 		criterionID: input.Criterion.ID, statement: input.Criterion.Statement,
-		title: &input.Criterion.Title, overview: &input.Criterion.Overview,
+		title: &input.Criterion.Title, overview: &input.Criterion.Overview, subtext: &input.Criterion.Subtext,
 		createdAt: input.CreatedAt, requestID: input.RequestID,
 	})
 }
@@ -187,7 +187,7 @@ func ReviseCriterion(root, sagaID string, input ReviseCriterionInput) (MutationR
 	return mutateCriterion(root, sagaID, criterionMutation{
 		kind: criterionRevise, story: input.Story, criterion: input.Criterion,
 		parent: input.Parent, revisionID: input.RevisionID, statement: input.Statement,
-		title: input.Title, overview: input.Overview,
+		title: input.Title, overview: input.Overview, subtext: input.Subtext,
 		createdAt: input.CreatedAt, requestID: input.RequestID,
 	})
 }
@@ -215,6 +215,7 @@ const (
 )
 
 type criterionMutation struct {
+	subtext     *string
 	kind        criterionMutationKind
 	story       string
 	criterion   string
@@ -288,7 +289,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		}
 		revision := Revision{
 			Schema: RevisionSchemaURL, Version: Version, ID: input.revisionID, Story: input.story,
-			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement, Overview: parent.Overview,
+			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement, Overview: parent.Overview, Subtext: parent.Subtext,
 			Priority: parent.Priority, Personas: append([]string(nil), parent.Personas...), Citations: copyStrings(parent.Citations),
 			AcceptanceCriteria: copyCriteria(parent.AcceptanceCriteria), CreatedAt: mutationTime(input.createdAt),
 			RequestID: input.requestID,
@@ -306,6 +307,9 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 				return fmt.Errorf("criterion id %q already exists in the current story revision", criterionID)
 			}
 			criterion := Criterion{ID: criterionID, Statement: strings.TrimSpace(input.statement)}
+			if input.subtext != nil {
+				criterion.Subtext = *input.subtext
+			}
 			if input.title != nil {
 				criterion.Title = *input.title
 			}
@@ -318,6 +322,9 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 				return fmt.Errorf("criterion %q is not present in parent revision %q", criterionID, input.parent)
 			}
 			previous := revision.AcceptanceCriteria[found]
+			if input.subtext != nil {
+				revision.AcceptanceCriteria[found].Subtext = *input.subtext
+			}
 			if input.statement != "" {
 				revision.AcceptanceCriteria[found].Statement = strings.TrimSpace(input.statement)
 			}

@@ -112,6 +112,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	event := flags.String("event", "", "stable initial proposed-event id")
 	title := flags.String("title", "", "short authored value shown in navigation")
 	statement := flags.String("statement", "", "full authored need: As a <persona> I can <value>")
+	subtext := flags.String("subtext", "", "one-line essay subtext; omitted preserves it on single-parent revise")
 	overview := flags.String("overview", "", "authored detailed Markdown overview; inherited on single-parent revise when omitted, empty clears it")
 	overviewSource := flags.String("overview-source", "", "Markdown file, or - for stdin; exclusive with --overview")
 	priority := flags.String("priority", "", "optional free-text priority the reviewer shows, such as must, should, or could; the tool reads no meaning into it")
@@ -150,6 +151,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		"id": func() { request.ID = *id }, "revision": func() { request.Revision = *revision },
 		"event": func() { request.Event = *event }, "title": func() { request.Title = *title },
 		"statement": func() { request.Statement = *statement },
+		"subtext":   func() { request.Subtext = *subtext },
 		"overview":  func() { request.Overview = *overview }, "priority": func() { request.Priority = *priority },
 		"request-id": func() { request.RequestID = *requestID },
 		"citation":   func() { request.Citations = append([]string{}, citations...) },
@@ -158,7 +160,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		"feature":    func() { request.Feature = *feature },
 	})
 	if *from == "" {
-		request = storyAddRequest{Feature: *feature, ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Overview: *overview, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
+		request = storyAddRequest{Feature: *feature, ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Overview: *overview, Subtext: *subtext, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
 	if request.ID == "" || request.Revision == "" || request.Event == "" || request.Title == "" || request.Statement == "" {
@@ -174,7 +176,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		return err
 	}
 	result, err := requirements.AddStory(root, sagaID, requirements.AddStoryInput{
-		Feature: target.ID, ID: request.ID, RevisionID: request.Revision, EventID: request.Event, Title: request.Title, Statement: request.Statement, Overview: request.Overview,
+		Feature: target.ID, ID: request.ID, RevisionID: request.Revision, EventID: request.Event, Title: request.Title, Statement: request.Statement, Overview: request.Overview, Subtext: request.Subtext,
 		Priority: request.Priority, Personas: request.Personas, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 	})
@@ -192,6 +194,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	revision := flags.String("revision", "", "stable revision id")
 	title := flags.String("title", "", "complete revised title; inherited from a single parent when omitted")
 	statement := flags.String("statement", "", "complete revised user-story statement; inherited from a single parent when omitted")
+	subtext := flags.String("subtext", "", "one-line essay subtext; omitted preserves it on single-parent revise")
 	overview := flags.String("overview", "", "authored detailed Markdown overview; inherited on single-parent revise when omitted, empty clears it")
 	overviewSource := flags.String("overview-source", "", "Markdown file, or - for stdin; exclusive with --overview")
 	priority := flags.String("priority", "", "optional free-text priority; inherited from a single parent when omitted, so pass an empty value for none")
@@ -236,11 +239,12 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		if value.Schema != requirements.RevisionSchemaURL || value.Version != requirements.Version {
 			return fmt.Errorf("structured story revision must use the v3 story-revision schema")
 		}
-		request = storyReviseRequest{Story: value.Story, Revision: value.ID, Parents: value.Parents, Title: value.Title, Statement: value.Statement, Overview: value.Overview, Priority: value.Priority, Personas: value.Personas, Citations: value.Citations, AcceptanceCriteria: value.AcceptanceCriteria, CreatedAt: value.CreatedAt, RequestID: value.RequestID}
+		request = storyReviseRequest{Story: value.Story, Revision: value.ID, Parents: value.Parents, Title: value.Title, Statement: value.Statement, Overview: value.Overview, Subtext: value.Subtext, Priority: value.Priority, Personas: value.Personas, Citations: value.Citations, AcceptanceCriteria: value.AcceptanceCriteria, CreatedAt: value.CreatedAt, RequestID: value.RequestID}
 	}
 	overrideVisited(flags, map[string]func(){
 		"story": func() { request.Story = *story }, "revision": func() { request.Revision = *revision },
 		"title": func() { request.Title = *title }, "statement": func() { request.Statement = *statement },
+		"subtext":  func() { request.Subtext = *subtext },
 		"overview": func() { request.Overview = *overview },
 		"priority": func() { request.Priority = *priority }, "request-id": func() { request.RequestID = *requestID },
 		"parent":    func() { request.Parents = append([]string{}, parents...) },
@@ -249,10 +253,13 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		"persona":   func() { request.Personas = append([]string{}, personas...) },
 	})
 	if *from == "" {
-		request = storyReviseRequest{Story: *story, Revision: *revision, Parents: parents, Title: *title, Statement: *statement, Overview: *overview, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
+		request = storyReviseRequest{Story: *story, Revision: *revision, Parents: parents, Title: *title, Statement: *statement, Overview: *overview, Subtext: *subtext, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
 	flags.Visit(func(value *flag.Flag) {
+		if value.Name == "subtext" {
+			request.SubtextGiven = true
+		}
 		if value.Name == "overview" {
 			request.OverviewGiven = true
 		}
@@ -284,7 +291,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		return err
 	}
 	result, err := requirements.ReviseStory(root, sagaID, requirements.ReviseStoryInput{
-		Story: request.Story, ID: request.Revision, Parents: request.Parents, Title: request.Title, Statement: request.Statement, Overview: request.Overview,
+		Story: request.Story, ID: request.Revision, Parents: request.Parents, Title: request.Title, Statement: request.Statement, Overview: request.Overview, Subtext: request.Subtext,
 		Priority: request.Priority, Personas: request.Personas, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 	})

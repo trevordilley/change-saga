@@ -16,6 +16,8 @@ const FeatureThemeSchemaURL = "https://changesaga.dev/schema/v5/feature-theme.sc
 // features; it never changes their identity or physical location. Git records
 // edits to this current snapshot, including its authored Markdown overview.
 type FeatureTheme struct {
+	Subtext   string    `json:"subtext,omitempty"`
+	Abstract  string    `json:"abstract,omitempty"`
 	Schema    string    `json:"$schema"`
 	Version   int       `json:"version"`
 	ID        string    `json:"id"`

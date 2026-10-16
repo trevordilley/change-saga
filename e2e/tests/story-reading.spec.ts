@@ -6,10 +6,10 @@ test("authored feature and story overviews lead into accessible criterion disclo
     const result = runCLI(repo, args);
     expect(result.status, `${result.stdout}\n${result.stderr}`).toBe(0);
   };
-  cli("feature", "set-overview", "--feature", "tide-charts", "--text", "## Purpose\n\nHelp harbor crews **choose a safe departure** with the latest tide information.\n\n## Why this matters\n\nCrews need enough context to understand an uncertain forecast before committing to a journey. The forecast supports their judgment; it does not replace it.", repo.sagaRoot);
+  cli("feature", "set-overview", "--feature", "tide-charts", "--subtext", "Plan with the latest tide information.", "--abstract", "Understand **conditions** before choosing a departure.", "--text", "## Purpose\n\nHelp harbor crews **choose a safe departure** with the latest tide information.\n\n## Why this matters\n\nCrews need enough context to understand an uncertain forecast before committing to a journey. The forecast supports their judgment; it does not replace it.", repo.sagaRoot);
   const statement = "As a harbor planner I can choose a safe departure time";
   const criterion = "When the latest forecast is unavailable, the planner can still read the last known tide and its observation time, with a clear explanation that conditions may have changed.";
-  cli("story", "add", "--feature", "tide-charts", "--id", "reading-story", "--revision", "r1", "--event", "proposed", "--title", "Choose a safe departure time", "--statement", statement, "--overview", "## The need\n\nA planner compares the departure window with local tide conditions. **Observation time** matters as much as the height.\n\n## Boundaries\n\n- Show the source and time.\n- Explain uncertainty without claiming safety.\n\n<script>window.overviewUnsafe = true</script>\n\n[Unsafe](javascript:alert(1))", "--criterion", `fresh=${criterion}`, "--criterion", "source=The planner can inspect the source of the forecast.", repo.sagaRoot);
+  cli("story", "add", "--feature", "tide-charts", "--id", "reading-story", "--revision", "r1", "--event", "proposed", "--title", "Choose a safe departure time", "--statement", statement, "--subtext", "Compare the available departure windows.", "--overview", "## The need\n\nA planner compares the departure window with local tide conditions. **Observation time** matters as much as the height.\n\n## Boundaries\n\n- Show the source and time.\n- Explain uncertainty without claiming safety.\n\n<script>window.overviewUnsafe = true</script>\n\n[Unsafe](javascript:alert(1))", "--criterion", `fresh=${criterion}`, "--criterion", "source=The planner can inspect the source of the forecast.", repo.sagaRoot);
   const server = await startSagaServer(repo);
   try {
     await page.goto(`${server.baseURL}/features/tide-charts`);
@@ -17,12 +17,20 @@ test("authored feature and story overviews lead into accessible criterion disclo
     await expect(page.getByRole("heading", { name: "Overview", exact: true })).toHaveCount(0);
     await expect(page.getByRole("navigation", { name: "Contents" }).getByRole("link", { name: "Overview", exact: true })).toHaveCount(0);
     await expect(page.locator("[data-feature-overview] strong")).toHaveText("choose a safe departure");
+    await expect(page.locator("[data-essay-subtext]")).toHaveText("Plan with the latest tide information.");
+    await expect(page.locator("[data-essay-abstract]")).toHaveText("Understand conditions before choosing a departure.");
+    await expect(page.locator("[data-essay-abstract]")).toHaveCSS("border-left-width", "3px");
+    await expect(page.locator("[data-feature-overview]")).toHaveCSS("border-left-width", "0px");
+    await expect(page.locator("[data-feature-overview] .fragment")).toHaveCSS("border-left-width", "0px");
     const summary = page.locator("details").filter({ has: page.getByText("Delivery and coverage", { exact: true }) });
     await expect(summary).not.toHaveAttribute("open", "");
     await page.locator("[data-feature-stories]").getByRole("link", { name: "Choose a safe departure time", exact: true }).click();
     await expect(page).toHaveURL(`${server.baseURL}/requirements/reading-story`);
     await waitForSettledSaga(page);
     await expect(page.locator(".requirement-need")).toHaveText(statement);
+    await expect(page.locator("[data-essay-subtext]")).toHaveText("Compare the available departure windows.");
+    await expect(page.locator(".requirement-need")).toHaveCSS("border-left-width", "3px");
+    await expect(page.locator("[data-story-overview]")).toHaveCSS("border-left-width", "0px");
     await expect(page.locator("[data-story-overview] strong")).toHaveText("Observation time");
     await expect(page.locator("[data-story-overview] script")).toHaveCount(0);
     await expect(page.locator('[data-story-overview] a[href^="javascript:"]')).toHaveCount(0);

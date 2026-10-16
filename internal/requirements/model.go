@@ -41,6 +41,7 @@ type StoryIdentity struct {
 }
 
 type Criterion struct {
+	Subtext   string `json:"subtext,omitempty"`
 	ID        string `json:"id"`
 	Statement string `json:"statement"`
 	Title     string `json:"title,omitempty"`
@@ -50,6 +51,7 @@ type Criterion struct {
 // Revision is a complete story snapshot. A reader never inherits omitted
 // values from a parent, which keeps branch merges deterministic.
 type Revision struct {
+	Subtext   string   `json:"subtext,omitempty"`
 	Schema    string   `json:"$schema"`
 	Version   int      `json:"version"`
 	ID        string   `json:"id"`
@@ -235,6 +237,7 @@ type LoadOptions struct {
 }
 
 type AddStoryInput struct {
+	Subtext string `json:"subtext,omitempty"`
 	// Feature is the feature the new story is written into.
 	Feature            string
 	ID                 string
@@ -252,6 +255,7 @@ type AddStoryInput struct {
 }
 
 type ReviseStoryInput struct {
+	Subtext            string `json:"subtext,omitempty"`
 	Story              string
 	ID                 string
 	Parents            []string
@@ -281,6 +285,7 @@ type AddCriterionInput struct {
 // ReviseCriterionInput changes the wording of one stable criterion without
 // changing its identity or any other part of the story snapshot.
 type ReviseCriterionInput struct {
+	Subtext    *string
 	Story      string
 	Criterion  string
 	Parent     string

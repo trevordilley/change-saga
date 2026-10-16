@@ -154,7 +154,9 @@ type pageData struct {
 	DesignSystem     *sectionView
 	// OverviewParts is the overview's directory: its parts and what each one
 	// holds.
-	OverviewParts []overviewPartView
+	OverviewParts   []overviewPartView
+	ProjectPitch    *fragmentView
+	ProjectAbstract *fragmentView
 	// PageFeature is the feature this page belongs to, and so the one feature the
 	// sidebar opens. Empty when the page belongs to none.
 	PageFeature string
@@ -1287,6 +1289,9 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewDataModel || applayout.IsTechnicalDesignPart(strings.TrimPrefix(fragment.Path, applayout.OverviewDir+"/")) {
 			continue
 		}
+		if fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewPitch || fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewDescription {
+			continue
+		}
 		appReport.Fragments = append(appReport.Fragments, fragment)
 	}
 	for _, child := range reportRoot.Children {
@@ -1317,6 +1322,13 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		Root:          makeSectionView(&appReport, scope.shell()),
 		Requirements:  requirementsView,
 	}
+	if pitch := document.OverviewPart(applayout.OverviewPitch); pitch != nil {
+		data.ProjectPitch = makeFragmentView(pitch, scope.shell())
+	}
+	if description := document.OverviewPart(applayout.OverviewDescription); description != nil {
+		data.ProjectAbstract = makeFragmentView(description, scope.shell())
+	}
+
 	// Change totals describe a comparison; observing has none, so its line
 	// arrives from /api/totals as the documented code instead.
 	if data.Comparing {

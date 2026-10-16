@@ -14,6 +14,7 @@ import (
 )
 
 type storyAddRequest struct {
+	Subtext            string                   `json:"subtext,omitempty"`
 	Feature            string                   `json:"feature"`
 	ID                 string                   `json:"id"`
 	Revision           string                   `json:"revision"`
@@ -30,6 +31,8 @@ type storyAddRequest struct {
 }
 
 type storyReviseRequest struct {
+	Subtext            string
+	SubtextGiven       bool
 	Story              string
 	Revision           string
 	Parents            []string
@@ -98,6 +101,9 @@ func inheritStoryRevision(root, sagaID string, request storyReviseRequest, given
 	if !given["statement"] {
 		request.Statement = parent.Statement
 	}
+	if !given["subtext"] {
+		request.Subtext = parent.Subtext
+	}
 	if !given["overview"] {
 		request.Overview = parent.Overview
 	}
@@ -139,6 +145,9 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 	if strings.TrimSpace(request.Statement) != "" {
 		candidate.Statement = request.Statement
 	}
+	if request.SubtextGiven {
+		candidate.Subtext = request.Subtext
+	}
 	if request.OverviewGiven {
 		candidate.Overview = request.Overview
 	}
@@ -165,7 +174,7 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 	}
 	return storyReviseRequest{
 		Story: edited.Story, Revision: edited.ID, Parents: edited.Parents, Title: edited.Title,
-		Statement: edited.Statement, Overview: edited.Overview, Priority: edited.Priority, Personas: edited.Personas, Citations: edited.Citations,
+		Statement: edited.Statement, Overview: edited.Overview, Subtext: edited.Subtext, Priority: edited.Priority, Personas: edited.Personas, Citations: edited.Citations,
 		AcceptanceCriteria: edited.AcceptanceCriteria, CreatedAt: edited.CreatedAt, RequestID: edited.RequestID,
 	}, nil
 }

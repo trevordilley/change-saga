@@ -357,7 +357,7 @@ func loadFragment(root, dir, sagaID string, options loadOptions, validation *Val
 	rel, _ := filepath.Rel(root, dir)
 	fragment := &Fragment{
 		Path: filepath.ToSlash(rel), Directory: dir, ID: value.ID, Title: value.Title,
-		MediaType: value.MediaType, Entrypoint: value.Entrypoint, Order: value.Order,
+		Subtext: value.Subtext, Abstract: value.Abstract, MediaType: value.MediaType, Entrypoint: value.Entrypoint, Order: value.Order,
 		Target: FragmentTarget(sagaID, value.ID),
 	}
 	if options.outline {

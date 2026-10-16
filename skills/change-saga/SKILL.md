@@ -282,7 +282,14 @@ as it is built. Never manufacture product intent to make coverage complete.
 
 Overviews are essays. Write connected prose explaining the subject, with headings
 as useful. The owning header opens the essay; do not add a separate “Overview”
-heading or navigation child. Existing `overview` CLI fields still author that essay.
+heading or navigation child. An Essay consists of its title, a one-line subtext
+under the title, a concise abstract with a left border, and an unframed prose body.
+Keep the abstract separate from the body rather than duplicating its opening.
+Feature and Technical design essay commands accept `--subtext` and `--abstract`
+with `--text` or `--source`; omitted metadata is preserved and explicit empty
+strings clear it. Stories and criteria use `--subtext`, their full `statement`
+as the abstract, and `--overview` for the body. Do not shorten the requirement to
+make it fit. Existing `overview` CLI fields still author that essay.
 
 Features are durable product domains, not changes. A story may move between
 features without changing its identity. Declare adjacent semantic links and

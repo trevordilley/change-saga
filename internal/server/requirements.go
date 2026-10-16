@@ -35,6 +35,7 @@ type requirementsPageView struct {
 }
 
 type requirementStoryView struct {
+	Subtext string
 	// Feature is the feature whose directory holds the story.
 	Feature            string
 	Number             int
@@ -94,6 +95,7 @@ type citationView struct {
 }
 
 type requirementCriterionView struct {
+	Subtext   string
 	Title     string
 	Overview  template.HTML
 	Number    int
@@ -230,6 +232,7 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 		view.Title = story.CurrentRevision.Title
 		view.Statement = story.CurrentRevision.Statement
 		if story.CurrentRevision.Overview != "" {
+			view.Subtext = story.CurrentRevision.Subtext
 			view.Overview = markdownWithAnchors(story.CurrentRevision.Overview, view.DOMID+"--overview")
 		}
 		view.Priority = story.CurrentRevision.Priority
@@ -245,7 +248,7 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 				Number: index + 1, Label: fmt.Sprintf("AC %02d", index+1), ID: criterion.ID,
 				Target: target, DOMID: domID(target), Href: requirementCriterionHref(story.Identity.ID, criterion.ID),
 				Statement: criterion.Statement, Title: criterion.Title,
-				Overview: markdownWithAnchors(criterion.Overview, domID(target)+"--overview"),
+				Subtext: criterion.Subtext, Overview: markdownWithAnchors(criterion.Overview, domID(target)+"--overview"),
 			})
 		}
 	}

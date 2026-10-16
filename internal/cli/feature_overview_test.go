@@ -28,7 +28,11 @@ func TestFeatureOverviewPreservesIdentityAndHasFragmentQueryHistory(t *testing.T
 	git(t, root, "config", "user.name", "Test")
 	git(t, root, "config", "user.email", "test@example.test")
 	for i, text := range []string{"## Purpose\n\nRead **intent** first.", "## Purpose\n\nRead intent and rationale first."} {
-		if err := Feature(ctx, []string{"set-overview", root, "--feature", "reading", "--text", text}, &bytes.Buffer{}); err != nil {
+		args := []string{"set-overview", root, "--feature", "reading", "--text", text}
+		if i == 0 {
+			args = append(args, "--subtext", "Read the intent behind a change.", "--abstract", "Understand **why** before inspecting the details.")
+		}
+		if err := Feature(ctx, args, &bytes.Buffer{}); err != nil {
 			t.Fatal(err)
 		}
 		doc, validation, err := saga.Load(root)
@@ -38,6 +42,9 @@ func TestFeatureOverviewPreservesIdentityAndHasFragmentQueryHistory(t *testing.T
 		fragment := doc.FindFeature("reading").Overview()
 		if fragment == nil {
 			t.Fatal("missing fragment")
+		}
+		if fragment.Subtext != "Read the intent behind a change." || fragment.Abstract != "Understand **why** before inspecting the details." {
+			t.Fatalf("essay metadata lost: %+v", fragment)
 		}
 		var output bytes.Buffer
 		if err := Query(ctx, []string{"fragment", "--saga", root, "--repo", repo, "--target", fragment.Target}, &output); err != nil || !strings.Contains(output.String(), "Read") {
@@ -51,6 +58,16 @@ func TestFeatureOverviewPreservesIdentityAndHasFragmentQueryHistory(t *testing.T
 			git(t, root, "add", ".")
 			git(t, root, "commit", "-m", "Author feature purpose")
 		}
+	}
+	if err := Feature(ctx, []string{"set-overview", root, "--feature", "reading", "--text", "Body", "--subtext", "", "--abstract", ""}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	doc, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if fragment := doc.FindFeature("reading").Overview(); fragment.Subtext != "" || fragment.Abstract != "" {
+		t.Fatalf("explicit empty did not clear metadata: %+v", fragment)
 	}
 	after, _ := os.ReadFile(identity)
 	if !bytes.Equal(before, after) {

@@ -21,6 +21,34 @@ deck header is its entry point; do not add an “Overview” child or repeat an
 “Overview” heading above the prose. Deck controls call this reading mode “Essay”.
 The public `overview` fields, commands, and existing links remain compatible.
 
+An Essay has four distinct parts, in order: its title, a one-line subtext under
+the title, an abstract marked by a left border, and the essay body. The body is
+ordinary unframed prose. Do not use the body as an abstract or repeat its opening
+summary in both places. Missing optional parts remain absent.
+
+Feature and Technical design essays accept `--subtext` and `--abstract` alongside
+`--text` or `--source`. The abstract accepts Markdown; subtext is plain text.
+Omitting these flags preserves existing values; an explicit empty string clears
+them. Fragment queries expose both fields. Themes accept the same flags, and
+deck essay objects accept `subtext` and `abstract`. Features without an authored
+abstract continue to show their identity description; decks fall back to their
+objective. The project pitch supplies subtext and its description supplies the
+abstract.
+
+Stories and criteria accept `--subtext`; their full `statement` supplies the
+abstract, preserving the actual requirement. Their `overview` supplies the body.
+Single-parent edits preserve omitted subtext, and an explicit empty string clears
+it. Complete revision snapshots include it explicitly when wanted. Changing
+subtext makes the affected obligation pins stale, just like changing other prose.
+
+```sh
+change-saga overview set-technical-design --title "Technical design" \
+  --subtext "How the application stores, serves, and explains change." \
+  --abstract "A concise summary of the approach and its main tradeoffs." \
+  --source technical-design.md change.saga
+```
+
+
 Use several paragraphs and headings for Description, Purpose, Rationale, examples,
 and boundaries as needed. `--text` on features and `--overview` on stories accept
 inline Markdown. File source flags accept `-` for stdin; two inputs cannot consume
@@ -41,7 +69,7 @@ The editor round-trips it. Structured `--from` and multi-parent revisions are
 complete snapshots: no prose is inherited from an unspecified winner. Criterion
 add/revise/remove preserve the rest of the snapshot. Overview changes make
 whole-story obligation pins stale; criterion pins continue to compare only their
-own title, statement, and overview. Acceptance/lifecycle events and revision graph semantics are
+own title, subtext, statement, and overview. Acceptance/lifecycle events and revision graph semantics are
 unchanged. Queries expose current and historical overview values.
 
 Feature pages put narrative and stories before delivery metrics. Story pages put
@@ -77,7 +105,7 @@ or `--overview-source -` for stdin. On criterion revision, omitted fields are
 preserved and explicit empty title/overview clears them. Structured criterion
 mutations are patches with the same omission behavior; full story revisions
 remain complete snapshots. The editor may change only the selected criterion's
-title, statement, and overview. Queries return these fields in current and
+title, subtext, statement, and overview. Queries return these fields in current and
 historical story snapshots.
 
 Changing a criterion's title, statement, or overview requires reassessing its

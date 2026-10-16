@@ -36,7 +36,7 @@ func TestStoryOverviewParticipatesInIdempotency(t *testing.T) {
 
 func TestCriterionProseChangeReassessesItsPinsAndWholeStory(t *testing.T) {
 	urn := "urn:change-saga:test:story:checkout"
-	for _, field := range []string{"title", "overview"} {
+	for _, field := range []string{"title", "overview", "subtext"} {
 		t.Run(field, func(t *testing.T) {
 			r1 := Revision{ID: "r1", Story: urn, Title: "Check out", Statement: "I can check out", AcceptanceCriteria: []Criterion{{ID: "works", Statement: "An order is confirmed."}, {ID: "receipt", Statement: "A receipt is available."}}}
 			r2 := r1
@@ -45,6 +45,8 @@ func TestCriterionProseChangeReassessesItsPinsAndWholeStory(t *testing.T) {
 			r2.AcceptanceCriteria = append([]Criterion{}, r1.AcceptanceCriteria...)
 			if field == "title" {
 				r2.AcceptanceCriteria[0].Title = "Order confirmation"
+			} else if field == "subtext" {
+				r2.AcceptanceCriteria[0].Subtext = "Make the confirmation understandable."
 			} else {
 				r2.AcceptanceCriteria[0].Overview = "Confirmation includes an order number."
 			}

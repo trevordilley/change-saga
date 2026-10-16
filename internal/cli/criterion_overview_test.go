@@ -20,7 +20,7 @@ func TestCriterionProseAuthoringPreservesSnapshots(t *testing.T) {
 		t.Fatal(err)
 	}
 	urn := "urn:change-saga:" + sagaID + ":story:reading"
-	if err := Story(ctx, []string{"add", root, "--feature", "core", "--id", "reading", "--revision", "r1", "--event", "proposed", "--title", "Read a forecast", "--statement", "As a planner I can understand a forecast", "--overview", "Story explanation", "--criterion", "source=The forecast names its source."}, &bytes.Buffer{}); err != nil {
+	if err := Story(ctx, []string{"add", root, "--feature", "core", "--id", "reading", "--revision", "r1", "--event", "proposed", "--title", "Read a forecast", "--statement", "As a planner I can understand a forecast", "--subtext", "Make forecasts understandable.", "--overview", "Story explanation", "--criterion", "source=The forecast names its source."}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	run := func(args ...string) {
@@ -48,17 +48,17 @@ func TestCriterionProseAuthoringPreservesSnapshots(t *testing.T) {
 	if err := os.WriteFile(source, []byte(prose), 0600); err != nil {
 		t.Fatal(err)
 	}
-	add := []string{"add", "--story", urn, "--parent", urn + ":revision:r1", "--revision", "r2", "--id", "fresh", "--statement", "The forecast shows its observation time.", "--title", "Know how fresh the forecast is", "--overview-source", source, "--request-id", "fresh-add"}
+	add := []string{"add", "--story", urn, "--parent", urn + ":revision:r1", "--revision", "r2", "--id", "fresh", "--statement", "The forecast shows its observation time.", "--title", "Know how fresh the forecast is", "--subtext", "Show the age of each observation.", "--overview-source", source, "--request-id", "fresh-add"}
 	run(add...)
 	run(add...) // Exact retry is idempotent, including authored prose.
 	previous := current()
 	fresh := previous.AcceptanceCriteria[1]
-	if fresh.Title != "Know how fresh the forecast is" || fresh.Overview != prose || previous.Overview != "Story explanation" {
+	if fresh.Subtext != "Show the age of each observation." || previous.Subtext != "Make forecasts understandable." || fresh.Title != "Know how fresh the forecast is" || fresh.Overview != prose || previous.Overview != "Story explanation" {
 		t.Fatalf("snapshot: %+v", previous)
 	}
 	old, _ := json.Marshal(previous)
 	run("revise", "--story", urn, "--criterion", urn+":criterion:fresh", "--parent", urn+":revision:r2", "--revision", "r3", "--statement", "The forecast shows its observation date and time.")
-	if got := current().AcceptanceCriteria[1]; got.Title != fresh.Title || got.Overview != prose {
+	if got := current().AcceptanceCriteria[1]; got.Subtext != fresh.Subtext || got.Title != fresh.Title || got.Overview != prose {
 		t.Fatalf("statement edit lost prose: %+v", got)
 	}
 	// Structured patches preserve omitted fields; explicit empty clears optional prose.
@@ -71,9 +71,9 @@ func TestCriterionProseAuthoringPreservesSnapshots(t *testing.T) {
 	}
 	// The editor accepts the selected criterion's prose and preserves siblings.
 	t.Setenv("EDITOR", "true")
-	run("revise", "--story", urn, "--criterion", urn+":criterion:fresh", "--parent", urn+":revision:r4", "--revision", "r5", "--overview", "", "--title", "", "--edit")
+	run("revise", "--story", urn, "--criterion", urn+":criterion:fresh", "--parent", urn+":revision:r4", "--revision", "r5", "--overview", "", "--title", "", "--subtext", "", "--edit")
 	got := current()
-	if got.AcceptanceCriteria[1].Title != "" || got.AcceptanceCriteria[1].Overview != "" || got.AcceptanceCriteria[0] != previous.AcceptanceCriteria[0] || got.Overview != previous.Overview {
+	if got.Subtext != previous.Subtext || got.AcceptanceCriteria[1].Subtext != "" || got.AcceptanceCriteria[1].Title != "" || got.AcceptanceCriteria[1].Overview != "" || got.AcceptanceCriteria[0] != previous.AcceptanceCriteria[0] || got.Overview != previous.Overview {
 		t.Fatalf("clear changed other content: %+v", got)
 	}
 	if err := criterion(ctx, []string{"revise", root, "--story", urn, "--criterion", urn + ":criterion:fresh", "--parent", urn + ":revision:r5", "--revision", "r6", "--overview-source", "-"}, &bytes.Buffer{}, strings.NewReader(prose)); err != nil {

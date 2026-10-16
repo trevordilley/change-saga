@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r4",
+  "relation": "urn:change-saga:change-saga:relation:approach-addresses-whiteboards",
+  "from_content_digest": "sha256:51a66321d2e79e9cff3e9c99030c3bbde682d8c3cff1b805140f0b98c44f13cd",
+  "rationale": "Re-read the approach and linked requirement. The opening summary moved into the Essay abstract and a one-line subtext was added; the design explanation and requirement remain unchanged.",
+  "created_at": "2026-10-16T16:33:57.632345Z"
+}
