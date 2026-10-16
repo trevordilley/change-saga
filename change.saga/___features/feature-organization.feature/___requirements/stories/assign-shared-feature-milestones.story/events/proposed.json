@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "proposed",
+  "story": "urn:change-saga:change-saga:story:assign-shared-feature-milestones",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-10-16T19:12:38.789964Z",
+  "request_id": "assign-shared-feature-milestones-20261016"
+}

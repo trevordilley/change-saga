@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "path": "internal/server/feature_themes.go",
+      "start": 33,
+      "end": 71,
+      "digest": "sha256:258ab39e31aba15e68a2682d59f51284205de0cc0af363411f54c13a4b084da6",
+      "note": "Separate grouping preferences and shared-name resolution leave canonical plans unchanged."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "path": "internal/server/feature_themes.go",
+      "start": 130,
+      "end": 186,
+      "digest": "sha256:113ed921083745c74a34771bc805b2953a04a037be2c094db13fdf660479d153",
+      "note": "Label and milestone grouping reuses feature records and retains unassigned members."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "subtext": "One definition, many feature memberships.",
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:reuse-shared-feature-labels",
+  "parents": [],
+  "title": "Reuse shared feature labels",
+  "statement": "As a Product Manager, I can define a label once and reference it from several features, so categories stay consistent as the product grows.",
+  "overview": "A shared label is a stable entity. Features carry references to it, not repeated display names. The same label may organize built and planned features. Authored label membership is separate from the richer theme records.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:feature-organization-intent-20261016",
+    "urn:change-saga:change-saga:citation:feature-organization-implementation"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "shared-definition",
+      "statement": "Two features assigned the same label reference one shared definition, and each feature may reference multiple labels."
+    },
+    {
+      "id": "rename-once",
+      "statement": "Renaming a shared label changes its displayed name for all assigned features without changing their identities or memberships."
+    },
+    {
+      "id": "duplicate-name",
+      "statement": "Creating a second label with the same name, ignoring letter case, is rejected and identifies the existing definition."
+    },
+    {
+      "id": "valid-references",
+      "statement": "Assigning a missing or cross-Saga label is rejected without changing the feature plan."
+    },
+    {
+      "id": "preserve-or-clear",
+      "statement": "An update omitting labels preserves the existing set, supplying labels replaces the set, and an explicit clear removes all label assignments."
+    }
+  ],
+  "created_at": "2026-10-16T19:12:38.639337Z",
+  "request_id": "reuse-shared-feature-labels-20261016"
+}

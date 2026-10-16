@@ -1,0 +1,38 @@
+{
+  "subtext": "A version or launch name can organize several features.",
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:assign-shared-feature-milestones",
+  "parents": [],
+  "title": "Assign shared milestones",
+  "statement": "As a Product Manager, I can assign features to a shared named milestone, so the team can see a common delivery target without duplicating its definition.",
+  "overview": "A milestone is optional and names an owner-chosen target. It does not imply dates, scheduling or dependency enforcement. Existing free-text milestone values remain readable; new assignments use shared milestone identities.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:feature-organization-intent-20261016",
+    "urn:change-saga:change-saga:citation:feature-organization-implementation"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "optional-shared-target",
+      "statement": "A feature can have no milestone or one reference to a shared milestone, and several features can reference that same milestone."
+    },
+    {
+      "id": "rename-once",
+      "statement": "Renaming a shared milestone updates its displayed name for every assigned feature without rewriting feature memberships."
+    },
+    {
+      "id": "valid-references",
+      "statement": "Assigning a missing or cross-Saga milestone is rejected without changing the feature plan."
+    },
+    {
+      "id": "preserve-or-clear",
+      "statement": "An update omitting the milestone preserves its assignment, while an explicitly empty milestone clears the assignment."
+    }
+  ],
+  "created_at": "2026-10-16T19:12:38.789964Z",
+  "request_id": "assign-shared-feature-milestones-20261016"
+}

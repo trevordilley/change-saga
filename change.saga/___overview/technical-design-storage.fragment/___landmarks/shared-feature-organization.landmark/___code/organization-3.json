@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "path": "internal/cli/classifications.go",
+      "start": 63,
+      "end": 94,
+      "digest": "sha256:458c0585ac18f9ae4d4947f19ad564d9afe4bd66d42c4cf4ae56205faeebae92",
+      "note": "Shared definition add/rename uses the Saga lock, duplicate-name validation and one record replacement."
+    }
+  ]
+}

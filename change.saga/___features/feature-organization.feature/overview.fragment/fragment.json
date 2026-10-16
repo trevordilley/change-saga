@@ -1,0 +1,10 @@
+{
+  "subtext": "Keep one feature identity from planned work to delivered capability.",
+  "abstract": "Features and Roadmap are two delivery views of the same records. Shared labels, milestones and optional themes organize those records without duplicating them, and each view remembers its own grouping choice.",
+  "version": 2,
+  "id": "feature-organization--overview",
+  "title": "Overview",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": -100
+}

@@ -1,0 +1,38 @@
+{
+  "subtext": "One durable feature record supports planning and delivery.",
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:plan-and-deliver-one-feature",
+  "parents": [],
+  "title": "Plan and deliver the same feature",
+  "statement": "As a Product Manager, I can describe a planned feature and later mark it built without recreating its knowledge, so the team retains the original intent through delivery.",
+  "overview": "Delivery status is explicit product intent. A planned feature can hold the same Essay, stories, criteria, prototype associations and design context as a built feature. Story acceptance and code coverage are independent of built/planned placement.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:feature-organization-intent-20261016",
+    "urn:change-saga:change-saga:citation:feature-organization-implementation"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "separate-views",
+      "statement": "Features lists built capabilities and Roadmap lists planned capabilities; neither view includes features in the other delivery category."
+    },
+    {
+      "id": "stable-identity",
+      "statement": "Changing a feature from planned to built preserves its canonical identity and URL, stories, Essay, associated design and prototypes, labels and milestone."
+    },
+    {
+      "id": "planning-context",
+      "statement": "A planned feature opens the same reading pages for its authored Essay, stories, acceptance criteria and associated design context as a built feature."
+    },
+    {
+      "id": "priority-order",
+      "statement": "Roadmap orders lower positive priority numbers before higher numbers, keeps unranked work after ranked work, and preserves creation order for ties."
+    }
+  ],
+  "created_at": "2026-10-16T19:12:38.462404Z",
+  "request_id": "plan-and-deliver-one-feature-20261016"
+}

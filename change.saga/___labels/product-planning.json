@@ -1,0 +1,6 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/label.schema.json",
+  "version": 5,
+  "id": "product-planning",
+  "title": "Product planning"
+}

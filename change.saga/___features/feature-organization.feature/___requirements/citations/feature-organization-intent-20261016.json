@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "feature-organization-intent-20261016",
+  "kind": "decision",
+  "title": "Product owner: shared organization and separate delivery views",
+  "reference": "User conversation, 2026-10-16: Features contains built work; Roadmap contains planned features; each view groups independently by labels, milestones or themes; define labels once and reference them; Features and Roadmap act as top-level status categories.",
+  "created_at": "2026-10-16T19:12:37.459063Z"
+}

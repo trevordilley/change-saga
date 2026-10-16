@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "shared-feature-organization",
+  "label": "Shared feature organization",
+  "description": "Shared label and milestone definitions, canonical feature references, delivery-state projections and independently remembered grouping.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "shared-feature-organization"
+  },
+  "target": ""
+}

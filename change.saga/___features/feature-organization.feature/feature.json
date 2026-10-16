@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "feature-organization",
+  "title": "Roadmap and feature organization",
+  "description": "Plan and deliver the same feature, organized through shared labels, milestones and optional themes.",
+  "created_at": "2026-10-16T19:12:37.302524Z",
+  "request_id": "feature-organization-20261016"
+}

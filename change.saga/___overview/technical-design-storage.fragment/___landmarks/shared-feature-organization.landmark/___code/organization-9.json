@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "path": "internal/cli/classifications_test.go",
+      "start": 16,
+      "end": 105,
+      "digest": "sha256:72d3965d7fb6e633b6f3cfcd13383828fb28f9954dde8a869c2516f0679bec29",
+      "note": "Regression coverage verifies rename/reference preservation, promotion, invalid assignment rejection and clearing."
+    }
+  ]
+}

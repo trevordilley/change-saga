@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "proposed",
+  "story": "urn:change-saga:change-saga:story:group-feature-views-independently",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-10-16T19:12:38.950492Z",
+  "request_id": "group-feature-views-independently-20261016"
+}

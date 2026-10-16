@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "path": "internal/applayout/classifications.go",
+      "start": 13,
+      "end": 71,
+      "digest": "sha256:4c80616624f8727c150daadc8ccd7ccbaddb82b95cc57aeed5dd64676f77b5b2",
+      "note": "Shared stable label/milestone definitions, canonical selectors and title resolution."
+    }
+  ]
+}

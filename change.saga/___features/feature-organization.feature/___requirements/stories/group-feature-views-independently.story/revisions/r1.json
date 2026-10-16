@@ -1,0 +1,42 @@
+{
+  "subtext": "Each collection remembers its own reading preference.",
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:group-feature-views-independently",
+  "parents": [],
+  "title": "Group Features and Roadmap independently",
+  "statement": "As a Product Manager, I can choose a separate grouping for Features and Roadmap, so I can review delivered capabilities and upcoming priorities from different perspectives.",
+  "overview": "Grouping changes presentation rather than feature ownership. Themes are shared categories with optional explanatory content; labels are lightweight shared categories. Persona grouping derives from the current stories. No grouping choice creates product records.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:feature-organization-intent-20261016",
+    "urn:change-saga:change-saga:citation:feature-organization-implementation"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "group-options",
+      "statement": "Each nonempty collection offers None, Persona, Label and Milestone grouping, and also offers Theme when themes exist."
+    },
+    {
+      "id": "independent-preferences",
+      "statement": "Changing the Roadmap grouping preserves the Features grouping and vice versa, including after opening a feature or story page."
+    },
+    {
+      "id": "membership-without-copying",
+      "statement": "A feature with several labels appears in each applicable label group and every occurrence opens the same canonical feature page."
+    },
+    {
+      "id": "unassigned-visible",
+      "statement": "Label grouping retains unlabeled features, and milestone grouping retains features with no milestone."
+    },
+    {
+      "id": "find-shared-names",
+      "statement": "Feature and Roadmap directories display and can filter by current shared label and milestone names."
+    }
+  ],
+  "created_at": "2026-10-16T19:12:38.950492Z",
+  "request_id": "group-feature-views-independently-20261016"
+}

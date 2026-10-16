@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "path": "internal/applayout/classifications.go",
+      "start": 135,
+      "end": 155,
+      "digest": "sha256:12091ff031d1650a258776dcd6e92fe72d8177a65063d749efc373c136397dbf",
+      "note": "Canonical same-Saga feature references are validated; legacy milestone text is preserved."
+    }
+  ]
+}
