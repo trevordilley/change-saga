@@ -114,11 +114,23 @@ was not inspected. Code-focused queries fail explicitly when source inspection
 is unavailable. `references` also lists active, unconflicted deprecation evidence;
 use `deprecation revise`, not in-place repinning, to correct it.
 
-Readers show the reason and scope on explanation/diagram pages, named whiteboards,
-technical definitions and code inspection surfaces. Provenance is expandable.
+Readers show a compact **Deprecations · N** badge beside content. Hover or focus
+previews the reason; clicking opens the shared details drawer. Full scope,
+replacement, target health, exact code evidence and provenance load on demand.
+Whiteboards keep the badge beside their title and mark individual appearances
+when the annotation names that saved board revision. A whole-board assertion
+does not mark every element. Multiple assertions at one appearance share a marker.
+
+A page's Deprecations link lists its records, including content farther down the
+page. The **Deprecations** project destination searches the whole Saga, filters
+by content/code scope and active/withdrawn/conflicted state, and pages through
+50 records at a time. Entries link to affected content; appearance links retain
+the authored board revision. Withdrawn and competing assertions remain discoverable.
+
 The reader is read-only. Historical content is still available; annotation pins
-and current-target health are reported separately. The inline reader caps its
-list at 100 and reports truncation; the CLI query enumerates the complete set.
+and current-target health are reported separately. Hidden slides do not fetch
+annotations, and hover does not resolve code or load full details. The CLI query
+continues to enumerate the complete set for agents.
 
 ## Correct or withdraw an assertion
 

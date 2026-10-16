@@ -1664,8 +1664,8 @@ const appJavaScript = `(() => {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     drawer.dataset.drawerMode = mode;
-    const labels = {documentation:'Technical explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
-    const icons = {documentation:'#i-book', fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
+    const labels = {deprecations:'Deprecations', documentation:'Technical explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
+    const icons = {deprecations:'#i-alert', documentation:'#i-book', fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
     const label = labels[mode] || labels.code;
     drawer.setAttribute('aria-label', label);
     const heading = q('.drawer-head strong', drawer);
@@ -2506,6 +2506,7 @@ const appJavaScript = `(() => {
   }
 
   function closeDrawer() {
+ deprecationRequest++; hideDeprecationPreview();
     documentationRequest++; documentationTrail = [];
     const drawer = q('.diff-drawer');
     if (!drawer) return;
@@ -3170,7 +3171,7 @@ const appJavaScript = `(() => {
     }
   }
 
-` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + `
+` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + deprecationJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the

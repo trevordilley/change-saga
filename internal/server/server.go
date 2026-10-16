@@ -122,6 +122,9 @@ func (w *lockedWriter) Write(data []byte) (int, error) {
 func OpenBrowser(rawURL string) error { return launchBrowser(rawURL) }
 
 type pageData struct {
+	Deprecations         *deprecationDirectory
+	PageDeprecations     int
+	PageDeprecationsHref string
 	// Opening says how the reviewer was opened; Comparing is compare mode.
 	Opening          string
 	Comparing        bool
@@ -502,6 +505,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /requirements", application.page)
 	page("GET /terms/{term}", application.page)
 	page("GET /terms", application.page)
+	page("GET /deprecations", application.page)
 	page("GET /chapters/{chapter}", application.page)
 	page("GET /personas/{persona}", application.page)
 	page("GET /personas", application.page)
@@ -1009,7 +1013,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 }
 
 // pageTemplateSource is every template the reviewer renders with.
-var pageTemplateSource = essayTemplates + deprecationTemplates + pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
+var pageTemplateSource = essayTemplates + deprecationTemplates + deprecationDiscoveryTemplates + pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
@@ -1183,6 +1187,8 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "overview"}, true
 	case isRequirementsPath(path):
 		return appRoute{kind: "requirements"}, true
+	case path == "/deprecations":
+		return appRoute{kind: "deprecations"}, true
 	case isTermsPath(path):
 		return appRoute{kind: "terms"}, true
 	case path == "/personas":
@@ -1360,6 +1366,16 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		return nil, err
 	}
 	data.TermsMode = data.Terms.Active
+	if len(requirementsDocument.Deprecations) > 0 || route.kind == "deprecations" {
+		metadata, _ := requirements.LoadWhiteboardMetadata(a.root, document.Manifest.ID)
+		if route.kind == "deprecations" {
+			data.Deprecations = makeDeprecationDirectory(requirementsDocument, graph, metadata, r.URL.Query())
+		} else {
+			query := url.Values{"page": {r.URL.Path}}
+			data.PageDeprecations = makeDeprecationDirectory(requirementsDocument, graph, metadata, query).Total
+			data.PageDeprecationsHref = "/deprecations?" + query.Encode()
+		}
+	}
 	switch route.kind {
 	case "feature-themes":
 		data.FeatureThemes = featureThemesDirectory(document, directoryQuery(r))
@@ -1508,6 +1524,8 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 // or told by a screen reader that a page has arrived, knows which one it is.
 func pageTitle(data *pageData) string {
 	switch {
+	case data.Deprecations != nil:
+		return "Deprecations"
 	case data.RequirementsMode && data.Requirements.FocusedCriterion != nil && data.Requirements.Story != nil:
 		return data.Requirements.FocusedCriterion.Label + " · " + data.Requirements.Story.Title
 	case data.RequirementsMode && data.Requirements.Story != nil:

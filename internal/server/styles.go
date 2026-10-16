@@ -16,9 +16,32 @@ var (
 // metadata, quiet reading surfaces and hairline separators, and controls that stay
 // invisible until the reviewer hovers or focuses the thing they belong to.
 var pageStyles = `
-.deprecation-panel{margin:10px 0;padding:10px 14px;border:1px solid var(--warning-line);border-radius:8px;background:var(--warning-bg);font:13px/1.5 var(--ui);overflow-wrap:anywhere}
+.deprecation-panel{margin:0;padding:8px 0;border:0;background:var(--bg);font:13px/1.5 var(--ui);overflow-wrap:anywhere}
 .deprecation-panel p{margin:6px 0}.deprecation-panel code{font-size:11px}.deprecation-record>summary{cursor:pointer}.deprecation-record+.deprecation-record{margin-top:10px;padding-top:10px;border-top:1px solid var(--warning-line)}
-.deprecation-record[data-deprecation-state="withdrawn"]{opacity:.8}.deprecation-evidence{padding-left:20px}.whiteboard-deprecations{position:absolute;right:16px;top:16px;z-index:5;max-width:min(440px,45vw);max-height:40%;overflow:auto}.whiteboard-deprecations:empty{display:none}
+.deprecation-record[data-deprecation-state="withdrawn"]{opacity:.8}.deprecation-evidence{padding-left:20px}.whiteboard-deprecations:empty{display:none}
+
+
+.deprecation-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border:1px solid var(--warning-line);border-radius:4px;background:var(--bg);color:var(--ink);font:12px/1.5 var(--ui);text-decoration:none}
+.deprecation-summary{display:inline-flex;margin:4px 0}
+.whiteboard-heading .whiteboard-deprecations{position:static;max-width:none;max-height:none;overflow:visible}
+.deprecation-marker{position:relative;display:inline-grid;place-items:center;width:22px;height:22px;padding:0;border:1px solid var(--warning-line);border-radius:50%;background:var(--warning-bg);color:var(--ink);font:700 13px/1 var(--ui);z-index:8}
+.deprecation-marker[data-deprecation-state="withdrawn"]{background:var(--bg-inset);border-color:var(--line);color:var(--muted)}
+.deprecation-marker-layer{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+.deprecation-marker-layer .deprecation-marker{position:absolute;pointer-events:auto;transform:translate(-50%,-50%)}
+.deprecation-marker[hidden]{display:none}
+.deprecation-tooltip{position:fixed;z-index:100;max-width:min(320px,calc(100vw - 16px));padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:12px/1.5 var(--ui);box-shadow:var(--shadow);overflow-wrap:anywhere}
+.deprecation-results{list-style:none;padding:0;margin:16px 0}
+.deprecation-results>li{padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.deprecation-results p,.deprecation-results small{display:block;margin:5px 0;color:var(--muted)}
+.deprecation-results a{display:block;margin-top:7px}
+.deprecation-entry-button{display:block;padding:0;border:0;background:transparent;text-align:left;color:var(--ink);font:600 13px/1.5 var(--ui)}
+.deprecation-entry-button:hover{text-decoration:underline}
+.deprecation-filters{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+.deprecation-filters label{display:grid;gap:4px}
+.deprecation-filters input,.deprecation-filters select,.deprecation-filters button{padding:6px;border:1px solid var(--line);border-radius:4px;background:var(--bg)}
+.page-deprecations{float:right;margin:12px 20px}
+.page-root:has([data-whiteboard-view])>.view>.page-deprecations{display:none}
+.deck-viewer-slide .fragment>.deprecation-load{position:absolute;top:8px;right:12px;z-index:9}
 
 .feature-menu{position:relative;flex:none;margin-left:auto}
 .feature-menu>summary{display:grid;place-items:center;width:30px;height:30px;list-style:none;border-radius:6px;color:var(--muted);font:700 20px/1 var(--ui);cursor:pointer}

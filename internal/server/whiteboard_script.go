@@ -237,6 +237,7 @@ const whiteboardJavaScript = `
         const hasReveal = revealPaths.some(path => !focused || path === focused || path?.startsWith(focused+'/'));
         if (replay.hidden === hasReveal) replay.hidden = !hasReveal;
         attribute(fitButton,'aria-pressed',fitted);
+ board.dispatchEvent(new CustomEvent('whiteboard:paint', {detail:{view, rect:viewportRect}}));
       }
       // Fit inside the clear area between the floating title and controls,
       // while keeping the SVG and pan surface across the entire canvas.
@@ -281,7 +282,7 @@ const whiteboardJavaScript = `
       }
       function focus(path, fitAll = false) {
         if (!path && fitAll) return fit();
-        const box = sections.has(path) ? geometry.get(path)?.bounds : byFrame.get(path)?.contentBox;
+        const box = byFrame.get(path)?.contentBox || geometry.get(path)?.bounds;
         if (!box) return home();
         const {x,y,width,height} = box;
         if (!(width > 0 && height > 0)) return;

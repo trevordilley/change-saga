@@ -106,6 +106,9 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	if len(sources.technical) > 0 {
 		overview.Children = append(overview.Children, navSection("Technical design", technicalPath, "nav-technical", "design", sources.technical))
 	}
+	if len(sources.requirements.Deprecations) > 0 {
+		overview.Children = append(overview.Children, navSection("Deprecations", "/deprecations", "nav-deprecations", "alert", nil))
+	}
 	if flags := flagNav(sources.requirements); len(flags) > 0 {
 		overview.Children = append(overview.Children, navSection("Feature flags", "/flags", "nav-featureflags", "flag", flags))
 	}

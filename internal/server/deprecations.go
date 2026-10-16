@@ -43,7 +43,7 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 		render()
 		return
 	}
-	if target == "" && !panel.Code {
+	if target == "" && !panel.Code && q.Get("deprecation") == "" {
 		http.Error(w, "requires target, ref or file", 400)
 		return
 	}
@@ -53,7 +53,7 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	filter := deprecationview.Filter{}
+	filter := deprecationview.Filter{ID: q.Get("deprecation")}
 	var resolver *coderesolve.Resolver
 	head := ""
 	if panel.Code {
@@ -133,10 +133,34 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	if panel.Code {
+	if q.Get("compact") == "1" && !panel.Code {
+		a.compactDeprecations(w, doc, selected, q)
+		return
+	}
+	if panel.Code || q.Get("deprecation") != "" {
 		panel.Records = deprecationview.Records(r.Context(), doc, head, evidenceResolver, filter)
 	} else {
 		panel.Records = files.contentDeprecations(doc).Records(r.Context(), selected)
+	}
+	if q.Get("compact") == "1" {
+		allowed := map[string]bool{}
+		for _, row := range panel.Records {
+			allowed[row.Identity.ID] = true
+		}
+		summaries := deprecationSummaries(doc, nil)
+		compact := summaries[:0]
+		for _, row := range summaries {
+			if allowed[row.ID] {
+				detail := r.URL.Query()
+				detail.Del("compact")
+				detail.Set("deprecation", row.URN)
+				row.DetailHref = "/api/deprecations?" + detail.Encode()
+				compact = append(compact, row)
+			}
+		}
+		writeIncrementalHeaders(w, "text/html; charset=utf-8")
+		renderHTML(w, a.template, "deprecation-summary", compact, "Deprecations could not be listed.")
+		return
 	}
 	if len(panel.Records) > 100 {
 		panel.Records = panel.Records[:100]
@@ -149,7 +173,7 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 }
 
 const deprecationTemplates = `
-{{define "deprecation-target"}}<div class="deprecation-load" data-deprecation-load hx-get="/api/deprecations?target={{urlquery .}}&amp;children=1" hx-trigger="load, saga:deprecations" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>{{end}}
+{{define "deprecation-target"}}<div class="deprecation-load" data-deprecation-load hx-get="/api/deprecations?compact=1&amp;target={{urlquery .}}&amp;children=1" hx-trigger="load, saga:deprecations" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>{{end}}
 {{define "deprecation-panel"}}
 {{if or .Records .Note .Code}}<aside class="deprecation-panel" data-deprecations aria-label="Recorded deprecations">
 {{if .Note}}<p role="status">{{.Note}}</p>{{end}}

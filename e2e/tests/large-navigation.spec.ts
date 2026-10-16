@@ -69,7 +69,10 @@ test("@navigation-performance a 104-slide Saga keeps ordinary navigation bounded
     await page.goto(server.baseURL + "/#" + anchor);
     await page.locator("body[data-shell-ready]").waitFor();
     await expect(last).toBeVisible();
-    await expect(last.locator("[data-deprecations]")).toContainText("The last slide is superseded.");
+    await expect(last.locator("[data-deprecation-summary]")).toBeVisible();
+    await last.getByRole("button", {name:"Deprecations on this content"}).click();
+    await page.locator(".diff-drawer").getByRole("button", {name:"The last slide is superseded.", exact:true}).click();
+    await expect(page.locator(".diff-drawer [data-deprecations]")).toContainText("The last slide is superseded.");
     metrics.push({ phase: "opened-and-deep-linked", decks, frames, annotations });
   } finally {
     metrics.push({ phase: "final-requests", decks, frames, annotations });

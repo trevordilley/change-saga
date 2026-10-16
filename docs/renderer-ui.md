@@ -35,6 +35,12 @@ Never edit committed saga content to hide a word from the chrome.
   focus; their on-slide affordances use the same quiet treatment in
   implementation and pull-request decks.
 
+Deprecations use compact counts and target markers, with hover/focus previews and
+click-to-open details in the shared drawer. Keep large explanations off the
+canvas until requested. Discovery must remain available without hover through
+the content count, page list and searchable project-wide Deprecations page.
+Preserve explicit scope, withdrawn/conflicted state, and historical pins.
+
 ## Icons
 
 `icons.go` ships every glyph as an inline SVG `<symbol>` sprite. The set is

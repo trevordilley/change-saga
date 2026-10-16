@@ -65,7 +65,7 @@ const whiteboardNavigationJavaScript = `
       const source = new URL(href, location.href);
       return {path:row.dataset.whiteboardFrame, source, row};
     }).filter(Boolean).sort((a,b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
-    const paths = new Set([...entries.map(entry => entry.path), ...qa('[data-whiteboard-section]', board).map(row => row.dataset.whiteboardSection)]);
+    const paths = new Set([...entries.map(entry => entry.path), ...qa('[data-whiteboard-section]', board).map(row => row.dataset.whiteboardSection), ...qa('[data-instance-path]', board).map(row => row.dataset.instancePath)]);
     let restoring = false;
     const destination = (path, fitAll = false) => {
       const url = new URL(location.href);
