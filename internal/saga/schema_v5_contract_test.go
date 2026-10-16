@@ -222,6 +222,8 @@ func TestV5SchemasRejectUnknownFieldsAndContractViolations(t *testing.T) {
 	}{
 		{"test-case", "test-case", func(v map[string]any) { v["author"] = "not persisted" }},
 		{"test-case-revision", "test-case-revision", func(v map[string]any) { v["coverage_kinds"] = []any{"edge", "edge"} }},
+		{"test-case-revision", "test-case-revision", func(v map[string]any) { v["steps"].([]any)[0].(map[string]any)["criteria"] = []any{"not-a-criterion"} }},
+		{"quality-evidence", "quality-evidence", func(v map[string]any) { v["steps"] = []any{"inspect-reason", "inspect-reason"} }},
 		{"test-case-event", "test-case-event", func(v map[string]any) { v["state"] = "passed" }},
 		{"quality-evidence", "quality-evidence", func(v map[string]any) { v["diffs"] = []any{} }},
 		{"test-run", "test-run", func(v map[string]any) { v["result"] = "successful" }},

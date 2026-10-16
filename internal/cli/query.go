@@ -222,6 +222,8 @@ var queryOperations = []string{
 	"work-events",
 	"work-conflicts",
 	"traceability",
+	"quality",
+	"quality-history",
 	"readiness",
 	"audit",
 	"layers",
@@ -275,6 +277,8 @@ var queryPurpose = map[string]string{
 	"work-events":          "normalized append-only progress, workspace, merge, and contract events",
 	"work-conflicts":       "deterministically identified work-plan conflicts and competing heads",
 	"traceability":         "current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers",
+	"quality":              "verification definitions, criterion-to-step mappings, and implementation evidence; no run results",
+	"quality-history":      "immutable case history including deprecated legacy_runs; inert metadata only",
 	"readiness":            "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 	"audit":                "a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts",
 	"history":              "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
@@ -320,6 +324,8 @@ var queryUsage = map[string]string{
 	"work-events":          "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"work-conflicts":       "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"traceability":         "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"quality":              "change-saga query quality --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]",
+	"quality-history":      "change-saga query quality-history --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]",
 	"readiness":            "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"audit":                "change-saga query audit --saga PATH --feature ID|URN [--repo PATH] [--head REV]",
 	"history":              "change-saga query history --saga PATH --node URN",
@@ -573,6 +579,8 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"work-events":          {"data.events"},
 		"work-conflicts":       {"data.conflicts"},
 		"traceability":         {"data.criteria", "data.unlinked_code_evidence"},
+		"quality":              {"data.test_cases"},
+		"quality-history":      {"data.test_cases"},
 		"readiness":            {"data.summary", "data.requirements"},
 		"audit":                {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":              {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
@@ -612,6 +620,8 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"work-events":          "data.events",
 		"work-conflicts":       "data.conflicts",
 		"traceability":         "data.criteria",
+		"quality":              "data.test_cases",
+		"quality-history":      "data.test_cases",
 		"readiness":            "data.requirements",
 		"whiteboards":          "data.whiteboards",
 		"inventory":            "data.records",
@@ -777,6 +787,11 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&commit, "commit", "", "optional Git commit; selects evidence pinned at it")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
+	case "quality", "quality-history":
+		flags.StringVar(&item, "test", "", "optional test-case ID or URN")
+		flags.StringVar(&feature, "feature", "", "optional feature ID or URN")
+		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
+		flags.Var(&limit, "limit", "page size")
 	case "readiness":
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
 		flags.StringVar(&state, "status", "", "ready or blocked")
@@ -919,10 +934,14 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return claimQuery{Target: target, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "verifications":
 		return verificationQuery{Claim: claim, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
-	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness", "audit":
+	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "quality", "quality-history", "readiness", "audit":
 		filters := livingapp.Filters{
 			Feature: feature, Expand: expand, Requirement: requirement, Persona: persona, Term: term, Kind: firstNonempty(kind, criterion), Citation: citation,
 			Relation: relation, From: from, To: to, Wave: wave, Item: item, Ref: ref, Commit: commit,
+		}
+		if operation == "quality" || operation == "quality-history" {
+			filters.TestCase = item
+			filters.Item = ""
 		}
 		if operation == "requirements" || operation == "relations" {
 			filters.State = state

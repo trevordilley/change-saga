@@ -12,9 +12,8 @@ import (
 )
 
 // A criterion's traceability includes design that addresses its whole story,
-// listed again as broad, and each verifying test case whose current run
-// passed, with the run on its path.
-func TestTraceabilityReachesStoryDesignAndPassingTests(t *testing.T) {
+// listed again as broad. Historical runs never establish delivery evidence.
+func TestTraceabilityDoesNotTreatRunsAsDeliveryEvidence(t *testing.T) {
 	design := "urn:change-saga:checkout:chapter:refund-design"
 	failing := requirements.Relation{ID: "failing-verifies", Type: requirements.RelationVerifies, From: testURN("failing"), To: criterionURN("cutoff"), State: requirements.RelationActive}
 	s := &session{
@@ -38,10 +37,10 @@ func TestTraceabilityReachesStoryDesignAndPassingTests(t *testing.T) {
 	if !reflect.DeepEqual(row.Design, []string{design}) || !reflect.DeepEqual(row.BroadDesign, []string{design}) {
 		t.Fatalf("story-level design = %v, broad = %v", row.Design, row.BroadDesign)
 	}
-	if !reflect.DeepEqual(row.Evidence, []string{testURN("cutoff-test")}) {
-		t.Fatalf("evidence = %v, want only the passing test", row.Evidence)
+	if len(row.Evidence) != 0 {
+		t.Fatalf("evidence = %v, want no run-derived delivery evidence", row.Evidence)
 	}
-	wantPaths := [][]string{{criterionURN("cutoff"), storyURN, design}, {criterionURN("cutoff"), testURN("cutoff-test"), testURN("cutoff-test") + ":run:ci-1"}}
+	wantPaths := [][]string{{criterionURN("cutoff"), storyURN, design}}
 	for _, want := range wantPaths {
 		found := false
 		for _, path := range row.Paths {

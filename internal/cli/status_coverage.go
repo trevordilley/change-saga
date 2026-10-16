@@ -276,10 +276,10 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 	}
 	for _, testCase := range living.Quality.TestCases {
 		examined = append(examined, healthRecord{Resource: testCase.TestCase, Kind: "test_case", Feature: testCase.Feature})
-	}
-	for _, fact := range living.Quality.Facts {
-		if fact.Required && fact.TestCase != "" && (fact.RunResult == "failed" || fact.RunResult == "blocked") {
-			problems = append(problems, areas.Problem{Resource: fact.TestCase, Kind: "test_case", Feature: featureOf(fact.Criterion), Reason: "its current run " + fact.RunResult + " for " + fact.Criterion})
+		for _, step := range testCase.Steps {
+			for _, issue := range step.Issues {
+				problems = append(problems, areas.Problem{Resource: testCase.TestCase, Kind: "test_case", Feature: testCase.Feature, Reason: "step " + step.ID + ": " + issue})
+			}
 		}
 	}
 	for _, term := range living.Terms {

@@ -757,7 +757,7 @@ var commands = []Command{
 		Flags: []Flag{featureCreateFlag,
 			required("id", "ID", "stable test-case id"), optional("revision", "ID", "initial revision id; defaults to r1"), optional("event", "ID", "initial proposed-event id"),
 			required("title", "TEXT", "test-case title"), repeatable("kind", "KIND", "positive, negative, or edge", true), required("automation", "MODE", "manual, automated, or hybrid"),
-			repeatable("step", "JSON", `ordered step {"id","action","expected_result"}`, true), required("expected-result", "TEXT", "overall expected result"),
+			repeatable("step", "JSON", `ordered step {"id","action","expected_result","criteria"?:[criterion URN,...]}`, true), required("expected-result", "TEXT", "overall expected result"),
 			repeatable("precondition", "TEXT", "ordered precondition", false), fromFileFlag, requestIDFlag, jsonFlag,
 		},
 		Positionals: sagaOnly,
@@ -765,7 +765,7 @@ var commands = []Command{
 	{
 		Name: "quality test-case revise", Status: StatusImplemented, Mutates: true, Writes: []string{"test-case-revision"},
 		Usage:   "change-saga quality test-case revise --test URN --parent REVISION... --revision ID [definition flags] [--from FILE|-] [flags] <saga>",
-		Summary: "append a complete test-case revision; runs, evidence, and verifies relations pinned to the parent become stale",
+		Summary: "append a complete test-case revision; implementation evidence and verifies relations pinned to the parent become stale",
 		Flags: []Flag{featureIDFlag,
 			required("test", "URN", "canonical test-case URN"), repeatable("parent", "URN", "current revision head URN", true), required("revision", "ID", "new revision id"),
 			optional("title", "TEXT", "revised title"), repeatable("kind", "KIND", "positive, negative, or edge", false), optional("automation", "MODE", "manual, automated, or hybrid"),
@@ -799,9 +799,9 @@ var commands = []Command{
 	},
 	{
 		Name: "quality evidence add", Status: StatusImplemented, Mutates: true, Writes: []string{"quality-evidence"},
-		Usage:   "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
+		Usage:   "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-revision URN] [--step ID...] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
 		Summary: "record immutable typed evidence for one test revision: test code, the code under test, or execution artifacts",
-		Flags: []Flag{featureIDFlag,
+		Flags: []Flag{featureIDFlag, repeatable("step", "ID", "stable step ID in the pinned test revision; omit for case-level evidence", false),
 			required("test", "URN", "canonical test-case URN"), required("role", "ROLE", "test_implementation, implementation_under_test, or execution_artifact"),
 			repeatable("code", "LOCATION", "code location <commit>:<path>[#L<start>[-L<end>]]; the commit may be any revision", false), optional("repo", "PATH", "source checkout when separate"), repeatable("verification", "URN", "verification URN", false), repeatable("citation", "URN", "citation URN", false),
 			optional("test-revision", "URN", "test revision pin; defaults to the unique current head"), repeatable("supersedes", "URN", "evidence this record replaces", false),
@@ -812,7 +812,7 @@ var commands = []Command{
 	{
 		Name: "quality run record", Status: StatusImplemented, Mutates: true, Writes: []string{"test-run"},
 		Usage:   "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
-		Summary: "append an immutable run result pinned to the test revision and the source identity; the command is recorded, never executed",
+		Summary: "deprecated compatibility writer for immutable run history; no coverage/readiness effect; command metadata is never executed",
 		Flags: []Flag{featureIDFlag,
 			required("test", "URN", "canonical test-case URN"), required("result", "RESULT", "passed, failed, blocked, or skipped"),
 			required("summary", "TEXT", "what ran and what was observed"), repeatable("evidence", "URN", "current evidence URN", true),

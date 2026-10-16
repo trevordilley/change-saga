@@ -197,7 +197,7 @@ func (s *session) auditDomainConflicts(featureID string, owners map[string]strin
 		for _, value := range []struct {
 			kind  string
 			heads []string
-		}{{"test_case_revision", testCase.RevisionHeads}, {"test_case_lifecycle", testCase.LifecycleHeads}, {"test_run", testCase.RunHeads}} {
+		}{{"test_case_revision", testCase.RevisionHeads}, {"test_case_lifecycle", testCase.LifecycleHeads}} {
 			if len(value.heads) > 1 {
 				report.Conflicts = append(report.Conflicts, AuditConflict{ID: urn, Kind: value.kind, Heads: uniqueSorted(value.heads), Reasons: []string{"quality record has competing current heads"}})
 			}

@@ -83,6 +83,19 @@ func validateRevision(value Revision, sagaID, testCaseID string) error {
 			problems.add("step id %q is duplicated", step.ID)
 		}
 		seenSteps[step.ID] = true
+		if len(step.Criteria) > MaxReferencesPerRecord {
+			problems.add("step %q has too many criteria", step.ID)
+		}
+		seenCriteria := map[string]bool{}
+		for _, criterion := range step.Criteria {
+			if _, ok := parseCriterion(criterion, sagaID); !ok {
+				problems.add("step %q criterion must be a canonical criterion URN in this saga", step.ID)
+			}
+			if seenCriteria[criterion] {
+				problems.add("step %q repeats criterion %q", step.ID, criterion)
+			}
+			seenCriteria[criterion] = true
+		}
 		if strings.TrimSpace(step.Action) == "" || strings.TrimSpace(step.ExpectedResult) == "" {
 			problems.add("step %q requires a nonblank action and expected_result", step.ID)
 		}
@@ -164,6 +177,19 @@ func validateEvidence(value Evidence, sagaID, testCaseID string) error {
 	}
 	if value.Role == EvidenceExecutionArtifact && len(value.Code) != 0 {
 		problems.add("execution_artifact evidence cannot contain code references")
+	}
+	if len(value.Steps) > MaxStepsPerRevision {
+		problems.add("steps exceeds maximum of %d", MaxStepsPerRevision)
+	}
+	seenSteps := map[string]bool{}
+	for _, id := range value.Steps {
+		if !qualityid.ValidID(id) || seenSteps[id] {
+			problems.add("evidence step %q must be a unique stable identifier", id)
+		}
+		seenSteps[id] = true
+	}
+	if value.Role == EvidenceExecutionArtifact && len(value.Steps) > 0 {
+		problems.add("execution_artifact cannot map definition steps")
 	}
 	validateCode(&problems, value.Code)
 	validateExternalURNs(&problems, value.Verifications, sagaID, "verification")
@@ -389,6 +415,18 @@ func validateTestCaseGraphs(testCase *TestCase, sagaID string, source SourceIden
 		evidence[value.ID] = value
 		if !knownRevisions[value.TestRevision] {
 			problems.add("evidence %q references missing test revision %q", value.ID, value.TestRevision)
+		}
+	}
+	for _, value := range evidence {
+		revisionID, _ := nestedID(value.TestRevision, qualityid.KindRevision, sagaID, testCaseID)
+		steps := map[string]bool{}
+		for _, step := range revisions[revisionID].Steps {
+			steps[step.ID] = true
+		}
+		for _, id := range value.Steps {
+			if !steps[id] {
+				problems.add("evidence %q references missing step %q in pinned test revision", value.ID, id)
+			}
 		}
 	}
 	for id, value := range evidence {

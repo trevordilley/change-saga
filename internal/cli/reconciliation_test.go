@@ -342,7 +342,7 @@ func TestReconciliationNewStaleEvidenceDoesNotInheritBaselineDebt(t *testing.T) 
 	}
 }
 
-func TestReconciliationSupersededEvidenceAndRunRepair(t *testing.T) {
+func TestReconciliationSupersededEvidenceAndLegacyRuns(t *testing.T) {
 	t.Parallel()
 	repo, root := shopSaga(t)
 	mustRun(t, Story, "set-state", "--story", "urn:change-saga:shop:story:pay", "--parent", "urn:change-saga:shop:story:pay:event:proposed", "--state", "accepted", "--reason", "Fixture requirement", "--event", "accepted", root)
@@ -370,28 +370,30 @@ func TestReconciliationSupersededEvidenceAndRunRepair(t *testing.T) {
 	report = reconciliationOf(t, root)
 	found := false
 	for _, task := range report.Queue {
-		if task.Kind != "test_run" {
+		if task.Kind == "test_run" {
+			t.Fatalf("legacy run became definition repair debt: %+v", task)
+		}
+		for _, repair := range task.Repair {
+			if repair.Command == "quality run record" {
+				t.Fatalf("repair depends on execution: %+v", task)
+			}
+		}
+		if task.Resource != test+":evidence:replacement" {
 			continue
 		}
 		found = true
 		if task.Inspect[0].Command != "status" {
-			t.Fatalf("wrong run inspection: %+v", task)
+			t.Fatalf("wrong evidence inspection: %+v", task)
 		}
 		output := mustRun(t, Status, task.Inspect[0].Argv[2:]...)
 		if !strings.Contains(output, test) {
-			t.Fatal("run inspection lost test context")
+			t.Fatal("evidence inspection lost test context")
 		}
-		for _, repair := range task.Repair {
-			if repair.Command != "quality run record" {
-				continue
-			}
-			args := strings.Join(repair.Argv, " ")
-			if !strings.Contains(args, test+":run:before") || !strings.Contains(args, "--commit") {
-				t.Fatalf("rerun lost current heads/commit: %+v", repair)
-			}
+		if len(task.Repair) == 0 || task.Repair[0].Command != "quality evidence add" {
+			t.Fatalf("missing definition evidence repair: %+v", task)
 		}
 	}
 	if !found {
-		t.Fatalf("missing stale-run task: %+v", report.Queue)
+		t.Fatalf("missing stale-evidence task: %+v", report.Queue)
 	}
 }

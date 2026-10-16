@@ -362,6 +362,7 @@ type qualityEvidenceRequest struct {
 	TestCase      string    `json:"test_case,omitempty"`
 	TestRevision  string    `json:"test_revision,omitempty"`
 	Role          string    `json:"role,omitempty"`
+	Steps         []string  `json:"steps,omitempty"`
 	Code          []string  `json:"code,omitempty"`
 	Verifications []string  `json:"verifications,omitempty"`
 	Citations     []string  `json:"citations,omitempty"`
@@ -379,7 +380,7 @@ func (request qualityEvidenceRequest) input(repository string) (quality.AddEvide
 	}
 	return quality.AddEvidenceInput{
 		ID: request.ID, TestCase: request.TestCase, TestRevision: request.TestRevision,
-		Role: quality.EvidenceRole(request.Role), Code: code, Verifications: request.Verifications,
+		Role: quality.EvidenceRole(request.Role), Steps: request.Steps, Code: code, Verifications: request.Verifications,
 		Citations: request.Citations, Supersedes: request.Supersedes,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 	}, nil
@@ -398,7 +399,8 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
-	var code, verifications, citations, supersedes stringList
+	var code, verifications, citations, supersedes, steps stringList
+	flags.Var(&steps, "step", "stable step ID in the pinned test revision; repeatable")
 	flags.Var(&code, "code", "code location <commit>:<path>[#L<start>[-L<end>]], the commit any revision; repeatable")
 	flags.Var(&verifications, "verification", "verification URN; repeatable")
 	flags.Var(&citations, "citation", "citation URN; repeatable")
@@ -450,6 +452,7 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	overrideVisited(flags, map[string]func(){
 		"id": func() { request.ID = *id }, "test": func() { request.TestCase = *testCase },
 		"test-case": func() { request.TestCase = *testCase }, "test-revision": func() { request.TestRevision = *testRevision },
+		"step": func() { request.Steps = steps },
 		"role": func() { request.Role = *role }, "code": func() { request.Code = code },
 		"verification": func() { request.Verifications = verifications }, "citation": func() { request.Citations = citations },
 		"supersedes": func() { request.Supersedes = supersedes }, "request-id": func() { request.RequestID = *requestID },

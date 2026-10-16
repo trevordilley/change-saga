@@ -98,7 +98,7 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Test-case revision | `v5/test-case-revision.schema.json` | full definition, parents, kinds, automation, ordered steps | one root, reachable acyclic graph, unique/non-reused step IDs |
 | Test lifecycle | `v5/test-case-event.schema.json` | parents and proposed/active/deprecated/retired state | one root, reachable acyclic graph, explicit multi-head conflicts |
 | Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | current code references, resolved local URNs, acyclic supersession |
-| Test run | `v5/test-run.schema.json` | test revision, parents, exact source identity, result, evidence, execution time | current source/revision/evidence, one root, acyclic graph, visible multi-head conflicts |
+| Test run (deprecated history) | `v5/test-run.schema.json` | test revision, parents, source identity, result, evidence, execution time | immutable history, one root, acyclic graph; never a coverage/readiness input |
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
 
 Nothing in a Saga is required up front. A first change is asked only to have
@@ -570,7 +570,7 @@ their `steps` array is execution order. `coverage_kinds` is a non-empty unique
 subset of `positive`, `negative`, and `edge`; `automation` is `manual`,
 `automated`, or `hybrid`. Lifecycle is a separate append-only event graph with
 states `proposed`, `active`, `deprecated`, and `retired`. Definition state does
-not imply a run result. An active test can satisfy coverage only when its
+not imply a run result. A proposed or active definition can satisfy coverage when its
 current revision contains at least one step and a current direct `verifies`
 relation.
 
@@ -590,12 +590,49 @@ explicit arrays `code`, `verifications`, `citations`, and `supersedes`;
 projection uses the supersession graph, never timestamps, to choose current
 heads.
 
-Runs are immutable graph events with results `passed`, `failed`, `blocked`, or
-`skipped`. A passing literal is current only when the run is the unique head,
-pins the unique current test revision, repeats the Saga's current canonical
-repository/base/product-head identity, and resolves all referenced current
-evidence. A command is optional so manual tests can record an execution without
-inventing a shell command. Reads MUST NOT execute it.
+Quality documents HOW verification is performed and where it is implemented;
+it never reports whether execution succeeded. A Roadmap feature uses the same
+canonical test-case entities and reader as a built feature. Requirement links,
+preconditions, ordered steps, and expected outcomes suffice before implementation.
+Feature planning metadata remains the source of delivery intent; there is no
+independent stored planned/implemented test state. The derived definition stage
+is `planned` until current `test_implementation` evidence is linked, then
+`implementation_linked`; outdated evidence is `stale_evidence`. None is a verdict.
+
+Steps MAY carry `criteria`, a unique array of canonical same-Saga criterion URNs.
+These refine the case-level `verifies` relations, whose `from_revision` and
+`to_revision` pins govern currency. They neither create relations nor copy criteria.
+Missing case-level relations are visible mapping issues. If any step declares
+criteria, each covered criterion must occur on a step. Older definitions with
+no step criteria retain their case-level coverage. Manual and setup steps need
+neither criterion nor code references.
+
+Implementation evidence MAY carry `steps`, a unique array of stable IDs present
+in its pinned `test_revision`. Omitting it preserves case-level evidence. This
+inverse reference lets steps navigate canonical evidence records without creating
+a revision/evidence cycle: author the definition, link criteria, then append
+evidence. One evidence record can map several steps; no code records are copied.
+An absent step, duplicate ID, foreign/malformed criterion, or execution artifact
+with step mappings is rejected before publishing. Evidence and relation pins do
+not advance automatically after a definition edit. Superseded records and old
+revisions remain immutable; step IDs cannot be removed and then reused.
+
+Runs and `execution_artifact` evidence are deprecated historical metadata. The
+`quality run record` compatibility writer and schemas remain supported, including
+immutable parent graphs and all four original result literals. `query
+quality-history` exposes them under `legacy_runs`. Runs, their results, missing
+runs, conflicts, or stale pins MUST NOT affect coverage, readiness, health,
+delivery evidence, or the Quality reader. Recorded commands MUST NOT be executed.
+`query quality` returns definitions, requirement/step mappings, and implementation
+evidence with revision currency, filtered by `--feature` or `--test` and paginated
+by case. Code currency against the viewed source remains in `status`.
+
+Compatibility: no migration or history rewrite is required. New readers accept
+old cases without the optional arrays and preserve historical runs. Older strict
+v5 readers reject newly authored `criteria`/`steps` fields and need an upgrade;
+older readers also retain the old run-dependent semantics. Optional arrays alone
+do not make their semantics safe. Status no longer emits run fields/states;
+consumers should use definition/mapping fields or the explicit history query.
 
 Policies are immutable per-criterion decisions. `required_kinds` and
 `allowed_automation` are non-empty unique sets. In the absence of a policy the
@@ -679,8 +716,8 @@ No score or percentage substitutes for the per-axis facts.
 
 Design coverage states are `covered_direct`, `covered_broad`, `excluded`,
 `gap`, `stale`, `invalid`, and `conflicted`. Quality states are `covered`,
-`missing_kind`, `not_run`, `failed`, `blocked`, `stale`, `excluded`, `invalid`,
-and `conflicted`. Every criterion/axis cell is exactly one of a current link,
+`missing_kind`, `missing_mapping`, `stale`, `inactive`, `excluded`, `invalid`,
+`conflicted`, and `automation_not_allowed`. Every criterion/axis cell is exactly one of a current link,
 an explicit exclusion, or a visible gap.
 
 Schema validation cannot establish same-Saga equality, graph rules, current
@@ -1778,7 +1815,7 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga open` serves a page per record: the overview and its terms,
   each persona, each feature, each story and each acceptance criterion, each test
   case with its steps, the criteria it verifies, its evidence code and its
-  runs, each slide, and each review. Observing, the Coverage view lists the
+  implementation evidence, each slide, and each review. Observing, the Coverage view lists the
   documented code in both directions and does not treat unreferenced code as a
   gap, because ownership accumulates. Counts are never a score or a verdict,
   and missing links are stated as growth with the command that acts on them.

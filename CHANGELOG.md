@@ -12,6 +12,15 @@ tool, and what they have to do about it.
 
 ### Added
 
+- **Format:** Optional test-step `criteria` and quality-evidence `steps` mappings
+  reuse canonical criteria, stable steps, and revision-pinned evidence. Planned
+  Roadmap cases need no code or execution record and gain evidence on the same
+  identity. Quality coverage/readiness and the reader now describe definitions,
+  never run outcomes. `query quality` exposes definitions and `query
+  quality-history` retains immutable legacy runs; the run writer is deprecated
+  but supported. Existing data needs no migration; older strict readers need an
+  upgrade to read the new fields and use the corrected semantics.
+
 - Compact deprecation badges and element markers with hover/focus previews,
   on-demand details in a narrow side panel, page discovery, and a searchable Saga-wide list. Whiteboard
   annotations no longer cover the canvas with expanded warning panels.

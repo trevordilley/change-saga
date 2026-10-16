@@ -7,7 +7,7 @@
 // or flag the spec does not declare.
 //
 // Actions come in three kinds of work. Health keeps what already exists
-// current (conflicts, invalid and stale records, failed runs). Implementation
+// current (conflicts, invalid and stale records). Implementation
 // accounts for every changed line. Growth offers, and never demands, the
 // next link of the chain (a story, a persona, design, a test, a term), each
 // with the practice it teaches, ordered by value to the current change.
@@ -44,7 +44,7 @@ const (
 )
 
 // Category orders actions. Lower categories come first: a conflict or invalid
-// record makes every later fact unreliable, stale pins and failed runs are
+// record makes every later fact unreliable, stale pins are
 // what already existed breaking, and changed-source accounting is the one
 // thing asked of every change. Growth comes last and is always optional.
 type Category string
@@ -311,12 +311,7 @@ func (b *builder) cells() {
 					Reason:   strings.Join(cell.Invalid, "; "),
 					Question: question("How should the invalid "+string(cell.Axis)+" record on "+b.describe(criterion.Criterion)+" be corrected?", NeedProductJudgment, b.invalidOptions(cell)...),
 				})
-			case coverage.StateGap:
-				if cell.Axis == coverage.AxisQuality {
-					if action, ok := b.qualityRun(criterion.Criterion, cell); ok {
-						b.add(action)
-					}
-				}
+
 			}
 		}
 	}
@@ -367,51 +362,6 @@ func (b *builder) invalidOptions(cell coverage.AxisCoverage) []Option {
 		options = append(options, option("correct the record", "fix the named record, then re-evaluate"))
 	}
 	return options
-}
-
-// qualityRun turns a required test kind whose current run fails into a
-// health question, and one that was never run into a growth suggestion. A
-// criterion with no test at all is growth the coverage report suggests.
-func (b *builder) qualityRun(criterion string, cell coverage.AxisCoverage) (Action, bool) {
-	var row livingapp.QualityCriterion
-	for _, candidate := range b.status.Quality.Criteria {
-		if candidate.Criterion == criterion {
-			row = candidate
-		}
-	}
-	subject := b.describe(criterion)
-	failing, unrun := []string{}, []string{}
-	for _, kind := range row.Kinds {
-		if !kind.Required {
-			continue
-		}
-		switch kind.State {
-		case "failed", "blocked", "skipped":
-			failing = append(failing, kind.Kind+" ("+kind.State+" on "+strings.Join(kind.TestCases, ", ")+")")
-		case "not_run":
-			unrun = append(unrun, kind.TestCases...)
-		}
-	}
-	action := Action{Resource: criterion, Axis: string(cell.Axis), Reason: strings.Join(cell.Gap.Reasons, "; ")}
-	switch {
-	case len(failing) > 0:
-		action.ID, action.Kind, action.Category, action.Area = "failed:quality:"+criterion, KindQuestion, CategoryFailed, AreaHealth
-		action.Question = question("The current run for "+strings.Join(failing, "; ")+" on "+subject+" does not pass. Is the product or the test wrong?", NeedProductJudgment,
-			option("the product is wrong", "fix the code, run the test, and record the new run",
-				b.invoke("quality run record", grammar.V("result", ""), grammar.V("evidence", ""))),
-			option("the test is wrong", "revise the test definition; its runs become stale until re-run",
-				b.invoke("quality test-case revise")))
-	case len(unrun) > 0:
-		action.ID, action.Kind, action.Category, action.Area = "growth:run:"+criterion, KindQuestion, CategoryGrowth, AreaQuality
-		action.Practice = practiceQuality
-		action.value = b.valueOf(criterion)
-		action.Question = question("Run "+strings.Join(unique(unrun), ", ")+" against the current test revision and source comparison, then record the result?", NeedExternalAccess,
-			option("recorded", "an immutable run pinned to the current test revision and source identity",
-				b.invoke("quality run record", grammar.V("result", ""), grammar.V("evidence", ""))))
-	default:
-		return Action{}, false
-	}
-	return action, true
 }
 
 func ptr[T any](value T) *T { return &value }

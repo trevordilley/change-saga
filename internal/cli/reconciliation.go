@@ -473,7 +473,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 	}
 	// Keep non-reference debt visible even when there is no code diff.
 	for _, entry := range result.HeadHealth.UncoveredEntries {
-		if entry.Kind == "code_reference" || entry.Kind == "term" {
+		if entry.Kind == "code_reference" || entry.Kind == "term" || entry.Kind == "test_run" {
 			continue
 		} // exact references above own these rows
 		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, tests, entry.Resource, entry.Kind)
@@ -487,6 +487,9 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		result.Queue = append(result.Queue, task)
 	}
 	for _, affected := range layers.Affected {
+		if affected.Kind == "test_run" {
+			continue // Legacy execution history is not definition repair debt.
+		}
 		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, tests, affected.URN, affected.Kind)
 		task.Debt, task.Because = "reassess", affected.Because
 		result.Queue = append(result.Queue, task)
@@ -618,20 +621,16 @@ func reconciliationRoute(root, repo, head string, mismatch bool, document *saga.
 	case "term":
 		task.Inspect = append(task.Inspect, query("query terms", grammar.V("term", resource)))
 		task.Repair = append(task.Repair, reconciliationInvoke("term revise", root, repo, mismatch, grammar.V("term", resource)))
-	case "quality_evidence", "test_case", "test_run":
-		test := strings.Split(strings.Split(resource, ":evidence:")[0], ":run:")[0]
+	case "quality_evidence", "test_case":
+		test := strings.Split(resource, ":evidence:")[0]
 		context := tests[test]
 		inspectValues := []grammar.Value{grammar.V("json", "true"), grammar.V("head", head)}
 		if context.Feature != "" {
 			inspectValues = append(inspectValues, grammar.V("feature", context.Feature))
 		}
-		task.Inspect = append(task.Inspect, reconciliationInvoke("status", root, repo, mismatch, inspectValues...))
-		runValues := []grammar.Value{grammar.V("test", test), grammar.V("commit", head)}
-		for _, parent := range context.RunHeads {
-			runValues = append(runValues, grammar.V("parent", parent))
-		}
-		task.Repair = append(task.Repair, reconciliationInvoke("quality evidence add", root, repo, mismatch, grammar.V("test", test)), reconciliationInvoke("quality run record", root, repo, mismatch, runValues...))
-		task.Guidance = "Inspect the test and linked criteria, rerun verification, then append evidence and a run with the actual result. Do not rewrite historical evidence or infer success from fresh pins."
+		task.Inspect = append(task.Inspect, reconciliationInvoke("status", root, repo, mismatch, inspectValues...), query("query quality", grammar.V("test", test)))
+		task.Repair = append(task.Repair, reconciliationInvoke("quality evidence add", root, repo, mismatch, grammar.V("test", test)))
+		task.Guidance = "Inspect the definition, linked criteria, step mappings and implementation references. Revise the definition or append superseding evidence where needed; preserve historical pins. Planned cases need no code evidence, and execution results never repair definition coverage."
 	case "claim":
 		task.Inspect = append(task.Inspect, query("query claims"))
 		claim := strings.Split(resource, ":claim:")

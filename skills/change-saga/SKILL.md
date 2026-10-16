@@ -281,6 +281,14 @@ work whose whole lifecycle is requested, begin with personas and stories,
 develop relevant design and quality, and connect exact implementation evidence
 as it is built. Never manufacture product intent to make coverage complete.
 
+Quality defines HOW each criterion is verified and where that verification is
+implemented. It never reports pass/fail, and CI failures never change Saga
+Quality status. On a Roadmap feature, author the same canonical case used after
+implementation: requirement links, preconditions, ordered steps and expected
+outcomes suffice without code. Keep delivery intent on the feature's existing
+planning metadata. See [Quality definitions](references/quality.md) for safe
+step mappings, enrichment, queries, and retained historical records.
+
 Overviews are essays. Write connected prose explaining the subject, with headings
 as useful. The owning header opens the essay; do not add a separate “Overview”
 heading or navigation child. An Essay consists of its title, a one-line subtext

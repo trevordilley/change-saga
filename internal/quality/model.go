@@ -77,6 +77,8 @@ type Step struct {
 	ID             string `json:"id"`
 	Action         string `json:"action"`
 	ExpectedResult string `json:"expected_result"`
+	// Criteria refines the case-level verifies relations; their revision pins govern currency.
+	Criteria []string `json:"criteria,omitempty"`
 }
 
 // Revision is a complete, ordered test-case definition snapshot.
@@ -126,12 +128,14 @@ const (
 )
 
 type Evidence struct {
-	Schema        string              `json:"$schema"`
-	Version       int                 `json:"version"`
-	ID            string              `json:"id"`
-	TestCase      string              `json:"test_case"`
-	TestRevision  string              `json:"test_revision"`
-	Role          EvidenceRole        `json:"role"`
+	Schema       string       `json:"$schema"`
+	Version      int          `json:"version"`
+	ID           string       `json:"id"`
+	TestCase     string       `json:"test_case"`
+	TestRevision string       `json:"test_revision"`
+	Role         EvidenceRole `json:"role"`
+	// Steps names stable step IDs in TestRevision; absent means case-level evidence.
+	Steps         []string            `json:"steps,omitempty"`
 	Code          []coderef.Reference `json:"code"`
 	Verifications []string            `json:"verifications"`
 	Citations     []string            `json:"citations"`
@@ -152,6 +156,8 @@ const (
 	RunSkipped RunResult = "skipped"
 )
 
+// Run is deprecated execution metadata retained for immutable historical reads.
+// Its result and command must never influence definition coverage or be executed.
 type Run struct {
 	Schema       string         `json:"$schema"`
 	Version      int            `json:"version"`

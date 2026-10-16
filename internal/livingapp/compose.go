@@ -8,8 +8,6 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingid"
-	"github.com/twentyideas/changesaga/internal/quality"
-	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -360,13 +358,6 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 	for _, v := range s.saga.Verifications {
 		verificationByURN["urn:change-saga:"+s.requirements.SagaID+":verification:"+v.ID] = v
 	}
-	passingRuns := map[string]string{}
-	for _, testCase := range s.quality.TestCases {
-		if testCase.CurrentRun != nil && testCase.CurrentRun.Result == quality.RunPassed {
-			testURN, _ := qualityid.TestCase(s.requirements.SagaID, testCase.Identity.ID)
-			passingRuns[testURN], _ = qualityid.Run(s.requirements.SagaID, testCase.Identity.ID, testCase.CurrentRun.ID)
-		}
-	}
 	inputs := []readiness.Criterion{}
 	meta := []Traceability{}
 	reviewEvidenceByTarget, _ := s.reviewEvidenceIndex()
@@ -466,11 +457,6 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 				if v, ok := verificationByURN[r.From]; ok && v.Status == "verified" {
 					evidence = append(evidence, r.From)
 					paths = append(paths, []string{criterionURN, r.From})
-				}
-				// A verifying test case is evidence once its current run passed.
-				if run, ok := passingRuns[r.From]; ok {
-					evidence = append(evidence, r.From)
-					paths = append(paths, []string{criterionURN, r.From, run})
 				}
 			}
 			blockers := []readiness.Blocker{}

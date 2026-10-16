@@ -5,6 +5,7 @@
   "test_case": "urn:change-saga:checkout-refund:test-case:refund-at-deadline",
   "test_revision": "urn:change-saga:checkout-refund:test-case:refund-at-deadline:revision:r1",
   "role": "test_implementation",
+  "steps": ["inspect-reason"],
   "code": [
     {
       "commit": "3f5d2c1a9b8e7d6c5b4a39281706f5e4d3c2b1a0",

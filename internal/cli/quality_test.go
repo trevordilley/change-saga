@@ -110,14 +110,14 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 	// A single-parent revision inherits every omitted field from its parent.
 	revised := runQuality(t, "", "test-case", "revise", root, "--test", qualityTestURN, "--parent", qualityTestURN+":revision:r1",
 		"--revision", "r2", "--step", `{"id":"submit","action":"Submit a refund request.","expected_result":"The request is rejected."}`,
-		"--step", `{"id":"inspect","action":"Inspect the reason.","expected_result":"The cutoff reason is returned."}`)
+		"--step", `{"id":"inspect","action":"Inspect the reason.","expected_result":"The cutoff reason is returned.","criteria":["urn:change-saga:checkout:story:refund:criterion:cutoff"]}`)
 	if !reflect.DeepEqual(revised.CurrentHeads, []string{qualityTestURN + ":revision:r2"}) {
 		t.Fatalf("revise = %#v", revised)
 	}
 	runQuality(t, "", "test-case", "set-state", root, "--test-case", qualityTestURN, "--parent", qualityTestURN+":event:proposed", "--state", "active", "--reason", "Ready to run.")
 
 	codeRepo, codeLocation := qualityCode(t, "internal/refund_test.go")
-	evidence := runQuality(t, "", "evidence", "add", root, "--test", qualityTestURN, "--role", "test_implementation", "--repo", codeRepo, "--code", codeLocation)
+	evidence := runQuality(t, "", "evidence", "add", root, "--test", qualityTestURN, "--role", "test_implementation", "--repo", codeRepo, "--code", codeLocation, "--step", "inspect")
 	manual := runQuality(t, `[{"id":"qa","test_case":"`+qualityTestURN+`","role":"execution_artifact","citations":["urn:change-saga:checkout:citation:qa-notes"]}]`,
 		"evidence", "add", root, "--batch", "-")
 	failed := runQuality(t, "", "run", "record", root, "--commit", "0123456789abcdef0123456789abcdef01234567", "--test", qualityTestURN, "--id", "ci-1", "--result", "failed",
@@ -133,6 +133,14 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 		t.Fatal(err)
 	}
 	testCase := document.TestCases[0]
+	if len(testCase.CurrentRevision.Steps[1].Criteria) != 1 {
+		t.Fatal("step criteria were dropped by CLI")
+	}
+	for _, e := range testCase.Evidence {
+		if e.Role == quality.EvidenceTestImplementation && !reflect.DeepEqual(e.Steps, []string{"inspect"}) {
+			t.Fatalf("step evidence: %+v", e)
+		}
+	}
 	if testCase.CurrentRevision.ID != "r2" || len(testCase.CurrentRevision.Steps) != 2 || testCase.CurrentRevision.Title != "Reject at deadline" {
 		t.Fatalf("revision = %#v", testCase.CurrentRevision)
 	}

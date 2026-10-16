@@ -91,6 +91,7 @@ type AddEvidenceInput struct {
 	TestCase      string
 	TestRevision  string
 	Role          EvidenceRole
+	Steps         []string
 	Code          []coderef.Reference
 	Verifications []string
 	Citations     []string
@@ -402,7 +403,7 @@ func AddEvidenceBatch(root string, inputs []AddEvidenceInput) ([]MutationResult,
 			candidate := candidates[testCaseID]
 			value := Evidence{
 				Schema: EvidenceSchemaURL, Version: Version, ID: input.ID, TestCase: input.TestCase,
-				TestRevision: input.TestRevision, Role: input.Role, Code: append([]coderef.Reference{}, input.Code...),
+				TestRevision: input.TestRevision, Role: input.Role, Steps: append([]string(nil), input.Steps...), Code: append([]coderef.Reference{}, input.Code...),
 				Verifications: copyStrings(input.Verifications), Citations: copyStrings(input.Citations),
 				Supersedes: copyStrings(input.Supersedes), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
 			}
@@ -605,7 +606,7 @@ func newRevision(id, testCase string, parents []string, definition Definition, c
 	}
 	steps := []Step{}
 	for _, step := range definition.Steps {
-		steps = append(steps, Step{ID: step.ID, Action: strings.TrimSpace(step.Action), ExpectedResult: strings.TrimSpace(step.ExpectedResult)})
+		steps = append(steps, Step{ID: step.ID, Action: strings.TrimSpace(step.Action), ExpectedResult: strings.TrimSpace(step.ExpectedResult), Criteria: append([]string(nil), step.Criteria...)})
 	}
 	return Revision{
 		Schema: RevisionSchemaURL, Version: Version, ID: id, TestCase: testCase, Parents: parents,
@@ -618,10 +619,14 @@ func newRevision(id, testCase string, parents []string, definition Definition, c
 // DefinitionOf returns the authored content of a stored revision so callers
 // can build a complete successor from a single parent.
 func DefinitionOf(revision Revision) Definition {
+	steps := append([]Step{}, revision.Steps...)
+	for i := range steps {
+		steps[i].Criteria = append([]string(nil), steps[i].Criteria...)
+	}
 	return Definition{
 		Title: revision.Title, CoverageKinds: append([]CoverageKind{}, revision.CoverageKinds...),
 		Automation: revision.Automation, Preconditions: copyStrings(revision.Preconditions),
-		Steps: append([]Step{}, revision.Steps...), ExpectedResult: revision.ExpectedResult,
+		Steps: steps, ExpectedResult: revision.ExpectedResult,
 	}
 }
 

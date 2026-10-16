@@ -17,7 +17,8 @@
     {
       "id": "inspect-reason",
       "action": "Inspect the response reason.",
-      "expected_result": "The documented refund-window-expired reason is returned."
+      "expected_result": "The documented refund-window-expired reason is returned.",
+      "criteria": ["urn:change-saga:checkout-refund:story:refund-window:criterion:at-or-after-deadline"]
     }
   ],
   "expected_result": "No refund is created and the rejection is auditable.",

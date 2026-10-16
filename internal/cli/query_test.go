@@ -335,7 +335,7 @@ func TestQuerySchemaDescribesEveryResponseWithoutOpeningSession(t *testing.T) {
 		"context": "data.stories", "requirements": "data.requirements", "requirement-history": "data.events", "citations": "data.citations",
 		"relations": "data.relations", "waves": "data.waves", "work-items": "data.items",
 		"work-events": "data.events", "work-conflicts": "data.conflicts", "traceability": "data.criteria",
-		"readiness": "data.requirements", "audit": "data.findings",
+		"quality": "data.test_cases", "quality-history": "data.test_cases", "readiness": "data.requirements", "audit": "data.findings",
 	}
 	for operation, wantPath := range wantCountedPaths {
 		t.Run(operation, func(t *testing.T) {

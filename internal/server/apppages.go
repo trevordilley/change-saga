@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"sort"
 	"strings"
-	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -52,7 +51,24 @@ func newAppGraph(document *saga.Saga, records requirements.Document, tests quali
 		outbound:      map[string][]requirements.Relation{},
 	}
 	graph.targetFeature = featureTargets(document)
+	// Evaluate case links with their actual definition heads. Requirements-only
+	// loads cannot establish the source pin's currency.
+	inputs := requirements.StaleInputs{}
+	heads := map[string][]string{}
+	for _, test := range tests.TestCases {
+		heads[test.Identity.ID] = test.RevisionHeads
+	}
+	inputs.SetTestCaseHeads(records.SagaID, heads)
+	evaluator := requirements.NewRelationEvaluator(records)
 	for _, relation := range records.Relations {
+		if relation.Type == requirements.RelationVerifies && strings.Contains(relation.From, ":test-case:") {
+			currency := evaluator.Evaluate(relation, inputs)
+			relation.Stale = !currency.Current()
+			relation.StaleReasons = nil
+			for _, reason := range currency.Reasons {
+				relation.StaleReasons = append(relation.StaleReasons, reason.Message)
+			}
+		}
 		if relation.State != requirements.RelationActive {
 			continue
 		}
@@ -129,7 +145,7 @@ type traceLink struct {
 	Rationale string
 	// Relation is the relation type that makes the link, e.g. "verifies".
 	Relation string
-	// Note is a fact about the linked record, such as a test's last run.
+	// Note is a fact about the linked record, such as a definition's reference currency.
 	Note string
 }
 
@@ -224,16 +240,11 @@ func (graph *appGraph) findTestCase(id string) *quality.TestCase {
 	return nil
 }
 
-// testCaseNote states a test case's lifecycle and its last run as recorded.
+// testCaseNote describes the definition, never execution history.
 func testCaseNote(testCase quality.TestCase) string {
-	var facts []string
+	facts := []string{strings.ReplaceAll(quality.DefinitionStage(testCase), "_", " ")}
 	if testCase.CurrentLifecycle != nil && testCase.CurrentLifecycle.State != quality.StateActive {
 		facts = append(facts, string(testCase.CurrentLifecycle.State))
-	}
-	if run := testCase.CurrentRun; run != nil {
-		facts = append(facts, "last run "+string(run.Result))
-	} else {
-		facts = append(facts, "no run recorded")
 	}
 	return strings.Join(facts, " · ")
 }
@@ -550,27 +561,25 @@ type testCasePageView struct {
 	Automation     string
 	CoverageKinds  []string
 	Preconditions  []string
-	Steps          []quality.Step
+	Steps          []testStepView
+	Definition     string
 	ExpectedResult string
 	Conflict       bool
 	Verifies       []traceLink
 	Evidence       []testEvidenceView
-	Runs           []testRunView
 }
 
+type testStepView struct {
+	quality.Step
+	CriteriaLinks []traceLink
+	EvidenceLinks []traceLink
+}
 type testEvidenceView struct {
-	Role string
-	Code []*termCodeView
-}
-
-type testRunView struct {
-	ID         string
-	Result     string
-	Summary    string
-	Command    string
-	Commit     string
-	ExecutedAt time.Time
-	Current    bool
+	ID    string
+	Role  string
+	Note  string
+	Steps []traceLink
+	Code  []*termCodeView
 }
 
 func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*testCasePageView, error) {
@@ -592,11 +601,35 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 		for _, kind := range revision.CoverageKinds {
 			view.CoverageKinds = append(view.CoverageKinds, string(kind))
 		}
-		view.Preconditions, view.Steps, view.ExpectedResult = revision.Preconditions, revision.Steps, revision.ExpectedResult
+		view.Preconditions, view.ExpectedResult = revision.Preconditions, revision.ExpectedResult
+		for _, step := range revision.Steps {
+			row := testStepView{Step: step}
+			for _, criterion := range step.Criteria {
+				link := graph.link(criterion)
+				link.Note = "Missing case-level verifies mapping"
+				for _, relation := range graph.outbound[urn] {
+					if relation.Type == requirements.RelationVerifies && relation.To == criterion {
+						link.Note = ""
+						if relation.Stale {
+							link.Note = "Stale mapping: " + strings.Join(relation.StaleReasons, "; ")
+						}
+					}
+				}
+				row.CriteriaLinks = append(row.CriteriaLinks, link)
+			}
+			view.Steps = append(view.Steps, row)
+		}
 	}
+	view.Definition = strings.ReplaceAll(quality.DefinitionStage(*testCase), "_", " ")
 	for _, relation := range graph.outbound[urn] {
+		if relation.Type != requirements.RelationVerifies {
+			continue
+		}
 		link := graph.link(relation.To)
 		link.Rationale, link.Relation = relation.Rationale, string(relation.Type)
+		if relation.Stale {
+			link.Note = "Stale mapping: " + strings.Join(relation.StaleReasons, "; ")
+		}
 		view.Verifies = append(view.Verifies, link)
 	}
 	for _, evidence := range testCase.Evidence {
@@ -606,19 +639,32 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 		if len(testCase.EvidenceHeads) > 0 && !contains(testCase.EvidenceHeads, evidenceURN) {
 			continue
 		}
-		view.Evidence = append(view.Evidence, testEvidenceView{
-			Role: strings.ReplaceAll(string(evidence.Role), "_", " "),
-			Code: a.referenceCode(ctx, evidence.Code, "test case"),
-		})
+		if evidence.Role == quality.EvidenceExecutionArtifact {
+			continue
+		}
+		row := testEvidenceView{ID: evidence.ID, Role: strings.ReplaceAll(string(evidence.Role), "_", " "),
+			Code: a.referenceCode(ctx, evidence.Code, "test case"), Note: strings.Join(evidence.StaleReasons, "; ")}
+		for _, code := range row.Code {
+			if !view.Conflict && (code.Stale || code.Integrity == "unavailable") {
+				view.Definition = "stale evidence"
+			}
+		}
+		for _, stepID := range evidence.Steps {
+			stepLink := traceLink{Title: "Step " + stepID, Note: "Only present in the pinned historical revision"}
+			for _, step := range view.Steps {
+				if step.ID == stepID {
+					stepLink.Href, stepLink.Note = "#step-"+stepID, ""
+				}
+			}
+			row.Steps = append(row.Steps, stepLink)
+			for i := range view.Steps {
+				if view.Steps[i].ID == stepID {
+					view.Steps[i].EvidenceLinks = append(view.Steps[i].EvidenceLinks, traceLink{Title: row.Role, Href: "#evidence-" + evidence.ID, Target: evidenceURN, Note: row.Note})
+				}
+			}
+		}
+		view.Evidence = append(view.Evidence, row)
 	}
-	for _, run := range testCase.Runs {
-		view.Runs = append(view.Runs, testRunView{
-			ID: run.ID, Result: string(run.Result), Summary: run.Summary, Command: run.Command,
-			Commit: run.Source.Commit, ExecutedAt: run.ExecutedAt,
-			Current: testCase.CurrentRun != nil && testCase.CurrentRun.ID == run.ID,
-		})
-	}
-	sort.SliceStable(view.Runs, func(i, j int) bool { return view.Runs[i].ExecutedAt.After(view.Runs[j].ExecutedAt) })
 	return view, nil
 }
 

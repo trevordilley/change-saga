@@ -628,7 +628,7 @@ func livingSpec() map[string]any {
 			"cell_states": []string{"covered_direct", "covered_broad", "excluded", "stale", "invalid", "conflicted", "gap"},
 			"resolutions": []string{"linked", "excluded", "gap"},
 			"quality_kind_states": []string{
-				"covered", "missing_kind", "not_run", "failed", "blocked", "skipped", "stale", "inactive", "invalid", "conflicted", "excluded", "automation_not_allowed",
+				"covered", "missing_kind", "missing_mapping", "stale", "inactive", "invalid", "conflicted", "excluded", "automation_not_allowed",
 			},
 			"exceptions":          "a cited, revision-pinned decision that one axis does not apply to one criterion; never excuses changed-source accounting",
 			"changed_source":      "every changed atom must be owned by some target; transitivity proves criteria reach code but cannot prove nothing else changed",
