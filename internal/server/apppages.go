@@ -138,11 +138,13 @@ func (graph *appGraph) featureChapter(section *saga.Section) (string, bool) {
 // traceLink is one linked record: what it is, where it opens, and, when the
 // link is a relation, the relation's own rationale.
 type traceLink struct {
-	Kind      string
-	Title     string
-	Href      string
-	Target    string
-	Rationale string
+	Preview      bool
+	CodeTemplate string
+	Kind         string
+	Title        string
+	Href         string
+	Target       string
+	Rationale    string
 	// Relation is the relation type that makes the link, e.g. "verifies".
 	Relation string
 	// Note is a fact about the linked record, such as a definition's reference currency.
@@ -575,11 +577,12 @@ type testStepView struct {
 	EvidenceLinks []traceLink
 }
 type testEvidenceView struct {
-	ID    string
-	Role  string
-	Note  string
-	Steps []traceLink
-	Code  []*termCodeView
+	TemplateID string
+	ID         string
+	Role       string
+	Note       string
+	Steps      []traceLink
+	Code       []*termCodeView
 }
 
 func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*testCasePageView, error) {
@@ -606,6 +609,7 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 			row := testStepView{Step: step}
 			for _, criterion := range step.Criteria {
 				link := graph.link(criterion)
+				link.Preview = true
 				link.Note = "Missing case-level verifies mapping"
 				for _, relation := range graph.outbound[urn] {
 					if relation.Type == requirements.RelationVerifies && relation.To == criterion {
@@ -626,6 +630,7 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 			continue
 		}
 		link := graph.link(relation.To)
+		link.Preview = true
 		link.Rationale, link.Relation = relation.Rationale, string(relation.Type)
 		if relation.Stale {
 			link.Note = "Stale mapping: " + strings.Join(relation.StaleReasons, "; ")
@@ -642,7 +647,7 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 		if evidence.Role == quality.EvidenceExecutionArtifact {
 			continue
 		}
-		row := testEvidenceView{ID: evidence.ID, Role: strings.ReplaceAll(string(evidence.Role), "_", " "),
+		row := testEvidenceView{ID: evidence.ID, TemplateID: "test-evidence-" + id + "-" + evidence.ID, Role: strings.ReplaceAll(string(evidence.Role), "_", " "),
 			Code: a.referenceCode(ctx, evidence.Code, "test case"), Note: strings.Join(evidence.StaleReasons, "; ")}
 		for _, code := range row.Code {
 			if !view.Conflict && (code.Stale || code.Integrity == "unavailable") {
@@ -659,7 +664,7 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 			row.Steps = append(row.Steps, stepLink)
 			for i := range view.Steps {
 				if view.Steps[i].ID == stepID {
-					view.Steps[i].EvidenceLinks = append(view.Steps[i].EvidenceLinks, traceLink{Title: row.Role, Href: "#evidence-" + evidence.ID, Target: evidenceURN, Note: row.Note})
+					view.Steps[i].EvidenceLinks = append(view.Steps[i].EvidenceLinks, traceLink{Title: row.Role, Href: "#evidence-" + evidence.ID, CodeTemplate: row.TemplateID, Target: evidenceURN, Note: row.Note})
 				}
 			}
 		}

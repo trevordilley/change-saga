@@ -17,6 +17,7 @@ const appJavaScript = `(() => {
   let diffLayout = 'inline';
   let drawerOpener = null;
   let drawerRestore = null;
+  let referenceRequest = null;
   // Element note popover state; see "Element notes" below.
   let notePopover = null;
   let noteOwner = null;
@@ -1664,8 +1665,8 @@ const appJavaScript = `(() => {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     drawer.dataset.drawerMode = mode;
-    const labels = {deprecations:'Deprecations', documentation:'Technical explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
-    const icons = {deprecations:'#i-alert', documentation:'#i-book', fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
+    const labels = {deprecations:'Deprecations', documentation:'Technical explanation', fragment:'Related explanation', history:'History', reference:'Linked requirement', code:'Linked code', stories:'Linked stories'};
+    const icons = {deprecations:'#i-alert', documentation:'#i-book', fragment:'#i-book', history:'#i-clock', reference:'#i-story', code:'#i-diff', stories:'#i-story'};
     const label = labels[mode] || labels.code;
     drawer.setAttribute('aria-label', label);
     const heading = q('.drawer-head strong', drawer);
@@ -1680,6 +1681,8 @@ const appJavaScript = `(() => {
   }
 
   function restoreDrawerContent() {
+    referenceRequest?.abort();
+    referenceRequest = null;
     const body = q('.drawer-body');
     if (body) within(body, '[data-file-diff-href]').forEach(cancelReviewFile);
     if (drawerRestore) {
@@ -1831,6 +1834,45 @@ const appJavaScript = `(() => {
       if (pin.item) retry.dataset.documentationItem = pin.item;
       if (pin.relationship) retry.dataset.sourceRelationship = pin.relationship;
       body.append(retry);
+    }
+  }
+
+  // Read the canonical requirement page in the shared drawer, keeping the
+  // test and its scroll position on screen. Never install its shell or nav.
+  async function openReferenceDrawer(link) {
+    const href = new URL(link.href, location.href);
+    if (href.origin !== location.origin) return;
+    const returnOpener = link.closest('.diff-drawer.open') ? drawerOpener : link;
+    restoreDrawerContent();
+    const request = new AbortController();
+    referenceRequest = request;
+    const body = q('.drawer-body');
+    const fullPage = document.createElement('a');
+    fullPage.href = href.href;
+    fullPage.textContent = 'Open full requirement page';
+    const status = document.createElement('p');
+    status.setAttribute('role', 'status');
+    status.textContent = 'Loading linked requirement…';
+    body.append(fullPage);
+    const context = link.closest('[data-trace-target]');
+    if (context) qa('.trace-note,.trace-rationale', context).forEach(note => body.append(note.cloneNode(true)));
+    body.append(status);
+    configureDrawer('reference', 'Linked requirement');
+    showDrawer(returnOpener);
+    try {
+      const response = await fetch(href, {
+        headers: {'HX-Request':'true', 'HX-Target':'page'},
+        credentials: 'same-origin', signal: request.signal
+      });
+      if (!response.ok) throw new Error('requirement request failed');
+      const content = q('[data-requirements-page]', parseShellHTML(await response.text()));
+      if (!content) throw new Error('requirement response was incomplete');
+      if (referenceRequest !== request) return;
+      status.replaceWith(content);
+      highlightCode(content);
+    } catch (_) {
+      if (referenceRequest !== request) return;
+      status.textContent = 'This reference could not be loaded. Open the full page, or close and reopen to retry.';
     }
   }
 
@@ -2634,6 +2676,13 @@ const appJavaScript = `(() => {
       else void loadReviewSurfacePage(nextSurfacePage);
       return;
     }
+    const referenceLink = event.target.closest?.('[data-open-reference]');
+    if (referenceLink) {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+      void openReferenceDrawer(referenceLink);
+      return;
+    }
     const boundedLink = event.target.closest?.('a[href]');
     if (boundedLink && !boundedLink.hasAttribute('data-open-fragment') && !boundedLink.getAttribute('href')?.startsWith('#') && !event.defaultPrevented && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && (!boundedLink.target || boundedLink.target === '_self')) {
       const destination = new URL(boundedLink.href, location.href);
@@ -3404,7 +3453,7 @@ const appJavaScript = `(() => {
   }
 
   // Anchors this script acts on rather than follows.
-  const pageActionLinks = '[data-open-fragment],[data-documentation-target],[data-open-diffs],[data-open-stories],[data-target-code-href],[data-open-history],[data-surface-next],[data-copy-link],[data-aux-file-next]';
+  const pageActionLinks = '[data-open-reference],[data-open-fragment],[data-documentation-target],[data-open-diffs],[data-open-stories],[data-target-code-href],[data-open-history],[data-surface-next],[data-copy-link],[data-aux-file-next]';
 
   const boostedPage = detail => detail.target?.id === 'page';
 

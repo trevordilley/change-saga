@@ -860,6 +860,10 @@ Quality view:
 - test cases are grouped under linked criteria, with orphaned tests in an
   explicit work queue;
 - ordered steps show action and expected result side by side;
+- criterion references in steps and the case's Verifies section open the shared
+  slideout, preserving the case's location and offering the full requirement
+  page; step and case evidence links open the same canonical evidence in the
+  linked-code slideout, including stale warnings and links back to its steps;
 - positive/negative/edge labels, lifecycle, planned/implementation-linked stage,
   and evidence are visible without opening raw JSON;
 - implementation-under-test evidence deep-links through the matching Item to
