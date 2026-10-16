@@ -14,12 +14,30 @@ func TestAppJavaScriptSyntaxAndLanguageContract(t *testing.T) {
 	if err != nil {
 		t.Skip("node is not installed")
 	}
-	source := strings.Replace(appJavaScript, "})();", "globalThis.changeSagaTest = {languageForPath, tokenClass, pageKey};})();", 1)
+	source := strings.Replace(appJavaScript, "})();", "globalThis.changeSagaTest = {languageForPath, tokenClass, pageKey, sanitizeSVGMeasurementClone};})();", 1)
 	prelude := `globalThis.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener:()=>{},body:{dataset:{}}};
 globalThis.location={href:'http://127.0.0.1/?view=code',pathname:'/',search:'?view=code',hash:''};
 globalThis.history={pushState:()=>{}};globalThis.addEventListener=()=>{};globalThis.innerWidth=1400;
 `
 	checks := `
+const assert = require('node:assert/strict');
+function element(attributes) {
+  return {attributes:Object.entries(attributes).map(([name,value])=>({name,value})),
+    removeAttribute(name){this.attributes=this.attributes.filter(attribute=>attribute.name!==name);}};
+}
+const root=element({onload:'alert(1)',ONCLICK:'alert(2)',href:'https://example.test',viewBox:'0 0 400 200',width:'400',id:'root'});
+const child=element({'xlink:href':'javascript:alert(1)',onmouseover:'alert(1)',transform:'translate(10 20)'});
+const local=element({href:'#shape',fill:'red'});
+let removed=0;
+root.querySelectorAll=selector=>selector==='*' ? [child,local] : [{remove(){removed++;}},{remove(){removed++;}}];
+changeSagaTest.sanitizeSVGMeasurementClone(root);
+const attrs=node=>Object.fromEntries(node.attributes.map(({name,value})=>[name,value]));
+assert.deepEqual(attrs(root),{viewBox:'0 0 400 200',width:'400',id:'root'});
+assert.deepEqual(attrs(child),{transform:'translate(10 20)'});
+assert.deepEqual(attrs(local),{href:'#shape',fill:'red'});
+assert.equal(removed,2);
+changeSagaTest.sanitizeSVGMeasurementClone(root);
+assert.deepEqual(attrs(root),{viewBox:'0 0 400 200',width:'400',id:'root'});
 const named='/technical/whiteboards/architecture?revision=r1';
 if(changeSagaTest.pageKey(named+'&focus=area')!==changeSagaTest.pageKey(named))throw new Error('focus must stay inside the named board');
 if(changeSagaTest.pageKey(named)===changeSagaTest.pageKey('/technical/whiteboards/architecture?revision=r2'))throw new Error('board revisions must load independently');

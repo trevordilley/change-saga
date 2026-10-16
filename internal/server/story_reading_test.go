@@ -79,3 +79,30 @@ func TestCriterionReadingShowsAuthoredTitleAndSafeOverview(t *testing.T) {
 		}
 	}
 }
+
+func TestStorySubtextDoesNotDependOnOverview(t *testing.T) {
+	for _, overview := range []string{"", "Authored body."} {
+		for _, subtext := range []string{"", "Independent <subtext>"} {
+			story := requirements.Story{Identity: requirements.StoryIdentity{ID: "read"}, CurrentRevision: &requirements.Revision{ID: "r1", Title: "Read", Statement: "Full obligation", Subtext: subtext, Overview: overview}}
+			doc := requirements.Document{SagaID: "reading", Stories: []requirements.Story{story}}
+			page, _, err := makeRequirementsSurface(doc, requirementRoute{active: true, storyID: "read"})
+			if err != nil {
+				t.Fatal(err)
+			}
+			var output bytes.Buffer
+			if err := serverTemplate(t).ExecuteTemplate(&output, "requirements-page", page); err != nil {
+				t.Fatal(err)
+			}
+			html := output.String()
+			if strings.Contains(html, "data-essay-subtext") != (subtext != "") {
+				t.Fatalf("subtext=%q overview=%q: %s", subtext, overview, html)
+			}
+			if subtext != "" && !strings.Contains(html, "Independent &lt;subtext&gt;") {
+				t.Fatalf("subtext missing or unescaped: %s", html)
+			}
+			if !strings.Contains(html, "Full obligation") {
+				t.Fatal("story obligation lost")
+			}
+		}
+	}
+}

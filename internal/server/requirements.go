@@ -231,8 +231,8 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 	if story.CurrentRevision != nil {
 		view.Title = story.CurrentRevision.Title
 		view.Statement = story.CurrentRevision.Statement
+		view.Subtext = story.CurrentRevision.Subtext
 		if story.CurrentRevision.Overview != "" {
-			view.Subtext = story.CurrentRevision.Subtext
 			view.Overview = markdownWithAnchors(story.CurrentRevision.Overview, view.DOMID+"--overview")
 		}
 		view.Priority = story.CurrentRevision.Priority

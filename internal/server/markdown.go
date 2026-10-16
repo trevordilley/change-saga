@@ -14,12 +14,11 @@ import (
 	"github.com/yuin/goldmark/util"
 )
 
-// markdownWithAnchors renders the author-facing Markdown dialect as safe GFM.
+// markdownEngine configures the shared author-facing Markdown dialect as safe GFM.
 // Raw HTML and dangerous URLs remain disabled by goldmark's default renderer.
 // A small heading renderer adds the namespaced permalinks used by the review UI.
-func markdownWithAnchors(source, namespace string) template.HTML {
-	var out bytes.Buffer
-	engine := goldmark.New(
+func markdownEngine(namespace string) goldmark.Markdown {
+	return goldmark.New(
 		goldmark.WithExtensions(
 			extension.GFM,
 			extension.NewFootnote(
@@ -36,6 +35,11 @@ func markdownWithAnchors(source, namespace string) template.HTML {
 			util.Prioritized(&headingRenderer{namespace: namespace}, 100),
 		)),
 	)
+}
+
+func markdownWithAnchors(source, namespace string) template.HTML {
+	var out bytes.Buffer
+	engine := markdownEngine(namespace)
 	if err := engine.Convert([]byte(source), &out); err != nil {
 		// bytes.Buffer does not return write errors, so this is defensive. Never
 		// fall back to emitting unescaped authored content.

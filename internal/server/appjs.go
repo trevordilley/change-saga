@@ -432,6 +432,18 @@ const appJavaScript = `(() => {
     if (document.readyState !== 'complete') addEventListener('load', settle);
   }
 
+  function sanitizeSVGMeasurementClone(svg) {
+    // Measurement never needs executable or navigable content. Keeping this
+    // clone inert preserves the iframe sandbox while still letting the browser
+    // account for groups, paths, text, and transforms via normal SVG layout.
+    // querySelectorAll excludes the root, whose attributes need the same policy.
+    svg.querySelectorAll('script,foreignObject').forEach(node => node.remove());
+    [svg, ...svg.querySelectorAll('*')].forEach(node => [...node.attributes].forEach(attribute => {
+      const name = attribute.name.toLowerCase();
+      if (name.startsWith('on') || ((name === 'href' || name.endsWith(':href')) && !attribute.value.startsWith('#'))) node.removeAttribute(attribute.name);
+    }));
+  }
+
   async function prepareSVGElementHotspots(fragment) {
     const frame = q('[data-fragment-frame]', fragment);
     const targets = qa('[data-landmark-target][data-landmark-type="element"]', fragment)
@@ -449,14 +461,7 @@ const appJavaScript = `(() => {
     const parsed = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
     if (parsed.querySelector('parsererror') || parsed.documentElement.localName !== 'svg') return;
     const svg = document.importNode(parsed.documentElement, true);
-    // Measurement never needs executable or navigable content. Keeping this
-    // clone inert preserves the iframe sandbox while still letting the browser
-    // account for groups, paths, text, and transforms via normal SVG layout.
-    svg.querySelectorAll('script,foreignObject').forEach(node => node.remove());
-    svg.querySelectorAll('*').forEach(node => [...node.attributes].forEach(attribute => {
-      const name = attribute.name.toLowerCase();
-      if (name.startsWith('on') || ((name === 'href' || name.endsWith(':href')) && !attribute.value.startsWith('#'))) node.removeAttribute(attribute.name);
-    }));
+    sanitizeSVGMeasurementClone(svg);
     const viewBox = svg.viewBox?.baseVal;
     if (!viewBox || !(viewBox.width > 0) || !(viewBox.height > 0)) return;
     const measure = document.createElement('div');
