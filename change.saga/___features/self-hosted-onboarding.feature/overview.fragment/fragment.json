@@ -1,6 +1,6 @@
 {
   "subtext": "Guide someone through setting up their own self-hosted Change Saga.",
-  "abstract": "Provide a setup experience that lets someone establish their own self-hosted Saga. This feature depends on self-hostable server mode; the starting point and successful completion conditions still need discovery.",
+  "abstract": "Guide someone through configuring the target repository and setting up the Saga repository for their self-hosted Change Saga. This feature depends on self-hostable server mode.",
   "version": 2,
   "id": "self-hosted-onboarding--overview",
   "title": "Overview",

@@ -1,20 +1,21 @@
 ## Intended outcome {#intended-outcome}
 
-Help someone set up a self-hosted Change Saga themselves. The experience should connect their Saga to the target repository described by the server-mode feature.
+Provide a UI that makes repository setup less confusing: configure the target repository containing the application and set up the separate repository holding its Saga. These repositories have different purposes, and the flow should help users understand which one they are configuring.
 
 ## Prerequisite {#prerequisite}
 
-Depends on [Self-hostable server mode](urn:change-saga:change-saga:feature:self-hostable-server).
+Depends on [Self-hostable server mode](urn:change-saga:change-saga:feature:self-hostable-server). This relationship is documented here while [Roadmap dependency mapping](urn:change-saga:change-saga:feature:roadmap-dependency-mapping) remains planned.
 
-This is a documented product prerequisite. Structured prerequisite records and their visualization are planned separately in [Roadmap dependency mapping](urn:change-saga:change-saga:feature:roadmap-dependency-mapping).
+## Scope {#scope}
 
-## Questions for discovery {#questions-for-discovery}
+The confirmed focus is repository configuration through the UI. Cloud provisioning is not part of the currently specified onboarding flow. The host arranges authentication and access controls as described by the server feature.
 
-- Who performs setup, and what technical knowledge can the flow assume?
-- Does setup start with an already running server, or help the user deploy one?
-- What observable result marks setup complete?
-- Which setup failures must the first version help the user recover from?
+## Open decisions {#open-decisions}
+
+- Whether setting up the Saga repository means creating a new remote repository, connecting an existing one, initializing Saga content, or some combination.
+- How repository credentials are supplied and checked.
+- The completion check and recovery experience for invalid or inaccessible repositories.
 
 ## Design and handoff {#design-and-handoff}
 
-This feature is planned. Develop the agreed stories and acceptance criteria, UX flow, and prototype before choosing the implementation. The setup steps and deployment platform have not been decided.
+This feature is planned. Its proposed story covers the two confirmed repository setup tasks. Develop the UX flow and prototype around those tasks, then resolve the open decisions before finalizing acceptance criteria and implementation design.

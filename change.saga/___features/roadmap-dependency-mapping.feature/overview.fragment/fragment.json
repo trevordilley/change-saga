@@ -1,6 +1,6 @@
 {
   "subtext": "Show which planned features depend on other features.",
-  "abstract": "Let the product owner record dependencies between Roadmap features so the team can understand prerequisites when planning delivery. Self-hosted onboarding depending on self-hostable server mode is the first concrete example.",
+  "abstract": "Record dependencies between Roadmap features so the team can understand prerequisites. A visual Roadmap with a Gantt chart is a possible future presentation; its scheduling behavior is not yet specified.",
   "version": 2,
   "id": "roadmap-dependency-mapping--overview",
   "title": "Overview",

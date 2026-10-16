@@ -1,0 +1,6 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story.schema.json",
+  "version": 3,
+  "id": "host-saga-outside-target-repo",
+  "created_at": "2026-10-16T18:06:41.200348Z"
+}

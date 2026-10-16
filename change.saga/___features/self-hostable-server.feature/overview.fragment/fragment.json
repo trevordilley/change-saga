@@ -1,6 +1,6 @@
 {
   "subtext": "Maintain a Saga outside its target repository, with remote references back to the code.",
-  "abstract": "Run Change Saga as a self-hosted service while keeping its documentation separate from the target repository. References must continue to identify the relevant material in that remote repository.",
+  "abstract": "Host a Change Saga server in your own cloud to serve its UI and maintain the Saga outside the target repository. The host supplies authentication and access controls; the Saga retains remote references to the target repository.",
   "version": 2,
   "id": "self-hostable-server--overview",
   "title": "Overview",
