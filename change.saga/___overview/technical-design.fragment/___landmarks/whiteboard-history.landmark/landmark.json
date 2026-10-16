@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "whiteboard-history",
+  "label": "Independent whiteboard history",
+  "selector": {
+    "type": "text",
+    "exact": "Whiteboards publish complete immutable diagram documents under independent document IDs."
+  },
+  "target": ""
+}

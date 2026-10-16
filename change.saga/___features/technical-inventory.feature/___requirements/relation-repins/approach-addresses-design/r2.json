@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:approach-addresses-design",
+  "from_content_digest": "sha256:089d74ea45e4b38efcebd95dc58e72033ddf62f98ecf435ff62cbd5e45b064da",
+  "rationale": "Added stable heading anchors; the authored design and its relation to the current story are unchanged.",
+  "created_at": "2026-10-16T03:24:58.283352Z"
+}

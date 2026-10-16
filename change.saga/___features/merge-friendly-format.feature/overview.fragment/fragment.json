@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "merge-friendly-format--overview",
+  "title": "Overview",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": -100
+}

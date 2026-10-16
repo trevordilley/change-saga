@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "path": "internal/store/store.go",
+      "start": 24,
+      "end": 37,
+      "digest": "sha256:e9195cf6e5d030d947434b45e9f49381cea5bb353132fe6e6357049eefc78352",
+      "note": "WriteBatch explicitly limits atomicity and attempts rollback while retaining recovery content on failure."
+    },
+    {
+      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "path": "internal/store/store.go",
+      "start": 111,
+      "end": 184,
+      "digest": "sha256:b7befabc2927769181fa2494323e31f7a564031db09723111cda807ec71a6542",
+      "note": "WriteBatch explicitly limits atomicity and attempts rollback while retaining recovery content on failure."
+    }
+  ]
+}

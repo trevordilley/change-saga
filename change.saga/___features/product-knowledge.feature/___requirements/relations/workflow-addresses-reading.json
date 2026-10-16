@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "workflow-addresses-reading",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-workflow",
+  "to": "urn:change-saga:change-saga:story:read-authored-criterion-context",
+  "scope": "self",
+  "rationale": "The workflow separates the short title, full obligation and explanation and describes reassessment.",
+  "to_revision": "urn:change-saga:change-saga:story:read-authored-criterion-context:revision:r1",
+  "from_content_digest": "sha256:ed9761584afe94ff14838745643b1ae379f589a7a350ea4a57291ddaeae549d5",
+  "state": "active",
+  "created_at": "2026-10-16T03:22:35.090369Z"
+}

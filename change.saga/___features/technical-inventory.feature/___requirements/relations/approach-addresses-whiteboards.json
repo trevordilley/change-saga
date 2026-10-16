@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "approach-addresses-whiteboards",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design",
+  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history",
+  "scope": "self",
+  "rationale": "The approach explains complete publications, independent history and explicit source adoption.",
+  "to_revision": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:revision:r1",
+  "from_content_digest": "sha256:147e91161dc85aab0b7be05e57fcb93f6f8e342ce4f230b61c67e181f858ffa8",
+  "state": "active",
+  "created_at": "2026-10-16T03:22:30.691427Z"
+}

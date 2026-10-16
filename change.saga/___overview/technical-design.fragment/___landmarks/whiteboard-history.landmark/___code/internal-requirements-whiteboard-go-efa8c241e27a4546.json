@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "path": "internal/requirements/whiteboard.go",
+      "start": 231,
+      "end": 298,
+      "digest": "sha256:4c0f898c694d6de8e49e6d2e3a10e299f1c4c0a1807b122e8557c92ec4f1d3c5",
+      "note": "Complete immutable board publication validates explicit parentage and resolves sources before committing."
+    }
+  ]
+}

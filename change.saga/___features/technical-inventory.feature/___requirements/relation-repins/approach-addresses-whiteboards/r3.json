@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r3",
+  "relation": "urn:change-saga:change-saga:relation:approach-addresses-whiteboards",
+  "from_content_digest": "sha256:01d8b770b5a43fc117b777157856e9cee16aa6664c20fcb3cd579c09d45ae9e4",
+  "rationale": "Re-read the essay and current story; the explanation still supports the obligation. Confirm the canonical design digest now that overview essays are indexed as design targets.",
+  "created_at": "2026-10-16T03:30:40.71698Z"
+}

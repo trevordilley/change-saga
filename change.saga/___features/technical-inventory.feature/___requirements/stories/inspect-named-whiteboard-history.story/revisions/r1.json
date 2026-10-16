@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history",
+  "parents": [],
+  "title": "Inspect a design without losing its history",
+  "statement": "As a developer, I can focus a named whiteboard and reopen an exact revision so I can inspect a design in the context in which it was authored.",
+  "overview": "A named board is an independent document built with the shared diagram grammar. Sections give a large design local reading context, while explicit connections explain how areas relate. A reader can pan, zoom and focus without replacing the document with an unrelated diagram.\n\nPublication appends a complete immutable revision and requires the observed parent. This code-derived story remains proposed; implementation evidence is not a product acceptance decision.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:reading-design-implementation"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "named",
+      "statement": "Publishing one named whiteboard leaves the current revisions of other named whiteboards unchanged.",
+      "title": "Independent documents",
+      "overview": "ERD, Infrastructure and Data flows are document conventions rather than separate diagram engines."
+    },
+    {
+      "id": "history",
+      "statement": "An exact whiteboard revision remains readable after a newer revision is published.",
+      "title": "Exact historical view",
+      "overview": "Source pins remain those of the selected revision; a reader must not silently adopt a newer entity definition."
+    },
+    {
+      "id": "parent",
+      "statement": "A publication that names an outdated parent is rejected instead of overwriting the current board.",
+      "title": "Concurrent update guard",
+      "overview": "The author rereads the current revision and makes an explicit update."
+    },
+    {
+      "id": "focus",
+      "statement": "A reader can focus a section or element by its instance path within the named whiteboard.",
+      "title": "Section focus",
+      "overview": "Repeated appearances retain distinct paths even when they refer to the same source identity."
+    }
+  ],
+  "created_at": "2026-10-16T03:20:04.243662Z"
+}

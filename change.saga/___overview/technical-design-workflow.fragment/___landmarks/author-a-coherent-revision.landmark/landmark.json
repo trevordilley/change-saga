@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "author-a-coherent-revision",
+  "label": "Author a coherent revision",
+  "selector": {
+    "type": "heading",
+    "heading_id": "author-a-coherent-revision"
+  },
+  "target": ""
+}

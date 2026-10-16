@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope",
+  "parents": [],
+  "title": "See what is deprecated and why",
+  "statement": "As a developer, I can inspect an explicit deprecation annotation and its exact scope so I can avoid the deprecated content or code without guessing that nearby code is also deprecated.",
+  "overview": "A deprecation is an authored statement with a reason. Content scope names the explanation that should no longer be used; code scope identifies the exact referenced source. Optional replacement links guide the reader without expanding the deprecated region.\n\nRevisions and withdrawal events preserve the history of the annotation. Stale evidence or competing heads remain visible. Absence of an annotation means no recorded deprecation, not proof that a record is current. This is a code-derived proposal.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:reading-design-implementation"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "scope",
+      "statement": "A code-scoped deprecation identifies explicit code references rather than inferring a deprecated region from related evidence.",
+      "title": "Exact scope",
+      "overview": "An annotation on content does not automatically deprecate the code that the content explains."
+    },
+    {
+      "id": "reason",
+      "statement": "A deprecation exposes an authored reason and any explicitly selected replacement.",
+      "title": "Explain the decision",
+      "overview": "The replacement is guidance for the selected target; it is not an assertion about every dependency."
+    },
+    {
+      "id": "withdrawal",
+      "statement": "Withdrawing a deprecation appends a lifecycle event while preserving its original assertion and revision history.",
+      "title": "Preserve withdrawal history",
+      "overview": "A reader must be able to distinguish withdrawn guidance from an active assertion instead of relying on deletion."
+    }
+  ],
+  "created_at": "2026-10-16T03:20:04.519384Z"
+}

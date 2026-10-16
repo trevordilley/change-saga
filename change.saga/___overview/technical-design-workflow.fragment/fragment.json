@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "change-saga-technical-design-workflow",
+  "title": "Authoring and review workflow",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 40
+}

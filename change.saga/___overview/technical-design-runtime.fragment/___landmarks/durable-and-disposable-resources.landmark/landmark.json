@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "durable-and-disposable-resources",
+  "label": "Durable and disposable resources",
+  "selector": {
+    "type": "heading",
+    "heading_id": "durable-and-disposable-resources"
+  },
+  "target": ""
+}

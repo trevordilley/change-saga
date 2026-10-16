@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "reading-design-implementation",
+  "kind": "repository_commit",
+  "title": "Merged reading surfaces, technical design and deprecation implementation",
+  "reference": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+  "created_at": "2026-10-16T03:20:03.998669Z"
+}

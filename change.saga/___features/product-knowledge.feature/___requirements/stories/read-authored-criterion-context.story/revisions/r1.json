@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:read-authored-criterion-context",
+  "parents": [],
+  "title": "Read the obligation and its explanation",
+  "statement": "As a product manager, I can read a concise criterion title, its full pass/fail statement and authored context so I can judge the intended outcome without reconstructing it from metadata.",
+  "overview": "The title helps readers scan; the statement remains the complete observable obligation. An optional Markdown overview explains rationale, examples and boundaries. Feature and story essays place those obligations in a readable product narrative.\n\nOmitting prose on revision preserves it, while explicitly clearing the title or overview removes that prose. A changed explanation can alter an obligation, so related evidence must be reassessed. This records the merged behavior as a proposal rather than claiming product approval.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:reading-design-implementation"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "full-statement",
+      "statement": "The criterion page displays the full statement even when a short authored title is present.",
+      "title": "Preserve the obligation",
+      "overview": "A short navigation label must never replace or truncate the obligation a reviewer needs to assess."
+    },
+    {
+      "id": "safe-prose",
+      "statement": "The criterion page renders its authored Markdown explanation under the product reading surface's content restrictions.",
+      "title": "Readable authored context",
+      "overview": "Authored prose is content, not executable page behavior. The merged safe-rendering tests exercise this distinction."
+    },
+    {
+      "id": "preservation",
+      "statement": "Revising one criterion preserves its omitted title and overview and leaves unrelated criteria unchanged.",
+      "title": "Preserve omitted prose",
+      "overview": "An explicit empty title or overview clears that field; omission is not a request to erase it."
+    },
+    {
+      "id": "reassess",
+      "statement": "Changing a criterion title or overview makes evidence pinned to the older criterion content require reassessment.",
+      "title": "Reassess changed context",
+      "overview": "The same content contributes to the whole-story obligation, so a story-level relation cannot claim currency solely because the one-line statement stayed the same."
+    }
+  ],
+  "created_at": "2026-10-16T03:20:04.379245Z"
+}

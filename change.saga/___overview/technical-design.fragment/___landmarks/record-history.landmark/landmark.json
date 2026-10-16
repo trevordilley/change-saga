@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "record-history",
+  "label": "Complete definitions and separate lifecycle",
+  "selector": {
+    "type": "text",
+    "exact": "Story definitions are complete immutable snapshots; lifecycle events form a separate history."
+  },
+  "target": ""
+}

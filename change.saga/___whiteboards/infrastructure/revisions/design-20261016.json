@@ -1,0 +1,540 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json",
+  "version": 1,
+  "id": "design-20261016",
+  "parents": [],
+  "name": "Local runtime and delivery resources",
+  "document": {
+    "version": 1,
+    "width": 2480,
+    "height": 1640,
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "width": 1660,
+      "height": 1430
+    },
+    "styles": {
+      "body": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 1,
+        "font_size": 22
+      },
+      "entity": {
+        "fill": "@diagram-normal-fill",
+        "stroke": "@diagram-normal-stroke",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 2,
+        "font_size": 21
+      },
+      "small": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-secondary-ink",
+        "stroke_width": 1,
+        "font_size": 18
+      }
+    },
+    "elements": [
+      {
+        "id": "title",
+        "kind": "text",
+        "label": "One local binary, ordinary Git, inspectable files",
+        "x": 65,
+        "y": 40,
+        "width": 2300,
+        "height": 70,
+        "style": "title",
+        "wrap": true
+      },
+      {
+        "id": "intro",
+        "kind": "text",
+        "label": "The installed runtime needs a workstation and its checkout. CI builds and tests the application; it is not an application backend.",
+        "x": 65,
+        "y": 120,
+        "width": 2300,
+        "height": 75,
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "workstation",
+        "kind": "group",
+        "shape": "section",
+        "label": "Developer workstation",
+        "x": 55,
+        "y": 240,
+        "width": 1630,
+        "height": 1300,
+        "style": "boundary",
+        "color": "blue"
+      },
+      {
+        "id": "delivery",
+        "kind": "group",
+        "shape": "section",
+        "label": "Build and distribution",
+        "x": 1760,
+        "y": 240,
+        "width": 650,
+        "height": 1300,
+        "style": "boundary",
+        "color": "purple"
+      },
+      {
+        "id": "browser",
+        "kind": "node",
+        "shape": "service",
+        "label": "Browser",
+        "detail": "HTML reader + local interaction",
+        "x": 65,
+        "y": 115,
+        "width": 390,
+        "height": 180,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "http",
+        "kind": "node",
+        "shape": "service",
+        "label": "Go HTTP server",
+        "detail": "Loopback listener; page and evidence endpoints",
+        "x": 620,
+        "y": 115,
+        "width": 390,
+        "height": 180,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "cache",
+        "kind": "node",
+        "shape": "datastore",
+        "label": "User cache directory",
+        "detail": "Disposable read generations; outside the Saga",
+        "x": 1170,
+        "y": 115,
+        "width": 390,
+        "height": 180,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "terminal",
+        "kind": "node",
+        "shape": "service",
+        "label": "Terminal / coding tool",
+        "detail": "Runs compiled public commands",
+        "x": 65,
+        "y": 500,
+        "width": 390,
+        "height": 180,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "cli",
+        "kind": "node",
+        "shape": "service",
+        "label": "change-saga binary",
+        "detail": "Typed authoring, query, validation, serve",
+        "x": 620,
+        "y": 500,
+        "width": 390,
+        "height": 180,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "git",
+        "kind": "node",
+        "shape": "service",
+        "label": "Git executable",
+        "detail": "Commit objects, diffs and repository identity",
+        "x": 1170,
+        "y": 500,
+        "width": 390,
+        "height": 180,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "saga-files",
+        "kind": "node",
+        "shape": "datastore",
+        "label": "change.saga/",
+        "detail": "Versioned records + authored assets",
+        "x": 65,
+        "y": 930,
+        "width": 390,
+        "height": 190,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "source",
+        "kind": "node",
+        "shape": "datastore",
+        "label": "Source checkout + .git",
+        "detail": "Application code and its commit history",
+        "x": 1170,
+        "y": 930,
+        "width": 390,
+        "height": 190,
+        "parent": "workstation",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "local-contract",
+        "kind": "text",
+        "label": "The CLI and server share Go packages. Authoring writes checked records. Read projections combine Saga state with the selected source context.",
+        "x": 620,
+        "y": 950,
+        "width": 390,
+        "height": 240,
+        "parent": "workstation",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "browse",
+        "kind": "edge",
+        "label": "loopback HTTP",
+        "x": 0,
+        "y": 0,
+        "parent": "workstation",
+        "style": "secondary",
+        "from": "browser",
+        "to": "http",
+        "points": [
+          {
+            "x": 455,
+            "y": 205
+          },
+          {
+            "x": 620,
+            "y": 205
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 460,
+          "y": 145,
+          "width": 155,
+          "height": 55
+        }
+      },
+      {
+        "id": "cache-read",
+        "kind": "edge",
+        "label": "reuse / rebuild",
+        "x": 0,
+        "y": 0,
+        "parent": "workstation",
+        "style": "secondary",
+        "from": "http",
+        "to": "cache",
+        "points": [
+          {
+            "x": 1010,
+            "y": 205
+          },
+          {
+            "x": 1170,
+            "y": 205
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 1015,
+          "y": 145,
+          "width": 150,
+          "height": 55
+        }
+      },
+      {
+        "id": "invoke",
+        "kind": "edge",
+        "label": "arguments / JSON",
+        "x": 0,
+        "y": 0,
+        "parent": "workstation",
+        "style": "secondary",
+        "from": "terminal",
+        "to": "cli",
+        "points": [
+          {
+            "x": 455,
+            "y": 590
+          },
+          {
+            "x": 620,
+            "y": 590
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 460,
+          "y": 525,
+          "width": 155,
+          "height": 60
+        }
+      },
+      {
+        "id": "git-read",
+        "kind": "edge",
+        "label": "Git subprocess",
+        "x": 0,
+        "y": 0,
+        "parent": "workstation",
+        "style": "secondary",
+        "from": "cli",
+        "to": "git",
+        "points": [
+          {
+            "x": 1010,
+            "y": 590
+          },
+          {
+            "x": 1170,
+            "y": 590
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 1015,
+          "y": 525,
+          "width": 150,
+          "height": 60
+        }
+      },
+      {
+        "id": "git-objects",
+        "kind": "edge",
+        "label": "objects / paths",
+        "x": 0,
+        "y": 0,
+        "parent": "workstation",
+        "style": "secondary",
+        "from": "git",
+        "to": "source",
+        "points": [
+          {
+            "x": 1365,
+            "y": 680
+          },
+          {
+            "x": 1365,
+            "y": 930
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 1380,
+          "y": 785,
+          "width": 175,
+          "height": 65
+        }
+      },
+      {
+        "id": "author-records",
+        "kind": "edge",
+        "label": "checked publication",
+        "x": 0,
+        "y": 0,
+        "parent": "workstation",
+        "style": "secondary",
+        "from": "cli",
+        "to": "saga-files",
+        "points": [
+          {
+            "x": 815,
+            "y": 680
+          },
+          {
+            "x": 815,
+            "y": 810
+          },
+          {
+            "x": 260,
+            "y": 810
+          },
+          {
+            "x": 260,
+            "y": 930
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 350,
+          "y": 820,
+          "width": 380,
+          "height": 55
+        }
+      },
+      {
+        "id": "read-records",
+        "kind": "edge",
+        "label": "load current records",
+        "x": 0,
+        "y": 0,
+        "parent": "workstation",
+        "style": "secondary",
+        "from": "saga-files",
+        "to": "http",
+        "points": [
+          {
+            "x": 65,
+            "y": 1025
+          },
+          {
+            "x": 30,
+            "y": 1025
+          },
+          {
+            "x": 30,
+            "y": 355
+          },
+          {
+            "x": 815,
+            "y": 355
+          },
+          {
+            "x": 815,
+            "y": 295
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 470,
+          "y": 350,
+          "width": 330,
+          "height": 50
+        }
+      },
+      {
+        "id": "github",
+        "kind": "node",
+        "shape": "cloud",
+        "label": "GitHub repository",
+        "detail": "Source + workflows + release artifacts",
+        "x": 70,
+        "y": 115,
+        "width": 510,
+        "height": 180,
+        "parent": "delivery",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "ci",
+        "kind": "node",
+        "shape": "service",
+        "label": "CI runners",
+        "detail": "Go tests / vet / builds; Node + Playwright browser checks",
+        "x": 70,
+        "y": 500,
+        "width": 510,
+        "height": 220,
+        "parent": "delivery",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "release",
+        "kind": "node",
+        "shape": "document",
+        "label": "Release binaries",
+        "detail": "Platform archives and checksums",
+        "x": 70,
+        "y": 960,
+        "width": 510,
+        "height": 180,
+        "parent": "delivery",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "ci-source",
+        "kind": "edge",
+        "label": "checkout",
+        "x": 0,
+        "y": 0,
+        "parent": "delivery",
+        "style": "secondary",
+        "from": "github",
+        "to": "ci",
+        "points": [
+          {
+            "x": 325,
+            "y": 295
+          },
+          {
+            "x": 325,
+            "y": 500
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 345,
+          "y": 365,
+          "width": 200,
+          "height": 45
+        }
+      },
+      {
+        "id": "package",
+        "kind": "edge",
+        "label": "package release",
+        "x": 0,
+        "y": 0,
+        "parent": "delivery",
+        "style": "secondary",
+        "from": "ci",
+        "to": "release",
+        "points": [
+          {
+            "x": 325,
+            "y": 720
+          },
+          {
+            "x": 325,
+            "y": 960
+          }
+        ],
+        "head": "arrow",
+        "label_box": {
+          "x": 345,
+          "y": 810,
+          "width": 210,
+          "height": 50
+        }
+      },
+      {
+        "id": "runtime-boundary",
+        "kind": "text",
+        "label": "Hosting / MCP deployment is deferred and is not part of main.",
+        "x": 70,
+        "y": 1190,
+        "width": 510,
+        "height": 80,
+        "parent": "delivery",
+        "style": "small",
+        "wrap": true
+      }
+    ]
+  },
+  "created_at": "2026-10-16T03:17:58.362484Z"
+}

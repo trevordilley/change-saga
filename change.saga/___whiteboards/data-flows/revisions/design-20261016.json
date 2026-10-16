@@ -1,0 +1,744 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json",
+  "version": 1,
+  "id": "design-20261016",
+  "parents": [],
+  "name": "Authoring, reading and review data flows",
+  "document": {
+    "version": 1,
+    "width": 2480,
+    "height": 1910,
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "width": 2460,
+      "height": 790
+    },
+    "styles": {
+      "body": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 1,
+        "font_size": 22
+      },
+      "entity": {
+        "fill": "@diagram-normal-fill",
+        "stroke": "@diagram-normal-stroke",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 2,
+        "font_size": 21
+      },
+      "small": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-secondary-ink",
+        "stroke_width": 1,
+        "font_size": 18
+      }
+    },
+    "elements": [
+      {
+        "id": "title",
+        "kind": "text",
+        "label": "From authored intent to a bounded, inspectable answer",
+        "x": 65,
+        "y": 40,
+        "width": 2300,
+        "height": 65,
+        "style": "title",
+        "wrap": true
+      },
+      {
+        "id": "intro",
+        "kind": "text",
+        "label": "Writes preserve records. Reads derive views. A comparison or review never silently turns a stale explanation into current evidence.",
+        "x": 65,
+        "y": 120,
+        "width": 2300,
+        "height": 80,
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "author",
+        "kind": "group",
+        "shape": "section",
+        "label": "Author and publish",
+        "x": 55,
+        "y": 245,
+        "width": 2360,
+        "height": 490,
+        "style": "boundary",
+        "color": "blue"
+      },
+      {
+        "id": "request",
+        "kind": "node",
+        "shape": "document",
+        "label": "Author request",
+        "detail": "Flags, Markdown or typed JSON",
+        "x": 40,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "author",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "parse",
+        "kind": "node",
+        "shape": "service",
+        "label": "CLI handler",
+        "detail": "Parse syntax and resolve existing identity",
+        "x": 510,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "author",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "validate",
+        "kind": "node",
+        "shape": "service",
+        "label": "Domain validation",
+        "detail": "Check parent, content, pins and geometry",
+        "x": 980,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "author",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "publish",
+        "kind": "node",
+        "shape": "service",
+        "label": "Storage boundary",
+        "detail": "Lock, stage and publish; surface failures",
+        "x": 1450,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "author",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "records",
+        "kind": "node",
+        "shape": "datastore",
+        "label": "Saga files",
+        "detail": "Immutable revisions / authored assets",
+        "x": 1920,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "author",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "author-step-0",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "author",
+        "style": "secondary",
+        "from": "request",
+        "to": "parse",
+        "points": [
+          {
+            "x": 420,
+            "y": 190
+          },
+          {
+            "x": 510,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "author-label-0",
+        "kind": "text",
+        "label": "typed input",
+        "x": 390,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "author",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "author-step-1",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "author",
+        "style": "secondary",
+        "from": "parse",
+        "to": "validate",
+        "points": [
+          {
+            "x": 890,
+            "y": 190
+          },
+          {
+            "x": 980,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "author-label-1",
+        "kind": "text",
+        "label": "resolved request",
+        "x": 860,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "author",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "author-step-2",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "author",
+        "style": "secondary",
+        "from": "validate",
+        "to": "publish",
+        "points": [
+          {
+            "x": 1360,
+            "y": 190
+          },
+          {
+            "x": 1450,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "author-label-2",
+        "kind": "text",
+        "label": "valid mutation",
+        "x": 1330,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "author",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "author-step-3",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "author",
+        "style": "secondary",
+        "from": "publish",
+        "to": "records",
+        "points": [
+          {
+            "x": 1830,
+            "y": 190
+          },
+          {
+            "x": 1920,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "author-label-3",
+        "kind": "text",
+        "label": "published bytes",
+        "x": 1800,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "author",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "author-boundary",
+        "kind": "text",
+        "label": "A busy writer retries; a stale parent rereads. Invalid input is rejected before publication. Multi-file batches attempt rollback but do not promise crash-atomic publication.",
+        "x": 40,
+        "y": 395,
+        "width": 2260,
+        "height": 70,
+        "parent": "author",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "read",
+        "kind": "group",
+        "shape": "section",
+        "label": "Read, compare and inspect",
+        "x": 55,
+        "y": 805,
+        "width": 2360,
+        "height": 490,
+        "style": "boundary",
+        "color": "green"
+      },
+      {
+        "id": "selection",
+        "kind": "node",
+        "shape": "document",
+        "label": "Reader selection",
+        "detail": "Saga + repository + observation / comparison",
+        "x": 40,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "read",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "load",
+        "kind": "node",
+        "shape": "service",
+        "label": "Load a read view",
+        "detail": "Parse records; preserve conflicting heads",
+        "x": 510,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "read",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "resolve",
+        "kind": "node",
+        "shape": "service",
+        "label": "Git + reference resolution",
+        "detail": "Read commit objects / diff atoms; assess digests",
+        "x": 980,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "read",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "project",
+        "kind": "node",
+        "shape": "service",
+        "label": "Application projection",
+        "detail": "Traceability, coverage and bounded detail",
+        "x": 1450,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "read",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "answer",
+        "kind": "node",
+        "shape": "document",
+        "label": "JSON or HTML",
+        "detail": "Snapshot / cursor; browser page / detail",
+        "x": 1920,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "read",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "read-step-0",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "read",
+        "style": "secondary",
+        "from": "selection",
+        "to": "load",
+        "points": [
+          {
+            "x": 420,
+            "y": 190
+          },
+          {
+            "x": 510,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "read-label-0",
+        "kind": "text",
+        "label": "explicit context",
+        "x": 390,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "read",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "read-step-1",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "read",
+        "style": "secondary",
+        "from": "load",
+        "to": "resolve",
+        "points": [
+          {
+            "x": 890,
+            "y": 190
+          },
+          {
+            "x": 980,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "read-label-1",
+        "kind": "text",
+        "label": "records + pins",
+        "x": 860,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "read",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "read-step-2",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "read",
+        "style": "secondary",
+        "from": "resolve",
+        "to": "project",
+        "points": [
+          {
+            "x": 1360,
+            "y": 190
+          },
+          {
+            "x": 1450,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "read-label-2",
+        "kind": "text",
+        "label": "resolved evidence",
+        "x": 1330,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "read",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "read-step-3",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "read",
+        "style": "secondary",
+        "from": "project",
+        "to": "answer",
+        "points": [
+          {
+            "x": 1830,
+            "y": 190
+          },
+          {
+            "x": 1920,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "read-label-3",
+        "kind": "text",
+        "label": "bounded response",
+        "x": 1800,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "read",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "read-boundary",
+        "kind": "text",
+        "label": "Queries page one snapshot. Input changes invalidate continuation. Cache generations reuse exact inputs outside the Saga; missing or changed evidence stays visible.",
+        "x": 40,
+        "y": 395,
+        "width": 2260,
+        "height": 70,
+        "parent": "read",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "review",
+        "kind": "group",
+        "shape": "section",
+        "label": "Act on a specific review",
+        "x": 55,
+        "y": 1365,
+        "width": 2360,
+        "height": 490,
+        "style": "boundary",
+        "color": "purple"
+      },
+      {
+        "id": "action",
+        "kind": "node",
+        "shape": "document",
+        "label": "Reviewer action",
+        "detail": "Comment, annotation, decision or withdrawal",
+        "x": 40,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "review",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "guard",
+        "kind": "node",
+        "shape": "service",
+        "label": "Local HTTP boundary",
+        "detail": "Check mutation access and selected context",
+        "x": 510,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "review",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "review-state",
+        "kind": "node",
+        "shape": "service",
+        "label": "Review service",
+        "detail": "Resolve target, actor and reviewed revision",
+        "x": 980,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "review",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "append",
+        "kind": "node",
+        "shape": "service",
+        "label": "Persist the action",
+        "detail": "Append the permitted review record",
+        "x": 1450,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "review",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "feedback",
+        "kind": "node",
+        "shape": "document",
+        "label": "Refresh review view",
+        "detail": "Show attribution, history and freshness",
+        "x": 1920,
+        "y": 95,
+        "width": 380,
+        "height": 200,
+        "parent": "review",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "review-step-0",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "review",
+        "style": "secondary",
+        "from": "action",
+        "to": "guard",
+        "points": [
+          {
+            "x": 420,
+            "y": 190
+          },
+          {
+            "x": 510,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "review-label-0",
+        "kind": "text",
+        "label": "submitted action",
+        "x": 390,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "review",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "review-step-1",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "review",
+        "style": "secondary",
+        "from": "guard",
+        "to": "review-state",
+        "points": [
+          {
+            "x": 890,
+            "y": 190
+          },
+          {
+            "x": 980,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "review-label-1",
+        "kind": "text",
+        "label": "checked request",
+        "x": 860,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "review",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "review-step-2",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "review",
+        "style": "secondary",
+        "from": "review-state",
+        "to": "append",
+        "points": [
+          {
+            "x": 1360,
+            "y": 190
+          },
+          {
+            "x": 1450,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "review-label-2",
+        "kind": "text",
+        "label": "specific record",
+        "x": 1330,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "review",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "review-step-3",
+        "kind": "edge",
+        "x": 0,
+        "y": 0,
+        "parent": "review",
+        "style": "secondary",
+        "from": "append",
+        "to": "feedback",
+        "points": [
+          {
+            "x": 1830,
+            "y": 190
+          },
+          {
+            "x": 1920,
+            "y": 190
+          }
+        ],
+        "head": "arrow"
+      },
+      {
+        "id": "review-label-3",
+        "kind": "text",
+        "label": "updated projection",
+        "x": 1800,
+        "y": 310,
+        "width": 260,
+        "height": 70,
+        "parent": "review",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "review-boundary",
+        "kind": "text",
+        "label": "Viewed progress, discussion and approval have different meanings. Decisions are tied to reviewed content; documentation authoring never implies a review verdict.",
+        "x": 40,
+        "y": 395,
+        "width": 2260,
+        "height": 70,
+        "parent": "review",
+        "style": "small",
+        "wrap": true
+      }
+    ]
+  },
+  "created_at": "2026-10-16T03:17:58.424989Z"
+}

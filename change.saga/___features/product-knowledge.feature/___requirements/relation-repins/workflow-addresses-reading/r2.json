@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:workflow-addresses-reading",
+  "from_content_digest": "sha256:fb032c34603405c581ce180144b29d54532c9b44e8948039073aaca0f55872cc",
+  "rationale": "Added stable heading anchors; the authored design and its relation to the current story are unchanged.",
+  "created_at": "2026-10-16T03:25:03.660634Z"
+}

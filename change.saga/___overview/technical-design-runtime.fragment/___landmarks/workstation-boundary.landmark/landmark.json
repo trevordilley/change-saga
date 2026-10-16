@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "workstation-boundary",
+  "label": "Workstation boundary",
+  "selector": {
+    "type": "heading",
+    "heading_id": "workstation-boundary"
+  },
+  "target": ""
+}

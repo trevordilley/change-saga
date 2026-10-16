@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "publication-and-recovery",
+  "label": "Publication and recovery",
+  "selector": {
+    "type": "heading",
+    "heading_id": "publication-and-recovery"
+  },
+  "target": ""
+}

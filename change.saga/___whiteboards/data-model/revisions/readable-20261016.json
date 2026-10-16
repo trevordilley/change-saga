@@ -1,0 +1,686 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json",
+  "version": 1,
+  "id": "readable-20261016",
+  "parents": [
+    "design-20261016"
+  ],
+  "name": "Change Saga record model",
+  "document": {
+    "version": 1,
+    "width": 2700,
+    "height": 1860,
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "width": 1380,
+      "height": 1320
+    },
+    "styles": {
+      "body": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 1,
+        "font_size": 22
+      },
+      "entity": {
+        "fill": "@diagram-normal-fill",
+        "stroke": "@diagram-normal-stroke",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 2,
+        "font_size": 21
+      },
+      "small": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-secondary-ink",
+        "stroke_width": 1,
+        "font_size": 18
+      }
+    },
+    "elements": [
+      {
+        "id": "title",
+        "kind": "text",
+        "label": "Records that preserve intent and evidence",
+        "x": 70,
+        "y": 45,
+        "width": 2500,
+        "height": 65,
+        "style": "title",
+        "wrap": true
+      },
+      {
+        "id": "intro",
+        "kind": "text",
+        "label": "Logical ERD of file-backed records. Crow's feet show multiplicity; circles show optionality. Source pins retain the exact definitions that informed each association.",
+        "x": 70,
+        "y": 120,
+        "width": 2500,
+        "height": 75,
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "product",
+        "kind": "group",
+        "shape": "section",
+        "label": "Product knowledge",
+        "x": 60,
+        "y": 240,
+        "width": 1250,
+        "height": 1120,
+        "style": "boundary",
+        "color": "blue"
+      },
+      {
+        "id": "evidence",
+        "kind": "group",
+        "shape": "section",
+        "label": "Implementation and evidence",
+        "x": 1390,
+        "y": 240,
+        "width": 1250,
+        "height": 1120,
+        "style": "boundary",
+        "color": "green"
+      },
+      {
+        "id": "saga-manifest",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Saga",
+        "x": 65,
+        "y": 100,
+        "width": 420,
+        "height": 175,
+        "parent": "product",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "id",
+            "type": "stable namespace"
+          },
+          {
+            "name": "repository",
+            "type": "source identity"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:saga-manifest",
+          "revision": "urn:change-saga:change-saga:data-entity:saga-manifest:revision:r1"
+        },
+        "summary": "Namespace and source identity for one application."
+      },
+      {
+        "id": "feature",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Feature",
+        "x": 65,
+        "y": 415,
+        "width": 420,
+        "height": 175,
+        "parent": "product",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "id",
+            "type": "durable domain"
+          },
+          {
+            "name": "title",
+            "type": "reader label"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:feature",
+          "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1"
+        },
+        "summary": "A durable product area containing related stories and explanations."
+      },
+      {
+        "id": "story",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Story revision",
+        "x": 65,
+        "y": 760,
+        "width": 420,
+        "height": 175,
+        "parent": "product",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "story + id",
+            "type": "identity / revision"
+          },
+          {
+            "name": "parents[]",
+            "type": "explicit history"
+          },
+          {
+            "name": "criteria[]",
+            "type": "embedded obligations"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:story",
+          "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+        },
+        "summary": "Complete intent snapshot with explicit parents and embedded criteria."
+      },
+      {
+        "id": "persona",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Persona",
+        "x": 740,
+        "y": 415,
+        "width": 420,
+        "height": 175,
+        "parent": "product",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "id",
+            "type": "beneficiary identity"
+          },
+          {
+            "name": "name",
+            "type": "human role"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:persona",
+          "revision": "urn:change-saga:change-saga:data-entity:persona:revision:r1"
+        },
+        "summary": "The human beneficiary whose outcome a story serves."
+      },
+      {
+        "id": "criterion",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Criterion",
+        "x": 740,
+        "y": 760,
+        "width": 420,
+        "height": 175,
+        "parent": "product",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "id",
+            "type": "within a story"
+          },
+          {
+            "name": "statement",
+            "type": "pass / fail"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:criterion",
+          "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+        },
+        "summary": "An independent observable obligation, owned by its story revision."
+      },
+      {
+        "id": "feature-in-saga",
+        "kind": "edge",
+        "label": "belongs to",
+        "x": 0,
+        "y": 0,
+        "parent": "product",
+        "style": "secondary",
+        "from": "feature",
+        "to": "saga-manifest",
+        "points": [
+          {
+            "x": 275,
+            "y": 415
+          },
+          {
+            "x": 275,
+            "y": 275
+          }
+        ],
+        "head": "only-one",
+        "label_box": {
+          "x": 300,
+          "y": 320,
+          "width": 210,
+          "height": 45
+        },
+        "tail": "zero-or-many",
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:feature",
+          "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1",
+          "relationship": "in-saga"
+        }
+      },
+      {
+        "id": "story-in-feature",
+        "kind": "edge",
+        "label": "lives in",
+        "x": 0,
+        "y": 0,
+        "parent": "product",
+        "style": "secondary",
+        "from": "story",
+        "to": "feature",
+        "points": [
+          {
+            "x": 275,
+            "y": 760
+          },
+          {
+            "x": 275,
+            "y": 590
+          }
+        ],
+        "head": "only-one",
+        "label_box": {
+          "x": 300,
+          "y": 650,
+          "width": 210,
+          "height": 45
+        },
+        "tail": "zero-or-many",
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:story",
+          "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1",
+          "relationship": "in-feature"
+        }
+      },
+      {
+        "id": "story-serves",
+        "kind": "edge",
+        "label": "serves",
+        "x": 0,
+        "y": 0,
+        "parent": "product",
+        "style": "secondary",
+        "from": "story",
+        "to": "persona",
+        "points": [
+          {
+            "x": 485,
+            "y": 820
+          },
+          {
+            "x": 610,
+            "y": 820
+          },
+          {
+            "x": 610,
+            "y": 500
+          },
+          {
+            "x": 740,
+            "y": 500
+          }
+        ],
+        "head": "zero-or-many",
+        "label_box": {
+          "x": 530,
+          "y": 575,
+          "width": 190,
+          "height": 45
+        },
+        "tail": "zero-or-many",
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:story",
+          "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1",
+          "relationship": "serves"
+        }
+      },
+      {
+        "id": "criterion-of-story",
+        "kind": "edge",
+        "label": "criterion of",
+        "x": 0,
+        "y": 0,
+        "parent": "product",
+        "style": "secondary",
+        "from": "criterion",
+        "to": "story",
+        "points": [
+          {
+            "x": 740,
+            "y": 900
+          },
+          {
+            "x": 485,
+            "y": 900
+          }
+        ],
+        "head": "only-one",
+        "label_box": {
+          "x": 505,
+          "y": 930,
+          "width": 240,
+          "height": 45
+        },
+        "tail": "zero-or-many",
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:criterion",
+          "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1",
+          "relationship": "of-story"
+        }
+      },
+      {
+        "id": "criterion-context",
+        "kind": "text",
+        "label": "Current criteria also support a short title and Markdown overview. Their full obligation remains visible.",
+        "x": 700,
+        "y": 990,
+        "width": 475,
+        "height": 85,
+        "parent": "product",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "deck",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Deck",
+        "x": 65,
+        "y": 110,
+        "width": 420,
+        "height": 175,
+        "parent": "evidence",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "id",
+            "type": "ordered explanation"
+          },
+          {
+            "name": "role",
+            "type": "implementation / review"
+          },
+          {
+            "name": "overview",
+            "type": "authored account"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:deck",
+          "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r2"
+        },
+        "summary": "An authored account supported by ordered visual slides."
+      },
+      {
+        "id": "slide",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Slide",
+        "x": 740,
+        "y": 110,
+        "width": 420,
+        "height": 175,
+        "parent": "evidence",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "id",
+            "type": "stable identity"
+          },
+          {
+            "name": "front",
+            "type": "summary bullets"
+          },
+          {
+            "name": "visual",
+            "type": "diagram or asset"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:slide",
+          "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r2"
+        },
+        "summary": "One focused explanation with a summary Front and detailed Back."
+      },
+      {
+        "id": "code-reference",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Code reference",
+        "x": 65,
+        "y": 640,
+        "width": 420,
+        "height": 175,
+        "parent": "evidence",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "commit + path",
+            "type": "source identity"
+          },
+          {
+            "name": "lines",
+            "type": "exact selection"
+          },
+          {
+            "name": "digest",
+            "type": "selected bytes"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:code-reference",
+          "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r2"
+        },
+        "summary": "Commit-pinned source selection with a digest of its bytes."
+      },
+      {
+        "id": "item",
+        "kind": "node",
+        "shape": "entity",
+        "label": "Item",
+        "x": 740,
+        "y": 640,
+        "width": 420,
+        "height": 175,
+        "parent": "evidence",
+        "style": "normal",
+        "wrap": true,
+        "fields": [
+          {
+            "name": "id",
+            "type": "semantic element"
+          },
+          {
+            "name": "selector",
+            "type": "visual location"
+          },
+          {
+            "name": "code[]",
+            "type": "owned evidence"
+          }
+        ],
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r2"
+        },
+        "summary": "An addressable visual element that owns its exact evidence."
+      },
+      {
+        "id": "slide-in-deck",
+        "kind": "edge",
+        "label": "in",
+        "x": 0,
+        "y": 0,
+        "parent": "evidence",
+        "style": "secondary",
+        "from": "slide",
+        "to": "deck",
+        "points": [
+          {
+            "x": 740,
+            "y": 195
+          },
+          {
+            "x": 485,
+            "y": 195
+          }
+        ],
+        "head": "only-one",
+        "label_box": {
+          "x": 500,
+          "y": 220,
+          "width": 230,
+          "height": 50
+        },
+        "tail": "zero-or-many",
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:slide",
+          "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r2",
+          "relationship": "in-deck"
+        }
+      },
+      {
+        "id": "item-on-slide",
+        "kind": "edge",
+        "label": "on",
+        "x": 0,
+        "y": 0,
+        "parent": "evidence",
+        "style": "secondary",
+        "from": "item",
+        "to": "slide",
+        "points": [
+          {
+            "x": 950,
+            "y": 640
+          },
+          {
+            "x": 950,
+            "y": 285
+          }
+        ],
+        "head": "only-one",
+        "label_box": {
+          "x": 975,
+          "y": 440,
+          "width": 220,
+          "height": 50
+        },
+        "tail": "zero-or-many",
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r2",
+          "relationship": "on-slide"
+        }
+      },
+      {
+        "id": "code-reference-owned-by-item",
+        "kind": "edge",
+        "label": "evidence of",
+        "x": 0,
+        "y": 0,
+        "parent": "evidence",
+        "style": "secondary",
+        "from": "code-reference",
+        "to": "item",
+        "points": [
+          {
+            "x": 485,
+            "y": 725
+          },
+          {
+            "x": 740,
+            "y": 725
+          }
+        ],
+        "head": "zero-or-one",
+        "label_box": {
+          "x": 495,
+          "y": 750,
+          "width": 240,
+          "height": 50
+        },
+        "tail": "zero-or-many",
+        "source": {
+          "target": "urn:change-saga:change-saga:data-entity:code-reference",
+          "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r2",
+          "relationship": "owned-by-item"
+        }
+      },
+      {
+        "id": "evidence-note",
+        "kind": "text",
+        "label": "An Item belongs to exactly one slide. Code references can also belong to narrative targets, so an Item is optional for a reference. Criterion links connect Items to Product; code coverage remains on the exact evidence owner.",
+        "x": 65,
+        "y": 890,
+        "width": 1100,
+        "height": 160,
+        "parent": "evidence",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "documents",
+        "kind": "group",
+        "shape": "section",
+        "label": "Current document contracts",
+        "x": 60,
+        "y": 1430,
+        "width": 2580,
+        "height": 360,
+        "style": "boundary",
+        "color": "purple"
+      },
+      {
+        "id": "whiteboard-revision",
+        "kind": "node",
+        "shape": "document",
+        "label": "Whiteboard revision",
+        "detail": "id, parents[], name, complete diagram document. A named board has independent immutable history.",
+        "x": 55,
+        "y": 80,
+        "width": 740,
+        "height": 210,
+        "parent": "documents",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "deprecation-revision",
+        "kind": "node",
+        "shape": "document",
+        "label": "Deprecation revision",
+        "detail": "target, scope, reason, optional replacement and exact code references. Withdrawal is a lifecycle event.",
+        "x": 930,
+        "y": 80,
+        "width": 740,
+        "height": 210,
+        "parent": "documents",
+        "style": "normal",
+        "wrap": true
+      },
+      {
+        "id": "record-key",
+        "kind": "text",
+        "label": "These native record summaries describe the current contracts. Existing ERD associations above retain their original entity revision pins; the diagram is a selected logical model, not a relational database.",
+        "x": 1830,
+        "y": 80,
+        "width": 660,
+        "height": 215,
+        "parent": "documents",
+        "style": "body",
+        "wrap": true
+      }
+    ]
+  },
+  "created_at": "2026-10-16T03:21:07.129755Z"
+}

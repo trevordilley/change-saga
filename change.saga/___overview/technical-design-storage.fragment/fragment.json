@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "change-saga-technical-design-storage",
+  "title": "Storage and evolution",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 40
+}

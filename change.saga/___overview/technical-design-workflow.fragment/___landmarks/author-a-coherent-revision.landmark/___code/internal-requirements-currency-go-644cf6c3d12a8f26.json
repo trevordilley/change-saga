@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "path": "internal/requirements/currency.go",
+      "start": 371,
+      "end": 378,
+      "digest": "sha256:4837cceba0cd409966acad78c8c94657949d178420cf5c9f058d7cd44ba9df93",
+      "note": "Story and criterion obligation comparisons include authored title, statement and overview."
+    },
+    {
+      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "path": "internal/requirements/currency.go",
+      "start": 403,
+      "end": 407,
+      "digest": "sha256:ed2f6252e1ebf617b35b664ba949fef1eaa9e395d910d161c59c20a50131c5db",
+      "note": "Story and criterion obligation comparisons include authored title, statement and overview."
+    }
+  ]
+}

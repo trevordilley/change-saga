@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "path": "internal/server/server.go",
+      "start": 386,
+      "end": 438,
+      "digest": "sha256:afc943c44e1cf4c80e21a2145fb289fba113ee580a3f0d971ffa191ba4ea06aa",
+      "note": "Local listener rejects remote binding and constructs the server from the Saga, source checkout and cache."
+    }
+  ]
+}
