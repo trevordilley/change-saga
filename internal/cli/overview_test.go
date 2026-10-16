@@ -154,3 +154,36 @@ func TestDataModelOverviewRequiresMarkdownAndSafePackage(t *testing.T) {
 		t.Fatal("wrote outside the Saga")
 	}
 }
+
+func TestTechnicalDesignEssayAndSupportingPages(t *testing.T) {
+	root := newAuthoredSaga(t)
+	ctx := context.Background()
+	for _, args := range [][]string{
+		{"set-technical-design", "--text", "Start with [Infrastructure](/technical/whiteboards/infrastructure).", root},
+		{"set-technical-design", "--page", "reliability", "--title", "Reliability decisions", "--text", "Retry work through the queue.", root},
+		{"set-technical-design", "--text", "Read [Reliability](/technical/pages/reliability) and [ERD](/technical/erd).", root},
+	} {
+		if err := overviewCommand(ctx, args, &bytes.Buffer{}, nil); err != nil {
+			t.Fatal(err)
+		}
+	}
+	assertValid(t, root)
+	document, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	essay := document.OverviewPart(applayout.OverviewTechnicalDesign)
+	page := document.OverviewPart("technical-design-reliability.fragment")
+	if essay == nil || page == nil || page.Title != "Reliability decisions" {
+		t.Fatal("missing essay or supporting page")
+	}
+	content, err := os.ReadFile(filepath.Join(essay.Directory, essay.Entrypoint))
+	if err != nil || !strings.Contains(string(content), "/technical/pages/reliability") {
+		t.Fatal("essay update lost links", err)
+	}
+	for _, id := range []string{"../outside", "bad/name", ".", "bad name"} {
+		if err := overviewCommand(ctx, []string{"set-technical-design", "--page", id, "--text", "No.", root}, &bytes.Buffer{}, nil); err == nil {
+			t.Errorf("accepted page %q", id)
+		}
+	}
+}

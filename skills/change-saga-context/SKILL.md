@@ -55,7 +55,7 @@ grepping, or globbing metadata files.
 | What behavior is required, and for whom? | `query requirements` and `query personas` for the relevant identities |
 | What does this term or component mean? | `query terms` or `query inventory` |
 | How does this part work? | `change-saga diagram describe --slide TARGET PATH`, or `query fragment` for design prose |
-| How does this technical design fit together? | `change-saga whiteboard describe --id ID --format json PATH`; add `--focus INSTANCE_PATH` for one section or element and `--revision REVISION` for saved history |
+| How does this technical design fit together? | Read the technical-design approach essay and supporting pages, then `change-saga whiteboard describe --id ID --format json PATH` for `data-model`, `infrastructure`, and `data-flows`; add `--focus INSTANCE_PATH` for a section and `--revision REVISION` for saved history |
 | What intent and evidence relate to this code? | `query traceability --ref LOCATION`; discover its supported location format from help |
 | Which automated tests should run for a review? | `change-saga review test-plan --review ID --json PATH` returns tests, recorded commands, affected stories and gaps |
 | Why did the documented intent change? | `query requirement-history`, `query citations`, or `query history` for the selected record |

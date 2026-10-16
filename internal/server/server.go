@@ -497,6 +497,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /personas", application.page)
 	page("GET /flags", application.page)
 	page("GET /design-system", application.page)
+	page("GET /technical/pages/{essay}", application.page)
 	page("GET /technical/whiteboards/{board}", application.namedWhiteboardPage)
 	page("GET /technical/{kind}/{id}", application.technicalDefinitionPage)
 	page("GET /technical/{area}", application.page)
@@ -1177,6 +1178,8 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "designsystem"}, true
 	case strings.HasPrefix(path, technicalPath+"/whiteboards/") && r.PathValue("board") != "":
 		return appRoute{kind: "whiteboard", id: r.PathValue("board")}, true
+	case strings.HasPrefix(path, technicalPath+"/pages/") && r.PathValue("essay") != "":
+		return appRoute{kind: "technical-essay", id: r.PathValue("essay")}, true
 	case path == technicalPath:
 		return appRoute{kind: "technical"}, true
 	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("area") != "":
@@ -1268,7 +1271,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 			designRoot.Fragments = append(designRoot.Fragments, fragment)
 			continue
 		}
-		if fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewDataModel {
+		if fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewDataModel || applayout.IsTechnicalDesignPart(strings.TrimPrefix(fragment.Path, applayout.OverviewDir+"/")) {
 			continue
 		}
 		appReport.Fragments = append(appReport.Fragments, fragment)
@@ -1348,7 +1351,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if len(designRoot.Fragments)+len(designRoot.Children) > 0 {
 			data.DesignSystem = makeSectionView(&designRoot, scope.shell())
 		}
-	case "technical", "technical-area", "technical-entity", "whiteboard":
+	case "technical", "technical-essay", "technical-area", "technical-entity", "whiteboard":
 		if data.Technical, data.TechnicalEntity, err = a.technicalShell(r.Context(), document, route, r.URL.Query()); err != nil {
 			if errors.Is(err, errTechnicalNotFound) {
 				return nil, errAppPageNotFound
@@ -1395,7 +1398,6 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	inventory, inventoryErr := files.inventory(document.Manifest.ID)
 	var technicalRows []*navNodeView
 	var board *whiteboardView
-	var namedBoards []whiteboardDocumentView
 	if inventoryErr == nil {
 		board = files.whiteboard(func() *whiteboardView {
 			if data.Technical != nil && data.Technical.DataModel != nil && r.URL.Query().Get("revision") == "" {
@@ -1410,7 +1412,6 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		}
 		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil, navBoard)
 		named, namedErr := files.whiteboardDocuments(func() ([]whiteboardDocumentView, error) { return a.whiteboardDocuments(document.Manifest.ID) })
-		namedBoards = named
 		for _, document := range named {
 			if document.ID == "data-model" {
 				continue
@@ -1426,31 +1427,49 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 					row.Children = append(row.Children, &navNodeView{Title: section.Title, Href: whiteboardFocusHref(selected.Href, section.Path), NodeID: row.NodeID + "-" + domID(section.Path), Icon: "split"})
 				}
 			}
-			technicalRows = append(technicalRows, row)
+			if _, standard := technicalDesignBoardOf(document.ID); standard {
+				for i, existing := range technicalRows {
+					if existing.NodeID == row.NodeID {
+						row.Title = existing.Title
+						technicalRows[i] = row
+						break
+					}
+				}
+			} else {
+				technicalRows = append(technicalRows, row)
+			}
 		}
 		if data.Technical != nil {
-			data.Technical.Whiteboards = named
+			for _, board := range named {
+				if _, standard := technicalDesignBoardOf(board.ID); standard {
+					for i := range data.Technical.Areas {
+						if data.Technical.Areas[i].Segment == board.ID {
+							data.Technical.Areas[i].Count = "Whiteboard"
+							data.Technical.Areas[i].Gap = board.Note != ""
+							if board.Note != "" {
+								data.Technical.Areas[i].Note = board.Note
+							}
+						}
+					}
+				} else {
+					data.Technical.Whiteboards = append(data.Technical.Whiteboards, board)
+				}
+			}
 			if namedErr != nil {
 				data.Technical.WhiteboardNote = "Whiteboards could not be listed: " + namedErr.Error()
 			}
 		}
 	}
+	var essayRows []*navNodeView
+	for _, page := range technicalEssayPages(document) {
+		essayRows = append(essayRows, &navNodeView{Title: page.Title, Href: page.Href, NodeID: "nav-technical-page-" + domID(page.Href), Icon: "design"})
+	}
+	technicalRows = append(essayRows, technicalRows...)
+
 	if route.kind == "overview" {
 		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
 		if inventoryErr == nil {
 			part := technicalOverviewPart(inventory)
-			if board != nil && board.Visual != "" {
-				part.Gap, part.Note = false, "One data model document, Systems and Components."
-			} else if document.OverviewPart(applayout.OverviewDataModel) != nil {
-				part.Gap, part.Note = false, "Shared data-model overview, ERD documents, Systems and Components."
-			}
-			if len(namedBoards) > 0 {
-				part.Gap = false
-				part.Count += " · " + plural(len(namedBoards), "whiteboard", "whiteboards")
-				if board == nil || board.Visual == "" {
-					part.Note = "Whiteboard documents and shared technical definitions."
-				}
-			}
 			data.OverviewParts = append(data.OverviewParts, part)
 		} else {
 			data.OverviewParts = append(data.OverviewParts, overviewPartView{Title: "Technical design", Href: technicalPath, Count: "unreadable", Note: "The technical inventory could not be read: " + inventoryErr.Error(), Gap: true})
@@ -1524,6 +1543,8 @@ func pageTitle(data *pageData) string {
 			return data.Technical.Whiteboard.Name
 		}
 		return data.Technical.Whiteboard.ID
+	case data.Technical != nil && data.Technical.EssayTitle != "":
+		return data.Technical.EssayTitle
 	case data.Technical != nil && data.Technical.Area.Title != "":
 		return data.Technical.Area.Title
 	case data.Technical != nil:

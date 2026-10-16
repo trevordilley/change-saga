@@ -104,6 +104,9 @@ func onFeaturePageHref(features map[string]string, target, href string) string {
 // fragmentPageHref preserves the canonical page for shared data-model prose.
 func fragmentPageHref(fragment *saga.Fragment) string {
 	href := sagaHref(fragment.Target)
+	if pkg := strings.TrimPrefix(fragment.Path, applayout.OverviewDir+"/"); applayout.IsTechnicalDesignPart(pkg) {
+		return technicalEssayHref(pkg) + href
+	}
 	if fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewDataModel {
 		return technicalPath + "/erd" + href
 	}

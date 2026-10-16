@@ -81,6 +81,12 @@ var resources = []Resource{
 		Notes:   "the overview's description: a short essay on what the application does",
 	},
 	{
+		Kind: "overview-technical-design", URN: "urn:change-saga:<saga>:fragment:<saga>-technical-design", Storage: "___overview/technical-design.fragment/{fragment.json,content.md}",
+		Schema: schemaBase + "v2/fragment.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
+		Writers: []string{"overview set-technical-design"},
+		Notes:   "technical-design approach essay; supporting pages use technical-design-<page>.fragment; links to ERD, Infrastructure and Data flows whiteboards",
+	},
+	{
 		Kind: "overview-data-model", URN: "urn:change-saga:<saga>:fragment:<saga>-data-model", Storage: "___overview/data-model.fragment/{fragment.json,content.md}",
 		Schema: schemaBase + "v5/data-model-overview.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
 		Writers: []string{"overview set-data-model"},

@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"sync"
 	"testing"
@@ -81,20 +82,48 @@ func dogfoodPage(t *testing.T, path string) (int, string) {
 	return recorder.Code, recorder.Body.String()
 }
 
+var sidebarNavTags = regexp.MustCompile(`<nav\b[^>]*>|</nav\s*>`)
+
 // pageSidebar is the Contents navigation of page, already rendered at path.
 // The sidebar shows one feature at a time, so a row that belongs to a feature
 // is asserted on a page inside that feature rather than on the app overview.
 func pageSidebar(t *testing.T, path, page string) string {
 	t.Helper()
-	_, rest, ok := strings.Cut(page, `<nav class="doc-tree"`)
-	if !ok {
+	start := strings.Index(page, `<nav class="doc-tree"`)
+	if start < 0 {
 		t.Fatalf("GET %s rendered no sidebar", path)
 	}
-	sidebar, _, ok := strings.Cut(rest, "</nav>")
-	if !ok {
-		t.Fatalf("GET %s rendered an unterminated sidebar", path)
+	// The feature-grouping menu is a nested nav. Match the outer Contents
+	// navigation so assertions also inspect feature rows after that menu.
+	depth := 0
+	for cursor := start; cursor < len(page); {
+		span := sidebarNavTags.FindStringIndex(page[cursor:])
+		if span == nil {
+			break
+		}
+		tag := page[cursor+span[0] : cursor+span[1]]
+		cursor += span[1]
+		if strings.HasPrefix(tag, "</") {
+			depth--
+		} else {
+			depth++
+		}
+		if depth == 0 {
+			return page[start:cursor]
+		}
 	}
-	return sidebar
+	t.Fatalf("GET %s rendered an unterminated sidebar", path)
+	return ""
+}
+
+func TestPageSidebarIncludesRowsAfterNestedNavigation(t *testing.T) {
+	for _, menu := range []string{"", `<nav class="feature-grouping"><a href="/features?group=all">None</a></nav>`} {
+		page := `<nav class="doc-tree" aria-label="Contents">` + menu + `<a href="/requirements/story">Story title</a></nav><nav><a href="/outside">Outside</a></nav>`
+		sidebar := pageSidebar(t, "/", page)
+		if !strings.Contains(sidebar, `href="/requirements/story"`) || strings.Contains(sidebar, `href="/outside"`) {
+			t.Fatalf("wrong Contents boundary: %s", sidebar)
+		}
+	}
 }
 
 func dogfoodOK(t *testing.T, path string) string {

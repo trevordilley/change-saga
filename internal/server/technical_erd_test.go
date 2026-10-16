@@ -99,7 +99,6 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 		"PDF job</a> → <em>rendered from</em> → <a",
 		// Holding resources are distinct from the data.
 		"Record store (persists report rows)",
-		`href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`,
 		// The drawing takes the page's full width inside its own zoomable
 		// scroll region; the toolbar stays hidden until app.js drives it.
 		`technical-entity-page technical-erd-page"`, `<div class="erd-zoom" role="toolbar" aria-label="Application data model zoom" data-erd-zoom hidden>`,
@@ -346,13 +345,8 @@ func TestMultipleERDDocumentsAndSharedOverview(t *testing.T) {
 		t.Fatal(err)
 	}
 	nav := technicalNav(inventory, true, nil)
-	if len(nav) == 0 || len(nav[0].Children) < 3 {
-		t.Fatal("missing documents")
-	}
-	for i := 0; i < 3; i++ {
-		if !strings.HasPrefix(nav[0].Children[i].Href, "/technical/erd/") {
-			t.Fatal("entity buried ERD documents")
-		}
+	if len(nav) != 3 || nav[0].Title != "ERD" || len(nav[0].Children) != 0 {
+		t.Fatal("technical design must list three boards, not source records")
 	}
 }
 

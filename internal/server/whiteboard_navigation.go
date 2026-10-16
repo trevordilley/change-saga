@@ -117,13 +117,19 @@ const whiteboardNavigationJavaScript = `
     function selection(path) {
       board.dataset.whiteboardFocused = path;
       const selected = entries.find(entry => entry.path === path);
+      // A retained sidebar may not yet contain this named board's outline.
+      // Keep the document current when its focused section has no sidebar row.
+      const sectionListed = path && qa('.doc-tree a.doc-link[href]').some(link => {
+        const url = new URL(link.getAttribute('href'), location.href);
+        return sameDocument(url) && url.searchParams.get('focus') === path;
+      });
       for (const row of qa('.doc-tree [data-nav-row]')) {
         const link = q(':scope > a.doc-link', row);
         if (!link) continue;
         const entry = entryFor(link);
         const url = new URL(link.getAttribute('href'), location.href);
         if (!entry && !sameDocument(url)) continue;
-        const active = entry ? selected?.source.pathname === entry.source.pathname : (url.searchParams.get('focus') || '') === path;
+        const active = entry ? selected?.source.pathname === entry.source.pathname : (url.searchParams.get('focus') || '') === (sectionListed ? path : '');
         row.classList.toggle('current', Boolean(active));
         if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
       }

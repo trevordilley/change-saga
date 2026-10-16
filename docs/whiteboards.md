@@ -1,33 +1,62 @@
 # Whiteboards for technical design
 
-Whiteboards are a Change Saga visualization for technical design: a cohesive,
-spatial document with room to explain relationships and explore detail. They
-complement the other presentation forms rather than replacing their contracts.
+A Technical design explains how an application works through one approach essay
+and three whiteboards. The essay is the starting point at `/technical`; supporting
+pages expand decisions and link back into the relevant diagrams.
 
-| Form | Primary use | Reading experience |
+| Part | What it explains | Document / route |
 | --- | --- | --- |
-| Long-form essays | Product overviews, features and user stories | Read the intent, requirements and context as a narrative. |
-| Slide decks | Technical implementation and code reviews | Follow a guided sequence of explanations and inspect exact evidence. |
-| Whiteboards | Technical design | Explore a connected model through sections, relationships, pan, zoom and evidence. |
+| General approach | Architecture, responsibilities, important decisions and tradeoffs, with links into the diagrams. | `/technical` |
+| ERD | Entities and relationships with proper crow's-foot cardinality and optionality. | `data-model` · `/technical/erd` |
+| Infrastructure | The actual layout of platforms, deployed services, resources, boundaries and connections. | `infrastructure` · `/technical/whiteboards/infrastructure` |
+| Data flows | How data moves through the application, including key services, stores, transformations, inputs and outputs. | `data-flows` · `/technical/whiteboards/data-flows` |
 
-Applications include data models (ERDs), infrastructure topology and
-system designs. Each design is one comprehensive explanatory document, with
-smaller diagrams composed into its sections. It is not constrained to one slide
-or a single screen. This is a presentation form, not a new inventory kind.
+Systems and Components are no longer Technical design navigation areas. Existing
+inventory definitions remain readable through saved evidence links. Authors can
+use the shared diagram grammar to explain platforms and services directly.
+
+Write the essay and optional supporting pages as Markdown:
+
+```sh
+change-saga overview set-technical-design --source approach.md change.saga
+change-saga overview set-technical-design --page reliability \
+  --title "Reliability decisions" --source reliability.md change.saga
+```
+
+The main essay lives in `___overview/technical-design.fragment`; supporting
+pages live in `___overview/technical-design-<page>.fragment` and open at
+`/technical/pages/<page>`. Later writes replace content while preserving fragment
+identity; Git records the prose history. `--title` sets the title on creation.
+Link with ordinary Markdown, for example `[Infrastructure](/technical/whiteboards/infrastructure)`
+or `[Retry path](/technical/whiteboards/data-flows?focus=delivery/retry)`.
+
+For ERD relationships, use the renderer's `head` and `tail` markers:
+`only-one`, `zero-or-one`, `one-or-many`, or `zero-or-many`, according to the
+recorded relationship. The crow's foot goes at the many end; circles and bars
+express optionality and required participation. An arrow or a text “N” does
+not replace a crow's-foot marker. Infrastructure and data-flow connections use
+directed arrows where direction matters, with labels explaining their meaning.
+
+Each whiteboard is a cohesive spatial document with nested sections and room to
+pan, zoom and inspect detail. All three use the shared diagram grammar and
+independent revision histories. They are authoring conventions, not new
+inventory kinds or different JSON formats.
 
 ## Named documents
 
 A Saga can hold several independent whiteboards. Each has a document ID, title
 and immutable revision history. All use the same shared diagram grammar and
-whiteboard JSON contract; data models, infrastructure and system design are
+whiteboard JSON contract; data models, infrastructure and data flows are
 authoring subjects, not kinds. Use `change-saga whiteboard
 publish|get|describe|check --id ID`. For example, publish separate documents:
 
 ```sh
 change-saga whiteboard publish --id data-model --revision r1 \
   --name "Application data" --from data-model.json change.saga
-change-saga whiteboard publish --id deployment --revision r1 \
-  --name "Deployment topology" --from deployment.json change.saga
+change-saga whiteboard publish --id infrastructure --revision r1 \
+  --name "Infrastructure" --from infrastructure.json change.saga
+change-saga whiteboard publish --id data-flows --revision r1 \
+  --name "Data flows" --from data-flows.json change.saga
 ```
 
 The files contain complete diagram documents. Each board is stored under

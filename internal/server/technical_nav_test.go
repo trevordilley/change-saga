@@ -38,74 +38,28 @@ func currentNav(sidebar string) []string {
 }
 
 func TestTechnicalDesignSidebarNestsItsAreas(t *testing.T) {
-	t.Parallel()
 	root, repo, _ := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
-	for _, tc := range []struct {
-		path, current string
-		open, shut    []string
-	}{
-		// The landing page opens Technical design over its three areas and
-		// none of them.
-		{"/technical", "/technical", []string{"nav-technical"}, []string{"nav-technical-erd", "nav-technical-systems", "nav-technical-components"}},
-		{"/technical/erd", "/technical/erd", []string{"nav-technical", "nav-technical-erd"}, []string{"nav-technical-systems", "nav-technical-components"}},
-		{"/technical/systems", "/technical/systems", []string{"nav-technical", "nav-technical-systems"}, []string{"nav-technical-erd", "nav-technical-components"}},
-		{"/technical/components", "/technical/components", []string{"nav-technical", "nav-technical-components"}, []string{"nav-technical-erd", "nav-technical-systems"}},
-		// A definition is current beneath its area, which opens around it.
-		{"/technical/data-entity/pdf-report", "/technical/data-entity/pdf-report", []string{"nav-technical", "nav-technical-erd"}, []string{"nav-technical-systems"}},
-		{"/technical/system/pdf-pipeline?revision=r1", "/technical/system/pdf-pipeline", []string{"nav-technical", "nav-technical-systems"}, []string{"nav-technical-erd"}},
-		{"/technical/component/record-store", "/technical/component/record-store", []string{"nav-technical", "nav-technical-components"}, []string{"nav-technical-systems"}},
-		// ERDs and overlays have no row of their own; the ERD area is current.
-		{"/technical/erd/reporting", "/technical/erd/reporting", []string{"nav-technical-erd"}, nil},
-		{"/technical/erd-overlay/pdf-jobs", "/technical/erd-overlay/pdf-jobs", []string{"nav-technical-erd"}, nil},
-	} {
-		status, body := technicalGet(t, mux, tc.path)
+	for _, path := range []string{"/technical", "/technical/erd", "/technical/whiteboards/infrastructure", "/technical/whiteboards/data-flows"} {
+		status, body := technicalGet(t, mux, path)
 		if status != 200 {
-			t.Fatalf("%s: %d", tc.path, status)
+			t.Fatalf("%s: %d", path, status)
 		}
 		sidebar := technicalSidebar(t, body)
-		if current := currentNav(sidebar); len(current) != 1 || current[0] != tc.current {
-			t.Fatalf("%s: current rows %v, want %s", tc.path, current, tc.current)
+		if current := currentNav(sidebar); len(current) != 1 || current[0] != path {
+			t.Fatalf("%s current %v", path, current)
 		}
-		for _, id := range tc.open {
-			if !navChildren(t, sidebar, id) {
-				t.Fatalf("%s: %s is shut", tc.path, id)
+		if !navChildren(t, sidebar, "nav-technical") {
+			t.Fatal("technical design is collapsed")
+		}
+		erd, infra, flows := strings.Index(sidebar, `href="/technical/erd"`), strings.Index(sidebar, `href="/technical/whiteboards/infrastructure"`), strings.Index(sidebar, `href="/technical/whiteboards/data-flows"`)
+		if erd < 0 || !(erd < infra && infra < flows) {
+			t.Fatal("wrong board order")
+		}
+		for _, unwanted := range []string{`href="/technical/systems"`, `href="/technical/components"`, `href="/technical/data-entity/`} {
+			if strings.Contains(sidebar, unwanted) {
+				t.Errorf("old directory %s", unwanted)
 			}
-			if !strings.Contains(sidebar, `aria-expanded="true" aria-controls="`+id+`"`) {
-				t.Fatalf("%s: %s's disclosure does not say it is open", tc.path, id)
-			}
-		}
-		for _, id := range tc.shut {
-			if navChildren(t, sidebar, id) {
-				t.Fatalf("%s: %s is open", tc.path, id)
-			}
-		}
-	}
-
-	_, body := technicalGet(t, mux, "/technical/erd")
-	sidebar := technicalSidebar(t, body)
-	// Areas in reading order, each a link that is also a disclosure.
-	erd, systems, components := strings.Index(sidebar, `href="/technical/erd"`), strings.Index(sidebar, `href="/technical/systems"`), strings.Index(sidebar, `href="/technical/components"`)
-	if erd < 0 || !(erd < systems && systems < components) {
-		t.Fatalf("areas out of order: %d %d %d", erd, systems, components)
-	}
-	// Independent documents and overlays remain reachable beside entities.
-	entities := sidebar[strings.Index(sidebar, `id="nav-technical-erd"`):]
-	entities = entities[:strings.Index(entities, `aria-controls="nav-technical-systems"`)]
-	for _, want := range []string{`href="/technical/erd/application"`, `href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`, `href="/technical/data-entity/pdf-report"`, `href="/technical/data-entity/pdf-job"`} {
-		if !strings.Contains(entities, want) {
-			t.Fatalf("ERD rows lost %s: %s", want, entities)
-		}
-	}
-	for _, unwanted := range []string{`href="/technical/component/`} {
-		if strings.Contains(entities, unwanted) {
-			t.Fatalf("ERD rows list %s", unwanted)
-		}
-	}
-	// The Data model page reaches every document and overlay.
-	for _, want := range []string{`data-technical-erd-views`, `href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`, `href="/technical/erd/application"`} {
-		if !strings.Contains(body, want) {
-			t.Fatalf("ERD page lost %s", want)
 		}
 	}
 }
@@ -126,13 +80,6 @@ func TestTechnicalDesignKeepsItsOldAddresses(t *testing.T) {
 		status, body := technicalGet(t, mux, path)
 		if status != 200 || !strings.Contains(body, `<a href="/technical">Technical design</a><span>/</span>`+crumb) {
 			t.Fatalf("%s: %d, breadcrumb lost %s", path, status, crumb)
-		}
-	}
-	// The single page's section fragments land on the matching area.
-	_, body := technicalGet(t, mux, "/technical")
-	for anchor, area := range map[string]string{"technical-systems-section": "systems", "technical-components-section": "components", "technical-data-model": "erd"} {
-		if !strings.Contains(body, `id="`+anchor+`" data-technical-area="`+area+`"`) {
-			t.Fatalf("old fragment #%s does not land on %s", anchor, area)
 		}
 	}
 	for _, path := range []string{"/technical/entities", "/technical/system", "/technical/data-entity"} {

@@ -12,4 +12,5 @@ Read only the reference needed for the task.
 
 Return to the route table in `SKILL.md` when a task crosses these boundaries.
 
-For technical design, use the named-whiteboard workflow in [diagrams.md](diagrams.md).
+For technical design, write the approach essay and its supporting pages, then the
+ERD, Infrastructure and Data flows whiteboards using [diagrams.md](diagrams.md).

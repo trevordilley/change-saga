@@ -17,14 +17,16 @@ Change Saga uses three complementary presentation forms:
 
 | Form | Purpose |
 | --- | --- |
-| Long-form essays | Product overviews, features and user stories: intent, requirements and context. |
+| Long-form essays | Product overviews, features, user stories and the technical-design approach: intent, context and decisions. |
 | Slide decks | Technical implementation and code reviews: a guided explanation with exact evidence. |
-| Whiteboards | Technical design: one spacious, connected document that readers explore by panning, zooming and inspecting evidence. |
+| Whiteboards | ERD, Infrastructure and Data flows: connected diagrams that readers explore by panning, zooming and inspecting evidence. |
 
 [Whiteboards](docs/whiteboards.md) bring the existing diagram grammar, visual
 styles and annotation interactions to designs that need more room than a slide.
-Use independent named documents for data models, infrastructure topology or
-system design. Every whiteboard uses the same shared diagram grammar.
+A Technical design starts with one approach essay, with optional supporting
+pages, that links to three whiteboards: an ERD with crow's-foot notation, the
+actual infrastructure layout, and data flows through key services. Every
+whiteboard uses the same shared diagram grammar.
 
 ## Install
 

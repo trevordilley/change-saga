@@ -157,6 +157,17 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "overview set-technical-design", Status: StatusImplemented, Mutates: true, Writes: []string{"overview-technical-design"},
+		Usage:   "change-saga overview set-technical-design (--text TEXT | --source FILE|-) [--page ID] [--title TEXT] [--json|--quiet] <saga>",
+		Summary: "write the technical-design essay or a supporting page linking the ERD, infrastructure and data-flow whiteboards",
+		Flags: []Flag{
+			optional("text", "TEXT", "the Markdown content; or use --source"), optional("source", "FILE|-", "a Markdown file, or - for standard input"),
+			optional("page", "ID", "supporting page ID; omit for the main essay"), optional("title", "TEXT", "page title on creation"),
+			jsonFlag, {Name: "quiet", Description: "suppress successful output"},
+		},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "overview set-data-model", Status: StatusImplemented, Mutates: true, Writes: []string{"overview-data-model"},
 		Usage:   "change-saga overview set-data-model (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
 		Summary: "write the shared data-model overview as Markdown; each ERD remains an independent document",

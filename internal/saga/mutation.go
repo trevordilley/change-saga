@@ -230,8 +230,12 @@ func scanMutationFragment(root, dir, sagaID string, index *MutationIndex, ids ma
 		return nil
 	}
 	path := relativePath(root, manifestPath)
-	if relativePath(root, dir) == applayout.OverviewDir+"/"+applayout.OverviewDataModel && value.MediaType != "text/markdown" {
-		addIssue(validation, "error", path, "the data-model overview must be Markdown")
+	if (relativePath(root, dir) == applayout.OverviewDir+"/"+applayout.OverviewDataModel || (filepath.Dir(dir) == filepath.Join(root, applayout.OverviewDir) && applayout.IsTechnicalDesignPart(filepath.Base(dir)))) && value.MediaType != "text/markdown" {
+		message := "the data-model overview must be Markdown"
+		if applayout.IsTechnicalDesignPart(filepath.Base(dir)) {
+			message = "the technical-design essay must be Markdown"
+		}
+		addIssue(validation, "error", path, message)
 	}
 	entrypointProblem := EntrypointError(value.Entrypoint)
 	if value.Version != CurrentVersion || !ValidID(value.ID) || !ValidMediaType(value.MediaType) || entrypointProblem != "" {

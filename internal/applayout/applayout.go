@@ -56,11 +56,12 @@ const (
 	// The overview's formal parts. The project name is saga.json's title; the
 	// elevator pitch, description and data-model overview are fixed report fragments; terms are
 	// living records. Every part is optional.
-	OverviewPitch       = "pitch.fragment"
-	OverviewDescription = "description.fragment"
-	OverviewDataModel   = "data-model.fragment"
-	OverviewTerms       = "terms"
-	TermsDir            = OverviewDir + "/" + OverviewTerms
+	OverviewPitch           = "pitch.fragment"
+	OverviewDescription     = "description.fragment"
+	OverviewDataModel       = "data-model.fragment"
+	OverviewTechnicalDesign = "technical-design.fragment"
+	OverviewTerms           = "terms"
+	TermsDir                = OverviewDir + "/" + OverviewTerms
 
 	FeatureSuffix       = ".feature"
 	FeatureManifestName = "feature.json"
@@ -432,4 +433,12 @@ func RejectFeatureRootsAtAppRoot(root string) error {
 		}
 	}
 	return nil
+}
+
+// IsTechnicalDesignPart identifies the main essay and its supporting pages.
+func IsTechnicalDesignPart(name string) bool {
+	if name == OverviewTechnicalDesign {
+		return true
+	}
+	return strings.HasPrefix(name, "technical-design-") && strings.HasSuffix(name, ".fragment") && ValidID(strings.TrimSuffix(strings.TrimPrefix(name, "technical-design-"), ".fragment"))
 }

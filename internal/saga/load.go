@@ -48,11 +48,14 @@ const (
 )
 
 // overviewPartError is the one message for anything else in ___overview.
-const overviewPartError = "the overview holds only " + applayout.OverviewPitch + ", " + applayout.OverviewDescription + ", " + applayout.OverviewDataModel + ", and " + applayout.OverviewTerms + "/"
+const overviewPartError = "the overview holds only " + applayout.OverviewPitch + ", " + applayout.OverviewDescription + ", " + applayout.OverviewDataModel + ", technical-design Markdown fragments, and " + applayout.OverviewTerms + "/"
 
 // overviewEntry reports whether a directory named name belongs in ___overview,
 // and whether it is a fragment the report loader reads.
 func overviewEntry(name string) (allowed, fragment bool) {
+	if applayout.IsTechnicalDesignPart(name) {
+		return true, true
+	}
 	switch name {
 	case applayout.OverviewPitch, applayout.OverviewDescription, applayout.OverviewDataModel:
 		return true, true
@@ -309,8 +312,12 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 			if err != nil {
 				return nil, err
 			}
-			if hierarchy == overviewHierarchy && name == applayout.OverviewDataModel && fragment.MediaType != "text/markdown" {
-				addIssue(validation, "error", displayPath(rel, name), "the data-model overview must be Markdown")
+			if hierarchy == overviewHierarchy && (name == applayout.OverviewDataModel || applayout.IsTechnicalDesignPart(name)) && fragment.MediaType != "text/markdown" {
+				message := "the data-model overview must be Markdown"
+				if applayout.IsTechnicalDesignPart(name) {
+					message = "the technical-design essay must be Markdown"
+				}
+				addIssue(validation, "error", displayPath(rel, name), message)
 			}
 			section.Fragments = append(section.Fragments, fragment)
 			continue

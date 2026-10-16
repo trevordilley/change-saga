@@ -1,9 +1,11 @@
 # Authoring an ERD whiteboard
 
-Data models are one application of [named whiteboards for technical design](whiteboards.md).
+The ERD is one of the three [Technical design whiteboards](whiteboards.md),
+alongside Infrastructure and Data flows. The approach essay links and explains
+these views. Use proper crow's-foot markers for ERD cardinality and optionality.
 
 Use the document ID `data-model` for the system's **one data-model explanation**.
-It is a named whiteboard using the same grammar as infrastructure and system-design
+It is a named whiteboard using the same grammar as infrastructure and data-flow
 documents, not a special board kind. Author its entities, relationships, nested
 sections and explanations directly using the
 existing diagram grammar. Importing exact ERD revisions is optional and useful
@@ -70,7 +72,7 @@ Other named documents open at `/technical/whiteboards/<id>`.
 
 Source adapters currently support exact ERD and data-entity revisions and ERD
 imports. Component and system inventory pins are not supported sources, even
-when the board explains infrastructure or system design. Existing feature
+when the board explains infrastructure or data flows. Existing feature
 `___design` fragments are not automatically converted to whiteboards.
 
 For a subsequent revision, add `--parent r1` and choose a new revision ID.

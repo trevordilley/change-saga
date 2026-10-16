@@ -137,21 +137,43 @@ func TestConcurrentAuthoringKeepsTheSagaValid(t *testing.T) {
 	t.Parallel()
 	root := newAuthoredSaga(t)
 	const writers = 8
+	writeChapter := func(index int) error {
+		var output bytes.Buffer
+		return AddChapter(context.Background(), []string{"--feature", testFeature, "--title", fmt.Sprintf("Chapter %d", index), root, fmt.Sprintf("chapter-%d", index)}, &output)
+	}
 	var wait sync.WaitGroup
 	failures := make([]error, writers)
 	for i := 0; i < writers; i++ {
 		wait.Add(1)
 		go func(index int) {
 			defer wait.Done()
-			var output bytes.Buffer
-			failures[index] = AddChapter(context.Background(), []string{"--feature", testFeature, "--title", fmt.Sprintf("Chapter %d", index), root, fmt.Sprintf("chapter-%d", index)}, &output)
+			failures[index] = writeChapter(index)
 		}(i)
 	}
 	wait.Wait()
+	// The CLI deliberately bounds lock waits. Under a loaded runner, a queued
+	// writer may report busy; it must leave no chapter behind and be retryable
+	// after its competitors finish. This tests atomic authoring, not throughput.
+	assertValid(t, root)
+	successes := 0
 	for index, err := range failures {
-		if err != nil {
+		if err == nil {
+			successes++
+			continue
+		}
+		if !strings.Contains(err.Error(), "saga is busy:") {
 			t.Fatalf("writer %d failed: %v", index, err)
 		}
+		chapter := filepath.Join(testFeatureDir(root), fmt.Sprintf("chapter-%d.chapter", index))
+		if _, err := os.Stat(chapter); !os.IsNotExist(err) {
+			t.Fatalf("busy writer %d left a chapter behind: %v", index, err)
+		}
+		if err := writeChapter(index); err != nil {
+			t.Fatalf("retry writer %d after contention: %v", index, err)
+		}
+	}
+	if successes == 0 {
+		t.Fatal("no concurrent writer acquired the lock")
 	}
 	assertValid(t, root)
 	document, _, err := saga.Load(root)

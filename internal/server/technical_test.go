@@ -62,9 +62,9 @@ func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T)
 		t.Fatalf("technical page: %d %s", status, body)
 	}
 	for _, want := range []string{
-		`data-technical-page="landing"`, `data-technical-area="systems"`, `href="/technical/systems">Systems</a><span class="overview-part-count">1 System</span>`,
-		`href="/technical/components">Components</a><span class="overview-part-count">2 Components</span>`,
-		`href="/technical/erd">Data model</a>`, "No data model yet.",
+		`data-technical-page="landing"`, `data-technical-essay`, `href="/technical/whiteboards/infrastructure">Infrastructure</a>`,
+		`href="/technical/whiteboards/data-flows">Data flows</a>`,
+		`href="/technical/erd">ERD</a>`, "Not authored yet",
 	} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("technical landing lost %s: %s", want, body)
@@ -99,7 +99,7 @@ func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T)
 		t.Fatalf("server filter did not hide non-matching rows: %s", body)
 	}
 	status, body = technicalGet(t, mux, "/")
-	if status != 200 || !strings.Contains(body, `data-overview-part="Technical design"`) || !strings.Contains(body, "1 System · 2 Components") {
+	if status != 200 || !strings.Contains(body, `data-overview-part="Technical design"`) || !strings.Contains(body, "Approach · ERD · Infrastructure · Data flows") {
 		t.Fatalf("overview directory lost Technical design: %s", body)
 	}
 }

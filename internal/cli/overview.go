@@ -26,9 +26,10 @@ type overviewPart struct {
 }
 
 var overviewParts = map[string]overviewPart{
-	"set-pitch":       {command: "overview set-pitch", pkg: applayout.OverviewPitch, title: "Elevator pitch", order: 10},
-	"set-data-model":  {command: "overview set-data-model", pkg: applayout.OverviewDataModel, title: "Data model overview", order: 30},
-	"set-description": {command: "overview set-description", pkg: applayout.OverviewDescription, title: "Description", order: 20},
+	"set-technical-design": {command: "overview set-technical-design", pkg: applayout.OverviewTechnicalDesign, title: "Technical design", order: 40},
+	"set-pitch":            {command: "overview set-pitch", pkg: applayout.OverviewPitch, title: "Elevator pitch", order: 10},
+	"set-data-model":       {command: "overview set-data-model", pkg: applayout.OverviewDataModel, title: "Data model overview", order: 30},
+	"set-description":      {command: "overview set-description", pkg: applayout.OverviewDescription, title: "Description", order: 20},
 }
 
 // Overview dispatches the overview command family.
@@ -40,7 +41,7 @@ func Overview(ctx context.Context, args []string, out io.Writer) error {
 
 func overviewCommand(ctx context.Context, args []string, out io.Writer, stdin io.Reader) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("overview", []string{"set-pitch", "set-description", "set-data-model"}, out)
+		return livingFamilyHelp("overview", []string{"set-pitch", "set-description", "set-data-model", "set-technical-design"}, out)
 	}
 	part, ok := overviewParts[args[0]]
 	if !ok {
@@ -57,6 +58,11 @@ func overviewCommand(ctx context.Context, args []string, out io.Writer, stdin io
 // creating its fragment the first time.
 func setOverviewPart(_ context.Context, part overviewPart, args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags(part.command, commandUsage[part.command], out)
+	var page, title *string
+	if part.pkg == applayout.OverviewTechnicalDesign {
+		page = flags.String("page", "", "supporting page ID")
+		title = flags.String("title", "", "supporting page title")
+	}
 	var feature *string
 	if part.feature {
 		feature = flags.String("feature", "", "feature ID or canonical URN")
@@ -70,6 +76,18 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 	}
 	if flags.NArg() != 1 || (*text == "") == (*source == "") {
 		return fmt.Errorf("usage: %s", commandUsage[part.command])
+	}
+	if page != nil {
+		if *page != "" {
+			part.pkg = "technical-design-" + *page + ".fragment"
+			if !applayout.IsTechnicalDesignPart(part.pkg) {
+				return fmt.Errorf("--page must be a valid stable identifier")
+			}
+			part.title = *page
+		}
+		if *title != "" {
+			part.title = *title
+		}
 	}
 	if *jsonOutput && *quiet {
 		return fmt.Errorf("--json and --quiet cannot be combined")
@@ -108,6 +126,9 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 		}
 
 		if fragment == nil {
+			if !saga.ValidID(id) {
+				return fmt.Errorf("generated fragment identity is invalid or too long; use a shorter page ID")
+			}
 			if part.feature {
 				target := saga.FragmentTarget(document.Manifest.ID, id)
 				if existing := saga.MutationIndexFromDocument(document).Targets[target]; existing != "" {
@@ -132,7 +153,7 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 			result.MediaType = manifest.MediaType
 			return nil
 		}
-		if (part.feature || part.pkg == applayout.OverviewDataModel) && fragment.MediaType != "text/markdown" {
+		if (part.feature || part.pkg == applayout.OverviewDataModel || applayout.IsTechnicalDesignPart(part.pkg)) && fragment.MediaType != "text/markdown" {
 			return fmt.Errorf("the overview must be Markdown")
 		}
 		entrypoint := filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint))

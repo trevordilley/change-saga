@@ -8,12 +8,24 @@ for current syntax.
 
 ## Choose the artifact
 
-Use long-form essays for Product overviews, features and user stories; slide
-decks for technical implementation and code reviews; and whiteboards for spatial
-technical design. Each whiteboard is a named document with nested sections and
-cross-section relationships, authored with the same diagram grammar and visual
-language as slides. Data models, infrastructure and system design are authoring
-subjects, not board kinds. A Saga can have multiple independent whiteboards.
+Technical design is one approach essay plus three whiteboards: ERD (`data-model`),
+Infrastructure (`infrastructure`) and Data flows (`data-flows`). The essay explains
+how the application works, the major decisions and tradeoffs, and links into the
+boards. Use `overview set-technical-design --source FILE PATH`; add a supporting
+page with `--page ID --title TITLE`. Supporting pages open at `/technical/pages/ID`.
+Systems and Components are no longer design navigation areas.
+
+The ERD uses proper crow's-foot `head`/`tail` markers (`only-one`, `zero-or-one`,
+`one-or-many`, `zero-or-many`) matching recorded cardinality and optionality.
+Infrastructure shows the actual platform and resource layout. Data flows show
+movement through key services, stores and transformations, with directed and
+labeled connections. Link from the essay to `/technical/erd`,
+`/technical/whiteboards/infrastructure`, and `/technical/whiteboards/data-flows`;
+append `?focus=SECTION_PATH` for a specific section.
+
+Use long-form essays for Product overviews, features and user stories, and slide
+decks for implementation and code reviews. All whiteboards share the same diagram
+grammar, nested sections, cross-section connections and revision contract.
 
 Every deck has a Deck -> Slide -> Item spine. A feature's single living
 implementation deck explains the domain's current implementation. Update its
@@ -592,30 +604,29 @@ overlap is defensible. Verify claims independently; complete coverage is not
 verification. Remove scaffold content, run validation, and use the relevant
 bounded queries before handoff.
 
-## Reusable Components and Systems
+## Existing inventory definitions: Components and Systems
 
-When supported by the current CLI, use `component` and `system` for canonical
-technical documentation, distinct from terms. Components identify meaningful
-logic/transformation with exact code. Systems pin Components and explain their
-directed interactions with scoped evidence. Discover the complete JSON
-contract through `spec --json` and command help. Author definitions with
-`add|revise --from`; lifecycle changes use `set-state`. Preserve every parent
-head and all code provenance.
+Components and Systems remain available for existing inventory and pinned deck
+evidence. They are not required parts of a Technical design. For a new design,
+write the approach essay and the ERD, Infrastructure and Data flows whiteboards;
+do not build a Component/System catalog as a prerequisite.
 
-When documenting a substantial system, build reusable definitions alongside
-the explanatory decks. Start with `query inventory` and reuse existing
-identities. Promote a responsibility into a Component when multiple slides or
-features depend on the same behavior or a stable boundary needs its own
-explanation. Use a System for the directed interactions among those Components.
+When the requested work involves those existing records, start with
+`query inventory` and reuse their identities. Components identify meaningful
+logic/transformation with exact code; Systems pin Components and explain their
+directed interactions with scoped evidence. Discover the JSON contract through
+`spec --json` and command help. Update definitions with `add|revise --from` and
+lifecycle with `set-state`, preserving parent heads and provenance.
+
 Use data entities for meaningful persisted/domain records and their evidenced
 relationships; explain them together in one cohesive data-model whiteboard.
 Existing ERD records can supply optional pinned imports, without requiring a
 separate ERD document per section. A function, endpoint or table does not
 automatically need a record.
 
-For example, several feature slides may use the same job runner or external
-service gateway. Define that responsibility once, then pin the relevant slide
-Items to it while keeping each slide's contextual explanation and exact code.
+For example, when an existing Component describes a job runner or service
+gateway, slides may pin that definition while keeping their contextual
+explanations and exact code.
 Naming it in prose or drawing a matching box creates no declared link. Preserve
 the simple Front summary; use Back, notes and linked definitions for depth.
 

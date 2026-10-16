@@ -128,8 +128,8 @@ func TestWhiteboardSectionsReplaceInventorySidebarOnlyWhenValid(t *testing.T) {
 	}
 	for _, invalid := range []*whiteboardView{nil, {Note: "invalid"}} {
 		fallback := technicalNav(inventory, true, invalid)
-		if len(fallback[0].Children) <= 2 {
-			t.Fatal("invalid board hides inventory fallback")
+		if len(fallback) != 3 || len(fallback[0].Children) != 0 {
+			t.Fatal("missing boards must retain the three design views")
 		}
 	}
 	for _, route := range []string{"/technical/erd", "/technical"} {
@@ -162,7 +162,7 @@ func TestWhiteboardSidebarCacheTracksBoardAndSourceFiles(t *testing.T) {
 		}
 		return body
 	}
-	if body := open(); !strings.Contains(body, "1 data model document") {
+	if body := open(); !strings.Contains(body, `data-technical-area="data-model"`) || !strings.Contains(body, `overview-part-count">Whiteboard</span>`) {
 		t.Fatal("landing page still presents a source catalog")
 	}
 	first := application.files.current.whiteboardView

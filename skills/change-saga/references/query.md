@@ -48,6 +48,15 @@ Hierarchy nodes report inclusive `diffs.current` and `diffs.stale` totals plus
 `descendant_stale`, so evidence owned by a landmark or child is not mistaken
 for a node with no explained code.
 
+## Reading technical design
+
+Start with the approach essay at `___overview/technical-design.fragment` and
+its linked `technical-design-<page>.fragment` supporting pages. Read their prose
+through `query fragment --target URN`, using the fragment identities returned
+by the query API. Then inspect the three whiteboards: `data-model` (ERD with
+crow's-foot cardinality), `infrastructure` (platforms and resources), and
+`data-flows` (movement through key services and elements).
+
 ## Reading whiteboards
 
 Use `change-saga whiteboard describe --id ID --format json PATH` for a named
@@ -57,7 +66,7 @@ Use `change-saga whiteboard get --id ID PATH` for the complete shared diagram
 source and `change-saga whiteboard check --id ID PATH` for validation. These
 are dedicated document commands, not paginated query-envelope responses.
 Document identity is independent of subject; `data-model` is the convention
-for the Data model page. Source pins identify exact entity/relationship revisions;
+for the ERD page. Source pins identify exact entity/relationship revisions;
 repeated appearances have distinct instance paths. Existing ERD inventory
 records remain readable through `query inventory`, but are optional sources,
 not a required document per whiteboard section.

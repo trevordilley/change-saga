@@ -136,8 +136,13 @@ func TestDeckNavigationFoldsIntoDesignAndTechnicalByRole(t *testing.T) {
 	billing.Decks = append(billing.Decks, uxDeck)
 	sources.decks = append(sources.decks, uxRow)
 	app := makeAppNavTree(sources)
-	if ux := findNav(t, app, "Features", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0] != uxRow {
+	if ux := findNav(t, app, "Features", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0].NodeID != uxRow.NodeID {
 		t.Fatalf("a feature's ux deck must fill its Design > UX: %v", navTitles(ux.Children, 0))
+	}
+	// Navigation clones deck rows so grouped features can expand independently.
+	uxSlides := findNav(t, app, "Features", "Billing", "Design", "UX").Children[0].Children
+	if len(uxSlides) != 1 || uxSlides[0].Href != uxRow.Children[0].Href || uxSlides[0].Slide.Target != uxRow.Children[0].Slide.Target {
+		t.Fatal("the feature's UX deck lost its slide destination")
 	}
 	if got := topTitles(findNav(t, app, "Features", "Billing", "Technical").Children); got != "charge|refund" {
 		t.Fatalf("a ux deck must leave the feature's Technical to the change deck: %s", got)

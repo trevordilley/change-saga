@@ -38,7 +38,9 @@ one Saga is neither invalid nor reported as a problem.
 ```text
 <name>.saga/                   # change.saga by default
   saga.json
-  ___overview/                 # pitch, description, and terms and vocabulary
+  ___overview/                 # product prose, technical-design essays, and vocabulary
+    technical-design.fragment/ # the application technical approach
+    technical-design-<page>.fragment/ # optional supporting technical pages
   ___designsystem/             # design-system references
   ___personas/<id>.persona/    # who the application serves
   ___featureflags/<id>.flag/   # flags and the stories or features they gate
@@ -192,14 +194,14 @@ revisions and whose directed interactions each explain their own exact code.
 Systems also carry a name, explanation, and direct scoped evidence. There is
 no prescribed C4 hierarchy, and terms remain a distinct vocabulary concept.
 
-Substantial technical documentation should connect explanatory decks to reusable
-definitions where shared responsibilities or boundaries warrant them. Reuse a
-Component across relevant slides and features, model its directed interactions
-in Systems, and describe meaningful data relationships with data entities and
-ERDs where useful. Slide Items pin Component, System or data-entity definitions
-while retaining their own context and exact evidence. A matching name in prose
-or a diagram is not a declared dependency. Inspect declared uses before claiming connected impact
-coverage; record counts alone do not establish completeness.
+These inventory definitions support existing reusable deck evidence; they are
+not required Technical design sections. A Technical design consists of the
+approach essay and ERD, Infrastructure and Data flows whiteboards described
+below. Slide Items may continue to pin Component, System or data-entity
+definitions while retaining their own context and exact evidence. A matching
+name in prose or a diagram is not a declared dependency. Inspect declared uses
+before claiming connected impact coverage; record counts alone do not establish
+completeness.
 
 Records live under `___inventory/components/<id>.component/` and
 `___inventory/systems/<id>.system/`, with an immutable identity, complete
@@ -393,6 +395,23 @@ revision rules above. See the
 [records implementation note](docs/technical-inventory-records-implementation.md).
 
 ### Whiteboards for technical design
+
+Technical design opens at `/technical` with one Markdown essay explaining the
+application's general approach and linking to three whiteboards: **ERD** (ID
+`data-model`, with proper crow's-foot cardinality and optionality),
+**Infrastructure** (ID `infrastructure`, the actual platform/resource layout),
+and **Data flows** (ID `data-flows`, movement through key services and elements).
+These replace Systems and Components as reading/navigation areas. Existing
+inventory definitions and exact saved pins remain addressable.
+
+`overview set-technical-design` writes `___overview/technical-design.fragment`.
+With `--page ID`, it writes `technical-design-<ID>.fragment`, served at
+`/technical/pages/<ID>`; `--title` sets a new page's title. All these fragments
+must be Markdown. They use normal fragment identity and Git history. Essays
+link to supporting pages and to board sections with `?focus=PATH`; boards retain
+their independent immutable revision histories. Missing essays and boards are
+visible authoring gaps. Other named boards remain available as supporting material.
+
 
 Whiteboards are a spatial presentation form alongside long-form product essays
 and implementation/review slide decks. They compose one technical-design

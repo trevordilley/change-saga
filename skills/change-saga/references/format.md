@@ -38,6 +38,10 @@ change.saga/
 The layout is descriptive, not an authoring API. Use queries to discover
 resources and public commands to change them.
 
+Technical design combines `___overview/technical-design.fragment`, optional
+`technical-design-<page>.fragment` supporting essays, and three whiteboards with
+IDs `data-model`, `infrastructure`, and `data-flows`.
+
 Named technical-design whiteboards use the shared diagram schema and independent
 immutable histories. Their directory placement determines the format; there is
 no kind discriminator. Publish and inspect them with the public `whiteboard`

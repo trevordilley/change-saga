@@ -11,7 +11,7 @@ review deck → reconcile living documentation → check again workflow.
 | | |
 | --- | --- |
 | [feature-themes.md](feature-themes.md) | Optional product themes, authored rationale decks, and Theme/Persona feature grouping. |
-| [whiteboards.md](whiteboards.md) | Independent named whiteboards for data models, infrastructure and system design, using one shared diagram grammar. |
+| [whiteboards.md](whiteboards.md) | Technical design: an approach essay, supporting pages, and ERD, Infrastructure and Data flows whiteboards. |
 | [erd-whiteboard-guide.md](erd-whiteboard-guide.md) | Current ERD whiteboard authoring, shared grammar, source evidence, immutable revisions and focused inspection. |
 | [code-examples.md](code-examples.md) | Author API and library usage examples as measured code elements inside visual slides. |
 | [deck-overview.md](deck-overview.md) | Current deck Overview, Front/Back, evidence citations, Viewed state, and compatibility guide. |
