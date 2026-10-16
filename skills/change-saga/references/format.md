@@ -40,21 +40,23 @@ resources and public commands to change them.
 
 ## Windows path portability
 
-Deck records retain a 64-byte filename limit and a 240-byte absolute-path
-budget on every platform, including macOS and Linux, to keep Sagas compatible
-with Windows. Creation reserves space for a full 64-byte filename; validation
-measures each existing filename. The diagnostic reports the directory, filename
-allowance, total length, and how many bytes must be removed.
+Deck records retain a 64-byte filename format limit on every platform. Absolute
+paths exceeding the 240-byte compatibility budget produce warnings only on
+Windows. These warnings do not invalidate the Saga or block loading or authoring;
+actual filesystem failures still return errors. macOS and Linux do not emit these
+checkout-location warnings. This is not a guarantee that every Windows tool can
+handle the same long path.
 
-When this guard fails, shorten the checkout/worktree or Saga location by at
-least the reported excess. Preserve uncommitted work and managed workspaces;
-use a separate checkout at a shorter path when appropriate instead of moving
-an active managed workspace behind its manager. Before creating a new record,
-a shorter deck or review ID can also reduce its directory path. Keep descriptive
-titles in the content. Do not rename existing IDs, hand-edit or rename generated
-storage files, disable the guard, or use a symlink to hide the real path length.
-Run `change-saga validate --json <saga>` at the shorter location, then retry the
-original command. Test fixtures should likewise use a short temporary root.
+Creation warnings allow space for a full 64-byte filename; validation measures
+each existing filename. The diagnostic reports the directory, filename allowance,
+total length, and reduction needed for compatibility. On Windows, use a shorter
+checkout/worktree or Saga location to resolve the warning. Preserve uncommitted
+work and managed workspaces; use a separate checkout at a shorter path when
+appropriate instead of moving an active managed workspace behind its manager.
+Before creating a new record, shorter deck or review IDs can also help. Do not
+rename existing IDs or hand-edit generated storage files. Run
+`change-saga validate --json <saga>` at the shorter location to verify the warning
+is resolved. Basename and structural format errors remain errors on all platforms.
 
 ## Technical design layout
 

@@ -43,18 +43,18 @@ func TestDeckRecordNamesAreCompactDeterministicAndCategorized(t *testing.T) {
 	}
 }
 
-func TestFlatPathBudgetPreservesLimitAndExplainsRecovery(t *testing.T) {
+func TestFlatPathWarningExplainsWindowsCompatibility(t *testing.T) {
 	base := filepath.Join(t.TempDir(), "s")
 	for _, filenameBytes := range []int{24, FlatMaxBasename} {
 		padding := FlatMaxPath - len(filepath.Join(base, "x")) + 1 - filenameBytes
 		directory := base + strings.Repeat("a", padding)
-		if issue := FlatPathBudgetIssue(directory, filenameBytes); issue != "" {
+		if issue := flatPathBudgetWarning(directory, filenameBytes, "windows"); issue != "" {
 			t.Fatalf("exactly 240 bytes must remain valid: %s", issue)
 		}
 		// A non-ASCII suffix checks that the diagnostic uses the same byte
 		// measurement as the guard rather than promising character counts.
-		issue := FlatPathBudgetIssue(directory+"é", filenameBytes)
-		for _, want := range []string{"242 bytes", "240-byte Windows portability budget (2-byte reduction required)", fmt.Sprintf("filename allowance: %d bytes", filenameBytes), "shorter checkout/worktree or Saga location", "Preserve existing record IDs", "guard enabled", "validate --json"} {
+		issue := flatPathBudgetWarning(directory+"é", filenameBytes, "windows")
+		for _, want := range []string{"242 bytes", "240-byte Windows portability budget (2-byte reduction required)", fmt.Sprintf("filename allowance: %d bytes", filenameBytes), "shorter checkout/worktree or Saga location", "Preserve existing record IDs", "does not invalidate the Saga or block authoring", "validate --json"} {
 			if !strings.Contains(issue, want) {
 				t.Errorf("diagnostic missing %q: %s", want, issue)
 			}
@@ -62,17 +62,25 @@ func TestFlatPathBudgetPreservesLimitAndExplainsRecovery(t *testing.T) {
 	}
 }
 
-func TestFlatPathChecksActualFilenameAndBasenameBudget(t *testing.T) {
+func TestFlatPathSeverityDependsOnPlatformAndIssue(t *testing.T) {
 	base := filepath.Join(t.TempDir(), "s")
 	directory := base + strings.Repeat("a", FlatMaxPath-len(filepath.Join(base, "x"))+1-24)
-	if issue := flatPathIssue(directory, strings.Repeat("x", 24)); issue != "" {
-		t.Fatal(issue)
-	}
-	if issue := flatPathIssue(directory, strings.Repeat("x", 25)); !strings.Contains(issue, "1-byte reduction required") {
-		t.Fatalf("expected over-budget actual file: %s", issue)
-	}
-	if issue := flatPathIssue(base, strings.Repeat("x", 65)); !strings.Contains(issue, "65 bytes") || !strings.Contains(issue, "do not hand-rename") {
-		t.Fatalf("expected actionable basename diagnostic: %s", issue)
+	for _, platform := range []string{"windows", "darwin", "linux"} {
+		if severity, message := flatPathIssueForOS(directory, strings.Repeat("x", 24), platform); severity != "" || message != "" {
+			t.Fatalf("%s: exact budget: %s %s", platform, severity, message)
+		}
+		severity, message := flatPathIssueForOS(directory, strings.Repeat("x", 25), platform)
+		if platform == "windows" {
+			if severity != "warning" || !strings.Contains(message, "1-byte reduction required") {
+				t.Fatalf("expected Windows warning: %s %s", severity, message)
+			}
+		} else if severity != "" || message != "" {
+			t.Fatalf("unexpected %s path diagnostic: %s %s", platform, severity, message)
+		}
+		severity, message = flatPathIssueForOS(directory, strings.Repeat("x", 65), platform)
+		if severity != "error" || !strings.Contains(message, "65 bytes") || !strings.Contains(message, "do not hand-rename") {
+			t.Fatalf("%s: basename limit must remain an error: %s %s", platform, severity, message)
+		}
 	}
 }
 

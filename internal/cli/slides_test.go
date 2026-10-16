@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -46,7 +47,7 @@ func TestQualifiedDiagramIDs(t *testing.T) {
 	}
 }
 
-func TestDeckPathBudgetExplainsShorterLocationAndAllowsRetry(t *testing.T) {
+func TestDeckPathBudgetAllowsAuthoringAndWarnsOnlyOnWindows(t *testing.T) {
 	root := newAuthoredSaga(t)
 	longParent := filepath.Join(shortTempDir(t), strings.Repeat("p", 150))
 	if err := os.MkdirAll(longParent, 0o755); err != nil {
@@ -60,23 +61,41 @@ func TestDeckPathBudgetExplainsShorterLocationAndAllowsRetry(t *testing.T) {
 	add := func(location string) error {
 		return AddDeck(context.Background(), []string{"--feature", testFeature, "--id", "arch", "--objective", "Explain the flow.", location, "arch"}, &output)
 	}
-	err := add(longRoot)
-	if err == nil || !strings.Contains(err.Error(), "240-byte Windows portability budget") || !strings.Contains(err.Error(), "filename allowance: 64 bytes") || !strings.Contains(err.Error(), "validate --json") {
-		t.Fatalf("expected actionable path error, got %v", err)
+	if err := add(longRoot); err != nil {
+		t.Fatalf("long-path creation must succeed when filesystem supports it: %v", err)
 	}
-	if _, err := os.Stat(filepath.Join(testFeatureDir(longRoot), saga.EmbeddedSlidesDir, "arch.deck")); !os.IsNotExist(err) {
-		t.Fatalf("rejected deck was created: %v", err)
+	warns := strings.Contains(output.String(), "Warning:")
+	if warns != (runtime.GOOS == "windows") {
+		t.Fatalf("wrong platform warning: %s", output.String())
 	}
-	if err := os.Rename(longRoot, root); err != nil {
-		t.Fatal(err)
+	if runtime.GOOS == "windows" && !strings.Contains(output.String(), "filename allowance: 64 bytes") {
+		t.Fatalf("missing creation allowance: %s", output.String())
 	}
-	if err := add(root); err != nil {
-		t.Fatalf("retry in shorter location: %v", err)
+	output.Reset()
+	if err := AddSlide(context.Background(), []string{"--deck", "arch", "--intent", "explain", "--layout", "diagram", longRoot, "flow"}, &output); err != nil {
+		t.Fatalf("authoring existing long-path deck: %v", err)
 	}
-	_, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid {
-		t.Fatalf("relocated Saga invalid: %v %v", err, validation.Issues)
+	output.Reset()
+	if err := Validate(context.Background(), []string{"--json", longRoot}, &output); err != nil {
+		t.Fatalf("validation must succeed: %v %s", err, output.String())
 	}
+	var result saga.Validation
+	if err := json.Unmarshal(output.Bytes(), &result); err != nil || !result.Valid {
+		t.Fatalf("invalid validation response: %v %s", err, output.String())
+	}
+	found := false
+	for _, issue := range result.Issues {
+		if strings.Contains(issue.Message, "Windows portability budget") {
+			found = true
+			if issue.Severity != "warning" {
+				t.Fatalf("path severity: %v", issue)
+			}
+		}
+	}
+	if found != (runtime.GOOS == "windows") {
+		t.Fatalf("platform diagnostics: %v", result.Issues)
+	}
+
 }
 
 func TestImplementationDeckAuthoringLoop(t *testing.T) {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -13,16 +14,30 @@ import (
 
 const commit = "0a103972ac26d8dfd8a4a1f3be0b1b9b5a2c4e61"
 
-func TestReviewPathBudgetExplainsRecoveryBeforeCreatingRecord(t *testing.T) {
+func TestReviewPathBudgetDoesNotBlockCreation(t *testing.T) {
 	root := filepath.Join(t.TempDir(), strings.Repeat("p", 120), "app.saga")
 	writeJSON(t, filepath.Join(root, saga.ManifestName), saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "app", Title: "App", Source: saga.Source{Repository: "https://example.test/acme/app.git"}})
 	err := Create(root, saga.ReviewManifest{ID: "pr-7", Title: "PR 7", Base: "main"}, saga.DeckManifest{ID: "pr-7", Title: "PR 7", Objective: "Explain the change."})
-	if err == nil || !strings.Contains(err.Error(), "cannot create review") || !strings.Contains(err.Error(), "240-byte Windows portability budget") || !strings.Contains(err.Error(), "filename allowance: 64 bytes") || !strings.Contains(err.Error(), "Preserve existing record IDs") {
-		t.Fatalf("expected actionable path error: %v", err)
+	if err != nil {
+		t.Fatal(err)
 	}
-	if _, err := os.Stat(saga.ReviewDir(root, "pr-7")); !os.IsNotExist(err) {
-		t.Fatalf("rejected review was created: %v", err)
+	document, validation, err := saga.Load(root)
+	if err != nil || !validation.Valid || document.FindReview("pr-7") == nil {
+		t.Fatalf("long-path review failed to load: %v %v", err, validation.Issues)
 	}
+	found := false
+	for _, issue := range validation.Issues {
+		if strings.Contains(issue.Message, "Windows portability budget") {
+			found = true
+			if issue.Severity != "warning" {
+				t.Fatalf("path severity: %v", issue)
+			}
+		}
+	}
+	if found != (runtime.GOOS == "windows") {
+		t.Fatalf("platform diagnostics: %v", validation.Issues)
+	}
+
 }
 
 func writeJSON(t *testing.T, path string, value any) {

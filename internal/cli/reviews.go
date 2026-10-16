@@ -109,6 +109,10 @@ func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 	}
 	urn := saga.ReviewTarget(sagaManifest.ID, *id)
 	path := saga.ReviewsDir + "/" + *id + saga.ReviewSuffix
+	var warnings []string
+	if warning := saga.FlatPathBudgetWarning(filepath.Join(root, path, saga.ReviewDeckDir), saga.FlatMaxBasename); warning != "" {
+		warnings = append(warnings, warning)
+	}
 	created := []string{urn, saga.ReviewDeckTarget(sagaManifest.ID, *id, *deckID)}
 	staleness := createdReviewStaleness(ctx, root, *repo, *id)
 	if *jsonOutput {
@@ -117,10 +121,14 @@ func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 			livingMutationOutput: livingMutationOutput{OK: true, Operation: name, Resource: urn, Path: path, Created: created, EventIDs: []string{}},
 			Review:               reviewCreated{ID: *id, Base: *base, Head: *head, PullRequest: manifest.PullRequest, Inferred: append([]string{}, filled.inferred...)},
 			StaleByChange:        staleness,
+			Warnings:             warnings,
 		})
 	}
 	if err := writeLivingMutation(out, name, urn, path, created, nil, false, false); err != nil {
 		return err
+	}
+	for _, warning := range warnings {
+		fmt.Fprintf(out, "Warning: %s\n", warning)
 	}
 	{
 		if len(filled.inferred) > 0 {
@@ -138,7 +146,8 @@ func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 // as created, with what was worked out rather than given.
 type reviewCreateOutput struct {
 	livingMutationOutput
-	Review reviewCreated `json:"review"`
+	Review   reviewCreated `json:"review"`
+	Warnings []string      `json:"warnings,omitempty"`
 	// StaleByChange is what the review's change did to the living
 	// documentation's references, when the Saga records any.
 	StaleByChange *changeStaleness `json:"stale_by_change,omitempty"`

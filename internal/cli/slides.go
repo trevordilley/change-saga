@@ -64,7 +64,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	if (rank.set && rank.value < 0) || utf8.RuneCountInString(*objective) > 240 {
 		return fmt.Errorf("--rank must be non-negative and --objective cannot exceed 240 characters")
 	}
-	var created, target string
+	var created, target, pathWarning string
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
 		var slidesRoot string
 		var peers []*saga.Deck
@@ -135,9 +135,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 			return statErr
 		}
 		bundle := filepath.Join(slidesRoot, *id+saga.EmbeddedDeckSuffix)
-		if issue := saga.FlatPathBudgetIssue(bundle, saga.FlatMaxBasename); issue != "" {
-			return fmt.Errorf("cannot create embedded deck: %s", issue)
-		}
+		pathWarning = saga.FlatPathBudgetWarning(bundle, saga.FlatMaxBasename)
 		if err := os.MkdirAll(slidesRoot, 0o755); err != nil {
 			return err
 		}
@@ -162,6 +160,9 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		intent = "orient"
 	}
 	fmt.Fprintf(out, "Added deck %s\nTarget: %s\nNext: change-saga add-slide --deck %s --intent %s --layout diagram %s first-slide\n", filepath.ToSlash(created), target, *id, intent, flags.Arg(0))
+	if pathWarning != "" {
+		fmt.Fprintf(out, "Warning: %s\n", pathWarning)
+	}
 	return nil
 }
 

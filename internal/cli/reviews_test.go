@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -15,6 +16,45 @@ import (
 )
 
 const reviewSlideSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><rect id="node" x="10" y="10" width="100" height="100"/><text id="note" x="200" y="50">why</text></svg>`
+
+func TestReviewCreateLongPathSucceedsWithPlatformWarnings(t *testing.T) {
+	t.Setenv("CHANGE_SAGA_NO_GH", "1")
+	fixture := newReviewOnlyFixture(t, false)
+	parent := filepath.Join(shortTempDir(t), strings.Repeat("p", 150))
+	if err := os.MkdirAll(parent, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	root := filepath.Join(parent, "app.saga")
+	if err := os.Rename(fixture.root, root); err != nil {
+		t.Fatal(err)
+	}
+	for _, jsonOutput := range []bool{true, false} {
+		id := "plain"
+		if jsonOutput {
+			id = "json"
+		}
+		args := []string{"create", "--id", id, "--repo", fixture.repo, "--base", "main", "--head", "feature/pg", "--title", "Review"}
+		if jsonOutput {
+			args = append(args, "--json")
+		}
+		args = append(args, root)
+		output := run(t, Review, args...)
+		warns := strings.Contains(output, "Windows portability budget")
+		if warns != (runtime.GOOS == "windows") {
+			t.Fatalf("wrong platform warning: %s", output)
+		}
+		if jsonOutput {
+			var result reviewCreateOutput
+			if err := json.Unmarshal([]byte(output), &result); err != nil || !result.OK {
+				t.Fatalf("JSON creation response: %v %s", err, output)
+			}
+			if (len(result.Warnings) > 0) != (runtime.GOOS == "windows") {
+				t.Fatalf("JSON warning field: %s", output)
+			}
+		}
+	}
+	assertValid(t, root)
+}
 
 // reviewFixture is a code repository holding an app Saga, with a feature
 // branch that changes two files and a review of that branch whose two slides

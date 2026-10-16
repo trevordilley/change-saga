@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 )
 
@@ -85,25 +86,39 @@ func validFlatRank(rank int) error {
 	return nil
 }
 
-func flatPathIssue(root, name string) string {
-	if len(name) > FlatMaxBasename {
-		return fmt.Sprintf("portable deck basename %q is %d bytes; Windows portability limit is %d bytes. Restore the canonical filename or recreate the record through the public CLI; do not hand-rename generated records", name, len(name), FlatMaxBasename)
-	}
-	return FlatPathBudgetIssue(root, len(name))
+func flatPathIssue(root, name string) (severity, message string) {
+	return flatPathIssueForOS(root, name, runtime.GOOS)
 }
 
-// FlatPathBudgetIssue preserves the absolute-path budget used for Windows
-// portability. Creators reserve FlatMaxBasename bytes for future bundle records;
-// readers check the actual filename length. Diagnostics distinguish that filename
-// allowance from the directory so callers can fix location without changing IDs.
-func FlatPathBudgetIssue(directory string, filenameBytes int) string {
+func flatPathIssueForOS(root, name, goos string) (severity, message string) {
+	if len(name) > FlatMaxBasename {
+		return "error", fmt.Sprintf("portable deck basename %q is %d bytes; format limit is %d bytes. Restore the canonical filename or recreate the record through the public CLI; do not hand-rename generated records", name, len(name), FlatMaxBasename)
+	}
+	if warning := flatPathBudgetWarning(root, len(name), goos); warning != "" {
+		return "warning", warning
+	}
+	return "", ""
+}
+
+// FlatPathBudgetWarning reports a local Windows compatibility concern without
+// rejecting otherwise valid content. Creators reserve FlatMaxBasename bytes for
+// future bundle records; readers check the actual filename length. Other platforms
+// do not emit this environment-specific warning.
+func FlatPathBudgetWarning(directory string, filenameBytes int) string {
+	return flatPathBudgetWarning(directory, filenameBytes, runtime.GOOS)
+}
+
+func flatPathBudgetWarning(directory string, filenameBytes int, goos string) string {
+	if goos != "windows" {
+		return ""
+	}
 	abs, err := filepath.Abs(directory)
 	if err != nil {
 		return fmt.Sprintf("cannot resolve deck directory for Windows portability check: %v", err)
 	}
 	length := len(filepath.Join(abs, "x")) - 1 + filenameBytes
 	if length > FlatMaxPath {
-		return fmt.Sprintf("portable deck path requires %d bytes (directory %q: %d bytes; filename allowance: %d bytes), exceeding the %d-byte Windows portability budget (%d-byte reduction required). Fix: use a shorter checkout/worktree or Saga location; for a new deck or review, shorter IDs can also help. Preserve existing record IDs and generated filenames, keep the portability guard enabled, then run change-saga validate --json <saga> at the shorter location and retry", length, abs, len(abs), filenameBytes, FlatMaxPath, length-FlatMaxPath)
+		return fmt.Sprintf("deck path requires %d bytes (directory %q: %d bytes; filename allowance: %d bytes), exceeding the %d-byte Windows portability budget (%d-byte reduction required). Some Windows tools may not support this location. Use a shorter checkout/worktree or Saga location for compatibility; for a new deck or review, shorter IDs can also help. Preserve existing record IDs and generated filenames, then run change-saga validate --json <saga> at the shorter location. This warning does not invalidate the Saga or block authoring", length, abs, len(abs), filenameBytes, FlatMaxPath, length-FlatMaxPath)
 	}
 	return ""
 }

@@ -128,8 +128,8 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		name := entry.Name()
 		path := filepath.Join(recordRoot, name)
 		diagnostic := relativePath(root, path)
-		if issue := flatPathIssue(recordRoot, name); issue != "" {
-			addIssue(validation, "error", diagnostic, issue)
+		if severity, issue := flatPathIssue(recordRoot, name); issue != "" {
+			addIssue(validation, severity, diagnostic, issue)
 		}
 		if !flatRegular(entry) {
 			addIssue(validation, "error", diagnostic, "slide storage permits only regular files inside a deck bundle")
