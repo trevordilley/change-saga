@@ -41,7 +41,9 @@
         "required": ["id", "statement"],
         "properties": {
           "id": { "$ref": "#/$defs/id" },
-          "statement": { "type": "string", "minLength": 1 }
+          "statement": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "description": "Optional short authored navigation title; the full statement remains visible." },
+          "overview": { "type": "string", "description": "Optional Markdown rationale, examples and boundaries; part of the criterion obligation." }
         }
       }
     },

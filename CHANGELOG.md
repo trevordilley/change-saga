@@ -12,6 +12,12 @@ tool, and what they have to do about it.
 
 ### Added
 
+- **Format:** Acceptance criteria support optional authored titles and Markdown
+  overviews in story revisions. CLI add/revise, editor, queries, and reading pages
+  preserve them; changes require reassessing criterion and whole-story evidence.
+  Existing Sagas need no migration. Upgrade strict readers before using the new
+  fields, which older readers reject.
+
 - **Format:** Optional shared Markdown data-model overview at
   `___overview/data-model.fragment`, authored with `overview set-data-model`.
   `query inventory` discovers its fragment target; existing fragment and history

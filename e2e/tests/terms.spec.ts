@@ -33,6 +33,7 @@ test("project destinations stay visible, and a term links its code and stories b
   await expect(page.getByRole("heading", { name: "Greeting", level: 1 })).toBeVisible();
   await expect(page.getByText("The line a caller is welcomed with; it now names the caller.")).toBeVisible();
   await expect(page.getByText("salutation", { exact: true })).toBeVisible();
+  await page.locator(".term-code-list > summary").click();
   const rendered = page.locator("[data-term-code]");
   await expect(rendered).toHaveAttribute("data-file-path", "src/app.go");
   await expect(rendered.locator("tr.referenced")).toHaveCount(3);

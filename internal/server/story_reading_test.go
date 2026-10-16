@@ -46,3 +46,36 @@ func TestStoryReadingPreservesAuthoredContentAndSafelyRendersOverview(t *testing
 		t.Fatal("criteria should start collapsed")
 	}
 }
+
+func TestCriterionReadingShowsAuthoredTitleAndSafeOverview(t *testing.T) {
+	statement := "The forecast shows its observation date and time."
+	doc := requirements.Document{SagaID: "reading", Stories: []requirements.Story{{Identity: requirements.StoryIdentity{ID: "read"}, CurrentRevision: &requirements.Revision{ID: "r1", Title: "Read forecasts", Statement: "I can read forecasts", AcceptanceCriteria: []requirements.Criterion{{ID: "fresh", Title: "Forecast freshness", Statement: statement, Overview: "## Why\n\nCheck **observation time**.\n\n<script>alert(1)</script>\n\n[bad](javascript:alert(1))"}}}}}}
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, criterionID := range []string{"", "fresh"} {
+		page, nav, err := makeRequirementsSurface(doc, requirementRoute{active: true, storyID: "read", criterionID: criterionID})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if nav.Children[0].Children[0].Title != "AC 01 · Forecast freshness" {
+			t.Fatalf("navigation: %+v", nav.Children[0].Children[0])
+		}
+		var output bytes.Buffer
+		if err := tmpl.ExecuteTemplate(&output, "requirements-page", page); err != nil {
+			t.Fatal(err)
+		}
+		html := output.String()
+		for _, want := range []string{"Forecast freshness", statement, "<strong>observation time</strong>", "data-criterion-overview"} {
+			if !strings.Contains(html, want) {
+				t.Fatalf("missing %q on %q", want, criterionID)
+			}
+		}
+		for _, unsafe := range []string{"<script>", `href="javascript:`} {
+			if strings.Contains(html, unsafe) {
+				t.Fatalf("unsafe criterion prose: %s", html)
+			}
+		}
+	}
+}

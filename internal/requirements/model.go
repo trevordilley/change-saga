@@ -43,6 +43,8 @@ type StoryIdentity struct {
 type Criterion struct {
 	ID        string `json:"id"`
 	Statement string `json:"statement"`
+	Title     string `json:"title,omitempty"`
+	Overview  string `json:"overview,omitempty"`
 }
 
 // Revision is a complete story snapshot. A reader never inherits omitted
@@ -283,8 +285,11 @@ type ReviseCriterionInput struct {
 	Parent     string
 	RevisionID string
 	Statement  string
-	CreatedAt  time.Time
-	RequestID  string
+	// Nil preserves the parent's prose; a pointer to "" explicitly clears it.
+	Title     *string
+	Overview  *string
+	CreatedAt time.Time
+	RequestID string
 }
 
 // RemoveCriterionInput omits one criterion from the next complete story

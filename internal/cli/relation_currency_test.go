@@ -91,7 +91,7 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	}
 	var carried bytes.Buffer
 	if err := Relation(ctx, []string{"status", root}, &carried); err != nil ||
-		!strings.Contains(carried.String(), "current\n  carried forward criterion_unchanged: to criterion statement is unchanged since the confirmed revision") {
+		!strings.Contains(carried.String(), "current\n  carried forward criterion_unchanged: to criterion content is unchanged since the confirmed revision") {
 		t.Fatalf("carried-forward text status = %v\n%s", err, carried.String())
 	}
 
@@ -107,7 +107,7 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 		t.Fatalf("revised relation = %#v", got)
 	}
 	var text bytes.Buffer
-	if err := Relation(ctx, []string{"status", root}, &text); err != nil || !strings.Contains(text.String(), "stale\n  criterion_statement_changed: to criterion statement changed") {
+	if err := Relation(ctx, []string{"status", root}, &text); err != nil || !strings.Contains(text.String(), "stale\n  criterion_statement_changed: to criterion content changed") {
 		t.Fatalf("text status = %v\n%s", err, text.String())
 	}
 

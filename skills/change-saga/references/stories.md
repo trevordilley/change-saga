@@ -238,3 +238,13 @@ read its prose with `query fragment --target URN` and its Git history with
 `query history --node URN`. The page renders safe Markdown, keeps full criterion
 statements visible as bullets, and expands supporting traceability through
 keyboard-accessible disclosures. Existing Sagas remain readable without migration.
+
+Acceptance criteria may also carry an optional short title and Markdown overview.
+Use `criterion add|revise --title TEXT --overview-source FILE|-` (or `--overview`)
+to explain rationale, examples, and boundaries while keeping the required
+statement an independent pass/fail obligation. Do not derive titles by truncating
+existing statements. Criterion revisions preserve omitted fields; explicit empty
+title or overview clears them. Full story snapshots still specify all fields.
+Changing any authored criterion field makes its own evidence pins and whole-story
+pins stale; unchanged sibling criteria continue to carry forward. The viewer
+keeps the full statement visible and expands explanation and evidence underneath.

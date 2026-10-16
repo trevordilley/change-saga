@@ -481,6 +481,9 @@ the record's own content for the top of the page. */
 .requirement-criterion{padding:0;border:0;border-bottom:1px solid var(--line-soft);border-radius:0;background:transparent;color:var(--ink)}
 .requirement-criterion:hover{transform:none;box-shadow:none;border-color:var(--line)}
 .requirement-criterion>summary{padding:12px 4px;cursor:pointer;font:500 16px/1.65 var(--ui);overflow-wrap:anywhere;white-space:pre-wrap}
+.criterion-title{font:650 17px/1.45 var(--ui);color:var(--ink)}
+.criterion-title+.criterion-statement{display:block;margin-top:4px;font-weight:400;color:var(--muted)}
+.criterion-details>.authored-overview{margin:0 0 20px}
 .requirement-criterion>summary::marker{color:var(--faint);font-size:11px}
 .criterion-details{padding:10px 16px 20px;margin-bottom:8px;border-radius:6px;background:var(--bg-subtle)}
 .criterion-details .criterion-label{margin:4px 0 18px}
@@ -489,11 +492,11 @@ the record's own content for the top of the page. */
 .feature-page .feature-stories>li{padding:16px 0}
 @media(max-width:640px){.requirement-characterization dl,.requirement-history-lists{grid-template-columns:1fr}.authored-overview .fragment-markdown{font-size:15px}.requirements-breadcrumbs{flex-wrap:wrap}}
 /* Product narrative is read in distinct surfaces; secondary detail stays quiet. */
-.feature-page>.authored-overview,.requirement-story-page>.authored-overview,.feature-page>[data-feature-stories],.requirement-story-page>.requirement-criteria{padding:28px 32px;border:1px solid var(--line-soft);border-radius:16px;background:var(--bg-subtle)}
-.feature-page>.authored-overview>h2,.requirement-story-page>.authored-overview>h2,.feature-page>[data-feature-stories]>h2,.requirement-story-page>.requirement-criteria>header{margin:0 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.criterion-page>.authored-overview,.feature-page>.authored-overview,.requirement-story-page>.authored-overview,.feature-page>[data-feature-stories],.requirement-story-page>.requirement-criteria{padding:28px 32px;border:1px solid var(--line-soft);border-radius:16px;background:var(--bg-subtle)}
+.criterion-page>.authored-overview>h2,.feature-page>.authored-overview>h2,.requirement-story-page>.authored-overview>h2,.feature-page>[data-feature-stories]>h2,.requirement-story-page>.requirement-criteria>header{margin:0 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
 .feature-page>[data-feature-stories]>h2{color:var(--ink);font:650 22px/1.3 var(--ui);letter-spacing:normal;text-transform:none}
-.requirement-story-page>.requirement-need{padding:24px 28px;border:1px solid var(--accent-line);border-left:3px solid var(--accent);border-radius:12px;background:var(--accent-soft)}
-.requirement-story-page>.requirement-need>p{font-weight:400;line-height:1.65}
+.criterion-page>.requirement-need,.requirement-story-page>.requirement-need{padding:24px 28px;border:1px solid var(--accent-line);border-left:3px solid var(--accent);border-radius:12px;background:var(--accent-soft)}
+.criterion-page>.requirement-need>p,.requirement-story-page>.requirement-need>p{font-weight:400;line-height:1.65}
 .feature-page .feature-stories{gap:14px}
 .feature-page .feature-stories>li{padding:18px 20px;border-color:var(--line);border-radius:10px}
 .feature-page .feature-stories>li>a{display:inline-block;margin-bottom:6px;font-size:16px}
@@ -509,7 +512,35 @@ the record's own content for the top of the page. */
 .feature-page>.reading-details[open],.requirement-story-page>.reading-details[open]{padding:0 22px 22px}
 .feature-page>.reading-details[open]>summary,.requirement-story-page>.reading-details[open]>summary{margin:0 -22px 16px;border-bottom:1px solid var(--line-soft)}
 .requirement-story-page .requirement-story-details-content{padding:4px 22px 22px;gap:18px}
-@media(max-width:640px){.feature-page>.authored-overview,.requirement-story-page>.authored-overview,.feature-page>[data-feature-stories],.requirement-story-page>.requirement-criteria{padding:20px 18px;border-radius:12px}.requirement-story-page>.requirement-need{padding:20px}.feature-page .feature-stories>li{padding:16px}.requirement-story-page .requirement-criteria-list{padding-left:16px}.requirement-story-page .requirement-criterion>summary{padding:14px 2px}}
+@media(max-width:640px){.criterion-page>.authored-overview,.feature-page>.authored-overview,.requirement-story-page>.authored-overview,.feature-page>[data-feature-stories],.requirement-story-page>.requirement-criteria{padding:20px 18px;border-radius:12px}.criterion-page>.requirement-need,.requirement-story-page>.requirement-need{padding:20px}.feature-page .feature-stories>li{padding:16px}.requirement-story-page .requirement-criteria-list{padding-left:16px}.requirement-story-page .requirement-criterion>summary{padding:14px 2px}}
+/* Shared reading surfaces for the surrounding product vocabulary and checks. */
+.reading-page{gap:28px;overflow-wrap:anywhere}
+.reading-page .requirements-breadcrumbs{margin-bottom:0}
+.reading-surface{min-width:0;margin:0;padding:28px 32px;border:1px solid var(--line-soft);border-radius:16px;background:var(--bg-subtle)}
+.reading-surface>h2{margin:0 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line);color:var(--ink);font:650 22px/1.3 var(--ui);letter-spacing:normal;text-transform:none}
+.reading-lead{min-width:0;margin:0;padding:24px 28px;border:1px solid var(--accent-line);border-left:3px solid var(--accent);border-radius:12px;background:var(--accent-soft)}
+.reading-lead>p,.reading-lead>p:last-child{margin:0;max-width:74ch;font:400 20px/1.65 var(--ui);white-space:pre-wrap}
+.reading-page>.reading-details{min-width:0;margin:0;padding:0;border:1px solid var(--line-soft);border-radius:12px;background:var(--bg-subtle)}
+.reading-page>.reading-details>summary{padding:18px 22px;margin:0;font-size:14px}
+.reading-page>.reading-details[open]{padding:0 22px 22px}
+.reading-page>.reading-details[open]>summary{margin:0 -22px 16px;border-bottom:1px solid var(--line-soft)}
+.reading-page .term-code{overflow-x:auto}
+.reading-page .term-evidence-status .trace-note{display:block;margin:14px 0 0;line-height:1.6}
+.reading-links{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.reading-links>li{padding:16px 20px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font:500 16px/1.6 var(--ui)}
+.reading-links a{color:var(--accent);text-decoration:none}
+.reading-links a:hover{text-decoration:underline}
+.test-walkthrough>h3,.test-outcome>h3{margin:24px 0 12px;font:650 17px/1.4 var(--ui)}
+.test-walkthrough>ul{padding-left:24px;font:400 16px/1.8 var(--ui)}
+.test-walkthrough .test-steps{gap:16px;padding-left:26px;font:400 16px/1.75 var(--ui)}
+.test-walkthrough .test-steps>li{padding:16px 20px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.test-walkthrough .test-steps>li::marker{color:var(--muted);font-weight:600}
+.test-walkthrough .test-step-result{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft);color:var(--muted);font-size:15px}
+.test-step-result>span{font-weight:650;color:var(--ink)}
+.test-outcome{margin-top:24px;padding:20px 24px;border:1px solid var(--accent-line);border-radius:10px;background:var(--accent-soft)}
+.test-outcome>h3{margin:0 0 8px}
+.test-outcome>p{margin:0;font:400 16px/1.75 var(--ui);white-space:pre-wrap}
+@media(max-width:640px){.reading-surface{padding:20px 18px;border-radius:12px}.reading-lead{padding:20px}.reading-lead>p,.reading-lead>p:last-child{font-size:18px}.test-walkthrough .test-steps{padding-left:22px}.test-walkthrough .test-steps>li{padding:14px}.test-outcome{padding:16px}.reading-surface>h2{font-size:20px}}
 .opening-badge{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--bg-subtle);white-space:nowrap;margin-right:8px}
 .opening-badge.compare{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
 .layer-quiet{opacity:1;transition:opacity .15s}.layer-quiet:hover,.layer-quiet:focus-within{opacity:1}

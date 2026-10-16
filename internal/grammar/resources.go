@@ -156,7 +156,7 @@ var resources = []Resource{
 		Kind: "criterion", URN: "urn:change-saga:<saga>:story:<story>:criterion:<criterion>", Storage: "inside every story revision's acceptance_criteria",
 		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{5}, History: "stable id across revisions; a removed id is never reused",
 		Writers: []string{"criterion add", "criterion revise", "criterion remove"},
-		Notes:   "inherits the story lifecycle; active only while present in the unique current story revision",
+		Notes:   "inherits the story lifecycle; optional title and Markdown overview accompany the required statement; active only while present in the unique current story revision",
 	},
 	{
 		Kind: "citation", URN: "urn:change-saga:<saga>:citation:<citation>", Storage: "___features/<feature>.feature/___requirements/citations/<citation>.json",

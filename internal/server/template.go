@@ -150,11 +150,11 @@ header count. They are derived from the code the record's own chain reaches,
 so there is nothing here for an author or an agent to maintain. */}}
 {{define "related-reviews"}}{{if .Reviews}}<aside class="related-reviews" data-related-reviews="{{.Kind}}"><h2>Related reviews</h2><ul>{{range .Reviews}}<li data-related-review="{{.ID}}"><a href="{{.Href}}">{{.Title}}</a>{{if .Number}} <span class="related-review-pr">#{{.Number}}</span>{{end}}{{if .Merged}} <span class="related-review-state">merged</span>{{end}}</li>{{end}}</ul><p class="related-reviews-note">Derived, not authored: these reviews changed lines inside the code this {{.Kind}} explains.</p></aside>{{end}}{{end}}
 
-{{define "persona-page"}}<section class="app-page persona-page" data-persona-page data-persona-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Persona breadcrumb"><span>Personas</span><span>/</span><strong>{{.Name}}</strong></nav>
-<header class="requirement-story-hero"><div><p class="app-page-kind">Persona</p><h1>{{.Name}}</h1><p class="app-lede">A persona is someone who gets value from the app, the &#34;As a &hellip;&#34; of a user story, never a tool or agent that operates it.</p>{{if .Retired}}<p class="term-state">Retired: the app no longer serves this persona.</p>{{end}}</div></header>
-{{if .Description}}<section class="requirement-need"><p>{{.Description}}</p></section>{{end}}
-<section class="app-page-section" data-persona-served><h2>Served by</h2>{{if .Served}}{{template "trace-links" .Served}}{{else}}<p class="term-empty">No accepted story names this persona yet. Naming it on the stories that serve it (<code>change-saga story revise --persona</code>) links the persona to the design and code those stories reach.</p>{{end}}{{if .Other}}<h3>Stories not yet accepted</h3>{{template "trace-links" .Other}}{{end}}</section>
-<section class="app-page-section" data-persona-terms><h2>Terms</h2>{{if .Terms}}<ul class="term-links">{{range .Terms}}<li><a href="{{.Href}}" data-term-target="{{.Target}}">{{.Title}}</a></li>{{end}}</ul>{{else}}<p class="term-empty">No term names this persona yet.</p>{{end}}</section>
+{{define "persona-page"}}<section class="app-page persona-page reading-page" data-persona-page data-persona-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Persona breadcrumb"><span>Personas</span><span>/</span><strong>{{.Name}}</strong></nav>
+<header class="requirement-story-hero"><div><p class="app-page-kind">Persona</p><h1>{{.Name}}</h1>{{if .Retired}}<p class="term-state">Retired: the app no longer serves this persona.</p>{{end}}</div></header>
+{{if .Description}}<section class="requirement-need reading-lead"><p>{{.Description}}</p></section>{{end}}
+<section class="app-page-section reading-surface" data-persona-served><h2>Served by</h2>{{if .Served}}{{template "trace-links" .Served}}{{else}}<p class="term-empty">No accepted story names this persona yet. Naming it on the stories that serve it (<code>change-saga story revise --persona</code>) links the persona to the design and code those stories reach.</p>{{end}}{{if .Other}}<h3>Stories not yet accepted</h3>{{template "trace-links" .Other}}{{end}}</section>
+<section class="app-page-section reading-surface" data-persona-terms><h2>Terms</h2>{{if .Terms}}<ul class="term-links">{{range .Terms}}<li><a href="{{.Href}}" data-term-target="{{.Target}}">{{.Title}}</a></li>{{end}}</ul>{{else}}<p class="term-empty">No term names this persona yet.</p>{{end}}</section>
 </section>{{end}}
 
 {{/* The overview's own directory: its parts, what each one holds, and where
@@ -165,7 +165,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 {{define "design-system-page"}}<section class="app-page design-system-page" data-design-system-page><nav class="requirements-breadcrumbs" aria-label="Design system breadcrumb"><a href="/">Overview</a><span>/</span><strong>Design system</strong></nav><header class="page-heading"><h1>Design system</h1><p class="app-lede">The references and chapters the interface is built from.</p></header>{{with .DesignSystem}}{{template "overview" .}}{{if .ChildViews}}<section class="chapter-index"><h2>Chapters</h2>{{template "chapter-list" .}}</section>{{end}}{{else}}<p class="app-empty">No design system yet. Run <code>change-saga design</code> to record what the interface is built from.</p>{{end}}</section>{{end}}
 
 {{define "feature-grouping"}}<details class="feature-menu" data-feature-group-control><summary aria-label="Feature options" title="Feature options"><span aria-hidden="true">⋯</span></summary><nav class="feature-grouping" aria-label="Group features" hx-boost="false"><span>Group features by</span><a href="/features?group=all"{{if eq .Mode "all"}} aria-current="true"{{end}}><span aria-hidden="true">{{if eq .Mode "all"}}✓{{end}}</span>None</a>{{if .HasThemes}}<a href="/features?group=theme"{{if eq .Mode "theme"}} aria-current="true"{{end}}><span aria-hidden="true">{{if eq .Mode "theme"}}✓{{end}}</span>Theme</a>{{end}}<a href="/features?group=persona"{{if eq .Mode "persona"}} aria-current="true"{{end}}><span aria-hidden="true">{{if eq .Mode "persona"}}✓{{end}}</span>Persona</a></nav></details>{{end}}
-{{define "feature-theme-page"}}<section class="app-page feature-theme-page" data-feature-theme-page data-feature-theme-target="{{.Target}}"><nav class="requirements-breadcrumbs"><a href="/feature-themes">Product themes</a><span>/</span><strong>{{.Title}}</strong></nav><header class="page-heading"><p class="app-page-kind">Product theme</p><h1>{{.Title}}</h1></header><section class="markdown-body" data-theme-overview>{{.Body}}</section><h2>Rationale deck</h2>{{range .Decks}}<p><a href="{{.Href}}">{{.Title}}</a></p>{{else}}<p>No rationale deck yet. Author it with <code>change-saga add-deck --feature-theme {{.ID}}</code>.</p>{{end}}<h2>Features</h2><ul>{{range .Features}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{else}}<li>No features assigned yet.</li>{{end}}</ul></section>{{end}}
+{{define "feature-theme-page"}}<section class="app-page feature-theme-page reading-page" data-feature-theme-page data-feature-theme-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Feature category breadcrumb"><a href="/features">Features</a><span>/</span><strong>{{.Title}}</strong></nav><header class="page-heading"><p class="app-page-kind">Product theme</p><h1>{{.Title}}</h1></header>{{if .Body}}<section class="authored-overview reading-surface" data-theme-overview><div class="fragment-markdown">{{.Body}}</div></section>{{end}}<section class="reading-surface"><h2>Features</h2><ul class="reading-links">{{range .Features}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{else}}<li>No features assigned yet.</li>{{end}}</ul></section><details class="reading-details"><summary>Rationale deck</summary>{{range .Decks}}<p><a href="{{.Href}}">{{.Title}}</a></p>{{else}}<p>No rationale deck yet. Author it with <code>change-saga add-deck --feature-theme {{.ID}}</code>.</p>{{end}}</details></section>{{end}}
 {{define "feature-page"}}<section class="app-page feature-page" data-feature-page data-feature-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Feature breadcrumb"><span>Features</span><span>/</span><strong>{{.Title}}</strong></nav>
 <header class="requirement-story-hero"><div><p class="app-page-kind">Feature</p><h1>{{.Title}}</h1></div></header>
 {{if .Description}}<section class="requirement-need"><p>{{.Description}}</p></section>{{end}}
@@ -179,13 +179,14 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 {{if .Decks}}<details class="app-page-section reading-details" id="feature-implementation" data-feature-implementation><summary>Technical</summary>{{range .Decks}}<h3>{{.Title}}</h3>{{template "trace-links" .Slides}}{{end}}</details>{{end}}
 {{template "related-reviews" (relatedReviews "feature" .RelatedReviews)}}</section>{{end}}
 
-{{define "test-case-page"}}<section class="app-page test-case-page" data-test-case-page data-test-case-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Test case breadcrumb">{{with .Feature}}{{if .Href}}<a href="{{.Href}}">{{.Title}}</a><span>/</span>{{end}}{{end}}<span>Test cases</span><span>/</span><strong>{{.Title}}</strong></nav>
+{{define "test-case-page"}}<section class="app-page test-case-page reading-page" data-test-case-page data-test-case-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Test case breadcrumb">{{with .Feature}}{{if .Href}}<a href="{{.Href}}">{{.Title}}</a><span>/</span>{{end}}{{end}}<span>Test cases</span><span>/</span><strong>{{.Title}}</strong></nav>
 <header class="requirement-story-hero"><div><p class="app-page-kind">Test case</p><h1>{{.Title}}</h1></div></header>{{if .Conflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This test case has more than one current revision or lifecycle state. No state is being guessed.</span></div>{{end}}
+
+<section class="app-page-section reading-surface test-walkthrough" data-test-definition><h2>Definition</h2>{{if .Preconditions}}<h3>Preconditions</h3><ul>{{range .Preconditions}}<li>{{.}}</li>{{end}}</ul>{{end}}<h3>Steps</h3>{{if .Steps}}<ol class="test-steps">{{range .Steps}}<li><p>{{.Action}}</p>{{if .ExpectedResult}}<p class="test-step-result"><span>Expect</span> {{.ExpectedResult}}</p>{{end}}</li>{{end}}</ol>{{else}}<p class="term-empty">No steps recorded.</p>{{end}}{{if .ExpectedResult}}<div class="test-outcome"><h3>Expected result</h3><p>{{.ExpectedResult}}</p></div>{{end}}</section>
 <dl class="feature-summary"><div><dt>Lifecycle</dt><dd>{{.Lifecycle}}</dd></div><div><dt>Automation</dt><dd>{{or .Automation "not stated"}}</dd></div><div><dt>Coverage</dt><dd>{{if .CoverageKinds}}{{join .CoverageKinds ", "}}{{else}}not stated{{end}}</dd></div></dl>
-<section class="app-page-section" data-test-definition><h2>Definition</h2>{{if .Preconditions}}<h3>Preconditions</h3><ul>{{range .Preconditions}}<li>{{.}}</li>{{end}}</ul>{{end}}<h3>Steps</h3>{{if .Steps}}<ol class="test-steps">{{range .Steps}}<li><p>{{.Action}}</p>{{if .ExpectedResult}}<p class="trace-rationale">Expect: {{.ExpectedResult}}</p>{{end}}</li>{{end}}</ol>{{else}}<p class="term-empty">No steps recorded.</p>{{end}}{{if .ExpectedResult}}<h3>Expected result</h3><p>{{.ExpectedResult}}</p>{{end}}</section>
-<section class="app-page-section" data-test-verifies><h2>Verifies</h2>{{if .Verifies}}{{template "trace-links" .Verifies}}{{else}}<p class="term-empty">This test case verifies no acceptance criterion yet. Relating it (<code>change-saga relation add --type verifies</code>) shows which criteria it tests.</p>{{end}}</section>
-<section class="app-page-section term-code-list" data-test-evidence><h2>Evidence</h2>{{range .Evidence}}<h3>{{.Role}}</h3>{{range .Code}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}" data-test-code><figcaption>{{template "ficon" .Path}}<code>{{.Location}}</code></figcaption>{{if .Note}}<p class="term-code-note" role="note">{{.Note}}</p>{{end}}<table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table></figure>{{end}}{{else}}<p class="term-empty">No evidence code recorded.</p>{{end}}</section>
-<section class="app-page-section" data-test-runs><h2>Runs</h2>{{if .Runs}}<ol class="test-runs">{{range .Runs}}<li class="test-run {{.Result}}{{if .Current}} current{{end}}" data-test-run="{{.ID}}"><strong>{{.Result}}</strong>{{if .Current}} <small class="trace-kind">current</small>{{end}} <small class="trace-note">at <code>{{short .Commit}}</code> · <time datetime="{{.ExecutedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.ExecutedAt.Format "2 Jan 2006, 15:04 MST"}}</time></small>{{if .Summary}}<p class="trace-rationale">{{.Summary}}</p>{{end}}{{if .Command}}<p><code>{{.Command}}</code></p>{{end}}</li>{{end}}</ol>{{else}}<p class="term-empty">No run recorded.</p>{{end}}</section>
+<section class="app-page-section reading-surface" data-test-verifies><h2>Verifies</h2>{{if .Verifies}}{{template "trace-links" .Verifies}}{{else}}<p class="term-empty">This test case verifies no acceptance criterion yet. Relating it (<code>change-saga relation add --type verifies</code>) shows which criteria it tests.</p>{{end}}</section>
+<details class="reading-details term-code-list" data-test-evidence><summary>Evidence</summary>{{range .Evidence}}<h3>{{.Role}}</h3>{{range .Code}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}" data-test-code><figcaption>{{template "ficon" .Path}}<code>{{.Location}}</code></figcaption>{{if .Note}}<p class="term-code-note" role="note">{{.Note}}</p>{{end}}<table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table></figure>{{end}}{{else}}<p class="term-empty">No evidence code recorded.</p>{{end}}</details>
+<details class="reading-details" data-test-runs><summary>Runs</summary>{{if .Runs}}<ol class="test-runs">{{range .Runs}}<li class="test-run {{.Result}}{{if .Current}} current{{end}}" data-test-run="{{.ID}}"><strong>{{.Result}}</strong>{{if .Current}} <small class="trace-kind">current</small>{{end}} <small class="trace-note">at <code>{{short .Commit}}</code> · <time datetime="{{.ExecutedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.ExecutedAt.Format "2 Jan 2006, 15:04 MST"}}</time></small>{{if .Summary}}<p class="trace-rationale">{{.Summary}}</p>{{end}}{{if .Command}}<p><code>{{.Command}}</code></p>{{end}}</li>{{end}}</ol>{{else}}<p class="term-empty">No run recorded.</p>{{end}}</details>
 </section>{{end}}
 
 {{define "terms-page"}}<section class="terms-page" data-terms-page>{{if .Index}}<header class="requirements-header">
@@ -196,40 +197,41 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <a href="/terms">Terms and vocabulary</a>
 <span>/</span>
 <strong>{{.Name}}</strong></nav>
-<article class="term-page" data-term-target="{{.Target}}">
+<article class="term-page reading-page" data-term-target="{{.Target}}">
 <header class="requirement-story-hero">
 <div>
-<h1>{{.Name}}</h1>{{if .Retired}}<p class="term-state">Retired: the project no longer uses this term.</p>{{end}}
+<p class="app-page-kind">Term</p><h1>{{.Name}}</h1>{{if .Retired}}<p class="term-state">Retired: the project no longer uses this term.</p>{{end}}
 </div>
 </header>
 {{if .RevisionConflicted}}<div class="alert" role="alert" data-term-revision-conflict><span><strong>Conflicting term revisions</strong> Definition maturity and implementation-evidence availability are unknown until the competing heads are reconciled.</span></div>{{end}}
-<dl class="feature-summary term-semantics" data-term-semantics>
-<div><dt>Definition maturity</dt><dd>{{.DefinitionMaturity}}{{if eq .DefinitionMaturity "unknown"}} — not assessed{{end}}</dd></div>
-<div><dt>Implementation evidence</dt><dd>{{.ImplementationEvidence}}</dd></div>
-</dl>
-<p class="trace-note" data-term-evidence-note>{{.EvidenceNote}}</p>
-<section class="term-definition">
+
+<section class="term-definition reading-lead">
 {{if .Definition}}<p>{{.Definition}}</p>{{else}}<p class="term-empty">No current definition is available.</p>{{end}}
 </section>{{if .Aliases}}
-<section class="term-aliases">
+<section class="term-aliases reading-surface">
 <h2>Also called</h2>
 <ul class="term-links">{{range .Aliases}}<li>{{.}}</li>{{end}}</ul>
 </section>{{end}}
-<section class="term-stories">
+<section class="term-stories reading-surface">
 <h2>Stories</h2>{{if .Stories}}
 <ul class="term-links">{{range .Stories}}<li><a href="{{.Href}}" data-story-target="{{.Target}}">{{.Title}}</a></li>{{end}}</ul>{{else}}
 <p class="term-empty">No story names this term yet.</p>{{end}}
 </section>{{if .Records}}
-<section class="term-records">
+<section class="term-records reading-surface">
 <h2>Related</h2>
 <ul class="term-links">{{range .Records}}<li>{{if .Href}}<a href="{{.Href}}">{{.Title}}</a>{{else}}{{.Title}}{{end}}</li>{{end}}</ul>
 </section>{{end}}
-<section class="term-code-list">
-<h2>Code</h2>{{range .Code}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}" data-term-code>
+<section class="reading-surface term-evidence-status"><h2>Definition and evidence</h2><dl class="feature-summary term-semantics" data-term-semantics>
+<div><dt>Definition maturity</dt><dd>{{.DefinitionMaturity}}{{if eq .DefinitionMaturity "unknown"}} — not assessed{{end}}</dd></div>
+<div><dt>Implementation evidence</dt><dd>{{.ImplementationEvidence}}</dd></div>
+</dl>
+<p class="trace-note" data-term-evidence-note>{{.EvidenceNote}}</p></section>
+<details class="term-code-list reading-details">
+<summary>Code</summary>{{range .Code}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}" data-term-code>
 <figcaption>{{template "ficon" .Path}}<code>{{.Location}}</code></figcaption>{{if .Note}}<p class="term-code-note" role="note">{{.Note}}</p>{{end}}
 <table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table>
 </figure>{{else}}<p class="term-empty">No code references this term yet.</p>{{end}}
-</section>
+</details>
 </article>{{end}}{{end}}</section>{{end}}
 
 {{define "story-context"}}<dl class="feature-summary story-context" data-story-context><div><dt>Feature</dt><dd>{{if .FeatureLink.Href}}<a href="{{.FeatureLink.Href}}">{{.FeatureLink.Title}}</a>{{else}}<small>none</small>{{end}}</dd></div><div><dt>Personas</dt><dd>{{range $index, $persona := .Personas}}{{if $index}}, {{end}}<a href="{{$persona.Href}}" data-story-persona="{{$persona.Target}}">{{$persona.Title}}</a>{{else}}<small>No persona named yet. Naming who the story serves links it to them.</small>{{end}}</dd></div><div><dt>Citations</dt><dd>{{range .Citations}}<span class="story-citation" data-story-citation>{{if .Href}}<a href="{{.Href}}" rel="noreferrer">{{.Title}}</a>{{else}}{{.Title}}{{end}}{{if .Kind}} <small>{{.Kind}}{{if not .Href}} · {{.Reference}}{{end}}</small>{{end}}</span>{{else}}<small>No citation yet.</small>{{end}}</dd></div></dl>{{end}}
@@ -253,10 +255,12 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <span>/</span>
 <strong>{{.Label}}</strong></nav>
 <article class="app-page criterion-page" data-criterion-page data-requirement-target="{{.Target}}">
-<header class="requirement-story-hero"><div><p class="app-page-kind">Acceptance criterion · {{.Label}}</p><h1>{{.Statement}}</h1><p class="trace-rationale">Of the story <a href="{{$story.Href}}">{{$story.Title}}</a>.</p></div></header>
+<header class="requirement-story-hero"><div><p class="app-page-kind">Acceptance criterion · {{.Label}}</p><h1>{{if .Title}}{{.Title}}{{else}}{{.Statement}}{{end}}</h1><p class="trace-rationale">Of the story <a href="{{$story.Href}}">{{$story.Title}}</a>.</p></div></header>
 {{with .Historical}}{{template "historical-requirement" .}}{{end}}
-<section class="requirement-trace" data-criterion-own-trace><h2>Linked to this criterion</h2>{{template "trace-groups" .Trace}}</section>
-<section class="requirement-trace" data-criterion-story-trace><h2>Through its story</h2>{{if $story.Trace.Empty}}<p class="term-empty">Nothing links to the story as a whole.</p>{{else}}{{template "trace-groups" $story.Trace}}{{end}}</section>
+{{if .Title}}<section class="requirement-need"><p>{{.Statement}}</p></section>{{end}}
+{{if .Overview}}<section class="authored-overview" data-criterion-overview><h2>Overview</h2><div class="fragment-markdown">{{.Overview}}</div></section>{{end}}
+<details class="requirement-trace reading-details" data-criterion-own-trace><summary>Linked to this criterion</summary>{{template "trace-groups" .Trace}}</details>
+<details class="requirement-trace reading-details" data-criterion-story-trace><summary>Through its story</summary>{{if $story.Trace.Empty}}<p class="term-empty">Nothing links to the story as a whole.</p>{{else}}{{template "trace-groups" $story.Trace}}{{end}}</details>
 <section class="app-page-section"><h2>The story's other criteria</h2><ul class="trace-links">{{range $story.Criteria}}{{if not .Selected}}<li><a href="{{.Href}}">{{.Label}}</a> <span>{{.Statement}}</span></li>{{end}}{{end}}</ul></section>
 {{template "related-reviews" (relatedReviews "acceptance criterion" .RelatedReviews)}}</article>{{end}}{{end}}
 
@@ -308,8 +312,8 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <h2>Acceptance criteria</h2>
 </header>
 <ul class="requirement-criteria-list">{{range .Criteria}}<li><details class="requirement-criterion{{if .Selected}} selected{{end}}" id="{{.DOMID}}" data-requirement-target="{{.Target}}"{{if .Selected}} open{{end}}>
-<summary><span class="criterion-statement">{{.Statement}}</span></summary>
-<div class="criterion-details"><a class="criterion-label" href="{{.Href}}">{{.Label}} · Open criterion</a>{{template "trace-groups" .Trace}}</div>
+<summary>{{if .Title}}<strong class="criterion-title">{{.Title}}</strong>{{end}}<span class="criterion-statement">{{.Statement}}</span></summary>
+<div class="criterion-details">{{if .Overview}}<div class="authored-overview" data-criterion-overview><div class="fragment-markdown">{{.Overview}}</div></div>{{end}}<a class="criterion-label" href="{{.Href}}">{{.Label}} · Open criterion</a>{{template "trace-groups" .Trace}}</div>
 </details></li>{{end}}</ul>
 </section>
 <details class="requirement-story-details">

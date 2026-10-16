@@ -255,7 +255,7 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 	}
 	shared = NewRelationEvaluator(document)
 	got = evaluate(current)
-	if got.Status != CurrencyStale || got.Current() || !reflect.DeepEqual(got.Reasons, []CurrencyReason{{Endpoint: "to", Code: ReasonCriterionStatementChanged, Pinned: v5StoryR1, Current: []string{"urn:change-saga:test:story:checkout:revision:r2"}, Message: "to criterion statement changed"}}) {
+	if got.Status != CurrencyStale || got.Current() || !reflect.DeepEqual(got.Reasons, []CurrencyReason{{Endpoint: "to", Code: ReasonCriterionStatementChanged, Pinned: v5StoryR1, Current: []string{"urn:change-saga:test:story:checkout:revision:r2"}, Message: "to criterion content changed"}}) {
 		t.Fatalf("revised story = %#v", got)
 	}
 

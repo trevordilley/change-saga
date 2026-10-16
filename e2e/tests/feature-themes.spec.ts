@@ -31,6 +31,20 @@ test("product themes preserve shared feature links, grouping preference and rati
       const ids = nodes.map(node => node.id);
       return ids.filter((id, index) => ids.indexOf(id) !== index);
     })).toEqual([]);
+    // A category title opens its context; the adjacent arrow only folds its features.
+    const category = sidebar.getByRole("link", { name: "Reliable work", exact: true });
+    await category.click();
+    await expect(page).toHaveURL(`${server.baseURL}/feature-themes/t1`);
+    await expect(page.locator("[data-theme-overview] strong")).toHaveText("Continuity");
+    await expect(category).toHaveAttribute("aria-current", "page");
+    const categoryArrow = sidebar.getByRole("button", { name: "Toggle Reliable work", exact: true });
+    await categoryArrow.click();
+    await expect(categoryArrow).toHaveAttribute("aria-expanded", "false");
+    await expect(page).toHaveURL(`${server.baseURL}/feature-themes/t1`);
+    await categoryArrow.click();
+    await expect(categoryArrow).toHaveAttribute("aria-expanded", "true");
+    await page.getByRole("navigation", { name: "Feature category breadcrumb" }).getByRole("link", { name: "Features", exact: true }).click();
+    await expect(page).toHaveURL(`${server.baseURL}/features`);
     await sidebar.getByRole("link", { name: "Tide Charts", exact: true }).first().click();
     await expect(page).toHaveURL(`${server.baseURL}/features/tide-charts`);
     await expect(sidebar.getByRole("link", { name: "Tide Charts", exact: true })).toHaveCount(2);
@@ -48,6 +62,7 @@ test("product themes preserve shared feature links, grouping preference and rati
     await expect(page.locator("[data-feature-group-control]")).toBeVisible();
     await page.goto(`${server.baseURL}/feature-themes/t1`);
     await expect(page.locator("[data-theme-overview] strong")).toHaveText("Continuity");
+    await page.locator("[data-feature-theme-page] summary").getByText("Rationale deck", { exact: true }).click();
     await page.locator("[data-feature-theme-page]").getByRole("link", { name: "why", exact: true }).click();
     await expect(page.locator("[data-deck-overview]:visible")).toContainText("Explain continuity.");
     await page.getByRole("button", { name: "Back", exact: true }).click();

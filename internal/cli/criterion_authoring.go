@@ -25,7 +25,9 @@ type criterionMutationRequest struct {
 	Parent    string    `json:"parent"`
 	Revision  string    `json:"revision"`
 	ID        string    `json:"id,omitempty"`
-	Statement string    `json:"statement,omitempty"`
+	Statement *string   `json:"statement,omitempty"`
+	Title     *string   `json:"title,omitempty"`
+	Overview  *string   `json:"overview,omitempty"`
 	Reason    string    `json:"reason,omitempty"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	RequestID string    `json:"request_id,omitempty"`
@@ -64,7 +66,10 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	parent := flags.String("parent", "", "explicit current story revision head URN")
 	revision := flags.String("revision", "", "stable new story revision id")
 	id := flags.String("id", "", "stable criterion id")
-	statement := flags.String("statement", "", "acceptance criterion statement")
+	statement := flags.String("statement", "", "full independent pass/fail statement")
+	title := flags.String("title", "", "optional short authored title; empty clears it on revise")
+	overview := flags.String("overview", "", "optional Markdown rationale and examples; empty clears it on revise")
+	overviewSource := flags.String("overview-source", "", "Markdown file, or - for stdin; exclusive with --overview")
 	reason := flags.String("reason", "", "reason for removing the criterion")
 	from := flags.String("from", "", "read a structured mutation request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
@@ -83,6 +88,9 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	if *from != "" && *edit {
 		return fmt.Errorf("--from and --edit cannot be used together")
 	}
+	if err := readAuthoredOverview(flags, *overviewSource, *from, stdin); err != nil {
+		return err
+	}
 	request := criterionMutationRequest{}
 	if *from != "" {
 		if err := readStrictAuthoringJSON(*from, stdin, &request); err != nil {
@@ -92,14 +100,15 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	overrideVisited(flags, map[string]func(){
 		"story": func() { request.Story = *story }, "criterion": func() { request.Criterion = *criterionURN },
 		"parent": func() { request.Parent = *parent }, "revision": func() { request.Revision = *revision },
-		"id": func() { request.ID = *id }, "statement": func() { request.Statement = *statement },
+		"id": func() { request.ID = *id }, "statement": func() { request.Statement = statement },
+		"title": func() { request.Title = title }, "overview": func() { request.Overview = overview },
 		"reason": func() { request.Reason = *reason }, "request-id": func() { request.RequestID = *requestID },
 	})
-	if *from == "" {
-		request = criterionMutationRequest{
-			Story: *story, Criterion: *criterionURN, Parent: *parent, Revision: *revision,
-			ID: *id, Statement: *statement, Reason: *reason, RequestID: *requestID,
-		}
+	if request.Statement != nil && strings.TrimSpace(*request.Statement) == "" {
+		return fmt.Errorf("criterion statement cannot be empty")
+	}
+	if operation == "remove" && (request.Statement != nil || request.Title != nil || request.Overview != nil) {
+		return fmt.Errorf("criterion remove cannot change authored content")
 	}
 	if strings.TrimSpace(request.Story) == "" || strings.TrimSpace(request.Parent) == "" || strings.TrimSpace(request.Revision) == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
@@ -124,21 +133,21 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	var result requirements.MutationResult
 	switch operation {
 	case "add":
-		if strings.TrimSpace(request.ID) == "" || strings.TrimSpace(request.Statement) == "" {
+		if strings.TrimSpace(request.ID) == "" || request.Statement == nil {
 			return fmt.Errorf("usage: %s", commandUsage[name])
 		}
 		result, err = requirements.AddCriterion(root, sagaID, requirements.AddCriterionInput{
 			Story: request.Story, Parent: request.Parent, RevisionID: request.Revision,
-			Criterion: requirements.Criterion{ID: request.ID, Statement: request.Statement},
+			Criterion: requirements.Criterion{ID: request.ID, Statement: criterionText(request.Statement), Title: criterionText(request.Title), Overview: criterionText(request.Overview)},
 			CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 		})
 	case "revise":
-		if strings.TrimSpace(request.Criterion) == "" || strings.TrimSpace(request.Statement) == "" {
+		if strings.TrimSpace(request.Criterion) == "" || (request.Statement == nil && request.Title == nil && request.Overview == nil) {
 			return fmt.Errorf("usage: %s", commandUsage[name])
 		}
 		result, err = requirements.ReviseCriterion(root, sagaID, requirements.ReviseCriterionInput{
 			Story: request.Story, Criterion: request.Criterion, Parent: request.Parent,
-			RevisionID: request.Revision, Statement: request.Statement,
+			RevisionID: request.Revision, Statement: criterionText(request.Statement), Title: request.Title, Overview: request.Overview,
 			CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 		})
 	case "remove":
@@ -197,8 +206,14 @@ func editCriterionRevision(ctx context.Context, root, sagaID string, request cri
 	for index := range candidate.AcceptanceCriteria {
 		if candidate.AcceptanceCriteria[index].ID == criterionRef.ID {
 			found = true
-			if strings.TrimSpace(request.Statement) != "" {
-				candidate.AcceptanceCriteria[index].Statement = strings.TrimSpace(request.Statement)
+			if request.Statement != nil {
+				candidate.AcceptanceCriteria[index].Statement = strings.TrimSpace(*request.Statement)
+			}
+			if request.Title != nil {
+				candidate.AcceptanceCriteria[index].Title = *request.Title
+			}
+			if request.Overview != nil {
+				candidate.AcceptanceCriteria[index].Overview = *request.Overview
 			}
 		}
 	}
@@ -211,22 +226,31 @@ func editCriterionRevision(ctx context.Context, root, sagaID string, request cri
 	}
 	baseline := candidate
 	baseline.AcceptanceCriteria = append([]requirements.Criterion{}, candidate.AcceptanceCriteria...)
-	var editedStatement string
+	var editedCriterion requirements.Criterion
 	for index := range edited.AcceptanceCriteria {
 		if index >= len(current.AcceptanceCriteria) || edited.AcceptanceCriteria[index].ID != current.AcceptanceCriteria[index].ID {
 			return request, fmt.Errorf("criterion revise --edit may not add, remove, or reorder criteria")
 		}
 		if edited.AcceptanceCriteria[index].ID == criterionRef.ID {
-			editedStatement = edited.AcceptanceCriteria[index].Statement
-			baseline.AcceptanceCriteria[index].Statement = edited.AcceptanceCriteria[index].Statement
+			editedCriterion = edited.AcceptanceCriteria[index]
+			baseline.AcceptanceCriteria[index] = editedCriterion
 		}
 	}
 	if len(edited.AcceptanceCriteria) != len(current.AcceptanceCriteria) || !reflect.DeepEqual(edited, baseline) {
-		return request, fmt.Errorf("criterion revise --edit may change only the selected criterion statement")
+		return request, fmt.Errorf("criterion revise --edit may change only the selected criterion title, statement, and overview")
 	}
-	request.Statement = editedStatement
+	request.Statement = &editedCriterion.Statement
+	request.Title = &editedCriterion.Title
+	request.Overview = &editedCriterion.Overview
 	request.CreatedAt = edited.CreatedAt
 	return request, nil
+}
+
+func criterionText(value *string) string {
+	if value == nil {
+		return ""
+	}
+	return *value
 }
 
 func runRevisionEditor(ctx context.Context, revision requirements.Revision) (requirements.Revision, error) {

@@ -252,7 +252,7 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 	for _, record := range status.Stale {
 		if record.Record == relation {
 			found = true
-			if len(record.Reasons) != 1 || record.Reasons[0] != "to criterion statement changed" {
+			if len(record.Reasons) != 1 || record.Reasons[0] != "to criterion content changed" {
 				t.Fatalf("the only stale reason is the reworded criterion: %#v", record.Reasons)
 			}
 		}

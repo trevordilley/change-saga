@@ -129,7 +129,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", usage)
 	}
-	if err := readStoryOverview(flags, *overviewSource, *from, stdin); err != nil {
+	if err := readAuthoredOverview(flags, *overviewSource, *from, stdin); err != nil {
 		return err
 	}
 	parsedCriteria, err := parseCriteria(criteria)
@@ -211,7 +211,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	if flags.NArg() != 1 || (*from != "" && *edit) {
 		return fmt.Errorf("usage: %s", usage)
 	}
-	if err := readStoryOverview(flags, *overviewSource, *from, stdin); err != nil {
+	if err := readAuthoredOverview(flags, *overviewSource, *from, stdin); err != nil {
 		return err
 	}
 	parsedCriteria, err := parseCriteria(criteria)
