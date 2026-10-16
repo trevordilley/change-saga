@@ -78,6 +78,52 @@ func TestCurrentDesignContentDigestsTrackAuthoredContentOnly(t *testing.T) {
 	}
 }
 
+func TestTechnicalDesignEssaysHaveCurrentDesignDigests(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "essays.saga")
+	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"essays","title":"Essays","source":{"repository":"https://example.test/app.git"}}`)
+	for _, id := range []string{"technical-design", "technical-design-storage", "pitch"} {
+		dir := filepath.Join(root, "___overview", id+".fragment")
+		writeTestFile(t, filepath.Join(dir, "fragment.json"), fmt.Sprintf(`{"version":2,"id":%q,"title":%q,"media_type":"text/markdown","entrypoint":"content.md"}`, id, id))
+		writeTestFile(t, filepath.Join(dir, "content.md"), "# Approach {#approach}\n\nOriginal explanation.\n")
+		if id != "pitch" {
+			writeTestFile(t, filepath.Join(dir, "___landmarks", "approach.landmark", "landmark.json"), `{"version":2,"id":"approach","label":"Approach","selector":{"type":"heading","heading_id":"approach"}}`)
+		}
+	}
+	read := func() map[string]string {
+		t.Helper()
+		document, validation, err := Load(root)
+		if err != nil || !validation.Valid {
+			t.Fatalf("load: %v %#v", err, validation.Issues)
+		}
+		digests, err := CurrentDesignContentDigests(document)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return digests
+	}
+	before := read()
+	for _, id := range []string{"technical-design", "technical-design-storage"} {
+		for _, target := range []string{FragmentTarget("essays", id), LandmarkTarget("essays", id, "approach")} {
+			if !strings.HasPrefix(before[target], "sha256:") {
+				t.Fatalf("technical design target missing: %s", target)
+			}
+		}
+	}
+	if len(before) != 4 {
+		t.Fatalf("product overview must not become technical design: %#v", before)
+	}
+	writeTestFile(t, filepath.Join(root, "___overview", "technical-design-storage.fragment", "content.md"), "# Approach {#approach}\n\nRevised storage boundary.\n")
+	after := read()
+	for _, target := range []string{FragmentTarget("essays", "technical-design-storage"), LandmarkTarget("essays", "technical-design-storage", "approach")} {
+		if before[target] == after[target] {
+			t.Fatalf("changed essay left a current pin: %s", target)
+		}
+	}
+	if before[FragmentTarget("essays", "technical-design")] != after[FragmentTarget("essays", "technical-design")] {
+		t.Fatal("editing the supporting page changed the approach digest")
+	}
+}
+
 func TestCurrentDesignContentDigestsCanonicalEmbeddedVisualTargets(t *testing.T) {
 	document, fixture := loadVisualDigestFixture(t)
 

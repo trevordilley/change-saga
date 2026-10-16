@@ -13,6 +13,8 @@ import (
 	"sort"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/twentyideas/changesaga/internal/applayout"
 )
 
 const (
@@ -72,6 +74,16 @@ func CurrentDesignContentDigests(document *Saga) (map[string]string, error) {
 	}
 	if _, err := digestDesignSection(document.Section, result, false); err != nil {
 		return nil, err
+	}
+	if document.Overview != nil {
+		for _, fragment := range document.Overview.Fragments {
+			if !applayout.IsTechnicalDesignPart(filepath.Base(fragment.Path)) {
+				continue
+			}
+			if _, err := digestDesignFragment(fragment, result); err != nil {
+				return nil, err
+			}
+		}
 	}
 	if err := digestEmbeddedVisualDesign(document.Decks, result); err != nil {
 		return nil, err
