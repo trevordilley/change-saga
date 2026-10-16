@@ -38,6 +38,26 @@ change.saga/
 The layout is descriptive, not an authoring API. Use queries to discover
 resources and public commands to change them.
 
+## Windows path portability
+
+Deck records retain a 64-byte filename limit and a 240-byte absolute-path
+budget on every platform, including macOS and Linux, to keep Sagas compatible
+with Windows. Creation reserves space for a full 64-byte filename; validation
+measures each existing filename. The diagnostic reports the directory, filename
+allowance, total length, and how many bytes must be removed.
+
+When this guard fails, shorten the checkout/worktree or Saga location by at
+least the reported excess. Preserve uncommitted work and managed workspaces;
+use a separate checkout at a shorter path when appropriate instead of moving
+an active managed workspace behind its manager. Before creating a new record,
+a shorter deck or review ID can also reduce its directory path. Keep descriptive
+titles in the content. Do not rename existing IDs, hand-edit or rename generated
+storage files, disable the guard, or use a symlink to hide the real path length.
+Run `change-saga validate --json <saga>` at the shorter location, then retry the
+original command. Test fixtures should likewise use a short temporary root.
+
+## Technical design layout
+
 Technical design combines `___overview/technical-design.fragment`, optional
 `technical-design-<page>.fragment` supporting essays, and three whiteboards with
 IDs `data-model`, `infrastructure`, and `data-flows`.

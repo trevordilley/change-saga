@@ -87,11 +87,23 @@ func validFlatRank(rank int) error {
 
 func flatPathIssue(root, name string) string {
 	if len(name) > FlatMaxBasename {
-		return fmt.Sprintf("portable deck basenames cannot exceed %d characters", FlatMaxBasename)
+		return fmt.Sprintf("portable deck basename %q is %d bytes; Windows portability limit is %d bytes. Restore the canonical filename or recreate the record through the public CLI; do not hand-rename generated records", name, len(name), FlatMaxBasename)
 	}
-	abs := filepath.Join(root, name)
-	if len(abs) > FlatMaxPath {
-		return fmt.Sprintf("portable deck path exceeds %d characters; choose a shorter Saga location", FlatMaxPath)
+	return FlatPathBudgetIssue(root, len(name))
+}
+
+// FlatPathBudgetIssue preserves the absolute-path budget used for Windows
+// portability. Creators reserve FlatMaxBasename bytes for future bundle records;
+// readers check the actual filename length. Diagnostics distinguish that filename
+// allowance from the directory so callers can fix location without changing IDs.
+func FlatPathBudgetIssue(directory string, filenameBytes int) string {
+	abs, err := filepath.Abs(directory)
+	if err != nil {
+		return fmt.Sprintf("cannot resolve deck directory for Windows portability check: %v", err)
+	}
+	length := len(filepath.Join(abs, "x")) - 1 + filenameBytes
+	if length > FlatMaxPath {
+		return fmt.Sprintf("portable deck path requires %d bytes (directory %q: %d bytes; filename allowance: %d bytes), exceeding the %d-byte Windows portability budget (%d-byte reduction required). Fix: use a shorter checkout/worktree or Saga location; for a new deck or review, shorter IDs can also help. Preserve existing record IDs and generated filenames, keep the portability guard enabled, then run change-saga validate --json <saga> at the shorter location and retry", length, abs, len(abs), filenameBytes, FlatMaxPath, length-FlatMaxPath)
 	}
 	return ""
 }

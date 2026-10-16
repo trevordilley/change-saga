@@ -72,8 +72,8 @@ func Create(root string, manifest saga.ReviewManifest, deck saga.DeckManifest) e
 			return err
 		}
 		dir := filepath.Join(reviews, manifest.ID+saga.ReviewSuffix)
-		if len(filepath.Join(dir, saga.ReviewDeckDir, strings.Repeat("x", saga.FlatMaxBasename))) > saga.FlatMaxPath {
-			return fmt.Errorf("review path exceeds the portable %d-character budget; choose a shorter review id or Saga location", saga.FlatMaxPath)
+		if issue := saga.FlatPathBudgetIssue(filepath.Join(dir, saga.ReviewDeckDir), saga.FlatMaxBasename); issue != "" {
+			return fmt.Errorf("cannot create review: %s", issue)
 		}
 		err = store.CommitDir(document.Root, dir, func(stage string) error {
 			if err := os.Chmod(stage, 0o755); err != nil {

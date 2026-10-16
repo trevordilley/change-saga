@@ -46,6 +46,39 @@ func TestQualifiedDiagramIDs(t *testing.T) {
 	}
 }
 
+func TestDeckPathBudgetExplainsShorterLocationAndAllowsRetry(t *testing.T) {
+	root := newAuthoredSaga(t)
+	longParent := filepath.Join(shortTempDir(t), strings.Repeat("p", 150))
+	if err := os.MkdirAll(longParent, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	longRoot := filepath.Join(longParent, "app.saga")
+	if err := os.Rename(root, longRoot); err != nil {
+		t.Fatal(err)
+	}
+	var output bytes.Buffer
+	add := func(location string) error {
+		return AddDeck(context.Background(), []string{"--feature", testFeature, "--id", "arch", "--objective", "Explain the flow.", location, "arch"}, &output)
+	}
+	err := add(longRoot)
+	if err == nil || !strings.Contains(err.Error(), "240-byte Windows portability budget") || !strings.Contains(err.Error(), "filename allowance: 64 bytes") || !strings.Contains(err.Error(), "validate --json") {
+		t.Fatalf("expected actionable path error, got %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(testFeatureDir(longRoot), saga.EmbeddedSlidesDir, "arch.deck")); !os.IsNotExist(err) {
+		t.Fatalf("rejected deck was created: %v", err)
+	}
+	if err := os.Rename(longRoot, root); err != nil {
+		t.Fatal(err)
+	}
+	if err := add(root); err != nil {
+		t.Fatalf("retry in shorter location: %v", err)
+	}
+	_, validation, err := saga.Load(root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("relocated Saga invalid: %v %v", err, validation.Issues)
+	}
+}
+
 func TestImplementationDeckAuthoringLoop(t *testing.T) {
 	t.Parallel()
 	repo := t.TempDir()

@@ -135,8 +135,8 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 			return statErr
 		}
 		bundle := filepath.Join(slidesRoot, *id+saga.EmbeddedDeckSuffix)
-		if len(filepath.Join(bundle, strings.Repeat("x", saga.FlatMaxBasename))) > saga.FlatMaxPath {
-			return fmt.Errorf("embedded deck path exceeds the portable %d-character budget; choose a shorter Saga location or deck id", saga.FlatMaxPath)
+		if issue := saga.FlatPathBudgetIssue(bundle, saga.FlatMaxBasename); issue != "" {
+			return fmt.Errorf("cannot create embedded deck: %s", issue)
 		}
 		if err := os.MkdirAll(slidesRoot, 0o755); err != nil {
 			return err
