@@ -1,4 +1,6 @@
 {
+  "subtext": "Define verification before implementation, then link the same cases to exact code.",
+  "abstract": "Quality connects acceptance criteria to planned verification steps and implementation evidence, with visible missing or stale mappings. It does not report execution results.",
   "version": 2,
   "id": "quality-verification--overview",
   "title": "Overview",
