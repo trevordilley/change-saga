@@ -30,7 +30,7 @@ import (
 )
 
 // ownedReference is one code reference the Saga records, with its owner.
-// Kind is evidence (a coverage record), claim, quality_evidence, or term. A
+// Kind is evidence (coverage), claim, quality_evidence, term or deprecation. A
 // term's references name the code that defines a word of the project's
 // vocabulary; when one goes stale, its owner is the term to update.
 type ownedReference struct {
@@ -82,6 +82,16 @@ func sagaReferences(document *saga.Saga) ([]ownedReference, error) {
 			result = append(result, ownedReference{Kind: "term", Owner: urn, Index: index + 1, Code: reference})
 		}
 	}
+	for _, dep := range vocabulary.Deprecations {
+		if dep.CurrentRevision == nil || !dep.Active() {
+			continue
+		}
+		urn, _ := requirements.DeprecationURN(document.Manifest.ID, dep.Identity.ID)
+		for index, reference := range dep.CurrentRevision.Code {
+			result = append(result, ownedReference{Kind: "deprecation", Owner: urn, EvidenceFile: requirements.DeprecationPackagePath(dep.Identity.ID) + "/revisions/" + dep.CurrentRevision.ID + ".json", Index: index + 1, Code: reference})
+		}
+	}
+
 	return result, nil
 }
 
@@ -155,13 +165,13 @@ func References(ctx context.Context, args []string, out io.Writer) error {
 		health := referenceHealth{ownedReference: value, Pinned: value.Code.Location(), State: coderesolve.Stale}
 		head := resolver.Resolve(ctx, value.Code, changes.HeadOID)
 		base := resolver.Resolve(ctx, value.Code, changes.BaseOID)
-		if head.Current() {
+		if head.Current() && (value.Kind != "deprecation" || !head.Provisional) {
 			location := head.Location
 			health.Head, health.State, health.Moved = &location, coderesolve.Current, head.Moved
 		}
-		// A term names the code as it is now, so only the head decides whether
-		// it is current: a rename in the change makes it stale.
-		if base.Current() && value.Kind != "term" {
+		// Terms and deprecations describe code at the inspected head. A match
+		// on the old side must not hide stale evidence in the current code.
+		if base.Current() && value.Kind != "term" && value.Kind != "deprecation" {
 			location := base.Location
 			health.Base, health.State = &location, coderesolve.Current
 			health.Moved = health.Moved || base.Moved && health.Head == nil

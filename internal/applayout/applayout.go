@@ -87,7 +87,7 @@ const (
 
 // AppRootDirs are the reserved directories allowed directly beneath an app
 // Saga root, besides the review overlay roots the report loader owns.
-var AppRootDirs = []string{FeatureThemesDir, OverviewDir, PersonasDir, DesignSystemDir, OnboardingDir, FeatureFlagsDir, FeaturesDir, "___inventory", WhiteboardsDir}
+var AppRootDirs = []string{FeatureThemesDir, OverviewDir, PersonasDir, DesignSystemDir, OnboardingDir, FeatureFlagsDir, FeaturesDir, "___inventory", "___deprecations", WhiteboardsDir}
 
 // FeatureRootDirs are the reserved directories allowed directly beneath a feature.
 var FeatureRootDirs = []string{RequirementsDir, DesignDir, SlidesDir, QualityDir, WorkplanDir}

@@ -93,12 +93,17 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"theme", "serve", "open", "install-skill", "spec",
 }
 
 var commandUsage = map[string]string{
+	"deprecation":           "change-saga deprecation <add|revise|set-state> [flags] <saga>",
+	"deprecation add":       "change-saga deprecation add --id ID --target URN --scope content|code --reason TEXT [--ref LOCATION...] [--replacement URN] [flags] <saga>",
+	"deprecation revise":    "change-saga deprecation revise --deprecation URN --revision ID --parent URN... --target URN --scope content|code --reason TEXT [--ref LOCATION...] [--replacement URN] [flags] <saga>",
+	"deprecation set-state": "change-saga deprecation set-state --deprecation URN --event ID --parent URN... --state active|withdrawn --reason TEXT [flags] <saga>",
+
 	"component":                  "change-saga component <add|revise|set-state> [flags] <saga>",
 	"system":                     "change-saga system <add|revise|set-state> [flags] <saga>",
 	"data-entity":                "change-saga data-entity <add|revise|set-state> [flags] <saga>",

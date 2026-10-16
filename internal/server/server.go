@@ -543,6 +543,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /api/coverage-file", application.coverageFilePage)
 	handle("GET /api/coverage-target", application.coverageTargetPage)
 	handle("GET /api/file-diff", application.fileDiffFragment)
+	handle("GET /api/deprecations", application.deprecations)
 	handle("GET /api/target-code", application.targetCode)
 	handle("GET /api/file-owners", application.fileOwners)
 	handle("GET /api/section", application.sectionBody)
@@ -997,7 +998,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 }
 
 // pageTemplateSource is every template the reviewer renders with.
-var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
+var pageTemplateSource = deprecationTemplates + pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
@@ -1017,8 +1018,12 @@ func templateFuncs() template.FuncMap {
 		"oob":                  oobPart,
 		"navState":             navState,
 		"sidebarOutline":       sidebarOutline,
-		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
-			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
+		"reviewDiffSurface": func(path, codeHref string, refs ...string) reviewDiffSurfaceView {
+			view := reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
+			if len(refs) > 0 {
+				view.Ref = refs[0]
+			}
+			return view
 		},
 		"relatedReviews": func(kind string, reviews []relatedReviewView) relatedReviewsView {
 			return relatedReviewsView{Kind: kind, Reviews: reviews}

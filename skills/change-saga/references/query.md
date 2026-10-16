@@ -149,6 +149,8 @@ covered lines are not proof of a correct explanation.
 ## Operations
 
 <!-- query-operations:begin -->
+- `deprecations`: authored deprecation assertions, exact content and code scope, target health, optional story relations and immutable history; absence is no recorded deprecation, never proof of non-deprecation.
+  `change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--history] [--cursor CURSOR] [--limit N]`
 - `schema`: the response paths and pagination contract for a query operation; no saga is required.
   `change-saga query schema <operation>`
 - `overview`: compact saga directory, source comparison and coverage summary; --deck URN includes only that deck's full overview report.
