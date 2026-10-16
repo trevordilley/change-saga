@@ -7,6 +7,7 @@ import (
 	"slices"
 	"sync"
 
+	"github.com/twentyideas/changesaga/internal/deprecationview"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -40,6 +41,9 @@ type sagaFiles struct {
 	recordsID   string
 	recordsDoc  requirements.Document
 	recordsErr  error
+
+	deprecationsOnce sync.Once
+	deprecationsView *deprecationview.ContentSnapshot
 
 	testsOnce sync.Once
 	testsDoc  quality.Document
@@ -206,4 +210,11 @@ func (files *sagaFiles) slides(build func() (*sectionView, template.HTML, error)
 func (files *sagaFiles) whiteboard(build func() *whiteboardView) *whiteboardView {
 	files.whiteboardOnce.Do(func() { files.whiteboardView = build() })
 	return files.whiteboardView
+}
+
+// contentDeprecations shares target health and lifecycle projections without
+// retaining any exact-code resolver or source-dependent result.
+func (files *sagaFiles) contentDeprecations(document requirements.Document) *deprecationview.ContentSnapshot {
+	files.deprecationsOnce.Do(func() { files.deprecationsView = deprecationview.NewContentSnapshot(document) })
+	return files.deprecationsView
 }

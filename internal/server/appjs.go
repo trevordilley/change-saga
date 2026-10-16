@@ -78,8 +78,8 @@ const appJavaScript = `(() => {
   }
 
   // The deck viewer a reader is looking at: a review's own deck on its page,
-  // or the shell's viewer of every embedded deck, which is loaded once after
-  // the first paint and kept from page to page.
+  // or the shell's viewer of embedded decks, loaded on demand and kept from
+  // page to page.
   function currentDeckViewer() { return q('#page [data-deck-viewer]') || q('#view-slides [data-deck-viewer]'); }
 
   // slideViewName is the view the current deck viewer is shown in.
@@ -312,11 +312,8 @@ const appJavaScript = `(() => {
   }
 
   // ----- Slide frames -----
-  // The deck viewer holds every slide of every deck, hidden, and is kept for
-  // the session. Its frames load in the background two at a time, the slide
-  // on screen and its neighbours first, so that a slide is ready before a
-  // reader opens it and the loading never takes the connections the reader's
-  // next page needs. A frame the page renders itself loads as any would.
+  // Only the active slide and its immediate neighbours load frames. Hidden
+  // decks must never consume the connections needed by page navigation.
   const frameSource = frame => frame.getAttribute('src') || frame.dataset.frameSrc || '';
   const frameQueue = [];
   const maxFramesLoading = 2;
@@ -347,14 +344,10 @@ const appJavaScript = `(() => {
     while (framesLoading < maxFramesLoading && frameQueue.length) loadFrame(frameQueue.shift());
   }
 
-  function queueFrames(root) {
-    within(root, 'iframe[data-frame-src]').forEach(frame => frameQueue.push(frame));
-    pumpFrames();
-  }
-
   // loadSlideFrames puts a slide's frames first, and its neighbours' next.
   function loadSlideFrames(slide) {
-    const slides = deckViewerSlides();
+    frameQueue.length = 0;
+    const slides = viewerDeckSlides(slide);
     const index = slides.indexOf(slide);
     const unqueue = frame => { const at = frameQueue.indexOf(frame); if (at >= 0) frameQueue.splice(at, 1); };
     [slides[index + 1], slides[index - 1]].filter(Boolean).forEach(neighbour => qa('iframe[data-frame-src]', neighbour).forEach(frame => {
@@ -857,6 +850,11 @@ const appJavaScript = `(() => {
   }
 
   async function activateLandmark() {
+    // Hash-only slide and Item permalinks predate the explicit slides view.
+    const hashID = decodeURIComponent(location.hash.slice(1));
+    const slideAnchor = hashID && qa('[data-slide-anchor]').some(link => hashID === link.dataset.slideAnchor || hashID.startsWith(link.dataset.slideAnchor + '--'));
+    const deckAnchor = hashID && qa('.doc-tree a[href]').some(link => link.hash === '#' + hashID && new URL(link.href).searchParams.get('view') === 'slides');
+    if ((requestedView() === 'slides' || slideAnchor || deckAnchor) && !document.getElementById(hashID)) await ensureDecks();
     if (openDeckOverviewFromHash()) return;
     qa('[data-landmark-visual].active').forEach(element => element.classList.remove('active'));
     qa('.content-landmark-active').forEach(element => element.classList.remove('content-landmark-active'));
@@ -1606,6 +1604,7 @@ const appJavaScript = `(() => {
       if (returningToReviewDeck) url.hash = reviewDeckHash;
       history.pushState({htmx: true, view: name}, '', url);
     }
+    if (name === 'slides') void ensureDecks();
     if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);
     if (deckViewerActive()) syncDeckNavigation();
     else if (wasDeckActive && q('#nav-state')) applyNavState(q('#nav-state'));
@@ -3273,18 +3272,23 @@ const appJavaScript = `(() => {
     delete document.body.dataset.shellReady;
   }
 
-  // The deck viewer arrives once per session, after the first paint. Until
-  // it has, the page is not settled: a reader, or a test, may open a slide.
+  // A retained deck host stays empty until a slide, essay or deep link asks
+  // for it. Ordinary pages settle without downloading the hidden viewer.
   let decksArrival = null;
-  function expectDecks() {
+  function ensureDecks() {
+    const host = q('[data-deck-host]');
+    if (!host || q('[data-deck-viewer]', host) || !globalThis.htmx) return Promise.resolve();
+    if (decksArrival?.host === host) return decksArrival.promise;
     let resolve;
     const promise = new Promise(accept => { resolve = accept; });
-    decksArrival = {promise, resolve};
+    decksArrival?.resolve();
+    decksArrival = {host, promise, resolve};
+    htmx.process(host);
+    htmx.trigger(host, 'saga:open-decks');
+    return promise;
   }
-  if (q('[data-deck-host]') && !q('[data-deck-host] [data-deck-viewer]')) expectDecks();
 
   function prepareDecks(viewer) {
-    queueFrames(viewer);
     prepareLandmarks(viewer);
     prepareDiffCitations(viewer);
     highlightCode(viewer);
@@ -3300,7 +3304,7 @@ const appJavaScript = `(() => {
     }
     positionLandmarkHotspots();
     globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
-    decksArrival?.resolve();
+    if (decksArrival?.host === viewer.closest('[data-deck-host]')) decksArrival.resolve();
   }
 
   // The sidebar is the same on every page; a page says which of its rows are
@@ -3366,7 +3370,7 @@ const appJavaScript = `(() => {
     // The page arrives as a shell and fills in what is on screen. Saying when
     // that has finished is the difference between a reviewer who can see the
     // page has settled and automation that would otherwise have to guess.
-    void Promise.all([settled, decksArrival?.promise]).then(() => {
+    void Promise.all([settled, requestedView() === 'slides' ? ensureDecks() : null]).then(() => {
       if (root.isConnected) document.body.dataset.shellReady = 'true';
     });
   }
@@ -3382,6 +3386,20 @@ const appJavaScript = `(() => {
     setView(view, false);
     syncDeckSlideForHash();
     void activateLandmark();
+  }
+
+  // A slide's annotations load when that slide or essay becomes visible,
+  // including face changes. Offscreen annotations on ordinary pages still
+  // load: a long canvas must not conceal its recorded deprecations.
+  const startedDeprecations = new WeakSet();
+  function loadVisibleDeckDeprecations() {
+    if (!globalThis.htmx) return;
+    qa('[data-deck-viewer] [data-deprecation-load]').forEach(loader => {
+      if (loader.getClientRects().length && !startedDeprecations.has(loader)) htmx.trigger(loader, 'saga:deprecations');
+    });
+  }
+  for (const event of ['deck-slide-activated', 'deck-face-changed']) {
+    document.addEventListener(event, () => requestAnimationFrame(loadVisibleDeckDeprecations));
   }
 
   // Anchors this script acts on rather than follows.
@@ -3400,7 +3418,7 @@ const appJavaScript = `(() => {
       else if (element.id === 'nav-state') applyNavState(element);
       // A deck host from another state of the Saga loads its viewer; one
       // hx-preserve kept is already loaded.
-      else if (element.id === 'view-slides' && !q('[data-deck-viewer]', element)) expectDecks();
+      else if (element.id === 'view-slides' && requestedView() === 'slides') void ensureDecks();
     });
     // What this script inserts itself, into the drawer, a chapter, an
     // explanation, or a review surface, holds links too; they are boosted
@@ -3460,6 +3478,14 @@ const appJavaScript = `(() => {
     // From the moment another page is asked for, this one is no longer the
     // settled page.
     document.addEventListener('htmx:beforeRequest', event => {
+      const loader = event.detail.elt;
+      if (loader?.matches('[data-deprecation-load]')) {
+        if (startedDeprecations.has(loader) || (loader.closest('[data-deck-viewer]') && !loader.getClientRects().length)) {
+          event.preventDefault();
+          return;
+        }
+        startedDeprecations.add(loader);
+      }
       if (!boostedPage(event.detail)) return;
       startPageLoading();
       delete document.body.dataset.shellReady;
@@ -3476,12 +3502,14 @@ const appJavaScript = `(() => {
     };
     document.addEventListener('htmx:responseError', loadDirectly);
     document.addEventListener('htmx:sendError', loadDirectly);
-    document.addEventListener('htmx:responseError', event => {
-      const host = event.detail.elt?.closest?.('[data-deck-host]');
+    const deckLoadError = event => {
+      const host = event.detail.elt?.matches?.('[data-deck-host]') ? event.detail.elt : null;
       if (!host) return;
       surfaceStatus(host, 'error', 'The slides could not be loaded.', 'Reload the page to try again.');
-      decksArrival?.resolve();
-    });
+      if (decksArrival?.host === host) decksArrival.resolve();
+    };
+    document.addEventListener('htmx:responseError', deckLoadError);
+    document.addEventListener('htmx:sendError', deckLoadError);
     // No page is snapshotted, so every step back or forward is a miss. One
     // that stays on the page on screen, moving between its views or anchors,
     // needs nothing from the server: the popstate and hashchange listeners

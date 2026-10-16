@@ -285,7 +285,7 @@ const whiteboardTemplates = `
 <section class="whiteboard whiteboard-canvas" data-whiteboard-view data-whiteboard-id="{{.ID}}" data-whiteboard-url="{{.Href}}" data-whiteboard-revision="{{.Revision}}" data-technical-page="{{if eq .Role "erd"}}erd{{else}}whiteboard{{end}}"{{if eq .Role "erd"}} data-technical-data-model{{end}} aria-label="{{.Name}} whiteboard">
 <div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}{{range .Notes}}<template data-diagram-note-template="{{.Path}}">{{template "element-note-popover" .Popover}}</template>{{end}}</div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
-<div class="whiteboard-deprecations whiteboard-overlay" data-deprecation-load hx-get="/api/deprecations?target={{urlquery .DeprecationTarget}}&amp;children=1&amp;revision={{urlquery .Revision}}" hx-trigger="load" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>
+<div class="whiteboard-deprecations whiteboard-overlay" data-deprecation-load hx-get="/api/deprecations?target={{urlquery .DeprecationTarget}}&amp;children=1&amp;revision={{urlquery .Revision}}" hx-trigger="load, saga:deprecations" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Whiteboard{{end}}</h1>
 <details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">

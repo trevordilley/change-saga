@@ -31,6 +31,63 @@ counter asserts that root never crosses the full-comparison build boundary. The
 narrative side has the same rule: one explanation's prose on first load is the
 whole eager-rendering regression, whatever the page happens to weigh.
 
+## Embedded decks and deprecation inspection
+
+Ordinary documentation navigation leaves the retained deck host empty. `/decks`
+is requested once, when a slide, deck essay, or slide/Item permalink needs it.
+Pages settle without waiting for an unopened viewer, and the background cache
+warmer no longer renders it. After opening a viewer, only visible slides and
+essays request their annotations; frame prefetch is limited to the active slide
+and its immediate neighbours within the same deck. Ordinary offscreen content
+still loads annotations, including a long whiteboard's warnings.
+
+Content deprecation inspection shares the existing documentation-file generation
+for requirements and narrative reads. It selects records by current authored
+targets before computing target health, then retains each requested record's
+immutable projection once per generation. A matching conflicted record still
+shows every candidate, and withdrawn records remain visible. Exact-code queries
+resolve evidence afresh against the requested commit: source HEAD, historical
+references, moved evidence and provisional matches are not cached as content.
+
+`e2e/tests/large-navigation.spec.ts` generates 104 slides before starting its own
+server. PR CI runs it serially via `npm run test:navigation-performance` and saves
+cold/warm root and click timings, response bytes, DOM size and request counts in
+`large-navigation-metrics.json`, on success as well as failure. Hard assertions
+require zero hidden deck downloads, zero hidden slide-annotation requests, zero
+hidden frames during ordinary navigation, and at most two loaded frames when
+opening the first slide. A last-slide hash-only link verifies deferred annotations
+remain reachable. A generous 10-second click ceiling catches gross stalls;
+precise milliseconds are diagnostic rather than a portable speed promise.
+
+A local before/after run on darwin/arm64 used the same generated fixture,
+Chromium, Go 1.26.1 binaries, viewport and click sequence, with one browser worker
+and a fresh server per binary. Cold means the first request to that process;
+warm repeats the sequence in the same server/browser. The diagnostic baseline
+allowed longer waits to collect both phases; the CI test retains its smoke
+ceiling and fails the baseline. These are single samples on a shared machine
+with other work running, not statistically controlled speed guarantees:
+
+| Measurement | Before | After |
+| --- | ---: | ---: |
+| Cold root to settled | 3,111 ms | 989 ms |
+| Cold first click to settled | 26,632 ms | 838 ms |
+| Warm root to settled | 1,190 ms | 727 ms |
+| Warm first click to settled | 25,483 ms | 848 ms |
+| Deck requests during ordinary cold navigation | 1 | 0 |
+| Hidden slide frame requests during that sequence | 104 | 0 |
+| All deprecation requests during that sequence | 107 | 2 |
+| DOM elements after ordinary navigation | 3,899 | 1,039 |
+
+The structural counts are the regression evidence. The public fixture is much
+simpler than a fully authored 104-slide Saga with thousands of Items, and the
+timing samples should not be extrapolated to that workload. After opening the
+first slide and then a fresh last-slide deep link, the fixed viewer fetched two
+frames on each visit and exposed the last slide's deprecation.
+
+Opening the viewer still renders the complete embedded-deck markup once per
+file generation. This change removes that cost from ordinary navigation; it
+does not yet make first-open viewer bytes proportional to the selected deck.
+
 ## Fixtures
 
 Performance work uses deterministic fixtures rather than a checked-in generated

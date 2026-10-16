@@ -24,6 +24,27 @@ On failure, Playwright retains the trace, screenshot, and video. The fixture
 also attaches browser console/network events, server output, and a sanitized
 snapshot of both temporary repositories before deleting them.
 
+## Large-Saga navigation regression
+
+`npm run test:navigation-performance` builds the local binary, generates a
+104-slide Saga in temporary repositories, and runs Chromium with one worker.
+CI runs it on every pull request before the rest of the browser suite and keeps
+`navigation-performance-<run id>` artifacts on success and failure. No private
+Saga, installed binary, credentials, or existing server is used.
+
+The test fails on hidden deck downloads, hidden slide annotations, eager frame
+loading, missing last-slide deprecations, broken hash-only links, or navigation
+above a generous 10-second smoke ceiling. It records first-request (cold server)
+and repeated (warm server/browser) root and click times, document bytes, DOM
+size, and request counts in `large-navigation-metrics.json`. Fixture creation is
+outside those timings. Exact milliseconds are diagnostic; the zero-request
+and bounded-frame assertions are the portable regression contracts.
+
+The Go suite also checks that ordinary pages and warmers never render decks,
+that deprecation projections are reused concurrently within a generation, and
+that withdrawal and target changes invalidate them. Those checks already run
+in the regular cross-platform CI test job.
+
 ## Layers
 
 Each check runs at the cheapest layer that can still tell the truth about it.

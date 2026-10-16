@@ -437,16 +437,18 @@ func (a *app) watchSaga(ctx context.Context) {
 	}
 }
 
-// warmCaches renders pages and the deck viewer nobody asked for, so the page
-// after a change finds everything it reads already read: the Saga's files,
+// warmCaches renders documentation pages, so the page after a change finds
+// everything it reads already read: the Saga's files,
 // the related reviews, which the requirements page reads as every feature and
-// story page does; the decks, which a shell kept from before the change loads
-// again; every review's state, which the reviews index and the sidebar show
-// at once, and each open review's coverage, which its row reads after; and
+// story page does; every review's state, which the reviews index and sidebar
+// show at once, and each open review's coverage, which its row reads after; and
 // where the terms' code is. Rendering real responses keeps the warming
 // exactly what the browser reads.
 func (a *app) warmCaches(ctx context.Context, handler http.Handler) {
-	for _, path := range []string{"/requirements", "/decks", "/reviews?details=all", "/terms"} {
+	for _, path := range []string{"/requirements", "/reviews?details=all", "/terms"} {
+		if ctx.Err() != nil {
+			return
+		}
 		request, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
 		if err != nil {
 			return

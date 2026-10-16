@@ -64,6 +64,16 @@ func TestDeprecationInspectionShowsScopeEvidenceAndWithdrawal(t *testing.T) {
 	if body := get("/api/deprecations?ref=" + url.QueryEscape(noRecord.String())); !strings.Contains(body, "No recorded deprecation") || !strings.Contains(body, "not proof") {
 		t.Fatal(body)
 	}
+	targetPath := "/api/deprecations?target=" + url.QueryEscape(target)
+	if body := get(targetPath); !strings.Contains(body, "Deprecation recorded") {
+		t.Fatal(body)
+	}
+	generation := application.files.current
+	projection := generation.deprecationsView
+	get(targetPath)
+	if application.files.current != generation || generation.deprecationsView != projection {
+		t.Fatal("unchanged annotations rebuilt their generation")
+	}
 	urn := "urn:change-saga:test:deprecation:code"
 	if _, err := requirements.SetDeprecationState(root, "test", requirements.SetDeprecationStateInput{Deprecation: urn, ID: "withdraw", Parents: []string{urn + ":event:active"}, State: requirements.DeprecationWithdrawn, Reason: "Wrong scope"}); err != nil {
 		t.Fatal(err)
@@ -71,8 +81,19 @@ func TestDeprecationInspectionShowsScopeEvidenceAndWithdrawal(t *testing.T) {
 	if body := get("/api/deprecations?target=" + url.QueryEscape(target)); !strings.Contains(body, "Deprecation withdrawn") || !strings.Contains(body, "Wrong scope") {
 		t.Fatal(body)
 	}
+	if application.files.current == generation {
+		t.Fatal("withdrawal reused the old annotation generation")
+	}
+	// Target health is part of the same generation: changing the board must
+	// update cached annotations even though their authored pins did not change.
+	if _, err := requirements.PublishWhiteboard(ctx, root, "test", "systems", "b2", "b1", "Systems changed", doc); err != nil {
+		t.Fatal(err)
+	}
+	if body := get(targetPath); !strings.Contains(body, `data-target-health="stale"`) || !strings.Contains(body, "Deprecation withdrawn") {
+		t.Fatal(body)
+	}
 	page := get("/technical/whiteboards/systems")
-	if !strings.Contains(page, "data-deprecation-load") || !strings.Contains(page, "revision=b1") {
+	if !strings.Contains(page, "data-deprecation-load") || !strings.Contains(page, "revision=b2") {
 		t.Fatalf("board does not load its annotations: %s", page)
 	}
 	for _, bad := range []string{"/api/deprecations", "/api/deprecations?target=../../../private", "/api/deprecations?ref=HEAD:kinds.go", "/api/deprecations?file=../private"} {
