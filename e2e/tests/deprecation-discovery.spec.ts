@@ -41,6 +41,10 @@ test('deprecations stay compact, reveal on hover or focus, and open through page
   await expect(drawer).toContainText('Use Shared Projects');
   await expect(drawer).toContainText('Content scope');
   await expect(drawer).toContainText('Reading saved revision r1');
+  expect((await drawer.boundingBox())!.width).toBeLessThanOrEqual(440);
+  await page.setViewportSize({width:390,height:844});
+  expect((await drawer.boundingBox())!.width).toBeLessThan(390);
+  await page.setViewportSize({width:1440,height:1000});
   await page.keyboard.press('Escape'); await expect(drawer).not.toHaveClass(/open/);
   await expect(marker).toBeFocused();
   await badge.click(); await expect(drawer.locator('li')).toHaveCount(2);

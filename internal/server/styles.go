@@ -768,6 +768,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .diff-drawer[data-drawer-mode=fragment] .fragment.active-fragment{border-left-color:transparent}
 .diff-drawer[data-drawer-mode=history]{width:min(620px,92vw)}
 .diff-drawer[data-drawer-mode=stories]{width:min(520px,92vw)}
+.diff-drawer[data-drawer-mode=deprecations]{width:min(440px,92vw)}
 .diff-drawer[data-drawer-mode=history] .drawer-body{padding-bottom:0}
 .history-drawer-surface{min-height:100%}
 .drawer-body .file-head{top:0}

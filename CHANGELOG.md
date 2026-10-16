@@ -13,7 +13,7 @@ tool, and what they have to do about it.
 ### Added
 
 - Compact deprecation badges and element markers with hover/focus previews,
-  on-demand details, page discovery, and a searchable Saga-wide list. Whiteboard
+  on-demand details in a narrow side panel, page discovery, and a searchable Saga-wide list. Whiteboard
   annotations no longer cover the canvas with expanded warning panels.
 
 - Identity-preserving authoring operations: feature/theme rename, unused
