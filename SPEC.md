@@ -335,9 +335,23 @@ revisions inherit omitted prose; explicit empty clears. Structured revisions
 remain complete snapshots and multi-parent reconciliation never guesses prose.
 Criterion conveniences preserve overview. It participates in whole-story
 obligation currency and changed-record context, without changing independent
-criterion-statement carry-forward or lifecycle acceptance semantics. Queries
+criterion-content carry-forward or lifecycle acceptance semantics. Queries
 expose current and historical snapshots. Both additions are optional: existing
 Sagas remain readable without migration. See [authoring and reading](docs/feature-story-reading.md).
+
+Acceptance criteria in a complete v3 story revision may have optional `title`
+and Markdown `overview` strings alongside required `id` and `statement`.
+Omission means absent; no generated title or prose is persisted. Criterion
+add/revise commands accept `--title`, `--overview`, and `--overview-source`.
+A criterion revise is a patch: omitted fields preserve parent values, explicit
+empty title/overview clears them, and an empty statement is invalid. Full story
+revisions retain their complete-snapshot semantics. Criterion titles, statements,
+and overviews all participate in criterion and whole-story obligation currency;
+unchanged siblings carry forward. The stable `criterion_statement_changed` code
+also covers title/overview changes. Queries expose historical and current prose,
+and the viewer renders safe Markdown with the full statement always visible.
+Older strict readers reject these optional fields when used; upgrade readers
+before adopting them. Existing records require no migration.
 
 **Multiple ERD documents and shared overview.** An app may have any number of
 independently named ERD records: for example `sqlite`, `postgres`, and
@@ -931,9 +945,9 @@ narrower form. A stale relation is never coverage, and relations never move
 exact diff ownership away from Items.
 
 A relation is judged by **what it points at**, not by a revision id. It is
-stale when its visual source disappears, when a pinned criterion's statement is
+stale when its visual source disappears, when a pinned criterion's title, statement, or overview is
 no longer byte-identical to the one confirmed, or when a pinned story no longer
-obliges what it did: its title, statement, or acceptance criteria changed.
+obliges what it did: its title, statement, overview, or acceptance criteria changed.
 A story's priority, personas, and citations do not stale a relation, because
 none of them changes what a design must address, a slide must explain, or a
 test must verify. The comparison is exact: a typo fix or a capitalization

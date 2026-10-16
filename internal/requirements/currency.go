@@ -27,8 +27,7 @@ const (
 	ReasonCriterionRemoved      = "criterion_removed"
 	ReasonHeadUnresolved        = "head_unresolved"
 	// ReasonCriterionStatementChanged is the criterion a relation points at
-	// being reworded under it: the one revision change that can invalidate
-	// what the relation asserts.
+	// changing its title, statement, or overview. The legacy code remains stable.
 	ReasonCriterionStatementChanged = "criterion_statement_changed"
 	// ReasonStoryObligationChanged is the story a relation points at changing
 	// what it obliges: its title, its statement, or any acceptance criterion.
@@ -38,7 +37,7 @@ const (
 // Carry-forward codes. Every carried-forward endpoint has exactly one.
 const (
 	// CarriedCriterionUnchanged is a story revised around a criterion whose id
-	// and statement did not move.
+	// and authored content did not move.
 	CarriedCriterionUnchanged = "criterion_unchanged"
 	// CarriedStoryObligationUnchanged is a story revised without changing what
 	// it obliges.
@@ -225,7 +224,7 @@ func documentHeads(document Document) currencyHeads {
 				if heads.statements[id] == nil {
 					heads.statements[id] = map[string]string{}
 				}
-				heads.statements[id][revisionID] = criterion.Statement
+				heads.statements[id][revisionID] = criterionObligation(criterion)
 			}
 			if heads.obligations[storyID] == nil {
 				heads.obligations[storyID] = map[string]string{}
@@ -311,7 +310,7 @@ func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
 			case CarriedCriterionUnchanged:
 				result.CarriedForward = append(result.CarriedForward, CarriedForward{
 					Endpoint: pin.name, Code: code, Confirmed: pin.revision, Current: current,
-					Message: pin.name + " criterion statement is unchanged since the confirmed revision",
+					Message: pin.name + " criterion content is unchanged since the confirmed revision",
 				})
 			case CarriedStoryObligationUnchanged:
 				result.CarriedForward = append(result.CarriedForward, CarriedForward{
@@ -319,7 +318,7 @@ func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
 					Message: pin.name + " story obliges what it did at the confirmed revision",
 				})
 			case ReasonCriterionStatementChanged:
-				add(code, "criterion statement changed", pin.revision, current)
+				add(code, "criterion content changed", pin.revision, current)
 			case ReasonStoryObligationChanged:
 				add(code, "story obligation changed", pin.revision, current)
 			default:
@@ -336,7 +335,7 @@ func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
 
 // revisionChange says what a moved revision pin means for one endpoint. A
 // relation to a criterion asserts something about that criterion alone, so a
-// revision that leaves the criterion's id and statement alone carries the pin
+// revision that leaves the criterion's id and authored content alone carries the pin
 // forward; a reworded criterion is stale, and so is anything the criterion
 // index cannot speak for. The comparison is byte-for-byte on purpose:
 // whitespace and typo fixes are judgment calls by definition, and staleness is
@@ -372,7 +371,7 @@ func compareAcross(byRevision map[string]string, pinned, current, unchanged, cha
 func obligationOf(revision Revision) string {
 	parts := []string{strconv.Quote(revision.Title), strconv.Quote(revision.Statement), strconv.Quote(revision.Overview)}
 	for _, criterion := range revision.AcceptanceCriteria {
-		parts = append(parts, strconv.Quote(criterion.ID), strconv.Quote(criterion.Statement))
+		parts = append(parts, strconv.Quote(criterion.ID), criterionObligation(criterion))
 	}
 	return strings.Join(parts, " ")
 }
@@ -399,4 +398,10 @@ func sortedCopy(values []string) []string {
 	result := append([]string{}, values...)
 	sort.Strings(result)
 	return result
+}
+
+// Include authored explanation when assessing evidence: a changed boundary or
+// example can change the obligation even when the one-line statement is stable.
+func criterionObligation(criterion Criterion) string {
+	return strings.Join([]string{strconv.Quote(criterion.Title), strconv.Quote(criterion.Statement), strconv.Quote(criterion.Overview)}, "\n")
 }

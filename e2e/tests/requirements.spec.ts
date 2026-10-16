@@ -99,6 +99,7 @@ test("an active requirement opens its implementation Item and exact linked sourc
   await criterionDisclosure.getByRole("link", { name: "AC 01 · Open criterion", exact: true }).click();
   await expect(page).toHaveURL(/\/requirements\/trace-code\/criteria\/opens-source$/);
   const criterionPage = page.locator("[data-criterion-page]");
+  await criterionPage.locator("[data-criterion-own-trace] > summary").click();
   const implementationLink = criterionPage.locator(`[data-trace-target="${item}"]`).getByRole("link", { name: "Request implementation" });
   await expect(implementationLink).toBeVisible();
   await implementationLink.click();

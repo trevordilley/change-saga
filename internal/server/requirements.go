@@ -94,6 +94,8 @@ type citationView struct {
 }
 
 type requirementCriterionView struct {
+	Title     string
+	Overview  template.HTML
 	Number    int
 	Label     string
 	ID        string
@@ -242,7 +244,8 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 			view.Criteria = append(view.Criteria, &requirementCriterionView{
 				Number: index + 1, Label: fmt.Sprintf("AC %02d", index+1), ID: criterion.ID,
 				Target: target, DOMID: domID(target), Href: requirementCriterionHref(story.Identity.ID, criterion.ID),
-				Statement: criterion.Statement,
+				Statement: criterion.Statement, Title: criterion.Title,
+				Overview: markdownWithAnchors(criterion.Overview, domID(target)+"--overview"),
 			})
 		}
 	}
@@ -308,7 +311,7 @@ func makeFeatureRequirementsNav(page *requirementsPageView, feature, prefix stri
 		}
 		for _, criterion := range story.Criteria {
 			child := &navNodeView{
-				Title: criterion.Label + " · " + shortStatement(criterion.Statement, criterionNavRunes), Href: criterion.Href,
+				Title: criterion.Label + " · " + criterionNavigationTitle(criterion), Href: criterion.Href,
 				NodeID: "nav-" + criterion.DOMID, Icon: "criterion", Requirement: true,
 				Active: criterion.Selected,
 			}
@@ -353,4 +356,11 @@ func shortStatement(statement string, limit int) string {
 		cut = cut[:space]
 	}
 	return strings.TrimRight(cut, " ,;:.") + "…"
+}
+
+func criterionNavigationTitle(criterion *requirementCriterionView) string {
+	if strings.TrimSpace(criterion.Title) != "" {
+		return criterion.Title
+	}
+	return shortStatement(criterion.Statement, criterionNavRunes)
 }

@@ -176,6 +176,7 @@ func AddCriterion(root, sagaID string, input AddCriterionInput) (MutationResult,
 	return mutateCriterion(root, sagaID, criterionMutation{
 		kind: criterionAdd, story: input.Story, parent: input.Parent, revisionID: input.RevisionID,
 		criterionID: input.Criterion.ID, statement: input.Criterion.Statement,
+		title: &input.Criterion.Title, overview: &input.Criterion.Overview,
 		createdAt: input.CreatedAt, requestID: input.RequestID,
 	})
 }
@@ -186,6 +187,7 @@ func ReviseCriterion(root, sagaID string, input ReviseCriterionInput) (MutationR
 	return mutateCriterion(root, sagaID, criterionMutation{
 		kind: criterionRevise, story: input.Story, criterion: input.Criterion,
 		parent: input.Parent, revisionID: input.RevisionID, statement: input.Statement,
+		title: input.Title, overview: input.Overview,
 		createdAt: input.CreatedAt, requestID: input.RequestID,
 	})
 }
@@ -220,6 +222,8 @@ type criterionMutation struct {
 	revisionID  string
 	criterionID string
 	statement   string
+	title       *string
+	overview    *string
 	reason      string
 	createdAt   time.Time
 	requestID   string
@@ -245,7 +249,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		}
 		criterionID = criterionRef.ID
 	}
-	if input.kind == criterionRevise && strings.TrimSpace(input.statement) == "" {
+	if input.kind == criterionRevise && strings.TrimSpace(input.statement) == "" && input.title == nil && input.overview == nil {
 		return MutationResult{}, fmt.Errorf("criterion %q requires a statement", criterionID)
 	}
 	criterionIDURN, _ := criterionURN(sagaID, storyRef.ID, criterionID)
@@ -285,7 +289,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		revision := Revision{
 			Schema: RevisionSchemaURL, Version: Version, ID: input.revisionID, Story: input.story,
 			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement, Overview: parent.Overview,
-			Priority: parent.Priority, Personas: copyStrings(parent.Personas), Citations: copyStrings(parent.Citations),
+			Priority: parent.Priority, Personas: append([]string(nil), parent.Personas...), Citations: copyStrings(parent.Citations),
 			AcceptanceCriteria: copyCriteria(parent.AcceptanceCriteria), CreatedAt: mutationTime(input.createdAt),
 			RequestID: input.requestID,
 		}
@@ -301,15 +305,31 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 			if found >= 0 {
 				return fmt.Errorf("criterion id %q already exists in the current story revision", criterionID)
 			}
-			revision.AcceptanceCriteria = append(revision.AcceptanceCriteria, Criterion{ID: criterionID, Statement: strings.TrimSpace(input.statement)})
+			criterion := Criterion{ID: criterionID, Statement: strings.TrimSpace(input.statement)}
+			if input.title != nil {
+				criterion.Title = *input.title
+			}
+			if input.overview != nil {
+				criterion.Overview = *input.overview
+			}
+			revision.AcceptanceCriteria = append(revision.AcceptanceCriteria, criterion)
 		case criterionRevise:
 			if found < 0 {
 				return fmt.Errorf("criterion %q is not present in parent revision %q", criterionID, input.parent)
 			}
-			if revision.AcceptanceCriteria[found].Statement == strings.TrimSpace(input.statement) {
-				return fmt.Errorf("criterion %q statement is unchanged", criterionID)
+			previous := revision.AcceptanceCriteria[found]
+			if input.statement != "" {
+				revision.AcceptanceCriteria[found].Statement = strings.TrimSpace(input.statement)
 			}
-			revision.AcceptanceCriteria[found].Statement = strings.TrimSpace(input.statement)
+			if input.title != nil {
+				revision.AcceptanceCriteria[found].Title = *input.title
+			}
+			if input.overview != nil {
+				revision.AcceptanceCriteria[found].Overview = *input.overview
+			}
+			if revision.AcceptanceCriteria[found] == previous {
+				return fmt.Errorf("criterion %q content is unchanged", criterionID)
+			}
 		case criterionRemove:
 			if found < 0 {
 				return fmt.Errorf("criterion %q is not present in parent revision %q", criterionID, input.parent)

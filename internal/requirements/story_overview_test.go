@@ -33,3 +33,27 @@ func TestStoryOverviewParticipatesInIdempotency(t *testing.T) {
 		t.Fatal("same request ID with different overview silently replayed")
 	}
 }
+
+func TestCriterionProseChangeReassessesItsPinsAndWholeStory(t *testing.T) {
+	urn := "urn:change-saga:test:story:checkout"
+	for _, field := range []string{"title", "overview"} {
+		t.Run(field, func(t *testing.T) {
+			r1 := Revision{ID: "r1", Story: urn, Title: "Check out", Statement: "I can check out", AcceptanceCriteria: []Criterion{{ID: "works", Statement: "An order is confirmed."}, {ID: "receipt", Statement: "A receipt is available."}}}
+			r2 := r1
+			r2.ID = "r2"
+			r2.Parents = []string{urn + ":revision:r1"}
+			r2.AcceptanceCriteria = append([]Criterion{}, r1.AcceptanceCriteria...)
+			if field == "title" {
+				r2.AcceptanceCriteria[0].Title = "Order confirmation"
+			} else {
+				r2.AcceptanceCriteria[0].Overview = "Confirmation includes an order number."
+			}
+			heads := documentHeads(Document{SagaID: "test", Stories: []Story{{Identity: StoryIdentity{ID: "checkout"}, Revisions: []Revision{r1, r2}, CurrentRevision: &r2, RevisionHeads: []string{urn + ":revision:r2"}}}})
+			for target, want := range map[string]string{urn: ReasonStoryObligationChanged, urn + ":criterion:works": ReasonCriterionStatementChanged, urn + ":criterion:receipt": CarriedCriterionUnchanged} {
+				if got := heads.revisionChange(target, urn+":revision:r1", urn+":revision:r2"); got != want {
+					t.Fatalf("%s: got %s, want %s", target, got, want)
+				}
+			}
+		})
+	}
+}

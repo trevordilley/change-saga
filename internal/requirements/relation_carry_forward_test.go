@@ -48,7 +48,7 @@ func TestRelationToUnchangedCriterionSurvivesAnUnrelatedRevision(t *testing.T) {
 	// the rest was carried forward rather than affirmed.
 	want := []CarriedForward{{Endpoint: "to", Code: CarriedCriterionUnchanged, Confirmed: v5StoryR1,
 		Current: "urn:change-saga:test:story:checkout:revision:r2",
-		Message: "to criterion statement is unchanged since the confirmed revision"}}
+		Message: "to criterion content is unchanged since the confirmed revision"}}
 	if !reflect.DeepEqual(got[0].CarriedForward, want) {
 		t.Fatalf("carried forward = %#v", got[0].CarriedForward)
 	}

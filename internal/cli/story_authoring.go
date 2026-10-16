@@ -172,7 +172,7 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 
 // Read multiline prose without interpreting it. Mark overview visited so the
 // existing flag overrides, inheritance, and editor paths share one contract.
-func readStoryOverview(flags *flag.FlagSet, source, from string, stdin io.Reader) error {
+func readAuthoredOverview(flags *flag.FlagSet, source, from string, stdin io.Reader) error {
 	given := map[string]bool{}
 	flags.Visit(func(f *flag.Flag) { given[f.Name] = true })
 	if !given["overview-source"] {
@@ -195,7 +195,7 @@ func readStoryOverview(flags *flag.FlagSet, source, from string, stdin io.Reader
 		data, err = os.ReadFile(source)
 	}
 	if err != nil {
-		return fmt.Errorf("read story overview: %w", err)
+		return fmt.Errorf("read overview: %w", err)
 	}
 	return flags.Set("overview", string(data))
 }

@@ -25,6 +25,11 @@ tool, and what they have to do about it.
   Existing Sagas and ERD histories remain readable with current readers. Older
   readers reject the new reserved subtree: upgrade before publishing a whiteboard.
   No automatic migration or manifest/inventory version bump is required.
+- **Format:** Acceptance criteria support optional authored titles and Markdown
+  overviews in story revisions. CLI add/revise, editor, queries, and reading pages
+  preserve them; changes require reassessing criterion and whole-story evidence.
+  Existing Sagas need no migration. Upgrade strict readers before using the new
+  fields, which older readers reject.
 
 - **Format:** Optional shared Markdown data-model overview at
   `___overview/data-model.fragment`, authored with `overview set-data-model`.
