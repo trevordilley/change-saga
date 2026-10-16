@@ -19,6 +19,7 @@ import (
 // references lead to the existing, independently readable pinned definitions.
 type whiteboardView struct {
 	ID, Href, CurrentHref string
+	Role                  string
 	DeprecationTarget     string
 	History               []whiteboardRevisionView
 	Metadata              string
@@ -61,28 +62,44 @@ type whiteboardGeometry struct {
 // A missing board is optional; a broken board is explicit without removing
 // the ERD documents and entity directory that remain usable below it.
 func (a *app) makeWhiteboardView(inventory requirements.Inventory) *whiteboardView {
-	return a.makeNamedWhiteboardView(inventory, "data-model", "")
+	metadata, err := requirements.LoadWhiteboardMetadata(a.root, inventory.SagaID)
+	if err != nil {
+		return &whiteboardView{Note: "Whiteboard roles could not be opened: " + err.Error()}
+	}
+	id := metadata.Roles["erd"]
+	if id == "" {
+		return nil
+	}
+	return a.makeNamedWhiteboardView(inventory, id, "")
 }
 
 func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revision string) *whiteboardView {
+	metadata, err := requirements.LoadWhiteboardMetadata(a.root, inventory.SagaID)
+	if err != nil {
+		return &whiteboardView{ID: id, Note: "Whiteboard metadata could not be opened: " + err.Error()}
+	}
 	resolved, err := requirements.LoadResolvedWhiteboard(a.root, inventory.SagaID, id, revision)
 	if err != nil {
-		return &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
+		return &whiteboardView{ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	if resolved == nil {
 		return nil
 	}
 	description, err := resolved.Composition.Describe("")
 	if err != nil {
-		return &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
+		return &whiteboardView{ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	visual, err := inlineWhiteboardSVG(resolved.SVG)
 	if err != nil {
-		return &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
+		return &whiteboardView{ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	enhanced, capabilities := a.enhanceWhiteboardSources(inventory, resolved, template.HTML(visual))
 	boardTarget, _ := requirements.WhiteboardURN(inventory.SagaID, id)
-	view := &whiteboardView{DeprecationTarget: boardTarget, ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	view := &whiteboardView{DeprecationTarget: boardTarget, ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	view.Role = metadata.Role(id)
+	if revision == "" && metadata.Boards[id].Name != "" {
+		view.Name = metadata.Boards[id].Name
+	}
 	if resolved.Revision.Document.Viewport != nil {
 		camera, _ := json.Marshal(resolved.Revision.Document.Viewport)
 		view.Viewport = string(camera)
@@ -95,8 +112,8 @@ func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revi
 		}
 		geometry = append(geometry, whiteboardGeometry{Path: item.Path, Bounds: item.Bounds, LabelBox: item.Element.LabelBox, Transform: item.Transform, Bends: item.Element.Bends, Curve: item.Element.Curve})
 	}
-	metadata, _ := json.Marshal(geometry)
-	view.Metadata = string(metadata)
+	geometryJSON, _ := json.Marshal(geometry)
+	view.Metadata = string(geometryJSON)
 	for _, item := range description.Elements {
 		if item.Element.Kind == "group" && item.Element.Shape == "section" && item.Bounds != nil {
 			title := item.Element.Label
@@ -265,7 +282,7 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 
 const whiteboardTemplates = `
 {{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
-<section class="whiteboard whiteboard-canvas" data-whiteboard-view data-whiteboard-id="{{.ID}}" data-whiteboard-url="{{.Href}}" data-whiteboard-revision="{{.Revision}}" data-technical-page="{{if eq .ID "data-model"}}erd{{else}}whiteboard{{end}}"{{if eq .ID "data-model"}} data-technical-data-model{{end}} aria-label="{{.Name}} whiteboard">
+<section class="whiteboard whiteboard-canvas" data-whiteboard-view data-whiteboard-id="{{.ID}}" data-whiteboard-url="{{.Href}}" data-whiteboard-revision="{{.Revision}}" data-technical-page="{{if eq .Role "erd"}}erd{{else}}whiteboard{{end}}"{{if eq .Role "erd"}} data-technical-data-model{{end}} aria-label="{{.Name}} whiteboard">
 <div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}{{range .Notes}}<template data-diagram-note-template="{{.Path}}">{{template "element-note-popover" .Popover}}</template>{{end}}</div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
 <div class="whiteboard-deprecations whiteboard-overlay" data-deprecation-load hx-get="/api/deprecations?target={{urlquery .DeprecationTarget}}&amp;children=1&amp;revision={{urlquery .Revision}}" hx-trigger="load" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>

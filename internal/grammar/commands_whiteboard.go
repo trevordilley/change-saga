@@ -47,3 +47,36 @@ var whiteboardCommands = []Command{
 }
 
 func init() { commands = append(commands, whiteboardCommands...) }
+
+func init() {
+	for _, op := range []string{"list", "assign-role", "unassign-role", "rename", "archive", "restore"} {
+		c := Command{Name: "whiteboard " + op, Status: StatusImplemented, Positionals: sagaOnly, Flags: []Flag{jsonFlag}, Usage: "change-saga whiteboard " + op, Summary: "inspect whiteboard metadata"}
+		if op != "list" {
+			c.Mutates = true
+			c.Writes = []string{"whiteboard-metadata"}
+			c.Flags = append(c.Flags, required("id", "ID", "stable whiteboard identity"), optional("expected-snapshot", "HASH", "observed metadata snapshot"), Flag{Name: "dry-run", Description: "validate without writing"})
+			c.Usage += " --id ID"
+			c.Summary = "update presentation metadata without changing identity or immutable source revisions"
+		}
+		switch op {
+		case "assign-role":
+			c.Flags = append(c.Flags, required("role", "erd|infrastructure|data-flows", "technical design role"), required("expect", "ID|URN|none", "observed role owner; use a URN for a board literally named none"), Flag{Name: "move", Description: "explicitly move the selected board from its previous role; requires --expected-snapshot"})
+			c.Usage += " --role erd|infrastructure|data-flows --expect ID|URN|none [--move]"
+		case "unassign-role":
+			c.Flags = append(c.Flags, required("role", "erd|infrastructure|data-flows", "role currently owned by this board"))
+			c.Usage += " --role erd|infrastructure|data-flows"
+		case "rename":
+			c.Flags = append(c.Flags, required("name", "TITLE", "new display title"))
+			c.Usage += " --name TITLE"
+		case "archive":
+			c.Summary = "hide an unassigned board from discovery while preserving direct links, sources and history"
+		case "restore":
+			c.Summary = "restore an archived board to discovery without changing history or assigning a role"
+		}
+		if op != "list" {
+			c.Usage += " [--expected-snapshot HASH] [--dry-run]"
+		}
+		c.Usage += " [--json] <saga>"
+		commands = append(commands, c)
+	}
+}

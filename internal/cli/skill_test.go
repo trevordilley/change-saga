@@ -130,6 +130,11 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
+			name: "reorganize existing content", fixture: "Assign the existing data-model board to ERD and move a chapter without changing identity.",
+			rowHint: "Rename, move, reparent", want: []string{"references/query.md", "references/reorganize.md"},
+			unwanted: []string{"references/stories.md", "references/terms.md", "references/ci.md"},
+		},
+		{
 			name: "diagram for a changed request flow", fixture: "Draw a request-flow diagram and attach each Item to the exact changed code.",
 			rowHint: "Author diagrams", want: []string{"references/query.md", "references/diagrams.md"},
 			unwanted: []string{"references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
@@ -307,6 +312,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"add-chapter": AddChapter, "add-fragment": AddFragment, "set-fragment-content": SetFragmentContent,
 	"add-landmark": AddLandmark, "deck": Deck, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
 	"replace-coverage": ReplaceCoverage, "references": References, "repin": Repin, "sync": Sync,
+	"move-deck": MoveDeck, "move-slide": MoveSlide, "move-chapter": MoveChapter, "move-section": MoveSection, "move-fragment": MoveFragment,
 	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "reconcile": Reconcile, "check": Check, "query": Query,
 	"visual-qa":     VisualQA,
 	"serve":         func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, false) },

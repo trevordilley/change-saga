@@ -553,3 +553,47 @@ test("oversized native entity actions stay reachable at readable field zoom", as
   await expect(book).toBeVisible(); await page.mouse.click(destination.x,destination.y);
   await expect(page.locator('.drawer-body')).toContainText('A shared record.');
 });
+
+test("role reassignment opens an existing whiteboard without a fourth technical entry", async ({ page, saga }) => {
+  const run = (...args: string[]) => {
+    const result = runCLI(saga, args, saga.sagaRepo);
+    expect(result.status, result.stdout + result.stderr).toBe(0);
+    return result.stdout;
+  };
+  const source = join(saga.root, "role-board.json");
+  writeFileSync(source, JSON.stringify({ version: 1, width: 800, height: 500, elements: [
+    { id: "section", kind: "group", shape: "section", label: "Existing section", x: 10, y: 10, width: 700, height: 400, style: "normal" }
+  ] }));
+  for (const id of ["data-model", "existing-model"]) {
+    run("whiteboard", "publish", "--id", id, "--revision", "r1", "--name", "Original " + id, "--from", source, saga.sagaRoot);
+    run("whiteboard", "publish", "--id", id, "--revision", "r2", "--parent", "r1", "--name", "Updated " + id, "--from", source, saga.sagaRoot);
+  }
+  const before = run("whiteboard", "get", "--id", "existing-model", "--revision", "r1", saga.sagaRoot);
+  run("whiteboard", "assign-role", "--id", "existing-model", "--role", "erd", "--expect", "data-model", saga.sagaRoot);
+  run("whiteboard", "rename", "--id", "existing-model", "--name", "Renamed model", saga.sagaRoot);
+  await page.goto(saga.baseURL + "/technical");
+  await waitForSettledSaga(page);
+  await expect(page.locator("#nav-technical > .doc-node > .doc-row > a")).toHaveText(["ERD", "Infrastructure", "Data flows"]);
+  // The three role links are stable even when a board has a different identity.
+  const sidebar = page.locator(".sidebar");
+  await expect(sidebar.getByRole("link", { name: "ERD", exact: true })).toHaveAttribute("href", "/technical/whiteboards/existing-model");
+  await expect(sidebar.getByRole("link", { name: "Infrastructure", exact: true })).toHaveCount(1);
+  await expect(sidebar.getByRole("link", { name: "Data flows", exact: true })).toHaveCount(1);
+  await expect(sidebar.getByRole("link", { name: "Renamed model", exact: true })).toHaveCount(0);
+  await sidebar.getByRole("link", { name: "ERD", exact: true }).click();
+  await waitForSettledSaga(page);
+  await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-id", "existing-model");
+  await expect(page.getByRole("heading", { name: "Renamed model", exact: true })).toBeVisible();
+  await page.goto(saga.baseURL + "/technical/whiteboards/existing-model?revision=r1");
+  await waitForSettledSaga(page);
+  await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-revision", "r1");
+  await expect(page.getByRole("heading", { name: "Original existing-model", exact: true })).toBeVisible();
+  expect(run("whiteboard", "get", "--id", "existing-model", "--revision", "r1", saga.sagaRoot)).toBe(before);
+  run("whiteboard", "assign-role", "--id", "data-model", "--role", "erd", "--expect", "existing-model", saga.sagaRoot);
+  await page.goto(saga.baseURL + "/technical");
+  await waitForSettledSaga(page);
+  await sidebar.getByRole("link", { name: "ERD", exact: true }).click();
+  await waitForSettledSaga(page);
+  await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-id", "data-model");
+  await expect(sidebar.getByRole("link", { name: "Updated data-model", exact: true })).toHaveCount(0);
+});

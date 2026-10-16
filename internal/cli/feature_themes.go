@@ -20,7 +20,10 @@ import (
 
 func FeatureTheme(_ context.Context, args []string, out io.Writer) error {
 	if len(args) == 0 || isHelpArg(args[0]) {
-		return livingFamilyHelp("feature-theme", []string{"add", "set-overview", "set-features"}, out)
+		return livingFamilyHelp("feature-theme", []string{"add", "rename", "remove", "set-overview", "set-features"}, out)
+	}
+	if args[0] == "rename" || args[0] == "remove" {
+		return entityEdit("feature-theme", args, out)
 	}
 	err := featureThemeMutation(args, out)
 	if err != nil && jsonFlagRequested(args) {

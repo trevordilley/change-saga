@@ -128,6 +128,16 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.ReviseFragment(ctx, args[1:], stdout)
 	case "remove-fragment":
 		err = cli.RemoveFragment(ctx, args[1:], stdout)
+	case "move-deck":
+		err = cli.MoveDeck(ctx, args[1:], stdout)
+	case "move-slide":
+		err = cli.MoveSlide(ctx, args[1:], stdout)
+	case "move-chapter":
+		err = cli.MoveChapter(ctx, args[1:], stdout)
+	case "move-section":
+		err = cli.MoveSection(ctx, args[1:], stdout)
+	case "move-fragment":
+		err = cli.MoveFragment(ctx, args[1:], stdout)
 	case "cover":
 		err = cli.Cover(ctx, args[1:], stdout)
 	case "remove-coverage":

@@ -227,6 +227,7 @@ var queryOperations = []string{
 	"layers",
 	"history",
 	"review-threads",
+	"whiteboards",
 	"inventory",
 	"inventory-uses",
 	"inventory-coverage",
@@ -240,6 +241,7 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
+	"whiteboards":          "Whiteboard identities, titles, revisions, lifecycle and technical design role assignments without rendering source",
 	"deprecations":         "authored deprecation assertions, exact content and code scope, target health, optional story relations and immutable history; absence is no recorded deprecation, never proof of non-deprecation",
 	"inventory":            "Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
 	"inventory-coverage":   "which tracked code at one source revision the current technical definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
@@ -283,6 +285,7 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
+	"whiteboards":          "change-saga query whiteboards --saga PATH [--cursor TOKEN] [--limit N]",
 	"deprecations":         "change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--history] [--cursor CURSOR] [--limit N]",
 	"labels":               "change-saga query labels --saga PATH [--cursor TOKEN] [--limit N]",
 	"milestones":           "change-saga query milestones --saga PATH [--cursor TOKEN] [--limit N]",
@@ -372,6 +375,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	}
 	if operation == "review-threads" {
 		return queryReviewThreads(ctx, args[1:], out)
+	}
+	if operation == "whiteboards" {
+		return queryWhiteboards(args[1:], out)
 	}
 	if operation == "inventory" {
 		return queryInventory(ctx, args[1:], out)
@@ -571,6 +577,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"audit":                {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":              {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
 		"review-threads":       {"data.review", "data.range", "data.diagnostics", "data.threads", "data.threads[].code_line", "data.threads[].placement", "data.threads[].comments"},
+		"whiteboards":          {"data.snapshot", "data.roles", "data.whiteboards"},
 		"inventory":            {"data.data_model_overview", "data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
 		"inventory-coverage":   {"data.head_oid", "data.scope", "data.summary", "data.state", "data.entries", "data.completeness"},
 		"inventory-selections": {"data.head_oid", "data.selections", "data.selections[].resolution", "data.completeness"},
@@ -606,6 +613,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"work-conflicts":       "data.conflicts",
 		"traceability":         "data.criteria",
 		"readiness":            "data.requirements",
+		"whiteboards":          "data.whiteboards",
 		"inventory":            "data.records",
 		"inventory-uses":       "data.uses",
 		"inventory-coverage":   "data.entries",

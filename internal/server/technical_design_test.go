@@ -35,6 +35,15 @@ func TestTechnicalDesignEssayAndThreeWhiteboards(t *testing.T) {
 			t.Errorf("old navigation %s", unwanted)
 		}
 	}
+	sidebar := technicalSidebar(t, body)
+	if strings.Contains(sidebar, `href="/technical/pages/reliability"`) {
+		t.Fatal("supporting essay became a fourth technical navigation entry")
+	}
+	for _, title := range []string{"ERD", "Infrastructure", "Data flows"} {
+		if !strings.Contains(sidebar, ">"+title+"</a>") {
+			t.Fatalf("missing technical role %s", title)
+		}
+	}
 	status, body = technicalGet(t, mux, "/")
 	if status != 200 || strings.Contains(body, "Our approach uses") || strings.Contains(body, "Retry work through the queue") {
 		t.Fatal("technical essays leaked into product overview")
@@ -43,7 +52,7 @@ func TestTechnicalDesignEssayAndThreeWhiteboards(t *testing.T) {
 	if status != 200 || !strings.Contains(body, "Retry work through the queue") || !strings.Contains(body, "<title>Reliability") {
 		t.Fatalf("supporting page: %d %s", status, body)
 	}
-	if got := currentNav(technicalSidebar(t, body)); len(got) != 1 || got[0] != "/technical/pages/reliability" {
+	if got := currentNav(technicalSidebar(t, body)); len(got) != 1 || got[0] != "/technical" {
 		t.Fatal("page navigation", got)
 	}
 	for _, id := range []string{"infrastructure", "data-flows"} {

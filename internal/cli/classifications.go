@@ -18,7 +18,10 @@ import (
 
 func Classification(_ context.Context, kind string, args []string, out io.Writer) error {
 	if len(args) == 0 || isHelpArg(args[0]) {
-		return livingFamilyHelp(kind, []string{"add", "rename"}, out)
+		return livingFamilyHelp(kind, []string{"add", "rename", "remove"}, out)
+	}
+	if args[0] == "remove" {
+		return entityEdit(kind, args, out)
 	}
 	err := classificationMutation(kind, args, out)
 	if err != nil && jsonFlagRequested(args) {

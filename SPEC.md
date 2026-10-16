@@ -88,7 +88,7 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | --- | --- | --- | --- |
 | Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
 | Product theme | `v5/feature-theme.schema.json` | mutable Markdown overview and many-to-many feature URN membership; Git history | optional; same-Saga members exist; one normal rationale deck |
-| Feature | `v5/feature.schema.json` | immutable ID, title, creation time | directory name equals ID |
+| Feature | `v5/feature.schema.json` | immutable ID and creation time; mutable display title | directory name equals ID |
 | Persona identity, revision, event | `v5/persona*.schema.json` | name and description; lifecycle `active` or `retired` | one root, acyclic revision and event graphs |
 | Term identity, revision, event | `v5/term*.schema.json` | name and definition; optional aliases, story and record links, and code references; lifecycle `active` or `retired` | linked stories and records exist; aliases distinct from the name |
 | Flag identity, revision, event | `v5/flag*.schema.json` | description and at least one story or feature target; state `off`, `on`, or `retired` | targets exist; `retired` is terminal |
@@ -111,8 +111,9 @@ yet.
 
 **Features** are durable areas of the product, not changes: revising a story that
 belongs to an older feature refines that area in place. Features are listed in the
-order they were created. A feature's `feature.json` is
-immutable and its URN is `urn:change-saga:<saga>:feature:<id>`. Moving a story
+order they were created. A feature's ID and creation time are immutable;
+`feature rename` changes its display title without changing its URN,
+`urn:change-saga:<saga>:feature:<id>`. Moving a story
 between features moves its directory and changes nothing else.
 
 Product themes optionally classify features without moving or duplicating them.
@@ -459,6 +460,33 @@ identical publication is idempotent; changing content under an existing revision
 ID is rejected. Publication is atomic and does not rewrite historical snapshots.
 Whiteboards do not currently support the slide `diagram edit` transaction.
 
+**Presentation metadata and navigation roles.** Optional
+`___whiteboards/.metadata.json` is validated by
+[whiteboard-metadata.schema.json](schema/v5/whiteboard-metadata.schema.json).
+It contains `$schema`, `version: 1`, `saga_id`, `roles`, and `boards`. `roles`
+has exactly `erd`, `infrastructure`, and `data-flows` keys; values are existing
+board IDs or an empty string for explicitly unassigned roles. Each board may
+occupy at most one role. `boards` maps existing IDs to optional display `name`
+and `archived` properties. Archived boards cannot occupy a role.
+
+Without this file, existing `data-model`, `infrastructure`, and `data-flows`
+boards provide the corresponding default assignments. The first metadata edit
+records those effective assignments. An explicit empty role never falls back
+to a conventional ID. Subsequent publication does not override explicit role
+metadata. Names and archival are presentation properties and do not rewrite
+immutable revisions or change whiteboard URNs.
+
+`whiteboard assign-role --id ID --role ROLE --expect ID|URN|none` replaces the
+observed role owner under the Saga lock. A different current owner rejects the
+operation. Moving an already assigned board between roles additionally needs
+`--move --expected-snapshot SNAPSHOT`; `whiteboard list --json` returns that
+metadata snapshot. `unassign-role --id ID --role ROLE` checks the observed
+owner before clearing it. `rename --id ID --name TITLE`, `archive --id ID`, and
+`restore --id ID` change presentation only. All metadata writes support
+`--dry-run`, `--json`, and an optional `--expected-snapshot`; they replace one
+file atomically. Archive refuses an assigned board and preserves direct and
+historical reads. No operation physically deletes whiteboard history.
+
 **Composition and sources.** Native elements use the shared diagram grammar,
 styles, icons, groups, annotations and renderer. Ordinary groups can nest;
 optional frames embed ERD revisions. Source references have exact `target` and
@@ -490,9 +518,23 @@ named whiteboards in the Saga. `--id` always identifies the document, including 
 
 The reader at `/technical/whiteboards/<id>` presents each named document with
 pan, zoom, fit, focus and shared annotation actions for source inspection.
-The existing Data model page at `/technical/erd` selects document ID `data-model`
-by convention; other boards do not replace the data-model source directory.
+The existing Data model page at `/technical/erd` without a revision selector
+selects the effective ERD-role board, defaulting to document ID `data-model`
+only when metadata is absent. Historical `/technical/erd?revision=ID` URLs
+continue to select the original `data-model` document, preserving saved links.
+Another assigned board's history uses `/technical/whiteboards/<id>?revision=ID`.
+Technical Design navigation has ERD, Infrastructure, and Data flows entries;
+an assigned board has no duplicate sidebar entry. Other active named boards
+and supporting essay pages remain discoverable from the overview. Named board URLs continue to identify
+their original document regardless of its current role.
 Whiteboard sources do not supply slide or review line coverage.
+
+Display-name overrides apply to current views; explicit historical reads retain
+the immutable revision's name. Archived boards are omitted from overview
+discovery but remain in `whiteboard list` and `query whiteboards` with
+`archived: true`, so authors can inspect and restore them. The query's
+`data.snapshot` is the metadata CAS token, whereas its envelope snapshot binds
+pagination to the complete listing; the latter is not a mutation precondition.
 
 **Storage compatibility.** The optional subtree extends v5 without changing the
 manifest or inventory format version. Current readers accept Sagas without whiteboards.
@@ -501,6 +543,12 @@ directory, including during server startup; upgrade readers before publishing.
 There is no automatic migration of existing feature `___design` fragments or
 older ERD records into whiteboards. See the
 [ERD whiteboard guide](docs/erd-whiteboard-guide.md) for authoring and viewer details.
+
+The optional metadata file also extends v5 without a version bump. Readers
+predating presentation metadata reject that file as an unexpected whiteboard
+root entry; upgrade before using these commands. New readers accept earlier
+whiteboards with their default assignments. No content-history migration is
+performed.
 
 ### V5 identities and quality records
 

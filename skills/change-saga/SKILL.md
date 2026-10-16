@@ -241,6 +241,7 @@ reference. When a task crosses rows, combine only those rows.
 | --- | --- |
 | Create a review for a PR or branch (the usual first task) | The fast path above, then [diagrams and evidence](references/diagrams.md) |
 | Inspect or navigate an existing Saga; load compact feature context; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
+| Rename, move, reparent, reorder, remove or archive existing entities; assign an existing whiteboard to a Technical Design role | [Query](references/query.md), then [reorganizing existing content](references/reorganize.md) |
 | Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
 | Describe implemented features; Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |

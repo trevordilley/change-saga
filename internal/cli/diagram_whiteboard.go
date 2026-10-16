@@ -18,14 +18,22 @@ func Whiteboard(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("whiteboard", []string{"publish", "get", "describe", "check"}, out)
+		return livingFamilyHelp("whiteboard", []string{"publish", "get", "describe", "check", "list", "assign-role", "unassign-role", "rename", "archive", "restore"}, out)
 	}
-	return whiteboardCommand(ctx, args[0], args[1:], out)
+	err := whiteboardCommand(ctx, args[0], args[1:], out)
+	if err != nil && jsonFlagRequested(args) {
+		return reportLivingMutationFailure(out, "whiteboard "+args[0], err)
+	}
+	return err
 }
 
 func whiteboardCommand(ctx context.Context, op string, args []string, out io.Writer) error {
+	switch op {
+	case "list", "assign-role", "unassign-role", "rename", "archive", "restore":
+		return whiteboardMetadataCommand(ctx, op, args, out)
+	}
 	if op != "publish" && op != "get" && op != "describe" && op != "check" {
-		return fmt.Errorf("whiteboards support publish, get, describe and check; usage: %s", commandUsage["whiteboard"])
+		return fmt.Errorf("whiteboards support publish, get, describe, check, list, assign-role, unassign-role, rename, archive and restore; usage: %s", commandUsage["whiteboard"])
 	}
 	name := "whiteboard " + op
 	flags := commandFlags(name, commandUsage[name], out)
@@ -93,6 +101,16 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 	if op == "get" && *focus == "" {
 		return writeJSON(out, value.Revision.Document)
 	}
+	displayName := value.Revision.Name
+	if *revision == "" {
+		metadata, err := requirements.LoadWhiteboardMetadata(root, manifest.ID)
+		if err != nil {
+			return err
+		}
+		if metadata.Boards[*boardID].Name != "" {
+			displayName = metadata.Boards[*boardID].Name
+		}
+	}
 	description, err := value.Composition.Describe(*focus)
 	if err != nil {
 		return err
@@ -105,9 +123,9 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 		return err
 	}
 	if op == "get" || *jsonOutput || *format == "json" {
-		return writeJSON(out, map[string]any{"whiteboard": *boardID, "revision": value.Revision.ID, "name": value.Revision.Name, "diagram": description})
+		return writeJSON(out, map[string]any{"whiteboard": *boardID, "revision": value.Revision.ID, "name": displayName, "diagram": description})
 	}
-	fmt.Fprintf(out, "Whiteboard %s: %s (revision %s)\n", *boardID, value.Revision.Name, value.Revision.ID)
+	fmt.Fprintf(out, "Whiteboard %s: %s (revision %s)\n", *boardID, displayName, value.Revision.ID)
 	if description.Focus != "" {
 		fmt.Fprintf(out, "Focus: %s\n", description.Focus)
 	}

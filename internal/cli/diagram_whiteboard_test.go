@@ -144,7 +144,7 @@ func TestWhiteboardCLIRejectsInvalidCommandBeforeLoadingSaga(t *testing.T) {
 		{"missing id", []string{"get", "missing.saga"}, "requires --id"},
 		{"removed kind", []string{"get", "--kind=erd", "missing.saga"}, "flag provided but not defined"},
 		{"path traversal", []string{"get", "--id=../outside", "missing.saga"}, "requires --id"},
-		{"unsupported edit", []string{"edit", "--id", "data-model", "missing.saga"}, "whiteboards support publish, get, describe and check"},
+		{"unsupported edit", []string{"edit", "--id", "data-model", "missing.saga"}, "whiteboards support publish, get, describe, check"},
 		{"unknown operation", []string{"delete", "--id", "data-model", "missing.saga"}, "usage: change-saga whiteboard"},
 		{"old selector in new family", []string{"get", "--whiteboard", "erd", "missing.saga"}, "flag provided but not defined"},
 	} {
@@ -169,5 +169,107 @@ func TestDiagramDoesNotExposeUnreleasedWhiteboardAlias(t *testing.T) {
 		if err := Diagram(context.Background(), args, &out); err == nil {
 			t.Fatalf("removed alias accepted: %v", args)
 		}
+	}
+}
+
+func TestWhiteboardMetadataCLIDryRunDiscoveryAndLifecycle(t *testing.T) {
+	ctx := context.Background()
+	repo, _ := sourceRepo(t, map[string]string{"README.md": "app\n"})
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	root := filepath.Join(repo, "atomic.saga")
+	var out bytes.Buffer
+	if err := Init(ctx, []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &out); err != nil {
+		t.Fatal(err)
+	}
+	doc := diagram.Document{Version: 1, Width: 400, Height: 300, Elements: []diagram.Element{{ID: "item", Kind: "node", Shape: "rect", Label: "Source", X: 10, Y: 10, Width: 200, Height: 100, Style: "normal"}}}
+	for _, id := range []string{"data-model", "existing-model"} {
+		if _, err := requirements.PublishWhiteboard(ctx, root, "atomic", id, "r1", "", "Original", doc); err != nil {
+			t.Fatal(err)
+		}
+	}
+	run := func(args ...string) string {
+		t.Helper()
+		out.Reset()
+		if err := Whiteboard(ctx, append(args, root), &out); err != nil {
+			t.Fatal(err)
+		}
+		return out.String()
+	}
+	before := run("get", "--id", "existing-model")
+	plan := run("assign-role", "--id", "existing-model", "--role", "erd", "--expect", "data-model", "--dry-run", "--json")
+	if !strings.Contains(plan, `"dry_run": true`) {
+		t.Fatal(plan)
+	}
+	if _, err := os.Stat(filepath.Join(root, requirements.WhiteboardDir, requirements.WhiteboardMetadataName)); !os.IsNotExist(err) {
+		t.Fatal("dry-run wrote metadata")
+	}
+	run("assign-role", "--id", "existing-model", "--role", "erd", "--expect", "data-model", "--json")
+	run("rename", "--id", "existing-model", "--name", "Renamed board", "--json")
+	listed := run("list", "--json")
+	for _, want := range []string{`"erd": "existing-model"`, `"role": "erd"`, `"name": "Renamed board"`, `"snapshot":`, `urn:change-saga:atomic:whiteboard:existing-model`} {
+		if !strings.Contains(listed, want) {
+			t.Fatalf("list missing %s: %s", want, listed)
+		}
+	}
+	if got := run("describe", "--id", "existing-model", "--format", "json"); !strings.Contains(got, `"name": "Renamed board"`) {
+		t.Fatal(got)
+	}
+	if got := run("describe", "--id", "existing-model", "--revision", "r1", "--format", "json"); !strings.Contains(got, `"name": "Original"`) {
+		t.Fatal("rename changed historical title", got)
+	}
+	if err := Whiteboard(ctx, []string{"archive", "--id", "existing-model", root}, &out); err == nil {
+		t.Fatal("archived assigned board")
+	}
+	run("unassign-role", "--id", "existing-model", "--role", "erd", "--json")
+	run("archive", "--id", "existing-model", "--json")
+	if listed := run("list", "--json"); !strings.Contains(listed, `"archived": true`) {
+		t.Fatal(listed)
+	}
+	if after := run("get", "--id", "existing-model"); after != before {
+		t.Fatal("metadata rewrote source")
+	}
+	run("restore", "--id", "existing-model")
+	out.Reset()
+	if err := Whiteboard(ctx, []string{"assign-role", "--id", "existing-model", "--role", "erd", "--expect", "wrong", "--json", root}, &out); err == nil || !strings.Contains(out.String(), `"ok": false`) {
+		t.Fatalf("missing structured failure: %v %s", err, out.String())
+	}
+	out.Reset()
+	if err := Query(ctx, []string{"whiteboards", "--saga", root, "--limit", "1"}, &out); err != nil {
+		t.Fatal(err)
+	}
+	var first struct {
+		OK   bool              `json:"ok"`
+		Data whiteboardList    `json:"data"`
+		Page queryPageEnvelope `json:"page"`
+	}
+	if err := json.Unmarshal(out.Bytes(), &first); err != nil || !first.OK || first.Page.Total != 2 || first.Page.NextCursor == nil || len(first.Data.Whiteboards) != 1 {
+		t.Fatalf("first query page: %s %v", out.String(), err)
+	}
+	cursor := *first.Page.NextCursor
+	out.Reset()
+	if err := Query(ctx, []string{"whiteboards", "--saga", root, "--limit", "1", "--cursor", cursor}, &out); err != nil {
+		t.Fatal(err)
+	}
+	var second struct {
+		Data whiteboardList    `json:"data"`
+		Page queryPageEnvelope `json:"page"`
+	}
+	if err := json.Unmarshal(out.Bytes(), &second); err != nil || second.Page.HasMore || len(second.Data.Whiteboards) != 1 || second.Data.Whiteboards[0].ID == first.Data.Whiteboards[0].ID {
+		t.Fatalf("second query page: %s %v", out.String(), err)
+	}
+	run("rename", "--id", "existing-model", "--name", "Another title")
+	out.Reset()
+	if err := Query(ctx, []string{"whiteboards", "--saga", root, "--cursor", cursor}, &out); err == nil || !strings.Contains(out.String(), `"stale_snapshot"`) {
+		t.Fatalf("stale query cursor accepted: %v %s", err, out.String())
+	}
+	run("check", "--id", "existing-model", "--json")
+	assertValid(t, root)
+}
+
+func TestQueryWhiteboardsBoundsCursorBeforeLoadingSaga(t *testing.T) {
+	var out bytes.Buffer
+	err := Query(context.Background(), []string{"whiteboards", "--saga", "missing.saga", "--cursor", strings.Repeat("x", 4097)}, &out)
+	if err == nil || !strings.Contains(out.String(), `"invalid_argument"`) || !strings.Contains(out.String(), "4096") {
+		t.Fatalf("cursor bound: %v %s", err, out.String())
 	}
 }

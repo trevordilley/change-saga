@@ -63,7 +63,14 @@ The files contain complete diagram documents. Each board is stored under
 `___whiteboards/<board-id>/revisions/<revision-id>.json` and opens at
 `/technical/whiteboards/<id>`. `--id` always names the document; `--focus PATH`
 selects an element inside it. There is no kind selector or `diagram` command alias.
-The existing Data model page at `/technical/erd` uses `data-model` by convention.
+The existing Data model page at `/technical/erd` uses `data-model` by default.
+Use `whiteboard list --json` to inspect effective roles and
+`whiteboard assign-role --id ID --role erd --expect ID_OR_none` to assign an
+existing board. Role assignment preserves its ID, content, history, and named
+URLs. The sidebar contains ERD, Infrastructure, and Data flows; other boards
+remain discoverable from the Technical Design overview. See
+[authoring operations](authoring-operations.md) for reassignment, rename,
+archival, dry-run and concurrency checks.
 
 The [data-model authoring guide](erd-whiteboard-guide.md) gives a worked example
 of the shared grammar, revision policy and viewer. Current source adapters resolve

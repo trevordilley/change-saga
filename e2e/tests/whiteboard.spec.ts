@@ -407,7 +407,9 @@ test("named technical-design whiteboards keep independent history and focus", as
   publish("system-context", "r1", "System context");
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);
-  await page.locator('.sidebar a[href="/technical/whiteboards/deployment-topology"]').click();
+  await expect(page.locator("#nav-technical > .doc-node > .doc-row > a")).toHaveText(["ERD", "Infrastructure", "Data flows"]);
+  await expect(page.locator('.sidebar a[href="/technical/whiteboards/deployment-topology"]')).toHaveCount(0);
+  await page.locator('[data-technical-whiteboards] a[href="/technical/whiteboards/deployment-topology"]').click();
   const board = page.locator("[data-whiteboard-view]");
   await expect(board.getByRole("heading", { level: 1 })).toHaveText("Deployment topology revised");
   await board.getByLabel("Focus section").selectOption("delivery");
@@ -419,8 +421,12 @@ test("named technical-design whiteboards keep independent history and focus", as
   await expect(board.getByRole("heading", { level: 1 })).toHaveText("Deployment topology");
   await board.getByRole("button", { name: "Fit board" }).click();
   expect(new URL(page.url()).searchParams.get("revision")).toBe("r1");
-  await page.locator('.sidebar a[href="/technical/whiteboards/system-context"]').click();
+  await page.locator('.sidebar').getByRole("link", { name: "Technical design", exact: true }).click();
+  await waitForSettledSaga(page);
+  await page.locator('[data-technical-whiteboards] a[href="/technical/whiteboards/system-context"]').click();
   await expect(board.getByRole("heading", { level: 1 })).toHaveText("System context");
+  await page.goBack();
+  await expect(page.locator('[data-technical-page="landing"]')).toBeVisible();
   await page.goBack();
   await expect(board.getByRole("heading", { level: 1 })).toHaveText("Deployment topology");
   expect(new URL(page.url()).searchParams.get("revision")).toBe("r1");

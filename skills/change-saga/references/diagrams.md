@@ -15,6 +15,12 @@ boards. Use `overview set-technical-design --source FILE PATH`; add a supporting
 page with `--page ID --title TITLE`. Supporting pages open at `/technical/pages/ID`.
 Systems and Components are no longer design navigation areas.
 
+Those IDs are defaults, not required identities. Before creating a board,
+inspect `change-saga whiteboard list --json change.saga`. Reuse an existing
+document with `whiteboard assign-role`; see [reorganize.md](reorganize.md) for
+observed-owner checks, role reassignment, rename and archival. Do not copy a
+board or rename its ID merely to give it the ERD role.
+
 The ERD uses proper crow's-foot `head`/`tail` markers (`only-one`, `zero-or-one`,
 `one-or-many`, `zero-or-many`) matching recorded cardinality and optionality.
 Infrastructure shows the actual platform and resource layout. Data flows show

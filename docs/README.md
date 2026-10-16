@@ -6,6 +6,9 @@ your first saga. This directory holds the deeper material.
 Use [reconciliation.md](reconciliation.md) for the implement → verify → PR
 review deck → reconcile living documentation → check again workflow.
 
+Use [authoring-operations.md](authoring-operations.md) to rename, move, reorder,
+remove, or archive existing content and assign whiteboards to navigation roles.
+
 ## The format
 
 | | |
