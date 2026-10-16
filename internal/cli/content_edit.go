@@ -17,6 +17,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/sagaref"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
@@ -207,7 +208,7 @@ func writeContentEdit(out io.Writer, result contentEditOutput, root string, json
 		return writeJSON(out, result)
 	}
 	switch {
-	case strings.HasPrefix(result.Operation, "remove-"):
+	case strings.HasPrefix(result.Operation, "remove-") || strings.HasSuffix(result.Operation, " remove"):
 		verb := "Removed"
 		if result.DryRun {
 			verb = "Would remove"
@@ -230,6 +231,12 @@ func writeContentEdit(out io.Writer, result contentEditOutput, root string, json
 		verb := "Revised"
 		if result.DryRun {
 			verb = "Would revise"
+		}
+		if strings.HasPrefix(result.Operation, "move-") {
+			verb = "Moved"
+			if result.DryRun {
+				verb = "Would move"
+			}
 		}
 		fmt.Fprintf(out, "%s %s: %s\n", verb, result.Resource, strings.Join(result.Changed, ", "))
 	}
@@ -389,6 +396,9 @@ func RemoveDeck(_ context.Context, args []string, out io.Writer) error {
 				result.Resource = deck.Target
 				result.Removed = append(result.Removed, deck.Target)
 				for _, slide := range deck.Slides {
+					if err := guardCompleteSlideMutation("remove-deck", slide); err != nil {
+						return err
+					}
 					result.Removed = append(result.Removed, slideRecords(slide)...)
 				}
 				result.DanglingRelations = danglingRelations(document.Root, document.Manifest.ID, result.Removed)
@@ -565,6 +575,9 @@ func RemoveSlide(_ context.Context, args []string, out io.Writer) error {
 					return fmt.Errorf("--slide must identify an existing slide; a review's slides carry its approvals and comments, so they are not removed")
 				}
 				if err := guardCompleteSlideMutation("remove-slide", slide); err != nil {
+					return err
+				}
+				if err := guardDeckReferences(slideDeck(document, slide), slide.ID, ""); err != nil {
 					return err
 				}
 				result.Resource = slide.Target
@@ -773,6 +786,9 @@ func RemoveItem(_ context.Context, args []string, out io.Writer) error {
 				if err := guardCompleteSlideMutation("remove-item", slide); err != nil {
 					return err
 				}
+				if err := guardDeckReferences(slideDeck(document, slide), slide.ID, item.ID); err != nil {
+					return err
+				}
 				for _, other := range slide.Items {
 					if other.Kind == "callout" && other.About == item.ID {
 						return fmt.Errorf("callout %s is about %s; revise its --about or remove it first", other.Target, item.ID)
@@ -811,7 +827,8 @@ func resolveNarrative(document *saga.Saga, kind, value string) (string, string, 
 	if err != nil {
 		return "", "", err
 	}
-	if !strings.Contains(target, narrativeKinds[kind].urn) {
+	identity, parseErr := sagaref.ParseTarget(target)
+	if parseErr != nil || string(identity.Kind) != kind {
 		return "", "", fmt.Errorf("target %q is not a %s", value, kind)
 	}
 	return dir, target, nil

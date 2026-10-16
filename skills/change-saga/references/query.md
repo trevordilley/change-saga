@@ -53,11 +53,19 @@ for a node with no explained code.
 Start with the approach essay at `___overview/technical-design.fragment` and
 its linked `technical-design-<page>.fragment` supporting pages. Read their prose
 through `query fragment --target URN`, using the fragment identities returned
-by the query API. Then inspect the three whiteboards: `data-model` (ERD with
-crow's-foot cardinality), `infrastructure` (platforms and resources), and
-`data-flows` (movement through key services and elements).
+by the query API. Query the whiteboard role assignments, then inspect ERD
+(crow's-foot cardinality), Infrastructure (platforms and resources), and
+Data flows (movement through key services and elements). Conventional IDs are
+defaults; use the IDs actually assigned to these roles.
 
 ## Reading whiteboards
+
+Use `change-saga query whiteboards --saga PATH` for snapshot-bound, paginated
+board discovery, including titles, current revisions, archival, and role
+assignments. Page to completion with the returned cursor. `data.snapshot` is
+the presentation metadata snapshot used for authoring concurrency; the query
+envelope snapshot also includes current board rows. These snapshots have
+different purposes. `whiteboard list --json` is the unpaginated authoring view.
 
 Use `change-saga whiteboard describe --id ID --format json PATH` for a named
 technical-design document. Add `--focus INSTANCE_PATH` to inspect a returned
@@ -65,8 +73,9 @@ section or element path, and `--revision REVISION` to retain exact history.
 Use `change-saga whiteboard get --id ID PATH` for the complete shared diagram
 source and `change-saga whiteboard check --id ID PATH` for validation. These
 are dedicated document commands, not paginated query-envelope responses.
-Document identity is independent of subject; `data-model` is the convention
-for the ERD page. Source pins identify exact entity/relationship revisions;
+Document identity is independent of subject; the ERD role selects an existing
+document, defaulting to `data-model` before explicit metadata is authored.
+Source pins identify exact entity/relationship revisions;
 repeated appearances have distinct instance paths. Existing ERD inventory
 records remain readable through `query inventory`, but are optional sources,
 not a required document per whiteboard section.
@@ -217,6 +226,8 @@ covered lines are not proof of a correct explanation.
   `change-saga query history --saga PATH --node URN`
 - `review-threads`: one review's discussion thread by thread: every comment on its slides, Items, and code lines, with each code-line thread's anchor and where it shows in the review's current range (current, moved, or outdated since its lines changed).
   `change-saga query review-threads --saga PATH --review ID [--path PATH] [--state open|resolved] [--lines] [--repo PATH]`
+- `whiteboards`: Whiteboard identities, titles, revisions, lifecycle and technical design role assignments without rendering source.
+  `change-saga query whiteboards --saga PATH [--cursor TOKEN] [--limit N]`
 - `inventory`: Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page.
   `change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]`
 - `inventory-uses`: declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness.

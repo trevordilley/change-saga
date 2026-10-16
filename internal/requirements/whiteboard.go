@@ -50,12 +50,18 @@ func ListWhiteboardIDs(root string) ([]string, error) {
 	}
 	// Allow bounded staging debris as well as the document limit. CommitDir
 	// stages beside the final board, including while unlocked readers list it.
-	entries, err := boundedReadDir(dir, 2*MaxWhiteboards)
+	entries, err := boundedReadDir(dir, 2*MaxWhiteboards+1)
 	if err != nil {
 		return nil, err
 	}
 	ids := make([]string, 0, len(entries))
 	for _, entry := range entries {
+		if entry.Name() == WhiteboardMetadataName && entry.Type().IsRegular() {
+			continue
+		}
+		if entry.Type().IsRegular() && strings.HasPrefix(entry.Name(), ".change-saga-write-") {
+			continue
+		}
 		if !entry.IsDir() || entry.Type()&fs.ModeSymlink != 0 {
 			return nil, fmt.Errorf("whiteboard entry %q must be a real directory with a valid board ID", entry.Name())
 		}
@@ -323,6 +329,9 @@ func resolveWhiteboard(root, sagaID string, v WhiteboardRevision) (*ResolvedWhit
 // ValidateWhiteboards validates every named document's complete history,
 // including source pins hidden by newer revisions. The subtree is optional.
 func ValidateWhiteboards(root, sagaID string) error {
+	if _, err := LoadWhiteboardMetadata(root, sagaID); err != nil {
+		return err
+	}
 	if !livingid.ValidID(sagaID) {
 		return fmt.Errorf("whiteboard requires a valid saga ID")
 	}

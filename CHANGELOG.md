@@ -12,6 +12,19 @@ tool, and what they have to do about it.
 
 ### Added
 
+- Identity-preserving authoring operations: feature/theme rename, unused
+  feature/theme/label/milestone removal, implementation deck and ordinary slide
+  moves, and chapter/section/fragment reparenting, with dry-run and JSON output.
+  Existing revision, rank, order, story-move and lifecycle commands remain the
+  authoring paths for their entities. Complete-slide transaction histories move
+  with their deck; moving an individual transaction slide is refused.
+- **Format:** Optional `___whiteboards/.metadata.json` stores display names,
+  archival and Technical Design role assignments independently of immutable
+  board revisions. `whiteboard assign-role` reuses existing board identity and
+  checks the observed role owner; rename/archive/restore preserve historical
+  links. New readers retain legacy defaults when metadata is absent; older
+  whiteboard readers reject the new file. Upgrade before adoption; no automatic
+  migration or manifest version bump is required.
 - Named whiteboards for technical design: independent documents with connected
   sections, readable overview narrative and focused detail. Data models,
   infrastructure topology and system design use the same shared diagram grammar.
@@ -40,6 +53,9 @@ tool, and what they have to do about it.
 
 ### Changed
 
+- Technical Design shows exactly ERD, Infrastructure, and Data flows role
+  entries; assigning an existing board consolidates its navigation entry.
+  Other active boards remain discoverable from the overview and named URLs.
 - Named boards open at `/technical/whiteboards/<id>`. The whiteboard CLI uses
   `--id` for the document and `--focus` for an element; it has no kind selector.
 - When the `data-model` whiteboard is present, `/technical/erd` opens that document

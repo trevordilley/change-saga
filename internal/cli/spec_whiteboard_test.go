@@ -74,8 +74,13 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	if err != nil || !bytes.Equal(actual, expected) {
 		t.Fatalf("whiteboards must retain the shared grammar apart from input/storage: %v", err)
 	}
-	if len(board.Commands) != 4 || board.Commands["publish"] != commandUsage["whiteboard publish"] {
+	if len(board.Commands) != 10 || board.Commands["publish"] != commandUsage["whiteboard publish"] {
 		t.Fatalf("whiteboard commands drifted: %#v", board.Commands)
+	}
+	for _, op := range []string{"list", "rename", "assign-role", "unassign-role", "archive", "restore"} {
+		if board.Commands[op] == "" || board.Commands[op] != commandUsage["whiteboard "+op] {
+			t.Errorf("missing metadata operation %s", op)
+		}
 	}
 	for _, op := range []string{"publish", "get", "describe", "check"} {
 		if board.Commands[op] != commandUsage["whiteboard "+op] || !strings.Contains(board.Commands[op], "whiteboard "+op+" --id ID") || !strings.Contains(board.Commands[op], "--revision ID") {

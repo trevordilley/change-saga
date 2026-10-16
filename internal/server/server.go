@@ -1446,59 +1446,17 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		}
 		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil, navBoard)
 		named, namedErr := files.whiteboardDocuments(func() ([]whiteboardDocumentView, error) { return a.whiteboardDocuments(document.Manifest.ID) })
-		for _, document := range named {
-			if document.ID == "data-model" {
-				continue
-			}
-			row := &navNodeView{Title: document.Name, Href: document.Href, NodeID: "nav-whiteboard-document-" + domID(document.ID), Icon: "split", Note: document.Note}
-			if data.Technical != nil && data.Technical.Whiteboard != nil && data.Technical.Whiteboard.ID == document.ID {
-				selected := data.Technical.Whiteboard
-				if selected.Name != "" {
-					row.Title = selected.Name
-				}
-				row.Href = selected.Href
-				for _, section := range selected.Sections {
-					row.Children = append(row.Children, &navNodeView{Title: section.Title, Href: whiteboardFocusHref(selected.Href, section.Path), NodeID: row.NodeID + "-" + domID(section.Path), Icon: "split"})
-				}
-			}
-			if _, standard := technicalDesignBoardOf(document.ID); standard {
-				for i, existing := range technicalRows {
-					if existing.NodeID == row.NodeID {
-						row.Title = existing.Title
-						technicalRows[i] = row
-						break
-					}
-				}
-			} else {
-				technicalRows = append(technicalRows, row)
-			}
+		metadata, metadataErr := requirements.LoadWhiteboardMetadata(a.root, document.Manifest.ID)
+		applyWhiteboardRoles(data.Technical, technicalRows, named, metadata)
+		if metadataErr != nil {
+			namedErr = metadataErr
 		}
 		if data.Technical != nil {
-			for _, board := range named {
-				if _, standard := technicalDesignBoardOf(board.ID); standard {
-					for i := range data.Technical.Areas {
-						if data.Technical.Areas[i].Segment == board.ID {
-							data.Technical.Areas[i].Count = "Whiteboard"
-							data.Technical.Areas[i].Gap = board.Note != ""
-							if board.Note != "" {
-								data.Technical.Areas[i].Note = board.Note
-							}
-						}
-					}
-				} else {
-					data.Technical.Whiteboards = append(data.Technical.Whiteboards, board)
-				}
-			}
 			if namedErr != nil {
 				data.Technical.WhiteboardNote = "Whiteboards could not be listed: " + namedErr.Error()
 			}
 		}
 	}
-	var essayRows []*navNodeView
-	for _, page := range technicalEssayPages(document) {
-		essayRows = append(essayRows, &navNodeView{Title: page.Title, Href: page.Href, NodeID: "nav-technical-page-" + domID(page.Href), Icon: "design"})
-	}
-	technicalRows = append(essayRows, technicalRows...)
 
 	if route.kind == "overview" {
 		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
@@ -1524,6 +1482,9 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	rootNavLinks(data.Nav)
 	if route.kind != "overview" && !data.TermsMode {
 		activeHref := r.URL.Path
+		if route.kind == "technical-essay" {
+			activeHref = technicalPath
+		}
 		// Whiteboard document rows keep their selected revision in the link.
 		// Match that identity before revealing ancestors; focus/view only refine
 		// the canvas and must not hide the owning Technical design branch.
@@ -1535,6 +1496,9 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 			}
 		}
 		markActiveNav(data.Nav, activeHref)
+		if route.kind == "whiteboard" {
+			expandTechnicalNav(data.Nav)
+		}
 	}
 	data.PageTitle = pageTitle(data)
 	return data, nil

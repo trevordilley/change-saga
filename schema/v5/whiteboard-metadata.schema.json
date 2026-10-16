@@ -1,0 +1,28 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "$id":"https://changesaga.dev/schema/v5/whiteboard-metadata.schema.json",
+ "title":"Whiteboard presentation metadata and technical design roles",
+ "type":"object",
+ "additionalProperties":false,
+ "required":["$schema","version","saga_id","roles","boards"],
+ "properties":{
+  "$schema":{"const":"https://changesaga.dev/schema/v5/whiteboard-metadata.schema.json"},
+  "version":{"const":1},
+  "saga_id":{"$ref":"#/$defs/id"},
+  "roles":{
+   "type":"object","additionalProperties":false,"required":["erd","infrastructure","data-flows"],
+   "properties":{"erd":{"$ref":"#/$defs/assignment"},"infrastructure":{"$ref":"#/$defs/assignment"},"data-flows":{"$ref":"#/$defs/assignment"}}
+  },
+  "boards":{
+   "type":"object","maxProperties":10000,"propertyNames":{"$ref":"#/$defs/id"},
+   "additionalProperties":{
+    "type":"object","additionalProperties":false,
+    "properties":{"name":{"type":"string","minLength":1,"maxLength":200,"pattern":"^\\S(?:[\\s\\S]*\\S)?$"},"archived":{"type":"boolean"}}
+   }
+  }
+ },
+ "$defs":{
+  "id":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+  "assignment":{"anyOf":[{"const":""},{"$ref":"#/$defs/id"}]}
+ }
+}
