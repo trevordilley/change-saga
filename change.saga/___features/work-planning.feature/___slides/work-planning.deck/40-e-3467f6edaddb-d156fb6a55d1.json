@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/cli/query.go",
-      "start": 194,
-      "end": 231,
-      "digest": "sha256:15d4bd886561ce15de2600d5fc8cade848eb12eb210d40729b95d81845e19de3",
+      "start": 196,
+      "end": 240,
+      "digest": "sha256:ef7b30fa9cc574698544dad2c993c3a12126f422c3d88d2f9d5d261b9e4391cc",
       "note": "Registers and describes the shipped waves, work-items, work-events, work-conflicts, traceability, and readiness queries."
     }
   ]

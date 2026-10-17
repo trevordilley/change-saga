@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/server_test.go",
       "start": 109,
-      "end": 109,
-      "digest": "sha256:ec9eb758c728fa9abd58ae5b596e082b788703c8f47784ddb062c1ba6b594d41",
+      "end": 114,
+      "digest": "sha256:82f9ea841c293cdd260d51c95b2a1effebcc32ab67a3d01de7ef650bcdb32f30",
       "note": "Server and browser regressions verify saved definitions, review rendering, desktop/narrow navigation and retained slide context."
     }
   ]

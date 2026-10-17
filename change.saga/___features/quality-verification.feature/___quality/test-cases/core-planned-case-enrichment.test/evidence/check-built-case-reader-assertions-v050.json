@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-built-case-reader-assertions-v050",
+  "test_case": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-built-case-reader"
+  ],
+  "code": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "e2e/tests/quality-definitions.spec.ts",
+      "start": 68,
+      "end": 72,
+      "digest": "sha256:45274ced050368a6c47cdbae86a784b54d18f393822691fcaaf866399500c10b"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-planned-case-enrichment:evidence:check-built-case-reader-assertions"
+  ],
+  "created_at": "2026-10-17T04:53:03Z"
+}

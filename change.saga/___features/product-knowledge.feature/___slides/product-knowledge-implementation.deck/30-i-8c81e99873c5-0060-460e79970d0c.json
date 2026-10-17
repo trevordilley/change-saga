@@ -4,8 +4,8 @@
   "slide": "quality-evidence-runtime",
   "rank": 60,
   "kind": "callout",
-  "label": "Progress is not proof",
-  "description": "Completed work without immutable integrated evidence or a current passing verification remains blocked for delivery readiness.",
+  "label": "Execution stays outside Quality",
+  "description": "Definition coverage does not prove a test passed or work was delivered. Legacy test results and execution artifacts cannot supply delivery evidence.",
   "selector": {
     "type": "element",
     "element_id": "progress-boundary"

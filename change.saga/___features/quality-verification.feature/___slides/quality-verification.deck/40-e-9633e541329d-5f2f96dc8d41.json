@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 227,
+      "end": 240,
+      "digest": "sha256:831b38dedcb7822484661d22cb98f9690ae78a413e776d920aad825db7993099",
+      "note": "A proposed or active case may document intent. It must declare the required kind, include ordered steps, and use allowed automation."
+    },
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 304,
+      "end": 345,
+      "digest": "sha256:6141d5cfdfedd399ebd0f6da192b6f29058f7fbe5e8b6b876fd9b3ffcd101f6b",
+      "note": "A proposed or active case may document intent. It must declare the required kind, include ordered steps, and use allowed automation."
+    }
+  ]
+}

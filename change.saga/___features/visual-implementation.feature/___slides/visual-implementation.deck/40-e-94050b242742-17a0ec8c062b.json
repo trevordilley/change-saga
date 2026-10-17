@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/saga/slides.go",
       "start": 127,
       "end": 138,
-      "digest": "sha256:799516cd4011e2a5c2ef92ddb705d921efc99bb4d94dd76f1f4cc81d59f92d00",
+      "digest": "sha256:9b3e90642d835b05b7ad86c2ee8a47fb35413f1fb3daef5c68c74aaa709a8cce",
       "note": "Rejects non-regular bundle entries, evidence without a known Item, and files outside the compact record contract."
     }
   ]

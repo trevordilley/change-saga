@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "v050",
+  "term": "urn:change-saga:change-saga:term:feature",
+  "parents": [
+    "urn:change-saga:change-saga:term:feature:revision:r1"
+  ],
+  "name": "Feature",
+  "definition": "A durable product domain grouping its product intent, design, Quality definitions, work planning and implementation records. Built features appear in Features and planned features in Roadmap; both share one identity with references to shared themes, labels and milestones. Moving a story between features preserves its identity.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "stories": [
+    "urn:change-saga:change-saga:story:requirements-feature-scope"
+  ],
+  "code": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/saga/app.go",
+      "start": 11,
+      "end": 26,
+      "digest": "sha256:cf10181b916c32430921bea8ef4112fec7aa913d9634c1ed389f9a4fa1c1ea5d"
+    },
+    {
+      "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+      "path": "internal/requirements/model.go",
+      "start": 188,
+      "end": 200,
+      "digest": "sha256:332f90947be215d3de47ca38548232bbd417c96efcab271bf82821482b617632"
+    }
+  ],
+  "created_at": "2026-10-17T04:53:05.625623Z"
+}

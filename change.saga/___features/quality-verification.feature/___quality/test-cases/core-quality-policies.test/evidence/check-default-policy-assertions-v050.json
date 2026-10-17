@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-default-policy-assertions-v050",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-policies",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-quality-policies:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-default-policy"
+  ],
+  "code": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/livingapp/status_test.go",
+      "start": 318,
+      "end": 328,
+      "digest": "sha256:b0898da113eb05d38e37c2b91267fb41805dd4dc89e4f093423773fd4a9787d7"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-quality-policies:evidence:check-default-policy-assertions"
+  ],
+  "created_at": "2026-10-17T04:53:03Z"
+}

@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "transition",
   "label": "Carry forward",
-  "description": "An unchanged criterion statement or story obligation advances logically while retaining the human-confirmed revision pin.",
+  "description": "Unchanged complete criterion content or story obligations carry forward logically while retaining the confirmed revision pin; titles, subtext and authored prose are part of meaning.",
   "selector": {
     "type": "element",
     "element_id": "carry-forward"

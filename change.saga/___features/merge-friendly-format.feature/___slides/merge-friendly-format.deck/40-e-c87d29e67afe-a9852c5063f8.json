@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/cli/living_requirements.go",
-      "start": 181,
-      "end": 277,
-      "digest": "sha256:b82c94eab9e97832c02c905dfe8bb8edfac91f23aca5694017a6c48907ffaf9e",
+      "start": 189,
+      "end": 301,
+      "digest": "sha256:cf53076defb95bfac889aab8a63a3c44f7dba90b68321b2d97b65dd30a5b5d33",
       "note": "Builds a complete revise request, inherits only from one current parent, and hands it to the requirements writer."
     }
   ]

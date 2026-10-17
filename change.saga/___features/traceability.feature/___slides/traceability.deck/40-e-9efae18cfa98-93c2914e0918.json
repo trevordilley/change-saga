@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/requirements/currency.go",
+      "start": 336,
+      "end": 379,
+      "digest": "sha256:741c5984a2e21df5d7cea36cf1d2ce5fa42d41205067ff83f9b5d2e0e0a8a195",
+      "note": "Carries unchanged complete criterion content or story obligations forward while preserving the confirmed revision."
+    }
+  ]
+}

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/cli/query_inventory.go",
       "start": 1,
-      "end": 196,
-      "digest": "sha256:5fd1bd6987d97df7ec8a9cc3fd27bccd400bc8060e50dbdccc81eecefeca2645",
+      "end": 197,
+      "digest": "sha256:4fdf19edccd3282ca47ce9ff7d357db89a9fd15a4796a392ba26af1f16148623",
       "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
     }
   ]

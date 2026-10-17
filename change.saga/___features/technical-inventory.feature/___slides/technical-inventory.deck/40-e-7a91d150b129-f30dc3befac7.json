@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/cli/cli.go",
+      "start": 108,
+      "end": 113,
+      "digest": "sha256:f80681130a2b7a1d9c1b8313b1f3b8a9d1911bbcea1bb2c9c1af3b1148872663",
+      "note": "Public Component, System, data entity and ERD authoring commands expose add, revise and lifecycle operations."
+    }
+  ]
+}

@@ -10,11 +10,11 @@
       "note": "Enumerates the quality authoring operations and resolves caller-named code locations into digested evidence inputs."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/cli/quality.go",
-      "start": 373,
-      "end": 385,
-      "digest": "sha256:13a4a3138b7776f9956581641932ec7c21e3a6c82f3707e4d84cd9aba68ac863",
+      "start": 374,
+      "end": 386,
+      "digest": "sha256:8fe76a70e6e11d1d658752956883f510febc4a7044dc7640dbb92b5179e8f846",
       "note": "Enumerates the quality authoring operations and resolves caller-named code locations into digested evidence inputs."
     }
   ]

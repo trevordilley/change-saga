@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/currency.go",
-      "start": 115,
-      "end": 254,
-      "digest": "sha256:6e3c939d034954e8dbb178391b8768a81ad48497d6395645538ae7f730f60910",
+      "start": 114,
+      "end": 261,
+      "digest": "sha256:fc092543dc5380325c7582daefcb313ba281e64ef641904fcece07f65f890734",
       "note": "Relation currency against current heads; a RelationEvaluator derives a document's heads once for many relations."
     }
   ]

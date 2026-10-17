@@ -10,11 +10,11 @@
       "note": "Builds read-only status and reduces policy, relations, tests, runs, and evidence into criterion quality facts."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/livingapp/status_quality.go",
-      "start": 122,
-      "end": 175,
-      "digest": "sha256:3609c91c730cb0c4dd8f6e32637ba5765fb42d983ec8c2fb6e36602f554380f6",
+      "start": 114,
+      "end": 167,
+      "digest": "sha256:fdbce31e0ce0e3690e239a3493f1d203c55964c8bcc12cd4d04e3cc6b0fb3905",
       "note": "Builds read-only status and reduces policy, relations, tests, runs, and evidence into criterion quality facts."
     }
   ]

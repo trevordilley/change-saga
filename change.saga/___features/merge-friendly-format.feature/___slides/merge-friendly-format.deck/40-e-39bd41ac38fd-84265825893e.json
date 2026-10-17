@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/applayout/applayout.go",
-      "start": 44,
-      "end": 83,
-      "digest": "sha256:ac25d775a698239b1634eb3e03342e5229c876420fb525e26de12e099b8ca45f",
+      "start": 45,
+      "end": 87,
+      "digest": "sha256:8e2a41906ec5f469acb9a43fabc993bb7b0e08366c59078d1bd29e2927dbcd59",
       "note": "Defines the app and feature content roots that make feature directories the physical ownership boundary."
     }
   ]

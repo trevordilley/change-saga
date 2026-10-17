@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 119,
+      "end": 175,
+      "digest": "sha256:fae1fe1f4dd8bd3acb308dc89f5567bcd33dc5175724058db72b581f6291494d",
+      "note": "Each accepted criterion requires positive, negative and edge verification definitions by default."
+    }
+  ]
+}

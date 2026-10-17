@@ -4,8 +4,8 @@
   "slide": "quality-trust-gaps",
   "rank": 20,
   "kind": "risk",
-  "label": "Missing execution API",
-  "description": "No quality command executes the recorded command or captures its exit status and output; run record only persists supplied facts.",
+  "label": "External execution",
+  "description": "Change Saga does not run commands or capture test outcomes. Authors define verification intent; CI owns execution results.",
   "selector": {
     "type": "element",
     "element_id": "execution-gap"

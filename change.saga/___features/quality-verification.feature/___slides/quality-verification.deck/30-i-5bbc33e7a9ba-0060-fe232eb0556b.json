@@ -4,8 +4,8 @@
   "slide": "criterion-quality-gate",
   "rank": 60,
   "kind": "region",
-  "label": "Explicit gap states",
-  "description": "Missing kinds, stale pins, conflicts, inactivity, unsupported automation, absent runs, and nonpassing results remain distinct facts.",
+  "label": "Visible definition gaps",
+  "description": "Missing kinds or step mappings, stale pins, conflicts, inactivity, unsupported automation and invalid definitions remain distinct from execution outcomes.",
   "selector": {
     "type": "element",
     "element_id": "visible-gaps"

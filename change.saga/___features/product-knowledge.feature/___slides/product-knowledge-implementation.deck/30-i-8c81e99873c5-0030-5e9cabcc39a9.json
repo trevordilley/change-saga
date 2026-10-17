@@ -4,8 +4,8 @@
   "slide": "quality-evidence-runtime",
   "rank": 30,
   "kind": "region",
-  "label": "Quality state projection",
-  "description": "The quality projection distinguishes covered, not run, failed, stale, missing, and excluded rather than reducing them to a boolean.",
+  "label": "Definition coverage facts",
+  "description": "Quality reports covered, missing_kind, missing_mapping, stale, conflicted, inactive, invalid, automation_not_allowed or excluded; none is an execution outcome.",
   "selector": {
     "type": "element",
     "element_id": "quality-states"

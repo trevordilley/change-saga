@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/model.go",
       "start": 35,
-      "end": 91,
-      "digest": "sha256:edbb5dbeb7b3796e94916eed3cb34361db1574cbab0c6c42347a57751f4dcbd9",
+      "end": 97,
+      "digest": "sha256:e7b1c05a7408648dc40570148b41aefc12a39745d298a6dc814678f2e5e4de53",
       "note": "Revisioned story and lifecycle model"
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/model.go",
-      "start": 182,
-      "end": 209,
-      "digest": "sha256:dbe9d9bb65868a5ad664f0022a8511499cede86ccc2ab85a42aa64998b7401ad",
+      "start": 188,
+      "end": 216,
+      "digest": "sha256:5d6c14910c9aab8723423665d1f89e9c6d6eb3ada16105886322b2714fe0c6c2",
       "note": "Revisioned story and lifecycle model"
     }
   ]

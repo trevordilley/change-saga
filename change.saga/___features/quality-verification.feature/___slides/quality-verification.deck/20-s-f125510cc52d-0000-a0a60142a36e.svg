@@ -8,7 +8,7 @@
   </defs>
   <rect width="1280" height="720" fill="url(#bg)"/>
   <text class="eyebrow" x="70" y="52">QUALITY VERIFICATION · OWNERSHIP MAP</text>
-  <text class="title" x="70" y="96">Quality is a recorded proof graph — not a test runner</text>
+  <text class="title" x="70" y="96">Quality defines verification without running tests</text>
 
   <g id="external-executor">
     <rect x="60" y="178" width="205" height="268" rx="22" fill="#172033" stroke="#f5b942" stroke-width="2"/>
@@ -50,7 +50,7 @@
     <text class="h" x="960" y="277">___quality/</text>
     <text class="b" x="960" y="312">policies/</text>
     <text class="b" x="960" y="340">test-cases/</text>
-    <text class="b" x="980" y="368">revisions · evidence · runs</text>
+    <text class="b" x="980" y="368">definitions · evidence · history</text>
     <path d="M895 312 H925" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
   </g>
 
@@ -66,10 +66,10 @@
     <rect x="77" y="470" width="266" height="112" rx="16" fill="#3a1822" stroke="#fb7185" stroke-width="2"/>
     <text class="small" x="98" y="498" fill="#fb7185">BOUNDARY</text>
     <text class="b" x="98" y="524">No execution API exists here.</text>
-    <text class="b" x="98" y="547">The caller submits the</text>
-    <text class="b" x="98" y="570">observed result.</text>
+    <text class="b" x="98" y="547">Legacy results stay in</text>
+    <text class="b" x="98" y="570">history, not coverage.</text>
   </g>
 
   <line x1="70" y1="638" x2="1210" y2="638" stroke="#334155"/>
-  <text class="take" x="70" y="676">The package owns durable evidence and derived readiness; execution remains outside its trust boundary.</text>
+  <text class="take" x="70" y="676">Definitions can precede implementation. Optional code links explain how verification is implemented.</text>
 </svg>

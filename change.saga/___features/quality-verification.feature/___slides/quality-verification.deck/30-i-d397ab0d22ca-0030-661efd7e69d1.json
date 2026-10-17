@@ -4,8 +4,8 @@
   "slide": "quality-state-graphs",
   "rank": 30,
   "kind": "region",
-  "label": "Run history DAG",
-  "description": "Runs are immutable successor events; failed and concurrent results remain visible after later reconciliation.",
+  "label": "Legacy run history",
+  "description": "Legacy runs remain immutable historical records with explicit parent heads. Their result literals never affect current Quality or readiness.",
   "selector": {
     "type": "element",
     "element_id": "run-dag"

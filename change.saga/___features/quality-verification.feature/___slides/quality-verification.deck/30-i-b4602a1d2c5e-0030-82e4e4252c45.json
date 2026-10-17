@@ -4,8 +4,8 @@
   "slide": "quality-trust-gaps",
   "rank": 30,
   "kind": "risk",
-  "label": "Missing run-commit freshness",
-  "description": "Run currency validates commit shape and repository identity but does not compare the recorded commit with the observed source HEAD.",
+  "label": "Implementation currency",
+  "description": "Current implementation evidence resolves exact code pins against the viewed source. Changed code marks evidence stale; omitted code is valid for a planned definition.",
   "selector": {
     "type": "element",
     "element_id": "commit-freshness-gap"

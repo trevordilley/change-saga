@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/inventory.go",
       "start": 1,
-      "end": 170,
-      "digest": "sha256:1a7e3ee704e05046cad3bce882f3e45c8abe124acb015c5e6658eb39506da66c",
+      "end": 195,
+      "digest": "sha256:d49ade3a46f5038f11fc1f6e7138f291f1b3f57c910a28c9bbef38041332847d",
       "note": "The endpoint loads the requested saved definition and generates its directed Component diagram with explicit noncurrent status."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/inventory.go",
-      "start": 182,
-      "end": 197,
-      "digest": "sha256:b6f0620db0f6eb1f26ae188e1b6a916218439b083ccab18655762603e14d0744",
+      "start": 207,
+      "end": 223,
+      "digest": "sha256:c17e091412d619f773f1b22ef3b3dec6190891a026a31710026407be35f6654a",
       "note": "The endpoint loads the requested saved definition and generates its directed Component diagram with explicit noncurrent status."
     }
   ]

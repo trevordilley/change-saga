@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3-v050",
+  "test_case": "urn:change-saga:change-saga:test-case:review-rectangle-place-resize",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-rectangle-place-resize:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "draw"
+  ],
+  "code": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/server/appjs.go",
+      "start": 3034,
+      "end": 3042,
+      "digest": "sha256:29efc576d4862cda084554047ab0e4a8ee7b21e90d92af512aee71ca98b4a94a"
+    },
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/server/appjs.go",
+      "start": 3130,
+      "end": 3134,
+      "digest": "sha256:37b699e98cf337231bbe100377f9dff2e27d77ad50e8362cc2bcdfb18e3d409e"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:review-rectangle-place-resize:evidence:evidence-3"
+  ],
+  "created_at": "2026-10-17T04:53:03Z"
+}

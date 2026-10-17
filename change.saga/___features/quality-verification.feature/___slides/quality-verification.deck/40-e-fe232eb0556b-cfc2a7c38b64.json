@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 13,
+      "end": 27,
+      "digest": "sha256:6463fc62bf6fef963526cdb9b38d61a933873f6ef5a3424089fe11096db7bba8",
+      "note": "Missing kinds or step mappings, stale pins, conflicts, inactivity, unsupported automation and invalid definitions remain distinct from execution outcomes."
+    },
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 318,
+      "end": 375,
+      "digest": "sha256:85cd8b0cd2d216f6f97047242785bab511023adf8cc14c11555f8fe7741cb867",
+      "note": "Missing kinds or step mappings, stale pins, conflicts, inactivity, unsupported automation and invalid definitions remain distinct from execution outcomes."
+    }
+  ]
+}

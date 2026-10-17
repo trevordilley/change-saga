@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/model.go",
-      "start": 48,
-      "end": 69,
-      "digest": "sha256:797e4b51331a3d1ebc83b6be64390e9704724c8b7ff453050f118b229470a8bc",
+      "start": 51,
+      "end": 75,
+      "digest": "sha256:7908ed5edc73f97fe25676f6a65defa0d54cc0d76a9b1ce363e086909b776a1b",
       "note": "Implements complete immutable revisions and proves concurrent definition heads remain unresolved until explicitly reconciled."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/mutation.go",
       "start": 107,
       "end": 163,
-      "digest": "sha256:cc3637f46bb4d10416a2020d84ed4284d3d66e48f3c6a6ec2c5a178e298311d0",
+      "digest": "sha256:f3d6b9684eff9c242abbbd59b6537b98b0f0d49a922049308bba0260c8b98178",
       "note": "Implements complete immutable revisions and proves concurrent definition heads remain unresolved until explicitly reconciled."
     },
     {

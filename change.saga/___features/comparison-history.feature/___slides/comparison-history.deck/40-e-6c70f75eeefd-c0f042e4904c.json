@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/template.go",
-      "start": 130,
-      "end": 130,
-      "digest": "sha256:1e96463a563eaab1e57a17db96e5e175719eb878e85d482f8b08a86f2ddff596",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:70a908135e70aa9159ae6889d910db7ded7cf813cfb341ec53a1dab1686fdb00",
       "note": "The selected-file stream URL adds the requested limit only when its view provides one."
     }
   ]

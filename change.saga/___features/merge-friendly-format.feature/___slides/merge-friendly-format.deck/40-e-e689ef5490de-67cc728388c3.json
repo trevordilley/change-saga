@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/applayout/applayout.go",
-      "start": 41,
-      "end": 87,
-      "digest": "sha256:9e3b5d471f51e4e67b2e08296ab185375d1d992a5a5e8d1a0620c4a4efe256e0",
+      "start": 42,
+      "end": 91,
+      "digest": "sha256:6683261bd7623ffed7a4d7b8d6f13362d267f607faf8f334c308c14786a69d95",
       "note": "Partitioned app layout and immutable requirement records"
     }
   ]

@@ -4,8 +4,8 @@
   "slide": "criterion-quality-gate",
   "rank": 50,
   "kind": "transition",
-  "label": "Outcome reduction",
-  "description": "A current pass covers the kind, while a failing current test outranks another pass so failure cannot be hidden.",
+  "label": "Definition coverage",
+  "description": "For each required kind, a usable current linked definition can supply coverage. Missing or uncertain definitions remain explicit; legacy execution outcomes are not inputs.",
   "selector": {
     "type": "element",
     "element_id": "outcome-reducer"

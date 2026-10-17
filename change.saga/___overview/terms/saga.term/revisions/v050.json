@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "v050",
+  "term": "urn:change-saga:change-saga:term:saga",
+  "parents": [
+    "urn:change-saga:change-saga:term:saga:revision:r1"
+  ],
+  "name": "Saga",
+  "definition": "The versioned, Git-native documentation for one application: its Essays, product intent, design, Quality definitions, implementation evidence and pull-request reviews. Independently authored records compose into a traceable view; the source comparison is selected when the Saga is opened.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "aliases": [
+    "app Saga",
+    "Change Saga"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:independent-product-knowledge",
+    "urn:change-saga:change-saga:story:product-intent-path"
+  ],
+  "code": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/saga/model.go",
+      "start": 373,
+      "end": 397,
+      "digest": "sha256:5ead4c6dc0437721ea809f28fea944b0f10b65c4b8385831bac20f88bb5fcc5a"
+    },
+    {
+      "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+      "path": "internal/saga/model.go",
+      "start": 15,
+      "end": 19,
+      "digest": "sha256:194b5efb90d9958d6a26b2b104ada15b06d977ab172356da45686a91093e0199"
+    }
+  ],
+  "created_at": "2026-10-17T04:53:09.726814Z"
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "v050",
+  "term": "urn:change-saga:change-saga:term:delivery-readiness",
+  "parents": [
+    "urn:change-saga:change-saga:term:delivery-readiness:revision:r1"
+  ],
+  "name": "delivery readiness",
+  "definition": "A per-criterion projection that keeps requirement, plan and delivery coverage separate. Delivery requires current immutable claim/verification or integrated work evidence and no delivery or transitive dependency blockers. Work progress, Quality definitions, legacy test runs and execution artifacts do not prove delivery; readiness is not an approval verdict.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "stories": [
+    "urn:change-saga:change-saga:story:track-work-delivery",
+    "urn:change-saga:change-saga:story:criterion-quality-readiness"
+  ],
+  "code": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/livingapp/compose.go",
+      "start": 444,
+      "end": 497,
+      "digest": "sha256:6ec29a37607a03849ea05a231cccd4250c420775be15f3a2eb618bd351d9d01e"
+    },
+    {
+      "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+      "path": "internal/livingapp/compose.go",
+      "start": 476,
+      "end": 490,
+      "digest": "sha256:0284d0a4f4f21be0ad0119b5f5f0fdd52a6309bb7cd48bc65c785d4139254800"
+    },
+    {
+      "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+      "path": "internal/readiness/readiness.go",
+      "start": 60,
+      "end": 81,
+      "digest": "sha256:efdcd3b7c674ec7acb62b2cb48eb7da9c4530c95623978c1972be6193e005f0e"
+    },
+    {
+      "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+      "path": "internal/readiness/readiness.go",
+      "start": 84,
+      "end": 100,
+      "digest": "sha256:3b8d041d4bfd6ba1efecb37c259a888a5077795ba00a216d2b63a3415cd7edfd"
+    }
+  ],
+  "created_at": "2026-10-17T04:53:04.941521Z"
+}

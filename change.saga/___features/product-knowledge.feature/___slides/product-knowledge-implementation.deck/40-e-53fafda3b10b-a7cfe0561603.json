@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 308,
+      "end": 362,
+      "digest": "sha256:d709979c1db52d3c6b3337f1f56b69ca0b7168a25b5f807ddc8489788a24710e",
+      "note": "Current verifies relations connect criteria to definitions. When any step declares criteria, each exercised criterion must be mapped by a step; code links are optional for planning."
+    }
+  ]
+}

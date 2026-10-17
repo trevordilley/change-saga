@@ -4,8 +4,8 @@
   "slide": "quality-evidence-runtime",
   "rank": 20,
   "kind": "transition",
-  "label": "Immutable run event",
-  "description": "Each run records result, source repository and commit as provenance, command, evidence, and every prior run head; currency checks repository identity and pins, not the commit against observed HEAD.",
+  "label": "Mapping checks",
+  "description": "Current verifies relations connect criteria to definitions. When any step declares criteria, each exercised criterion must be mapped by a step; code links are optional for planning.",
   "selector": {
     "type": "element",
     "element_id": "immutable-run"

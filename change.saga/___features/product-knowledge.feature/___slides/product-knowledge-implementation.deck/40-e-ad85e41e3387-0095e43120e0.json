@@ -2,27 +2,27 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/currency.go",
-      "start": 257,
-      "end": 326,
-      "digest": "sha256:703b3b303b6061cd2c8623237c88044f96742aa7688a950f940dc697e1b0212a",
+      "start": 264,
+      "end": 333,
+      "digest": "sha256:008ebe94928a92c3a6727d0c97269ac4effbb22a044543be9a42c5eff6809ca9",
       "note": "Judges relation pins by criterion meaning, carries unchanged criteria forward, and stales reworded obligations."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/currency.go",
-      "start": 329,
-      "end": 369,
-      "digest": "sha256:08115944e61af56934c329bb3d22ebf916e89009dd73debc6aa3836bccd27552",
+      "start": 336,
+      "end": 379,
+      "digest": "sha256:741c5984a2e21df5d7cea36cf1d2ce5fa42d41205067ff83f9b5d2e0e0a8a195",
       "note": "Judges relation pins by criterion meaning, carries unchanged criteria forward, and stales reworded obligations."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/relation_carry_forward_test.go",
       "start": 9,
       "end": 88,
-      "digest": "sha256:2b3150ce62465e1791e9a78e2050aa0ebefb2601f506a937899a07f6f3ae425c",
+      "digest": "sha256:cb34181a7b853ddfa3ed58b7cc78d8126eb6eab8ec021c723c031541ebeb6c5e",
       "note": "Judges relation pins by criterion meaning, carries unchanged criteria forward, and stales reworded obligations."
     }
   ]

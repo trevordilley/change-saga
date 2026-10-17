@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/currency.go",
       "start": 371,
-      "end": 378,
-      "digest": "sha256:4837cceba0cd409966acad78c8c94657949d178420cf5c9f058d7cd44ba9df93",
+      "end": 381,
+      "digest": "sha256:52bb7a28dbf0e661443cfa7906b461a90a5b601e43ad418918d3fd0f9db5d8bb",
       "note": "Story and criterion obligation comparisons include authored title, statement and overview."
     },
     {
-      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/currency.go",
-      "start": 403,
-      "end": 407,
-      "digest": "sha256:ed2f6252e1ebf617b35b664ba949fef1eaa9e395d910d161c59c20a50131c5db",
+      "start": 406,
+      "end": 414,
+      "digest": "sha256:c82e7bbc01a2a5d4be6fa31d106ecd5c20cac2bb180fb88f4ee5b3dee53943d9",
       "note": "Story and criterion obligation comparisons include authored title, statement and overview."
     }
   ]

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "v050",
+  "term": "urn:change-saga:change-saga:term:test-run",
+  "parents": [
+    "urn:change-saga:change-saga:term:test-run:revision:r1"
+  ],
+  "name": "test run",
+  "definition": "A legacy immutable execution event retained for compatibility and history, recording caller-supplied outcome, time, source repository and commit, optional command and evidence. New events preserve every current run head. Change Saga neither executes the command nor uses these results for current Quality, definition coverage or delivery readiness.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "stories": [
+    "urn:change-saga:change-saga:story:record-test-proof",
+    "urn:change-saga:change-saga:story:quality-result-trust"
+  ],
+  "code": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/quality/model.go",
+      "start": 150,
+      "end": 176,
+      "digest": "sha256:45b4df06339115adfbe8f28a6d49e400cf2943b99730bd31657fd96d00356b48"
+    },
+    {
+      "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+      "path": "internal/quality/mutation.go",
+      "start": 466,
+      "end": 484,
+      "digest": "sha256:cb273c75bef3fc192220965f88fdf4eddaa13acf82e1f291204319f5cac5c872"
+    },
+    {
+      "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+      "path": "internal/quality/mutation.go",
+      "start": 503,
+      "end": 513,
+      "digest": "sha256:5629cfccbdcff0a9679507ea0431c8eee00e5608aff8001410a1c14b4011e537"
+    }
+  ],
+  "created_at": "2026-10-17T04:53:11.305523Z"
+}

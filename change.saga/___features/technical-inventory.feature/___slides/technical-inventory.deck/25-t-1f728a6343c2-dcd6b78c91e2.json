@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "technical-inventory",
   "slide": "ti-ui-impl-verification",
-  "current": "sha256:811ee18e24362988cd4751296ef3dc51c80952533d976bd8f9f3f231b5bcb060",
+  "current": "sha256:c020f06dd9d23c6a65fa6a6954add3ebb76c0604d4a8280c394095de4295c793",
   "revisions": [
     {
       "snapshot": "sha256:8e7029ea7a6b185322575444c5eeaa1bd8f44099d28b2f25e83cb1a501c5660f",
@@ -4865,6 +4865,510 @@
                   "start": 1,
                   "end": 237,
                   "digest": "sha256:a5189e310ec6f3f069984001f36e3dc5ed74aad56a04a54f80cfabb49b9060cc",
+                  "note": "The implementation note: delivered behavior including the page tree and ERD zoom, divergences, verification, gaps, and Saga results."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-note",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "The note explains the delivered definition pages, their currency facts and their boundaries."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:f0015b888a4e64b591f4940a97b41a6f30704124a0fcaafde5466681708c9e17",
+      "parent_snapshots": [
+        "sha256:811ee18e24362988cd4751296ef3dc51c80952533d976bd8f9f3f231b5bcb060"
+      ],
+      "request_id": "ti-ui-impl-verification-34ad7425-edit",
+      "created_at": "2026-10-17T04:51:25.315289Z",
+      "asset": "24-a-4051b8f9cfa831417e3cecb00a1e19413cc37557673f0fc6bd12.svg",
+      "asset_digest": "sha256:4051b8f9cfa831417e3cecb00a1e19413cc37557673f0fc6bd12ef7077371b93",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-verification",
+        "deck": "technical-inventory",
+        "title": "How the Technical Design UI is checked",
+        "rank": 255,
+        "section": "Technical Design UI",
+        "intent": "prove",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-4051b8f9cfa831417e3cecb00a1e19413cc37557673f0fc6bd12.svg",
+        "takeaway": "Go tests on the shared fixture and browser flows through the public CLI check the UI; they found and fixed one reviewer bug.",
+        "reading_order": [
+          "server-tests",
+          "browser",
+          "found",
+          "note"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "server-tests",
+            "slide": "ti-ui-impl-verification",
+            "rank": 0,
+            "kind": "example",
+            "label": "Server tests on the shared fixture",
+            "description": "Go tests render pages over records written by the real writers: unspecified intent is never inferred, pins stay exact, conflicts are named, newness needs a comparison and unsafe drawings are refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "server-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/inventory_test.go",
+                  "start": 19,
+                  "end": 19,
+                  "digest": "sha256:674187d2065679e64438529c514203474859e569a844dbe867c144ca90cb17b8",
+                  "note": "The review control test checks the Item URN and selection count."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/inventory_test.go",
+                  "start": 24,
+                  "end": 24,
+                  "digest": "sha256:d02ec9324fd248e01a344aa2707017603e7730960c42f1cb8f5e7553393e6074",
+                  "note": "The review control test checks the Item URN and selection count."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server_test.go",
+                  "start": 109,
+                  "end": 109,
+                  "digest": "sha256:ec9eb758c728fa9abd58ae5b596e082b788703c8f47784ddb062c1ba6b594d41",
+                  "note": "The drawer label test follows the generalized label."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/technical_erd_test.go",
+                  "start": 1,
+                  "end": 289,
+                  "digest": "sha256:3b249fdb7ddf32131280f3c820da6be638a21561c6546bc8d5386433aa069076",
+                  "note": "Tests on the shared writer-built fixture: the full-width zoomable ERD page, entities, overlays, owner uses, sanitizer and refused drawings."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/technical_test.go",
+                  "start": 1,
+                  "end": 253,
+                  "digest": "sha256:69a90335602a50d5abfc75c2b7690cf41d54be029d26c7c63f5c7e2b90cd188d",
+                  "note": "Tests: the landing and area pages without inferred intent or the ERD page's width, exact pins, competing heads, usages and comparison newness."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-state",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:consistent-state",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Tests assert the same explicit intent across directory, page and drawer, never inferred for legacy revisions."
+            },
+            {
+              "id": "ti-ui-impl-verification-without-code",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Tests assert a code-free proposal renders and says it has no code yet."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "browser",
+            "slide": "ti-ui-impl-verification",
+            "rank": 10,
+            "kind": "example",
+            "label": "Browser verification",
+            "description": "Public CLI fixtures exercise four-role Technical Design navigation, saved inventory directories, exact Item pins, ERD interactions, keyboard and 390px touch layouts, and missing revisions.",
+            "selector": {
+              "type": "element",
+              "element_id": "browser"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+                  "path": "e2e/tests/technical-inventory-ui.spec.ts",
+                  "start": 33,
+                  "end": 180,
+                  "digest": "sha256:8684f59a205aae1f52951386fc88b535cc1dc9ede87c65783552a8d907d5d184",
+                  "note": "Public CLI fixtures exercise four-role Technical Design navigation, saved inventory directories, exact Item pins, ERD interactions, keyboard and 390px touch layouts, and missing revisions."
+                },
+                {
+                  "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+                  "path": "e2e/tests/technical-inventory-ui.spec.ts",
+                  "start": 188,
+                  "end": 438,
+                  "digest": "sha256:6a7545c31c4af50a978b768b54a2582e10533e9e2de907c287cd444fbbb1c005",
+                  "note": "Public CLI fixtures exercise four-role Technical Design navigation, saved inventory directories, exact Item pins, ERD interactions, keyboard and 390px touch layouts, and missing revisions."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-same-definition",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "A flow opens the same pinned entity from the drawn element and its directory row."
+            },
+            {
+              "id": "ti-ui-impl-verification-return",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "A flow checks that Escape returns focus to the Item control with the slide URL unchanged."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "found",
+            "slide": "ti-ui-impl-verification",
+            "rank": 20,
+            "kind": "callout",
+            "label": "Bug found by the flows",
+            "description": "A reader navigating away while comparison layers derived left a cached git cancellation error, making every later /api/layers request fail; cancellations are no longer cached.",
+            "selector": {
+              "type": "element",
+              "element_id": "found"
+            },
+            "about": "browser",
+            "body": "A cancelled derivation was cached as the comparison's error, so later /api/layers requests answered 500. It is no longer cached."
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/layers.go",
+                  "start": 87,
+                  "end": 91,
+                  "digest": "sha256:4b196830b9a253fa9a76edbdd58fbd1c6016084a836a7f165ae6f34a84b4a3a6",
+                  "note": "A cancelled comparison derivation is returned without being cached."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-review",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Reviewer surfaces keep working without recording any decision; the fix changes no review state."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "note",
+            "slide": "ti-ui-impl-verification",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Implementation note",
+            "description": "The note records delivered behavior, deliberate divergences from the proposal slides, how it was verified, and known gaps.",
+            "selector": {
+              "type": "element",
+              "element_id": "note"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "docs/technical-inventory-ui-implementation.md",
+                  "start": 1,
+                  "end": 237,
+                  "digest": "sha256:a5189e310ec6f3f069984001f36e3dc5ed74aad56a04a54f80cfabb49b9060cc",
+                  "note": "The implementation note: delivered behavior including the page tree and ERD zoom, divergences, verification, gaps, and Saga results."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-note",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "The note explains the delivered definition pages, their currency facts and their boundaries."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:c020f06dd9d23c6a65fa6a6954add3ebb76c0604d4a8280c394095de4295c793",
+      "parent_snapshots": [
+        "sha256:f0015b888a4e64b591f4940a97b41a6f30704124a0fcaafde5466681708c9e17"
+      ],
+      "request_id": "accept-proposed-ad47d43e65046c22",
+      "created_at": "2026-10-17T05:01:19.759337Z",
+      "asset": "24-a-4051b8f9cfa831417e3cecb00a1e19413cc37557673f0fc6bd12.svg",
+      "asset_digest": "sha256:4051b8f9cfa831417e3cecb00a1e19413cc37557673f0fc6bd12ef7077371b93",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-verification",
+        "deck": "technical-inventory",
+        "title": "How the Technical Design UI is checked",
+        "rank": 255,
+        "section": "Technical Design UI",
+        "intent": "prove",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-4051b8f9cfa831417e3cecb00a1e19413cc37557673f0fc6bd12.svg",
+        "takeaway": "Go tests on the shared fixture and browser flows through the public CLI check the UI; they found and fixed one reviewer bug.",
+        "reading_order": [
+          "server-tests",
+          "browser",
+          "found",
+          "note"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "server-tests",
+            "slide": "ti-ui-impl-verification",
+            "rank": 0,
+            "kind": "example",
+            "label": "Server tests on the shared fixture",
+            "description": "Go tests render pages over records written by the real writers: unspecified intent is never inferred, pins stay exact, conflicts are named, newness needs a comparison and unsafe drawings are refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "server-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/inventory_test.go",
+                  "start": 19,
+                  "end": 19,
+                  "digest": "sha256:674187d2065679e64438529c514203474859e569a844dbe867c144ca90cb17b8",
+                  "note": "The review control test checks the Item URN and selection count."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/inventory_test.go",
+                  "start": 24,
+                  "end": 24,
+                  "digest": "sha256:d02ec9324fd248e01a344aa2707017603e7730960c42f1cb8f5e7553393e6074",
+                  "note": "The review control test checks the Item URN and selection count."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+                  "path": "internal/server/server_test.go",
+                  "start": 109,
+                  "end": 114,
+                  "digest": "sha256:82f9ea841c293cdd260d51c95b2a1effebcc32ab67a3d01de7ef650bcdb32f30",
+                  "note": "The drawer label test follows the generalized label."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+                  "path": "internal/server/technical_erd_test.go",
+                  "start": 1,
+                  "end": 300,
+                  "digest": "sha256:80aa0a0dabdf719d096fbf71184b07cff2df6ea4bac978e77393290695a9d0b3",
+                  "note": "Tests on the shared writer-built fixture: the full-width zoomable ERD page, entities, overlays, owner uses, sanitizer and refused drawings."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+                  "path": "internal/server/technical_test.go",
+                  "start": 1,
+                  "end": 253,
+                  "digest": "sha256:9a3915f9bc424f6fe5b15e3c52d54b07d53bc429f742221e43fb461136b12e85",
+                  "note": "Tests: the landing and area pages without inferred intent or the ERD page's width, exact pins, competing heads, usages and comparison newness."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-state",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:consistent-state",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Tests assert the same explicit intent across directory, page and drawer, never inferred for legacy revisions."
+            },
+            {
+              "id": "ti-ui-impl-verification-without-code",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Tests assert a code-free proposal renders and says it has no code yet."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "browser",
+            "slide": "ti-ui-impl-verification",
+            "rank": 10,
+            "kind": "example",
+            "label": "Browser verification",
+            "description": "Public CLI fixtures exercise four-role Technical Design navigation, saved inventory directories, exact Item pins, ERD interactions, keyboard and 390px touch layouts, and missing revisions.",
+            "selector": {
+              "type": "element",
+              "element_id": "browser"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+                  "path": "e2e/tests/technical-inventory-ui.spec.ts",
+                  "start": 33,
+                  "end": 180,
+                  "digest": "sha256:8684f59a205aae1f52951386fc88b535cc1dc9ede87c65783552a8d907d5d184",
+                  "note": "Public CLI fixtures exercise four-role Technical Design navigation, saved inventory directories, exact Item pins, ERD interactions, keyboard and 390px touch layouts, and missing revisions."
+                },
+                {
+                  "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+                  "path": "e2e/tests/technical-inventory-ui.spec.ts",
+                  "start": 188,
+                  "end": 438,
+                  "digest": "sha256:6a7545c31c4af50a978b768b54a2582e10533e9e2de907c287cd444fbbb1c005",
+                  "note": "Public CLI fixtures exercise four-role Technical Design navigation, saved inventory directories, exact Item pins, ERD interactions, keyboard and 390px touch layouts, and missing revisions."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-same-definition",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "A flow opens the same pinned entity from the drawn element and its directory row."
+            },
+            {
+              "id": "ti-ui-impl-verification-return",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "A flow checks that Escape returns focus to the Item control with the slide URL unchanged."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "found",
+            "slide": "ti-ui-impl-verification",
+            "rank": 20,
+            "kind": "callout",
+            "label": "Bug found by the flows",
+            "description": "A reader navigating away while comparison layers derived left a cached git cancellation error, making every later /api/layers request fail; cancellations are no longer cached.",
+            "selector": {
+              "type": "element",
+              "element_id": "found"
+            },
+            "about": "browser",
+            "body": "A cancelled derivation was cached as the comparison's error, so later /api/layers requests answered 500. It is no longer cached."
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/layers.go",
+                  "start": 87,
+                  "end": 91,
+                  "digest": "sha256:4b196830b9a253fa9a76edbdd58fbd1c6016084a836a7f165ae6f34a84b4a3a6",
+                  "note": "A cancelled comparison derivation is returned without being cached."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-verification-review",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Reviewer surfaces keep working without recording any decision; the fix changes no review state."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "note",
+            "slide": "ti-ui-impl-verification",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Implementation note",
+            "description": "The note records delivered behavior, deliberate divergences from the proposal slides, how it was verified, and known gaps.",
+            "selector": {
+              "type": "element",
+              "element_id": "note"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+                  "path": "docs/technical-inventory-ui-implementation.md",
+                  "start": 1,
+                  "end": 239,
+                  "digest": "sha256:522f9fef9caf0a30f615e55fadc34e03aa60060cfa71027d67de3ddfd4742547",
                   "note": "The implementation note: delivered behavior including the page tree and ERD zoom, divergences, verification, gaps, and Saga results."
                 }
               ]

@@ -4,8 +4,8 @@
   "slide": "criterion-quality-gate",
   "rank": 30,
   "kind": "node",
-  "label": "Definition gate",
-  "description": "The current test must be active, declare the required kind, and use automation allowed by policy.",
+  "label": "Usable definition",
+  "description": "A proposed or active case may document intent. It must declare the required kind, include ordered steps, and use allowed automation.",
   "selector": {
     "type": "element",
     "element_id": "definition-gate"

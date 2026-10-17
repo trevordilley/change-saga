@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/cli/criterion_authoring.go",
-      "start": 66,
-      "end": 114,
-      "digest": "sha256:a1114854597082650e27121dece5f58f433565c6b8b72c99e585ea399d17067b",
+      "start": 67,
+      "end": 116,
+      "digest": "sha256:857aa77567f9ba75c9f7dcb7df62cd658c2932901c83ecb28ec7be2ef33b39b3",
       "note": "The public criterion command distinguishes omitted prose from explicit values and validates authored changes."
     },
     {
-      "commit": "60b4861443d0f4249c4d3ec94d8ca228e7fc94c5",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/cli/criterion_authoring.go",
-      "start": 133,
-      "end": 153,
-      "digest": "sha256:42b047f5e57845461e3a588fa80ff964bddba6505b852a8d51e4dfc2374cbc35",
+      "start": 135,
+      "end": 155,
+      "digest": "sha256:dc6122d1c5c9293fc8f9e1b4a0d1a0947d9014d80f8a03eb330bd58522599f50",
       "note": "The public criterion command distinguishes omitted prose from explicit values and validates authored changes."
     }
   ]

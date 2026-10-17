@@ -4,8 +4,8 @@
   "slide": "quality-trust-gaps",
   "rank": 40,
   "kind": "callout",
-  "label": "Readiness consequence",
-  "description": "A caller-supplied passed result can satisfy quality when the implemented relation, revision, evidence, and repository checks are current.",
+  "label": "No execution proof",
+  "description": "A definition, legacy passing result or execution artifact cannot establish delivery. Quality describes verification intent and its implementation mappings.",
   "selector": {
     "type": "element",
     "element_id": "readiness-consequence"

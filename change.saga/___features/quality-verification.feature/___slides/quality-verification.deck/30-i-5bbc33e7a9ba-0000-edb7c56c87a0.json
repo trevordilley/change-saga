@@ -4,8 +4,8 @@
   "slide": "criterion-quality-gate",
   "rank": 0,
   "kind": "node",
-  "label": "Accepted criterion obligation",
-  "description": "Every accepted criterion enters the quality axis with positive coverage required by default.",
+  "label": "Accepted criterion",
+  "description": "Each accepted criterion requires positive, negative and edge verification definitions by default.",
   "selector": {
     "type": "element",
     "element_id": "criterion-obligation"

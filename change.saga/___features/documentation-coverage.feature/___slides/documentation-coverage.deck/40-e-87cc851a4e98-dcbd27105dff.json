@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/cli/status_coverage.go",
       "start": 135,
-      "end": 232,
-      "digest": "sha256:42bb0253559592344973e0b5ae2776706de32edc4ce6937edbbbcf95585a754c",
+      "end": 235,
+      "digest": "sha256:87040e1990d735e882236f07001ea1db747c35140cec37e518448d0ca09d540d",
       "note": "Joins atom owners and living graph paths into area inputs without creating evidence."
     }
   ]

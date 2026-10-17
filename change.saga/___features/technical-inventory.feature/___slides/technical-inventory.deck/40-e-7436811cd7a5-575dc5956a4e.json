@@ -18,19 +18,19 @@
       "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/appjs.go",
-      "start": 1270,
-      "end": 1271,
-      "digest": "sha256:4a8e1238e391edb0dd14bc6e49da1e626f83b169a89f56ee68973fcfa60fcac8",
+      "start": 1668,
+      "end": 1669,
+      "digest": "sha256:cc1cdf794ee1a2e92510f77519447796efce07fc89cf42ea181a747a721ff54c",
       "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/appjs.go",
-      "start": 1327,
-      "end": 1366,
-      "digest": "sha256:09dc1a4597b5912d7ac1513dbacf6d509d046c39207bd3baddfc4b5ccfb7ced1",
+      "start": 1793,
+      "end": 1838,
+      "digest": "sha256:ddff72657ea21833ebad4e863ed77d97dc5d81c3199fc013dac7ec42348cc1ea",
       "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
     },
     {
@@ -42,11 +42,11 @@
       "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/appjs.go",
-      "start": 2225,
-      "end": 2227,
-      "digest": "sha256:cf59662cc3d9b2ec03d022e191ebb4fc9633c91ff3fc702ff0a31417c36ea2bb",
+      "start": 2760,
+      "end": 2762,
+      "digest": "sha256:4b36097e020b1feda3ccf573df8d6ff7803ae7a2dfad44fab03187c86fc9bf57",
       "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
     },
     {

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/model.go",
       "start": 35,
-      "end": 69,
-      "digest": "sha256:c68d011d8c3493bbef7fb6663b1f835990bbad5751be595356f532f647e93457",
+      "end": 75,
+      "digest": "sha256:878b852e64245b893f698450cb7aa5139d6442618ec7ffc81461ce27e4c400ce",
       "note": "Defines requirements-domain identities, complete story revisions, typed pinned relations, and the aggregate document."
     },
     {
@@ -18,11 +18,11 @@
       "note": "Defines requirements-domain identities, complete story revisions, typed pinned relations, and the aggregate document."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/model.go",
-      "start": 199,
-      "end": 209,
-      "digest": "sha256:795ed77bd422aab28746ad4a1a520ffa3e908f3c4224a44c0522f779aec80f4a",
+      "start": 205,
+      "end": 216,
+      "digest": "sha256:7140f9d7ce7b132acc36eac6095b0bec01be4037cdcb10248c2d96d8eb69abce",
       "note": "Defines requirements-domain identities, complete story revisions, typed pinned relations, and the aggregate document."
     }
   ]

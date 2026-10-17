@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/server/appjs.go",
-      "start": 2221,
-      "end": 2229,
-      "digest": "sha256:0ccfa1b2998e5e2a073a96bf7b43fb0171fcb0db67e0593ce72774053d04473b",
+      "start": 2756,
+      "end": 2764,
+      "digest": "sha256:957c12818f20f1d29d878548244ede9676cf07a1644ddfaf64be81776b6ca529",
       "note": "Story, code and documentation controls dispatch independently; a saved definition opens without replacing the Item pin or slide context."
     }
   ]

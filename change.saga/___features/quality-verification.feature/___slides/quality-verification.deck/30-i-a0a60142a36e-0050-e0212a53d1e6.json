@@ -4,8 +4,8 @@
   "slide": "quality-ownership",
   "rank": 50,
   "kind": "callout",
-  "label": "Execution boundary",
-  "description": "The implemented authoring surface records a result but has no test-execution operation.",
+  "label": "Definitions, not runs",
+  "description": "Current Quality describes how criteria are verified. The deprecated run writer retains historical facts only; it never executes commands or supplies definition coverage.",
   "selector": {
     "type": "element",
     "element_id": "executor-gap"

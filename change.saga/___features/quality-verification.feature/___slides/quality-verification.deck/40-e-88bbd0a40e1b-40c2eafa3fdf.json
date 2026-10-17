@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 346,
+      "end": 408,
+      "digest": "sha256:092e13947afc4d5f6a2483ca9653043516b45c79a5b4259dc54ec0de66118cd7",
+      "note": "Step criteria refine a current verifies relation. When explicit step mappings are present, the criterion needs a mapped step; supplied implementation evidence must remain current."
+    }
+  ]
+}

@@ -4,8 +4,8 @@
   "slide": "quality-state-graphs",
   "rank": 40,
   "kind": "statement",
-  "label": "Unique-head projection",
-  "description": "The loader projects a current revision, lifecycle, evidence set, or run only when its graph has one valid current head.",
+  "label": "Explicit heads, separate meanings",
+  "description": "Definition and lifecycle conflicts remain visible. Evidence supersession preserves prior pins; legacy run conflicts remain historical and do not block definition coverage.",
   "selector": {
     "type": "element",
     "element_id": "conflict-rule"

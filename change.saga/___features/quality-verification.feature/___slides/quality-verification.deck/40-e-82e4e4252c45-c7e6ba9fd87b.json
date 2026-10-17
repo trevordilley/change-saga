@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 62,
+      "end": 82,
+      "digest": "sha256:19df89c07cdab1afef6c28fe506f3ad97905b4441445e846138821cf7af09dc2",
+      "note": "Current implementation evidence resolves exact code pins against the viewed source. Changed code marks evidence stale; omitted code is valid for a planned definition."
+    },
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 363,
+      "end": 408,
+      "digest": "sha256:10431ed6ccd8ebff928b1482257aab8041519622baf3c61dfa0f4eeb11b5068a",
+      "note": "Current implementation evidence resolves exact code pins against the viewed source. Changed code marks evidence stale; omitted code is valid for a planned definition."
+    }
+  ]
+}

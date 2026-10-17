@@ -10,11 +10,11 @@
       "note": "The loader reads a bounded inventory separately and rejects ambiguous JSON, invalid graph structure, and unsafe packages."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
       "path": "internal/requirements/inventory.go",
-      "start": 308,
-      "end": 388,
-      "digest": "sha256:bb7c5dfc5b2a9ac7d6162bce98ff3deb35afa2d9331020bb19fd51e3803763e9",
+      "start": 311,
+      "end": 407,
+      "digest": "sha256:96415a812a46dbbed634a7f9b51528c620589c3dcf98f92898ac92db0c86100e",
       "note": "The loader reads a bounded inventory separately and rejects ambiguous JSON, invalid graph structure, and unsafe packages."
     }
   ]

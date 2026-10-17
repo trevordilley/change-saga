@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/compose.go",
+      "start": 390,
+      "end": 501,
+      "digest": "sha256:8da5706b718decb52c262aaab345800dc923786d3a1a2c17596b2ba4730b1d32",
+      "note": "Addresses, implements, explains and verifies relations derive design, work, review Item, code and test-definition paths. Test results do not supply immutable delivery evidence."
+    },
+    {
+      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 346,
+      "end": 408,
+      "digest": "sha256:092e13947afc4d5f6a2483ca9653043516b45c79a5b4259dc54ec0de66118cd7",
+      "note": "Addresses, implements, explains and verifies relations derive design, work, review Item, code and test-definition paths. Test results do not supply immutable delivery evidence."
+    }
+  ]
+}

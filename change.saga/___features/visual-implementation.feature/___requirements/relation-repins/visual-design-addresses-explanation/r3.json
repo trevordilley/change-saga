@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r3",
+  "relation": "urn:change-saga:change-saga:relation:visual-design-addresses-explanation",
+  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:reading-20261016",
+  "rationale": "Re-read the current story and visual implementation model: both retain SVG, raster and sandboxed HTML, semantic Item identity and exact commit-pinned evidence. The added reading guidance does not change this design contract.",
+  "created_at": "2026-10-17T04:53:22.593208Z"
+}

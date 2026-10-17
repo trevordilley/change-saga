@@ -5,8 +5,8 @@
     <style>.title{font:700 34px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#f8fafc}.eyebrow{font:700 13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#fb7185;letter-spacing:2px}.h{font:700 17px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#f8fafc}.b{font:500 14px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#cbd5e1}.small{font:600 11px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#94a3b8}.take{font:600 18px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#dbeafe}</style>
   </defs>
   <rect width="1280" height="720" fill="url(#bg)"/>
-  <text class="eyebrow" x="70" y="52">FAILURE BOUNDARIES · IMPLEMENTED VS MISSING</text>
-  <text class="title" x="70" y="96">Storage truth is hard; execution truth is caller-asserted</text>
+  <text class="eyebrow" x="70" y="52">TRUST BOUNDARIES · DOCUMENTATION VS EXECUTION</text>
+  <text class="title" x="70" y="96">Definition coverage never claims execution success</text>
 
   <g id="strict-loader">
     <rect x="62" y="156" width="332" height="318" rx="24" fill="#10293a" stroke="#41d3bd" stroke-width="2"/>
@@ -22,8 +22,8 @@
 
   <g id="recorded-run">
     <rect x="474" y="186" width="332" height="258" rx="24" fill="#251d42" stroke="#8b5cf6" stroke-width="2"/>
-    <text class="small" x="500" y="220">IMPLEMENTED · RECORD BOUNDARY</text>
-    <text class="h" x="500" y="263">Run record</text>
+    <text class="small" x="500" y="220">RETAINED · LEGACY HISTORY</text>
+    <text class="h" x="500" y="263">Legacy run</text>
     <text class="b" x="500" y="298">result: passed</text>
     <text class="b" x="500" y="326">command: go test ./...</text>
     <text class="b" x="500" y="354">source.commit: 7fa399…</text>
@@ -33,20 +33,20 @@
 
   <g id="execution-gap">
     <rect x="886" y="146" width="332" height="148" rx="24" fill="#3a1822" stroke="#fb7185" stroke-width="2.5" stroke-dasharray="8 5"/>
-    <text class="small" x="912" y="180">MISSING · EXECUTION BOUNDARY</text>
+    <text class="small" x="912" y="180">OUTSIDE · EXECUTION</text>
     <text class="h" x="912" y="212">No command execution</text>
     <text class="h" x="912" y="234">or output capture</text>
-    <text class="b" x="912" y="268">The CLI records the caller’s claimed result.</text>
+    <text class="b" x="912" y="268">CI retains results; Quality retains definitions.</text>
     <path d="M817 246 H876" stroke="#fb7185" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arr)"/>
   </g>
 
   <g id="commit-freshness-gap">
     <rect x="886" y="322" width="332" height="148" rx="24" fill="#3a1822" stroke="#fb7185" stroke-width="2.5" stroke-dasharray="8 5"/>
-    <text class="small" x="912" y="356">MISSING · SOURCE CURRENCY</text>
-    <text class="h" x="912" y="388">No run-commit vs</text>
-    <text class="h" x="912" y="410">observed-HEAD check</text>
-    <text class="b" x="912" y="438">Syntax and repository are checked;</text>
-    <text class="b" x="912" y="461">commit freshness is not projected.</text>
+    <text class="small" x="912" y="356">OPTIONAL · CODE CURRENCY</text>
+    <text class="h" x="912" y="388">Exact code pins</text>
+    <text class="h" x="912" y="410">checked at HEAD</text>
+    <text class="b" x="912" y="438">Changed evidence stays stale;</text>
+    <text class="b" x="912" y="461">planned definitions need no code.</text>
     <path d="M817 392 H876" stroke="#fb7185" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arr)"/>
   </g>
 
@@ -54,10 +54,10 @@
     <path d="M640 444 V520 H1052 V480" fill="none" stroke="#f5b942" stroke-width="3" marker-end="url(#arr)"/>
     <rect x="302" y="520" width="676" height="92" rx="20" fill="#3a2b16" stroke="#f5b942" stroke-width="2"/>
     <text class="small" x="329" y="550">CONSEQUENCE</text>
-    <text class="h" x="329" y="578">A caller-supplied “passed” run can satisfy quality</text>
-    <text class="h" x="329" y="601">when all implemented pins are current.</text>
+    <text class="h" x="329" y="578">Current definitions explain verification intent;</text>
+    <text class="h" x="329" y="601">execution results never supply definition coverage.</text>
   </g>
 
   <line x1="70" y1="640" x2="1210" y2="640" stroke="#334155"/>
-  <text class="take" x="70" y="680">The deck marks these as absent behavior: no executor and no observed-HEAD freshness gate exist today.</text>
+  <text class="take" x="70" y="680">No executor is part of this model. Historical run records remain readable without influencing current Quality.</text>
 </svg>
