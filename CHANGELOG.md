@@ -14,9 +14,13 @@ tool, and what they have to do about it.
 
 ### Added
 
-- Roadmap planning with canonical feature identities, shared labels and milestones,
-  and independent grouping for built and planned features.
-- Essay presentation separates title, subtext, abstract, and body.
+- **Format:** Roadmap planning with canonical feature identities, shared labels
+  and milestones, and independent grouping for built and planned features.
+  Upgrade older readers before adopting the optional planning and classification
+  records; existing features retain their built placement.
+- **Format:** Essay presentation separates title, subtext, abstract, and body.
+  Existing prose remains readable; upgrade strict readers before authoring the
+  optional Essay metadata fields.
 
 - Review slide outlines now show named sections with the same dividers as feature
   implementation decks. Use `add-slide --review ID --section LABEL` or
@@ -104,6 +108,9 @@ tool, and what they have to do about it.
   `application` or first ERD as primary; a single active document stays inline.
 
 ### Fixed
+
+- Evidence repair refuses ranges that converge onto duplicate references before
+  writing, preserving all original evidence and explanation notes.
 
 - Review annotation comment boxes open beside their marks and stay within the
   visible viewport as the slide or window resizes, instead of occupying a fixed corner.

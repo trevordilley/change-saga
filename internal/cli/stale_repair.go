@@ -557,6 +557,15 @@ func applyEvidenceEdits(label string, references []coderef.Reference, fileEdits 
 		}
 		references[edit.Reference-1] = edit.replacement
 	}
+	// Distinct old ranges can converge on the same proposed range. Do not
+	// publish invalid evidence or silently discard either author's note.
+	seen := map[string]int{}
+	for index, reference := range references {
+		if earlier, exists := seen[reference.Key()]; exists {
+			return nil, fmt.Errorf("%s: repaired references %d and %d would duplicate the same code location; consolidate their explanations with replace-coverage (or apply-slide for managed evidence), then retry", label, earlier+1, index+1)
+		}
+		seen[reference.Key()] = index
+	}
 	return references, nil
 }
 

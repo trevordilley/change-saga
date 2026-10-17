@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -262,5 +263,65 @@ func TestLivingDocumentationOfDeletedLinesIsMadeStaleByTheChange(t *testing.T) {
 	}
 	if summary := reconciliationOf(t, root, "--repo", code).Summary.StaleByChange; summary.Count != 1 || summary.DeletedSide != 0 {
 		t.Fatalf("reconcile summary = %+v", summary)
+	}
+}
+
+// A diff can map distinct pins onto one location. Reject the entire repair
+// before publishing any file, preserving even notes that differ at that pin.
+func TestEvidenceRepairRefusesConvergingPinsBeforeWriting(t *testing.T) {
+	t.Parallel()
+	repo := t.TempDir()
+	git(t, repo, "init", "-b", "main")
+	git(t, repo, "config", "user.name", "Test Author")
+	git(t, repo, "config", "user.email", "test@example.test")
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	writeFile(t, filepath.Join(repo, "app.go"), appFeature)
+	pin := commitAll(t, repo, "Base")
+	root := filepath.Join(repo, "change.saga")
+	var output bytes.Buffer
+	if err := Init(context.Background(), []string{"--repo", repo, "--title", "App", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	coverJSON(t, "--commit", pin, "--path", "app.go", "--lines", "3,5-7", "--name", "z-conflict", "--note", "Original explanation", root)
+	coverJSON(t, "--commit", pin, "--path", "app.go", "--lines", "3", "--name", "a-safe", root)
+	conflictPath := filepath.Join(root, saga.CodeDirName, "z-conflict.json")
+	safePath := filepath.Join(root, saga.CodeDirName, "a-safe.json")
+	conflict := readCodeFile(t, conflictPath)
+	safe := readCodeFile(t, safePath)
+	if len(conflict) != 2 {
+		t.Fatalf("fixture references = %#v", conflict)
+	}
+	duplicate := conflict[0]
+	duplicate.Note = "A distinct explanation that must not be discarded"
+	safeEdit := safe[0]
+	safeEdit.Note = "A valid edit that must also remain unpublished"
+	beforeConflict, err := os.ReadFile(conflictPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	beforeSafe, err := os.ReadFile(safePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	edits := []evidenceEdit{
+		{EvidenceFile: "___code/a-safe.json", Reference: 1, previous: safe[0], replacement: safeEdit},
+		{EvidenceFile: "___code/z-conflict.json", Reference: 2, previous: conflict[1], replacement: duplicate},
+	}
+	for _, dryRun := range []bool{true, false} {
+		_, err := writeEvidenceEdits(context.Background(), root, repo, edits, "converging-pins", dryRun)
+		if err == nil || !strings.Contains(err.Error(), "references 1 and 2 would duplicate") || !strings.Contains(err.Error(), "replace-coverage") {
+			t.Fatalf("dry-run %v: %v", dryRun, err)
+		}
+		afterConflict, err := os.ReadFile(conflictPath)
+		if err != nil {
+			t.Fatal(err)
+		}
+		afterSafe, err := os.ReadFile(safePath)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !bytes.Equal(beforeConflict, afterConflict) || !bytes.Equal(beforeSafe, afterSafe) {
+			t.Fatal("a refused repair changed evidence")
+		}
 	}
 }
