@@ -66,6 +66,9 @@ jobs:
         # The race-enabled server package is intentionally broad and can take
         # longer than Go's default 10-minute per-package timeout on shared CI
         # runners. Keep the full suite and race detector; give them headroom.
+        # The showcase now includes 178 verification definitions: its exhaustive
+        # page checks can exceed 20 minutes under the race detector. Preserve
+        # every case while allowing the expanded corpus to finish.
         # Always execute the suite without recording a test-result cache log.
         # The server fixtures perform enough filesystem reads to create hundreds
         # of MB of cache-input logs; build and module caching still stay enabled.
@@ -83,7 +86,7 @@ jobs:
             resource_monitor=$!
             trap 'kill "$resource_monitor" 2>/dev/null || true' EXIT
           fi
-          go test -json -p 1 -parallel 2 -count=1 -timeout 20m ${{ matrix.race }} ./...
+          go test -json -p 1 -parallel 2 -count=1 -timeout 30m ${{ matrix.race }} ./...
         env:
           # Leave room for race-detector shadow memory and Git children on
           # Linux runners; that memory is outside Go's managed heap budget.
