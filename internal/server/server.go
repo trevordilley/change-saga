@@ -1784,20 +1784,12 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 			Title: deck.Title, NodeID: "nav-" + domID(deck.Target), Icon: "deck", Deck: true,
 		}
 		node.Href = "?view=slides#overview-" + domID(deck.Target)
-		previousSection := ""
+		var sections deckSections
 		for _, slide := range deck.Fragments {
 			if slide.Title == "" {
 				continue
 			}
-			section := ""
-			if slide.SlideMeta != nil {
-				section = strings.TrimSpace(slide.SlideMeta.Section)
-			}
-			sectionStart := ""
-			if section != "" && section != previousSection {
-				sectionStart = section
-			}
-			previousSection = section
+			sectionStart := sections.next(slide.SlideMeta)
 			node.Children = append(node.Children, &navNodeView{
 				Title:  slide.Title,
 				Href:   "?view=slides#" + domID(slide.Target),
@@ -1907,16 +1899,10 @@ func makeSectionView(section *saga.Section, scope viewScope) *sectionView {
 		view.Deferred = true
 		return view
 	}
-	previousSlideSection := ""
+	var sections deckSections
 	for _, fragment := range section.Fragments {
 		fragmentView := makeFragmentView(fragment, scope)
-		if fragment.SlideMeta != nil {
-			currentSection := strings.TrimSpace(fragment.SlideMeta.Section)
-			if currentSection != "" && currentSection != previousSlideSection {
-				fragmentView.SectionTitle = currentSection
-			}
-			previousSlideSection = currentSection
-		}
+		fragmentView.SectionTitle = sections.next(fragment.SlideMeta)
 		view.FragmentViews = append(view.FragmentViews, fragmentView)
 	}
 	for _, child := range section.Children {
