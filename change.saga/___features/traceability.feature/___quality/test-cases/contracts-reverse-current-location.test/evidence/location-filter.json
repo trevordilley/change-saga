@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "location-filter",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reverse-current-location",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reverse-current-location:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "match"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 540,
+      "end": 561,
+      "digest": "sha256:403743aaac8df080b0f0893382977ea263ab3b59ab0db6387cda435478b8907f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reverse-current-location-location-filter"
+}

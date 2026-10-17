@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "review-slide-comment",
+  "created_at": "2026-10-16T23:21:48Z",
+  "request_id": "saga-definition-review-slide-comment"
+}

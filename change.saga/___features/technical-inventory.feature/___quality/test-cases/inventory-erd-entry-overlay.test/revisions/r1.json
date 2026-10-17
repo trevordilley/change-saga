@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay",
+  "parents": [],
+  "title": "Open the application ERD and compare a proposed overlay",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Disposable format-2 Saga using the PDF inventory fixture: implemented PDF report held by Record store, proposed JSON PDF job held by Job queue, report-to-job production relationship, application ERD, and pdf-jobs overlay; the reporting ERD also includes a job association with owner 0..many and destination unknown."
+  ],
+  "steps": [
+    {
+      "id": "open",
+      "action": "Open Technical design, follow Data model, then open the application ERD.",
+      "expected_result": "The application ERD entry and authored baseline report are readable.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:technical-overview"
+      ]
+    },
+    {
+      "id": "overlay",
+      "action": "Open the pdf-jobs overlay and then reopen the baseline application ERD.",
+      "expected_result": "The overlay shows the added job and production relationship, links baseline r1, and leaves the baseline directory unchanged.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:technical-overview",
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context"
+      ]
+    },
+    {
+      "id": "context",
+      "action": "From the selected design follow its declared feature and design links.",
+      "expected_result": "The originating feature and committed design are identifiable without changing the baseline.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context"
+      ]
+    }
+  ],
+  "expected_result": "The originating feature and committed design are identifiable without changing the baseline.",
+  "created_at": "2026-10-16T23:03:10Z",
+  "request_id": "saga-definition-inventory-erd-entry-overlay"
+}

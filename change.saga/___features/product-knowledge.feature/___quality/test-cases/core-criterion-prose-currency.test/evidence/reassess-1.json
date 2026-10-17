@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "reassess-1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-criterion-prose-currency",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-criterion-prose-currency:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-reassess"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/story_overview_test.go",
+      "start": 37,
+      "end": 61,
+      "digest": "sha256:588b65e98f42da0f43400e6ac6bbb90269cd26df6197c287bb442a1f764922eb"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-criterion-prose-currency-reassess-1"
+}

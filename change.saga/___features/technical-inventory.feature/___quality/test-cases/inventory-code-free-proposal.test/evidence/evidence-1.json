@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-code-free-proposal",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-code-free-proposal:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "create"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/inventory_lifecycle_test.go",
+      "start": 120,
+      "end": 127,
+      "digest": "sha256:20b80935ed2d31222a1c5429953ddf5e80bd3387d995dae01b261b6971f98b1b"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-code-free-proposal-evidence-1"
+}

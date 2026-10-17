@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads",
+  "parents": [],
+  "title": "Require explicit reconciliation of every definition head",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A separate case r1 exists; prepare two valid concurrent revisions r2 and r2b from r1."
+  ],
+  "steps": [
+    {
+      "id": "check-definition-head-guards",
+      "action": "Attempt a parentless revision; inspect concurrent heads; attempt reconciliation naming only r2, then retry naming both heads.",
+      "expected_result": "Parentless/incomplete-head requests are refused, concurrent heads have no current revision, and explicit complete reconciliation yields current r3.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment"
+      ]
+    }
+  ],
+  "expected_result": "Require explicit reconciliation of every definition head.",
+  "created_at": "2026-10-16T23:19:37Z",
+  "request_id": "saga-definition-core-case-conflicting-heads"
+}

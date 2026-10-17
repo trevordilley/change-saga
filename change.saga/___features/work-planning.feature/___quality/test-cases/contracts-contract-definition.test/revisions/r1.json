@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-contract-definition",
+  "parents": [],
+  "title": "Persist a versioned provider-consumer contract definition",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use the CLI plan test fixture with provider cli and consumer docs work items in the same feature."
+  ],
+  "steps": [
+    {
+      "id": "create",
+      "action": "Run plan add-contract for cli-docs revision cli-docs-r1, kind handoff, provider cli, consumer docs, statement \"Publish stable help\", acceptance \"Every command has deterministic help\" and a unique request-id.",
+      "expected_result": "The public writer succeeds and returns one initial event.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:versioned-contract"
+      ]
+    },
+    {
+      "id": "inspect",
+      "action": "Inspect the stored definition through an available public contract read projection.",
+      "expected_result": "The exact revision identity, provider, consumer, kind, statement and acceptance checks are retrievable unchanged.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:versioned-contract"
+      ]
+    }
+  ],
+  "expected_result": "The agreed seam has a versioned definition with concrete acceptance checks.",
+  "created_at": "2026-10-16T23:22:43Z",
+  "request_id": "saga-definition-contracts-contract-definition"
+}

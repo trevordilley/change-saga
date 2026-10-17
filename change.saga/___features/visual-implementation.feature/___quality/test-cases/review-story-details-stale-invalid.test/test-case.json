@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "review-story-details-stale-invalid",
+  "created_at": "2026-10-16T23:21:58Z",
+  "request_id": "saga-definition-review-story-details-stale-invalid"
+}

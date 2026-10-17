@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip",
+  "parents": [],
+  "title": "Inspect selected code and return to the originating Item",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use public CLI browser fixture: Pipeline System→Store evidence src/app.go 3-5 with greeting-store/store selecting only line 4."
+  ],
+  "steps": [
+    {
+      "id": "selected",
+      "action": "Open the Item's technical explanation and inspect greet-only selection.",
+      "expected_result": "The path shows Pipeline→Store, exactly one referenced line is shown, digest integrity matches, and whole-definition code is separately labeled.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:selected-code",
+        "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+        "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path"
+      ]
+    },
+    {
+      "id": "return",
+      "action": "Open Store member, return to the prior explanation, then close it.",
+      "expected_result": "Member view has no Item selection; back restores greet-only; close restores the originating control and exact slide URL.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context"
+      ]
+    },
+    {
+      "id": "provenance",
+      "action": "Inspect the code caption, then repeat with stale and unavailable exact references.",
+      "expected_result": "The displayed code identifies full commit/path/range and marks stale/unresolved without substituting other source.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity"
+      ]
+    }
+  ],
+  "expected_result": "The displayed code identifies full commit/path/range and marks stale/unresolved without substituting other source.",
+  "created_at": "2026-10-16T23:21:04Z",
+  "request_id": "saga-definition-inventory-selected-code-roundtrip"
+}

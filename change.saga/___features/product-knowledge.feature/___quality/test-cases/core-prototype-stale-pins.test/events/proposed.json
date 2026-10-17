@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-event.schema.json",
+  "version": 5,
+  "id": "proposed",
+  "test_case": "urn:change-saga:change-saga:test-case:core-prototype-stale-pins",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-10-16T23:18:59Z",
+  "request_id": "saga-definition-core-prototype-stale-pins"
+}

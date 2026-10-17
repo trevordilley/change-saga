@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-inherited-subset",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-inherited-subset:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "selection",
+    "coverage"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/inventoryview/inherited.go",
+      "start": 55,
+      "end": 69,
+      "digest": "sha256:e92dc3e587d91575c2ec790abe12187ac2344210b4781b3b9c6c58943f757198"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-inherited-subset-evidence-3"
+}

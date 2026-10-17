@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "report-fields",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-states",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-coverage-states:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "evaluate"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/coverage/coverage.go",
+      "start": 71,
+      "end": 78,
+      "digest": "sha256:421a8156ae3d428ee03ef7d20c45d721988b23e69cb2eb73cbb66da1bfa590a3"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-coverage-states-report-fields"
+}

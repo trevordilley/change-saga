@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-review-isolation",
+  "parents": [],
+  "title": "Keep complete review coverage separate from living documentation",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use newReviewFixture; cover queue.go/store.go review lines with review Items, without living implementation references."
+  ],
+  "steps": [
+    {
+      "id": "review",
+      "action": "Reconcile the fixture with fully covered review Items.",
+      "expected_result": "Review uncovered=0, living implementation covered=0/uncovered=4, and review evidence contributes nothing to living HEAD currency.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency"
+      ]
+    }
+  ],
+  "expected_result": "Review coverage is complete while four living implementation lines remain uncovered and living currency contains no review evidence.",
+  "created_at": "2026-10-16T23:23:18Z",
+  "request_id": "saga-definition-contracts-reconcile-review-isolation"
+}

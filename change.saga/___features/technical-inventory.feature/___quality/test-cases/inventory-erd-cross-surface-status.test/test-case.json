@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "inventory-erd-cross-surface-status",
+  "created_at": "2026-10-16T23:07:54Z",
+  "request_id": "saga-definition-inventory-erd-cross-surface-status"
+}

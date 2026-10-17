@@ -1,8 +1,9 @@
 package livingapp
 
 import (
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"sort"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -10,40 +11,27 @@ import (
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
-// Quality kind states. They extend the design state vocabulary with the run
-// outcomes the quality contract names, and are reported per required kind.
+// Quality describes verification definitions, never execution outcomes.
 const (
-	kindCovered     = "covered"
-	kindMissing     = "missing_kind"
-	kindNotRun      = "not_run"
-	kindFailed      = "failed"
-	kindBlocked     = "blocked"
-	kindSkipped     = "skipped"
-	kindStale       = "stale"
-	kindInactive    = "inactive"
-	kindInvalid     = "invalid"
-	kindConflicted  = "conflicted"
-	kindExcluded    = "excluded"
-	kindUnsupported = "automation_not_allowed"
+	kindCovered        = "covered"
+	kindMissing        = "missing_kind"
+	kindStale          = "stale"
+	kindInactive       = "inactive"
+	kindInvalid        = "invalid"
+	kindConflicted     = "conflicted"
+	kindExcluded       = "excluded"
+	kindUnsupported    = "automation_not_allowed"
+	kindMissingMapping = "missing_mapping"
 )
 
-// factRank orders candidate states when several tests declare the same kind. A
-// failing current run outranks a passing one on purpose: a required kind with a
-// failing test is not quality-ready, and hiding it behind another pass would
-// make the failure invisible to ready_for_review.
-var factRank = map[string]int{
-	kindFailed: 0, kindCovered: 1, kindConflicted: 2, kindBlocked: 3, kindSkipped: 4, kindStale: 5,
-	kindNotRun: 6, kindUnsupported: 7, kindInactive: 8, kindInvalid: 9,
-}
+var factRank = map[string]int{kindCovered: 0, kindConflicted: 1, kindStale: 2, kindMissingMapping: 3, kindUnsupported: 4, kindInactive: 5, kindInvalid: 6}
 
 // testEval is one verifies relation from a test case to a criterion, with the
-// test's current proving state.
+// test's current definition and reference state.
 type testEval struct {
 	relation, testCase string
 	kinds              []string
 	state              string
-	run, runResult     string
-	runHeads           []string
 	evidenceResolved   bool
 	stale, conflicts   []string
 	invalid            []string
@@ -82,9 +70,13 @@ func (a *assembler) indexQuality() {
 					}
 				}
 			}
-			if len(reasons) > 0 && evidence.Current {
+			if len(reasons) > 0 && contains(testCase.EvidenceHeads, evidenceURN) && evidence.Role != quality.EvidenceExecutionArtifact {
 				a.evidenceStale[evidenceURN] = uniqueSorted(reasons)
-				a.markStale(evidenceURN, "quality_evidence", historySource, reasons, []Pin{{Field: "test_revision", Pinned: evidence.TestRevision, Current: a.currentRevs[urn]}}, nil)
+				history := historySource
+				if evidence.TestRevision != a.currentRevs[urn] {
+					history = historyReview
+				}
+				a.markStale(evidenceURN, "quality_evidence", history, reasons, []Pin{{Field: "test_revision", Pinned: evidence.TestRevision, Current: a.currentRevs[urn]}}, nil)
 			}
 		}
 	}
@@ -120,7 +112,7 @@ func (a *assembler) testOwnedAtoms() map[string]TestOwned {
 }
 
 // qualityAxis evaluates every accepted criterion's quality obligation from the
-// recorded policy, verifies relations, test definitions, runs, and evidence.
+// recorded policy, verifies relations, test definitions and implementation evidence.
 func (a *assembler) qualityAxis() qualityEvaluation {
 	result := qualityEvaluation{
 		links: map[string][]coverage.AxisLink{}, unsatisfied: map[string][]string{}, criteria: map[string]*QualityCriterion{},
@@ -130,7 +122,7 @@ func (a *assembler) qualityAxis() qualityEvaluation {
 	for _, frame := range a.criteria {
 		row := &QualityCriterion{
 			Criterion: frame.urn, StoryRevision: frame.currentRevision, Policy: "default", PolicyState: "default",
-			RequiredKinds: []string{string(quality.CoveragePositive)}, AllowedAutomation: []string{}, ObservedKinds: []string{},
+			RequiredKinds: []string{string(quality.CoveragePositive), string(quality.CoverageNegative), string(quality.CoverageEdge)}, AllowedAutomation: []string{}, ObservedKinds: []string{},
 			Tests: []string{}, Kinds: []KindStatus{}, Links: []TestLinkRow{},
 		}
 		result.criteria[frame.urn] = row
@@ -142,7 +134,7 @@ func (a *assembler) qualityAxis() qualityEvaluation {
 			row.ObservedKinds = append(row.ObservedKinds, eval.kinds...)
 			row.Links = append(row.Links, TestLinkRow{
 				Relation: eval.relation, TestCase: eval.testCase, State: eval.state, Kinds: copyStrings(eval.kinds),
-				Run: eval.run, RunResult: eval.runResult, Reasons: uniqueSorted(append(append(append(append([]string{}, eval.stale...), eval.conflicts...), eval.invalid...), eval.unsatisfied...)),
+				Reasons: uniqueSorted(append(append(append(append([]string{}, eval.stale...), eval.conflicts...), eval.invalid...), eval.unsatisfied...)),
 			})
 			result.links[frame.urn] = append(result.links[frame.urn], coverage.AxisLink{
 				Axis: coverage.AxisQuality, Relation: eval.relation, Source: eval.testCase, Broad: eval.broad, PinnedRevision: eval.pinned,
@@ -307,7 +299,7 @@ func (a *assembler) verifiesByTestCase() map[string][]VerifiesLink {
 
 func (a *assembler) evaluateTest(link Link, criterion string, broad bool, relationStale []string) *testEval {
 	eval := &testEval{
-		relation: link.URN, testCase: link.From, state: kindCovered, kinds: []string{}, runHeads: []string{},
+		relation: link.URN, testCase: link.From, state: kindCovered, kinds: []string{},
 		evidenceResolved: true, stale: copyStrings(relationStale), conflicts: []string{}, invalid: []string{}, unsatisfied: []string{},
 		diffs: []string{}, broad: broad, pinned: link.ToRevision,
 	}
@@ -322,61 +314,77 @@ func (a *assembler) evaluateTest(link Link, criterion string, broad bool, relati
 	if testCase.CurrentRevision != nil {
 		eval.kinds = kindsOf(testCase.CurrentRevision.CoverageKinds)
 	}
-	eval.runHeads = copyStrings(testCase.RunHeads)
 	switch {
 	case testCase.RevisionConflict():
 		eval.conflicts = append(eval.conflicts, "test case has competing revision heads: "+joinReasons(testCase.RevisionHeads))
 	case testCase.LifecycleConflict():
 		eval.conflicts = append(eval.conflicts, "test case has competing lifecycle heads: "+joinReasons(testCase.LifecycleHeads))
-	case testCase.RunConflict():
-		eval.conflicts = append(eval.conflicts, "test case has competing run heads: "+joinReasons(testCase.RunHeads))
 	}
 	if len(eval.conflicts) > 0 {
 		eval.state = kindConflicted
 	}
-	if testCase.CurrentLifecycle != nil && testCase.CurrentLifecycle.State != quality.StateActive {
+	if testCase.CurrentLifecycle != nil && (testCase.CurrentLifecycle.State == quality.StateDeprecated || testCase.CurrentLifecycle.State == quality.StateRetired) {
 		eval.unsatisfied = append(eval.unsatisfied, "test case is "+string(testCase.CurrentLifecycle.State))
 		if eval.state == kindCovered {
 			eval.state = kindInactive
 		}
 	}
 	path := hops(criterion, story, broad, link.From)
-	if head := testCase.HeadRun; head != nil {
-		eval.run, _ = qualityid.Run(a.in.SagaID, testCase.Identity.ID, head.ID)
-		eval.runResult = string(head.Result)
-		path = append(path, eval.run)
-		if !head.Current {
-			reasons := []string{}
-			for _, reason := range head.StaleReasons {
-				reasons = append(reasons, "run "+eval.run+": "+reason)
-			}
-			eval.stale = append(eval.stale, reasons...)
-			eval.evidenceResolved = false
-			a.markStale(eval.run, "test_run", runHistory(head.StaleReasons), head.StaleReasons,
-				[]Pin{{Field: "test_revision", Pinned: head.TestRevision, Current: a.currentRevs[link.From]}}, []string{criterion})
-			a.addImplicated(link.From, "test_case", eval.run+": "+joinReasons(head.StaleReasons))
+	if testCase.CurrentRevision == nil || len(testCase.CurrentRevision.Steps) == 0 {
+		eval.unsatisfied = append(eval.unsatisfied, "test definition needs ordered steps")
+		if eval.state == kindCovered {
+			eval.state = kindMissingMapping
 		}
-		for _, evidenceURN := range head.Evidence {
-			if reasons := a.evidenceStale[evidenceURN]; len(reasons) > 0 {
-				eval.stale = append(eval.stale, "evidence "+evidenceURN+": "+joinReasons(reasons))
-				eval.evidenceResolved = false
+	}
+	mapped, explicit := false, false
+	if testCase.CurrentRevision != nil {
+		for _, step := range testCase.CurrentRevision.Steps {
+			explicit = explicit || len(step.Criteria) > 0
+			if contains(step.Criteria, criterion) {
+				mapped = true
 			}
 		}
-		for _, evidence := range testCase.Evidence {
-			evidenceURN, _ := qualityid.Evidence(a.in.SagaID, testCase.Identity.ID, evidence.ID)
-			if !contains(head.Evidence, evidenceURN) {
+	}
+	if explicit && !mapped {
+		eval.unsatisfied = append(eval.unsatisfied, "no step maps this criterion")
+		if eval.state == kindCovered {
+			eval.state = kindMissingMapping
+		}
+	}
+	for _, evidence := range testCase.Evidence {
+		evidenceURN, _ := qualityid.Evidence(a.in.SagaID, testCase.Identity.ID, evidence.ID)
+		if evidence.Role == quality.EvidenceExecutionArtifact || !contains(testCase.EvidenceHeads, evidenceURN) {
+			continue
+		}
+		// Step evidence only contributes to the criteria those steps exercise.
+		if len(evidence.Steps) > 0 && testCase.CurrentRevision != nil {
+			relevant := false
+			for _, step := range testCase.CurrentRevision.Steps {
+				if contains(evidence.Steps, step.ID) && contains(step.Criteria, criterion) {
+					relevant = true
+				}
+			}
+			if !relevant {
 				continue
 			}
-			for _, reference := range evidence.Code {
-				location := reference.Location().String()
-				eval.diffs = append(eval.diffs, location)
-				eval.paths = append(eval.paths, append(append([]string{}, path...), evidenceURN, location))
-			}
 		}
-	} else if len(testCase.RunHeads) == 0 {
-		eval.unsatisfied = append(eval.unsatisfied, "no run is recorded")
-		if eval.state == kindCovered {
-			eval.state = kindNotRun
+		reasons := append(append([]string{}, evidence.StaleReasons...), a.evidenceStale[evidenceURN]...)
+		if len(reasons) > 0 {
+			eval.stale = append(eval.stale, "evidence "+evidenceURN+": "+joinReasons(reasons))
+			eval.evidenceResolved = false
+		}
+		for _, reference := range evidence.Code {
+			location := reference.Location().String()
+			eval.diffs = append(eval.diffs, location)
+			if len(evidence.Steps) == 0 {
+				eval.paths = append(eval.paths, append(append([]string{}, path...), evidenceURN, location))
+			} else if testCase.CurrentRevision != nil {
+				for _, step := range testCase.CurrentRevision.Steps {
+					if contains(evidence.Steps, step.ID) && contains(step.Criteria, criterion) {
+						eval.paths = append(eval.paths, append(append([]string{}, path...), link.From+":step:"+step.ID, evidenceURN, location))
+					}
+				}
+			}
 		}
 	}
 	if len(eval.paths) == 0 {
@@ -387,18 +395,14 @@ func (a *assembler) evaluateTest(link Link, criterion string, broad bool, relati
 	if len(eval.stale) > 0 && eval.state == kindCovered {
 		eval.state = kindStale
 	}
-	if eval.state == kindCovered && testCase.HeadRun != nil && testCase.HeadRun.Result != quality.RunPassed {
-		eval.state = string(testCase.HeadRun.Result)
-		eval.unsatisfied = append(eval.unsatisfied, "current run "+eval.run+" "+eval.runResult)
-	}
 	return eval
 }
 
 // kindState reduces the tests declaring one kind to that kind's state and the
-// readiness fact the quality gate evaluates.
+// fact explaining definition coverage.
 func kindState(criterion, kind string, required bool, evals []*testEval) (KindStatus, QualityFactStatus) {
 	status := KindStatus{Kind: kind, Required: required, State: kindMissing, TestCases: []string{}, Reasons: []string{}}
-	fact := QualityFactStatus{Criterion: criterion, Kind: kind, Required: required, State: kindMissing, RunHeads: []string{}, EvidenceResolved: true, StaleReasons: []string{}}
+	fact := QualityFactStatus{Criterion: criterion, Kind: kind, Required: required, State: kindMissing, EvidenceResolved: true, StaleReasons: []string{}}
 	var best *testEval
 	for _, eval := range evals {
 		if !contains(eval.kinds, kind) {
@@ -418,13 +422,6 @@ func kindState(criterion, kind string, required bool, evals []*testEval) (KindSt
 	status.Reasons = uniqueSorted(append(append(append(append([]string{}, best.stale...), best.conflicts...), best.invalid...), best.unsatisfied...))
 	fact.State = best.state
 	fact.TestCase = best.testCase
-	fact.RunResult = best.runResult
-	if best.state != kindCovered && best.runResult == string(quality.RunPassed) {
-		// A pass that is stale, conflicted, or otherwise unsatisfying is not a
-		// current pass; the fact must not read as one.
-		fact.RunResult = best.state
-	}
-	fact.RunHeads = copyStrings(best.runHeads)
 	fact.EvidenceResolved = best.evidenceResolved
 	fact.StaleReasons = copyStrings(best.stale)
 	return status, fact
@@ -466,7 +463,7 @@ func (a *assembler) finishQuality(evaluation qualityEvaluation, projection cover
 		testCase := a.testCases[urn]
 		row := TestCaseStatus{
 			TestCase: urn, Feature: testCase.Feature, Lifecycle: "conflicted", RevisionHeads: copyStrings(testCase.RevisionHeads), Kinds: []string{},
-			RunHeads: copyStrings(testCase.RunHeads), Verifies: append([]VerifiesLink{}, evaluation.verifies[urn]...),
+			Definition: quality.DefinitionStage(*testCase), Verifies: append([]VerifiesLink{}, evaluation.verifies[urn]...),
 		}
 		if testCase.CurrentLifecycle != nil {
 			row.Lifecycle = string(testCase.CurrentLifecycle.State)
@@ -477,25 +474,17 @@ func (a *assembler) finishQuality(evaluation qualityEvaluation, projection cover
 			row.Kinds = kindsOf(testCase.CurrentRevision.CoverageKinds)
 			row.Automation = string(testCase.CurrentRevision.Automation)
 		}
-		if testCase.CurrentRun != nil {
-			row.CurrentRun, _ = qualityid.Run(a.in.SagaID, testCase.Identity.ID, testCase.CurrentRun.ID)
-			row.RunResult = string(testCase.CurrentRun.Result)
+		row.Steps = definitionSteps(*testCase, row.Verifies)
+		for _, evidence := range testCase.Evidence {
+			eid, _ := qualityid.Evidence(a.in.SagaID, testCase.Identity.ID, evidence.ID)
+			if len(a.evidenceStale[eid]) > 0 && row.Definition != "conflicted" {
+				row.Definition = "stale_evidence"
+			}
 		}
 		row.Orphaned = len(row.Verifies) == 0
 		result.TestCases = append(result.TestCases, row)
 	}
 	return result
-}
-
-// runHistory says which history invalidated a run: a changed test definition
-// is a review-repo change; a changed source identity is a source-repo change.
-func runHistory(reasons []string) string {
-	for _, reason := range reasons {
-		if reason == "source comparison changed" {
-			return historySource
-		}
-	}
-	return historyReview
 }
 
 func kindsOf(values []quality.CoverageKind) []string {
@@ -519,4 +508,45 @@ func orUnknownRevision(value string) string {
 		return "unavailable (multiple story revision heads)"
 	}
 	return value
+}
+
+func definitionSteps(test quality.TestCase, links []VerifiesLink) []TestStepStatus {
+	rows := []TestStepStatus{}
+	if test.CurrentRevision == nil {
+		return rows
+	}
+	for _, step := range test.CurrentRevision.Steps {
+		revision := test.CurrentRevision.TestCase + ":revision:" + test.CurrentRevision.ID
+		row := TestStepStatus{Step: test.CurrentRevision.TestCase + ":step:" + step.ID, Revision: revision, ID: step.ID, Criteria: copyStrings(step.Criteria), Verifies: []VerifiesLink{}, Evidence: []string{}, Issues: []string{}}
+		for _, criterion := range step.Criteria {
+			found := false
+			for _, link := range links {
+				if link.Criterion != criterion {
+					continue
+				}
+				found = true
+				row.Verifies = append(row.Verifies, link)
+				if link.Currency != "current" {
+					row.Issues = append(row.Issues, "criterion mapping is "+link.Currency+": "+criterion)
+				}
+			}
+			if !found {
+				row.Issues = append(row.Issues, "missing case-level verifies relation: "+criterion)
+			}
+		}
+		for _, evidence := range test.Evidence {
+			if evidence.Role == quality.EvidenceExecutionArtifact || !contains(evidence.Steps, step.ID) {
+				continue
+			}
+			eid := test.CurrentRevision.TestCase + ":evidence:" + evidence.ID
+			if !contains(test.EvidenceHeads, eid) {
+				continue
+			}
+			row.Evidence = append(row.Evidence, eid)
+			row.Issues = append(row.Issues, evidence.StaleReasons...)
+		}
+		row.Issues = uniqueSorted(row.Issues)
+		rows = append(rows, row)
+	}
+	return rows
 }

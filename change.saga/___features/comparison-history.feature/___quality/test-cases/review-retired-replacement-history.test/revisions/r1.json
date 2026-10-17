@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-retired-replacement-history",
+  "parents": [],
+  "title": "Retire a replaced slide while retaining its replacement context",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use shop Saga with implementation deck and SQS slide explaining pay/charged, committed on main."
+  ],
+  "steps": [
+    {
+      "id": "replace",
+      "action": "On a branch supersede the SQS relation, remove SQS slide, add a Postgres slide explaining the same criterion, and commit with subject and body explaining the replacement.",
+      "expected_result": "The new slide replaces SQS; SQS is classified retired and removed, and both changes retain the commit reason.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records"
+      ]
+    }
+  ],
+  "expected_result": "The new slide replaces SQS; SQS is classified retired and removed, and both changes retain the commit reason.",
+  "created_at": "2026-10-16T23:21:32Z",
+  "request_id": "saga-definition-review-retired-replacement-history"
+}

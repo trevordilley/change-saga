@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-independent-history",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-whiteboard-independent-history:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "publish"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/whiteboard_documents_test.go",
+      "start": 22,
+      "end": 47,
+      "digest": "sha256:b8afbd09e2a9bdd8835a00e1eb388cfebb78b24e66679e528c6ce62bdd4e76e5"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-whiteboard-independent-history-evidence-1"
+}

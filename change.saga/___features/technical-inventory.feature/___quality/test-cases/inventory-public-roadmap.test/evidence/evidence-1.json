@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-public-roadmap",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-public-roadmap:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "intent"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/inventory_format2_test.go",
+      "start": 87,
+      "end": 96,
+      "digest": "sha256:85ca5d12e5cfcda03aeddef89cf61b1a878ec1aaca5a75e3006e40ea5c387cce"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-public-roadmap-evidence-1"
+}

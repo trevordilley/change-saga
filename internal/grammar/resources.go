@@ -235,7 +235,7 @@ var resources = []Resource{
 	{
 		Kind: "quality-policy", URN: "urn:change-saga:<saga>:quality-policy:<policy>", Storage: "___features/<feature>.feature/___quality/policies/<policy>.json",
 		Schema: schemaBase + "v5/quality-policy.schema.json", Versions: []int{5}, History: "immutable; one unsuperseded head per criterion/story revision",
-		Writers: []string{"quality policy set"}, Notes: "absent policy means positive is required",
+		Writers: []string{"quality policy set"}, Notes: "absent policy requires positive, negative, and edge for accepted criteria; a current policy may narrow the set with a rationale for omitted kinds",
 	},
 	{
 		Kind: "quality-evidence", URN: "urn:change-saga:<saga>:test-case:<test-case>:evidence:<evidence>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/evidence/<evidence>.json",
@@ -245,9 +245,9 @@ var resources = []Resource{
 	},
 	{
 		Kind: "test-run", URN: "urn:change-saga:<saga>:test-case:<test-case>:run:<run>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/runs/<run>.json",
-		Schema: schemaBase + "v5/test-run.schema.json", Versions: []int{5}, History: "append-only results with parent heads; multiple heads are a conflict",
+		Schema: schemaBase + "v5/test-run.schema.json", Versions: []int{5}, History: "deprecated immutable execution history; parent-head conflicts have no coverage/readiness effect",
 		Lifecycle: []string{"passed", "failed", "blocked", "skipped"}, Writers: []string{"quality run record"},
-		Notes: "current only for the current test revision, the current source comparison, and current evidence",
+		Notes: "legacy revision/source/evidence pins remain readable; results and recorded commands are inert history",
 	},
 }
 
@@ -283,7 +283,7 @@ var relations = []Relation{
 	{
 		Type: "verifies", Sources: []string{"claim", "verification", "test-case"}, Targets: []string{criterion}, Scopes: []string{"self"},
 		RequiredPins: []string{"to_revision", "from_revision when the source is a test case"}, Axes: []string{"quality"},
-		Meaning: "test intent; a test case needs a current passing run before quality readiness",
+		Meaning: "verification approach; current definition and requirement pins establish coverage, independently of execution",
 	},
 	{
 		Type: "supersedes", Sources: []string{"any resource"}, Targets: []string{"a resource of the same kind"}, Scopes: []string{"self"},
@@ -300,7 +300,7 @@ var relations = []Relation{
 var derivedEdges = []DerivedEdge{
 	{Edge: "contains", Source: "deck -> slide -> item", Target: "item", Rule: "exact parent ids in validated v4 records"},
 	{Edge: "owns_code", Source: "item", Target: "code reference", Rule: "valid 40-e record in the Item's embedded bundle whose reference is current in the comparison"},
-	{Edge: "has_quality_evidence", Source: "test-case revision or run", Target: "quality-evidence", Rule: "exact URN reference in validated v5 records"},
+	{Edge: "has_quality_evidence", Source: "test-case revision or step", Target: "quality-evidence", Rule: "exact URN reference in validated v5 records"},
 	{Edge: "matches_item_code", Source: "implementation_under_test evidence", Target: "item", Rule: "both reference the same changed atoms once resolved in the current comparison"},
 }
 
@@ -309,6 +309,6 @@ var axisRules = []AxisRule{
 	{Axis: "ux", Covered: "a current addresses relation from a deck, slide, or Item of a ux-role deck", Gate: "design_ready"},
 	{Axis: "ui", Covered: "no UI reference resource is recorded yet; only an explicit ui coverage exception resolves this axis", Gate: "design_ready"},
 	{Axis: "technical", Covered: "a current addresses relation from a report design target or a non-ux deck, slide, or Item", Gate: "design_ready"},
-	{Axis: "quality", Covered: "active test cases linked by current verifies relations whose current passing runs cover every required kind", Gate: "quality_ready"},
+	{Axis: "quality", Covered: "proposed or active test definitions linked by current verifies relations declaring every required kind; no run is required", Gate: "quality_ready"},
 	{Axis: "implementation", Covered: "a current addresses or explains path through an Item to a current code reference", Gate: "implementation_trace_ready"},
 }

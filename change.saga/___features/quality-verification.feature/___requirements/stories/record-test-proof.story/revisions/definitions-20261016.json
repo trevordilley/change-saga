@@ -1,0 +1,51 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "definitions-20261016",
+  "story": "urn:change-saga:change-saga:story:record-test-proof",
+  "parents": [
+    "urn:change-saga:change-saga:story:record-test-proof:revision:r4"
+  ],
+  "title": "Define verification and link its implementation",
+  "statement": "As a developer preparing a feature, I can define how its acceptance criteria are verified before code exists and enrich that same case with implementation evidence so intent and verification remain traceable as the feature develops.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "criterion-pin",
+      "statement": "A test case can verify an exact acceptance criterion revision, and the link is reported stale when that criterion changes until the relation is repinned."
+    },
+    {
+      "id": "evidence-provenance",
+      "statement": "Implementation evidence exposes its canonical identity, role, pinned test revision, exact code references, optional stable step IDs and supersession history; outdated pins remain visible without rewriting evidence."
+    },
+    {
+      "id": "run-provenance",
+      "statement": "The explicit quality-history query retains immutable legacy run identities, revisions, result literals, summaries, recorded command text, execution times, source identities, parent heads and evidence references as historical metadata only."
+    },
+    {
+      "id": "guarded-run",
+      "statement": "For compatibility, the deprecated run writer refuses a new record unless every current run head is named, without adding a run on refusal."
+    },
+    {
+      "id": "existing-run-inputs",
+      "statement": "For compatibility, the deprecated run writer refuses missing test revisions or evidence references without adding a run."
+    },
+    {
+      "id": "planned-definition",
+      "statement": "A Roadmap feature can define a case using requirement links, preconditions, ordered steps and expected outcomes without code evidence; that same case and reader are reused after implementation."
+    },
+    {
+      "id": "step-traceability",
+      "statement": "An action or assertion can name canonical criteria and navigate canonical implementation evidence pinned to its stable step ID; manual and setup steps require no code link."
+    },
+    {
+      "id": "immutable-enrichment",
+      "statement": "Adding implementation evidence preserves the existing case identity and definition; revisions retain history, removed step IDs cannot be reused, and stale or conflicting pins are never silently advanced."
+    }
+  ],
+  "created_at": "2026-10-16T22:57:59.184484Z",
+  "request_id": "definition-model-record-test-proof"
+}

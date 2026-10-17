@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:review-merge-base",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-merge-base:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "mode"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/gitdiff/opening.go",
+      "start": 24,
+      "end": 29,
+      "digest": "sha256:d764f2edd00819630d2db07c30ede780bd8b955b3f97893603c7e9020841bf4a"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-merge-base-evidence-3"
+}

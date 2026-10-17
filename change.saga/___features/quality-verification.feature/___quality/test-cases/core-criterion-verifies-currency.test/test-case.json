@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "core-criterion-verifies-currency",
+  "created_at": "2026-10-16T23:19:30Z",
+  "request_id": "saga-definition-core-criterion-verifies-currency"
+}

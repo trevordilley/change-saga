@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "path-builders",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "delivered"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 418,
+      "end": 444,
+      "digest": "sha256:c1e863240305ff5d07baa745e0a4f8a4518cfee5919b8cb2b112b10852f3b5d2"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 470,
+      "end": 492,
+      "digest": "sha256:1b83f51c3bf9742d236d3d47cb6e5b69ae18c5345b98556321ba7290a15b4506"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-intent-delivery-path-path-builders"
+}

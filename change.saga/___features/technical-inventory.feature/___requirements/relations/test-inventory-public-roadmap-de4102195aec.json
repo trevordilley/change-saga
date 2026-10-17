@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-public-roadmap-de4102195aec",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-public-roadmap",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+  "scope": "self",
+  "rationale": "Steps new define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-public-roadmap:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-10-16T23:10:44.216821Z",
+  "request_id": "test-inventory-public-roadmap-de4102195aec"
+}

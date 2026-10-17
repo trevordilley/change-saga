@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-implementation-history-90532362c41f",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-implementation-history",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+  "scope": "self",
+  "rationale": "Steps implement define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-implementation-history:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-10-16T23:20:37.401005Z",
+  "request_id": "test-inventory-implementation-history-90532362c41f"
+}

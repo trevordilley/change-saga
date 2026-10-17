@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-annotation-anchor",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-annotation-anchor:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "navigate"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 312,
+      "end": 317,
+      "digest": "sha256:4d736428647f9abecc8d453b58573dc518f631f8a68af8de8a09004104a4378f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-annotation-anchor-evidence-2"
+}

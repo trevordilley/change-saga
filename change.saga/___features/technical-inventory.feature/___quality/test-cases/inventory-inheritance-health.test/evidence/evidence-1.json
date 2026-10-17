@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-inheritance-health",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-inheritance-health:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "selected-drift"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/inventoryview/inherited_test.go",
+      "start": 66,
+      "end": 76,
+      "digest": "sha256:32ab65415e3c3d76dd9bef708ee1b8ad6c62aef6f3cd592df65ecb8ec1471e18"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-inheritance-health-evidence-1"
+}

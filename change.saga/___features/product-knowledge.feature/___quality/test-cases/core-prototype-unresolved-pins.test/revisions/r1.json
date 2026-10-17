@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-prototype-unresolved-pins",
+  "parents": [],
+  "title": "Resolve an annotation authored before its endpoints",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "A fresh Saga has neither the referenced prototype nor story revision."
+  ],
+  "steps": [
+    {
+      "id": "check-pinned-annotation",
+      "action": "Author an element annotation pinned to prototype r1 and story s1; load/compose it, then create those exact endpoints and compose again.",
+      "expected_result": "The unresolved annotation remains loadable with two gaps; resolution makes it current, linked and covered with bidirectional annotation identity.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:pinned-annotation",
+        "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:visible-currency"
+      ]
+    },
+    {
+      "id": "check-annotation-pin-fields",
+      "action": "Read the annotation record and compare its prototype revision, story revision and element selector with the authored values.",
+      "expected_result": "All explicit pins and selector values are retained exactly.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:pinned-annotation",
+        "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:visible-currency"
+      ]
+    }
+  ],
+  "expected_result": "Resolve an annotation authored before its endpoints.",
+  "created_at": "2026-10-16T23:18:56Z",
+  "request_id": "saga-definition-core-prototype-unresolved-pins"
+}

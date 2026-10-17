@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent",
+  "parents": [],
+  "title": "Reject publication based on an outdated board parent",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Disposable data-model board has r1 followed by r2; zeta remains r1."
+  ],
+  "steps": [
+    {
+      "id": "reject",
+      "action": "Attempt data-model r3 naming r1; attempt zeta r3 naming sibling-only r2.",
+      "expected_result": "Both publications fail rather than replace current history.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:parent"
+      ]
+    }
+  ],
+  "expected_result": "Both publications fail rather than replace current history.",
+  "created_at": "2026-10-16T23:21:12Z",
+  "request_id": "saga-definition-inventory-whiteboard-stale-parent"
+}

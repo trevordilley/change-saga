@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-independent-preferences-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-feature-grouping",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-feature-grouping:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-independent-preferences"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/feature-organization.spec.ts",
+      "start": 16,
+      "end": 28,
+      "digest": "sha256:89007f93e4b56490595855e8382a96d3be59fca3504bacd593a8d0174562c84d"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-feature-grouping-check-independent-preferences-assertions"
+}

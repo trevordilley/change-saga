@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "public"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query_inventory_coverage.go",
+      "start": 149,
+      "end": 155,
+      "digest": "sha256:760187dc09ceba8e5604d4940eeced2b5b196d1ef7115267a474e8742dbc093b"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-bounded-coverage-evidence-2"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-criterion-axis-reasons-70e27fe2efc1",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons",
+  "to": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:criterion-axis-reasons",
+  "scope": "self",
+  "rationale": "Steps project, stale define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:23:08.151768Z",
+  "request_id": "test-contracts-criterion-axis-reasons-70e27fe2efc1"
+}

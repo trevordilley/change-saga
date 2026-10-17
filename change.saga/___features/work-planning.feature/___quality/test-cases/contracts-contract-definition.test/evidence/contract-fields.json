@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "contract-fields",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-contract-definition",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-contract-definition:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "create"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/living_plan.go",
+      "start": 267,
+      "end": 288,
+      "digest": "sha256:ab834c8dcef71b7ce615e26cfa5964c9c67af6597ba60524dc9ffb8e3b7522b2"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/living_plan.go",
+      "start": 294,
+      "end": 301,
+      "digest": "sha256:d17ce4f43660dfa47f345d1c67ba3104c474f2e4c1f8340c8e3985505c50645f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-contract-definition-contract-fields"
+}

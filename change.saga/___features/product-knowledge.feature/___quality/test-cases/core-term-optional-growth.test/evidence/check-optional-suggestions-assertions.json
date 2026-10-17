@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-optional-suggestions-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-term-optional-growth",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-term-optional-growth:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-optional-suggestions"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/terms_test.go",
+      "start": 184,
+      "end": 213,
+      "digest": "sha256:6964e05e4ffc3dae93caa4cd172d854bd2da27385c62c06dd7c64baf6c6093ca"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/terms_test.go",
+      "start": 217,
+      "end": 221,
+      "digest": "sha256:f391f97267998f115e12e82969af00aec96b3c82529a301dd8ad18084111e056"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-term-optional-growth-check-optional-suggestions-assertions"
+}

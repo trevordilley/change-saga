@@ -125,19 +125,12 @@ func assertGrammarShape(t *testing.T, invocation grammar.Invocation) {
 	}
 }
 
-func TestFailingRunAsksForJudgmentAndStaleRunNeedsExternalAccess(t *testing.T) {
+func TestLegacyRunsNeverPromptQualityActions(t *testing.T) {
 	actions := byID(Derive(statusFixture(), saga))
-	failing := actions["failed:quality:"+criterion("failing")]
-	if failing.Category != CategoryFailed || failing.Area != AreaHealth || failing.Question == nil || failing.Question.Needs != NeedProductJudgment || !strings.Contains(failing.Question.Text, "product or the test") {
-		t.Fatalf("a failing run asks whether the product or the test is wrong: %#v", failing)
-	}
-	run := actions["stale:urn:change-saga:checkout:test-case:revised:run:ci-1"]
-	if run.Question == nil || run.Question.Needs != NeedExternalAccess {
-		t.Fatalf("re-running a test needs external access: %#v", run)
-	}
-	shape := run.Question.Options[0].Commands[0]
-	if shape.Command != "quality run record" || shape.Status != grammar.StatusImplemented || !hasArgument(shape, "test-revision", "urn:change-saga:checkout:test-case:revised:revision:r2") {
-		t.Fatalf("the re-run shape pins the current test revision: %#v", shape)
+	for _, id := range []string{"failed:quality:" + criterion("failing"), "stale:urn:change-saga:checkout:test-case:revised:run:ci-1"} {
+		if _, ok := actions[id]; ok {
+			t.Fatalf("legacy run emitted action %s", id)
+		}
 	}
 }
 

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-decision-current",
+  "parents": [],
+  "title": "Keep decisions current when their slide and referenced code are unchanged",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use queue/table review fixture with separate exact code references."
+  ],
+  "steps": [
+    {
+      "id": "current",
+      "action": "Approve queue and request changes on table, then inspect the report before editing their inputs.",
+      "expected_result": "queue approval is current.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:review-decision-freshness:criterion:current"
+      ]
+    },
+    {
+      "id": "isolation",
+      "action": "Commit a change only to queue.go and inspect table.",
+      "expected_result": "table retains current currency and its changes-requested state.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:review-decision-freshness:criterion:current"
+      ]
+    }
+  ],
+  "expected_result": "table retains current currency and its changes-requested state.",
+  "created_at": "2026-10-16T23:21:42Z",
+  "request_id": "saga-definition-review-decision-current"
+}

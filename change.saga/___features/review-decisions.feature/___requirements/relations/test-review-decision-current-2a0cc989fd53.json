@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-review-decision-current-2a0cc989fd53",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:review-decision-current",
+  "to": "urn:change-saga:change-saga:story:review-decision-freshness:criterion:current",
+  "scope": "self",
+  "rationale": "Steps current, isolation define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:review-decision-current:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:review-decision-freshness:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:43.950547Z",
+  "request_id": "test-review-decision-current-2a0cc989fd53"
+}

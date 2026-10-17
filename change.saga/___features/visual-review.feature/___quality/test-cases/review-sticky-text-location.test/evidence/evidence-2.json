@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:review-sticky-text-location",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-sticky-text-location:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "place",
+    "location"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/appjs.go",
+      "start": 3030,
+      "end": 3035,
+      "digest": "sha256:64b7f61a041d26947723b02015a4d1ba64c2450d1c1b4003b8276a7c2aa522ba"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/appjs.go",
+      "start": 3045,
+      "end": 3045,
+      "digest": "sha256:e4ecbdcc59b6cffbfd3b6b2461be5be19fa36e35e7c9aae87d4a2c11534bc586"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-sticky-text-location-evidence-2"
+}

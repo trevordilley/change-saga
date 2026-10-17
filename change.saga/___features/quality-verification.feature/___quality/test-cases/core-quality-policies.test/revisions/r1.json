@@ -1,0 +1,52 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-policies",
+  "parents": [],
+  "title": "Apply criterion kinds and automation policy without executions",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "A disposable fixture has accepted criteria, positive/negative/edge case definitions and manual/automated variants."
+  ],
+  "steps": [
+    {
+      "id": "check-default-policy",
+      "action": "Inspect the fixture accepted criterion with positive coverage and no explicit policy.",
+      "expected_result": "The positive kind is covered under the default policy.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:default-policy"
+      ]
+    },
+    {
+      "id": "check-required-kinds",
+      "action": "Author and supersede a current exact-criterion policy to require positive, negative and edge; separately inspect the policy fixture with positive absent and negative/edge present.",
+      "expected_result": "The stored current policy retains all three kinds; the report marks positive missing and negative/edge covered independently.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:required-kinds"
+      ]
+    },
+    {
+      "id": "check-default-automation-matrix",
+      "action": "In separate no-policy fixtures, supply equivalent manual, hybrid and automated positive cases.",
+      "expected_result": "All three automation modes are permitted by default.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:default-policy"
+      ]
+    },
+    {
+      "id": "check-required-kind-subsets",
+      "action": "In separate fixtures, create each nonempty subset of positive, negative and edge kinds, linked to the exact criterion revision; supply all required definitions.",
+      "expected_result": "Every chosen subset is retained and every required kind is reported covered independently.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:required-kinds"
+      ]
+    }
+  ],
+  "expected_result": "Apply criterion kinds and automation policy without executions.",
+  "created_at": "2026-10-16T23:17:40Z",
+  "request_id": "saga-definition-core-quality-policies"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-approach",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-technical-approach:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "support"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/technical-design.spec.ts",
+      "start": 34,
+      "end": 41,
+      "digest": "sha256:d932aa4c0f5f1dc63fec788fda5c2297e7f72e731f760e3a91aa3e812a94de0d"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-technical-approach-evidence-2"
+}

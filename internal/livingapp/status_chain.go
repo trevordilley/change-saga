@@ -44,7 +44,7 @@ func (a *assembler) chain() Chain {
 	}
 	retiredTests := map[string]bool{}
 	for urn, testCase := range a.testCases {
-		if testCase.CurrentLifecycle != nil && testCase.CurrentLifecycle.State == quality.StateRetired {
+		if testCase.CurrentLifecycle != nil && (testCase.CurrentLifecycle.State == quality.StateRetired || testCase.CurrentLifecycle.State == quality.StateDeprecated) {
 			retiredTests[urn] = true
 		}
 	}
@@ -77,6 +77,19 @@ func (a *assembler) chain() Chain {
 		case requirements.RelationVerifies:
 			if !strings.Contains(link.To, ":criterion:") || retiredTests[link.From] {
 				continue
+			}
+			if test := a.testCases[link.From]; test != nil {
+				if test.CurrentRevision == nil || test.LifecycleConflict() || len(test.CurrentRevision.Steps) == 0 {
+					continue
+				}
+				explicit, mapped := false, false
+				for _, step := range test.CurrentRevision.Steps {
+					explicit = explicit || len(step.Criteria) > 0
+					mapped = mapped || contains(step.Criteria, link.To)
+				}
+				if explicit && !mapped {
+					continue
+				}
 			}
 			result.CriterionTests[link.To] = append(result.CriterionTests[link.To], link.From)
 			result.TargetStories[link.From] = append(result.TargetStories[link.From], story)

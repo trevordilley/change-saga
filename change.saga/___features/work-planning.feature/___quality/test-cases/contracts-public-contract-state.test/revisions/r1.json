@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-public-contract-state",
+  "parents": [],
+  "title": "Append and query contract states through the public plan API",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Use isolated handoff contracts between provider and consumer; record their initial event heads through public queries. Public lifecycle authoring must be discoverable in plan help."
+  ],
+  "steps": [
+    {
+      "id": "discover",
+      "action": "Inspect plan help/spec for the supported contract-state operation.",
+      "expected_result": "An operation accepts contract identity, new state, event identity and every current parent head.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:public-contract-state"
+      ]
+    },
+    {
+      "id": "states",
+      "action": "Using separate valid lifecycle fixtures, append proposed, accepted, fulfilled, violated and waived through that public operation; query work-events --kind contract after each mutation.",
+      "expected_result": "Each state is returned as an append-only event with its submitted parent heads; prior events remain visible.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:public-contract-state"
+      ]
+    }
+  ],
+  "expected_result": "All five contract states are publicly authorable and queryable without direct metadata edits.",
+  "created_at": "2026-10-16T23:22:47Z",
+  "request_id": "saga-definition-contracts-public-contract-state"
+}

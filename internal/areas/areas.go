@@ -262,6 +262,9 @@ type Inputs struct {
 	CriterionTests  map[string][]string
 	DesignExcluded  map[string]bool
 	QualityExcluded map[string]bool
+	// QualityGaps carries the canonical kind/policy/reference assessment for
+	// accepted criteria. A verifies link alone cannot resolve these gaps.
+	QualityGaps map[string][]string
 	// Examined are the existing records health checked; Problems the ones
 	// that went stale or broke.
 	Examined []Record
@@ -447,6 +450,10 @@ func (e evaluator) quality(stories []Story) Area {
 	for _, story := range stories {
 		for _, criterion := range story.Criteria {
 			entry := Entry{Resource: criterion.URN, Title: criterion.Statement, Feature: story.Feature, Count: 1}
+			if reasons := e.in.QualityGaps[criterion.URN]; len(reasons) > 0 {
+				area.record(entry, nil, strings.Join(uniqueSorted(reasons), "; "))
+				continue
+			}
 			via := append([]string{}, e.in.CriterionTests[criterion.URN]...)
 			if len(via) == 0 && e.in.QualityExcluded[criterion.URN] {
 				via = []string{"coverage exception"}

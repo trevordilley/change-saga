@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "stale-not-current",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "stale-filter"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/traceability_test.go",
+      "start": 70,
+      "end": 72,
+      "digest": "sha256:cd87433605491a7e51e8b388433321849ccabed2dca72af9cfe0cb56adab753f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reverse-stale-conflict-report-stale-not-current"
+}

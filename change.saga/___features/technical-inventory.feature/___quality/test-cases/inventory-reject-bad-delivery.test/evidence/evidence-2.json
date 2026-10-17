@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "stale-digest"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/inventory_lifecycle_test.go",
+      "start": 220,
+      "end": 237,
+      "digest": "sha256:c983068c1130125cb477517e9418f042cfee67e4d1914bc60e0eb6b668a87250"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-reject-bad-delivery-evidence-2"
+}

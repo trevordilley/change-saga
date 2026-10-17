@@ -374,7 +374,7 @@ displayed from requirement outward for readability.
 | `addresses` | report design target, Deck, Slide, or Item | story or criterion | source digest and target story revision | Counts current requirement-to-design coverage. `descendants` may traverse Deck/Slide containment. |
 | `implements` | work item | report design target or criterion | work-item revision and design digest/story revision | Planning path only; progress never proves delivery. |
 | `explains` | Deck, Slide, or Item | story or criterion | target story revision; v5 visual digest recommended | Existing review-explanation and reverse-code path. It does not count as design coverage. |
-| `verifies` | claim, verification, or test case | criterion | criterion revision; test case also pins its revision | Claim/test intent. A test case needs a current passing run before quality readiness. |
+| `verifies` | claim, verification, or test case | criterion | criterion revision; test case also pins its revision | Verification intent with current definition/mapping pins; execution results are irrelevant. |
 | `supersedes` | resource | same resource kind | pins as applicable | Explicit replacement; no automatic lifecycle mutation. Existing acyclic rule remains. |
 | `conflicts_with` | story or criterion | story or criterion | pins as applicable | Symmetric diagnostic; no inferred winner. |
 
@@ -384,7 +384,7 @@ Derived edges are not persisted relation records:
 | --- | --- | --- |
 | `contains` | Deck -> Slide -> Item | Exact parent IDs in validated v4 records. |
 | `owns_diff` | Item -> diff URI | Valid current `40-e` record in the Item's embedded bundle. |
-| `has_quality_evidence` | test case revision/run -> quality evidence | Exact URN reference in validated v5 records. |
+| `has_quality_evidence` | test case revision/step -> quality evidence | Exact URN reference in validated v5 records. |
 | `matches_item_diff` | implementation-under-test evidence -> Item | Exact canonical diff URI equality in the same current source comparison. |
 
 ### Design coverage states
@@ -472,7 +472,7 @@ Many-to-many behavior is explicit:
 - multiple valid paths are corroborating mappings, not ambiguity.
 
 `ambiguous` is reserved for facts the engine cannot reduce deterministically:
-multiple story/test revision heads, multiple current run heads, contradictory
+multiple story/test revision heads, contradictory
 active exceptions, or a source selector that resolves to zero/multiple visual
 elements. Ambiguity blocks readiness and returns every competing head or
 resolution candidate. It is not resolved by timestamps.
@@ -538,7 +538,8 @@ Example test case revision:
     {
       "id": "inspect-reason",
       "action": "Inspect the response reason.",
-      "expected_result": "The documented refund-window-expired reason is returned."
+      "expected_result": "The documented refund-window-expired reason is returned.",
+      "criteria": ["urn:change-saga:checkout-refund:story:refund-window:criterion:at-or-after-deadline"]
     }
   ],
   "expected_result": "No refund is created and the rejection is auditable.",
@@ -570,7 +571,7 @@ A test case links to one or more criteria through current `verifies` relations:
 }
 ```
 
-### Evidence and runs
+### Implementation evidence and retained run history
 
 Quality evidence is immutable and typed:
 
@@ -632,25 +633,55 @@ visible instead of arbitrarily ordered:
 }
 ```
 
-Run results are `passed`, `failed`, `blocked`, or `skipped`. A current quality
-result requires one run head, the current test revision, the current source
-comparison identity, and resolved current evidence. A past pass becomes stale
-when the test definition or product identity changes. A failed, blocked,
-skipped, multi-head, or stale run does not satisfy quality readiness.
+Quality documents verification definitions, not test execution. Historical runs
+(`passed`, `failed`, `blocked`, `skipped`) and execution artifacts remain immutable
+and loadable through the deprecated compatibility APIs. They have no effect on
+coverage, readiness, delivery evidence, health, or the reader. Never execute their
+recorded command text. See [the normative compatibility contract](../SPEC.md#v5-identities-and-quality-records).
+
+### Planned cases and step traceability
+
+Roadmap and Features reuse the same feature, test identity, revisions, and reader.
+A planned feature can define a proposed case with requirement links, preconditions,
+ordered actions, and expected outcomes before code exists. Missing implementation
+evidence is expected. Feature planning metadata owns delivery intent; definition
+stage is derived (`planned`, `implementation_linked`, `stale_evidence`, or
+`conflicted`), never a second independently authored lifecycle.
+
+A step's optional `criteria` array contains canonical criterion URNs. Its
+case-level `verifies` relations supply the test/story revision pins; unmapped
+criteria are reported, not silently related. Setup/manual steps may omit criteria.
+When any step has explicit criteria, each linked criterion needs a mapped step;
+legacy definitions without step criteria retain case-level mappings.
+
+An evidence record's optional `steps` array names stable IDs in `test_revision`.
+The reader and query invert those references so each step can open canonical test
+code and optional implementation-under-test evidence. Empty/omitted `steps` means
+case-level evidence. Append evidence after the definition, avoiding circular pins.
+The same case gains evidence later without rewriting its definition. Revisions,
+supersession, stable step IDs, and stale/conflict handling retain their existing
+immutable rules. Old definitions need no migration; older strict readers need an
+upgrade before reading these optional fields.
 
 ### Quality coverage and comparison with design
 
-Default full quality coverage for an accepted criterion requires:
+Default verification coverage for an accepted criterion requires:
 
-1. at least one active, current test case linked directly to the criterion;
-2. at least one linked test whose declared kinds include `positive`;
-3. every additional kind required by an explicit criterion quality policy;
-4. a unique current `passed` run for each required kind; and
-5. resolved evidence on the current source comparison.
+1. a proposed or active current definition with ordered steps and a direct,
+   current `verifies` relation to the criterion;
+2. linked definitions covering `positive`, `negative`, and `edge`;
+3. or the explicit kind set of a current criterion policy with a rationale for
+   any omitted kinds; and
+4. current mapping pins and, when present, current implementation references.
 
-The initial default requires `positive`; `negative` and `edge` remain visible
-gaps but block only when a per-criterion policy requires them. Policies are
-immutable records under `___quality/policies/`, avoiding a shared manifest map:
+No run or code evidence is required to define planned verification.
+
+The default requires all three kinds. Status and `check --covers quality` name
+missing required kinds even when a positive case is already linked. A current,
+revision-pinned policy can narrow the set when its rationale explains why omitted
+kinds do not apply. Prefer focused cases; do not tag a happy-path scenario with all
+three kinds merely to close gaps. Policies are immutable records under
+`___quality/policies/`, avoiding a shared manifest map:
 
 ```json
 {
@@ -668,17 +699,20 @@ immutable records under `___quality/policies/`, avoiding a shared manifest map:
 ```
 
 There is one unsuperseded policy head per criterion/story revision. New-story
-authoring should prompt for required kinds. Migration projects `positive` when
-no policy exists and does not rewrite historical v3 story revisions.
+authoring must consider valid behavior, rejection/recovery, and boundaries for
+each criterion. Existing explicit policy sets retain their meaning; without a
+policy, older Sagas now show all three obligations. No historical story or test
+revision is rewritten. Planned definitions need no code or execution results.
 
-The quality query returns `covered`, `missing_kind`, `not_run`, `failed`,
-`blocked`, `stale`, `excluded`, `invalid`, or `conflicted` for each required
+The status quality projection returns `covered`, `missing_kind`, `missing_mapping`,
+`stale`, `inactive`, `excluded`, `invalid`, `automation_not_allowed`, or `conflicted` for each required
 kind. It also reports observed positive/negative/edge tests even when not
 required.
 
 ```text
-change-saga query quality-coverage --saga SAGA --include tests,runs,evidence,paths
-change-saga query coverage-comparison --saga SAGA --criterion CRITERION_URN
+change-saga query quality --saga SAGA --feature FEATURE --limit 20
+change-saga query quality-history --saga SAGA --test TEST_URN
+change-saga status --json SAGA
 ```
 
 `coverage-comparison` is a matrix, not a score:
@@ -715,8 +749,8 @@ criterion <- verifies - test case@revision
   -> exact URI match -> design Item -> implementation diff
 ```
 
-A manual case may have execution artifacts without a test-code diff. That can
-satisfy an allowed manual quality policy, but the query honestly reports that
+A manual or planned case needs no execution artifact or test-code diff. It can
+define an allowed verification approach, while the query honestly reports that
 no Requirement -> Quality -> test-code Diff path exists.
 
 ### Quality CLI
@@ -785,8 +819,8 @@ or percentage. The v2 response returns every axis and blocker:
 | `product_ready` | Every retained prototype is linked to a current story/criterion; every accepted criterion has required prototype coverage or a current exception. | That prototype behavior is desirable or feasible. |
 | `design_ready` | Every accepted criterion has current UX, UI, and technical coverage or a current exception on each applicable axis; no invalid/conflicted links. | Design quality or correctness. |
 | `implementation_trace_ready` | Every accepted criterion has a valid current path through its required artifacts to an exact Diff; global diff coverage is separately complete. | That the selected diff implements the criterion correctly. |
-| `quality_ready` | Quality is adopted; every accepted criterion has required current test kinds or a current quality exception; required tests have one current passing run with resolved evidence. | Test sufficiency or absence of undiscovered defects. |
-| `ready_for_review` | All preceding configured gates, immutable current evidence, no graph conflicts, and no failed current required run. | Reviewer approval. |
+| `quality_ready` | Quality is adopted; every accepted criterion has required current test kinds or a current quality exception; definitions have current requirement mappings; missing planned code is expected. | Test sufficiency or absence of undiscovered defects. |
+| `ready_for_review` | All preceding configured gates, immutable current evidence, no definition/mapping conflicts; execution results are irrelevant. | Reviewer approval. |
 | `review_complete` | `ready_for_review` plus required current report/slide/test-case review decisions under review policy. | Merge authorization outside Change Saga. |
 
 For compatibility, a v2/v3 Saga or a v5 Saga whose quality capability is not
@@ -832,11 +866,15 @@ Quality view:
 - test cases are grouped under linked criteria, with orphaned tests in an
   explicit work queue;
 - ordered steps show action and expected result side by side;
-- positive/negative/edge labels, lifecycle, current run status, source identity,
+- criterion references in steps and the case's Verifies section open the shared
+  slideout, preserving the case's location and offering the full requirement
+  page; step and case evidence links open the same canonical evidence in the
+  linked-code slideout, including stale warnings and links back to its steps;
+- positive/negative/edge labels, lifecycle, planned/implementation-linked stage,
   and evidence are visible without opening raw JSON;
 - implementation-under-test evidence deep-links through the matching Item to
   the existing code drawer;
-- failed, stale, skipped, conflicting, and intentionally excluded states use
+- missing mappings, stale, conflicting, and intentionally excluded states use
   text and icons in addition to color; and
 - test-case approval is added as a review target kind, while slide approval
   remains slide-scoped and report approvals remain unchanged.
@@ -910,11 +948,10 @@ published JSON Schemas where expressible:
 11. Every step ID is unique in a revision, every ordered step appears exactly
     once, action and expected result are nonblank, and removed IDs are not
     reused for a different meaning.
-12. An active test case has at least one step, at least one `coverage_kind`, and
+12. A proposed or active definition has at least one step, at least one `coverage_kind`, and
     at least one active direct `verifies` relation before it can satisfy quality.
-13. A current passing run pins the current test revision and current source
-    identity and resolves all referenced evidence. `progress=done`, a claim, or
-    a past pass cannot substitute for it.
+13. Quality coverage is independent of every run result. Current criterion pins
+    and optional step/evidence references document the verification approach.
 14. `implementation_under_test` selectors must exactly match current Item-owned
     selectors to produce a Quality -> Diff path. Near/overlapping ranges are
     diagnostics, not matches.
@@ -942,7 +979,7 @@ Risks and mitigations:
 | A visual edit silently leaves an old relation current. | Require canonical visual source digests for v5 `addresses`; exclude overlay bytes from digest. |
 | Test pass is reused after code or test changes. | Pin both test revision and full source comparison identity. |
 | Quality duplicates Item ownership of implementation code. | `implementation_under_test` requires exact equality with Item-owned evidence and is a reference, not another design owner. |
-| Large decks/tests make the report eager and slow. | Requirements/Quality SSR returns bounded summaries; deck, steps, runs, evidence, and paths load by scoped endpoints and snapshot cursors. |
+| Large decks/tests make the report eager and slow. | Requirements/Quality SSR returns bounded summaries; deck, steps, evidence, and paths load by scoped endpoints and snapshot cursors; legacy runs stay in explicit history queries. |
 | Central loader/CLI files become merge hotspots. | Implement leaf packages first and serialize only the small registry/dispatcher integration commits. |
 
 ## Implementation phases
@@ -1002,7 +1039,7 @@ unmerged parallel branch to compile.
   cases; compute required/observed kinds and Requirement -> Quality paths.
 - Integrate test-code evidence with global diff coverage and exact-match
   implementation evidence with Item ownership.
-- Exit: quality coverage handles manual/automated cases, stale runs, failures,
+- Exit: quality coverage handles planned/manual/automated cases, stale mappings,
   multi-head conflicts, exceptions, and orphaned tests.
 
 ### Phase 6: readiness composition
@@ -1055,7 +1092,7 @@ internal/server        UI/HTTP projection only; no domain rules
    reverse lookup by diff/commit.
 7. **Quality:** ordered steps, coverage-kind policies, manual evidence,
    exact test diffs, implementation exact-match, stale source identity, failed
-   and concurrent runs, superseded evidence, orphan tests, and exceptions.
+   and retained legacy runs, superseded evidence, orphan tests, and exceptions.
 8. **Readiness truth tables:** every gate independently varied; progress and
    approval never substitute for evidence; existing legacy behavior retained.
 9. **Migration:** canonical v2, v3 living, v3 hybrid, standalone v4, v5 empty,
@@ -1091,9 +1128,9 @@ internal/server        UI/HTTP projection only; no domain rules
 7. **Quality definition:** test cases with ordered steps and expected results
    are added and linked directly to criteria. The comparison view exposes
    positive/negative/edge gaps beside design gaps.
-8. **Verification:** test-code and implementation-under-test evidence are
-   recorded, then a run pins the current test revision and source identity.
-   Passing results satisfy configured quality kinds; failures remain visible.
+8. **Implementation links:** the same planned case gains test-code and optional
+   implementation-under-test evidence pinned to its revision and stable steps.
+   CI outcomes never mark the Saga passed or failed.
 9. **Review ready:** requirements, design, implementation traces, global diff
    coverage, and quality gates are all current. The system says why each gate
    passes but does not claim the change is correct.
@@ -1110,8 +1147,8 @@ internal/server        UI/HTTP projection only; no domain rules
 | Visual design relation | Expand `addresses`; keep `explains` unchanged. | Reuses typed relations and prevents existing review links from silently becoming design claims. |
 | Container traversal | Require explicit `scope: descendants`. | Makes Deck/Slide-to-Item inference reviewable and deterministic. |
 | Story-level design links | Count as `covered_broad`, but report precision separately. | Preserves current broad semantics without pretending to identify a particular criterion element. |
-| Required test kinds | Default `positive`; declare additional negative/edge kinds per criterion policy. | Requiring all three universally is wasteful; inferring them from prose is unreliable. |
-| Passing result selection | Parent-head graph, not latest timestamp. | Concurrent CI/manual runs remain visible and reconcilable. |
+| Required test kinds | Default `positive`, `negative`, and `edge`; explain inapplicable kinds in a current criterion policy. | Happy-path-only coverage leaves risks unexamined; explicit exceptions avoid inventing irrelevant scenarios. |
+| Legacy run retention | Immutable parent-head graph, not latest timestamp. | History remains queryable but never affects Quality or readiness. |
 | Implementation-under-test mapping | Require exact equality with Item-owned diff URIs. | Prevents near-range heuristics from claiming a quality/design connection. |
 | Exclusions | Allow cited design/quality exceptions; never delivery exceptions. | Keeps intentional non-applicability explicit without erasing accepted obligations. |
 | Query compatibility | Preserve API v1; add API v2 schemas. | Existing agents remain stable while new clients receive typed paths and states. |

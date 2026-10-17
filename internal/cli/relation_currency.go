@@ -24,6 +24,23 @@ type relationHeads struct {
 }
 
 func loadRelationHeads(root string) (relationHeads, error) {
+	return loadRelationHeadsWithSaga(root, nil)
+}
+
+func canReuseVerifyRelationSaga(input *requirements.AddRelationInput, report *saga.Saga) bool {
+	if report == nil || input.Type != requirements.RelationVerifies {
+		return false
+	}
+	from, fromErr := qualityid.Parse(input.From)
+	to, toErr := livingid.Parse(input.To)
+	return fromErr == nil && toErr == nil && from.Kind == qualityid.KindTestCase &&
+		to.Kind == livingid.KindCriterion && from.SagaID == report.Manifest.ID && to.SagaID == report.Manifest.ID
+}
+
+// loadRelationHeadsWithSaga accepts a full Saga already loaded by this command's
+// embedded-link guard. It still loads and validates the owning domains and
+// indexes design content, preserving their errors and exact revision checks.
+func loadRelationHeadsWithSaga(root string, report *saga.Saga) (relationHeads, error) {
 	document, err := requirements.Load(root, "")
 	if err != nil {
 		return relationHeads{}, err
@@ -50,9 +67,11 @@ func loadRelationHeads(root string) (relationHeads, error) {
 			inputs.ConflictedRevisions[urn] = item.Heads
 		}
 	}
-	report, _, err := saga.Load(root)
-	if err != nil {
-		return relationHeads{}, fmt.Errorf("load saga: %w", err)
+	if report == nil {
+		report, _, err = saga.Load(root)
+		if err != nil {
+			return relationHeads{}, fmt.Errorf("load saga: %w", err)
+		}
 	}
 	digests, err := saga.CurrentDesignContentDigests(report)
 	if err != nil {

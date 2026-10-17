@@ -217,6 +217,10 @@ covered lines are not proof of a correct explanation.
   `change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `traceability`: current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers.
   `change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
+- `quality`: verification definitions, criterion-to-step mappings, and implementation evidence; no run results.
+  `change-saga query quality --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]`
+- `quality-history`: immutable case history including deprecated legacy_runs; inert metadata only.
+  `change-saga query quality-history --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]`
 - `readiness`: independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness.
   `change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `audit`: a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts.

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-added-records",
+  "parents": [],
+  "title": "Classify records introduced after the comparison base",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use the shop Saga fixture on feature; main points at the commit before that Saga existed."
+  ],
+  "steps": [
+    {
+      "id": "added",
+      "action": "Read status comparing feature against main.",
+      "expected_result": "The Saga base is absent, Changed is nonempty, and every entry is added.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records"
+      ]
+    }
+  ],
+  "expected_result": "The Saga base is absent, Changed is nonempty, and every entry is added.",
+  "created_at": "2026-10-16T23:21:29Z",
+  "request_id": "saga-definition-review-added-records"
+}

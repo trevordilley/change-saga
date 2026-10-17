@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-pinned-annotation-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-prototype-unresolved-pins",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-prototype-unresolved-pins:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-pinned-annotation"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 106,
+      "end": 123,
+      "digest": "sha256:c57f8ce6e07c603d29e6bf49a2e0bb4730d9c5f7316336ccda13e735b164c887"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 127,
+      "end": 139,
+      "digest": "sha256:024f331af961a2a5737d7e6e972262b4e27cfa1613d91e91625a7f95e8e6d0c3"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-prototype-unresolved-pins-check-pinned-annotation-assertions"
+}

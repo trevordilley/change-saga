@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "broad-design",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-broad-design-path",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-intent-broad-design-path:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "broad"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/traceability_test.go",
+      "start": 32,
+      "end": 51,
+      "digest": "sha256:c81ce59748b84f9f431052cc2b5e5c72d95c557a9709fd70ee458c779f1a3ac2"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-intent-broad-design-path-broad-design"
+}

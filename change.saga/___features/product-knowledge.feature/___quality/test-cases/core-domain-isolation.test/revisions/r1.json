@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-domain-isolation",
+  "parents": [],
+  "title": "Keep requirement, prototype and quality histories independent",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Use a disposable Saga with one story, prototype and quality case; capture all three query-history outputs before each operation."
+  ],
+  "steps": [
+    {
+      "id": "check-independent-histories",
+      "action": "Append a revision in each domain separately and compare all other domain histories after each write.",
+      "expected_result": "Only the selected domain gains history; the other two histories are byte-equivalent in normalized query output.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:independent-product-knowledge:criterion:independent-histories"
+      ]
+    }
+  ],
+  "expected_result": "Keep requirement, prototype and quality histories independent.",
+  "created_at": "2026-10-16T23:17:02Z",
+  "request_id": "saga-definition-core-domain-isolation"
+}

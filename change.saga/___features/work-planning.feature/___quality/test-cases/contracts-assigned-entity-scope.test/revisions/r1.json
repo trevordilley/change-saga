@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-assigned-entity-scope",
+  "parents": [],
+  "title": "Assign existing technical identities without duplicating inventory or personas",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Have existing proposed System S, Component C and data entity E with relevant design links, plus an unrelated Component U and a work item W. A supported public entity-scope assignment operation must exist."
+  ],
+  "steps": [
+    {
+      "id": "assign",
+      "action": "Assign S, C and E identities and their existing design context to W through the public work-planning API.",
+      "expected_result": "Assignment stores references to those exact existing identities.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:technical-entity-scope"
+      ]
+    },
+    {
+      "id": "identity",
+      "action": "Query W, inventory and personas and compare to the pre-assignment inventories.",
+      "expected_result": "No duplicate technical definitions or AI-worker persona are created; assignment shows S/C/E and design references.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:technical-entity-scope"
+      ]
+    }
+  ],
+  "expected_result": "Work scope references shared technical entities without duplicating their definitions.",
+  "created_at": "2026-10-16T23:23:44Z",
+  "request_id": "saga-definition-contracts-assigned-entity-scope"
+}

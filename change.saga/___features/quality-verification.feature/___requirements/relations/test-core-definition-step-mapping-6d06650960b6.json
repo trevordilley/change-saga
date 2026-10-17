@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-definition-step-mapping-6d06650960b6",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-definition-step-mapping",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty",
+  "scope": "self",
+  "rationale": "Steps check-specific-mapping define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-definition-step-mapping:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-readiness:revision:definitions-20261016",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:10.822469Z",
+  "request_id": "test-core-definition-step-mapping-6d06650960b6"
+}

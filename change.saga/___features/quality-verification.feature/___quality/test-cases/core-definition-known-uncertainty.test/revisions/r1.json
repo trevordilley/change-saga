@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-definition-known-uncertainty",
+  "parents": [],
+  "title": "Expose missing stale and excluded definition states",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use the quality status fixture with missing coverage, stale test-revision evidence, an excluded criterion and stale verifies pins."
+  ],
+  "steps": [
+    {
+      "id": "check-known-reasons",
+      "action": "Inspect the missing definition, stale evidence, exclusion and stale criterion relation entries.",
+      "expected_result": "The entries retain their missing/stale/excluded reasons and original versus current revision pins.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty"
+      ]
+    }
+  ],
+  "expected_result": "Expose missing stale and excluded definition states.",
+  "created_at": "2026-10-16T23:19:11Z",
+  "request_id": "saga-definition-core-definition-known-uncertainty"
+}

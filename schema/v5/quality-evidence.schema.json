@@ -40,6 +40,7 @@
         "execution_artifact"
       ]
     },
+    "steps": { "type": "array", "maxItems": 10000, "uniqueItems": true, "items": { "$ref": "#/$defs/id" }, "description": "Stable step IDs in test_revision. Omit for case-level evidence." },
     "code": {
       "type": "array",
       "maxItems": 20000,
@@ -138,6 +139,7 @@
       },
       "then": {
         "properties": {
+          "steps": { "maxItems": 0 },
           "code": {
             "maxItems": 0
           }

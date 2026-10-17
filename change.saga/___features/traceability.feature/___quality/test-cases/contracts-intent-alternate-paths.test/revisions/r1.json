@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-alternate-paths",
+  "parents": [],
+  "title": "Enumerate every declared current design and implementation path",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Use one accepted criterion with two current design addresses relations and two implements work paths, each with integrated evidence, plus a direct criterion explains link."
+  ],
+  "steps": [
+    {
+      "id": "all-paths",
+      "action": "In a combined fixture add two designs and two implementation paths plus direct criterion links, then enumerate public traceability.",
+      "expected_result": "Every available current path is present without silently dropping alternate routes.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths"
+      ]
+    }
+  ],
+  "expected_result": "All alternate current routes appear without silent loss.",
+  "created_at": "2026-10-16T23:23:02Z",
+  "request_id": "saga-definition-contracts-intent-alternate-paths"
+}

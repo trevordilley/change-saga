@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-term-optional-growth",
+  "parents": [],
+  "title": "Keep terminology growth optional",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A fresh repository has a typed enum with documented values and a Saga with those terms; add one new enum value."
+  ],
+  "steps": [
+    {
+      "id": "check-optional-suggestions",
+      "action": "Add a typed enum value and inspect comparison next actions before and after documenting it.",
+      "expected_result": "The value appears only as optional growth, never as required work.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:shared-product-language:criterion:optional-suggestions"
+      ]
+    }
+  ],
+  "expected_result": "Keep terminology growth optional.",
+  "created_at": "2026-10-16T23:19:04Z",
+  "request_id": "saga-definition-core-term-optional-growth"
+}

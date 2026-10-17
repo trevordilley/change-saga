@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "remapped-match",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reverse-current-location",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reverse-current-location:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "match"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/traceability_test.go",
+      "start": 58,
+      "end": 68,
+      "digest": "sha256:8b34848758ede331943c72692d257378aecc8797f99e3bfab35c592f9e3f3482"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-reverse-current-location-remapped-match"
+}

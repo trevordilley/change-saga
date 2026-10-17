@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-baseline-boundaries-a3f69266ab66",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+  "scope": "self",
+  "rationale": "Steps unknown-base define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:55.266625Z",
+  "request_id": "test-inventory-baseline-boundaries-a3f69266ab66"
+}

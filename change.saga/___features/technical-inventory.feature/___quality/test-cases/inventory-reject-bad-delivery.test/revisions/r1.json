@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery",
+  "parents": [],
+  "title": "Reject unsupported implementation assertions",
+  "coverage_kinds": [
+    "negative",
+    "edge"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Disposable format-2 Saga with proposed store r1 and exact store.go lines 4-6; capture its inventory before each refused operation."
+  ],
+  "steps": [
+    {
+      "id": "missing-delivery",
+      "action": "Attempt implemented r2 without delivery metadata, then with a parent that omits the current head.",
+      "expected_result": "Both operations are refused.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition"
+      ]
+    },
+    {
+      "id": "stale-digest",
+      "action": "Attempt implementation using evidence changed at delivery, then a digest that does not match saved bytes.",
+      "expected_result": "Stale delivery evidence and forged digest are refused; stale attempt leaves no partial writes.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition"
+      ]
+    },
+    {
+      "id": "missing-evidence",
+      "action": "Attempt implemented revisions with no code, an unavailable commit, and a nonexistent source range.",
+      "expected_result": "Each is refused and the previous proposal remains readable.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition"
+      ]
+    }
+  ],
+  "expected_result": "Each is refused and the previous proposal remains readable.",
+  "created_at": "2026-10-16T23:20:38Z",
+  "request_id": "saga-definition-inventory-reject-bad-delivery"
+}

@@ -87,3 +87,56 @@ func TestStatusFailsOnlyWhenTheReportCannotBeTrusted(t *testing.T) {
 		t.Fatalf("check on a broken Saga cannot answer: %v", err)
 	}
 }
+
+// The public quality gate uses the same kind assessment as detailed status,
+// rather than treating any verifies link as sufficient coverage.
+func TestCheckQualityRequiresKindsOrAnExplicitPolicy(t *testing.T) {
+	t.Parallel()
+	root, repo := coveredSaga(t)
+	story := addStory(t, root, testFeature, "quality-kinds").Resource
+	acceptStory(t, root, story)
+	criterion := story + ":criterion:fast"
+	addCase := func(kind string) {
+		t.Helper()
+		result := runQuality(t, "", "test-case", "add", root, "--feature", testFeature,
+			"--id", kind+"-definition", "--title", kind+" verification", "--kind", kind, "--automation", "manual",
+			"--step", `{"id":"assert","action":"Inspect the specified scenario","expected_result":"The specified outcome holds"}`,
+			"--expected-result", "The specified outcome holds")
+		mustLiving(t, "relation add", relationCommand, "add", root, "--feature", testFeature,
+			"--id", kind+"-verifies", "--type", "verifies", "--from", result.Resource, "--to", criterion, "--rationale", "This scenario verifies the criterion.")
+	}
+	check := func(wantGap bool, reasons ...string) {
+		t.Helper()
+		var output bytes.Buffer
+		err := Check(context.Background(), []string{"--repo", repo, "--covers", "quality", "--json", root}, &output)
+		var exit *StatusError
+		if wantGap {
+			if !errors.As(err, &exit) || exit.Code != checkExitUncovered {
+				t.Fatalf("quality gate should report a gap: %v\n%s", err, output.String())
+			}
+		} else if err != nil {
+			t.Fatalf("quality gate should be covered: %v\n%s", err, output.String())
+		}
+		for _, reason := range reasons {
+			if !strings.Contains(output.String(), reason) {
+				t.Fatalf("gate omitted %q: %s", reason, output.String())
+			}
+		}
+	}
+	addCase("positive")
+	check(true, "required negative test: missing_kind", "required edge test: missing_kind")
+	addCase("negative")
+	check(true, "required edge test: missing_kind")
+	runQuality(t, "", "policy", "set", root, "--feature", testFeature, "--id", "no-boundary",
+		"--criterion", criterion, "--story-revision", story+":revision:r1", "--require", "positive", "--require", "negative",
+		"--rationale", "This fixed scenario has no boundary condition; success and rejection are distinct.")
+	check(false)
+	addCase("edge")
+	// Superseding the exception restores the full requirement. All three
+	// definitions still satisfy it without code evidence or run records.
+	sagaPrefix := strings.Split(story, ":story:")[0]
+	runQuality(t, "", "policy", "set", root, "--feature", testFeature, "--id", "all-kinds",
+		"--criterion", criterion, "--story-revision", story+":revision:r1", "--require", "positive", "--require", "negative", "--require", "edge",
+		"--supersedes", sagaPrefix+":quality-policy:no-boundary", "--rationale", "Boundary behavior is now explicitly defined.")
+	check(false)
+}

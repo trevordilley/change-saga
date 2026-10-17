@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-2",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "unknown-base"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query_inventory_view_test.go",
+      "start": 190,
+      "end": 203,
+      "digest": "sha256:3efee248358446c9c795201e31f3a845cdbf70548ed2f4eac038e97d0e887eba"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-baseline-boundaries-evidence-2"
+}

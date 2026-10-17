@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-specific-mapping-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-definition-step-mapping",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-definition-step-mapping:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-specific-mapping"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 597,
+      "end": 611,
+      "digest": "sha256:de10a449d8d9dd51647cf6e03abcd9b8a980f61fc75c848e3300f070e835646e"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/status_test.go",
+      "start": 615,
+      "end": 627,
+      "digest": "sha256:7e1a86ad7a2fca6c62302583f71068b61895db96d1ade9a0339e5cac39c41f13"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-definition-step-mapping-check-specific-mapping-assertions"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "criterion-staleness",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-stale-criterion",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-intent-stale-criterion:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "stale"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 356,
+      "end": 368,
+      "digest": "sha256:962fa8a4223027d18a312b58f7649cf7ec087034e715de26b1745022351ca617"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-intent-stale-criterion-criterion-staleness"
+}

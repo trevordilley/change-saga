@@ -163,6 +163,8 @@ func (s *session) Query(_ context.Context, query Query) (Result, error) {
 	var rows any
 	var key string
 	switch query.Operation {
+	case "quality", "quality-history":
+		return s.qualityResult(query)
 	case "personas":
 		values, err := s.personaRows(query.Filters)
 		if err != nil {

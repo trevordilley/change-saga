@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-repository-mismatch",
+  "test_revision": "urn:change-saga:change-saga:test-case:review-repository-mismatch:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "refuse",
+    "override"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/gitdiff/gitdiff_test.go",
+      "start": 525,
+      "end": 532,
+      "digest": "sha256:c38a2bb31b9ded3d1d96e6f90dfd3452306ac918c16a45540515d46af92b6c84"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:08Z",
+  "request_id": "saga-evidence-review-repository-mismatch-evidence-1"
+}

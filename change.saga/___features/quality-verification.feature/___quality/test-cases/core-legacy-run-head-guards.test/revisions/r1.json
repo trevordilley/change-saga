@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-legacy-run-head-guards",
+  "parents": [],
+  "title": "Guard legacy run appends and preserve history",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A separate legacy fixture has a case, evidence and an initial failed run ci1."
+  ],
+  "steps": [
+    {
+      "id": "check-guarded-run",
+      "action": "Attempt ci2 without the current parent and attempt to overwrite ci1; append valid ci2; introduce a concurrent head, then append a record naming every head.",
+      "expected_result": "Invalid appends are refused without consuming ci2, current run is absent during conflict, complete reconciliation retains four records, and the original ci1 remains failed.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-test-proof:criterion:guarded-run"
+      ]
+    }
+  ],
+  "expected_result": "Guard legacy run appends and preserve history.",
+  "created_at": "2026-10-16T23:19:46Z",
+  "request_id": "saga-definition-core-legacy-run-head-guards"
+}

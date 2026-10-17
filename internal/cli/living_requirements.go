@@ -429,7 +429,8 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	relationURN, _ := livingid.Relation(document.SagaID, *id)
-	if err := guardEmbeddedCriterionRelationMutation(root, relationURN); err != nil {
+	guardedSaga, err := loadAndGuardEmbeddedCriterionRelationMutation(root, relationURN)
+	if err != nil {
 		return err
 	}
 	input := requirements.AddRelationInput{
@@ -437,7 +438,7 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 		FromRevision: *fromRevision, ToRevision: *toRevision, FromContentDigest: *fromDigest,
 		ToContentDigest: *toDigest, Scope: requirements.RelationScope(*scope), RequestID: *requestID,
 	}
-	defaulted, err := defaultV5RelationPins(root, &input)
+	defaulted, err := defaultV5RelationPinsWithGuardedSaga(root, &input, guardedSaga)
 	if err != nil {
 		return err
 	}
@@ -475,7 +476,16 @@ type relationAddOutput struct {
 // head, and reports each default so the author sees exactly what was pinned.
 // supersedes never defaults: its pins are optional history, not currency.
 func defaultV5RelationPins(root string, input *requirements.AddRelationInput) ([]string, error) {
-	heads, err := loadRelationHeads(root)
+	return defaultV5RelationPinsWithGuardedSaga(root, input, nil)
+}
+
+func defaultV5RelationPinsWithGuardedSaga(root string, input *requirements.AddRelationInput, guardedSaga *saga.Saga) ([]string, error) {
+	// Reuse only this command's fully validated collision-guard snapshot for
+	// test-case-to-criterion authoring. Other relation paths retain their loads.
+	if !canReuseVerifyRelationSaga(input, guardedSaga) {
+		guardedSaga = nil
+	}
+	heads, err := loadRelationHeadsWithSaga(root, guardedSaga)
 	if err != nil {
 		return nil, err
 	}
@@ -627,29 +637,34 @@ func relationRepin(_ context.Context, args []string, out io.Writer) error {
 }
 
 func guardEmbeddedCriterionRelationMutation(root, relationURN string) error {
+	_, err := loadAndGuardEmbeddedCriterionRelationMutation(root, relationURN)
+	return err
+}
+
+func loadAndGuardEmbeddedCriterionRelationMutation(root, relationURN string) (*saga.Saga, error) {
 	ref, err := livingid.Parse(relationURN)
 	if err != nil || ref.Kind != livingid.KindRelation {
-		return nil
+		return nil, nil
 	}
 	document, validation, err := saga.Load(root)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if !validation.Valid {
-		return fmt.Errorf("the Saga is invalid; run change-saga validate for details")
+		return nil, fmt.Errorf("the Saga is invalid; run change-saga validate for details")
 	}
 	for _, deck := range document.Decks {
 		for _, slide := range deck.Slides {
 			for _, item := range slide.Items {
 				for _, link := range item.CriterionLinks {
 					if link.ID == ref.ID {
-						return completeSlideMutationError("relation mutation", slide.Target)
+						return nil, completeSlideMutationError("relation mutation", slide.Target)
 					}
 				}
 			}
 		}
 	}
-	return nil
+	return document, nil
 }
 
 // defaultRepinPins fills every omitted pin the relation is behind on with the

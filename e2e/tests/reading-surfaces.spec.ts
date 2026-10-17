@@ -54,8 +54,8 @@ test("product context and test walkthroughs remain readable across themes and na
       const native = await noJS.newPage();
       await native.goto(server.baseURL + "/tests/cached-forecast");
       await expect(native.locator(".test-outcome")).toBeVisible();
-      await native.locator("[data-test-runs] > summary").click();
-      await expect(native.locator("[data-test-runs] .term-empty")).toBeVisible();
+      await native.locator("[data-test-evidence] > summary").click();
+      await expect(native.locator("[data-test-evidence] .term-empty")).toBeVisible();
     } finally { await noJS.close(); }
   } finally { await stopSagaServer(server); }
 });

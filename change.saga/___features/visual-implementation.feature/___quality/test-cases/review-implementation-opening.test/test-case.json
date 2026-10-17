@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "review-implementation-opening",
+  "created_at": "2026-10-16T23:22:17Z",
+  "request_id": "saga-definition-review-implementation-opening"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "write-fault",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-atomic-record-write",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-atomic-record-write:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "fault"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/store/store_test.go",
+      "start": 47,
+      "end": 70,
+      "digest": "sha256:441d16fd73895bc142c28a40c13c6d9fd539a5be1512d74ea18d724b90ff873b"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-atomic-record-write-write-fault"
+}

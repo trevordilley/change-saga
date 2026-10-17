@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-coverage-no-verdict-42bf85695273",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-coverage-no-verdict",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict",
+  "scope": "self",
+  "rationale": "Steps inspect, compare define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-coverage-no-verdict:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:22:43.332195Z",
+  "request_id": "test-contracts-coverage-no-verdict-42bf85695273"
+}

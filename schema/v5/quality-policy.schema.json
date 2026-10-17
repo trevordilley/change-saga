@@ -12,6 +12,7 @@
     "criterion": { "$ref": "#/$defs/criterion_urn" },
     "story_revision": { "$ref": "#/$defs/story_revision_urn" },
     "required_kinds": {
+      "description": "Explicit replacement for the default positive, negative, and edge obligations of an accepted criterion. Explain any omitted kinds in rationale.",
       "type": "array",
       "minItems": 1,
       "maxItems": 3,

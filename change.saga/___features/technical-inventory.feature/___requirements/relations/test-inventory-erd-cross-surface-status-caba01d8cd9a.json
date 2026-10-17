@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-erd-cross-surface-status-caba01d8cd9a",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-erd-cross-surface-status",
+  "to": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:consistent-state",
+  "scope": "self",
+  "rationale": "Steps compare define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-erd-cross-surface-status:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:08:08.592226Z",
+  "request_id": "test-inventory-erd-cross-surface-status-caba01d8cd9a"
+}

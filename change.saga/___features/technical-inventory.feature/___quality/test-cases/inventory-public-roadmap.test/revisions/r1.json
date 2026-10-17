@@ -1,0 +1,50 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-public-roadmap",
+  "parents": [],
+  "title": "Query explicit proposals independently from comparison newness",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use WriteInventoryFixture with code-free job/queue, implemented store r3 with proposed r2 in history, implemented pipeline/report and two feature Items selecting pipeline and report; commit head and retain the pre-Saga baseline."
+  ],
+  "steps": [
+    {
+      "id": "intent",
+      "action": "Query inventory --intent proposed and --intent implemented --kind component.",
+      "expected_result": "Proposed includes job/queue and excludes implemented store; implemented Components include store/worker and exclude queue.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-proposed",
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:remaining-roadmap",
+        "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:separate-newness"
+      ]
+    },
+    {
+      "id": "new",
+      "action": "Query inventory --new against the pre-Saga baseline, then against the current head.",
+      "expected_result": "All eight identities, including implemented definitions, are new against the absent baseline and none are new against head.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new",
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+        "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:separate-newness"
+      ]
+    },
+    {
+      "id": "scope",
+      "action": "Query inventory --feature for the Items' feature and inventory-uses for the job.",
+      "expected_result": "Feature reachability includes pipeline, store, worker, queue, report and job through declared pins; unrelated ERD is excluded; job uses include relationship destination and overlay.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
+        "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals"
+      ]
+    }
+  ],
+  "expected_result": "Feature reachability includes pipeline, store, worker, queue, report and job through declared pins; unrelated ERD is excluded; job uses include relationship destination and overlay.",
+  "created_at": "2026-10-16T23:09:53Z",
+  "request_id": "saga-definition-inventory-public-roadmap"
+}

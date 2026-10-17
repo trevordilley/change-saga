@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "review-companion-cursor",
+  "created_at": "2026-10-16T23:22:09Z",
+  "request_id": "saga-definition-review-companion-cursor"
+}

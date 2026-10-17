@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-approach",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-technical-approach:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "approach"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/technical.go",
+      "start": 579,
+      "end": 595,
+      "digest": "sha256:86126256188e48de66ebc780f0368a556e9fbbbfbbba615a00e64a8db1d27bcd"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-technical-approach-evidence-3"
+}

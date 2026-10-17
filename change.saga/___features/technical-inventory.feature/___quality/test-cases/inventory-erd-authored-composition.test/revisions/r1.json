@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-authored-composition",
+  "parents": [],
+  "title": "Review the ERD as an authored architectural explanation",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Disposable format-2 Saga using the PDF inventory fixture: implemented PDF report held by Record store, proposed JSON PDF job held by Job queue, report-to-job production relationship, application ERD, and pdf-jobs overlay; the reporting ERD also includes a job association with owner 0..many and destination unknown.",
+    "Reviewer has the intended application architecture and source model available; the ERD intentionally omits low-level payload properties and database columns."
+  ],
+  "steps": [
+    {
+      "id": "composition",
+      "action": "Read the overview and inspect the author-selected entities, layout and relationship explanations.",
+      "expected_result": "The diagram communicates the application shape and permits deliberate omissions; it is not an exhaustive schema dump.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview"
+      ]
+    },
+    {
+      "id": "omissions",
+      "action": "Compare the declared field list with source and inspect the report for omitted fields.",
+      "expected_result": "Only architecturally meaningful fields and keys need appear; omission alone is not labeled missing implementation.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail"
+      ]
+    }
+  ],
+  "expected_result": "Only architecturally meaningful fields and keys need appear; omission alone is not labeled missing implementation.",
+  "created_at": "2026-10-16T23:06:35Z",
+  "request_id": "saga-definition-inventory-erd-authored-composition"
+}

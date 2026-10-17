@@ -1,0 +1,52 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-shared-milestones",
+  "parents": [],
+  "title": "Keep milestone identity through sharing, renaming and clearing",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "A disposable Saga has two features and a shared Launch milestone."
+  ],
+  "steps": [
+    {
+      "id": "check-unassigned-target",
+      "action": "In a separate fresh feature, omit milestone assignment.",
+      "expected_result": "The feature has no milestone reference.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:optional-shared-target"
+      ]
+    },
+    {
+      "id": "check-optional-shared-target",
+      "action": "Assign both features to the shared Launch milestone.",
+      "expected_result": "Both plans reference the shared milestone and store no copied display name.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:optional-shared-target"
+      ]
+    },
+    {
+      "id": "check-rename-once",
+      "action": "Snapshot feature plans, rename Launch to Summer launch, and read both features.",
+      "expected_result": "Both display Summer launch and their stored milestone references are unchanged.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:rename-once"
+      ]
+    },
+    {
+      "id": "check-preserve-or-clear",
+      "action": "Change only priority, inspect the milestone, then explicitly clear it.",
+      "expected_result": "Omission preserves the existing milestone reference; explicit empty removes it.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:preserve-or-clear"
+      ]
+    }
+  ],
+  "expected_result": "Keep milestone identity through sharing, renaming and clearing.",
+  "created_at": "2026-10-16T23:13:44Z",
+  "request_id": "saga-definition-core-shared-milestones"
+}

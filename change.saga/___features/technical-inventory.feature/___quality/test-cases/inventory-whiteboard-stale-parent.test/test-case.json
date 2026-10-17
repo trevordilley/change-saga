@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "inventory-whiteboard-stale-parent",
+  "created_at": "2026-10-16T23:21:12Z",
+  "request_id": "saga-definition-inventory-whiteboard-stale-parent"
+}

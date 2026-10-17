@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "blocker-projection",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-dependency-fact-gates",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-dependency-fact-gates:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "public-blockers"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 200,
+      "end": 214,
+      "digest": "sha256:42502b568ba06b7061c4cea693c6c45f5a3402e61bbe62b06ddbc90d13252d21"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-dependency-fact-gates-blocker-projection"
+}

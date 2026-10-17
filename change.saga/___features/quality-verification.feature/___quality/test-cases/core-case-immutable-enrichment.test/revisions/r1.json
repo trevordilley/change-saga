@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment",
+  "parents": [],
+  "title": "Enrich a case without rewriting its definition",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A separate planned case r1 has stable step IDs; save its identity and original revision bytes."
+  ],
+  "steps": [
+    {
+      "id": "check-immutable-enrichment",
+      "action": "Add implementation evidence, revise the expected outcome to r2, and append superseding evidence.",
+      "expected_result": "Evidence addition preserves the existing r1 revision; old evidence becomes stale after r2, both revisions and evidence records remain, and original r1 bytes stay unchanged.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment"
+      ]
+    }
+  ],
+  "expected_result": "Enrich a case without rewriting its definition.",
+  "created_at": "2026-10-16T23:19:34Z",
+  "request_id": "saga-definition-core-case-immutable-enrichment"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-usage-navigation",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-usage-navigation:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "navigate"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/technical.go",
+      "start": 216,
+      "end": 247,
+      "digest": "sha256:bf6aec0c567a9f03fae148d77d87839069f888fce0fa263a3d3896b7e7ef0399"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-usage-navigation-evidence-3"
+}

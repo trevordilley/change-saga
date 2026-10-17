@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-inert-command-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-inert-command"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/quality-definitions.spec.ts",
+      "start": 50,
+      "end": 53,
+      "digest": "sha256:e25acd525b5e9bbaf15b409e9930684b6442bf161aac6ff7228610f07d7a05a4"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-quality-definition-staleness-check-inert-command-assertions"
+}

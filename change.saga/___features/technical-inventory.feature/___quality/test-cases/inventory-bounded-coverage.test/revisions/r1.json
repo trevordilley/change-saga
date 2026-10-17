@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage",
+  "parents": [],
+  "title": "Measure bounded inventory coverage with exact owners",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use TestInventoryCoverage fixture: app/store.go has 60 lines, app/changed.go 10, binary logo; store owns 14-40, System interaction owns 30-50, changed.go evidence is stale, lib reference is out of scope, retired and conflicted owners exist."
+  ],
+  "steps": [
+    {
+      "id": "counts",
+      "action": "Measure app scope at the explicit head commit.",
+      "expected_result": "70 text lines produce 37 unique covered, 33 uncovered and 11 overlapping; two text files and one binary are distinguished.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:bounded-report",
+        "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:deduplicate"
+      ]
+    },
+    {
+      "id": "owners",
+      "action": "Inspect app/store.go overlap range 30-40 and separate health collections.",
+      "expected_result": "The overlap keeps two owners including system:flags#read; stale, outside-scope, unresolved and retired evidence remain separate.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:exact-owners",
+        "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:separate-health"
+      ]
+    },
+    {
+      "id": "public",
+      "action": "Query inventory-coverage --path app --head the full commit and page all ranges.",
+      "expected_result": "The public report names that head and scope; every covered range names its owners and every uncovered range has an exact source location.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:bounded-report",
+        "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:exact-owners"
+      ]
+    }
+  ],
+  "expected_result": "The public report names that head and scope; every covered range names its owners and every uncovered range has an exact source location.",
+  "created_at": "2026-10-16T23:20:44Z",
+  "request_id": "saga-definition-inventory-bounded-coverage"
+}

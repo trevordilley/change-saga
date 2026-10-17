@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-source-staleness",
+  "parents": [],
+  "title": "Expose stale code without a fresh run",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A separate accepted-criterion fixture has an explicitly mapped case step and current code evidence; remove every run record."
+  ],
+  "steps": [
+    {
+      "id": "check-code-staleness",
+      "action": "Make the evidence code reference stale and inspect Quality and its definition query.",
+      "expected_result": "Coverage reports stale code and the definition reports stale evidence without any run.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness"
+      ]
+    }
+  ],
+  "expected_result": "Expose stale code without a fresh run.",
+  "created_at": "2026-10-16T23:19:22Z",
+  "request_id": "saga-definition-core-quality-source-staleness"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-review-companion-source-delta-5a9cfcb7dbd0",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:review-companion-source-delta",
+  "to": "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout",
+  "scope": "self",
+  "rationale": "Steps compare define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:review-companion-source-delta:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:source-checkout-context:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:22:26.060634Z",
+  "request_id": "test-review-companion-source-delta-5a9cfcb7dbd0"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-contract-definition-a944d00080b9",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-contract-definition",
+  "to": "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:versioned-contract",
+  "scope": "self",
+  "rationale": "Steps create, inspect define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-contract-definition:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:contract-gated-handoff:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:22:44.813242Z",
+  "request_id": "test-contracts-contract-definition-a944d00080b9"
+}

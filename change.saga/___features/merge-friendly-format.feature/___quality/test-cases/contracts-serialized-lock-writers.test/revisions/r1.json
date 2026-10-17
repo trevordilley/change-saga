@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers",
+  "parents": [],
+  "title": "Serialize supported writers and return busy at timeout",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use a temporary Saga directory and one writer holding its Saga lock until explicitly released."
+  ],
+  "steps": [
+    {
+      "id": "timeout",
+      "action": "Attempt a second WithSagaLock callback with 40ms timeout while first holds the lock.",
+      "expected_result": "It reports timeout no earlier than 40ms; the blocking writer completes after release.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:serialized-writes"
+      ]
+    },
+    {
+      "id": "serialize",
+      "action": "Start eight callbacks that count active writers while acquiring the same Saga lock.",
+      "expected_result": "Maximum simultaneous active callbacks is exactly one.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:serialized-writes"
+      ]
+    },
+    {
+      "id": "public",
+      "action": "Repeat with two real supported mutations and inspect final public query state plus the contending busy error.",
+      "expected_result": "No persisted mutation is interleaved; the contending public error identifies Saga busy.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:serialized-writes"
+      ]
+    }
+  ],
+  "expected_result": "Cooperating writers cannot mutate the Saga concurrently.",
+  "created_at": "2026-10-16T23:23:30Z",
+  "request_id": "saga-definition-contracts-serialized-lock-writers"
+}

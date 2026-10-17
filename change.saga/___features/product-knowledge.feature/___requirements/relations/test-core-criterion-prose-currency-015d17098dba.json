@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-criterion-prose-currency-015d17098dba",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-criterion-prose-currency",
+  "to": "urn:change-saga:change-saga:story:read-authored-criterion-context:criterion:reassess",
+  "scope": "self",
+  "rationale": "Steps check-reassess define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-criterion-prose-currency:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:read-authored-criterion-context:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:18:54.872212Z",
+  "request_id": "test-core-criterion-prose-currency-015d17098dba"
+}

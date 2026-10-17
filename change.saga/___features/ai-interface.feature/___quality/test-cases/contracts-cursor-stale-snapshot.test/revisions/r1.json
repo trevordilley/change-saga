@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-stale-snapshot",
+  "parents": [],
+  "title": "Reject a cursor after the Saga snapshot changes",
+  "coverage_kinds": [
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use querytest.New with at least two children and a fixed source comparison."
+  ],
+  "steps": [
+    {
+      "id": "issue",
+      "action": "Read children with limit 1 and retain the cursor.",
+      "expected_result": "A continuation token is returned.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:snapshot-retry"
+      ]
+    },
+    {
+      "id": "advance",
+      "action": "Advance Saga snapshot using the fixture mutation; repeat children using the old cursor.",
+      "expected_result": "The CLI returns exit 4, stale_snapshot, retryable=true, rather than a mixed-state page.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:snapshot-retry"
+      ]
+    }
+  ],
+  "expected_result": "The caller must restart pagination after a snapshot change.",
+  "created_at": "2026-10-16T23:22:38Z",
+  "request_id": "saga-definition-contracts-cursor-stale-snapshot"
+}

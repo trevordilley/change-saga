@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-query-operation-discovery-13eb157bc81f",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery",
+  "to": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery",
+  "scope": "self",
+  "rationale": "Steps paths, records, schema, spec define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:23:38.468405Z",
+  "request_id": "test-contracts-query-operation-discovery-13eb157bc81f"
+}

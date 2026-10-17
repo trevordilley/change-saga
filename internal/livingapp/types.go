@@ -43,6 +43,7 @@ type Filters struct {
 	// Omitting empty feature-context fields preserves the normalized cursor key
 	// of every pre-existing living query.
 	Feature     string `json:"Feature,omitempty"`
+	TestCase    string `json:"TestCase,omitempty"`
 	Expand      string `json:"Expand,omitempty"`
 	Requirement string
 	Persona     string

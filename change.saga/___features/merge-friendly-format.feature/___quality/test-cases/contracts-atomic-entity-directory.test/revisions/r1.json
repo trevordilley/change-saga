@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-atomic-entity-directory",
+  "parents": [],
+  "title": "Publish a complete new entity directory or none",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use an empty Saga threads parent and a populate callback that writes thread.json into the stage directory."
+  ],
+  "steps": [
+    {
+      "id": "failure",
+      "action": "Inject before-stage-commit failure and call CommitDir.",
+      "expected_result": "No final entity directory or staging directory remains.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:atomic"
+      ]
+    },
+    {
+      "id": "success",
+      "action": "Remove the fault and call CommitDir again.",
+      "expected_result": "The final entity contains thread.json.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:atomic"
+      ]
+    }
+  ],
+  "expected_result": "New entity publication exposes the complete staged record only after success.",
+  "created_at": "2026-10-16T23:23:13Z",
+  "request_id": "saga-definition-contracts-atomic-entity-directory"
+}

@@ -315,11 +315,13 @@ func kind(t *testing.T, status Status, criterion, name string) KindStatus {
 	return KindStatus{}
 }
 
-func TestQualityAxisReflectsTestCasesKindsRunsAndExceptions(t *testing.T) {
+func TestQualityAxisReflectsDefinitionsAndExceptionsIndependentlyOfRuns(t *testing.T) {
 	status := Assemble(qualityFixture(t))
 
-	if got := cell(t, status, "positive-path", coverage.AxisQuality); got.State != coverage.StateCoveredDirect {
-		t.Fatalf("a current passing positive test covers the criterion: %#v", got)
+	if got := cell(t, status, "positive-path", coverage.AxisQuality); got.Resolution != coverage.ResolutionGap ||
+		!containsText(got.Unsatisfied, "required negative test: missing_kind") ||
+		!containsText(got.Unsatisfied, "required edge test: missing_kind") {
+		t.Fatalf("a positive definition leaves the other default kinds missing: %#v", got)
 	}
 	if got := kind(t, status, "positive-path", "positive"); got.State != kindCovered || !reflect.DeepEqual(got.TestCases, []string{testURN("happy")}) {
 		t.Fatalf("positive kind = %#v", got)
@@ -330,21 +332,22 @@ func TestQualityAxisReflectsTestCasesKindsRunsAndExceptions(t *testing.T) {
 		t.Fatalf("a policy-required kind no test declares keeps the cell a gap with its reason: %#v", cutoff)
 	}
 	if kind(t, status, "cutoff", "negative").State != kindCovered || kind(t, status, "cutoff", "edge").State != kindCovered {
-		t.Fatal("declared negative and edge kinds with a current pass are covered")
+		t.Fatal("declared negative and edge verification approaches are covered")
 	}
 
 	staleRun := cell(t, status, "stale-run", coverage.AxisQuality)
 	if staleRun.State != coverage.StateStale || !containsText(staleRun.StalePins, "test revision changed") {
-		t.Fatalf("a run pinned to an older test revision is stale: %#v", staleRun)
+		t.Fatalf("implementation evidence pinned to an older definition is stale: %#v", staleRun)
 	}
-	if got := kind(t, status, "failing", "positive"); got.State != kindFailed {
-		t.Fatalf("a failing current run is reported as failed: %#v", got)
+	if got := kind(t, status, "failing", "positive"); got.State != kindCovered {
+		t.Fatalf("a failed historical run does not change definition coverage: %#v", got)
 	}
-	if got := cell(t, status, "failing", coverage.AxisQuality); got.State != coverage.StateGap || !containsText(got.Unsatisfied, "failed") {
-		t.Fatalf("a failing run never covers the criterion: %#v", got)
+	if got := cell(t, status, "failing", coverage.AxisQuality); got.State != coverage.StateGap ||
+		!containsText(got.Unsatisfied, "required negative test: missing_kind") || containsText(got.Unsatisfied, "failed") {
+		t.Fatalf("only missing definition kinds affect coverage, never a failed historical run: %#v", got)
 	}
-	if got := kind(t, status, "not-run", "positive"); got.State != kindNotRun {
-		t.Fatalf("a linked test without runs is not_run: %#v", got)
+	if got := kind(t, status, "not-run", "positive"); got.State != kindCovered {
+		t.Fatalf("a linked definition needs no runs: %#v", got)
 	}
 	if got := kind(t, status, "untested", "positive"); got.State != kindMissing {
 		t.Fatalf("a criterion without tests is missing its kind: %#v", got)
@@ -388,12 +391,12 @@ func TestStaleSetIsPinDerivedAndNamesWhichHistoryMoved(t *testing.T) {
 	if !reflect.DeepEqual(relation.Affects, []string{criterionURN("positive-path")}) {
 		t.Fatalf("the stale record names the criterion it affects: %#v", relation.Affects)
 	}
-	run, ok := stale[testURN("revised")+":run:ci-1"]
-	if !ok || run.Kind != "test_run" || run.History != historyReview || !containsText(run.Reasons, "test revision changed") {
-		t.Fatalf("a run pinned to a superseded test revision is stale: %#v", run)
+	run, ok := stale[testURN("revised")+":evidence:code"]
+	if !ok || run.Kind != "quality_evidence" || run.History != historyReview || !containsText(run.Reasons, "test revision changed") {
+		t.Fatalf("evidence pinned to a superseded test revision is stale: %#v", run)
 	}
 	if !hasPin(run.Pins, "test_revision", testRevisionURN("revised", "r1"), testRevisionURN("revised", "r2")) {
-		t.Fatalf("the stale run shows its revision pin: %#v", run.Pins)
+		t.Fatalf("stale evidence shows its revision pin: %#v", run.Pins)
 	}
 	if _, ok := stale[relationURN("happy-positive")]; ok {
 		t.Fatal("a relation whose pins match the current heads is not stale")
@@ -555,5 +558,129 @@ func TestAVerifyingTestCaseReachesItsStory(t *testing.T) {
 	}
 	if got := status.Chain.TargetStories[testURN("orphan")]; len(got) != 0 {
 		t.Fatalf("a test case that verifies nothing reaches no story: %v", got)
+	}
+}
+
+func TestQualityCoverageIgnoresAllRunOutcomesAndRunConflicts(t *testing.T) {
+	inputs := qualityFixture(t)
+	baseline := Assemble(inputs)
+	for i := range inputs.Quality.TestCases {
+		test := &inputs.Quality.TestCases[i]
+		test.Runs = nil
+		test.CurrentRun = nil
+		test.HeadRun = nil
+		test.RunHeads = nil
+	}
+	without := Assemble(inputs)
+	if !reflect.DeepEqual(baseline, without) {
+		t.Fatal("removing run history changed status")
+	}
+	for i := range inputs.Quality.TestCases {
+		test := &inputs.Quality.TestCases[i]
+		test.CurrentLifecycle = &quality.LifecycleEvent{State: quality.StateProposed}
+		test.RunHeads = []string{"conflict-a", "conflict-b"}
+		test.HeadRun = &quality.Run{Result: quality.RunFailed, StaleReasons: []string{"source comparison changed"}}
+	}
+	planned := Assemble(inputs)
+	if kind(t, planned, "not-run", "positive").State != kindCovered {
+		t.Fatal("proposed definition without evidence must cover verification intent")
+	}
+	if !reflect.DeepEqual(without.Quality.Criteria, planned.Quality.Criteria) {
+		t.Fatal("run conflicts or proposed lifecycle changed definition coverage")
+	}
+}
+
+func TestQualityStepMappingsAreCriterionSpecificAndRevisionPinned(t *testing.T) {
+	inputs := qualityFixture(t)
+	for i := range inputs.Quality.TestCases {
+		test := &inputs.Quality.TestCases[i]
+		if test.Identity.ID != "happy" {
+			continue
+		}
+		test.CurrentRevision.Steps = []quality.Step{{ID: "setup", Action: "Arrange", ExpectedResult: "Ready"}, {ID: "assert", Action: "Inspect", ExpectedResult: "Outcome", Criteria: []string{criterionURN("positive-path")}}}
+		test.Evidence[0].Steps = []string{"assert"}
+	}
+	status := Assemble(inputs)
+	if kind(t, status, "positive-path", "positive").State != kindCovered {
+		t.Fatal("mapped criterion lost coverage")
+	}
+	var row TestCaseStatus
+	for _, test := range status.Quality.TestCases {
+		if test.TestCase == testURN("happy") {
+			row = test
+		}
+	}
+	if len(row.Steps) != 2 || len(row.Steps[0].Evidence) != 0 || len(row.Steps[1].Evidence) != 1 || len(row.Steps[1].Verifies) != 2 {
+		t.Fatalf("trace: %+v", row.Steps)
+	}
+	// Map the assertion to a different canonical criterion; the case link alone must
+	// not imply that the explicitly mapped assertion exercises positive-path.
+	for i := range inputs.Quality.TestCases {
+		if inputs.Quality.TestCases[i].Identity.ID == "happy" {
+			inputs.Quality.TestCases[i].CurrentRevision.Steps[1].Criteria = []string{criterionURN("untested")}
+		}
+	}
+	status = Assemble(inputs)
+	if kind(t, status, "positive-path", "positive").State != kindMissingMapping {
+		t.Fatal("criterion-specific mapping was ignored")
+	}
+	for _, test := range status.Quality.TestCases {
+		if test.TestCase == testURN("happy") && !containsText(test.Steps[1].Issues, "missing case-level verifies") {
+			t.Fatalf("missing mapping not explained: %+v", test.Steps)
+		}
+	}
+}
+
+// Existing explicit policies retain their meaning. An absent, stale, or
+// conflicted policy cannot silently waive negative and boundary verification.
+func TestQualityDefaultKindsAndExplicitPolicyCompatibility(t *testing.T) {
+	for _, scenario := range []string{"default", "current policy", "stale policy", "conflicting policy", "all planned kinds"} {
+		t.Run(scenario, func(t *testing.T) {
+			inputs := qualityFixture(t)
+			policy := quality.Policy{ID: "positive-only", Criterion: criterionURN("positive-path"), StoryRevision: storyR2,
+				RequiredKinds: []quality.CoverageKind{quality.CoveragePositive},
+				Rationale:     "This criterion is a fixed informational statement; invalid input and boundaries do not apply."}
+			set := quality.PolicySet{Criterion: policy.Criterion, StoryRevision: storyR2,
+				Heads: []string{"urn:change-saga:checkout:quality-policy:positive-only"}, Policies: []quality.Policy{policy}, Current: &policy}
+			switch scenario {
+			case "current policy":
+				inputs.Quality.PolicySets = append(inputs.Quality.PolicySets, set)
+			case "stale policy":
+				policy.StoryRevision = storyR1
+				set.StoryRevision, set.Policies = storyR1, []quality.Policy{policy}
+				inputs.Quality.PolicySets = append(inputs.Quality.PolicySets, set)
+			case "conflicting policy":
+				set.Heads = append(set.Heads, "urn:change-saga:checkout:quality-policy:competing")
+				set.Current = nil
+				inputs.Quality.PolicySets = append(inputs.Quality.PolicySets, set)
+			case "all planned kinds":
+				for i := range inputs.Quality.TestCases {
+					test := &inputs.Quality.TestCases[i]
+					test.Evidence, test.EvidenceHeads, test.Runs, test.RunHeads = nil, nil, nil, nil
+					test.HeadRun, test.CurrentRun = nil, nil
+					test.CurrentLifecycle = &quality.LifecycleEvent{State: quality.StateProposed}
+				}
+				inputs.Links = fixtureLinks(inputs.Stories, []requirements.Relation{
+					verifies("happy-positive", "happy", "r1", "positive-path", storyR2),
+					verifies("boundary-positive", "boundary", "r1", "positive-path", storyR2),
+				}, inputs.Quality)
+			}
+			status := Assemble(inputs)
+			got := cell(t, status, "positive-path", coverage.AxisQuality)
+			if scenario == "current policy" || scenario == "all planned kinds" {
+				if got.State != coverage.StateCoveredDirect {
+					t.Fatalf("explicit policy or all planned kinds should resolve coverage: %+v", got)
+				}
+				return
+			}
+			if got.Resolution != coverage.ResolutionGap {
+				t.Fatalf("missing kinds must remain gaps: %+v", got)
+			}
+			for _, name := range []string{"negative", "edge"} {
+				if row := kind(t, status, "positive-path", name); !row.Required || row.State != kindMissing {
+					t.Fatalf("%s: %+v", name, row)
+				}
+			}
+		})
 	}
 }

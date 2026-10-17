@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "workspace-query",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-workspace-ownership-events",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-workspace-ownership-events:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "query"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/compose.go",
+      "start": 232,
+      "end": 237,
+      "digest": "sha256:b819b5607c3f6368f8513563ab6eea08539311de4421545a057ae244aec473ea"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/workplan/model.go",
+      "start": 193,
+      "end": 208,
+      "digest": "sha256:8e6a793aa3b76b076579b1b3bfc7e574bc1a0620231886a25ae71cbbe977606a"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-workspace-ownership-events-workspace-query"
+}

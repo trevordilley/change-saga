@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-design-paths-a8c819d30905",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-design-paths",
+  "to": "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path",
+  "scope": "self",
+  "rationale": "Steps relations, trace define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-design-paths:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:design-usage-path:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:22:59.185696Z",
+  "request_id": "test-contracts-design-paths-a8c819d30905"
+}

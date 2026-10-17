@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-milestone-invalid-references",
+  "parents": [],
+  "title": "Reject invalid milestone assignments",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "A disposable Saga has two features and a shared Launch milestone."
+  ],
+  "steps": [
+    {
+      "id": "check-valid-references",
+      "action": "Attempt to assign a nonexistent milestone and compare the feature plan bytes.",
+      "expected_result": "The request fails and the plan is unchanged.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:valid-references"
+      ]
+    },
+    {
+      "id": "check-foreign-milestone",
+      "action": "Attempt to assign a milestone URN owned by another Saga and compare the plan bytes.",
+      "expected_result": "The cross-Saga request is refused without changing the plan.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:valid-references"
+      ]
+    }
+  ],
+  "expected_result": "Reject invalid milestone assignments.",
+  "created_at": "2026-10-16T23:18:00Z",
+  "request_id": "saga-definition-core-milestone-invalid-references"
+}

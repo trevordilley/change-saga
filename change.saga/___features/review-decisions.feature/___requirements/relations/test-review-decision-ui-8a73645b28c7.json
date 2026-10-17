@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-review-decision-ui-8a73645b28c7",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:review-decision-ui",
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:approve",
+  "scope": "self",
+  "rationale": "Steps approve define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:review-decision-ui:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:37.895895Z",
+  "request_id": "test-review-decision-ui-8a73645b28c7"
+}

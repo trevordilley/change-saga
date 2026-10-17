@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries",
+  "parents": [],
+  "title": "Do not infer newness or hide conflicting definitions",
+  "coverage_kinds": [
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use newInventoryQueryFixture: known base contains store/reader, head adds system/later, reader has competing heads, one earlier commit has absent Saga and another has unreadable Saga."
+  ],
+  "steps": [
+    {
+      "id": "conflicts",
+      "action": "Query inventory normally and with --intent proposed.",
+      "expected_result": "Legacy intent stays unspecified and the conflicting reader remains explicitly unresolved even when no proposed records match.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:remaining-roadmap"
+      ]
+    },
+    {
+      "id": "unknown-base",
+      "action": "Query --new against the unreadable baseline, query the comparison without --new, then request --new without a baseline.",
+      "expected_result": "Unreadable baseline returns baseline_unknown for the filter and unknown newness otherwise; baseline-free --new returns invalid_argument.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new"
+      ]
+    },
+    {
+      "id": "scope-path",
+      "action": "Query inventory --feature and inspect scope_paths plus unresolved rows.",
+      "expected_result": "Only declared feature pins and their members are selected; membership paths identify the System and conflicted members retain scope paths.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+        "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals"
+      ]
+    }
+  ],
+  "expected_result": "Only declared feature pins and their members are selected; membership paths identify the System and conflicted members retain scope paths.",
+  "created_at": "2026-10-16T23:19:51Z",
+  "request_id": "saga-definition-inventory-baseline-boundaries"
+}

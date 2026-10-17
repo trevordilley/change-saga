@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-technical-runtime-infrastructure-3f557817c719",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-technical-runtime-infrastructure",
+  "to": "urn:change-saga:change-saga:story:read-application-technical-design:criterion:platforms",
+  "scope": "self",
+  "rationale": "Steps read, verify define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-technical-runtime-infrastructure:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:read-application-technical-design:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:17.385896Z",
+  "request_id": "test-inventory-technical-runtime-infrastructure-3f557817c719"
+}

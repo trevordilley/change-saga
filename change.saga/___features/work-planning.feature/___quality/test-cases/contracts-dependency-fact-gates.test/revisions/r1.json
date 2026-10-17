@@ -1,0 +1,62 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-dependency-fact-gates",
+  "parents": [],
+  "title": "Evaluate progress, merge and exact-contract dependency facts",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use provider and consumer with required merge unit primary, and separate progress_done, merge_integrated, contract_fulfilled dependencies; contract gate pins handoff v1."
+  ],
+  "steps": [
+    {
+      "id": "done",
+      "action": "Advance provider progress through in_progress to done; evaluate the progress and merge dependencies.",
+      "expected_result": "Progress dependency is satisfied; merge dependency stays unsatisfied with merge_not_integrated or merge_conflicted.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:fact-gates",
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:blocker-reasons"
+      ]
+    },
+    {
+      "id": "integrate",
+      "action": "Record planned, ready and integrated merge events with exact head and merge OIDs; evaluate merge dependency.",
+      "expected_result": "The merge dependency becomes satisfied.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:fact-gates"
+      ]
+    },
+    {
+      "id": "contract",
+      "action": "Create handoff v1 between the same endpoints, fulfill its lifecycle and evaluate its exact-revision dependency.",
+      "expected_result": "The contract dependency becomes satisfied.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:fact-gates"
+      ]
+    },
+    {
+      "id": "public-blockers",
+      "action": "Query work-items/readiness before each fact is met, including fixtures with competing progress/merge/contract heads.",
+      "expected_result": "Every unmet dependency is named by identity with its exact unsatisfied or conflicted fact; no blocker is omitted.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:blocker-reasons"
+      ]
+    },
+    {
+      "id": "reject-condition",
+      "action": "Attempt dependency definitions with unknown gate, missing contract revision, and a progress gate also carrying a contract revision.",
+      "expected_result": "Each invalid or combined condition is rejected without publication.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:dependency-aware-work-plan:criterion:fact-gates"
+      ]
+    }
+  ],
+  "expected_result": "Only the declared fact opens each explicit gate and unmet facts stay explainable.",
+  "created_at": "2026-10-16T23:22:53Z",
+  "request_id": "saga-definition-contracts-dependency-fact-gates"
+}

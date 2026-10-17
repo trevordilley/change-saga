@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-label-invalid-writes-189e50821c50",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-label-invalid-writes",
+  "to": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:valid-references",
+  "scope": "self",
+  "rationale": "Steps check-valid-references define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-label-invalid-writes:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:18:27.397381Z",
+  "request_id": "test-core-label-invalid-writes-189e50821c50"
+}

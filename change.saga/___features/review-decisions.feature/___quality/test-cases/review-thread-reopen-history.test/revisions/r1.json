@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-thread-reopen-history",
+  "parents": [],
+  "title": "Reopen a resolved thread without losing ordered discussion",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Create root comment A and reply B on one slide Item; resolve the thread with explicit action C."
+  ],
+  "steps": [
+    {
+      "id": "resolved",
+      "action": "Inspect discussion after resolution.",
+      "expected_result": "A, B and C remain visible in chronological order and open-thread count is zero.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:preserves-discussion"
+      ]
+    },
+    {
+      "id": "reopen",
+      "action": "Append an explicit reopen action D to the same root thread.",
+      "expected_result": "The thread is open and its slide open-thread count becomes one.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:resolve-reopen"
+      ]
+    },
+    {
+      "id": "history",
+      "action": "Inspect the thread again.",
+      "expected_result": "A, B, C and D remain visible in order with the original slide/Item context.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:preserves-discussion",
+        "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:reply-context"
+      ]
+    }
+  ],
+  "expected_result": "A, B, C and D remain visible in order with the original slide/Item context.",
+  "created_at": "2026-10-16T23:21:50Z",
+  "request_id": "saga-definition-review-thread-reopen-history"
+}

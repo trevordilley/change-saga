@@ -18,6 +18,7 @@
     },
     "title": { "type": "string", "minLength": 1 },
     "coverage_kinds": {
+      "description": "Verification purposes, not run results: positive valid behavior, negative rejection/recovery, edge boundaries. Prefer one purpose per case; declare multiple only when its steps exercise each.",
       "type": "array",
       "minItems": 1,
       "maxItems": 3,
@@ -40,7 +41,8 @@
         "properties": {
           "id": { "$ref": "#/$defs/id" },
           "action": { "type": "string", "minLength": 1 },
-          "expected_result": { "type": "string", "minLength": 1 }
+          "expected_result": { "type": "string", "minLength": 1 },
+          "criteria": {"type": "array", "maxItems": 50000, "uniqueItems": true, "items": {"type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"}, "description": "Canonical criteria refined by this step; currency inherits the case-level verifies relation pins."}
         }
       }
     },

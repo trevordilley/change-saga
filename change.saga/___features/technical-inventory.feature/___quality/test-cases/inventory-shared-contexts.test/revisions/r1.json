@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-shared-contexts",
+  "parents": [],
+  "title": "Reuse one canonical definition from separate design contexts",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Browser fixture has one FeatureFlag System with FlagClient/FlagStore members and checkout/search slides referencing its r1; add a second implementation deck for the manual cross-deck extension."
+  ],
+  "steps": [
+    {
+      "id": "shared",
+      "action": "Open the shared System from checkout and search Items; follow FlagStore then return to the System.",
+      "expected_result": "Both contexts resolve the same System identity, saved member and code without independent definitions.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:shared-identity",
+        "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:contextual-use"
+      ]
+    },
+    {
+      "id": "two-decks",
+      "action": "Give Items in two distinct decks different use descriptions and pin the same saved definition; query both Items.",
+      "expected_result": "Both retain the same canonical identity/revision and their own contextual explanations.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:shared-identity",
+        "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:contextual-use"
+      ]
+    },
+    {
+      "id": "saved",
+      "action": "Revise the System and reopen its old slide Item.",
+      "expected_result": "The old r1 remains readable with stale status, without repinning the context.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding"
+      ]
+    }
+  ],
+  "expected_result": "The old r1 remains readable with stale status, without repinning the context.",
+  "created_at": "2026-10-16T23:20:49Z",
+  "request_id": "saga-definition-inventory-shared-contexts"
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-entity-meaning",
+  "parents": [],
+  "title": "Read logical payloads, persisted records and declared relationships",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Disposable format-2 Saga using the PDF inventory fixture: implemented PDF report held by Record store, proposed JSON PDF job held by Job queue, report-to-job production relationship, application ERD, and pdf-jobs overlay; the reporting ERD also includes a job association with owner 0..many and destination unknown."
+  ],
+  "steps": [
+    {
+      "id": "record",
+      "action": "Open PDF report details and inspect purpose, fields, keys and holder.",
+      "expected_result": "The report is a persisted record, JobID is an authored foreign key note rather than an enforced constraint, and Record store is separately identified as the holding resource.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:logical-and-persisted",
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+        "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource"
+      ]
+    },
+    {
+      "id": "payload",
+      "action": "Open the pinned PDF job from the drawer and inspect its holder and proposal state.",
+      "expected_result": "The code-free proposal remains visible; its pinned drawer says the holder carries the job until a worker consumes it.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:logical-and-persisted",
+        "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+        "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code"
+      ]
+    },
+    {
+      "id": "relations",
+      "action": "Inspect the application production relationship and reporting association, then follow each related entity link.",
+      "expected_result": "Production flows from job to report; association reports 0..many and unknown without guessing; related definitions open at their declared pins.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+        "urn:change-saga:change-saga:story:erd-entity-context:criterion:relationship-navigation"
+      ]
+    }
+  ],
+  "expected_result": "Production flows from job to report; association reports 0..many and unknown without guessing; related definitions open at their declared pins.",
+  "created_at": "2026-10-16T23:03:56Z",
+  "request_id": "saga-definition-inventory-erd-entity-meaning"
+}

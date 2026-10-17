@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "acceptance-requires-criterion-1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-acceptance-requires-criterion"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 252,
+      "end": 261,
+      "digest": "sha256:91172dbc56c0ca585d077959848a6fd8a65e6a175b71e57b04f921f0b42f60c9"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-story-acceptance-rejection-acceptance-requires-criterion-1"
+}

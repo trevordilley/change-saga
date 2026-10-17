@@ -137,7 +137,7 @@ func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report cover
 		Scope:  areas.Scope{Kind: areas.ScopeApp, Head: changes.Head, Feature: feature},
 		Owners: map[string][]string{}, TargetFeature: map[string]string{}, TargetTitle: map[string]string{}, TargetParent: map[string]string{},
 		TargetStories: living.Chain.TargetStories, StoryDesign: living.Chain.StoryDesign, CriterionTests: living.Chain.CriterionTests,
-		ActivePersonas: map[string]bool{}, DesignExcluded: map[string]bool{}, QualityExcluded: map[string]bool{},
+		ActivePersonas: map[string]bool{}, DesignExcluded: map[string]bool{}, QualityExcluded: map[string]bool{}, QualityGaps: map[string][]string{},
 	}
 	targets := documentTargets(document)
 	for target, value := range targets {
@@ -198,6 +198,9 @@ func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report cover
 	}
 	for _, criterion := range living.Axes.Criteria {
 		for _, cell := range criterion.Axes {
+			if cell.Axis == coverage.AxisQuality && cell.Resolution == coverage.ResolutionGap && cell.Gap != nil {
+				in.QualityGaps[criterion.Criterion] = append([]string{}, cell.Gap.Reasons...)
+			}
 			if cell.Resolution != coverage.ResolutionExcluded {
 				continue
 			}
@@ -276,10 +279,10 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 	}
 	for _, testCase := range living.Quality.TestCases {
 		examined = append(examined, healthRecord{Resource: testCase.TestCase, Kind: "test_case", Feature: testCase.Feature})
-	}
-	for _, fact := range living.Quality.Facts {
-		if fact.Required && fact.TestCase != "" && (fact.RunResult == "failed" || fact.RunResult == "blocked") {
-			problems = append(problems, areas.Problem{Resource: fact.TestCase, Kind: "test_case", Feature: featureOf(fact.Criterion), Reason: "its current run " + fact.RunResult + " for " + fact.Criterion})
+		for _, step := range testCase.Steps {
+			for _, issue := range step.Issues {
+				problems = append(problems, areas.Problem{Resource: testCase.TestCase, Kind: "test_case", Feature: testCase.Feature, Reason: "step " + step.ID + ": " + issue})
+			}
 		}
 	}
 	for _, term := range living.Terms {

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-inventory-reject-bad-delivery-d38a660c828b",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+  "scope": "self",
+  "rationale": "Steps missing-delivery, stale-digest, missing-evidence define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-10-16T23:20:39.237311Z",
+  "request_id": "test-inventory-reject-bad-delivery-d38a660c828b"
+}

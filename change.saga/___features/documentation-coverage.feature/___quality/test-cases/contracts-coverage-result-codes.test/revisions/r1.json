@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-result-codes",
+  "parents": [],
+  "title": "Distinguish complete, gap and untrustworthy check results",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use coveredSaga with all six implementation lines covered and no story path; separately use duplicate story IDs across features to make a report untrustworthy."
+  ],
+  "steps": [
+    {
+      "id": "complete",
+      "action": "Check only implementation against main.",
+      "expected_result": "Command succeeds (exit 0).",
+      "criteria": [
+        "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:result-codes"
+      ]
+    },
+    {
+      "id": "gap",
+      "action": "Check implementation and stories against main.",
+      "expected_result": "The valid report returns coverage-gap exit 3.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:result-codes"
+      ]
+    },
+    {
+      "id": "untrusted",
+      "action": "Check health for the duplicate-ID Saga.",
+      "expected_result": "The command errors as untrustworthy rather than returning a coverage-gap result.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:result-codes"
+      ]
+    }
+  ],
+  "expected_result": "Exit 3 means a trustworthy report with an omission, not invalid input or an untrustworthy Saga.",
+  "created_at": "2026-10-16T23:23:35Z",
+  "request_id": "saga-definition-contracts-coverage-result-codes"
+}

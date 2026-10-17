@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-exact-deprecation",
+  "parents": [],
+  "title": "Distinguish explicit deprecated code from related code and neighboring lines",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use deprecation fixture with old.go line 2 and adjacent supported line 3."
+  ],
+  "steps": [
+    {
+      "id": "scope",
+      "action": "Create content-scoped and code-scoped deprecations referring to old.go line 2; query that exact location.",
+      "expected_result": "Reference is pinned to the source commit; code scope labels it deprecated_code while content scope labels it related_code.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:scope"
+      ]
+    },
+    {
+      "id": "neighbor",
+      "action": "Query old.go line 3.",
+      "expected_result": "No annotation matches the neighboring line; code scope is not widened.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:scope"
+      ]
+    }
+  ],
+  "expected_result": "No annotation matches the neighboring line; code scope is not widened.",
+  "created_at": "2026-10-16T23:22:02Z",
+  "request_id": "saga-definition-review-exact-deprecation"
+}

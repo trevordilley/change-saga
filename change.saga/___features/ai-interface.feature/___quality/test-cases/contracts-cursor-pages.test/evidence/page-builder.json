@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "page-builder",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-pages",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-cursor-pages:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "first",
+    "last"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/reviewapp/session.go",
+      "start": 1035,
+      "end": 1047,
+      "digest": "sha256:4470fb8a77263c9c54b8ed27c0cb825e86ca25be43b4dddcd436b34792f32c43"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-cursor-pages-page-builder"
+}

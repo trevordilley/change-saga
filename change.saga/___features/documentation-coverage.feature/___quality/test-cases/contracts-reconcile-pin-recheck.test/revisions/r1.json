@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-pin-recheck",
+  "parents": [],
+  "title": "Recheck after pin repair without clearing semantic reassessment",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use shopSaga with a queue behavior edit that makes one reference stale and implicates its story."
+  ],
+  "steps": [
+    {
+      "id": "route",
+      "action": "Reconcile and inspect the evidence task.",
+      "expected_result": "It offers replace-coverage and a final repin --accept-proposed command with exact record/reference.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop"
+      ]
+    },
+    {
+      "id": "repair",
+      "action": "Apply narrow replacement coverage and re-query reconciliation.",
+      "expected_result": "Stale count becomes zero/current one, but the reassessment queue remains nonempty.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop"
+      ]
+    }
+  ],
+  "expected_result": "Fresh bytes restore currency without proving the explanation still matches intent.",
+  "created_at": "2026-10-16T23:23:23Z",
+  "request_id": "saga-definition-contracts-reconcile-pin-recheck"
+}

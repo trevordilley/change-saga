@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-documentation-named-areas",
+  "parents": [],
+  "title": "Report documentation areas independently with covered and gap entries",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use five changed lines all owned by one implementation Item with no story/persona links; no in-scope design, quality or health facts."
+  ],
+  "steps": [
+    {
+      "id": "areas",
+      "action": "Evaluate the coverage report and serialize JSON.",
+      "expected_result": "Implementation reports five covered lines; stories and personas each report five uncovered lines; design, quality and health remain separate named empty areas with present collections.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:separate-areas"
+      ]
+    },
+    {
+      "id": "status",
+      "action": "Read status --json for the same authored fixture.",
+      "expected_result": "All six named areas and their covered/uncovered collections are exposed under coverage.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:separate-areas"
+      ]
+    }
+  ],
+  "expected_result": "A gap in one area does not erase the facts for another.",
+  "created_at": "2026-10-16T23:23:05Z",
+  "request_id": "saga-definition-contracts-documentation-named-areas"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "no-delivery",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-done-not-delivery",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-done-not-delivery:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "done"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/session_test.go",
+      "start": 58,
+      "end": 63,
+      "digest": "sha256:1642c50877404bd67c50a15581b0130651e7924bf7a6ec2772d5cf543ee60ba9"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/session_test.go",
+      "start": 87,
+      "end": 99,
+      "digest": "sha256:cfc4dff8b5375cc98a86b44e37715ba4aa972b96b86137af7ef40abe896df8af"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-done-not-delivery-no-delivery"
+}

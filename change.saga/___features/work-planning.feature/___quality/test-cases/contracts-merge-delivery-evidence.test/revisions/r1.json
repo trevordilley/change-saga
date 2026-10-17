@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-merge-delivery-evidence",
+  "parents": [],
+  "title": "Record required merge lifecycle with exact head and merge commit",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use CLI item cli with required primary merge unit and known 40-character head OID of ones and merge OID of twos."
+  ],
+  "steps": [
+    {
+      "id": "record",
+      "action": "Record planned, then ready with parent planned/head OID, then integrated with parent ready, head OID and merge commit.",
+      "expected_result": "Every public mutation succeeds and integrated returns one event.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:merge-evidence"
+      ]
+    },
+    {
+      "id": "query",
+      "action": "Query work-events --kind merge for cli through every page and work-items for the item.",
+      "expected_result": "The required primary lifecycle is visible, integrated retains exact head/merge OIDs and parents, and evidence identifies the merge.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:track-work-delivery:criterion:merge-evidence"
+      ]
+    }
+  ],
+  "expected_result": "Delivery remains attributable to immutable source and integration commits.",
+  "created_at": "2026-10-16T23:23:40Z",
+  "request_id": "saga-definition-contracts-merge-delivery-evidence"
+}

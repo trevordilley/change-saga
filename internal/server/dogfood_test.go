@@ -333,7 +333,7 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 		if !strings.Contains(sidebar, `href="`+href+`"`) {
 			t.Fatalf("the sidebar does not list %s", href)
 		}
-		for _, want := range []string{"data-test-definition", "data-test-verifies", "data-test-evidence", "data-test-runs", template.HTMLEscapeString(testCase.CurrentRevision.Title)} {
+		for _, want := range []string{"data-test-definition", "data-test-verifies", "data-test-evidence", "data-test-definition-stage", template.HTMLEscapeString(testCase.CurrentRevision.Title)} {
 			if !strings.Contains(page, want) {
 				t.Fatalf("%s lacks %q", href, want)
 			}

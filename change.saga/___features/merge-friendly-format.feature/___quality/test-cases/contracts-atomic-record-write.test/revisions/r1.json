@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-atomic-record-write",
+  "parents": [],
+  "title": "Leave the previous record intact after interrupted file publication",
+  "coverage_kinds": [
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use a temporary record.json containing old newline and store faultHook that fails before-commit."
+  ],
+  "steps": [
+    {
+      "id": "fault",
+      "action": "Attempt to replace record.json with new newline using WriteFile.",
+      "expected_result": "The write returns an error; original bytes remain old newline; the directory contains only record.json and no temporary files.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:atomic"
+      ]
+    }
+  ],
+  "expected_result": "A failed single-file publication exposes no partial replacement.",
+  "created_at": "2026-10-16T23:23:10Z",
+  "request_id": "saga-definition-contracts-atomic-record-write"
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "contracts-intent-broad-design-path",
+  "created_at": "2026-10-16T23:23:00Z",
+  "request_id": "saga-definition-contracts-intent-broad-design-path"
+}

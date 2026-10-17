@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "three-way-resolution",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "project"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/coverage/axes_test.go",
+      "start": 132,
+      "end": 160,
+      "digest": "sha256:3be5658d9a0850854f289ae322a1678177e35cd08caa4ba2b012bd6688835f99"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-criterion-axis-reasons-three-way-resolution"
+}

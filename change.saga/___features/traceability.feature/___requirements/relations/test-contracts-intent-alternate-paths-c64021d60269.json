@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-contracts-intent-alternate-paths-c64021d60269",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:contracts-intent-alternate-paths",
+  "to": "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths",
+  "scope": "self",
+  "rationale": "Steps all-paths define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:contracts-intent-alternate-paths:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:product-intent-path:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:23:03.661682Z",
+  "request_id": "test-contracts-intent-alternate-paths-c64021d60269"
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-contract-conflicted-head",
+  "parents": [],
+  "title": "Keep unfulfilled or conflicted contract heads blocking",
+  "coverage_kinds": [
+    "negative",
+    "edge"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Use separate isolated fixtures with the same dependency pinned to a uniquely current handoff v1: one proposed, one accepted, and one produced by merging branches with competing fulfilled and violated lifecycle heads."
+  ],
+  "steps": [
+    {
+      "id": "check",
+      "action": "Evaluate the consumer dependency in each fixture using work-items/readiness queries.",
+      "expected_result": "Proposed/accepted contracts are unsatisfied; competing lifecycle heads remain conflicted and do not satisfy the gate.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:exact-revision-gate"
+      ]
+    },
+    {
+      "id": "reconcile",
+      "action": "In the conflicted fixture reconcile all lifecycle parents to one fulfilled event using supported authoring once available; query again.",
+      "expected_result": "Only the single fulfilled head at the still-current v1 opens the dependency.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:exact-revision-gate"
+      ]
+    }
+  ],
+  "expected_result": "Neither an incomplete lifecycle nor one fulfilled competitor opens dependent work.",
+  "created_at": "2026-10-16T23:22:46Z",
+  "request_id": "saga-definition-contracts-contract-conflicted-head"
+}

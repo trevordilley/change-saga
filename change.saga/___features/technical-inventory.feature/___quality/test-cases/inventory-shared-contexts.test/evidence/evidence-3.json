@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-3",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-shared-contexts",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-shared-contexts:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "shared",
+    "saved"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/server/inventory.go",
+      "start": 69,
+      "end": 85,
+      "digest": "sha256:188747d6d939efd3dc41f7e50887cfca7bc448021b6311f88084e5a3c9b88d1f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-shared-contexts-evidence-3"
+}

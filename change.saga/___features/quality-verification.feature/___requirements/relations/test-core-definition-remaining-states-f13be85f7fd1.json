@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-core-definition-remaining-states-f13be85f7fd1",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:core-definition-remaining-states",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty",
+  "scope": "self",
+  "rationale": "Steps check-definition-state-matrix define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:core-definition-remaining-states:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-readiness:revision:definitions-20261016",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:16.658027Z",
+  "request_id": "test-core-definition-remaining-states-f13be85f7fd1"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "untrustworthy",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-result-codes",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-coverage-result-codes:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "untrusted"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/check_test.go",
+      "start": 80,
+      "end": 87,
+      "digest": "sha256:0af9678b92a94b189599f29ba290a158add6f2f86d3c7ab8c06e026b1118c6ca"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-coverage-result-codes-untrustworthy"
+}

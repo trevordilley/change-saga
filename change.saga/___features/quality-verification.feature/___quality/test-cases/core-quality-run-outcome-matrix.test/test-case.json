@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "core-quality-run-outcome-matrix",
+  "created_at": "2026-10-16T23:19:19Z",
+  "request_id": "saga-definition-core-quality-run-outcome-matrix"
+}

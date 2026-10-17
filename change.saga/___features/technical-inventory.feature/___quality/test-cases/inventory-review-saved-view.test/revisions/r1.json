@@ -1,0 +1,55 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-review-saved-view",
+  "parents": [],
+  "title": "Carry canonical inventory pins and code selections into review",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Use inventory_item_test review fixture with Storage System r1 declaring store/queue Components and store evidence lines 2-3; commit the Saga as viewOne before revising definitions."
+  ],
+  "steps": [
+    {
+      "id": "select",
+      "action": "Add review Item storage-use with Storage→store path and only store.go line 3 selected.",
+      "expected_result": "The selection persists the evidence commit, digest and line 3.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse"
+      ]
+    },
+    {
+      "id": "preserve",
+      "action": "Revise store to r2 and relabel the review Item.",
+      "expected_result": "Saved System r1 documentation and its selection remain intact.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:visible-evolution"
+      ]
+    },
+    {
+      "id": "historical",
+      "action": "Try historical store r1 without a view, with mismatching HEAD, with a missing commit, and finally with viewOne.",
+      "expected_result": "Only the exact saved view is admitted, recorded as a full commit, keeping the committed earlier design available.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan"
+      ]
+    },
+    {
+      "id": "full-handoff",
+      "action": "Compare a committed proposed design and delivered implementation/review across System, Component and data entity, including changed definitions and code selections.",
+      "expected_result": "The same stable identities and original proposal are traceable alongside changed selections and delivered code.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+        "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+        "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:visible-evolution"
+      ]
+    }
+  ],
+  "expected_result": "The same stable identities and original proposal are traceable alongside changed selections and delivered code.",
+  "created_at": "2026-10-16T23:20:56Z",
+  "request_id": "saga-definition-inventory-review-saved-view"
+}

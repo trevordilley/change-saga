@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts",
+  "parents": [],
+  "title": "Preserve independent revision and lifecycle records after a merge",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Create checkout r1/proposed in an isolated Saga; create two branch-local r1 children with distinct definitions and accepted/rejected lifecycle children, then merge those immutable records as the test fixtures do."
+  ],
+  "steps": [
+    {
+      "id": "definitions",
+      "action": "Load the merged story.",
+      "expected_result": "Both revision heads remain present, revision_conflict is true, and there is no fabricated current revision.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts"
+      ]
+    },
+    {
+      "id": "lifecycle",
+      "action": "Load the merged lifecycle graph.",
+      "expected_result": "Both event branches remain separate, lifecycle_conflict is true, and no current lifecycle winner is selected.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts"
+      ]
+    },
+    {
+      "id": "records",
+      "action": "Inspect the separate immutable revision and event records in the fixture and compare their original bytes.",
+      "expected_result": "Each record retains its identity and complete content; no branch overwrote the other.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned"
+      ]
+    }
+  ],
+  "expected_result": "Concurrent branch histories remain explicit instead of last-writer-wins.",
+  "created_at": "2026-10-16T23:23:08Z",
+  "request_id": "saga-definition-contracts-parallel-partitioned-conflicts"
+}

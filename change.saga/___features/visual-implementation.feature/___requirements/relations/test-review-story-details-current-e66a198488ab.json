@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "test-review-story-details-current-e66a198488ab",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:review-story-details-current",
+  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details",
+  "scope": "self",
+  "rationale": "Steps drawer, details define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:review-story-details-current:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:diagram-element-intent:revision:r1",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:58.089095Z",
+  "request_id": "test-review-story-details-current-e66a198488ab"
+}

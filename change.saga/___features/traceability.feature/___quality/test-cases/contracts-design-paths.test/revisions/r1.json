@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-design-paths",
+  "parents": [],
+  "title": "Follow design links to requirements and delivered evidence",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Use an accepted story S with criterion C, design D linked by addresses to C, work item W linked by implements to D, and integrated merge evidence on W; save the exact story revision and design digest when authoring relations.",
+    "A direct requirement-revision field on every edge is not assumed. If the required historical context cannot be recovered through saved pins, record the verification gap."
+  ],
+  "steps": [
+    {
+      "id": "relations",
+      "action": "Query relations from D and to D; inspect the saved endpoint pins.",
+      "expected_result": "Requirement and implementation neighbors are returned. For each tested relationship, the exact saved design content digest and requirement revision are recoverable directly or through an explicitly pinned context path.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path",
+        "urn:change-saga:change-saga:story:design-usage-path:criterion:pinned-context"
+      ]
+    },
+    {
+      "id": "trace",
+      "action": "Query traceability for S/C and follow the declared paths through D and W to immutable merge evidence.",
+      "expected_result": "D is reachable from the criterion and its implementation path reaches the persisted evidence.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path"
+      ]
+    }
+  ],
+  "expected_result": "The design can be followed in both directions with exact historical context.",
+  "created_at": "2026-10-16T23:22:58Z",
+  "request_id": "saga-definition-contracts-design-paths"
+}

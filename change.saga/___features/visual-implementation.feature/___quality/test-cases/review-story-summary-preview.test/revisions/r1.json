@@ -1,0 +1,52 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-summary-preview",
+  "parents": [],
+  "title": "Preview only Items with story links on hover and keyboard focus",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "hybrid",
+  "preconditions": [
+    "Active Request enters slide has one code-only Item and one story-only Item."
+  ],
+  "steps": [
+    {
+      "id": "hover",
+      "action": "Hover the slide story count.",
+      "expected_result": "Only story-linked Item receives the preview highlight.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:summary-preview"
+      ]
+    },
+    {
+      "id": "unhover",
+      "action": "Move the pointer to the brand.",
+      "expected_result": "The story Item preview clears.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:summary-preview"
+      ]
+    },
+    {
+      "id": "focus",
+      "action": "Focus the story count.",
+      "expected_result": "The story Item is highlighted.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:summary-preview"
+      ]
+    },
+    {
+      "id": "blur",
+      "action": "Move keyboard focus outside the story summary without opening a drawer.",
+      "expected_result": "The preview clears on every Item.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:diagram-element-intent:criterion:summary-preview"
+      ]
+    }
+  ],
+  "expected_result": "The preview clears on every Item.",
+  "created_at": "2026-10-16T23:22:00Z",
+  "request_id": "saga-definition-review-story-summary-preview"
+}

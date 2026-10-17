@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "description",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "schema"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query.go",
+      "start": 634,
+      "end": 646,
+      "digest": "sha256:6c46f3d1dd77285fbfb8f96aa56decf6667df84e36a52c7ba31d1326d74bdcc5"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:24:10Z",
+  "request_id": "saga-evidence-contracts-query-operation-discovery-description"
+}

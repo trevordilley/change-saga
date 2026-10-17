@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-4",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-implementation-history",
+  "test_revision": "urn:change-saga:change-saga:test-case:inventory-implementation-history:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "implement"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 337,
+      "end": 379,
+      "digest": "sha256:cb01c39588dbc97b99597cb27e71246e72bd2fdad20861acadde645bc46eefe6"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:50Z",
+  "request_id": "saga-evidence-inventory-implementation-history-evidence-4"
+}

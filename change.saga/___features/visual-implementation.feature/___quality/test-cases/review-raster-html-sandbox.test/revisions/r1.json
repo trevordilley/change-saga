@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:review-raster-html-sandbox",
+  "parents": [],
+  "title": "Accept raster slides and sandbox interactive HTML",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Have small valid PNG, JPEG and WebP files, plus self-contained HTML that changes its own DOM and attempts parent document access."
+  ],
+  "steps": [
+    {
+      "id": "raster",
+      "action": "Create a separate slide for each raster file using its explicit media type and open each slide.",
+      "expected_result": "Each raster slide is accepted and displays its image.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media"
+      ]
+    },
+    {
+      "id": "sandbox",
+      "action": "Add and open the HTML slide.",
+      "expected_result": "Its content runs inside the sandboxed slide; it cannot access the parent document or remove the sandbox.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media"
+      ]
+    }
+  ],
+  "expected_result": "Its content runs inside the sandboxed slide; it cannot access the parent document or remove the sandbox.",
+  "created_at": "2026-10-16T23:22:21Z",
+  "request_id": "saga-definition-review-raster-html-sandbox"
+}

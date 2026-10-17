@@ -230,7 +230,7 @@ type QualityCriterion struct {
 }
 
 // KindStatus is one coverage kind for one criterion. State is one of covered,
-// missing_kind, not_run, failed, blocked, skipped, stale, inactive, invalid,
+// missing_kind, missing_mapping, stale, inactive, invalid,
 // conflicted, or excluded.
 type KindStatus struct {
 	Kind      string   `json:"kind"`
@@ -243,31 +243,28 @@ type KindStatus struct {
 // TestLinkRow is one verifies relation from a test case to a criterion and the
 // evaluated state of the test behind it.
 type TestLinkRow struct {
-	Relation  string   `json:"relation"`
-	TestCase  string   `json:"test_case"`
-	State     string   `json:"state"`
-	Kinds     []string `json:"kinds"`
-	Run       string   `json:"run,omitempty"`
-	RunResult string   `json:"run_result,omitempty"`
-	Reasons   []string `json:"reasons"`
+	Relation string   `json:"relation"`
+	TestCase string   `json:"test_case"`
+	State    string   `json:"state"`
+	Kinds    []string `json:"kinds"`
+	Reasons  []string `json:"reasons"`
 }
 
-// TestCaseStatus is one test case and what it currently proves.
+// TestCaseStatus is one test case and its current verification definition.
 type TestCaseStatus struct {
-	TestCase        string         `json:"test_case"`
-	Feature         string         `json:"feature"`
-	Title           string         `json:"title,omitempty"`
-	Lifecycle       string         `json:"lifecycle"`
-	RevisionHeads   []string       `json:"revision_heads"`
-	CurrentRevision string         `json:"current_revision,omitempty"`
-	Kinds           []string       `json:"kinds"`
-	Automation      string         `json:"automation,omitempty"`
-	RunHeads        []string       `json:"run_heads"`
-	CurrentRun      string         `json:"current_run,omitempty"`
-	RunResult       string         `json:"run_result,omitempty"`
-	Verifies        []VerifiesLink `json:"verifies"`
+	TestCase        string           `json:"test_case"`
+	Feature         string           `json:"feature"`
+	Title           string           `json:"title,omitempty"`
+	Definition      string           `json:"definition"`
+	Lifecycle       string           `json:"lifecycle"`
+	RevisionHeads   []string         `json:"revision_heads"`
+	CurrentRevision string           `json:"current_revision,omitempty"`
+	Kinds           []string         `json:"kinds"`
+	Automation      string           `json:"automation,omitempty"`
+	Verifies        []VerifiesLink   `json:"verifies"`
+	Steps           []TestStepStatus `json:"steps"`
 	// Orphaned is true when no active verifies relation connects the test to
-	// any criterion, so it proves nothing about any story.
+	// any criterion, so it documents no story mapping.
 	Orphaned bool `json:"orphaned"`
 }
 
@@ -281,16 +278,13 @@ type VerifiesLink struct {
 	Reasons   []string `json:"reasons"`
 }
 
-// QualityFactStatus is the readiness.QualityFact the gate evaluated, exposed so
-// the gate verdict can be traced without re-deriving it.
+// QualityFactStatus explains the per-kind definition coverage calculation.
 type QualityFactStatus struct {
 	Criterion        string   `json:"criterion"`
 	Kind             string   `json:"kind"`
 	Required         bool     `json:"required"`
 	State            string   `json:"state"`
 	TestCase         string   `json:"test_case,omitempty"`
-	RunResult        string   `json:"run_result,omitempty"`
-	RunHeads         []string `json:"run_heads"`
 	EvidenceResolved bool     `json:"evidence_resolved"`
 	StaleReasons     []string `json:"stale_reasons"`
 }
@@ -385,4 +379,15 @@ type Implicated struct {
 	Resource string   `json:"resource"`
 	Kind     string   `json:"kind"`
 	Via      []string `json:"via"`
+}
+
+// TestStepStatus navigates canonical criteria, their pinned case relations, and evidence.
+type TestStepStatus struct {
+	Step     string         `json:"step"`
+	Revision string         `json:"revision"`
+	ID       string         `json:"id"`
+	Criteria []string       `json:"criteria"`
+	Verifies []VerifiesLink `json:"verifies"`
+	Evidence []string       `json:"evidence"`
+	Issues   []string       `json:"issues"`
 }

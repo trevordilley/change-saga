@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:core-policy-automation-restriction",
+  "parents": [],
+  "title": "Exclude test definitions outside allowed automation",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "manual",
+  "preconditions": [
+    "Use separate fixtures for each nonempty subset of manual, hybrid and automated; otherwise identical linked cases differ only in automation."
+  ],
+  "steps": [
+    {
+      "id": "check-allowed-automation",
+      "action": "Apply each allowed-automation subset and inspect every case variant, including a manual-only policy.",
+      "expected_result": "Allowed modes may cover the criterion; excluded modes report automation not allowed and cannot satisfy it.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:allowed-automation"
+      ]
+    }
+  ],
+  "expected_result": "Exclude test definitions outside allowed automation.",
+  "created_at": "2026-10-16T23:19:49Z",
+  "request_id": "saga-definition-core-policy-automation-restriction"
+}

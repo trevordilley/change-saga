@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-code-staleness-assertions",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-source-staleness",
+  "test_revision": "urn:change-saga:change-saga:test-case:core-quality-source-staleness:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "check-code-staleness"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/livingapp/quality_queries_test.go",
+      "start": 58,
+      "end": 79,
+      "digest": "sha256:f043bef589383f2636fb21245fc17f18862174687a6dc77b9c58526ac7d2ad49"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-10-16T23:23:49Z",
+  "request_id": "saga-evidence-core-quality-source-staleness-check-code-staleness-assertions"
+}
