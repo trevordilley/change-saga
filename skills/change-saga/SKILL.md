@@ -255,7 +255,7 @@ reference. When a task crosses rows, combine only those rows.
 | Describe implemented features; Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
 | Author Components, Systems, data entities, ERDs, their relationships, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
-| Author technical design: an approach essay, supporting pages, and ERD, Infrastructure and Data flows whiteboards | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
+| Author technical design: an approach essay, supporting pages, and ERD, Infrastructure, Data flows and Architecture whiteboards | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
 | Categorize features by optional product themes, author rationale overviews and decks | [Product themes](references/feature-themes.md) |
@@ -331,6 +331,11 @@ documentation, so requirements, designs, tests, and decks describe current
 intent rather than carrying review verdicts. This is not a waterfall:
 discovery may revise earlier records, but it does so with new immutable
 history rather than rewriting what was previously known.
+
+Technical Design includes an Architecture whiteboard alongside ERD, Infrastructure
+and Data flows. For codebase structure, patterns, state ownership and technology
+choices, read [architecture guidance](references/architecture.md). Reuse the
+shared whiteboard format; feature decks link to the wider architectural context.
 
 ## Common workflow
 

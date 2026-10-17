@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/server/reviewcache.go",
+      "start": 16,
+      "end": 83,
+      "digest": "sha256:a4042257d6bacdfe685a16598654d19f19247a44dbe9909433364ec238fb0b12",
+      "note": "Source for the cache validity explanation."
+    }
+  ]
+}

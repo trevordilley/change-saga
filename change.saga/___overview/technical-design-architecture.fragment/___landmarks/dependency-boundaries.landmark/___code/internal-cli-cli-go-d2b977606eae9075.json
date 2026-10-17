@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/cli/cli.go",
+      "start": 20,
+      "end": 41,
+      "digest": "sha256:64bfa31410d5c8037e25c68f1c28f826ae97fe45bd37ccca95d07b3fe08773ce",
+      "note": "Source for the dependency boundaries explanation."
+    }
+  ]
+}

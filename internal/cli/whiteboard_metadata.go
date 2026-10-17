@@ -23,7 +23,7 @@ func whiteboardMetadataCommand(ctx context.Context, op string, args []string, ou
 	}
 	switch op {
 	case "assign-role", "unassign-role":
-		flags.StringVar(&role, "role", "", "erd, infrastructure or data-flows")
+		flags.StringVar(&role, "role", "", "erd, infrastructure, data-flows or architecture")
 	case "rename":
 		flags.StringVar(&title, "name", "", "new display title")
 	}

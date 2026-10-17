@@ -12,6 +12,12 @@ tool, and what they have to do about it.
 
 ### Added
 
+- **Format:** Architecture is the fourth Technical Design whiteboard role, using
+  the shared renderer, revision history and assignment commands. Existing
+  three-role metadata remains valid; older readers must upgrade before reading
+  metadata with the optional `architecture` key. Guidance covers codebase
+  boundaries, design choices and a shared technology-stack reference.
+
 - Visual storytelling guidance for first-time Saga authors: connected review
   narratives, named ownership sections, consistent semantic colors, concrete
   examples, and readable slide/whiteboard detail with visual calibration.
@@ -61,7 +67,7 @@ tool, and what they have to do about it.
 
 ### Changed
 
-- Technical Design shows exactly ERD, Infrastructure, and Data flows role
+- Technical Design shows ERD, Infrastructure, Data flows, and Architecture role
   entries; assigning an existing board consolidates its navigation entry.
   Other active boards remain discoverable from the overview and named URLs.
 - Named boards open at `/technical/whiteboards/<id>`. The whiteboard CLI uses

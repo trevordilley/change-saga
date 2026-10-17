@@ -345,7 +345,7 @@ func TestMultipleERDDocumentsAndSharedOverview(t *testing.T) {
 		t.Fatal(err)
 	}
 	nav := technicalNav(inventory, true, nil)
-	if len(nav) != 3 || nav[0].Title != "ERD" || len(nav[0].Children) != 0 {
+	if len(nav) != 4 || nav[0].Title != "ERD" || len(nav[0].Children) != 0 {
 		t.Fatal("technical design must list three boards, not source records")
 	}
 }

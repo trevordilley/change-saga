@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/diagram/model.go",
+      "start": 1,
+      "end": 10,
+      "digest": "sha256:6b720ceb5f18f1d8e6fae01558d4196a6c97d8711673c8c3feddbd75098466a7",
+      "note": "Source for the shared presentation explanation."
+    }
+  ]
+}

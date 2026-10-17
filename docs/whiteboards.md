@@ -1,7 +1,7 @@
 # Whiteboards for technical design
 
 A Technical design explains how an application works through one approach essay
-and three whiteboards. The essay is the starting point at `/technical`; supporting
+and four whiteboards. The essay is the starting point at `/technical`; supporting
 pages expand decisions and link back into the relevant diagrams.
 
 | Part | What it explains | Document / route |
@@ -10,6 +10,7 @@ pages expand decisions and link back into the relevant diagrams.
 | ERD | Entities and relationships with proper crow's-foot cardinality and optionality. | `data-model` · `/technical/erd` |
 | Infrastructure | The actual layout of platforms, deployed services, resources, boundaries and connections. | `infrastructure` · `/technical/whiteboards/infrastructure` |
 | Data flows | How data moves through the application, including key services, stores, transformations, inputs and outputs. | `data-flows` · `/technical/whiteboards/data-flows` |
+| Architecture | How the codebase fits together: dependency direction, ownership, design patterns, state management and consequential technology choices. | `architecture` · `/technical/whiteboards/architecture` |
 
 Systems and Components are no longer Technical design navigation areas. Existing
 inventory definitions remain readable through saved evidence links. Authors can
@@ -38,15 +39,35 @@ not replace a crow's-foot marker. Infrastructure and data-flow connections use
 directed arrows where direction matters, with labels explaining their meaning.
 
 Each whiteboard is a cohesive spatial document with nested sections and room to
-pan, zoom and inspect detail. All three use the shared diagram grammar and
+pan, zoom and inspect detail. All four use the shared diagram grammar and
 independent revision histories. They are authoring conventions, not new
 inventory kinds or different JSON formats.
+
+## Architecture: the context for implementation
+
+Open with a codebase map a new maintainer can read at a glance. Show real
+responsibility boundaries, dependency direction and the seams that keep changes
+local. Then provide focused sections or linked supporting whiteboards for the
+interesting mechanisms: dependency injection and composition, factories or
+adapters, frontend state ownership, caching and invalidation, concurrency, or
+mergeable persistence. Choose what the code actually does; a pattern name alone
+is not an explanation or a quality score. Show the tradeoff and remaining
+coupling as well as the intended benefit.
+
+Keep one authoritative technology-stack essay, for example
+`/technical/pages/technology-stack`, listing each choice, its responsibility,
+why it is used, and its constraints. Link to it from the board and the approach.
+Use supporting essays for detail; the main Architecture surface stays visual.
+Feature implementation decks link to the relevant architecture section and
+explain their local mechanism rather than repeating the application-wide map.
+See the [architecture authoring guidance](../skills/change-saga/references/architecture.md)
+for the question-led storyboard and evidence expectations.
 
 ## Named documents
 
 A Saga can hold several independent whiteboards. Each has a document ID, title
 and immutable revision history. All use the same shared diagram grammar and
-whiteboard JSON contract; data models, infrastructure and data flows are
+whiteboard JSON contract; data models, infrastructure, data flows and architecture are
 authoring subjects, not kinds. Use `change-saga whiteboard
 publish|get|describe|check --id ID`. For example, publish separate documents:
 
@@ -67,7 +88,7 @@ The existing Data model page at `/technical/erd` uses `data-model` by default.
 Use `whiteboard list --json` to inspect effective roles and
 `whiteboard assign-role --id ID --role erd --expect ID_OR_none` to assign an
 existing board. Role assignment preserves its ID, content, history, and named
-URLs. The sidebar contains ERD, Infrastructure, and Data flows; other boards
+URLs. The sidebar contains ERD, Infrastructure, Data flows, and Architecture; other boards
 remain discoverable from the Technical Design overview. See
 [authoring operations](authoring-operations.md) for reassignment, rename,
 archival, dry-run and concurrency checks.

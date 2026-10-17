@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/server/assets.go",
+      "start": 14,
+      "end": 35,
+      "digest": "sha256:19b6676cba11b5d250232394c8aca9155e82cd21613ba832a4b6a84befc3acbc",
+      "note": "Technology role, dependency or documented rationale for the shared stack reference."
+    }
+  ]
+}

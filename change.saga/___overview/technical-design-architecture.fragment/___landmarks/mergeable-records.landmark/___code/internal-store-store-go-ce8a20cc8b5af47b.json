@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/store/store.go",
+      "start": 27,
+      "end": 35,
+      "digest": "sha256:ab4096d7e14cb525cf569cbd90ce43fbcc874f0c656cf26a7aa7a93779541cce",
+      "note": "Source for the mergeable records explanation."
+    }
+  ]
+}

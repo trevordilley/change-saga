@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "cache-validity",
+  "label": "Cache validity",
+  "selector": {
+    "type": "heading",
+    "heading_id": "cache-validity"
+  },
+  "target": ""
+}

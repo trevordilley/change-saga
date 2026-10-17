@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "mergeable-records",
+  "label": "Mergeable records",
+  "selector": {
+    "type": "heading",
+    "heading_id": "mergeable-records"
+  },
+  "target": ""
+}

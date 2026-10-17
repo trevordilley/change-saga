@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "markdown",
+  "label": "Goldmark",
+  "selector": {
+    "type": "text",
+    "exact": "Goldmark"
+  },
+  "target": ""
+}

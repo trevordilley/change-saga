@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "go-runtime",
+  "label": "Go and its standard library",
+  "selector": {
+    "type": "text",
+    "exact": "Go and its standard library"
+  },
+  "target": ""
+}

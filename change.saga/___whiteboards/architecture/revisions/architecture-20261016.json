@@ -1,0 +1,741 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json",
+  "version": 1,
+  "id": "architecture-20261016",
+  "parents": [],
+  "name": "How Change Saga fits together",
+  "document": {
+    "version": 1,
+    "width": 1640,
+    "height": 3760,
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "width": 1640,
+      "height": 1020
+    },
+    "styles": {
+      "blue-node": {
+        "fill": "@diagram-blue-tint",
+        "stroke": "@diagram-blue-accent",
+        "ink": "@diagram-blue-ink",
+        "stroke_width": 2,
+        "font_size": 25
+      },
+      "body": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 1,
+        "font_size": 26
+      },
+      "green-node": {
+        "fill": "@diagram-green-tint",
+        "stroke": "@diagram-green-accent",
+        "ink": "@diagram-green-ink",
+        "stroke_width": 2,
+        "font_size": 25
+      },
+      "normal": {
+        "fill": "@diagram-normal-fill",
+        "stroke": "@diagram-normal-stroke",
+        "ink": "@diagram-normal-ink",
+        "stroke_width": 2,
+        "font_size": 25
+      },
+      "purple-node": {
+        "fill": "@diagram-purple-tint",
+        "stroke": "@diagram-purple-accent",
+        "ink": "@diagram-purple-ink",
+        "stroke_width": 2,
+        "font_size": 25
+      },
+      "small": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "@diagram-secondary-ink",
+        "stroke_width": 1,
+        "font_size": 23
+      },
+      "yellow-node": {
+        "fill": "@diagram-yellow-tint",
+        "stroke": "@diagram-yellow-accent",
+        "ink": "@diagram-yellow-ink",
+        "stroke_width": 2,
+        "font_size": 25
+      }
+    },
+    "elements": [
+      {
+        "id": "codebase",
+        "kind": "group",
+        "shape": "section",
+        "label": "01 / One durable model, several ways to read it",
+        "x": 30,
+        "y": 25,
+        "width": 1580,
+        "height": 840,
+        "style": "boundary",
+        "color": "blue"
+      },
+      {
+        "id": "codebase-thesis",
+        "kind": "text",
+        "label": "Go domain libraries own meaning; the CLI and HTTP reader compose them.",
+        "x": 35,
+        "y": 45,
+        "width": 1480,
+        "height": 65,
+        "parent": "codebase",
+        "style": "title",
+        "wrap": true
+      },
+      {
+        "id": "codebase-guide",
+        "kind": "text",
+        "label": "Follow dependency arrows downward. Blue = entry points · purple = semantics · green = durable boundary. Focus the next sections for mergeability, caching and presentation.",
+        "x": 35,
+        "y": 120,
+        "width": 1480,
+        "height": 90,
+        "parent": "codebase",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "codebase-cli",
+        "kind": "node",
+        "shape": "rect",
+        "label": "CLI authoring + query\nTyped requests, validation and bounded JSON",
+        "x": 40,
+        "y": 235,
+        "width": 660,
+        "height": 130,
+        "parent": "codebase",
+        "style": "blue-node",
+        "wrap": true
+      },
+      {
+        "id": "codebase-http",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Loopback HTTP reader\nHTML pages, review actions and evidence endpoints",
+        "x": 850,
+        "y": 235,
+        "width": 660,
+        "height": 130,
+        "parent": "codebase",
+        "style": "blue-node",
+        "wrap": true
+      },
+      {
+        "id": "codebase-domain",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Domain libraries\nrequirements · quality · saga · semanticgraph · coverage",
+        "x": 320,
+        "y": 435,
+        "width": 930,
+        "height": 130,
+        "parent": "codebase",
+        "style": "purple-node",
+        "wrap": true
+      },
+      {
+        "id": "codebase-persistence",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Publication boundary\nstore locks + atomic file/directory publication",
+        "x": 40,
+        "y": 640,
+        "width": 660,
+        "height": 130,
+        "parent": "codebase",
+        "style": "green-node",
+        "wrap": true
+      },
+      {
+        "id": "codebase-source",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Source interpretation\ngitexec / gitdiff + coderesolve",
+        "x": 850,
+        "y": 640,
+        "width": 660,
+        "height": 130,
+        "parent": "codebase",
+        "style": "green-node",
+        "wrap": true
+      },
+      {
+        "id": "cli-domain",
+        "kind": "connection",
+        "label": "calls typed operations",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "codebase/codebase-cli",
+        "to": "codebase/codebase-domain",
+        "head": "arrow",
+        "label_box": {
+          "x": 467.5,
+          "y": 403,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "http-domain",
+        "kind": "connection",
+        "label": "builds reading projections",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "codebase/codebase-http",
+        "to": "codebase/codebase-domain",
+        "head": "arrow",
+        "label_box": {
+          "x": 872.5,
+          "y": 403,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "domain-store",
+        "kind": "connection",
+        "label": "publishes authored records",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "codebase/codebase-domain",
+        "to": "codebase/codebase-persistence",
+        "head": "arrow",
+        "label_box": {
+          "x": 467.5,
+          "y": 605.5,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "domain-source",
+        "kind": "connection",
+        "label": "resolves pinned code",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "codebase/codebase-domain",
+        "to": "codebase/codebase-source",
+        "head": "arrow",
+        "label_box": {
+          "x": 872.5,
+          "y": 605.5,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "locator",
+        "kind": "text",
+        "label": "Start here, then focus: 02 Mergeable history · 03 Cache validity · 04 Shared presentation. Technology choices and supporting evidence are in the linked Architecture notes.",
+        "x": 55,
+        "y": 900,
+        "width": 1500,
+        "height": 95,
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "mergeability",
+        "kind": "group",
+        "shape": "section",
+        "label": "02 / Keep parallel edits small; keep disagreement visible",
+        "x": 30,
+        "y": 1040,
+        "width": 1580,
+        "height": 840,
+        "style": "boundary",
+        "color": "green"
+      },
+      {
+        "id": "mergeability-thesis",
+        "kind": "text",
+        "label": "Independent records merge; competing definitions still require a decision.",
+        "x": 35,
+        "y": 45,
+        "width": 1480,
+        "height": 65,
+        "parent": "mergeability",
+        "style": "title",
+        "wrap": true
+      },
+      {
+        "id": "mergeability-context",
+        "kind": "text",
+        "label": "Stable identities connect references across moves. Immutable revisions and review events are separate files; presentation metadata remains mutable.",
+        "x": 35,
+        "y": 120,
+        "width": 1480,
+        "height": 85,
+        "parent": "mergeability",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "mergeability-base",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Shared story identity\nDefinition r1 is the common parent",
+        "x": 70,
+        "y": 245,
+        "width": 410,
+        "height": 130,
+        "parent": "mergeability",
+        "style": "green-node",
+        "wrap": true
+      },
+      {
+        "id": "mergeability-author-a",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Author A\nNew definition r2 → parent r1",
+        "x": 620,
+        "y": 225,
+        "width": 410,
+        "height": 130,
+        "parent": "mergeability",
+        "style": "blue-node",
+        "wrap": true
+      },
+      {
+        "id": "mergeability-author-b",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Author B\nNew definition r3 → parent r1",
+        "x": 620,
+        "y": 470,
+        "width": 410,
+        "height": 130,
+        "parent": "mergeability",
+        "style": "purple-node",
+        "wrap": true
+      },
+      {
+        "id": "mergeability-read",
+        "kind": "node",
+        "shape": "rect",
+        "label": "After Git combines the files\nTwo definition heads remain visible",
+        "x": 1140,
+        "y": 345,
+        "width": 370,
+        "height": 190,
+        "parent": "mergeability",
+        "style": "yellow-node",
+        "wrap": true
+      },
+      {
+        "id": "branch-a",
+        "kind": "connection",
+        "label": "new file",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "mergeability/mergeability-base",
+        "to": "mergeability/mergeability-author-a",
+        "head": "arrow",
+        "label_box": {
+          "x": 440,
+          "y": 1318,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "branch-b",
+        "kind": "connection",
+        "label": "new file",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "mergeability/mergeability-base",
+        "to": "mergeability/mergeability-author-b",
+        "head": "arrow",
+        "label_box": {
+          "x": 440,
+          "y": 1440.5,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "merge-a",
+        "kind": "connection",
+        "label": "r2",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "mergeability/mergeability-author-a",
+        "to": "mergeability/mergeability-read",
+        "head": "arrow",
+        "label_box": {
+          "x": 965,
+          "y": 1383,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "merge-b",
+        "kind": "connection",
+        "label": "r3",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "mergeability/mergeability-author-b",
+        "to": "mergeability/mergeability-read",
+        "head": "arrow",
+        "label_box": {
+          "x": 965,
+          "y": 1505.5,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "mergeability-limit",
+        "kind": "text",
+        "label": "Merge-friendly is not conflict-free. The reader does not silently choose the newest timestamp. A deliberate revision reconciles the observed parents.",
+        "x": 45,
+        "y": 670,
+        "width": 1460,
+        "height": 65,
+        "parent": "mergeability",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "mergeability-write-limit",
+        "kind": "text",
+        "label": "Cooperating local writers take locks. File publication is atomic; multi-file batches attempt rollback and are not crash-atomic. Git merging is a separate boundary.",
+        "x": 45,
+        "y": 755,
+        "width": 1460,
+        "height": 65,
+        "parent": "mergeability",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "cache-validity",
+        "kind": "group",
+        "shape": "section",
+        "label": "03 / Reuse only the work whose inputs still match",
+        "x": 30,
+        "y": 1960,
+        "width": 1580,
+        "height": 840,
+        "style": "boundary",
+        "color": "yellow"
+      },
+      {
+        "id": "cache-validity-thesis",
+        "kind": "text",
+        "label": "Different questions need different cache keys—not one global TTL.",
+        "x": 35,
+        "y": 45,
+        "width": 1480,
+        "height": 65,
+        "parent": "cache-validity",
+        "style": "title",
+        "wrap": true
+      },
+      {
+        "id": "cache-validity-context",
+        "kind": "text",
+        "label": "One freshness check feeds several projections. Derived generations live outside the Saga, so rebuilding does not create authored Git changes.",
+        "x": 35,
+        "y": 120,
+        "width": 1480,
+        "height": 85,
+        "parent": "cache-validity",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "cache-validity-freshness",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Freshness check\nSaga fingerprints + source context",
+        "x": 490,
+        "y": 230,
+        "width": 600,
+        "height": 120,
+        "parent": "cache-validity",
+        "style": "blue-node",
+        "wrap": true
+      },
+      {
+        "id": "cache-validity-docs",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Documentation generation\nKey: documentation fingerprint\nLazy parts built with sync.Once",
+        "x": 35,
+        "y": 465,
+        "width": 470,
+        "height": 165,
+        "parent": "cache-validity",
+        "style": "green-node",
+        "wrap": true
+      },
+      {
+        "id": "cache-validity-review",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Review coverage\nKey: commit range + repository +\nGit attributes + Item evidence",
+        "x": 555,
+        "y": 465,
+        "width": 470,
+        "height": 165,
+        "parent": "cache-validity",
+        "style": "purple-node",
+        "wrap": true
+      },
+      {
+        "id": "cache-validity-disk",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Persistent derived generation\nKey: Saga location + tree + source\nStage, then publish by rename",
+        "x": 1075,
+        "y": 465,
+        "width": 470,
+        "height": 165,
+        "parent": "cache-validity",
+        "style": "yellow-node",
+        "wrap": true
+      },
+      {
+        "id": "docs-key",
+        "kind": "connection",
+        "label": "same documentation",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "cache-validity/cache-validity-freshness",
+        "to": "cache-validity/cache-validity-docs",
+        "head": "arrow",
+        "label_box": {
+          "x": 420,
+          "y": 2356.75,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "review-key",
+        "kind": "connection",
+        "label": "same coverage inputs",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "cache-validity/cache-validity-freshness",
+        "to": "cache-validity/cache-validity-review",
+        "head": "arrow",
+        "label_box": {
+          "x": 680,
+          "y": 2356.75,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "disk-key",
+        "kind": "connection",
+        "label": "exact source identity",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "cache-validity/cache-validity-freshness",
+        "to": "cache-validity/cache-validity-disk",
+        "head": "arrow",
+        "label_box": {
+          "x": 940,
+          "y": 2356.75,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "cache-validity-invalid",
+        "kind": "text",
+        "label": "Changed inputs → new key → rebuild. Unpinnable WORKTREE input is excluded from persistent reuse; failed/provisional coverage is not retained as a stable answer.",
+        "x": 45,
+        "y": 675,
+        "width": 1470,
+        "height": 65,
+        "parent": "cache-validity",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "cache-validity-cost",
+        "kind": "text",
+        "label": "Browser work has another boundary: /decks loads only when opened. First open still renders all deck markup; deferred work reduces ordinary navigation cost, not every cost.",
+        "x": 45,
+        "y": 755,
+        "width": 1470,
+        "height": 65,
+        "parent": "cache-validity",
+        "style": "small",
+        "wrap": true
+      },
+      {
+        "id": "presentation",
+        "kind": "group",
+        "shape": "section",
+        "label": "04 / Share rendering mechanisms; retain different meanings",
+        "x": 30,
+        "y": 2880,
+        "width": 1580,
+        "height": 840,
+        "style": "boundary",
+        "color": "purple"
+      },
+      {
+        "id": "presentation-thesis",
+        "kind": "text",
+        "label": "Three presentation families share primitives without sharing ownership rules.",
+        "x": 35,
+        "y": 45,
+        "width": 1480,
+        "height": 65,
+        "parent": "presentation",
+        "style": "title",
+        "wrap": true
+      },
+      {
+        "id": "presentation-context",
+        "kind": "text",
+        "label": "Stories and acceptance criteria use Essay framing. Slides own stable Items and code evidence. Whiteboards provide spatial context and independent revisions.",
+        "x": 35,
+        "y": 120,
+        "width": 1480,
+        "height": 85,
+        "parent": "presentation",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "presentation-essays",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Essays\nTitle · subtext · abstract · body\nShared safe Markdown engine",
+        "x": 35,
+        "y": 250,
+        "width": 470,
+        "height": 150,
+        "parent": "presentation",
+        "style": "blue-node",
+        "wrap": true
+      },
+      {
+        "id": "presentation-slides",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Slide decks\nFront + visual + stable Items\nFeature or review ownership",
+        "x": 555,
+        "y": 250,
+        "width": 470,
+        "height": 150,
+        "parent": "presentation",
+        "style": "purple-node",
+        "wrap": true
+      },
+      {
+        "id": "presentation-boards",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Whiteboards\nNested sections + focus paths\nIndependent document history",
+        "x": 1075,
+        "y": 250,
+        "width": 470,
+        "height": 150,
+        "parent": "presentation",
+        "style": "green-node",
+        "wrap": true
+      },
+      {
+        "id": "presentation-diagram",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Shared diagram grammar + deterministic SVG renderer\nGroups, geometry, semantic color, connections and notes",
+        "x": 555,
+        "y": 505,
+        "width": 990,
+        "height": 120,
+        "parent": "presentation",
+        "style": "purple-node",
+        "wrap": true
+      },
+      {
+        "id": "slides-render",
+        "kind": "connection",
+        "label": "structured visual",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "presentation/presentation-slides",
+        "to": "presentation/presentation-diagram",
+        "head": "arrow",
+        "label_box": {
+          "x": 810,
+          "y": 3303,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "boards-render",
+        "kind": "connection",
+        "label": "same grammar",
+        "x": 0,
+        "y": 0,
+        "style": "primary",
+        "from": "presentation/presentation-boards",
+        "to": "presentation/presentation-diagram",
+        "head": "arrow",
+        "label_box": {
+          "x": 1070,
+          "y": 3303,
+          "width": 280,
+          "height": 44
+        }
+      },
+      {
+        "id": "presentation-state",
+        "kind": "text",
+        "label": "The server owns rendered HTML. htmx swaps the page inside a persistent shell; plain JavaScript owns viewer interaction. URL state and page-scoped cleanup keep navigation coherent.",
+        "x": 45,
+        "y": 670,
+        "width": 1470,
+        "height": 65,
+        "parent": "presentation",
+        "style": "body",
+        "wrap": true
+      },
+      {
+        "id": "presentation-boundary",
+        "kind": "text",
+        "label": "A whiteboard source pin does not grant slide/review line coverage. Shared presentation must preserve requirement, evidence and review semantics.",
+        "x": 45,
+        "y": 755,
+        "width": 1470,
+        "height": 65,
+        "parent": "presentation",
+        "style": "small",
+        "wrap": true
+      }
+    ]
+  },
+  "created_at": "2026-10-16T23:57:58.111717Z"
+}

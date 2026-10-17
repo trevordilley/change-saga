@@ -13,6 +13,7 @@ var technicalDesignBoards = []struct{ ID, Title, Note string }{
 	{"data-model", "ERD", "Entities and relationships, using crow's-foot notation to show cardinality and optionality."},
 	{"infrastructure", "Infrastructure", "The actual layout of platforms, deployed services, resources and their connections."},
 	{"data-flows", "Data flows", "How data enters, moves through and leaves the application, including key services, stores and transformations."},
+	{"architecture", "Architecture", "How the codebase fits together: responsibility boundaries, dependency direction, state ownership, design patterns and the tradeoffs behind technology choices."},
 }
 
 func technicalDesignBoardOf(id string) (struct{ ID, Title, Note string }, bool) {

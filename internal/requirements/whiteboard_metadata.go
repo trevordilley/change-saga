@@ -34,7 +34,7 @@ type WhiteboardProperties struct {
 	Archived bool   `json:"archived,omitempty"`
 }
 
-var whiteboardRoleDefaults = map[string]string{"erd": "data-model", "infrastructure": "infrastructure", "data-flows": "data-flows"}
+var whiteboardRoleDefaults = map[string]string{"erd": "data-model", "infrastructure": "infrastructure", "data-flows": "data-flows", "architecture": "architecture"}
 
 // LoadWhiteboardMetadata preserves the legacy default IDs until a metadata
 // operation explicitly records the role assignments. It never renders a board.
@@ -54,6 +54,11 @@ func LoadWhiteboardMetadata(root, sagaID string) (WhiteboardMetadata, error) {
 	path := filepath.Join(root, WhiteboardDir, WhiteboardMetadataName)
 	if _, err := os.Lstat(path); os.IsNotExist(err) {
 		for role, id := range whiteboardRoleDefaults {
+			// Do not opt a three-role Saga into the new metadata vocabulary
+			// merely because an unrelated board was renamed or archived.
+			if role == "architecture" && !known[id] {
+				continue
+			}
 			metadata.Roles[role] = ""
 			if known[id] {
 				metadata.Roles[role] = id
@@ -67,8 +72,14 @@ func LoadWhiteboardMetadata(root, sagaID string) (WhiteboardMetadata, error) {
 	if err := readInventoryJSON(path, &metadata); err != nil {
 		return metadata, err
 	}
-	if metadata.Schema != WhiteboardMetadataSchemaURL || metadata.Version != 1 || metadata.SagaID != sagaID || metadata.Roles == nil || metadata.Boards == nil || len(metadata.Roles) != len(whiteboardRoleDefaults) {
+	if metadata.Schema != WhiteboardMetadataSchemaURL || metadata.Version != 1 || metadata.SagaID != sagaID || metadata.Roles == nil || metadata.Boards == nil {
 		return metadata, fmt.Errorf("invalid whiteboard metadata schema, version, ownership or roles")
+	}
+	// Architecture is optional so existing three-role metadata remains readable.
+	for _, role := range []string{"erd", "infrastructure", "data-flows"} {
+		if _, ok := metadata.Roles[role]; !ok {
+			return metadata, fmt.Errorf("whiteboard metadata is missing required role %q", role)
+		}
 	}
 	metadata.Stored = true
 	assigned := map[string]bool{}
@@ -178,7 +189,7 @@ func UpdateWhiteboardMetadata(ctx context.Context, root, sagaID string, w Whiteb
 		switch w.Operation {
 		case "assign-role", "unassign-role":
 			if _, ok := whiteboardRoleDefaults[w.Role]; !ok {
-				return fmt.Errorf("--role must be erd, infrastructure or data-flows")
+				return fmt.Errorf("--role must be erd, infrastructure, data-flows or architecture")
 			}
 			if w.Operation == "unassign-role" {
 				if after.Roles[w.Role] != w.ID {

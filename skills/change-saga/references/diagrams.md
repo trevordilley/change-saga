@@ -14,8 +14,10 @@ shows publication mechanics, not the target depth of a finished review.
 
 ## Choose the artifact
 
-Technical design is one approach essay plus three whiteboards: ERD (`data-model`),
-Infrastructure (`infrastructure`) and Data flows (`data-flows`). The essay explains
+Technical design is one approach essay plus four whiteboards: ERD (`data-model`),
+Infrastructure (`infrastructure`), Data flows (`data-flows`) and Architecture
+(`architecture`). Read [architecture guidance](architecture.md) when explaining
+codebase structure, patterns and technology choices. The essay explains
 how the application works, the major decisions and tradeoffs, and links into the
 boards. Use `overview set-technical-design --source FILE PATH`; add a supporting
 page with `--page ID --title TITLE`. Supporting pages open at `/technical/pages/ID`.
@@ -32,7 +34,8 @@ The ERD uses proper crow's-foot `head`/`tail` markers (`only-one`, `zero-or-one`
 Infrastructure shows the actual platform and resource layout. Data flows show
 movement through key services, stores and transformations, with directed and
 labeled connections. Link from the essay to `/technical/erd`,
-`/technical/whiteboards/infrastructure`, and `/technical/whiteboards/data-flows`;
+`/technical/whiteboards/infrastructure`, `/technical/whiteboards/data-flows`,
+and `/technical/whiteboards/architecture`;
 append `?focus=SECTION_PATH` for a specific section.
 
 Use long-form essays for Product overviews, features and user stories, and slide
@@ -623,7 +626,7 @@ bounded queries before handoff.
 
 Components and Systems remain available for existing inventory and pinned deck
 evidence. They are not required parts of a Technical design. For a new design,
-write the approach essay and the ERD, Infrastructure and Data flows whiteboards;
+write the approach essay and the ERD, Infrastructure, Data flows and Architecture whiteboards;
 do not build a Component/System catalog as a prerequisite.
 
 When the requested work involves those existing records, start with

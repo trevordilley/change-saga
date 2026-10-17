@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/server/template.go",
+      "start": 22,
+      "end": 30,
+      "digest": "sha256:8284f7b90942664bf5d02a117e99945f0c63ae0b0492ee9f6d4e538323799b3d",
+      "note": "Source for the shared presentation explanation."
+    }
+  ]
+}

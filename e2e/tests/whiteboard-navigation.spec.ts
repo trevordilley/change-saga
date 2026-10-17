@@ -554,7 +554,7 @@ test("oversized native entity actions stay reachable at readable field zoom", as
   await expect(page.locator('.drawer-body')).toContainText('A shared record.');
 });
 
-test("role reassignment opens an existing whiteboard without a fourth technical entry", async ({ page, saga }) => {
+test("role reassignment opens an existing whiteboard without a duplicate technical entry", async ({ page, saga }) => {
   const run = (...args: string[]) => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, result.stdout + result.stderr).toBe(0);
@@ -573,8 +573,8 @@ test("role reassignment opens an existing whiteboard without a fourth technical 
   run("whiteboard", "rename", "--id", "existing-model", "--name", "Renamed model", saga.sagaRoot);
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);
-  await expect(page.locator("#nav-technical > .doc-node > .doc-row > a")).toHaveText(["ERD", "Infrastructure", "Data flows"]);
-  // The three role links are stable even when a board has a different identity.
+  await expect(page.locator("#nav-technical > .doc-node > .doc-row > a")).toHaveText(["ERD", "Infrastructure", "Data flows", "Architecture"]);
+  // The four role links are stable even when a board has a different identity.
   const sidebar = page.locator(".sidebar");
   await expect(sidebar.getByRole("link", { name: "ERD", exact: true })).toHaveAttribute("href", "/technical/whiteboards/existing-model");
   await expect(sidebar.getByRole("link", { name: "Infrastructure", exact: true })).toHaveCount(1);

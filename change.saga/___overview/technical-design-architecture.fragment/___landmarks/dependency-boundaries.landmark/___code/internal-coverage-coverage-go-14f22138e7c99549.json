@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/coverage/coverage.go",
+      "start": 1,
+      "end": 18,
+      "digest": "sha256:f282a096b1d1f5fd79b28e732b198ebd7ea382dddf79c0cbe2ca7d110143306f",
+      "note": "Source for the dependency boundaries explanation."
+    }
+  ]
+}

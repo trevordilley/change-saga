@@ -10,7 +10,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
-func TestTechnicalDesignEssayAndThreeWhiteboards(t *testing.T) {
+func TestTechnicalDesignEssayAndFourWhiteboards(t *testing.T) {
 	root, repo := technicalFixture(t)
 	for _, page := range []struct{ pkg, id, title, body string }{
 		{"technical-design", "test-technical-design", "Technical design", "Our approach uses [Infrastructure](/technical/whiteboards/infrastructure) and [Reliability](/technical/pages/reliability)."},
@@ -37,9 +37,9 @@ func TestTechnicalDesignEssayAndThreeWhiteboards(t *testing.T) {
 	}
 	sidebar := technicalSidebar(t, body)
 	if strings.Contains(sidebar, `href="/technical/pages/reliability"`) {
-		t.Fatal("supporting essay became a fourth technical navigation entry")
+		t.Fatal("supporting essay became an extra technical navigation entry")
 	}
-	for _, title := range []string{"ERD", "Infrastructure", "Data flows"} {
+	for _, title := range []string{"ERD", "Infrastructure", "Data flows", "Architecture"} {
 		if !strings.Contains(sidebar, ">"+title+"</a>") {
 			t.Fatalf("missing technical role %s", title)
 		}
@@ -55,7 +55,7 @@ func TestTechnicalDesignEssayAndThreeWhiteboards(t *testing.T) {
 	if got := currentNav(technicalSidebar(t, body)); len(got) != 1 || got[0] != "/technical" {
 		t.Fatal("page navigation", got)
 	}
-	for _, id := range []string{"infrastructure", "data-flows"} {
+	for _, id := range []string{"infrastructure", "data-flows", "architecture"} {
 		status, body = technicalGet(t, mux, whiteboardHref(id, ""))
 		if status != 200 || !strings.Contains(body, "has not been authored yet") {
 			t.Fatalf("empty %s: %d", id, status)

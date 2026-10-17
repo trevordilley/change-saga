@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "go.mod",
+      "start": 1,
+      "end": 11,
+      "digest": "sha256:bd6a86774690544b70d87a8945ed7372228c439ef0a74c39b9a879bbc0de2b0a",
+      "note": "Technology role, dependency or documented rationale for the shared stack reference."
+    }
+  ]
+}

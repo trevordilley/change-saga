@@ -60,11 +60,11 @@ func init() {
 		}
 		switch op {
 		case "assign-role":
-			c.Flags = append(c.Flags, required("role", "erd|infrastructure|data-flows", "technical design role"), required("expect", "ID|URN|none", "observed role owner; use a URN for a board literally named none"), Flag{Name: "move", Description: "explicitly move the selected board from its previous role; requires --expected-snapshot"})
-			c.Usage += " --role erd|infrastructure|data-flows --expect ID|URN|none [--move]"
+			c.Flags = append(c.Flags, required("role", "erd|infrastructure|data-flows|architecture", "technical design role"), required("expect", "ID|URN|none", "observed role owner; use a URN for a board literally named none"), Flag{Name: "move", Description: "explicitly move the selected board from its previous role; requires --expected-snapshot"})
+			c.Usage += " --role erd|infrastructure|data-flows|architecture --expect ID|URN|none [--move]"
 		case "unassign-role":
-			c.Flags = append(c.Flags, required("role", "erd|infrastructure|data-flows", "role currently owned by this board"))
-			c.Usage += " --role erd|infrastructure|data-flows"
+			c.Flags = append(c.Flags, required("role", "erd|infrastructure|data-flows|architecture", "role currently owned by this board"))
+			c.Usage += " --role erd|infrastructure|data-flows|architecture"
 		case "rename":
 			c.Flags = append(c.Flags, required("name", "TITLE", "new display title"))
 			c.Usage += " --name TITLE"

@@ -11,7 +11,7 @@
   "saga_id":{"$ref":"#/$defs/id"},
   "roles":{
    "type":"object","additionalProperties":false,"required":["erd","infrastructure","data-flows"],
-   "properties":{"erd":{"$ref":"#/$defs/assignment"},"infrastructure":{"$ref":"#/$defs/assignment"},"data-flows":{"$ref":"#/$defs/assignment"}}
+   "properties":{"erd":{"$ref":"#/$defs/assignment"},"infrastructure":{"$ref":"#/$defs/assignment"},"data-flows":{"$ref":"#/$defs/assignment"},"architecture":{"$ref":"#/$defs/assignment"}}
   },
   "boards":{
    "type":"object","maxProperties":10000,"propertyNames":{"$ref":"#/$defs/id"},

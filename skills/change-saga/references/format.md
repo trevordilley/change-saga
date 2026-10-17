@@ -63,8 +63,8 @@ is resolved. Basename and structural format errors remain errors on all platform
 ## Technical design layout
 
 Technical design combines `___overview/technical-design.fragment`, optional
-`technical-design-<page>.fragment` supporting essays, and three whiteboards with
-IDs `data-model`, `infrastructure`, and `data-flows`.
+`technical-design-<page>.fragment` supporting essays, and four whiteboards with
+IDs `data-model`, `infrastructure`, `data-flows`, and `architecture`.
 
 Named technical-design whiteboards use the shared diagram schema and independent
 immutable histories. Their directory placement determines the format; there is

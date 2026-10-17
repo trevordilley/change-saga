@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "dependency-boundaries",
+  "label": "Dependency boundaries",
+  "selector": {
+    "type": "heading",
+    "heading_id": "dependency-boundaries"
+  },
+  "target": ""
+}

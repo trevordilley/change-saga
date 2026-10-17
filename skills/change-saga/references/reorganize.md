@@ -44,9 +44,9 @@ change-saga whiteboard assign-role --id EXISTING_BOARD --role erd --expect OBSER
 ```
 
 Replace `OBSERVED_OWNER_OR_none` with the current role's board ID, or `none` if
-empty. The roles are `erd`, `infrastructure`, and `data-flows`. Assignment retains
+empty. The roles are `erd`, `infrastructure`, `data-flows`, and `architecture`. Assignment retains
 the existing board ID and history, and consolidates its navigation placement:
-Technical Design has ERD, Infrastructure, and Data flows, with no duplicate
+Technical Design has ERD, Infrastructure, Data flows, and Architecture, with no duplicate
 entry for the assigned board. Other boards remain reachable from the overview
 and their named URLs. A display rename alone does not assign a role.
 

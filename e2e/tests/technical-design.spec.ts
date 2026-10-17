@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
 import { runCLI } from "../support/fixture-builder.js";
 
-test("technical design links its approach, supporting pages and three whiteboards", async ({page, saga}, testInfo) => {
+test("technical design links its approach, supporting pages and four whiteboards", async ({page, saga}, testInfo) => {
   const run = (...args: string[]) => {
     const result = runCLI(saga, [...args, saga.sagaRoot], saga.sagaRepo);
     expect(result.status, result.stderr + result.stdout).toBe(0);
@@ -15,9 +15,10 @@ test("technical design links its approach, supporting pages and three whiteboard
     {id: "delivery", kind: "group", shape: "section", label: "Delivery", width: 900, height: 600, style: "normal"},
     {id: "service", parent: "delivery", kind: "node", shape: "rect", label: "Delivery service", x: 100, y: 100, width: 300, height: 140, style: "normal"}
   ]}));
-  for (const [id, name] of [["data-model", "Application ERD"], ["infrastructure", "Deployment infrastructure"], ["data-flows", "Application data flows"]]) {
+  for (const [id, name] of [["data-model", "Application ERD"], ["infrastructure", "Deployment infrastructure"], ["data-flows", "Application data flows"], ["codebase-map", "Codebase architecture"]]) {
     run("whiteboard", "publish", "--id", id, "--revision", "r1", "--name", name, "--from", source);
   }
+  run("whiteboard", "assign-role", "--id", "codebase-map", "--role", "architecture", "--expect", "none");
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);
   await expect(page.locator("[data-technical-essay]")).toContainText("Our application uses a queue");
@@ -27,7 +28,7 @@ test("technical design links its approach, supporting pages and three whiteboard
   await expect(page.locator("[data-technical-essay]")).toHaveCSS("border-left-width", "0px");
   await expect(page.locator("[data-technical-essay] .fragment")).toHaveCSS("border-left-width", "0px");
   const sidebar = page.locator(".sidebar");
-  for (const label of ["ERD", "Infrastructure", "Data flows"]) await expect(sidebar.getByRole("link", {name: label, exact: true})).toBeVisible();
+  for (const label of ["ERD", "Infrastructure", "Data flows", "Architecture"]) await expect(sidebar.getByRole("link", {name: label, exact: true})).toBeVisible();
   for (const label of ["Systems", "Components"]) await expect(sidebar.getByRole("link", {name: label, exact: true})).toHaveCount(0);
   await expectNoSeriousAccessibilityViolations(page, "[data-technical-page]");
   await page.screenshot({path: testInfo.outputPath("technical-design.png")});
@@ -39,4 +40,9 @@ test("technical design links its approach, supporting pages and three whiteboard
   await page.locator("[data-technical-essay]").getByRole("link", {name: "delivery flow", exact: true}).click();
   await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-id", "data-flows");
   await expect(sidebar.getByRole("link", {name:"Data flows", exact:true})).toHaveAttribute("aria-current", "page");
+  await sidebar.getByRole("link", {name:"Architecture", exact:true}).click();
+  await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-id", "codebase-map");
+  await expect(sidebar.getByRole("link", {name:"Architecture", exact:true})).toHaveAttribute("aria-current", "page");
+  await expect(page.locator("#nav-technical > .doc-node > .doc-row > a")).toHaveText(["ERD", "Infrastructure", "Data flows", "Architecture"]);
+  await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
 });

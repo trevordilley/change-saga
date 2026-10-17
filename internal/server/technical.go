@@ -14,7 +14,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// Technical design starts with an approach essay and three whiteboards.
+// Technical design starts with an approach essay and four whiteboards.
 // Existing inventory definition URLs remain readable for saved evidence pins.
 const technicalPath = "/technical"
 
@@ -329,7 +329,7 @@ func technicalDirectory(id, title, lede, noun, nouns, command, action string) *d
 	}
 }
 
-// technicalLanding presents the three whiteboards and their authoring gaps.
+// technicalLanding presents the four whiteboards and their authoring gaps.
 func technicalLanding(_ requirements.Inventory) []technicalAreaView {
 	var areas []technicalAreaView
 	for _, board := range technicalDesignBoards {
@@ -409,7 +409,7 @@ func newnessCell(newness *technicalNewness, record *requirements.TechnicalRecord
 
 // technicalOverviewPart is the overview directory's row for Technical design.
 func technicalOverviewPart(_ requirements.Inventory) overviewPartView {
-	return overviewPartView{Title: "Technical design", Href: technicalPath, Count: "Approach · ERD · Infrastructure · Data flows", Note: "How the application works: the design approach and three connected whiteboards."}
+	return overviewPartView{Title: "Technical design", Href: technicalPath, Count: "Approach · ERD · Infrastructure · Data flows · Architecture", Note: "How the application works: the design approach and four connected whiteboards."}
 }
 
 func technicalBoardPresentation(view *technicalPageView, _ requirements.Inventory, board *whiteboardView) {
@@ -424,7 +424,7 @@ func technicalBoardPresentation(view *technicalPageView, _ requirements.Inventor
 	}
 }
 
-// technicalNav keeps the three reading views visible even before authoring.
+// technicalNav keeps the four reading views visible even before authoring.
 func technicalNav(_ requirements.Inventory, _ bool, board *whiteboardView) []*navNodeView {
 	var nodes []*navNodeView
 	for _, design := range technicalDesignBoards {
@@ -653,7 +653,7 @@ const technicalTemplates = `
 
 {{define "technical-page"}}{{if .Whiteboard}}{{if .Whiteboard.Visual}}{{template "erd-whiteboard" .}}{{else}}<section class="app-page"><h1>{{.Whiteboard.Name}}</h1><p class="gap" data-whiteboard-note>{{.Whiteboard.Note}}</p></section>{{end}}{{else if .Area.Segment}}{{template "technical-area-page" .}}{{else}}<section class="app-page technical-page" data-technical-page="landing"><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Project</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>{{if .EssayTitle}}{{.EssayTitle}}{{else}}Technical design{{end}}</h1>{{if and .Overview .Overview.Subtext}}{{template "essay-subtext" .Overview.Subtext}}{{else}}{{template "essay-subtext" "How the application works, from its data model to its key services."}}{{end}}</header>
 {{with .Overview}}{{template "essay-abstract" (essayAbstract .Abstract .Target)}}{{end}}
-<section class="app-page-section essay-body" data-essay-body data-technical-essay>{{with .Overview}}{{template "fragment" .}}{{else}}<h2>General approach</h2><p class="app-empty">The technical-design essay has not been written yet. Explain the application's approach and key decisions, and link to the three whiteboards below.</p>{{end}}</section>
+<section class="app-page-section essay-body" data-essay-body data-technical-essay>{{with .Overview}}{{template "fragment" .}}{{else}}<h2>General approach</h2><p class="app-empty">The technical-design essay has not been written yet. Explain the application's approach and key decisions, and link to the four whiteboards below.</p>{{end}}</section>
 {{if .Pages}}<section class="app-page-section" data-technical-supporting-pages><h2>Further reading</h2>{{template "trace-links" .Pages}}</section>{{end}}
 <ul class="overview-parts technical-areas" aria-label="Technical design areas">{{range .Areas}}<li class="overview-part{{if .Gap}} gap{{end}}" id="{{.Anchor}}" data-technical-area="{{.Segment}}"><a class="overview-part-link" href="{{.Href}}">{{.Title}}</a><span class="overview-part-count">{{.Count}}</span><p class="overview-part-note">{{.Note}}</p></li>{{end}}</ul>
 {{if .Whiteboards}}<section class="app-page-section" data-technical-whiteboards><h2>Supporting whiteboards</h2><ul>{{range .Whiteboards}}<li><a href="{{.Href}}">{{.Name}}</a>{{with .Note}} <span class="gap">{{.}}</span>{{end}}</li>{{end}}</ul></section>{{end}}{{with .WhiteboardNote}}<p class="gap">{{.}}</p>{{end}}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/requirements/model.go",
+      "start": 185,
+      "end": 205,
+      "digest": "sha256:87226daf58903ee08335b0c1ccd02a8253c369a874e96186696fc8ed9e92aaea",
+      "note": "Source for the mergeable records explanation."
+    }
+  ]
+}

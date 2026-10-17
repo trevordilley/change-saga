@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "docs/performance.md",
+      "start": 36,
+      "end": 50,
+      "digest": "sha256:5458daef55b3eccde546672f72266fe1ef6bdd4abde1400ae8fe32bc124e2c9a",
+      "note": "Source for the cache validity explanation."
+    },
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "docs/performance.md",
+      "start": 87,
+      "end": 90,
+      "digest": "sha256:f8c67e8f38cc50142e00a3edb7bb0f67685380a46284c5973d381ab85e7fd619",
+      "note": "Source for the cache validity explanation."
+    }
+  ]
+}

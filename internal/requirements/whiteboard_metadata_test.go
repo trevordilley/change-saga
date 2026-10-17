@@ -165,6 +165,9 @@ func TestWhiteboardMetadataPublishedSchema(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if _, present := result.After.Roles["architecture"]; present {
+		t.Fatal("unrelated edit adopted the Architecture metadata extension")
+	}
 	data, err := os.ReadFile(filepath.Join("..", "..", "schema", "v5", "whiteboard-metadata.schema.json"))
 	if err != nil {
 		t.Fatal(err)
@@ -186,9 +189,83 @@ func TestWhiteboardMetadataPublishedSchema(t *testing.T) {
 	if err := schema.Validate(instance); err != nil {
 		t.Fatal(err)
 	}
+	roles := instance.(map[string]any)["roles"].(map[string]any)
+	roles["architecture"] = ""
+	if err := schema.Validate(instance); err != nil {
+		t.Fatal("schema rejected the optional Architecture role", err)
+	}
+	roles["unknown-role"] = ""
+	if err := schema.Validate(instance); err == nil {
+		t.Fatal("schema admitted an unknown role")
+	}
 	got, err := LoadWhiteboardMetadata(root, "test")
 	if err != nil || !reflect.DeepEqual(got.Roles, result.After.Roles) {
 		t.Fatal(got, err)
+	}
+}
+
+func TestArchitectureRoleAcceptsLegacyMetadataAndPreservesHistory(t *testing.T) {
+	root, pin, _ := whiteboardFixture(t)
+	ctx := context.Background()
+	for _, id := range []string{"architecture", "codebase-map"} {
+		if _, err := PublishWhiteboard(ctx, root, "test", id, "r1", "", id, boardDocument(pin)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	defaults, err := LoadWhiteboardMetadata(root, "test")
+	if err != nil || defaults.Roles["architecture"] != "architecture" {
+		t.Fatalf("architecture convention: %+v, %v", defaults, err)
+	}
+	// A stored three-role document predates Architecture; it must load without
+	// being rewritten or silently adopting a conventionally named board.
+	delete(defaults.Roles, "architecture")
+	data, _ := json.Marshal(defaults)
+	path := filepath.Join(root, WhiteboardDir, WhiteboardMetadataName)
+	if err := os.WriteFile(path, data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := LoadWhiteboardMetadata(root, "test")
+	if err != nil || legacy.Roles["architecture"] != "" {
+		t.Fatalf("legacy metadata: %+v, %v", legacy, err)
+	}
+	if after, _ := os.ReadFile(path); !bytes.Equal(after, data) {
+		t.Fatal("reading migrated metadata")
+	}
+	assign := WhiteboardMetadataWrite{Operation: "assign-role", ID: "codebase-map", Role: "architecture", Expected: "none", ExpectedSnapshot: legacy.Snapshot(), DryRun: true}
+	if _, err := UpdateWhiteboardMetadata(ctx, root, "test", assign); err != nil {
+		t.Fatal(err)
+	}
+	if after, _ := os.ReadFile(path); !bytes.Equal(after, data) {
+		t.Fatal("dry run wrote metadata")
+	}
+	assign.DryRun = false
+	result, err := UpdateWhiteboardMetadata(ctx, root, "test", assign)
+	if err != nil || result.After.Roles["architecture"] != "codebase-map" {
+		t.Fatalf("assignment: %+v, %v", result, err)
+	}
+	if _, err := UpdateWhiteboardMetadata(ctx, root, "test", assign); err == nil {
+		t.Fatal("accepted stale architecture ownership")
+	}
+	if _, err := UpdateWhiteboardMetadata(ctx, root, "test", WhiteboardMetadataWrite{Operation: "unassign-role", ID: "codebase-map", Role: "architecture"}); err != nil {
+		t.Fatal(err)
+	}
+	unassigned, err := LoadWhiteboardMetadata(root, "test")
+	if err != nil || unassigned.Roles["architecture"] != "" {
+		t.Fatal("explicit unassignment restored default", err)
+	}
+	if _, err := LoadResolvedWhiteboard(root, "test", "codebase-map", "r1"); err != nil {
+		t.Fatal("assignment changed history", err)
+	}
+	if err := ValidateWhiteboards(root, "test"); err != nil {
+		t.Fatal(err)
+	}
+	delete(unassigned.Roles, "erd")
+	data, _ = json.Marshal(unassigned)
+	if err := os.WriteFile(path, data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := LoadWhiteboardMetadata(root, "test"); err == nil {
+		t.Fatal("optional architecture weakened required legacy roles")
 	}
 }
 

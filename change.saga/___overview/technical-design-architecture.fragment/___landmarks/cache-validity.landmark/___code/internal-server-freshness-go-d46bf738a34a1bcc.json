@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/server/freshness.go",
+      "start": 21,
+      "end": 73,
+      "digest": "sha256:9ccf773a919693e484165055cadf4dd8543bcb9465dabaef31612cfe4d7dd6d4",
+      "note": "Source for the cache validity explanation."
+    }
+  ]
+}

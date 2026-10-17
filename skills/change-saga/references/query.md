@@ -55,7 +55,8 @@ its linked `technical-design-<page>.fragment` supporting pages. Read their prose
 through `query fragment --target URN`, using the fragment identities returned
 by the query API. Query the whiteboard role assignments, then inspect ERD
 (crow's-foot cardinality), Infrastructure (platforms and resources), and
-Data flows (movement through key services and elements). Conventional IDs are
+Data flows (movement through key services and elements), and Architecture
+(codebase boundaries, dependency direction, patterns and state ownership). Conventional IDs are
 defaults; use the IDs actually assigned to these roles.
 
 ## Reading whiteboards

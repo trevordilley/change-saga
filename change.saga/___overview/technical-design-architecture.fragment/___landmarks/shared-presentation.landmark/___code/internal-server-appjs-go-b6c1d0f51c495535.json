@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/server/appjs.go",
+      "start": 3215,
+      "end": 3261,
+      "digest": "sha256:b1872fe6ffc3d7e6f697a37b604a14b49d7b288b7ea01bce93e1ccc4d7d27d62",
+      "note": "Source for the shared presentation explanation."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/server/sagafiles.go",
+      "start": 87,
+      "end": 106,
+      "digest": "sha256:c7856c6d754c0019837a1e5645c929ed6515a9d2a9763bd910e0cf481430e1c9",
+      "note": "Source for the cache validity explanation."
+    }
+  ]
+}

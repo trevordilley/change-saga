@@ -1,0 +1,10 @@
+{
+  "subtext": "The decisions behind the codebase map.",
+  "abstract": "Explicit package boundaries, small immutable histories and input-keyed projections keep authored knowledge separate from the ways it is read.",
+  "version": 2,
+  "id": "change-saga-technical-design-architecture",
+  "title": "Architecture notes",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 40
+}

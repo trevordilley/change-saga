@@ -1,16 +1,17 @@
 # Technical design: a repository is the durable model {#technical-design-a-repository-is-the-durable-model}
 
-Read the design in three views:
+Read the design in four views:
 
 - [ERD](/technical/erd) explains the logical records, ownership and optionality. These are file-backed entities, not SQL tables.
 - [Infrastructure](/technical/whiteboards/infrastructure) locates the binary, browser, source checkout, Saga directory and disposable caches on the developer workstation, with the build and release services outside that runtime boundary.
 - [Data flows](/technical/whiteboards/data-flows) follows authoring, reading, code comparison and review actions through their validation and persistence boundaries.
+- [Architecture](/technical/whiteboards/architecture) maps the codebase and explains its mergeable histories, cache validity and shared presentation mechanisms. The [Architecture notes](/technical/pages/architecture) give supporting detail and evidence; the [technology stack](/technical/pages/technology-stack) records the shared technology choices and their rationale.
 
 ## Separate intent, design and review {#separate-intent-design-and-review}
 
 Product describes why an application exists: personas, durable features, stories and independent acceptance criteria. Features and stories carry authored essays. A criterion can have a short navigation title and a Markdown explanation while retaining its full pass/fail statement. Explanations can change an obligation, so criterion title or overview changes require evidence to be reassessed; a prettier reading page does not make an old pin current.
 
-Technical design is this approach essay, optional supporting essays, and the three whiteboards. Implementation decks explain mechanisms at a narrower feature scope. A pull-request review deck explains a change between commits. Those artifacts share diagram grammar and semantic links, but they have different jobs: a whiteboard source pin does not own changed-line review coverage, and a review decision does not accept a product requirement. Existing Component and System records remain readable for historical pins; they are not the organizing structure of this design.
+Technical design is this approach essay, optional supporting essays, and the four whiteboards. Implementation decks explain mechanisms at a narrower feature scope. A pull-request review deck explains a change between commits. Those artifacts share diagram grammar and semantic links, but they have different jobs: a whiteboard source pin does not own changed-line review coverage, and a review decision does not accept a product requirement. Existing Component and System records remain readable for historical pins; they are not the organizing structure of this design.
 
 ## Stable identities, explicit history {#stable-identities-explicit-history}
 
@@ -18,7 +19,7 @@ The Saga manifest establishes a stable namespace and source repository. Features
 
 Decks contain slides, and slides contain addressable Items. An Item names the visual element it explains and can own precise code evidence. A code reference pins a repository commit, path, selection and digest. Readers can remap moved bytes; changed bytes remain stale until an author reassesses the explanation. The [ERD](/technical/erd) distinguishes this stored evidence from the comparison and coverage projections derived from it.
 
-Whiteboards publish complete immutable diagram documents under independent document IDs. ERD, Infrastructure and Data flows are conventions for the three design views, not different rendering engines. Publication names the observed parent revision; historical views keep their original source pins. Native groups and connections let readers focus on a section without splitting the design into disconnected files.
+Whiteboards publish complete immutable diagram documents under independent document IDs. ERD, Infrastructure, Data flows and Architecture are conventions for the four design views, not different rendering engines. Publication names the observed parent revision; historical views keep their original source pins. Native groups and connections let readers focus on a section without splitting the design into disconnected files.
 
 ## Write through a checked boundary {#write-through-a-checked-boundary}
 

@@ -1,0 +1,10 @@
+{
+  "subtext": "One shared reference for the tools and why they belong.",
+  "abstract": "Change Saga favors a local compiled runtime, Git-native records, server-rendered reading surfaces and shared visual primitives.",
+  "version": 2,
+  "id": "change-saga-technical-design-technology-stack",
+  "title": "Technology stack",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 40
+}

@@ -198,7 +198,7 @@ no prescribed C4 hierarchy, and terms remain a distinct vocabulary concept.
 
 These inventory definitions support existing reusable deck evidence; they are
 not required Technical design sections. A Technical design consists of the
-approach essay and ERD, Infrastructure and Data flows whiteboards described
+approach essay and ERD, Infrastructure, Data flows and Architecture whiteboards described
 below. Slide Items may continue to pin Component, System or data-entity
 definitions while retaining their own context and exact evidence. A matching
 name in prose or a diagram is not a declared dependency. Inspect declared uses
@@ -413,10 +413,15 @@ revision rules above. See the
 ### Whiteboards for technical design
 
 Technical design opens at `/technical` with one Markdown essay explaining the
-application's general approach and linking to three whiteboards: **ERD** (ID
+application's general approach and linking to four whiteboards: **ERD** (ID
 `data-model`, with proper crow's-foot cardinality and optionality),
 **Infrastructure** (ID `infrastructure`, the actual platform/resource layout),
-and **Data flows** (ID `data-flows`, movement through key services and elements).
+**Data flows** (ID `data-flows`, movement through key services and elements),
+and **Architecture** (ID `architecture`, codebase boundaries, dependency direction,
+state ownership, design patterns and technology tradeoffs). Architecture supplies
+the shared context for feature implementation decks; it does not duplicate them.
+Focused sections and linked supporting boards can explain separate mechanisms;
+a supporting essay can hold the authoritative technology stack and rationale.
 These replace Systems and Components as reading/navigation areas. Existing
 inventory definitions and exact saved pins remain addressable.
 
@@ -464,16 +469,21 @@ Whiteboards do not currently support the slide `diagram edit` transaction.
 `___whiteboards/.metadata.json` is validated by
 [whiteboard-metadata.schema.json](schema/v5/whiteboard-metadata.schema.json).
 It contains `$schema`, `version: 1`, `saga_id`, `roles`, and `boards`. `roles`
-has exactly `erd`, `infrastructure`, and `data-flows` keys; values are existing
+requires `erd`, `infrastructure`, and `data-flows` keys and permits an optional
+`architecture` key; no other keys are allowed. An absent Architecture role in
+existing metadata is unassigned. Values are existing
 board IDs or an empty string for explicitly unassigned roles. Each board may
 occupy at most one role. `boards` maps existing IDs to optional display `name`
 and `archived` properties. Archived boards cannot occupy a role.
 
-Without this file, existing `data-model`, `infrastructure`, and `data-flows`
+Without this file, existing `data-model`, `infrastructure`, `data-flows`, and `architecture`
 boards provide the corresponding default assignments. The first metadata edit
 records those effective assignments. An explicit empty role never falls back
 to a conventional ID. Subsequent publication does not override explicit role
-metadata. Names and archival are presentation properties and do not rewrite
+metadata. Older readers reject metadata containing the new `architecture` key;
+upgrade readers before assigning it. New readers accept existing three-role
+metadata without migration. Source histories and URNs are unchanged.
+Names and archival are presentation properties and do not rewrite
 immutable revisions or change whiteboard URNs.
 
 `whiteboard assign-role --id ID --role ROLE --expect ID|URN|none` replaces the
@@ -523,7 +533,7 @@ selects the effective ERD-role board, defaulting to document ID `data-model`
 only when metadata is absent. Historical `/technical/erd?revision=ID` URLs
 continue to select the original `data-model` document, preserving saved links.
 Another assigned board's history uses `/technical/whiteboards/<id>?revision=ID`.
-Technical Design navigation has ERD, Infrastructure, and Data flows entries;
+Technical Design navigation has ERD, Infrastructure, Data flows, and Architecture entries;
 an assigned board has no duplicate sidebar entry. Other active named boards
 and supporting essay pages remain discoverable from the overview. Named board URLs continue to identify
 their original document regardless of its current role.

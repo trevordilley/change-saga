@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "htmx",
+  "label": "Vendored htmx plus plain JavaScript",
+  "selector": {
+    "type": "text",
+    "exact": "Vendored htmx plus plain JavaScript"
+  },
+  "target": ""
+}

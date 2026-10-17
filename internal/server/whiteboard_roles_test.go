@@ -9,7 +9,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
-func TestWhiteboardRolesUseExistingIdentityAndExactlyThreeNavigationRows(t *testing.T) {
+func TestWhiteboardRolesUseExistingIdentityAndExactlyFourNavigationRows(t *testing.T) {
 	root, repo := termSaga(t)
 	doc := diagram.Document{Version: 1, Width: 800, Height: 500, Elements: []diagram.Element{{ID: "area", Kind: "group", Shape: "section", Label: "Existing section", Width: 700, Height: 400, Style: "normal"}}}
 	for _, id := range []string{"data-model", "existing-model", "infrastructure"} {
@@ -51,7 +51,7 @@ func TestWhiteboardRolesUseExistingIdentityAndExactlyThreeNavigationRows(t *test
 		t.Fatal(err)
 	}
 	applyWhiteboardRoles(nil, rows, documents, metadata)
-	if len(rows) != 3 || rows[0].Title != "ERD" || rows[1].Title != "Infrastructure" || rows[2].Title != "Data flows" || rows[0].Href != "/technical/whiteboards/existing-model" {
+	if len(rows) != 4 || rows[0].Title != "ERD" || rows[1].Title != "Infrastructure" || rows[2].Title != "Data flows" || rows[3].Title != "Architecture" || rows[0].Href != "/technical/whiteboards/existing-model" {
 		t.Fatalf("roles: %+v", rows)
 	}
 	for _, path := range []string{"/technical/erd", "/technical/whiteboards/existing-model", "/technical/whiteboards/existing-model?revision=r1", "/technical/whiteboards/data-model", "/technical/erd?revision=r1"} {

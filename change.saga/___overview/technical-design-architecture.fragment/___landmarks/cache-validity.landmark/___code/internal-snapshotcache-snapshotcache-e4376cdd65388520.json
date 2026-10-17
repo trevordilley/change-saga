@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/snapshotcache/snapshotcache.go",
+      "start": 1,
+      "end": 43,
+      "digest": "sha256:770ed0b804e3c8047d2a096781a73cf06c32a192c47d268ae8525ab2515db6e8",
+      "note": "Source for the cache validity explanation."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "cache",
+  "label": "Disposable filesystem cache generations",
+  "selector": {
+    "type": "text",
+    "exact": "Disposable filesystem cache generations"
+  },
+  "target": ""
+}

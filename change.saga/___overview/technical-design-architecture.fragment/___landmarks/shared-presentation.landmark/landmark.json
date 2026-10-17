@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "shared-presentation",
+  "label": "Shared presentation",
+  "selector": {
+    "type": "heading",
+    "heading_id": "shared-presentation"
+  },
+  "target": ""
+}

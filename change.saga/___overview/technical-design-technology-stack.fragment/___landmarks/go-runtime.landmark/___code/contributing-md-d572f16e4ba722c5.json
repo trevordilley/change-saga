@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "CONTRIBUTING.md",
+      "start": 14,
+      "end": 24,
+      "digest": "sha256:9d864d415baf7e94655ae0d6dd2ea7b8e6f56e1fd75c539cb8f32c5f74e08f7a",
+      "note": "Technology role, dependency or documented rationale for the shared stack reference."
+    }
+  ]
+}

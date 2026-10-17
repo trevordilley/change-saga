@@ -15,4 +15,4 @@ Read only the needed reference.
 Use `SKILL.md` for tasks crossing boundaries.
 
 For technical design, write the approach essay and its supporting pages, then the
-ERD, Infrastructure and Data flows whiteboards using [diagrams.md](diagrams.md).
+ERD, Infrastructure, Data flows and Architecture whiteboards using [diagrams.md](diagrams.md).

@@ -1421,7 +1421,7 @@ func Spec(args []string, out io.Writer) error {
 				},
 				"presentation": map[string]any{
 					"storage":     requirements.WhiteboardDir + "/.metadata.json",
-					"roles":       []string{"erd", "infrastructure", "data-flows"},
+					"roles":       []string{"erd", "infrastructure", "data-flows", "architecture"},
 					"identity":    "role, display name, and archival are independent of immutable source revisions and stable board identity",
 					"concurrency": "assign-role checks --expect; --move additionally requires --expected-snapshot from whiteboard list; all metadata writes accept an optional expected snapshot",
 					"removal":     "archive removes ordinary discovery only; assigned boards must first be unassigned or replaced; restore preserves all historical links",

@@ -128,8 +128,8 @@ func TestWhiteboardSectionsReplaceInventorySidebarOnlyWhenValid(t *testing.T) {
 	}
 	for _, invalid := range []*whiteboardView{nil, {Note: "invalid"}} {
 		fallback := technicalNav(inventory, true, invalid)
-		if len(fallback) != 3 || len(fallback[0].Children) != 0 {
-			t.Fatal("missing boards must retain the three design views")
+		if len(fallback) != 4 || len(fallback[0].Children) != 0 {
+			t.Fatal("missing boards must retain the four design views")
 		}
 	}
 	for _, route := range []string{"/technical/erd", "/technical"} {

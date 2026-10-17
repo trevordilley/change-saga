@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/server/markdown.go",
+      "start": 18,
+      "end": 48,
+      "digest": "sha256:8238a0f4f71e7ea704547491aff1e16100d39ffe2a57ad076e7a6be410756387",
+      "note": "Source for the shared presentation explanation."
+    }
+  ]
+}

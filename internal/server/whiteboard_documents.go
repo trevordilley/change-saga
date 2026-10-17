@@ -119,7 +119,7 @@ func (a *app) whiteboardMetadata() requirements.WhiteboardMetadata {
 	return metadata
 }
 
-// Only the three technical roles occupy top-level navigation rows. Unassigned
+// Only the four technical roles occupy top-level navigation rows. Unassigned
 // documents remain discoverable on the overview and directly addressable.
 func applyWhiteboardRoles(view *technicalPageView, rows []*navNodeView, documents []whiteboardDocumentView, metadata requirements.WhiteboardMetadata) {
 	for i, design := range technicalDesignBoards {

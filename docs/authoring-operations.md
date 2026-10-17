@@ -79,8 +79,8 @@ change-saga whiteboard list --json change.saga
 change-saga validate --json change.saga
 ```
 
-Technical Design shows the three role entries **ERD**, **Infrastructure**, and
-**Data flows**. ERD opens the assigned board. The board does not also appear as
+Technical Design shows the four role entries **ERD**, **Infrastructure**,
+**Data flows**, and **Architecture**. ERD opens the assigned board. The board does not also appear as
 a fourth sidebar entry. Other authored boards remain discoverable from the
 Technical Design overview and retain their named URLs. Supporting essay pages
 also remain in that overview and keep their direct links. Role assignment does

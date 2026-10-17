@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "docs/design/htmx-frontend.md",
+      "start": 34,
+      "end": 51,
+      "digest": "sha256:e5ca5e257ceb22d118cd0fdfd6d144b6b5b1e5cd7f074d68759133da2f476aec",
+      "note": "Technology role, dependency or documented rationale for the shared stack reference."
+    }
+  ]
+}

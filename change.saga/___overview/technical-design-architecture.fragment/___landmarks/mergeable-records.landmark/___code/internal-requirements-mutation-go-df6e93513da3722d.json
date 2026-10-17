@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9345691abe778141b60d527a350b7333812dacdd",
+      "path": "internal/requirements/mutation.go",
+      "start": 105,
+      "end": 155,
+      "digest": "sha256:41c9acec05f69ce0a5795ddc48f16a127aa92af9e1af926b6b9bfbc5bcdea2c0",
+      "note": "Source for the mergeable records explanation."
+    }
+  ]
+}

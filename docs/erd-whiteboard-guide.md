@@ -1,6 +1,6 @@
 # Authoring an ERD whiteboard
 
-The ERD is one of the three [Technical design whiteboards](whiteboards.md),
+The ERD is one of the four [Technical design whiteboards](whiteboards.md),
 alongside Infrastructure and Data flows. The approach essay links and explains
 these views. Use proper crow's-foot markers for ERD cardinality and optionality.
 
