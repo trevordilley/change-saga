@@ -12,6 +12,10 @@ tool, and what they have to do about it.
 
 ### Added
 
+- Review slide outlines now show named sections with the same dividers as feature
+  implementation decks. Use `add-slide --review ID --section LABEL` or
+  `apply-slide` with `slide.section`; existing reviews need no migration.
+
 - **Format:** Architecture is the fourth Technical Design whiteboard role, using
   the shared renderer, revision history and assignment commands. Existing
   three-role metadata remains valid; older readers must upgrade before reading

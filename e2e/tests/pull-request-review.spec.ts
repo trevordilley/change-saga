@@ -25,7 +25,7 @@ function authorReview(repositories: SagaRepositories): void {
   cli(repositories, "add-slide", "--deck", "living-implementation", "--id", "living-overview", "--intent", "orient", "--layout", "diagram", "--title", "Living overview", "--source", visual, sagaRoot, "Living overview");
   cli(repositories, "review", "create", "--id", "pr-1", "--base", "main", "--head", "feature/wave-one", "--pr", "1", "--url", "https://example.test/acme/change-saga-demo/pull/1", "--title", "Wave one review", sagaRoot);
   for (const slide of ["greeting", "theme"]) {
-    cli(repositories, "add-slide", "--review", "pr-1", "--intent", "explain", "--layout", "diagram", "--title", slide === "greeting" ? "Greeting takes a name" : "Theme colour", "--source", visual, sagaRoot, slide);
+    cli(repositories, "add-slide", "--review", "pr-1", "--section", slide === "greeting" ? "Request" : "Appearance", "--intent", "explain", "--layout", "diagram", "--title", slide === "greeting" ? "Greeting takes a name" : "Theme colour", "--source", visual, sagaRoot, slide);
     cli(repositories, "add-item", "--review", "pr-1", "--slide", slide, "--kind", "node", "--element-id", "change", "--label", "The change", "--description", "The code this slide explains", sagaRoot);
   }
   cli(repositories, "add-item", "--review", "pr-1", "--slide", "greeting", "--kind", "statement", "--element-id", "why", "--label", "Feature", "--description", "The feature this change revises", "--record", "urn:change-saga:wave-one:feature:wave-one", sagaRoot);
@@ -605,7 +605,7 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
   cli(sagaRepositories, "review", "create", "--id", "pr-2", "--base", "main", "--head", "feature/wave-one", "--pr", "2", "--title", "Diagram review", sagaRoot);
   const request = {
     version: 1, operation: "create", request_id: "greeting-flow", review: "pr-2", expected_snapshot: "absent",
-    slide: { id: "greeting-flow", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["caller", "greeting", "no-default"] },
+    slide: { id: "greeting-flow", title: "Greeting flow", rank: 10, section: "Request flow", intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["caller", "greeting", "no-default"] },
     diagram: {
       version: 1, width: 1280, height: 720, background: "#fafaf8",
       elements: [
@@ -632,6 +632,7 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
   const running = await startSagaServer(sagaRepositories);
   try {
     await page.goto(`${running.baseURL}/reviews/pr-2`);
+    await expect(page.locator(".review-deck-rail [data-slide-section]")).toHaveText(["Request flow"]);
     const slide = page.locator('[data-deck-slide][data-slide-target$=":slide:greeting-flow"]');
     await expect(slide).toBeVisible();
     const visual = slide.locator("iframe.fragment-frame").contentFrame();

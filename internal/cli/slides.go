@@ -171,7 +171,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	deckTarget := flags.String("deck", "", "containing deck path, id, or URN")
 	id := flags.String("id", "", "stable slide identifier")
 	title := flags.String("title", "", "slide title")
-	section := flags.String("section", "", "optional section label shown as a subtle divider inside the deck")
+	section := flags.String("section", "", "optional section label; consecutive slides share a divider in implementation and review decks")
 	intent := flags.String("intent", "", "reviewer job: orient, explain, compare, trace, prove, risk, or conclude")
 	layout := flags.String("layout", "", "canvas arrangement, not diagram meaning: hero, diagram, before-after, sequence, evidence, risk, or custom")
 	var rank optionalInt

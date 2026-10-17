@@ -383,6 +383,14 @@ retrying; the published record and its referenced asset must remain intact.
 
 ### Review deck slides
 
+Use `slide.section` in an `apply-slide` request (or `add-slide --review ID
+--section "Request flow"`) to label divisions in a review outline, just as in a
+feature implementation deck. Consecutive slides with the same label share one
+divider; a different label starts a new division. An empty label ends the run,
+and repeating an earlier label later starts a fresh division in place. Sections
+do not reorder slides or introduce extra slides; slide and Item links, review
+decisions, and the deck Essay keep their existing destinations.
+
 Author review slides the same way: set `"review": ID` instead of `"deck"` (or
 pass `apply-slide --review ID`). A review Item carries no `evidence` or
 `criterion_links`, and may set `record` to a Saga record to open beside the
