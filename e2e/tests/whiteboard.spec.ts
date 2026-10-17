@@ -407,7 +407,7 @@ test("named technical-design whiteboards keep independent history and focus", as
   publish("system-context", "r1", "System context");
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);
-  await expect(page.locator("#nav-technical > .doc-node > .doc-row > a")).toHaveText(["ERD", "Infrastructure", "Data flows"]);
+  await expect(page.locator("#nav-technical > .doc-node > .doc-row > a")).toHaveText(["ERD", "Infrastructure", "Data flows", "Architecture"]);
   await expect(page.locator('.sidebar a[href="/technical/whiteboards/deployment-topology"]')).toHaveCount(0);
   await page.locator('[data-technical-whiteboards] a[href="/technical/whiteboards/deployment-topology"]').click();
   const board = page.locator("[data-whiteboard-view]");
