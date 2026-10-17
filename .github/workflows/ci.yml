@@ -89,8 +89,8 @@ jobs:
           go test -json -p 1 -parallel 2 -count=1 -timeout 30m ${{ matrix.race }} ./...
         env:
           # Leave room for race-detector shadow memory and Git children on
-          # Linux runners; that memory is outside Go's managed heap budget.
-          GOMEMLIMIT: ${{ runner.os == 'Linux' && '512MiB' || 'off' }}
+          # Linux and macOS; that memory is outside Go's managed heap budget.
+          GOMEMLIMIT: ${{ runner.os != 'Windows' && '512MiB' || 'off' }}
           # Test fixtures commit constantly, and after each commit Git starts
           # its automatic maintenance as another process. Throwaway fixture
           # repositories never need it.
