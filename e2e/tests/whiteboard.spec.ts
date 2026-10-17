@@ -389,6 +389,40 @@ test("wheel and trackpad scroll pan the board while modified scroll zooms", asyn
   await expect.poll(camera).toEqual(start);
 });
 
+test("opening camera follows toolbar wrapping without resetting a manual camera", async ({ page, saga }) => {
+  authorWhiteboard(saga, false, true);
+  await page.goto(saga.baseURL + '/technical/erd');
+  await waitForSettledSaga(page);
+  const board = page.locator('[data-whiteboard-view]');
+  const toolbar = board.locator('[data-whiteboard-toolbar]');
+  const viewport = board.locator('[data-whiteboard-viewport]');
+  const camera = () => viewport.locator(':scope > svg').evaluate((node: SVGSVGElement) => {
+    const {x,y,width,height} = node.viewBox.baseVal;
+    return {x,y,width,height};
+  });
+  await page.evaluate(() => document.fonts.ready);
+  await board.locator('[data-whiteboard-home]').click();
+  const start = await camera();
+  const initialHeight = (await toolbar.boundingBox())!.height;
+  await toolbar.evaluate(node => { node.style.width = '380px'; });
+  await expect.poll(async () => (await toolbar.boundingBox())!.height).toBeGreaterThan(initialHeight);
+  await expect.poll(async () => (await camera()).width).toBeGreaterThan(start.width);
+  await toolbar.evaluate(node => { node.style.removeProperty('width'); });
+  await expect.poll(camera).toEqual(start);
+
+  await board.locator('[data-whiteboard-zoom="1"]').click();
+  await expect.poll(async () => (await camera()).width).toBeLessThan(start.width);
+  const manual = await camera();
+  await toolbar.evaluate(node => { node.style.width = '380px'; });
+  await expect.poll(async () => (await toolbar.boundingBox())!.height).toBeGreaterThan(initialHeight);
+  // Allow the resize observer and resulting paint to run before checking
+  // that the reader's chosen camera survived the overlay's layout change.
+  await viewport.evaluate(() => new Promise<void>(resolve => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  }));
+  expect(await camera()).toEqual(manual);
+});
+
 test("named technical-design whiteboards keep independent history and focus", async ({ page, saga }) => {
   authorWhiteboard(saga);
   const source = join(saga.root, "deployment-board.json");

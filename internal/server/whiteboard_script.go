@@ -427,7 +427,12 @@ const whiteboardJavaScript = `
       }});
       const templates = new Map(qa('[data-diagram-note-template]',board).map(node => [node.dataset.diagramNoteTemplate,node]));
       prepareDiagramInteractions(svg, {interactionRoot:board, signal:pageScope.signal, affordance, templates});
-      const resize = new ResizeObserver(() => { viewportRect = viewport.getBoundingClientRect(); atStart ? home() : fitted ? fit() : paint(); }); resize.observe(viewport);
+      const resize = new ResizeObserver(() => { viewportRect = viewport.getBoundingClientRect(); atStart ? home() : fitted ? fit() : paint(); });
+      resize.observe(viewport);
+      // Fitting reserves space for these overlays. Their labels can wrap
+      // after a camera change even when the viewport itself has not resized.
+      resize.observe(q('[data-whiteboard-toolbar]', board));
+      resize.observe(q('.whiteboard-description > summary', board));
       pageScope.signal.addEventListener('abort', () => { resize.disconnect(); stopMotion(); cancelAnimationFrame(render); clearTimeout(interactionTimer); }, {once:true});
       q('[data-whiteboard-toolbar]', board).hidden = false;
       home();

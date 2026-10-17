@@ -109,6 +109,9 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- Whiteboard opening and fit cameras follow toolbar wrapping, so returning to
+  the authored start restores the same framing on different platforms.
+
 - Evidence repair refuses ranges that converge onto duplicate references before
   writing, preserving all original evidence and explanation notes.
 
