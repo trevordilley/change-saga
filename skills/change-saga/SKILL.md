@@ -346,8 +346,11 @@ history rather than rewriting what was previously known.
 
 Technical Design includes an Architecture whiteboard alongside ERD, Infrastructure
 and Data flows. For codebase structure, patterns, state ownership and technology
-choices, read [architecture guidance](references/architecture.md). Reuse the
-shared whiteboard format; feature decks link to the wider architectural context.
+choices, read [architecture guidance](references/architecture.md) before drawing:
+gather code evidence and boundary rules, build a map with question-led sections,
+generate and visually inspect a scratch board, then independently fact-check its
+claims before publication. Reuse the shared whiteboard format; feature decks
+link to the wider architectural context.
 
 ## Common workflow
 

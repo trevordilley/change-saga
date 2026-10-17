@@ -887,6 +887,22 @@ serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
 sans-serif elsewhere. Code examples use bundled Go Mono at
 `/_diagram/fonts/go-mono.ttf`, with a monospace fallback elsewhere.
 
+Custom entries in `styles` are complete styles, not overrides of a default.
+Each requires `fill`, `stroke`, `ink`, `font_size` (8–200), and `stroke_width`
+(0–50). Colors accept the documented theme tokens, `none`, or `#rrggbb`.
+`dash` is an optional boolean and defaults to false. For example:
+
+```json
+"styles": {"browser": {"fill": "@diagram-blue-tint", "stroke": "@diagram-blue-accent", "ink": "@diagram-blue-ink", "font_size": 20, "stroke_width": 2, "dash": false}}
+```
+
+Ordinary `edge` endpoints (`from` and `to`) must name `node` elements, not
+groups or sections. Composed `connection` endpoints instead name instance paths
+to non-decorative elements with explicit bounds. Text is measured with the
+bundled font; unsupported glyphs are rejected with their character and code
+point. For example, Go Regular lacks U+2713 (`✓`) and U+25B7 (`▷`); use words,
+bundled icons or the appropriate edge terminator instead of those text symbols.
+
 A **code** element displays an API invocation or library usage example as
 literal source, never executed. It has `kind: "code"`, a required `code` string,
 an optional `language` display label, optional `line_numbers`, and optional

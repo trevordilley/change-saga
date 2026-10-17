@@ -50,6 +50,15 @@ Technical Design has ERD, Infrastructure, Data flows, and Architecture, with no 
 entry for the assigned board. Other boards remain reachable from the overview
 and their named URLs. A display rename alone does not assign a role.
 
+Without explicit presentation metadata, existing conventional IDs supply role
+defaults: `data-model` owns ERD, and `infrastructure`, `data-flows`, and
+`architecture` own their namesake roles. Publishing one can therefore fill an
+empty role implicitly. Reread `whiteboard list --json` after publication; do not
+blindly follow it with `assign-role --expect none`. If the desired board already
+owns the role, no assignment is needed. If changing an observed owner named
+`architecture`, the expectation is `--expect architecture`. Explicit metadata
+may override these conventions, so always use the effective list result.
+
 If the board belongs to another role, explicitly unassign it first using
 `whiteboard unassign-role --id OBSERVED_OWNER --role ROLE`, or use the documented
 move option with the observed metadata snapshot. Re-read after a concurrency

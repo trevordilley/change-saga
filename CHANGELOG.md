@@ -10,6 +10,17 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-17
+
+### Changed
+
+- Architecture authoring guidance now starts with code and boundary evidence,
+  then a codebase map and question-led sections, scripted scratch publication,
+  light/dark visual inspection and an independent factual review. Technology
+  rationales distinguish decisions, provenance, inference and unknowns.
+- Clarified whiteboard role defaults, complete custom styles, endpoint and glyph
+  constraints, supporting Essay discovery, and managed reader shutdown.
+
 ## [0.5.0] - 2026-10-16
 
 ### Added
@@ -1207,7 +1218,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/trevordilley/change-saga/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/trevordilley/change-saga/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/trevordilley/change-saga/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/trevordilley/change-saga/compare/v0.3.0...v0.3.1

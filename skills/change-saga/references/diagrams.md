@@ -20,7 +20,10 @@ Infrastructure (`infrastructure`), Data flows (`data-flows`) and Architecture
 codebase structure, patterns and technology choices. The essay explains
 how the application works, the major decisions and tradeoffs, and links into the
 boards. Use `overview set-technical-design --source FILE PATH`; add a supporting
-page with `--page ID --title TITLE`. Supporting pages open at `/technical/pages/ID`.
+page with `--page ID --title TITLE` and its own `--subtext`. Supporting pages
+open at `/technical/pages/ID` and are linked from the Technical Design essay,
+not extra sidebar children. An empty subtext currently displays a generic
+Technical Design subtitle; it does not inherit the main essay's authored subtext.
 Systems and Components are no longer design navigation areas.
 
 Those IDs are defaults, not required identities. Before creating a board,
@@ -101,6 +104,15 @@ A whiteboard has no `diagram edit` transaction; it uses immutable complete
 publications. Distinct instance paths identify repeated appearances. Opaque
 imported SVGs remain whole diagrams; do not infer internal geometry or fabricate
 slide Items for them.
+
+Publication currently has no `--dry-run`, and `visual-qa` selects slides, not
+whiteboards. Iterate complete publications in a scratch Saga, then inspect the
+opening board and every `?focus=SECTION_PATH` in the reader in light and dark
+mode. See [architecture](architecture.md#generate-validate-and-inspect) for the
+generator, overflow-repair and fact-check workflow. `open` starts a managed
+reader; `change-saga serve status SCRATCH_SAGA` finds it and `change-saga serve
+stop SCRATCH_SAGA` stops it. Always supply the scratch path so unrelated readers
+are left running.
 
 Revisions live at `___whiteboards/<board-id>/revisions/<revision-id>.json`;
 each document has independent history and must satisfy the shared whiteboard
@@ -257,6 +269,10 @@ diagram icons`.
   boxes. Use `curve: "smooth"` for a flowing line through its points, `line:
   "dashed"` or `"dotted"` for optional or asynchronous flows, and a style with
   a thick `stroke_width` for an emphatic arrow; its head grows with it.
+- An ordinary `edge` must name `node` IDs in `from` and `to`; it cannot end on
+  a `group`, including a section. Use real endpoint nodes inside the boundary.
+  Composed `connection` elements instead use instance paths to non-decorative
+  elements with explicit bounds; do not confuse the two endpoint contracts.
 - Edge labels need a `label_box`; a node whose shape is too small for its
   label may place it in a `label_box` outside the shape. `align` is `start`,
   `middle`, or `end`.
@@ -264,10 +280,30 @@ diagram icons`.
   wrap, or shorten the text.
 - Name styles; define custom ones under `styles`. Graphics use `currentColor`
   for their style's stroke instead of hard-coded colors.
+- A custom style is complete, not a partial override: supply `fill`, `stroke`,
+  `ink`, `font_size` (8–200) and `stroke_width` (0–50). `dash` is an optional
+  boolean, default false, not a dash-pattern string. For example:
+
+  ```json
+  "styles": {
+    "browser": {
+      "fill": "@diagram-blue-tint", "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink", "font_size": 20, "stroke_width": 2,
+      "dash": false
+    }
+  }
+  ```
 - Prefer colour tokens over hex in custom styles: `"fill": "@diagram-primary-fill"`
   or `"stroke": "@accent"` follows light and dark mode and a theme, while a
   hex colour stays fixed in both. `change-saga spec` lists the tokens under
   `theme` (and `diagram.color_tokens`).
+- Text uses the bundled Go font, not arbitrary system glyphs. ASCII labels are
+  a safe starting point; the font also supports some non-ASCII text, but not all
+  Unicode. In particular, `✓` (U+2713) and `▷` (U+25B7) are rejected. Use words
+  or a bundled Lucide `icon` discovered with `diagram icons`; use an edge
+  terminator for an arrowhead. The missing-glyph error names the character and
+  code point. There is currently no CLI character-set listing; validate chosen
+  symbols in the scratch publication before using them throughout the board.
 - Mark lifelines and chrome `decorative`, and a title unless it carries a
   `note` (a decorative element is hidden from readers, so it cannot). Everything else is semantic,
   appears in the description, and needs a `description` when its label does
