@@ -10,7 +10,13 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-16
+
 ### Added
+
+- Roadmap planning with canonical feature identities, shared labels and milestones,
+  and independent grouping for built and planned features.
+- Essay presentation separates title, subtext, abstract, and body.
 
 - Review slide outlines now show named sections with the same dividers as feature
   implementation decks. Use `add-slide --review ID --section LABEL` or
@@ -79,6 +85,12 @@ tool, and what they have to do about it.
 
 ### Changed
 
+- Quality requires positive, negative, and edge verification definitions by default,
+  with explicit policy exceptions; execution results never determine coverage.
+- Large Sagas defer hidden deck viewers and reuse navigation work for faster clicks.
+- Absolute checkout path warnings are emitted only on Windows; portable Saga path
+  validation remains enforced.
+
 - Technical Design shows ERD, Infrastructure, Data flows, and Architecture role
   entries; assigning an existing board consolidates its navigation entry.
   Other active boards remain discoverable from the overview and named URLs.
@@ -90,6 +102,11 @@ tool, and what they have to do about it.
 - Without a `data-model` whiteboard, Data model navigation gives independently named ERD
   documents equal standing and lists them before data entities. Multiple documents no longer choose an
   `application` or first ERD as primary; a single active document stays inline.
+
+### Fixed
+
+- Review annotation comment boxes open beside their marks and stay within the
+  visible viewport as the slide or window resizes, instead of occupying a fixed corner.
 
 ## [0.4.0] - 2026-10-07
 
@@ -115,9 +132,6 @@ tool, and what they have to do about it.
   legacy-format explanations and compatibility decision steps.
 
 ### Fixed
-
-- Review annotation comment boxes open beside their marks and stay within the
-  visible viewport as the slide or window resizes, instead of occupying a fixed corner.
 
 - Technical documentation guidance uses the current inventory schema for new
   authoring, removing the unnecessary format-choice prompt. ERDs are selected for explanatory value independently
@@ -1183,7 +1197,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/trevordilley/change-saga/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/trevordilley/change-saga/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/trevordilley/change-saga/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/trevordilley/change-saga/compare/v0.2.0...v0.3.0

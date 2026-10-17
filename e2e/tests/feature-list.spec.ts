@@ -21,8 +21,9 @@ test("@critical lists every feature and opens only the one being read", async ({
 
   // Project destinations are peers; prose stays on Overview's page.
   const places = contents.locator(":scope > .doc-node:not([hidden]) > .doc-row > .doc-link");
-  await expect(places).toHaveText(["Terms and vocabulary", "Personas", "Technical design", "Feature flags", "Features"]);
-  await expect(places.last()).toHaveAttribute("href", "/features");
+  await expect(places).toHaveText(["Terms and vocabulary", "Personas", "Technical design", "Feature flags", "Features", "Roadmap"]);
+  await expect(places.filter({ hasText: /^Features$/ })).toHaveAttribute("href", "/features");
+  await expect(places.last()).toHaveAttribute("href", "/roadmap");
   // Terms stay shut until they are opened, and the header is still the way in.
   await expect(contents.getByRole("button", { name: "Toggle Terms and vocabulary" })).toHaveAttribute("aria-expanded", "false");
   await expect(contents.getByRole("link", { name: "Terms and vocabulary", exact: true })).toHaveAttribute("href", "/terms");
@@ -77,7 +78,7 @@ test("the open feature follows the page, and no reading preference is stored", a
     await waitForSettledSaga(page);
     await expect(featureRows(page).locator(":scope > .doc-row > .doc-link")).toHaveText(["Wave One", "Tide Charts", "Harbor Lights"]);
     await expect(openFeatures(page)).toHaveCount(0);
-    await expect(page.locator("[data-feature-group-control]")).toHaveCount(0);
+    await expect(page.locator("[data-feature-group-control]")).toHaveCount(1);
   }
   expect(await context.cookies()).toEqual([]);
 });

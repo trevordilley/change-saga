@@ -287,10 +287,19 @@ func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 				t.Fatalf("%s renders %s = %v, want %v", href, marker, got, want)
 			}
 		}
+		abstract := ""
 		for _, manifest := range records.Features {
-			if manifest.ID == feature.ID && manifest.Description != "" && !strings.Contains(page, template.HTMLEscapeString(manifest.Description)) {
-				t.Fatalf("%s lacks its description", href)
+			if manifest.ID == feature.ID {
+				abstract = manifest.Description
 			}
+		}
+		// An authored Essay abstract takes precedence over the manifest's
+		// fallback description; assert the actual reading contract in both cases.
+		if overview := feature.Overview(); overview != nil && overview.Abstract != "" {
+			abstract = overview.Abstract
+		}
+		if abstract != "" && !strings.Contains(page, string(essayAbstract(abstract, feature.Target))) {
+			t.Fatalf("%s lacks its abstract", href)
 		}
 		if feature.Design == nil {
 			continue

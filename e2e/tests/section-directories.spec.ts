@@ -63,7 +63,7 @@ test("@critical every section header opens its page rather than only expanding",
   await expect(page).toHaveURL(`${saga.baseURL}/features`);
   await waitForSettledSaga(page);
   const features = page.locator('[data-directory="features"]');
-  await expect(features.getByRole("columnheader")).toHaveText(["Feature", "Description", "Stories", "Accepted", "With design", "Test cases", "Slides"]);
+  await expect(features.getByRole("columnheader")).toHaveText(["Feature", "Description", "Milestone", "Labels", "Stories", "Accepted", "With design", "Test cases", "Slides"]);
   await expect(features.getByRole("row", { name: /Tide Charts/ })).toContainText("1");
   await expectNoSeriousAccessibilityViolations(page);
 
