@@ -286,7 +286,11 @@ implemented. It never reports pass/fail, and CI failures never change Saga
 Quality status. On a Roadmap feature, author the same canonical case used after
 implementation: requirement links, preconditions, ordered steps and expected
 outcomes suffice without code. Keep delivery intent on the feature's existing
-planning metadata. See [Quality definitions](references/quality.md) for safe
+planning metadata. For every criterion, consider positive, negative, and edge
+verification; prefer focused cases and explain any inapplicable kinds through a
+revision-pinned quality policy. All three are required by default for accepted
+criteria. Never relabel a happy-path case to claim scenarios it does not exercise.
+See [Quality definitions](references/quality.md) for safe
 step mappings, enrichment, queries, and retained historical records.
 
 Overviews are essays. Write connected prose explaining the subject, with headings

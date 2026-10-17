@@ -36,6 +36,7 @@ test("Roadmap verification gains step evidence on the same case without run outc
     await page.locator('[data-feature-quality]').getByRole("link", { name: "Verify the named greeting", exact: true }).click();
     await expect(page).toHaveURL(server.baseURL + "/tests/planned-check");
     await expect(page.locator('[data-test-definition-stage]')).toContainText("planned");
+    await expect(page.locator('[data-test-kinds]')).toHaveText("Test kindspositive");
     await expect(page.locator('[data-test-step="assert"]')).toContainText("The greeting includes the supplied name.");
     await expect(page.locator('[data-test-runs]')).toHaveCount(0);
     const criterionLink = page.locator('[data-test-step="assert"]').getByRole("link", { name: "The greeting includes the supplied name.", exact: true });
@@ -115,5 +116,38 @@ test("Roadmap verification gains step evidence on the same case without run outc
     await expect(drawer).toContainText("This reference could not be loaded");
     await expect(drawer.getByRole("link", { name: "Open full requirement page" })).toBeVisible();
     await expect(page).toHaveURL(server.baseURL + "/tests/planned-check");
+  } finally { await stopSagaServer(server); }
+});
+
+
+test("Quality lists focused positive, negative, and edge definitions", async ({ page, sagaRepositories: repo }) => {
+  const cli = (...args: string[]) => {
+    const result = runCLI(repo, [...args, repo.sagaRoot]);
+    expect(result.status, result.stdout + result.stderr).toBe(0);
+  };
+  cli("feature", "add", "--id", "kind-examples", "--title", "Verification purposes", "--status", "planned");
+  cli("story", "add", "--feature", "kind-examples", "--id", "bounded-name", "--revision", "r1", "--event", "proposed", "--title", "Validate a caller name", "--statement", "As a caller I can supply a name of one to twenty characters.", "--criterion", "length=Names of one to twenty characters are accepted; other lengths are rejected without saving them.");
+  const cases = [
+    { kind: "positive", title: "Accept a valid name", action: "Supply a five-character name.", expected: "The name is accepted." },
+    { kind: "negative", title: "Reject an empty name", action: "Supply an empty name.", expected: "A validation message appears and nothing is saved." },
+    { kind: "edge", title: "Accept the exact name limit", action: "Supply a twenty-character name.", expected: "The full name is accepted without truncation." }
+  ];
+  for (const scenario of cases) {
+    cli("quality", "test-case", "add", "--feature", "kind-examples", "--id", "name-" + scenario.kind, "--title", scenario.title, "--kind", scenario.kind, "--automation", "manual", "--step", JSON.stringify({ id: "assert", action: scenario.action, expected_result: scenario.expected }), "--expected-result", scenario.expected);
+    cli("relation", "add", "--feature", "kind-examples", "--id", "name-" + scenario.kind, "--type", "verifies", "--from", "urn:change-saga:wave-one:test-case:name-" + scenario.kind, "--to", "urn:change-saga:wave-one:story:bounded-name:criterion:length", "--rationale", "This scenario checks the allowed name lengths.");
+  }
+  const server = await startSagaServer(repo);
+  try {
+    for (const scenario of cases) {
+      await page.goto(server.baseURL + "/features/kind-examples");
+      await page.locator('[data-feature-quality] > summary').click();
+      const link = page.locator('[data-feature-quality]').getByRole("link", { name: scenario.title, exact: true });
+      await expect(link.locator("..")).toContainText(scenario.kind);
+      await link.click();
+      await expect(page.locator('[data-test-kinds]')).toHaveText("Test kinds" + scenario.kind);
+      await expect(page.locator('[data-test-definition-stage]')).toContainText("planned");
+      await expect(page.locator('[data-test-step="assert"]')).toContainText(scenario.expected);
+    }
+    await expectNoSeriousAccessibilityViolations(page);
   } finally { await stopSagaServer(server); }
 });

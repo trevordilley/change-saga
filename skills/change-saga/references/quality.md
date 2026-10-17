@@ -4,6 +4,31 @@ Quality explains how an outcome is verified, not whether an execution passed.
 Use the feature's existing planned/built metadata; Roadmap and Features share
 one canonical case and one reader. Do not invent a second planning state.
 
+For every criterion, explicitly consider all three verification purposes:
+
+- `positive`: valid inputs and permitted actions produce the intended outcome.
+- `negative`: invalid inputs, disallowed actions, or failures are rejected or
+  recovered from correctly; assert the error and absence of unintended effects.
+- `edge`: limits, empty states, duplicates, concurrency, or partial failures have
+  defined outcomes. Choose the boundaries relevant to the criterion.
+
+Usually author separate, focused cases with one kind each. A case may retain
+multiple kinds when its steps actually exercise them (for example, rejection at
+an exact boundary). Never add labels unsupported by the scenario to satisfy a
+coverage check. Negative means expected rejection/recovery, not a failed run.
+
+All three kinds are required by default for accepted criteria. If a kind does
+not apply, publish `quality policy set --criterion CRITERION_URN --story-revision
+REVISION_URN --require KIND ... --rationale TEXT --feature ID SAGA` with the
+applicable set and a specific reason for each omission. Respect existing explicit
+policies; changing one requires superseding all current heads. Use planned cases
+for applicable scenarios that lack code. Do not waive them because implementation
+is missing, or invent requirements or evidence merely to close a gap.
+
+Before handoff, use `status --json` and `check --covers quality` to find missing
+required kinds, mappings, or stale policies. Report unresolved gaps explicitly;
+a set of happy-path cases alone is not sufficient under the default policy.
+
 1. Author a proposed case with `quality test-case add --feature ID`, preconditions,
    ordered `--step` JSON objects, coverage kinds, automation, and expected outcome.
    Each step has stable `id`, `action`, and `expected_result`. Optional `criteria`

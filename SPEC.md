@@ -568,7 +568,12 @@ urn:change-saga:<saga>:coverage-exception:<exception>
 A test identity is immutable. Revisions are append-only complete snapshots;
 their `steps` array is execution order. `coverage_kinds` is a non-empty unique
 subset of `positive`, `negative`, and `edge`; `automation` is `manual`,
-`automated`, or `hybrid`. Lifecycle is a separate append-only event graph with
+`automated`, or `hybrid`. Positive cases define intended behavior for valid input;
+negative cases define rejection or recovery for invalid input or disallowed actions;
+edge cases define boundary, empty-state, duplicate, concurrency, or partial-failure
+behavior. These are verification purposes, never execution verdicts. Prefer a
+single purpose per case; multiple kinds remain valid when its steps exercise each.
+Lifecycle is a separate append-only event graph with
 states `proposed`, `active`, `deprecated`, and `retired`. Definition state does
 not imply a run result. A proposed or active definition can satisfy coverage when its
 current revision contains at least one step and a current direct `verifies`
@@ -636,8 +641,18 @@ consumers should use definition/mapping fields or the explicit history query.
 
 Policies are immutable per-criterion decisions. `required_kinds` and
 `allowed_automation` are non-empty unique sets. In the absence of a policy the
-quality projection requires `positive`; a policy can additionally require
-`negative` and/or `edge`. Coverage exceptions use one of the six axes
+quality projection requires `positive`, `negative`, and `edge` for each accepted
+criterion. Missing required kinds remain visible definition gaps in status and
+`check --covers quality`, even when another kind has a current verifies link.
+A current revision-pinned policy replaces this default with its explicit set;
+its rationale should explain why each omitted kind does not apply. Missing code
+or unimplemented verification is not a reason to omit an applicable kind: define
+a planned case instead. Stale or conflicting policies cannot waive the default.
+
+Existing cases and explicit policies remain readable and unchanged. Older Sagas
+without policies can now report additional negative/edge coverage gaps; this is
+a stricter derived obligation, not an invalid record or failed execution. No
+history is rewritten or cases automatically relabeled. Coverage exceptions use one of the six axes
 `prototype`, `ux`, `ui`, `technical`, `quality`, or `implementation`, pin one
 story revision, and require a nonblank rationale plus at least one resolved
 citation. An exception declares an axis inapplicable to a criterion, and there is one unsuperseded head per

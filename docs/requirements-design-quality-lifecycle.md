@@ -669,15 +669,19 @@ Default verification coverage for an accepted criterion requires:
 
 1. a proposed or active current definition with ordered steps and a direct,
    current `verifies` relation to the criterion;
-2. a linked definition declaring `positive`;
-3. additional kinds required by its criterion policy; and
+2. linked definitions covering `positive`, `negative`, and `edge`;
+3. or the explicit kind set of a current criterion policy with a rationale for
+   any omitted kinds; and
 4. current mapping pins and, when present, current implementation references.
 
 No run or code evidence is required to define planned verification.
 
-The initial default requires `positive`; `negative` and `edge` remain visible
-gaps but block only when a per-criterion policy requires them. Policies are
-immutable records under `___quality/policies/`, avoiding a shared manifest map:
+The default requires all three kinds. Status and `check --covers quality` name
+missing required kinds even when a positive case is already linked. A current,
+revision-pinned policy can narrow the set when its rationale explains why omitted
+kinds do not apply. Prefer focused cases; do not tag a happy-path scenario with all
+three kinds merely to close gaps. Policies are immutable records under
+`___quality/policies/`, avoiding a shared manifest map:
 
 ```json
 {
@@ -695,8 +699,10 @@ immutable records under `___quality/policies/`, avoiding a shared manifest map:
 ```
 
 There is one unsuperseded policy head per criterion/story revision. New-story
-authoring should prompt for required kinds. Migration projects `positive` when
-no policy exists and does not rewrite historical v3 story revisions.
+authoring must consider valid behavior, rejection/recovery, and boundaries for
+each criterion. Existing explicit policy sets retain their meaning; without a
+policy, older Sagas now show all three obligations. No historical story or test
+revision is rewritten. Planned definitions need no code or execution results.
 
 The status quality projection returns `covered`, `missing_kind`, `missing_mapping`,
 `stale`, `inactive`, `excluded`, `invalid`, `automation_not_allowed`, or `conflicted` for each required
@@ -1141,7 +1147,7 @@ internal/server        UI/HTTP projection only; no domain rules
 | Visual design relation | Expand `addresses`; keep `explains` unchanged. | Reuses typed relations and prevents existing review links from silently becoming design claims. |
 | Container traversal | Require explicit `scope: descendants`. | Makes Deck/Slide-to-Item inference reviewable and deterministic. |
 | Story-level design links | Count as `covered_broad`, but report precision separately. | Preserves current broad semantics without pretending to identify a particular criterion element. |
-| Required test kinds | Default `positive`; declare additional negative/edge kinds per criterion policy. | Requiring all three universally is wasteful; inferring them from prose is unreliable. |
+| Required test kinds | Default `positive`, `negative`, and `edge`; explain inapplicable kinds in a current criterion policy. | Happy-path-only coverage leaves risks unexamined; explicit exceptions avoid inventing irrelevant scenarios. |
 | Legacy run retention | Immutable parent-head graph, not latest timestamp. | History remains queryable but never affects Quality or readiness. |
 | Implementation-under-test mapping | Require exact equality with Item-owned diff URIs. | Prevents near-range heuristics from claiming a quality/design connection. |
 | Exclusions | Allow cited design/quality exceptions; never delivery exceptions. | Keeps intentional non-applicability explicit without erasing accepted obligations. |

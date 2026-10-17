@@ -122,7 +122,7 @@ func (a *assembler) qualityAxis() qualityEvaluation {
 	for _, frame := range a.criteria {
 		row := &QualityCriterion{
 			Criterion: frame.urn, StoryRevision: frame.currentRevision, Policy: "default", PolicyState: "default",
-			RequiredKinds: []string{string(quality.CoveragePositive)}, AllowedAutomation: []string{}, ObservedKinds: []string{},
+			RequiredKinds: []string{string(quality.CoveragePositive), string(quality.CoverageNegative), string(quality.CoverageEdge)}, AllowedAutomation: []string{}, ObservedKinds: []string{},
 			Tests: []string{}, Kinds: []KindStatus{}, Links: []TestLinkRow{},
 		}
 		result.criteria[frame.urn] = row

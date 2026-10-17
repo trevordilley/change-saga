@@ -318,8 +318,10 @@ func kind(t *testing.T, status Status, criterion, name string) KindStatus {
 func TestQualityAxisReflectsDefinitionsAndExceptionsIndependentlyOfRuns(t *testing.T) {
 	status := Assemble(qualityFixture(t))
 
-	if got := cell(t, status, "positive-path", coverage.AxisQuality); got.State != coverage.StateCoveredDirect {
-		t.Fatalf("a current positive definition covers the criterion: %#v", got)
+	if got := cell(t, status, "positive-path", coverage.AxisQuality); got.Resolution != coverage.ResolutionGap ||
+		!containsText(got.Unsatisfied, "required negative test: missing_kind") ||
+		!containsText(got.Unsatisfied, "required edge test: missing_kind") {
+		t.Fatalf("a positive definition leaves the other default kinds missing: %#v", got)
 	}
 	if got := kind(t, status, "positive-path", "positive"); got.State != kindCovered || !reflect.DeepEqual(got.TestCases, []string{testURN("happy")}) {
 		t.Fatalf("positive kind = %#v", got)
@@ -340,8 +342,9 @@ func TestQualityAxisReflectsDefinitionsAndExceptionsIndependentlyOfRuns(t *testi
 	if got := kind(t, status, "failing", "positive"); got.State != kindCovered {
 		t.Fatalf("a failed historical run does not change definition coverage: %#v", got)
 	}
-	if got := cell(t, status, "failing", coverage.AxisQuality); got.State != coverage.StateCoveredDirect {
-		t.Fatalf("a failed historical run does not erase the verification approach: %#v", got)
+	if got := cell(t, status, "failing", coverage.AxisQuality); got.State != coverage.StateGap ||
+		!containsText(got.Unsatisfied, "required negative test: missing_kind") || containsText(got.Unsatisfied, "failed") {
+		t.Fatalf("only missing definition kinds affect coverage, never a failed historical run: %#v", got)
 	}
 	if got := kind(t, status, "not-run", "positive"); got.State != kindCovered {
 		t.Fatalf("a linked definition needs no runs: %#v", got)
@@ -625,5 +628,59 @@ func TestQualityStepMappingsAreCriterionSpecificAndRevisionPinned(t *testing.T) 
 		if test.TestCase == testURN("happy") && !containsText(test.Steps[1].Issues, "missing case-level verifies") {
 			t.Fatalf("missing mapping not explained: %+v", test.Steps)
 		}
+	}
+}
+
+// Existing explicit policies retain their meaning. An absent, stale, or
+// conflicted policy cannot silently waive negative and boundary verification.
+func TestQualityDefaultKindsAndExplicitPolicyCompatibility(t *testing.T) {
+	for _, scenario := range []string{"default", "current policy", "stale policy", "conflicting policy", "all planned kinds"} {
+		t.Run(scenario, func(t *testing.T) {
+			inputs := qualityFixture(t)
+			policy := quality.Policy{ID: "positive-only", Criterion: criterionURN("positive-path"), StoryRevision: storyR2,
+				RequiredKinds: []quality.CoverageKind{quality.CoveragePositive},
+				Rationale:     "This criterion is a fixed informational statement; invalid input and boundaries do not apply."}
+			set := quality.PolicySet{Criterion: policy.Criterion, StoryRevision: storyR2,
+				Heads: []string{"urn:change-saga:checkout:quality-policy:positive-only"}, Policies: []quality.Policy{policy}, Current: &policy}
+			switch scenario {
+			case "current policy":
+				inputs.Quality.PolicySets = append(inputs.Quality.PolicySets, set)
+			case "stale policy":
+				policy.StoryRevision = storyR1
+				set.StoryRevision, set.Policies = storyR1, []quality.Policy{policy}
+				inputs.Quality.PolicySets = append(inputs.Quality.PolicySets, set)
+			case "conflicting policy":
+				set.Heads = append(set.Heads, "urn:change-saga:checkout:quality-policy:competing")
+				set.Current = nil
+				inputs.Quality.PolicySets = append(inputs.Quality.PolicySets, set)
+			case "all planned kinds":
+				for i := range inputs.Quality.TestCases {
+					test := &inputs.Quality.TestCases[i]
+					test.Evidence, test.EvidenceHeads, test.Runs, test.RunHeads = nil, nil, nil, nil
+					test.HeadRun, test.CurrentRun = nil, nil
+					test.CurrentLifecycle = &quality.LifecycleEvent{State: quality.StateProposed}
+				}
+				inputs.Links = fixtureLinks(inputs.Stories, []requirements.Relation{
+					verifies("happy-positive", "happy", "r1", "positive-path", storyR2),
+					verifies("boundary-positive", "boundary", "r1", "positive-path", storyR2),
+				}, inputs.Quality)
+			}
+			status := Assemble(inputs)
+			got := cell(t, status, "positive-path", coverage.AxisQuality)
+			if scenario == "current policy" || scenario == "all planned kinds" {
+				if got.State != coverage.StateCoveredDirect {
+					t.Fatalf("explicit policy or all planned kinds should resolve coverage: %+v", got)
+				}
+				return
+			}
+			if got.Resolution != coverage.ResolutionGap {
+				t.Fatalf("missing kinds must remain gaps: %+v", got)
+			}
+			for _, name := range []string{"negative", "edge"} {
+				if row := kind(t, status, "positive-path", name); !row.Required || row.State != kindMissing {
+					t.Fatalf("%s: %+v", name, row)
+				}
+			}
+		})
 	}
 }

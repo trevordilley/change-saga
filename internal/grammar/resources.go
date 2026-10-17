@@ -235,7 +235,7 @@ var resources = []Resource{
 	{
 		Kind: "quality-policy", URN: "urn:change-saga:<saga>:quality-policy:<policy>", Storage: "___features/<feature>.feature/___quality/policies/<policy>.json",
 		Schema: schemaBase + "v5/quality-policy.schema.json", Versions: []int{5}, History: "immutable; one unsuperseded head per criterion/story revision",
-		Writers: []string{"quality policy set"}, Notes: "absent policy means positive is required",
+		Writers: []string{"quality policy set"}, Notes: "absent policy requires positive, negative, and edge for accepted criteria; a current policy may narrow the set with a rationale for omitted kinds",
 	},
 	{
 		Kind: "quality-evidence", URN: "urn:change-saga:<saga>:test-case:<test-case>:evidence:<evidence>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/evidence/<evidence>.json",

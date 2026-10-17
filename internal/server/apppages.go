@@ -245,6 +245,11 @@ func (graph *appGraph) findTestCase(id string) *quality.TestCase {
 // testCaseNote describes the definition, never execution history.
 func testCaseNote(testCase quality.TestCase) string {
 	facts := []string{strings.ReplaceAll(quality.DefinitionStage(testCase), "_", " ")}
+	if testCase.CurrentRevision != nil {
+		for _, kind := range testCase.CurrentRevision.CoverageKinds {
+			facts = append(facts, string(kind))
+		}
+	}
 	if testCase.CurrentLifecycle != nil && testCase.CurrentLifecycle.State != quality.StateActive {
 		facts = append(facts, string(testCase.CurrentLifecycle.State))
 	}

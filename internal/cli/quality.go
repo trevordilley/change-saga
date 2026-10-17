@@ -111,7 +111,7 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 	feature := featureIDFlag(flags)
 	var parents, kinds, preconditions, steps stringList
 	flags.Var(&parents, "parent", "current revision head URN; repeatable")
-	flags.Var(&kinds, "kind", "coverage kind: positive, negative, or edge; repeatable")
+	flags.Var(&kinds, "kind", "test kind: positive (valid behavior), negative (rejection/recovery), or edge (boundaries); repeat only for scenarios exercising multiple kinds")
 	flags.Var(&preconditions, "precondition", "ordered precondition; repeatable")
 	flags.Var(&steps, "step", `ordered step JSON {"id":ID,"action":TEXT,"expected_result":TEXT}; repeatable`)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -307,7 +307,7 @@ func qualityPolicySet(args []string, out io.Writer, stdin io.Reader) error {
 	id := flags.String("id", "", "stable policy id; defaults to <story>.<criterion>.<story-revision>")
 	criterion := flags.String("criterion", "", "canonical criterion URN")
 	storyRevision := flags.String("story-revision", "", "exact story revision URN the policy applies to")
-	rationale := flags.String("rationale", "", "why these kinds are required")
+	rationale := flags.String("rationale", "", "why these kinds apply and why any omitted kinds do not")
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")

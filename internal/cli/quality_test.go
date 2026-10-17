@@ -76,6 +76,9 @@ func TestQualityHelpListsTheAuthoringGrammar(t *testing.T) {
 		if err := Quality(context.Background(), append(strings.Fields(operation), "-h"), &help); !errors.Is(err, flag.ErrHelp) {
 			t.Fatalf("%s help error = %v", operation, err)
 		}
+		if operation == "policy set" && !strings.Contains(help.String(), "positive, negative, and edge are required") {
+			t.Fatalf("policy help omitted the default kinds: %s", help.String())
+		}
 		if usage := commandUsage["quality "+operation]; usage == "" || !strings.Contains(help.String(), usage) {
 			t.Fatalf("%s help omitted its usage line:\n%s", operation, help.String())
 		}
