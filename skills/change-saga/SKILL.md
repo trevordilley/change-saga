@@ -161,6 +161,15 @@ documentation), `change-saga setup-initial-saga` guides growing this Saga.
 
 ## Describe implemented features
 
+Name and define a feature as a durable capability a product owner could pitch
+to a CEO or board member who has never used the app. Its title and one-line
+subtext should make clear what someone can do and why it matters, without
+requiring knowledge of the codebase. Use concrete, supported value rather than
+marketing claims. Apply this equally to built Features and planned Roadmap
+entries; read the [feature framing guidance](references/stories.md)
+before creating or redefining one. Implementation mechanisms belong in design
+and technical decks, under the capability they enable.
+
 When asked to describe or document implemented features, query the existing
 Product features and stories, inspect the implementation, and create or update
 actual feature story records through the public story authoring commands. Put
@@ -331,7 +340,8 @@ or invent priorities or milestones. `query roadmap` discovers planned work with
 snapshot-bound pagination; ordinary `query context --feature ID` includes its
 plan. Existing features without a plan retain built placement for compatibility.
 
-Features are durable product domains, not changes. A story may move between
+Features are durable product domains defined by user capabilities and value,
+not changes or implementation artifacts. A story may move between
 features without changing its identity. Declare adjacent semantic links and
 let queries infer longer paths: story to persona, design or test case to story
 or criterion, and visual Item or supported evidence target to exact code.

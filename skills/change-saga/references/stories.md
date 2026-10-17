@@ -1,8 +1,61 @@
 # Stories, provenance, and lifecycle
 
-Read this reference for personas, stories, criteria, requirement citations,
+Read this reference for feature definitions, personas, stories, criteria, requirement citations,
 relations, or lifecycle changes. Read [query.md](query.md) first for an
 existing Saga. Discover exact mutation syntax from the installed CLI.
+
+## Frame features as product capabilities
+
+A feature should make sense to someone encountering the product for the first
+time. Write it as a durable capability a product owner could pitch to a CEO or
+board: **who benefits, what they can accomplish, and why that matters**. The
+reader should not need a codebase tour or a glossary of internal artifacts to
+understand its value. This standard applies to both built Features and Roadmap
+entries; keep planned capabilities explicitly planned.
+
+Before creating or redefining a feature, draft one plain-language sentence:
+“[Existing persona] can [concrete outcome], so [supported value].” Use it to
+choose the feature boundary and wording; it is a thinking aid, not a required
+title format or a substitute for actual story records. Query existing features
+first and reuse the capability that already owns that outcome.
+
+- **Title:** name the recognizable capability or outcome, short enough for the
+  navigation. Avoid internal type names, storage formats and implementation tasks.
+- **One-line subtext:** make the benefit understandable without prior product
+  knowledge. A title and subtext together should pass the cold-reader test.
+- **Abstract and Essay:** explain the problem, beneficiaries, useful result,
+  scope and meaningful limits. Stories and criteria define the observable
+  obligations; architecture and implementation decks explain how they are met.
+
+Use these examples only where the behavior and intent support them:
+
+| Implementation-shaped candidate | Product capability and one-line benefit |
+| --- | --- |
+| Immutable review event storage | **Collaborative change review** — Reviewers can contribute feedback without losing one another's work. |
+| Whiteboard role metadata | **Understand the application architecture** — Teams can find how the code, infrastructure and data fit together. |
+| Label and milestone entities | **Organize product priorities** — Product owners can group planned work and communicate what belongs in a release. |
+| Server bootstrap and repository configuration | **Set up a shared Saga** — Teams can connect their repository and make its product documentation available to collaborators. |
+
+Reframing is more than giving every internal mechanism a friendlier title.
+Several mechanisms often support one capability: put their details in that
+feature's design and technical deck, or in Architecture when shared. A database
+table, migration, cache, adapter, API refactor or new CLI flag is not automatically
+a separate feature. Keep an engineering task as work unless it delivers a
+distinct user capability. Conversely, a developer tool or public API can be a
+feature when developers are the actual human beneficiaries and its outcome is
+clear. Do not hide necessary technical terms from a technical audience.
+
+Pitchable means understandable and valuable, not inflated. Avoid vague titles
+such as “Enterprise platform” and unsupported claims about time saved, revenue,
+security, reliability or ease of use. Keep real product terminology and explain
+unfamiliar terms. Code proves behavior, not customer demand or a business case.
+If the beneficiary or value is unclear, ask a focused question rather than
+inventing a rationale or promoting a mechanism into a product requirement.
+
+For existing Sagas, improve display titles and Essays through public authoring
+commands when that work is requested. Preserve stable identities, story links
+and history; do not mass-rename or consolidate the catalog as an incidental
+cleanup. A guidance update alone does not authorize rewriting existing features.
 
 ## Document implemented features as Product stories
 
@@ -117,7 +170,8 @@ every current revision head needs at least one criterion. When only one
 obligation is confirmed, add exactly that narrow obligation; never invent
 broader behavior to make acceptance valid.
 
-Features are durable product domains, not pull requests. Revise a story in
+Features are durable product capabilities with a coherent user outcome, not
+pull requests or implementation artifacts. Revise a story in
 place as understanding improves; use the supported move operation when its
 domain changes so stable identities and links survive.
 

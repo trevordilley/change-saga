@@ -14,6 +14,9 @@ tool, and what they have to do about it.
 
 ### Changed
 
+- Feature guidance now frames built and planned capabilities around a clear user
+  outcome and value that a product owner can explain to an unfamiliar audience,
+  keeping implementation artifacts in design and technical documentation.
 - Architecture authoring guidance now starts with code and boundary evidence,
   then a codebase map and question-led sections, scripted scratch publication,
   light/dark visual inspection and an independent factual review. Technology

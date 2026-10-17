@@ -61,6 +61,16 @@ or implementation layer. For each feature, ask what outcome it enables, which
 personas receive that value, where its boundary lies, and whether the user
 wants to provide one representative story, several stories, or none yet.
 
+Frame each feature so a product owner could pitch it to a CEO or board member
+who has never used the app. Its title and one-line subtext should communicate
+what a person can accomplish and why it matters without codebase knowledge.
+For example, immutable review event storage may enable “Collaborative change
+review — contribute feedback without losing one another's work”; the storage
+mechanism belongs in its technical deck. Do not create a feature for every
+internal artifact under a friendlier name. Use concrete, supported benefits,
+not invented business impact or marketing hype. Apply the same framing to
+planned Roadmap entries while keeping their delivery status truthful.
+
 Stories must be persona-focused and deliver observable value. Keep technical
 detail out unless it is essential to the requirement. Acceptance criteria are
 independent, pass/fail one-liners. Agent-drafted stories and criteria remain
