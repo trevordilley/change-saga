@@ -53,23 +53,8 @@ change-saga version
 change-saga help
 ```
 
-Author a system's data model as [one ERD whiteboard](docs/erd-whiteboard-guide.md):
-connected sections, selected entities, relationships, callouts and source evidence.
-Existing ERD revisions remain readable and can be reused as optional source material.
-
-Publish and inspect a complete `board.json` through the whiteboard API:
-
-```sh
-change-saga whiteboard publish --id data-model --revision r1 --from board.json change.saga
-change-saga whiteboard describe --id data-model change.saga
-change-saga whiteboard get --id data-model --revision r1 change.saga
-change-saga whiteboard check --id data-model change.saga
-```
-
-`--id` selects the document; `--focus` selects an element within it. Named boards
-open at `/technical/whiteboards/<id>`. The Data model page at `/technical/erd`
-uses `data-model` by convention. Source references currently support exact ERD
-and data-entity pins, plus ERD imports; component and system pins are not supported.
+Every command is listed in the [CLI reference](#cli-reference) at the end of
+this README; `change-saga <command> -h` gives its flags.
 
 ## Start with a review
 
@@ -199,14 +184,14 @@ A grown Saga holds:
   constant) that define it.
 - **Personas**, a **design system**, an **onboarding deck**, and **feature
   flags**.
-- **Features**, the durable areas of the product. Each has the same four parts,
-  which never reorder as work progresses: **Product** (prototypes, and user
-  stories with acceptance criteria), **Design** (UX flows, UI references, and
-  technical design), **Quality** (test cases and their evidence), and
-  **Technical** (a slide deck whose visual elements reference the exact
-  code they explain).
+- **Features**, the durable areas of the product. Each has the same sections,
+  which never reorder as work progresses: **Stories** (user stories with
+  acceptance criteria), **Prototypes** (interactive experiences),
+  **UX** (flow decks), **UI** (visual references), **Technical** (a slide deck
+  whose visual elements reference the exact code they explain, plus technical
+  design), and **Quality** (test cases and their evidence).
 
-To describe implemented features, create or update their actual **Product**
+To describe implemented features, create or update their actual
 stories and observable acceptance criteria. Technical decks reference those
 stories and explain how the code fulfills them.
 
@@ -462,10 +447,10 @@ Documentation holds:
 - **Overview** is the application's pitch and description, plus its personas,
   terms and vocabulary, design system, onboarding deck, and feature flags.
 - **Features** lists every feature, each opening its own page. Inside a feature
-  the sidebar is always Product, Design, Quality, and Technical, in that
-  order. Technical is the deck itself, open to its slide thumbnails; the
-  other sections stay collapsed until you need them, and empty places say what
-  is missing.
+  the sidebar is always Stories, Prototypes, UX, UI, Technical, and Quality,
+  in that order, omitting any that are empty. Technical is the deck itself,
+  open to its slide thumbnails; the other sections stay collapsed until you
+  need them.
 - **Present** shows the technical deck full screen, one slide at a time.
   Linked code opens without losing the active slide.
 
@@ -669,6 +654,171 @@ go build -o ./bin/change-saga ./cmd/change-saga
 
 The release build is a single executable with no separately installed Go
 runtime and no hosted service.
+
+## CLI reference
+
+Every command takes the Saga directory (usually `change.saga`) as its last
+argument; `query` takes it as `--saga PATH`. Run `change-saga <command> -h` for
+a command's flags, and `change-saga spec --json` for the machine-readable
+grammar. Many commands that write accept `--dry-run`, and most accept `--json`.
+Commands that read a diff accept `--repo PATH` when the Saga lives in a
+separate repository from the code.
+
+### Setup and help
+
+| Command | What it does |
+| --- | --- |
+| `version` | Print the installed version. |
+| `help` | Overview of the workflow and every command. |
+| `install-skill` | Print the prompt that installs the authoring skills into your coding agent. |
+| `init [name.saga]` | Create the repository's Saga, `change.saga` by default. |
+| `setup-initial-saga` | Print the guided, one-time workflow for growing a Saga into living documentation. |
+| `spec [--json]` | Publish the resources, relation matrix, command grammar and invariants. |
+
+### Reviews
+
+| Command | What it does |
+| --- | --- |
+| `review create` | Create the review of a pull request or branch. Works out the PR, base and id. |
+| `review list` | Each review slide's decisions, whether they are out of date, and each deck's coverage. |
+| `review follow` | Set the ref an open review follows. |
+| `review refresh-coverage` | Re-pin a review deck's moved references and report new uncovered lines. |
+| `review test-plan` | Select the automated tests reached by the review's changed code and stories. |
+| `review approve` / `request-changes` / `withdraw` | Record or withdraw a decision on one review slide at the current head. |
+| `review comment` | Comment on a slide, Item or diff lines, or reply to a comment. |
+
+### Slides and decks
+
+| Command | What it does |
+| --- | --- |
+| `add-deck` | Create a feature's implementation deck. `--role ux` creates its UX flows deck, `--role onboarding` the app's onboarding deck, and `--feature-theme ID` a theme's rationale deck. |
+| `revise-deck` / `remove-deck` / `move-deck` | Correct a deck's title, objective or rank; delete it; or move it to another feature. |
+| `deck overview` | Author a deck's overview essay with slide and Item citations, or check that it cites every slide. |
+| `apply-slide` | Publish one complete slide from a JSON request: its diagram or visual and its Items. `--print-current` prints the request for an existing slide. |
+| `add-slide` | Add one slide to a deck or review. |
+| `set-slide-content` | Replace a slide's visual while keeping its target and Items. |
+| `revise-slide` / `remove-slide` / `move-slide` | Correct a slide's title, intent, layout, takeaway or rank; delete it; or move it to another deck. |
+| `add-item` | Add a semantic Item, including a callout, to a slide. |
+| `revise-item` / `remove-item` | Correct an Item in place, or delete it with its evidence. |
+| `diagram describe` / `get` | Read a diagram slide as text, or one element's full properties. |
+| `diagram edit` | Apply explicit edits to a diagram slide and republish it. |
+| `diagram icons` | List the bundled icons a diagram may use. |
+| `diagram check` | Report diagram slides whose published SVG no longer matches their source. |
+| `visual-qa` | Render slides and the reviewer at two viewports, with a contact sheet and findings. |
+
+### Coverage and evidence
+
+| Command | What it does |
+| --- | --- |
+| `cover` | Reference the code a target explains, pinned at a commit. `--changed-lines` covers a file's whole change; `--batch` reads many records. |
+| `replace-coverage` / `remove-coverage` | Atomically replace or delete one coverage record. |
+| `references` | List every code reference as current, remapped or stale, with the diff since its pin. |
+| `repin` | After a change lands, re-pin evidence to the landed commit (`--onto`). `--accept-proposed` repairs stale references by accepting their proposed ranges. |
+| `sync` | Move a companion Saga's sync cursor to the code commit it now documents. |
+| `add-claim` / `verify-claim` | Record a falsifiable author assertion with its code, and append independent verification results. |
+
+### Status, checks and upkeep
+
+| Command | What it does |
+| --- | --- |
+| `status` | Report review coverage first, then coverage by area, with every gap. Never a verdict. |
+| `check --covers AREA,...` | Exit 0 when the named areas are covered, 3 with their gaps, 1 when the report cannot be trusted. For CI. |
+| `validate` | Check every structural invariant without writing. |
+| `reconcile --against REV` | Read-only queue of what a change affected: stale references, baseline debt and repair paths. |
+| `preintegrate --ref REF --ref REF` | Report semantic convergence risks between branches before merging them. |
+
+### Viewing
+
+| Command | What it does |
+| --- | --- |
+| `open` | Start the reviewer in the background and open it in a browser. `--against main` compares the branch. |
+| `serve` | Serve the reviewer on loopback; `serve status` and `serve stop` manage a running one. |
+| `query <operation>` | Run one read-only query and print JSON. `query schema OPERATION` describes each operation. |
+| `theme init` / `check` / `preview` | Write a starter `theme.css`, validate it and its contrast, or preview every token. |
+
+### Product: overview, features and people
+
+| Command | What it does |
+| --- | --- |
+| `overview set-pitch` / `set-description` | Write the app's elevator pitch and description. |
+| `overview set-data-model` / `set-technical-design` | Write the data-model overview and the technical-design essay. |
+| `feature add` / `rename` / `remove` | Add, rename or remove a durable product area. |
+| `feature set-overview` / `set-plan` | Write a feature's description, or set its planning metadata. |
+| `feature-theme add` / `rename` / `remove` / `set-overview` / `set-features` | Group features into optional product themes. |
+| `label` / `milestone` `add` / `rename` / `remove` | Shared labels and milestones for features. |
+| `persona add` / `revise` / `set-state` | Who gets value from the app. |
+| `term add` / `revise` / `set-state` | The project's vocabulary, linked to stories and the code that defines each term. |
+| `flag add` / `revise` / `set-state` | Feature flags gating stories or features. |
+| `deprecation add` / `revise` / `set-state` | Record that something is deprecated, without changing it. |
+
+### Stories and prototypes
+
+| Command | What it does |
+| --- | --- |
+| `story add` / `revise` | Create a story, or append a complete revision. |
+| `story set-state` / `withdraw` | Move a story through proposed, accepted, deferred, rejected or retired. |
+| `story move` / `consolidate` | Move a story to another feature, or merge a duplicate. |
+| `criterion add` / `revise` / `remove` | Change one acceptance criterion through a new story revision. |
+| `citation add` | Record a source that stories and evidence can cite. |
+| `relation add` / `repin` / `supersede` / `status` | Typed, pinned links between records, such as a slide that addresses a criterion. |
+| `prototype add-html` / `add-external` | Add an interactive HTML prototype, or one hosted elsewhere. |
+| `prototype revise` / `annotate` | Append a prototype revision, or pin part of it to a story or criterion. |
+
+### Technical design and whiteboards
+
+| Command | What it does |
+| --- | --- |
+| `whiteboard publish` | Publish a complete whiteboard revision from a `board.json`. |
+| `whiteboard get` / `describe` / `check` / `list` | Read, describe, validate or list whiteboards. `--focus` selects one element. |
+| `whiteboard rename` / `assign-role` / `unassign-role` | Change a board's title or its ERD, Infrastructure, Data flows or Architecture role. |
+| `whiteboard archive` / `restore` | Hide a board from discovery, or bring it back, without losing history. |
+| `component` / `system` / `data-entity` `add` / `revise` / `set-state` | Stable technical definitions that documentation can pin. |
+| `erd` / `erd-overlay` `add` / `revise` / `set-state` | ERD documents and their overlays. |
+| `inventory adopt-format` | Opt in to inventory format 2. |
+| `design add-chapter` / `add-section` / `add-fragment` / `set-fragment-content` | Author a feature's technical-design chapters. |
+
+An ERD is [one whiteboard](docs/erd-whiteboard-guide.md) of connected sections,
+entities, relationships, callouts and source evidence. Named boards open at
+`/technical/whiteboards/<id>`, and the Data model page at `/technical/erd` uses
+the `data-model` board by convention:
+
+```sh
+change-saga whiteboard publish --id data-model --revision r1 --from board.json change.saga
+change-saga whiteboard describe --id data-model change.saga
+change-saga whiteboard check --id data-model change.saga
+```
+
+Source references currently support exact ERD and data-entity pins and ERD
+imports; component and system pins are not supported yet.
+
+### Narrative content
+
+| Command | What it does |
+| --- | --- |
+| `add-chapter` / `add-section` / `add-fragment` | Add report chapters, sections and fragments to a feature or the design system. |
+| `set-fragment-content` | Replace a fragment's content. |
+| `add-landmark` | Make a heading, text span, element or image region inside a fragment coverable. |
+| `revise-chapter` / `revise-section` / `revise-fragment` | Correct a title or display order. |
+| `remove-chapter` / `remove-section` / `remove-fragment` | Delete content; dependent relations are listed. |
+| `move-chapter` / `move-section` / `move-fragment` | Move or rename content, keeping its identity. |
+
+### Quality
+
+| Command | What it does |
+| --- | --- |
+| `quality test-case add` / `revise` / `set-state` | Test cases with ordered steps, linked to the criteria they verify. |
+| `quality policy set` | Set the test kinds a criterion requires (default positive, negative and edge). |
+| `quality evidence add` | Attach test code, the code under test, or run artifacts to a test case. |
+| `quality run record` | Deprecated: record run history, with no coverage effect. |
+
+### Work planning
+
+| Command | What it does |
+| --- | --- |
+| `plan add-wave` / `revise-wave` | Delivery phases with entry and exit conditions. |
+| `plan add-item` / `revise-item` | Independently assignable units of work. |
+| `plan add-dependency` / `add-contract` | Prerequisites and interfaces between work items. |
+| `plan assign` / `progress` / `record-merge` | Bind work to a workspace and branch, and record its progress and merges. |
 
 ## Project links
 
