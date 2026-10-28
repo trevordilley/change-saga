@@ -61,7 +61,7 @@ type appNavSources struct {
 	// overviewActive says which overview row the page shows; see overviewNav.
 	overviewActive string
 	// pageFeature is the feature the page being read belongs to, and so the one
-	// feature that opens over its four places. Empty on a page that belongs to
+	// feature that opens over its places. Empty on a page that belongs to
 	// no feature, where every feature stays a row.
 	pageFeature     string
 	featureGrouping string
@@ -350,7 +350,7 @@ func reviewNavTitle(review *saga.Review) string {
 	return title
 }
 
-// makeFeatureNav is one feature: its own report content first, then today's four
+// makeFeatureNav is one feature: its own report content first, then its
 // places filled from this feature's records only.
 func makeFeatureNav(sources appNavSources, feature *saga.Feature, deckRows map[string]*navNodeView) *navNodeView {
 	prefix := "nav-feature-" + domID(feature.ID)

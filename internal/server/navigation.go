@@ -9,32 +9,34 @@ import (
 
 // The reviewer sidebar projects one stable information architecture:
 //
-//	Stories          Prototypes, then stories
-//	Design           UX, UI
-//	Quality          Test Cases
+//	Stories          the feature's stories and their criteria
+//	Prototypes       interactive prototypes
+//	UX               ux-role decks: user flows
+//	UI               UI references and embeds
 //	Technical        Essay on the header, Architecture and explanatory slides
+//	Quality          Test Cases
 //
-// The order is fixed among the sections that have content. It is an information
+// The first five mirror the coverage axes a criterion is designed along, so a
+// reader finds each kind of design where its axis says it belongs. The order is
+// fixed among the sections that have content. It is an information
 // architecture, not a phase gate: it never reorders as authoring progresses,
 // so it never implies waterfall.
-// Within Stories, Prototypes precedes stories because prototype-first is
-// the common discovery path, not because prototypes come due first.
 //
 // A place nothing has been authored into is omitted. The sidebar describes the
 // Saga that exists; authoring and coverage surfaces are where missing work is
 // made explicit.
 //
-// The four headers are destinations as well as disclosures. Stories, Design,
-// and Quality open the feature's page at the section that lists what they hold,
-// and Technical opens its deck essay.
+// Stories and Quality open the feature's page at the section that lists what
+// they hold, and Technical opens its deck essay. The other headers are
+// disclosures only.
 
 // productNavSources is everything the architecture can be filled from. Every
 // field is optional: empty fields do not produce navigation rows.
 type productNavSources struct {
 	// prefix namespaces the architecture's node IDs, since every feature has
-	// its own four places. An empty prefix is "nav".
+	// its own places. An empty prefix is "nav".
 	prefix string
-	// feature is the feature these four places belong to, so each place's header
+	// feature is the feature these places belong to, so each place's header
 	// can open that feature's page at the section it names. An empty feature leaves
 	// the headers as disclosures, which is what they were before a feature had
 	// a page of its own.
@@ -70,11 +72,10 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	}
 	requirements := sources.requirements
 
-	// Stories, Design, and Quality open the feature's page at the section that
-	// lists what they hold: its stories, its design, and its test cases. The
-	// feature's page is already the directory of all three, so a second table
-	// per place would say the same thing twice and go out of step the first
-	// time one of them changed.
+	// Stories and Quality open the feature's page at the section that lists
+	// what they hold: its stories and its test cases. The feature's page is
+	// already their directory, so a second table per place would say the same
+	// thing twice and go out of step the first time one of them changed.
 	place := func(title, id, icon, anchor string, children []*navNodeView) *navNodeView {
 		node := navPlace(title, id, icon, children)
 		if sources.feature != "" {
@@ -82,56 +83,55 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		}
 		return node
 	}
-	var productChildren []*navNodeView
+	var navigation []*navNodeView
+	if requirements != nil && len(requirements.Children) > 0 {
+		navigation = append(navigation, place("Stories", prefix+"-product", "product", "#feature-product", requirements.Children))
+	}
 	if len(sources.prototypes) > 0 || sources.prototypeNote != "" {
 		prototypes := navPlace("Prototypes", prefix+"-prototypes", "prototype", sources.prototypes)
 		if len(sources.prototypes) == 0 {
 			prototypes.Gap, prototypes.Note = true, sources.prototypeNote
 		}
-		productChildren = append(productChildren, prototypes)
+		navigation = append(navigation, prototypes)
 	}
-	if requirements != nil && len(requirements.Children) > 0 {
-		productChildren = append(productChildren, requirements.Children...)
-	}
-
-	var designChildren []*navNodeView
 	if len(sources.uxDecks) > 0 {
-		designChildren = append(designChildren, navPlace("UX", prefix+"-design-ux", "deck", sources.uxDecks))
+		navigation = append(navigation, navPlace("UX", prefix+"-ux", "deck", sources.uxDecks))
 	}
 	if len(sources.uiDesign) > 0 {
-		designChildren = append(designChildren, navPlace("UI", prefix+"-design-ui", "design", sources.uiDesign))
+		navigation = append(navigation, navPlace("UI", prefix+"-ui", "design", sources.uiDesign))
 	}
 	var technicalChildren []*navNodeView
 	if len(sources.dataFlows) > 0 {
 		technicalChildren = append(technicalChildren, navPlace("Data Flows", prefix+"-technical-data-flows", "design", sources.dataFlows))
 	}
 	technicalChildren = append(technicalChildren, sources.technical...)
-
-	var navigation []*navNodeView
-	if len(productChildren) > 0 {
-		navigation = append(navigation, place("Stories", prefix+"-product", "product", "#feature-product", productChildren))
-	}
-	if len(designChildren) > 0 {
-		navigation = append(navigation, place("Design", prefix+"-design", "design", "#feature-design", designChildren))
+	if technical := makeTechnicalPlace(prefix, sources.implementation, technicalChildren); technical != nil {
+		navigation = append(navigation, technical)
 	}
 	if len(sources.testCases) > 0 {
 		navigation = append(navigation, place("Quality", prefix+"-quality", "quality", "#feature-quality", []*navNodeView{
 			navPlace("Test Cases", prefix+"-test-cases", "quality", sources.testCases),
 		}))
 	}
+	for _, node := range navigation {
+		revealActive(node)
+	}
+	return navigation
+}
+
+// makeTechnicalPlace builds Technical, or nil when there is neither a deck nor
+// architecture to put in it.
+func makeTechnicalPlace(prefix string, decks, architectureChildren []*navNodeView) *navNodeView {
 	// Technical is the one place that opens on arrival, and it opens all
 	// the way to the slides. The deck that explains the change is what a
 	// reviewer came for, so the sidebar shows what is actually there instead of
-	// a row to click first. Everything else stays shut: four short rows read as
-	// one architecture, where four open ones read as a wall.
-	if len(sources.implementation) == 0 && len(technicalChildren) == 0 {
-		for _, node := range navigation {
-			revealActive(node)
-		}
-		return navigation
+	// a row to click first. Everything else stays shut: short rows read as
+	// one architecture, where open ones read as a wall.
+	if len(decks) == 0 && len(architectureChildren) == 0 {
+		return nil
 	}
-	implementation := navPlace("Technical", prefix+"-implementation", "implementation", sources.implementation)
-	implementation.Href = deckEntryHref(sources.implementation)
+	implementation := navPlace("Technical", prefix+"-implementation", "implementation", decks)
+	implementation.Href = deckEntryHref(decks)
 	// Technical is the deck. With the one deck a Saga normally has, its
 	// slides sit directly beneath the section instead of under a deck row that
 	// only restates the section and costs a click. Several decks keep their
@@ -144,16 +144,11 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		deck.Expanded = len(deck.Children) > 0
 	}
 	// The header opens the essay; architecture and slides sit beneath it.
-	if len(technicalChildren) > 0 {
-		architecture := navPlace("Architecture", prefix+"-technical", "implementation", technicalChildren)
+	if len(architectureChildren) > 0 {
+		architecture := navPlace("Architecture", prefix+"-technical", "implementation", architectureChildren)
 		implementation.Children = append([]*navNodeView{architecture}, implementation.Children...)
 	}
-
-	navigation = append(navigation, implementation)
-	for _, node := range navigation {
-		revealActive(node)
-	}
-	return navigation
+	return implementation
 }
 
 // navPlace is one filled row of the architecture. Empty places are filtered by
@@ -231,7 +226,7 @@ func makeDesignChapterNav(root *saga.Section) []*navNodeView {
 }
 
 // splitDeckNavByRole folds the decks that used to occupy their own top-level
-// sidebar path into Design > UX and Technical.
+// sidebar path into UX and Technical.
 //
 // Technical is where a deck belongs unless it says otherwise. The slide
 // deck that explains the change is the core artifact of a Change Saga, and an
@@ -240,9 +235,8 @@ func makeDesignChapterNav(root *saga.Section) []*navNodeView {
 // arriving here without a design role is not one whose role went unrecorded —
 // it is the implementation deck, named by the only role it is allowed to have.
 //
-// "ux" is the one role that moves a deck out of Technical, for the UX
-// flows the authoring grammar will add as `add-deck --role ux`. It is accepted
-// ahead of that grammar so the seam is already correct when the role lands.
+// "ux" is the one role that moves a deck out of Technical: a feature's UX
+// flows, authored with `add-deck --feature ID --role ux`.
 func splitDeckNavByRole(nodes []*navNodeView, decks []*saga.Deck) (ux, implementation []*navNodeView) {
 	roles := make(map[string]string, len(decks))
 	for _, deck := range decks {

@@ -58,23 +58,31 @@ func TestProductNavigationDoesNotReorderAsWorkProgresses(t *testing.T) {
 	}
 }
 
-// Prototypes precede the stories, which sit directly under Stories while
-// keeping their canonical destinations and nested acceptance criteria.
-func TestProductListsStoriesDirectlyAfterPrototypes(t *testing.T) {
+// Stories, Prototypes, UX, UI, Technical, then Quality: each is its own
+// section, and stories sit directly under Stories while keeping their
+// canonical destinations and nested acceptance criteria.
+func TestFeatureSectionsFollowStoriesPrototypesUXUITechnical(t *testing.T) {
 	t.Parallel()
 	requirements := makeRequirementsNav(&requirementsPageView{Stories: []*requirementStoryView{{
 		ID: "checkout", Label: "Story 01", Title: "Complete checkout", Href: "/requirements/checkout",
 		Criteria: []*requirementCriterionView{{Label: "AC 01", Statement: "The cart survives a retry.", Href: "/requirements/checkout/criteria/cart"}},
 	}}})
 	nodes := makeProductNavTree(productNavSources{
-		requirements: requirements,
-		prototypes:   []*navNodeView{{Title: "Checkout walkthrough"}},
+		requirements:   requirements,
+		prototypes:     []*navNodeView{{Title: "Checkout walkthrough"}},
+		uxDecks:        []*navNodeView{{Title: "Checkout flows"}},
+		uiDesign:       []*navNodeView{{Title: "Checkout screens"}},
+		implementation: []*navNodeView{{Title: "Checkout", Deck: true}},
+		testCases:      []*navNodeView{{Title: "Retry preserves the cart"}},
 	})
-	product := findNav(t, nodes, "Stories")
-	if len(product.Children) != 2 || product.Children[0].Title != "Prototypes" || product.Children[1] != requirements.Children[0] {
-		t.Fatalf("product order = %v", navTitles(product.Children, 0))
+	if got, want := topTitles(nodes), "Stories|Prototypes|UX|UI|Technical|Quality"; got != want {
+		t.Fatalf("section order = %s, want %s", got, want)
 	}
-	story := product.Children[1]
+	product := findNav(t, nodes, "Stories")
+	if len(product.Children) != 1 || product.Children[0] != requirements.Children[0] {
+		t.Fatalf("Stories must hold only the stories: %v", navTitles(product.Children, 0))
+	}
+	story := product.Children[0]
 	if story.Href != "/requirements/checkout" || len(story.Children) != 1 || story.Children[0].Href != "/requirements/checkout/criteria/cart" {
 		t.Fatalf("story and criterion destinations changed: %#v", story)
 	}
@@ -91,7 +99,7 @@ func TestRequirementsWithoutStoriesIsHidden(t *testing.T) {
 // Decks used to occupy their own top-level sidebar path. They now fold into
 // the architecture by role: Technical is where a deck belongs unless it
 // says otherwise, and "ux" is the one role that moves it out.
-func TestDeckNavigationFoldsIntoDesignAndTechnicalByRole(t *testing.T) {
+func TestDeckNavigationFoldsIntoUXAndTechnicalByRole(t *testing.T) {
 	t.Parallel()
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flows", Title: "Checkout flows", Target: saga.DeckTarget("test", "flows")},
@@ -120,8 +128,8 @@ func TestDeckNavigationFoldsIntoDesignAndTechnicalByRole(t *testing.T) {
 	}
 
 	nodes := makeProductNavTree(productNavSources{uxDecks: ux, implementation: implementation})
-	if findNav(t, nodes, "Design", "UX").Gap {
-		t.Fatal("a ux deck must fill Design > UX")
+	if findNav(t, nodes, "UX").Gap {
+		t.Fatal("a ux deck must fill UX")
 	}
 	for _, node := range nodes {
 		if node.Title == "Technical" && node.Gap {
@@ -136,11 +144,11 @@ func TestDeckNavigationFoldsIntoDesignAndTechnicalByRole(t *testing.T) {
 	billing.Decks = append(billing.Decks, uxDeck)
 	sources.decks = append(sources.decks, uxRow)
 	app := makeAppNavTree(sources)
-	if ux := findNav(t, app, "Features", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0].NodeID != uxRow.NodeID {
-		t.Fatalf("a feature's ux deck must fill its Design > UX: %v", navTitles(ux.Children, 0))
+	if ux := findNav(t, app, "Features", "Billing", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0].NodeID != uxRow.NodeID {
+		t.Fatalf("a feature's ux deck must fill its UX: %v", navTitles(ux.Children, 0))
 	}
 	// Navigation clones deck rows so grouped features can expand independently.
-	uxSlides := findNav(t, app, "Features", "Billing", "Design", "UX").Children[0].Children
+	uxSlides := findNav(t, app, "Features", "Billing", "UX").Children[0].Children
 	if len(uxSlides) != 1 || uxSlides[0].Href != uxRow.Children[0].Href || uxSlides[0].Slide.Target != uxRow.Children[0].Slide.Target {
 		t.Fatal("the feature's UX deck lost its slide destination")
 	}
@@ -149,8 +157,8 @@ func TestDeckNavigationFoldsIntoDesignAndTechnicalByRole(t *testing.T) {
 	}
 	// Catalog only spends rows on its four places when the reader is in it.
 	sources.pageFeature = "catalog"
-	if findNavByID(makeAppNavTree(sources), featureNavID("catalog")+"-design") != nil {
-		t.Fatal("an empty Design section must not render for another feature")
+	if findNavByID(makeAppNavTree(sources), featureNavID("catalog")+"-ux") != nil {
+		t.Fatal("an empty UX section must not render for another feature")
 	}
 }
 
@@ -277,7 +285,7 @@ func TestOnlyTechnicalOpensOnArrival(t *testing.T) {
 	if findNav(t, nodes, "Technical", "Architecture").Expanded {
 		t.Fatal("Architecture must stay collapsed until opened or active")
 	}
-	for _, title := range []string{"Stories", "Design"} {
+	for _, title := range []string{"Stories", "Prototypes", "UX"} {
 		if findNav(t, nodes, title).Expanded {
 			t.Fatalf("%s must stay collapsed on arrival", title)
 		}
@@ -318,7 +326,7 @@ func TestActivePageOpensThePlacesThatContainIt(t *testing.T) {
 	if current := findNav(t, nodes, "Stories", story.Title); current != story {
 		t.Fatal("the active story must sit directly under Stories")
 	}
-	if findNavByID(nodes, "nav-design") != nil || findNavByID(nodes, "nav-quality") != nil {
+	if findNavByID(nodes, "nav-ux") != nil || findNavByID(nodes, "nav-quality") != nil {
 		t.Fatal("empty places must not render")
 	}
 }
