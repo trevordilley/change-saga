@@ -95,8 +95,8 @@ func MoveDeck(_ context.Context, args []string, out io.Writer) error {
 		}
 		return runContentEdit(contentEditRequest{operation: name, root: flags.Arg(0), dryRun: *dryRun, json: *jsonOutput, apply: func(document *saga.Saga, edit *contentEdit, result *contentEditOutput) error {
 			deck := findDeck(document, *target)
-			if deck == nil || deck.Role != saga.DeckRoleChange {
-				return fmt.Errorf("--deck must identify an implementation deck; review, onboarding, and theme ownership cannot change")
+			if deck == nil || (deck.Role != saga.DeckRoleChange && deck.Role != saga.DeckRoleUX) {
+				return fmt.Errorf("--deck must identify an implementation or UX deck; review, onboarding, and theme ownership cannot change")
 			}
 			owner, err := requireFeature(document.Root, *feature)
 			if err != nil {
@@ -134,8 +134,8 @@ func MoveSlide(_ context.Context, args []string, out io.Writer) error {
 				return err
 			}
 			destination := findDeck(document, *parent)
-			if owner != "" || source == nil || source.Role != saga.DeckRoleChange || destination == nil || destination.Role != saga.DeckRoleChange {
-				return fmt.Errorf("move-slide requires implementation decks; review, onboarding, and theme ownership cannot change")
+			if owner != "" || source == nil || destination == nil || source.Role != destination.Role || (source.Role != saga.DeckRoleChange && source.Role != saga.DeckRoleUX) {
+				return fmt.Errorf("move-slide requires two implementation decks or two UX decks; review, onboarding, and theme ownership cannot change")
 			}
 			result.Resource = slide.Target
 			if source.Target == destination.Target {

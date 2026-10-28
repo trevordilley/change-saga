@@ -443,11 +443,11 @@ var commands = []Command{
 	},
 	{
 		Name: "add-deck", Status: StatusImplemented, Mutates: true, Writes: []string{"deck"},
-		Usage:   "change-saga add-deck (--feature ID | --role onboarding | --feature-theme ID) [flags] <saga> <name>",
-		Summary: "create a feature's implementation deck, or with --role onboarding the app's onboarding deck whose Items reference records",
+		Usage:   "change-saga add-deck (--feature ID [--role ux] | --role onboarding | --feature-theme ID) [flags] <saga> <name>",
+		Summary: "create a feature's implementation deck, with --role ux its UX flows deck, or with --role onboarding the app's onboarding deck whose Items reference records",
 		Flags: []Flag{
-			optional("feature-theme", "ID|URN", "product theme owning this rationale deck"), optional("feature", "ID", "feature whose implementation deck this is; required unless --role onboarding"),
-			optional("id", "ID", "stable deck id"), optional("title", "TEXT", "deck title"), optional("role", "ROLE", "change (a feature's implementation deck, the default) or onboarding (the app's onboarding deck)"),
+			optional("feature-theme", "ID|URN", "product theme owning this rationale deck"), optional("feature", "ID", "feature whose implementation or UX deck this is; required unless --role onboarding"),
+			optional("id", "ID", "stable deck id"), optional("title", "TEXT", "deck title"), optional("role", "ROLE", "change (a feature's implementation deck, the default), ux (a feature's UX flows, shown in its UX section), or onboarding (the app's onboarding deck)"),
 			optional("feature-qualified-id", "", "generate <feature>--<name> when --id is omitted"),
 			optional("rank", "N", "review order"), optional("objective", "TEXT", "one concise reviewer objective"),
 		},

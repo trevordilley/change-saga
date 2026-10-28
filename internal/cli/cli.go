@@ -196,7 +196,7 @@ var commandUsage = map[string]string{
 	"quality run record":            "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
 	"deck":                          "change-saga deck overview [flags] <saga>",
 	"deck overview":                 "change-saga deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
-	"add-deck":                      "change-saga add-deck (--feature ID | --role onboarding | --feature-theme ID) [flags] <saga> <name>",
+	"add-deck":                      "change-saga add-deck (--feature ID [--role ux] | --role onboarding | --feature-theme ID) [flags] <saga> <name>",
 	"add-slide":                     "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"apply-slide":                   "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
 	"whiteboard":                    "change-saga whiteboard <publish|get|describe|check|list|rename|assign-role|unassign-role|archive|restore> [flags] <saga>",

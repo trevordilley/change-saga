@@ -402,8 +402,8 @@ func validateDeckManifest(value DeckManifest, path, target string, validation *V
 	if err != nil || expected != path {
 		addIssue(validation, "error", path, "deck filename does not match its rank and stable target")
 	}
-	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding && value.Role != DeckRoleReview && value.Role != DeckRoleFeatureTheme {
-		addIssue(validation, "error", path, "deck role must be change, onboarding, review, or feature-theme")
+	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding && value.Role != DeckRoleReview && value.Role != DeckRoleFeatureTheme && value.Role != DeckRoleUX {
+		addIssue(validation, "error", path, "deck role must be change, ux, onboarding, review, or feature-theme")
 	}
 	if validFlatRank(value.Rank) != nil || strings.TrimSpace(value.Objective) == "" || utf8.RuneCountInString(value.Objective) > 240 {
 		addIssue(validation, "error", path, "deck rank must fit the portable range and objective must contain 1 to 240 characters")
@@ -561,11 +561,16 @@ func ProjectDeck(deck *Deck) *Section {
 }
 
 // validateDeckRole enforces what each deck location may hold. A feature's
-// implementation deck owns scoped code evidence and keeps Item.Record empty;
+// implementation or UX deck owns scoped code evidence and keeps Item.Record empty;
 // its separate Documentation pin never transfers evidence. The onboarding deck
 // explains the app, so every Item
 // references a persona, feature, or story record and owns no code evidence.
 func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
+	// A feature's slides hold its implementation deck and any UX flows beside
+	// it; both follow the implementation Item rules.
+	if role == DeckRoleChange && deck.Role == DeckRoleUX {
+		role = DeckRoleUX
+	}
 	if deck.Role != role {
 		addIssue(validation, "error", deck.Path, fmt.Sprintf("a deck in this location must use role %s", role))
 	}

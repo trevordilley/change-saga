@@ -361,7 +361,7 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			if err := admitReviewItems(document, review, existing, revision.Items); err != nil {
 				return err
 			}
-		} else if deck.Role == saga.DeckRoleChange {
+		} else if deck.Role == saga.DeckRoleChange || deck.Role == saga.DeckRoleUX {
 			if err := validateTransactionCriteria(document, revision.Items); err != nil {
 				return err
 			}
@@ -562,8 +562,8 @@ func transactionDeck(document *saga.Saga, request SlideTransactionRequest, revie
 		}
 		return nil, nil, fmt.Errorf("deck %q does not exist", request.Deck)
 	}
-	if deck.Role != saga.DeckRoleChange && deck.Role != saga.DeckRoleFeatureTheme {
-		return nil, nil, fmt.Errorf("complete-slide transactions publish feature implementation and pull request review slides; the onboarding deck is authored with add-slide and add-item")
+	if deck.Role != saga.DeckRoleChange && deck.Role != saga.DeckRoleUX && deck.Role != saga.DeckRoleFeatureTheme {
+		return nil, nil, fmt.Errorf("complete-slide transactions publish feature implementation, UX, and pull request review slides; the onboarding deck is authored with add-slide and add-item")
 	}
 	return deck, nil, nil
 }

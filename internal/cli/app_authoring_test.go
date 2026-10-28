@@ -548,6 +548,48 @@ func TestOnboardingDeckItemsExplainRecords(t *testing.T) {
 	assertValid(t, root)
 }
 
+// A feature's UX flows deck sits beside its implementation deck. Its Items
+// follow the implementation rules but are not asked for code.
+func TestUXDeckSitsBesideTheImplementationDeck(t *testing.T) {
+	t.Parallel()
+	root := newAuthoredSaga(t)
+	ctx := context.Background()
+	var output bytes.Buffer
+	if err := AddDeck(ctx, []string{"--feature", testFeature, "--id", "impl", "--objective", "Explain.", root, "impl"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddDeck(ctx, []string{"--feature", testFeature, "--role", "ux", "--id", "flows", "--objective", "Walk the checkout flow.", root, "flows"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddSlide(ctx, []string{"--deck", "flows", "--intent", "explain", "--layout", "hero", "--title", "Checkout", "--takeaway", "Three steps.", root, "checkout-flow"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddItem(ctx, []string{"--slide", "checkout-flow", "--kind", "callout", "--id", "step", "--element-id", "slide-title", "--description", "D", "--body", "B", "--record", testPersonaURN, root}, &output); err == nil || !strings.Contains(err.Error(), "--record is for onboarding items") {
+		t.Fatalf("a UX item with --record = %v", err)
+	}
+	if err := AddItem(ctx, []string{"--slide", "checkout-flow", "--kind", "callout", "--id", "step", "--element-id", "slide-title", "--description", "D", "--body", "B", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	assertValid(t, root)
+	document, validation, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, issue := range validation.Issues {
+		if strings.Contains(issue.Path, "flows.deck") && strings.Contains(issue.Message, "code") {
+			t.Fatalf("a UX slide must not be asked for code: %s", issue.Message)
+		}
+	}
+	feature := document.FindFeature(testFeature)
+	roles := map[string]string{}
+	for _, deck := range feature.Decks {
+		roles[deck.ID] = deck.Role
+	}
+	if roles["impl"] != saga.DeckRoleChange || roles["flows"] != saga.DeckRoleUX {
+		t.Fatalf("feature deck roles = %v", roles)
+	}
+}
+
 // Status reports each active persona no accepted story serves as a gap, and a
 // persona retirement as one question for all the stories it leaves without an
 // active persona.

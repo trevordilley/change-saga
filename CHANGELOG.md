@@ -10,6 +10,18 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- `add-deck --feature ID --role ux` creates a feature's UX flows deck. Its
+  slides are not asked for code, and its `addresses` relations cover the
+  criterion `ux` axis.
+
+### Changed
+
+- Each feature in the reviewer sidebar now lists Stories, Prototypes, UX, UI,
+  Technical, then Quality as separate sections. Prototypes no longer sit
+  inside Stories, and UX and UI no longer sit inside Design.
+
 ## [0.5.1] - 2026-10-17
 
 ### Changed

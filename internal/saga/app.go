@@ -74,12 +74,15 @@ type appContent struct {
 // DeckRoleChange is a feature's implementation deck; DeckRoleOnboarding is the
 // app's onboarding deck, whose Items reference records instead of code;
 // DeckRoleReview is a pull request review's deck, whose Items reference the
-// code the change touched and the records it revised.
+// code the change touched and the records it revised. DeckRoleUX is a
+// feature's UX flows deck: it sits beside the implementation deck and
+// addresses criteria along the ux axis without owning code.
 const (
 	DeckRoleFeatureTheme = "feature-theme"
 	DeckRoleChange       = "change"
 	DeckRoleOnboarding   = "onboarding"
 	DeckRoleReview       = "review"
+	DeckRoleUX           = "ux"
 )
 
 // loadAppContent loads the app-level report roots, every feature, and the

@@ -31,7 +31,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("add-deck", commandUsage["add-deck"], out)
 	id := flags.String("id", "", "stable deck identifier")
 	title := flags.String("title", "", "deck title")
-	role := flags.String("role", "change", "deck role: change or onboarding; --feature-theme selects product rationale")
+	role := flags.String("role", "change", "deck role: change, ux, or onboarding; --feature-theme selects product rationale")
 	qualifiedID := flags.Bool("feature-qualified-id", false, "generate <feature>--<name> when --id is omitted")
 	feature := featureIDFlag(flags)
 	theme := flags.String("feature-theme", "", "product theme id or URN owning this rationale deck")
@@ -69,7 +69,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		var slidesRoot string
 		var peers []*saga.Deck
 		switch *role {
-		case saga.DeckRoleChange:
+		case saga.DeckRoleChange, saga.DeckRoleUX:
 			target, err := requireFeature(document.Root, *feature)
 			if err != nil {
 				return err
@@ -110,7 +110,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 			}
 			slidesRoot = filepath.Join(document.Root, applayout.OnboardingDir)
 		default:
-			return fmt.Errorf("--role must be change or onboarding; for product rationale use --feature-theme ID")
+			return fmt.Errorf("--role must be change, ux, or onboarding; for product rationale use --feature-theme ID")
 		}
 		if !saga.ValidID(*id) || targetIDExists(document, *id) {
 			return fmt.Errorf("deck id %q is invalid or already used", *id)

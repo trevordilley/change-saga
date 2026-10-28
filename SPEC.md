@@ -792,6 +792,14 @@ Exact diff evidence on a slide is owned only by Items, so every changed line a
 reviewer sees in the deck is attached to the specific visual element that
 explains it.
 
+A feature's `___slides/` may also hold UX flows decks, created with
+`add-deck --feature ID --role ux`. A UX deck follows the implementation Item
+rules, but its slides are not asked for code and the feature audit neither
+requires code evidence from its Items nor accepts their `explains` links as the
+implementation's explanation. Its `addresses` relations cover a criterion's
+`ux` axis. The reviewer shows each feature's sections in a fixed order, omitting
+any that are empty: Stories, Prototypes, UX, UI, Technical, then Quality.
+
 ### Deck overview and slide Front/Back
 
 Deck records may include `overview: {body, annotations?}`. `body` is nonblank

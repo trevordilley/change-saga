@@ -26,6 +26,7 @@
     "role": {
       "enum": [
         "change",
+        "ux",
         "onboarding",
         "review",
         "feature-theme"
