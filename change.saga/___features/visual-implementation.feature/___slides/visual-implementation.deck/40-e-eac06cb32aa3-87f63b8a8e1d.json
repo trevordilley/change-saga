@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "commit": "f45dd4e74038f9e3ff0fbe7ccd4cea0f3dee4a4d",
       "path": "internal/server/navigation.go",
       "start": 133,
-      "end": 156,
-      "digest": "sha256:a4835edbcafe7e8e02d37d890997a23bdf2e7b24badf9c08d828630d720ba77c",
+      "end": 151,
+      "digest": "sha256:41e6054d4dd339415ebd72d729f152a6fbbb3cbb0603bd8f71cd0288386e98ae",
       "note": "The Technical header opens the deck Essay while the slide outline remains directly reachable beneath it."
     }
   ]

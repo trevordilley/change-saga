@@ -10,11 +10,11 @@
       "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f45dd4e74038f9e3ff0fbe7ccd4cea0f3dee4a4d",
       "path": "internal/saga/slides.go",
-      "start": 559,
-      "end": 561,
-      "digest": "sha256:4333a702a76757290af1476b8dea13c9fd7e9ac937f4ec048c5aae88871014a7",
+      "start": 564,
+      "end": 566,
+      "digest": "sha256:794635e1a18c3d72dad46c7b9adaccf0d611c51eb27dd820a8acb582e332599d",
       "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
     },
     {
