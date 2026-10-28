@@ -37,13 +37,13 @@ test("@critical lists every feature and opens only the one being read", async ({
   // Exactly one of them is opened: the feature this page belongs to.
   await expect(openFeatures(page)).toHaveText(["Wave One"]);
   const waveOne = featureRows(page).first();
-  // Its own report outline is present; all four empty product places are not.
+  // Its own report outline is present; its empty product places are not.
   await expect(waveOne.locator(":scope > .doc-children > .doc-node > .doc-row > .doc-link")).toHaveText([
     "Architecture Diagram", "Interactive Demo", "Raster Preview",
     "Architecture"
   ]);
   // The closed features show nothing of their places: one row each.
-  await expect(contents.getByRole("button", { name: /^Toggle (Stories|Design|Quality|Technical)$/ })).toHaveCount(0);
+  await expect(contents.getByRole("button", { name: /^Toggle (Stories|Prototypes|UX|UI|Technical|Quality)$/ })).toHaveCount(0);
   // Decorative icons remain in the shared markup, but the outline suppresses them.
   const ordinaryRows = contents.locator(".doc-row > .doc-link");
   await expect(ordinaryRows.locator(":scope > svg.i")).toHaveCount(await ordinaryRows.count());
