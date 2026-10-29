@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"mime"
 	"net/http"
@@ -82,7 +83,7 @@ type prototypeAnnotationView struct {
 	OnRevision bool
 }
 
-func (a *app) prototypePage(graph *appGraph, sagaID, id, requested string) (*prototypePageView, error) {
+func (a *app) prototypePage(ctx context.Context, graph *appGraph, sagaID, id, requested string) (*prototypePageView, error) {
 	document, note := a.prototypeDocument(sagaID)
 	if note != "" {
 		return nil, fmt.Errorf("The prototypes %s.", note)
@@ -129,6 +130,11 @@ func (a *app) prototypePage(graph *appGraph, sagaID, id, requested string) (*pro
 		case prototypes.SourceHTML:
 			view.FrameURL = prototypeFileHref(id, revision.ID, revision.Source.Entrypoint)
 			view.OpenURL = view.FrameURL
+		case prototypes.SourceRepo:
+			view.FrameURL = prototypeFileHref(id, revision.ID, revision.Source.RepoEntry())
+			view.OpenURL = view.FrameURL
+			view.Location, view.Commit = revision.Source.Entrypoint, shortCommit(revision.Source.Commit)
+			view.Stale = prototypes.RepoStaleness(ctx, a.sourceDir, revision.Source, "HEAD")
 		case prototypes.SourceExternal, prototypes.SourceEmbed:
 			view.ExternalURL = revision.Source.URL
 		default:
@@ -205,6 +211,15 @@ func (a *app) prototypeFile(w http.ResponseWriter, r *http.Request) {
 	switch revision.Source.Kind {
 	case prototypes.SourceHTML:
 		a.servePrototypePackageFile(w, r, document, *prototype, revision.ID, rel)
+	case prototypes.SourceRepo:
+		// The package is read as pinned, from its commit, so a revision shows
+		// what it recorded even after the files move on.
+		data, ok := prototypes.ReadRepoFile(r.Context(), a.sourceDir, revision.Source, rel)
+		if !ok {
+			http.NotFound(w, r)
+			return
+		}
+		writePrototypeFile(w, r, rel, data, time.Time{})
 	default:
 		http.NotFound(w, r)
 	}

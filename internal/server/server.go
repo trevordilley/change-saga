@@ -1417,7 +1417,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 			return nil, err
 		}
 	case "prototype":
-		if data.Prototype, err = a.prototypePage(graph, document.Manifest.ID, route.id, r.URL.Query().Get("revision")); err != nil {
+		if data.Prototype, err = a.prototypePage(r.Context(), graph, document.Manifest.ID, route.id, r.URL.Query().Get("revision")); err != nil {
 			return nil, err
 		}
 	}

@@ -175,6 +175,29 @@ pull requests or implementation artifacts. Revise a story in
 place as understanding improves; use the supported move operation when its
 domain changes so stable identities and links survive.
 
+## Prototypes
+
+A prototype is an interactive HTML app that shows the experience a story
+describes. Keep it in the repository and point the Saga at it, rather than
+copying it in:
+
+```sh
+git add docs/prototypes/sidebar && git commit -m "Add the sidebar prototype"
+change-saga prototype add-repo --feature ID --id sidebar --revision r1 \
+  --title "Agents sidebar" --path docs/prototypes/sidebar/index.html change.saga
+```
+
+The files must be committed first: the revision pins the entrypoint, the
+directory beside it (`--root`, defaulting to the entrypoint's directory), and
+the commit. A file at the repository root is pinned alone. When the files
+change, the reviewer shows the prototype as stale; record the change with
+`prototype refresh --prototype URN --revision r2`. `prototype add-html` copies
+an app into the Saga instead, for one that has no home in the repository.
+
+Pin the parts that matter to criteria with `prototype annotate` (an element
+id, exact text, or a region). The reviewer opens each prototype on its own
+page, sandboxed, with an "Open in new tab" link.
+
 ## Preserve revisions and conflicts
 
 A revision is a complete immutable snapshot. A single-parent revision may

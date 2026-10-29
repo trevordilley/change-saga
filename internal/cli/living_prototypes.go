@@ -11,7 +11,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/prototypes"
 )
 
-var prototypeOperations = []string{"add-html", "add-external", "revise", "annotate"}
+var prototypeOperations = []string{"add-html", "add-repo", "add-external", "revise", "refresh", "annotate"}
 
 // Prototype exposes the existing v3 prototype model. Prototypes are revisioned
 // interactive HTML experiences or explicitly allowed external embeds; a
@@ -28,10 +28,14 @@ func Prototype(ctx context.Context, args []string, out io.Writer) error {
 	switch args[0] {
 	case "add-html":
 		err = prototypeAddHTML(ctx, args[1:], out)
+	case "add-repo":
+		err = prototypeAddRepo(ctx, args[1:], out)
 	case "add-external":
 		err = prototypeAddExternal(ctx, args[1:], out)
 	case "revise":
 		err = prototypeRevise(ctx, args[1:], out)
+	case "refresh":
+		err = prototypeRefresh(ctx, args[1:], out)
 	case "annotate":
 		err = prototypeAnnotate(ctx, args[1:], out)
 	default:

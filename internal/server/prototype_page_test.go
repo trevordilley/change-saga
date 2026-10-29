@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -82,5 +83,55 @@ func TestPrototypePageFramesTheAppAndServesItSandboxed(t *testing.T) {
 		if code := get(escape).Code; code == http.StatusOK {
 			t.Fatalf("%s escaped the html package", escape)
 		}
+	}
+}
+
+// A repository prototype is framed from its pinned commit, says where it
+// lives, and reads as stale once its files change at HEAD.
+func TestRepoPrototypeIsServedAsPinnedAndShowsWhenStale(t *testing.T) {
+	t.Parallel()
+	repo := t.TempDir()
+	serverGit(t, repo, "init", "-q", "-b", "main")
+	serverGit(t, repo, "config", "user.name", "Test")
+	serverGit(t, repo, "config", "user.email", "test@example.test")
+	writeServerFile(t, filepath.Join(repo, "prototypes", "sidebar", "index.html"), `<link rel="stylesheet" href="app.css"><h1>Go</h1>`)
+	writeServerFile(t, filepath.Join(repo, "prototypes", "sidebar", "app.css"), `h1{color:red}`)
+	serverGit(t, repo, "add", "-A")
+	serverGit(t, repo, "commit", "-q", "-m", "prototype")
+
+	root := writeAppNavSaga(t)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`)
+	writeServerFile(t, filepath.Join(applayout.FeatureDir(root, "billing"), applayout.FeatureManifestName), fmt.Sprintf(`{"$schema":%q,"version":5,"id":"billing","title":"Billing","created_at":"2026-08-21T12:00:00Z"}`, applayout.FeatureSchemaURL))
+	source, err := prototypes.ResolveRepoSource(context.Background(), repo, "prototypes/sidebar/index.html", "prototypes/sidebar", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := prototypes.AddRepo(root, "shop", prototypes.AddRepoInput{Feature: "billing", ID: "sidebar", RevisionID: "r1", Title: "Sidebar", State: prototypes.StateDraft, Source: source}); err != nil {
+		t.Fatal(err)
+	}
+	get := func(path string) *httptest.ResponseRecorder {
+		t.Helper()
+		recorder := httptest.NewRecorder()
+		newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)}).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+		return recorder
+	}
+	html := get("/prototypes/sidebar").Body.String()
+	if !strings.Contains(html, `src="/p/sidebar/r1/index.html"`) || !strings.Contains(html, `<code>prototypes/sidebar/index.html</code>`) || strings.Contains(html, "data-prototype-stale") {
+		t.Fatalf("fresh repo prototype page:\n%s", html)
+	}
+	if asset := get("/p/sidebar/r1/app.css"); asset.Code != http.StatusOK || asset.Body.String() != `h1{color:red}` || !strings.HasPrefix(asset.Header().Get("Content-Security-Policy"), "sandbox allow-scripts;") {
+		t.Fatalf("pinned asset = %d %q %q", asset.Code, asset.Body.String(), asset.Header().Get("Content-Security-Policy"))
+	}
+	if get("/p/sidebar/r1/../../README.md").Code == http.StatusOK || get("/p/sidebar/r1/missing.css").Code != http.StatusNotFound {
+		t.Fatal("only the pinned package's files may be served")
+	}
+
+	writeServerFile(t, filepath.Join(repo, "prototypes", "sidebar", "app.css"), `h1{color:blue}`)
+	serverGit(t, repo, "commit", "-q", "-am", "restyle")
+	if html := get("/prototypes/sidebar").Body.String(); !strings.Contains(html, "data-prototype-stale") || !strings.Contains(html, "prototype refresh") {
+		t.Fatal("a changed repo prototype must say it is stale and how to record the change")
+	}
+	if asset := get("/p/sidebar/r1/app.css").Body.String(); asset != `h1{color:red}` {
+		t.Fatalf("the revision must keep serving what it pinned, got %q", asset)
 	}
 }

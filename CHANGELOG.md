@@ -12,6 +12,12 @@ tool, and what they have to do about it.
 
 ### Added
 
+- Prototypes open on their own page in the reviewer, sandboxed, with their
+  revisions, the annotations pinning them to criteria, and an "Open in new
+  tab" link. The Prototypes sidebar rows now link to it.
+- `prototype add-repo` records a prototype whose files stay in the repository,
+  pinned at a commit like code evidence; the reviewer shows it as stale when
+  the files change, and `prototype refresh` re-pins it.
 - `add-deck --feature ID --role ux` creates a feature's UX flows deck. Its
   slides are not asked for code, and its `addresses` relations cover the
   criterion `ux` axis.

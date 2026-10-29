@@ -800,6 +800,20 @@ implementation's explanation. Its `addresses` relations cover a criterion's
 `ux` axis. The reviewer shows each feature's sections in a fixed order, omitting
 any that are empty: Stories, Prototypes, UX, UI, Technical, then Quality.
 
+A prototype is a reading surface of its own. The reviewer opens it at
+`/prototypes/<id>`: the current revision (or `?revision=ID`) framed in a
+sandbox, its revisions, and the annotations that pin it to stories and
+criteria, with a link that opens the app in its own tab. Prototype files are
+served under `/p/` on the authored-content policy, whose `sandbox` directive
+gives them an opaque origin wherever they load, so a prototype's scripts run
+but cannot reach the reviewer. A revision's source is one of four kinds:
+`html` copies the app into the revision package; `repo` leaves it in the source
+repository and pins its `entrypoint`, the `root` directory served beside it
+(omitted for a single file), the `commit`, and the package's Git `object` at
+that commit; `external` and `embed` name an app hosted elsewhere. A `repo`
+revision is read from its pinned commit and reads as stale once the package's
+object at HEAD differs; `prototype refresh` appends a revision that re-pins it.
+
 ### Deck overview and slide Front/Back
 
 Deck records may include `overview: {body, annotations?}`. `body` is nonblank
