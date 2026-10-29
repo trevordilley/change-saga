@@ -116,8 +116,9 @@ order they were created. A feature's ID and creation time are immutable;
 `urn:change-saga:<saga>:feature:<id>`. Moving a story
 between features moves its directory and changes nothing else.
 
-`feature remove` deletes only a feature that holds nothing but its metadata.
-A feature with content is archived instead: `feature archive [--reason TEXT]`
+`feature remove` deletes only a feature that holds nothing but its metadata;
+`feature remove --with-content` deletes it with everything in it (see Removing
+records below). A feature can instead be archived: `feature archive [--reason TEXT]`
 sets `archived` (and `archived_reason`) in its `plan.json`, keeping its planned
 or built status and every record it holds. An archived feature is omitted from
 the Features and Roadmap lists and from theme pages, its page stays reachable
@@ -125,6 +126,28 @@ with an archived notice, and status leaves it and its stories out of coverage,
 so it adds no gaps. Its records are still validated. `feature restore` clears
 the flag and returns it to its previous placement. A plan without the field is
 not archived.
+
+### Removing records
+
+The Saga is the current documentation and Git is its history, so a record that
+should not exist is deleted, never left for other records to point at. `story
+remove`, `persona remove`, `term remove`, `flag remove`, `citation remove`,
+`prototype remove`, `quality test-case remove`, and `feature remove
+--with-content` delete the record and every record that exists only to link to
+it or to something beneath it (a story's criteria and revisions): relations in
+any state with their repin directories, prototype annotations, quality
+policies, coverage exceptions, and theme membership. The removal runs under
+the Saga lock and is kept only if it introduces no validation error.
+
+Records with content of their own that named it (stories, slide Items' criterion
+links, test-case steps, terms, flags, and onboarding or theme Items) are left as
+they are. Status reports each current one as a dangling reference with the
+command that adjusts it, and `check --covers health` counts it as unhealthy
+until it is fixed. To make that possible, whether a term's, flag's, or story's
+links and an onboarding Item's record still exist is not a load rule; it is
+checked when a revision is written, and only current revisions are judged.
+Every remove accepts `--dry-run`, which writes nothing and reports the same
+removals, rewrites, and adjustments.
 
 Product themes optionally classify features without moving or duplicating them.
 Their stable URN is `urn:change-saga:<saga>:feature-theme:<id>`. A theme records

@@ -907,3 +907,6 @@ func rank[T comparable](order map[T]int, value T) int {
 	}
 	return len(order)
 }
+
+// TestCasePath is the app-relative directory of one test case.
+func TestCasePath(feature, id string) string { return testCasePath(feature, id) }

@@ -56,13 +56,16 @@ func Citation(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("citation", []string{"add"}, out)
+		return livingFamilyHelp("citation", []string{"add", "remove"}, out)
 	}
 	operation := "citation " + args[0]
 	var err error
-	if args[0] == "add" {
+	switch args[0] {
+	case "add":
 		err = citationAdd(ctx, args[1:], out)
-	} else {
+	case "remove":
+		err = citationRemove(ctx, args[1:], out)
+	default:
 		err = fmt.Errorf("usage: %s", commandUsage["citation"])
 	}
 	if err != nil && jsonFlagRequested(args) {

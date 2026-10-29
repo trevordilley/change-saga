@@ -18,7 +18,7 @@ func Term(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("term", []string{"add", "revise", "set-state"}, out)
+		return livingFamilyHelp("term", []string{"add", "revise", "set-state", "remove"}, out)
 	}
 	var err error
 	switch args[0] {
@@ -28,6 +28,8 @@ func Term(ctx context.Context, args []string, out io.Writer) error {
 		err = termRevise(ctx, args[1:], out)
 	case "set-state":
 		err = termSetState(ctx, args[1:], out)
+	case "remove":
+		err = termRemove(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["term"])
 	}

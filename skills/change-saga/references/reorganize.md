@@ -17,12 +17,13 @@ operations; do not create a duplicate to simulate a rename or move.
 | Transfer an implementation deck to another feature | `move-deck --deck TARGET --feature ID` |
 | Move an ordinary implementation slide | `move-slide --slide TARGET --deck TARGET`; transaction-authored and review slides are refused |
 | Move a story, rank planned work, or change theme membership | Existing `story move`, `feature set-plan --priority`, `feature-theme set-features` |
-| Remove unused mutable entities | `feature remove`, `feature-theme remove`, `label remove`, `milestone remove`; dependencies must be resolved first |
+| Delete a record that should not exist | `story remove`, `persona remove`, `term remove`, `flag remove`, `citation remove`, `prototype remove`, `quality test-case remove`, `feature remove --with-content`. See [Deleting records](#deleting-records). |
+| Remove unused classification entities | `feature remove` (empty feature), `feature-theme remove`, `label remove`, `milestone remove`; dependencies must be resolved first |
 | Hide a feature that holds content | `feature archive --feature ID [--reason TEXT]` keeps every record and its status; `feature restore --feature ID` brings it back |
 | Remove ordinary content | Existing `remove-deck`, `remove-slide`, `remove-item`, `remove-chapter`, `remove-section`, `remove-fragment`; inspect contained targets and dependencies |
 | Remove transaction-managed technical content | `remove-deck` and `remove-slide` append removal history and hide content; use `--dry-run --json` first and optionally `remove-slide --expected-snapshot SHA256`. Review slides remain protected; removing a transaction Item alone requires an `apply-slide` update. |
-| Retire a requirement or inventory entity | Its existing lifecycle command; preserve revisions, events, pins and evidence |
-| Remove a criterion or retire a prototype | `criterion remove` appends a story revision; `prototype revise --state retired` appends a prototype revision |
+| Retire an inventory entity | Its existing lifecycle command; preserve revisions, events, pins and evidence |
+| Remove a criterion | `criterion remove` appends a story revision without it |
 | Change whiteboard title or discovery | `whiteboard rename --id ID --name TITLE`, `archive`, `restore`; content and history remain intact |
 
 New moves and metadata edits support `--dry-run` and `--json`. Preview changes,
@@ -32,6 +33,34 @@ permission to move files manually. Whole-deck moves retain complete-slide
 history; moving one transaction-authored slide between decks is unsupported.
 Use explicit positions to reorder; a sequence of commands is not an atomic
 shuffle operation. Do not change identity just to change a title or position.
+
+## Deleting records
+
+The Saga is the current documentation; Git keeps the history. When a story,
+persona, term, flag, citation, prototype, test case, or feature should no
+longer exist, delete it rather than retiring it. A remove deletes the record
+and every record that exists only to link to it (relations and their repins,
+prototype annotations, quality policies, coverage exceptions, theme
+membership), so nothing is left pointing at dead data.
+
+Records with content of their own that referenced it (slides, test cases,
+stories, terms, flags, onboarding Items) are not touched. They lose what they
+covered, and the removal lists each one with the command that adjusts it.
+`status` and `check --covers health` keep reporting them as dangling
+references until they are fixed.
+
+Always preview first, and tell the user what will happen before you delete:
+
+```sh
+change-saga story remove --story URN --dry-run change.saga
+```
+
+The first line summarizes the size: how many files would be removed and how
+many records elsewhere would need adjusting. If it removes more than the user
+plainly asked for (a whole feature, many relations), or leaves records in
+other features to adjust, show the user that summary and the list and confirm
+before running it without `--dry-run`. After removing, work through the
+listed adjustments, or tell the user which remain.
 
 ## Technical Design roles
 

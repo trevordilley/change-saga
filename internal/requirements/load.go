@@ -147,14 +147,9 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if err := loadTerms(&document); err != nil {
 		return Document{}, err
 	}
-	citationIDs := map[string]bool{}
-	for _, citation := range document.Citations {
-		citationIDs[citation.ID] = true
-	}
-	personaIDs := document.personaIDs()
 	for index := range document.Stories {
 		story := &document.Stories[index]
-		if err := validateStoryGraphs(story, sagaID, citationIDs, personaIDs); err != nil {
+		if err := validateStoryGraphs(story, sagaID, nil, nil); err != nil {
 			return Document{}, fmt.Errorf("story %q: %w", story.Identity.ID, err)
 		}
 	}

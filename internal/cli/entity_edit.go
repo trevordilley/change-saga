@@ -30,6 +30,11 @@ func entityEdit(kind string, args []string, out io.Writer) error {
 		if args[0] == "rename" {
 			flags.StringVar(&title, "title", "", "display title; stable identity is preserved")
 		}
+		if kind == "feature" && args[0] == "remove" {
+			// Feature dispatches --with-content to featureRemoveWithContent
+			// before reaching here; it is declared so help lists it.
+			flags.Bool("with-content", false, "delete the feature with everything in it")
+		}
 		if err := flags.Parse(normalizeLivingArgs(args[1:])); err != nil {
 			return err
 		}
@@ -65,6 +70,9 @@ func entityEdit(kind string, args []string, out io.Writer) error {
 						allowed = append(allowed, applayout.FeaturePlanName)
 					}
 					if err := requireMetadataOnly(removePath, allowed); err != nil {
+						if kind == "feature" {
+							return fmt.Errorf("%w; or pass --with-content to delete the feature with everything in it (preview with --dry-run)", err)
+						}
 						return err
 					}
 				}

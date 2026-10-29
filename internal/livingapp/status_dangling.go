@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
@@ -24,6 +25,10 @@ func danglingReferences(in StatusInputs) []DanglingReference {
 				exists[urn+":criterion:"+criterion.ID] = true
 			}
 		}
+	}
+	for _, citation := range in.Citations {
+		urn, _ := livingid.Citation(in.SagaID, citation.ID)
+		exists[urn] = true
 	}
 	for _, persona := range in.Personas {
 		urn, _ := requirements.PersonaURN(in.SagaID, persona.Identity.ID)
@@ -55,6 +60,14 @@ func danglingReferences(in StatusInputs) []DanglingReference {
 		if len(value.Missing) > 0 {
 			result = append(result, value)
 		}
+	}
+	for _, story := range in.Stories {
+		if story.CurrentRevision == nil {
+			continue
+		}
+		urn, _ := livingid.Story(in.SagaID, story.Identity.ID)
+		add(DanglingReference{Record: urn, Kind: "story", Missing: missing(append(append([]string{}, story.CurrentRevision.Personas...), story.CurrentRevision.Citations...)...),
+			Fix: "change-saga story revise --story " + urn + " without the removed personas or citations"})
 	}
 	for _, term := range in.Terms {
 		if term.CurrentRevision == nil {
@@ -124,21 +137,32 @@ func recordReference(sagaID, value string) bool {
 }
 
 // DanglingReferences lists the current records that point at something that
-// no longer exists, as if the given stories were already gone. A removal
+// no longer exists, as if the named records were already gone. A removal
 // previews with them named, and reports with none.
-func DanglingReferences(in StatusInputs, removedStories ...string) []DanglingReference {
-	if len(removedStories) > 0 {
-		removed := map[string]bool{}
-		for _, urn := range removedStories {
-			removed[urn] = true
-		}
-		kept := make([]requirements.Story, 0, len(in.Stories))
-		for _, story := range in.Stories {
-			if !removed["urn:change-saga:"+in.SagaID+":story:"+story.Identity.ID] {
-				kept = append(kept, story)
-			}
-		}
-		in.Stories = kept
+func DanglingReferences(in StatusInputs, removed ...string) []DanglingReference {
+	if len(removed) == 0 {
+		return danglingReferences(in)
 	}
+	gone := map[string]bool{}
+	for _, urn := range removed {
+		gone[urn] = true
+	}
+	urn := func(kind, id string) string { return "urn:change-saga:" + in.SagaID + ":" + kind + ":" + id }
+	in.Stories = keep(in.Stories, func(value requirements.Story) bool { return !gone[urn("story", value.Identity.ID)] })
+	in.Personas = keep(in.Personas, func(value requirements.Persona) bool { return !gone[urn("persona", value.Identity.ID)] })
+	in.Flags = keep(in.Flags, func(value requirements.Flag) bool { return !gone[urn("flag", value.Identity.ID)] })
+	in.Terms = keep(in.Terms, func(value requirements.Term) bool { return !gone[urn("term", value.Identity.ID)] })
+	in.Citations = keep(in.Citations, func(value requirements.Citation) bool { return !gone[urn("citation", value.ID)] })
+	in.Features = keep(in.Features, func(value applayout.Feature) bool { return !gone[urn("feature", value.ID)] })
 	return danglingReferences(in)
+}
+
+func keep[T any](values []T, wanted func(T) bool) []T {
+	result := make([]T, 0, len(values))
+	for _, value := range values {
+		if wanted(value) {
+			result = append(result, value)
+		}
+	}
+	return result
 }

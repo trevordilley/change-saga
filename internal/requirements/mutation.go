@@ -796,3 +796,12 @@ func (relation Relation) TouchesStory(storyURN string) bool {
 	}
 	return false
 }
+
+// PersonaPackagePath is the app-relative directory of one persona.
+func PersonaPackagePath(id string) string { return personaPackagePath(id) }
+
+// FlagPackagePath is the app-relative directory of one feature flag.
+func FlagPackagePath(id string) string { return flagPackagePath(id) }
+
+// CitationPath is the app-relative file of one citation.
+func CitationPath(feature, id string) string { return citationPath(feature, id) }

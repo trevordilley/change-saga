@@ -269,6 +269,72 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "persona remove", Status: StatusImplemented, Mutates: true, Writes: []string{"persona"},
+		Usage:   "change-saga persona remove --persona URN [--dry-run] [--json] <saga>",
+		Summary: "delete a persona; list the stories, terms, and Items that now need adjusting",
+		Flags: []Flag{
+			optional("dry-run", "", "report what would be removed and adjusted without writing"),
+			jsonFlag,
+			required("persona", "URN", "persona URN or ID"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "term remove", Status: StatusImplemented, Mutates: true, Writes: []string{"term"},
+		Usage:   "change-saga term remove --term URN [--dry-run] [--json] <saga>",
+		Summary: "delete a term; list the terms and records that now need adjusting",
+		Flags: []Flag{
+			optional("dry-run", "", "report what would be removed and adjusted without writing"),
+			jsonFlag,
+			required("term", "URN", "term URN or ID"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "flag remove", Status: StatusImplemented, Mutates: true, Writes: []string{"flag"},
+		Usage:   "change-saga flag remove --flag URN [--dry-run] [--json] <saga>",
+		Summary: "delete a feature flag; list the terms that now need adjusting",
+		Flags: []Flag{
+			optional("dry-run", "", "report what would be removed and adjusted without writing"),
+			jsonFlag,
+			required("flag", "URN", "flag URN or ID"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "citation remove", Status: StatusImplemented, Mutates: true, Writes: []string{"citation", "relation"},
+		Usage:   "change-saga citation remove --citation URN [--dry-run] [--json] <saga>",
+		Summary: "delete a citation and the relations that named it; list the stories that now need adjusting",
+		Flags: []Flag{
+			optional("dry-run", "", "report what would be removed and adjusted without writing"),
+			jsonFlag,
+			required("citation", "URN", "citation URN or ID"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "prototype remove", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-revision", "prototype-annotation"},
+		Usage:   "change-saga prototype remove --prototype URN [--dry-run] [--json] <saga>",
+		Summary: "delete a prototype and its annotations",
+		Flags: []Flag{
+			optional("dry-run", "", "report what would be removed and adjusted without writing"),
+			jsonFlag,
+			required("prototype", "URN", "prototype URN or ID"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "quality test-case remove", Status: StatusImplemented, Mutates: true, Writes: []string{"test-case", "relation"},
+		Usage:   "change-saga quality test-case remove --test-case URN [--dry-run] [--json] <saga>",
+		Summary: "delete a test case, its evidence, and the relations that named it",
+		Flags: []Flag{
+			optional("dry-run", "", "report what would be removed and adjusted without writing"),
+			jsonFlag,
+			required("test-case", "URN", "test-case URN or ID"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "story remove", Status: StatusImplemented, Mutates: true, Writes: []string{"story", "relation", "prototype-annotation", "quality-policy", "coverage-exception"},
 		Usage:   "change-saga story remove --story URN [--dry-run] [--json] <saga>",
 		Summary: "delete a story and the records that only linked to it; list the slides, test cases, terms, flags, and Items that now need adjusting",

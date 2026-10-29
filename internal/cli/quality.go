@@ -17,7 +17,7 @@ import (
 )
 
 var qualityOperations = []string{
-	"test-case add", "test-case revise", "test-case set-state",
+	"test-case add", "test-case revise", "test-case set-state", "test-case remove",
 	"policy set", "evidence add", "run record",
 }
 
@@ -30,7 +30,7 @@ func Quality(ctx context.Context, args []string, out io.Writer) error {
 	return qualityCommand(ctx, args, out, os.Stdin)
 }
 
-func qualityCommand(_ context.Context, args []string, out io.Writer, stdin io.Reader) error {
+func qualityCommand(ctx context.Context, args []string, out io.Writer, stdin io.Reader) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("quality", qualityOperations, out)
 	}
@@ -52,6 +52,8 @@ func qualityCommand(_ context.Context, args []string, out io.Writer, stdin io.Re
 		err = qualityTestCaseDefine(operation, args[2:], out, stdin)
 	case "quality test-case set-state":
 		err = qualityTestCaseSetState(args[2:], out, stdin)
+	case "quality test-case remove":
+		err = testCaseRemove(ctx, args[2:], out)
 	case "quality policy set":
 		err = qualityPolicySet(args[2:], out, stdin)
 	case "quality evidence add":

@@ -340,17 +340,6 @@ func validateStoryGraphs(story *Story, sagaID string, citationIDs, personaIDs ma
 			problems.add("revision id %q is duplicated", revision.ID)
 		}
 		revisions[revision.ID] = revision
-		for _, citation := range revision.Citations {
-			ref, err := livingid.Parse(citation)
-			if err == nil && !citationIDs[ref.ID] {
-				problems.add("revision %q cites missing citation %q", revision.ID, citation)
-			}
-		}
-		for _, persona := range revision.Personas {
-			if id, err := ParsePersonaURN(sagaID, persona); err == nil && !personaIDs[id] {
-				problems.add("revision %q serves missing persona %q", revision.ID, persona)
-			}
-		}
 	}
 	revisionParents := map[string][]string{}
 	for id, revision := range revisions {
@@ -383,6 +372,26 @@ func validateStoryGraphs(story *Story, sagaID string, citationIDs, personaIDs ma
 	if len(revisionHeads) == 1 {
 		value := revisions[revisionHeads[0]]
 		story.CurrentRevision = &value
+	}
+	// What the current revision cites and serves must exist when a revision is
+	// written. Loading passes no ID sets: removing a persona or citation must
+	// leave the Saga readable, and status reports a current story still
+	// naming one (older revisions are history and are not judged).
+	if citationIDs != nil && personaIDs != nil {
+		for _, id := range revisionHeads {
+			revision := revisions[id]
+			for _, citation := range revision.Citations {
+				ref, err := livingid.Parse(citation)
+				if err == nil && !citationIDs[ref.ID] {
+					problems.add("revision %q cites missing citation %q", revision.ID, citation)
+				}
+			}
+			for _, persona := range revision.Personas {
+				if personaID, err := ParsePersonaURN(sagaID, persona); err == nil && !personaIDs[personaID] {
+					problems.add("revision %q serves missing persona %q", revision.ID, persona)
+				}
+			}
+		}
 	}
 	if !cycle {
 		validateCriterionHistory(&problems, revisions, revisionParents)

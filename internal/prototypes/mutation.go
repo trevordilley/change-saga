@@ -677,3 +677,9 @@ func annotationFeature(doc *Document, prototypeID, requested string) (string, er
 	}
 	return feature.ID, nil
 }
+
+// PrototypePath is the app-relative directory of one prototype.
+func PrototypePath(feature, id string) string { return prototypePath(feature, id) }
+
+// AnnotationDir is the app-relative directory of one prototype's annotations.
+func AnnotationDir(feature, prototypeID string) string { return annotationDir(feature, prototypeID) }

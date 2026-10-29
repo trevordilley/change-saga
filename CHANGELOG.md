@@ -12,6 +12,17 @@ tool, and what they have to do about it.
 
 ### Added
 
+- Records can be deleted outright: `story remove`, `persona remove`,
+  `term remove`, `flag remove`, `citation remove`, `prototype remove`,
+  `quality test-case remove`, and `feature remove --with-content`. A remove
+  deletes the record and the records that only linked to it (relations and
+  their repins, prototype annotations, quality policies, coverage exceptions,
+  theme membership); Git keeps the history. Records with content of their own
+  that referenced it are listed with the command that adjusts each, and
+  `status` and `check --covers health` report them as dangling references
+  until they are fixed. `--dry-run` previews the whole effect with a one-line
+  summary of its size.
+
 - Prototypes open on their own page in the reviewer, sandboxed, with their
   revisions, the annotations pinning them to criteria, and an "Open in new
   tab" link. The Prototypes sidebar rows now link to it.
@@ -32,6 +43,9 @@ tool, and what they have to do about it.
 
 ### Changed
 
+- A term, flag, story, or onboarding Item that names a removed record no longer
+  makes the Saga fail to load; it is reported as a dangling reference. Whether
+  a link exists is still checked when a new revision is written.
 - Each feature in the reviewer sidebar now lists Stories, Prototypes, UX, UI,
   Technical, then Quality as separate sections. Prototypes no longer sit
   inside Stories, and UX and UI no longer sit inside Design.

@@ -217,6 +217,12 @@ These rules apply to every Change Saga task:
 - Make Saga mutations only through public CLI authoring commands. Do not edit,
   invent, rename, or delete metadata files. Narrative and visual source files
   are installed or replaced through the CLI commands that own them.
+- Delete what should not exist, and keep the Saga clean; Git keeps the
+  history. Every `remove` deletes the record and the links that only pointed
+  at it, then lists what else lost coverage. Run it with `--dry-run` first and
+  show the user its summary; confirm before a removal that reaches beyond what
+  they asked for. Then fix, or report, each listed adjustment. See
+  "Deleting records" in [reorganizing existing content](references/reorganize.md).
 - Preserve history and uncertainty. Revisions and lifecycle events are
   immutable; decisions, comments, claims, verification results, and merge
   evidence are append-only. Preserve competing heads and reported conflicts;

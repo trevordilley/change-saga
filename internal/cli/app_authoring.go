@@ -137,6 +137,20 @@ func Feature(ctx context.Context, args []string, out io.Writer) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("feature", []string{"add", "rename", "remove", "archive", "restore", "set-overview", "set-plan"}, out)
 	}
+	if args[0] == "remove" {
+		// --with-content deletes the feature and everything in it; without it
+		// remove refuses a feature that holds anything.
+		for index, arg := range args {
+			if arg == "--with-content" || arg == "-with-content" {
+				rest := append(append([]string{}, args[1:index]...), args[index+1:]...)
+				err := featureRemoveWithContent(ctx, rest, out)
+				if err != nil && jsonFlagRequested(args) {
+					return reportLivingMutationFailure(out, "feature remove", err)
+				}
+				return err
+			}
+		}
+	}
 	if args[0] == "rename" || args[0] == "remove" {
 		return entityEdit("feature", args, out)
 	}
@@ -226,7 +240,7 @@ func Persona(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("persona", []string{"add", "revise", "set-state"}, out)
+		return livingFamilyHelp("persona", []string{"add", "revise", "set-state", "remove"}, out)
 	}
 	var err error
 	switch args[0] {
@@ -236,6 +250,8 @@ func Persona(ctx context.Context, args []string, out io.Writer) error {
 		err = personaRevise(ctx, args[1:], out)
 	case "set-state":
 		err = personaSetState(ctx, args[1:], out)
+	case "remove":
+		err = personaRemove(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["persona"])
 	}
@@ -342,7 +358,7 @@ func FeatureFlag(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("flag", []string{"add", "revise", "set-state"}, out)
+		return livingFamilyHelp("flag", []string{"add", "revise", "set-state", "remove"}, out)
 	}
 	var err error
 	switch args[0] {
@@ -352,6 +368,8 @@ func FeatureFlag(ctx context.Context, args []string, out io.Writer) error {
 		err = flagRevise(ctx, args[1:], out)
 	case "set-state":
 		err = flagSetState(ctx, args[1:], out)
+	case "remove":
+		err = flagRemove(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["flag"])
 	}

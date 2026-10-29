@@ -461,6 +461,9 @@ Every command takes the Saga directory (usually `change.saga`) as its last
 argument; `query` takes it as `--saga PATH`. Run `change-saga <command> -h` for
 a command's flags, and `change-saga spec --json` for the machine-readable
 grammar. Many commands that write accept `--dry-run`, and most accept `--json`.
+Every `remove` deletes the record and the links that only pointed at it, and
+lists what else lost coverage; run it with `--dry-run` first to see the whole
+effect.
 Commands that read a diff accept `--repo PATH` when the Saga lives in a
 separate repository from the code.
 
@@ -543,14 +546,14 @@ separate repository from the code.
 | --- | --- |
 | `overview set-pitch` / `set-description` | Write the app's elevator pitch and description. |
 | `overview set-data-model` / `set-technical-design` | Write the data-model overview and the technical-design essay. |
-| `feature add` / `rename` / `remove` | Add, rename or remove a durable product area. `remove` refuses a feature with content. |
+| `feature add` / `rename` / `remove` | Add, rename or remove a durable product area. `remove --with-content` deletes it with everything in it. |
 | `feature archive` / `restore` | Hide a feature from the feature lists and coverage gaps while keeping its records, or bring it back. |
 | `feature set-overview` / `set-plan` | Write a feature's description, or set its planning metadata. |
 | `feature-theme add` / `rename` / `remove` / `set-overview` / `set-features` | Group features into optional product themes. |
 | `label` / `milestone` `add` / `rename` / `remove` | Shared labels and milestones for features. |
-| `persona add` / `revise` / `set-state` | Who gets value from the app. |
-| `term add` / `revise` / `set-state` | The project's vocabulary, linked to stories and the code that defines each term. |
-| `flag add` / `revise` / `set-state` | Feature flags gating stories or features. |
+| `persona add` / `revise` / `set-state` / `remove` | Who gets value from the app. |
+| `term add` / `revise` / `set-state` / `remove` | The project's vocabulary, linked to stories and the code that defines each term. |
+| `flag add` / `revise` / `set-state` / `remove` | Feature flags gating stories or features. |
 | `deprecation add` / `revise` / `set-state` | Record that something is deprecated, without changing it. |
 
 ### Stories and prototypes
@@ -560,13 +563,15 @@ separate repository from the code.
 | `story add` / `revise` | Create a story, or append a complete revision. |
 | `story set-state` / `withdraw` | Move a story through proposed, accepted, deferred, rejected or retired. |
 | `story move` / `consolidate` | Move a story to another feature, or merge a duplicate. |
+| `story remove` | Delete a story and the links that only pointed at it; lists what else lost coverage. |
 | `criterion add` / `revise` / `remove` | Change one acceptance criterion through a new story revision. |
-| `citation add` | Record a source that stories and evidence can cite. |
+| `citation add` / `remove` | Record a source that stories and evidence can cite, or delete one. |
 | `relation add` / `repin` / `supersede` / `status` | Typed, pinned links between records, such as a slide that addresses a criterion. |
 | `prototype add` | Add a prototype: an HTML file committed in the project. The Saga points at it rather than copying it. |
 | `prototype update` | Record a new version after the prototype's file changed. |
 | `prototype add-external` / `add-html` | Name a prototype hosted elsewhere, or copy one that doesn't live in the project into the Saga. |
 | `prototype revise` / `annotate` | Append a prototype revision, or pin part of it to a story or criterion. |
+| `prototype remove` | Delete a prototype and its annotations. |
 
 ### Technical design and whiteboards
 
@@ -610,7 +615,7 @@ imports; component and system pins are not supported yet.
 
 | Command | What it does |
 | --- | --- |
-| `quality test-case add` / `revise` / `set-state` | Test cases with ordered steps, linked to the criteria they verify. |
+| `quality test-case add` / `revise` / `set-state` / `remove` | Test cases with ordered steps, linked to the criteria they verify. |
 | `quality policy set` | Set the test kinds a criterion requires (default positive, negative and edge). |
 | `quality evidence add` | Attach test code, the code under test, or run artifacts to a test case. |
 | `quality run record` | Deprecated: record run history, with no coverage effect. |
