@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "commit": "013e98e401b6a188ec2b34744f91dde00d08320c",
       "path": "internal/server/roadmap.go",
       "start": 9,
-      "end": 28,
-      "digest": "sha256:4b734979b464d3fcbce83d811baaead3ecc321c692a6760cfdb229d30652647b",
+      "end": 29,
+      "digest": "sha256:3bb161ccba439da10d96f23927cc7bc0dfa4bff3746fc4ff1c9c754c4552055e",
       "note": "Built and planned collections project the same records, preserve identity and sort Roadmap by priority."
     }
   ]

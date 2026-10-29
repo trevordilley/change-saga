@@ -7,12 +7,13 @@ import (
 )
 
 // featureCollection changes only the projection. Every feature, story, essay,
-// deck and theme retains its canonical identity, storage, and renderer.
+// deck and theme retains its canonical identity, storage, and renderer. An
+// archived feature is in neither collection; its page stays reachable by URL.
 func featureCollection(document *saga.Saga, planned bool) *saga.Saga {
 	view := *document
 	view.Features = []*saga.Feature{}
 	for _, feature := range document.Features {
-		if feature.Plan.Planned() == planned {
+		if !feature.Plan.Archived && feature.Plan.Planned() == planned {
 			view.Features = append(view.Features, feature)
 		}
 	}

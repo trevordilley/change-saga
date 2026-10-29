@@ -684,3 +684,24 @@ func TestQualityDefaultKindsAndExplicitPolicyCompatibility(t *testing.T) {
 		})
 	}
 }
+
+// An archived feature's stories leave status, so their criteria add no axis
+// gaps; restoring the feature brings them back.
+func TestArchivedFeatureAddsNoCoverageGaps(t *testing.T) {
+	inputs := qualityFixture(t)
+	inputs.Stories[0].Feature = "refunds"
+	inputs.Features = []applayout.Feature{{FeatureManifest: applayout.FeatureManifest{ID: "refunds", Title: "Refunds"}}}
+	active := Assemble(inputs)
+	if len(active.Stories) != 1 || len(active.Axes.Gaps) == 0 || len(active.Features) != 1 {
+		t.Fatalf("the active fixture must report its story and gaps: %d stories, %d gaps", len(active.Stories), len(active.Axes.Gaps))
+	}
+	inputs.Features[0].Plan.Archived = true
+	archived := Assemble(inputs)
+	if len(archived.Stories) != 0 || len(archived.Axes.Criteria) != 0 || len(archived.Axes.Gaps) != 0 || len(archived.Features) != 0 {
+		t.Fatalf("an archived feature must add no stories, criteria, or gaps: %d stories, %d criteria, %d gaps, %d features",
+			len(archived.Stories), len(archived.Axes.Criteria), len(archived.Axes.Gaps), len(archived.Features))
+	}
+	if len(inputs.Stories) != 1 {
+		t.Fatal("Assemble must not mutate its inputs")
+	}
+}

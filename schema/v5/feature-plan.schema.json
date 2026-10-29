@@ -45,6 +45,16 @@
         "maxLength": 1000
       },
       "description": "References to shared label records in this Saga."
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Hide the feature from feature lists and coverage gaps while keeping every record. Status is preserved for restore."
+    },
+    "archived_reason": {
+      "type": "string",
+      "maxLength": 1000,
+      "pattern": "^[^\\r\\n]*$",
+      "description": "Why the feature was archived. Requires archived."
     }
   }
 }

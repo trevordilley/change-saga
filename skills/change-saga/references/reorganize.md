@@ -18,6 +18,7 @@ operations; do not create a duplicate to simulate a rename or move.
 | Move an ordinary implementation slide | `move-slide --slide TARGET --deck TARGET`; transaction-authored and review slides are refused |
 | Move a story, rank planned work, or change theme membership | Existing `story move`, `feature set-plan --priority`, `feature-theme set-features` |
 | Remove unused mutable entities | `feature remove`, `feature-theme remove`, `label remove`, `milestone remove`; dependencies must be resolved first |
+| Hide a feature that holds content | `feature archive --feature ID [--reason TEXT]` keeps every record and its status; `feature restore --feature ID` brings it back |
 | Remove ordinary content | Existing `remove-deck`, `remove-slide`, `remove-item`, `remove-chapter`, `remove-section`, `remove-fragment`; inspect contained targets and dependencies |
 | Retire a requirement or inventory entity | Its existing lifecycle command; preserve revisions, events, pins and evidence |
 | Remove a criterion or retire a prototype | `criterion remove` appends a story revision; `prototype revise --state retired` appends a prototype revision |

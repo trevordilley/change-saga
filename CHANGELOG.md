@@ -21,6 +21,9 @@ tool, and what they have to do about it.
 - `add-deck --feature ID --role ux` creates a feature's UX flows deck. Its
   slides are not asked for code, and its `addresses` relations cover the
   criterion `ux` axis.
+- `feature archive --feature ID [--reason TEXT]` hides a feature that holds
+  stories or other content without removing anything: it leaves the feature
+  lists and adds no coverage gaps. `feature restore` brings it back.
 
 ### Changed
 

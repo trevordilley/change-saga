@@ -135,10 +135,13 @@ func Feature(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("feature", []string{"add", "rename", "remove", "set-overview", "set-plan"}, out)
+		return livingFamilyHelp("feature", []string{"add", "rename", "remove", "archive", "restore", "set-overview", "set-plan"}, out)
 	}
 	if args[0] == "rename" || args[0] == "remove" {
 		return entityEdit("feature", args, out)
+	}
+	if args[0] == "archive" || args[0] == "restore" {
+		return featureArchive(args[0], args[1:], out)
 	}
 	var err error
 	switch args[0] {

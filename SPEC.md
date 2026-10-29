@@ -116,6 +116,16 @@ order they were created. A feature's ID and creation time are immutable;
 `urn:change-saga:<saga>:feature:<id>`. Moving a story
 between features moves its directory and changes nothing else.
 
+`feature remove` deletes only a feature that holds nothing but its metadata.
+A feature with content is archived instead: `feature archive [--reason TEXT]`
+sets `archived` (and `archived_reason`) in its `plan.json`, keeping its planned
+or built status and every record it holds. An archived feature is omitted from
+the Features and Roadmap lists and from theme pages, its page stays reachable
+with an archived notice, and status leaves it and its stories out of coverage,
+so it adds no gaps. Its records are still validated. `feature restore` clears
+the flag and returns it to its previous placement. A plan without the field is
+not archived.
+
 Product themes optionally classify features without moving or duplicating them.
 Their stable URN is `urn:change-saga:<saga>:feature-theme:<id>`. A theme records
 an authored Markdown overview and a set of canonical feature URNs; features may
