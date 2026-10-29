@@ -10,7 +10,7 @@ different properties.
 
 | Entity | Create and read | Rename or revise | Move or order | Remove or retire |
 | --- | --- | --- | --- | --- |
-| Feature | `feature add`; `query overview`, `query context` | `feature rename`, `feature set-overview` | `feature set-plan --priority`; built/planned placement uses `--status` | `feature remove` refuses contained content and dependencies |
+| Feature | `feature add`; `query overview`, `query context` | `feature rename`, `feature set-overview` | `feature set-plan --priority`; built/planned placement uses `--status` | `feature remove` refuses contained content and dependencies; `feature archive` hides a feature with content (and its coverage gaps) without removing anything, and `feature restore` brings it back |
 | Product theme | `feature-theme add`; `query feature-themes` | `feature-theme rename`, `set-overview` | `set-features` replaces membership; features retain their identities | `feature-theme remove` refuses decks and inbound dependencies |
 | Label, milestone | `label add`, `milestone add`; corresponding queries | Existing `rename` changes the shared title once | Assign through `feature set-plan`; clear assignments explicitly | `remove` refuses referenced records |
 | Story, persona, criterion | Existing family `add`; corresponding queries | Existing `revise` appends immutable revisions | `story move` changes its feature without changing its URN | Story/persona lifecycle; `criterion remove` appends a story revision and preserves historical criteria |
