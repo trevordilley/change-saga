@@ -175,17 +175,36 @@ func loadTerms(document *Document) error {
 		}
 		document.Terms = append(document.Terms, term)
 	}
-	// Links are checked once every term is loaded, because a term may name
-	// another term.
-	for _, term := range document.Terms {
-		for _, revision := range term.Revisions {
-			if err := validateTermLinks(document, revision); err != nil {
-				path := TermPackagePath(term.Identity.ID) + "/revisions/" + revision.ID + ".json"
-				return fmt.Errorf("%s: %w", path, err)
-			}
-		}
-	}
+	// Whether the stories and records a term names still exist is not a load
+	// rule: removing a story or record must leave the Saga readable, and a
+	// current term that names a removed one is reported by status as a link to
+	// fix (see MissingTermLinks). A new revision is still refused a link to
+	// nothing when it is written.
 	return nil
+}
+
+// MissingTermLinks lists the stories and records the term's current
+// revision names that no longer exist.
+func (d *Document) MissingTermLinks(term Term) []string {
+	if term.CurrentRevision == nil {
+		return nil
+	}
+	return problemMessages(validateTermLinks(d, *term.CurrentRevision))
+}
+
+// problemMessages splits a joined validation error into its messages.
+func problemMessages(err error) []string {
+	if err == nil {
+		return nil
+	}
+	if joined, ok := err.(interface{ Unwrap() []error }); ok {
+		var messages []string
+		for _, value := range joined.Unwrap() {
+			messages = append(messages, value.Error())
+		}
+		return messages
+	}
+	return []string{err.Error()}
 }
 
 // validateTermRevision checks one revision's own shape. Whether the stories

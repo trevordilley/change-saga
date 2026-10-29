@@ -546,7 +546,7 @@ func loadFlags(document *Document) error {
 			if err := readStrictJSON(path, &revision); err != nil {
 				return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 			}
-			if err := validateFlagRevision(revision, document, value.id, strings.TrimSuffix(filepath.Base(path), ".json")); err != nil {
+			if err := validateFlagRevision(revision, document, value.id, strings.TrimSuffix(filepath.Base(path), ".json"), false); err != nil {
 				return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 			}
 			flag.Revisions = append(flag.Revisions, revision)
@@ -587,7 +587,10 @@ func ParseFlagTarget(sagaID, value string) (FlagTarget, error) {
 	return FlagTarget{}, fmt.Errorf("target %q must be a canonical story or feature URN in saga %q", value, sagaID)
 }
 
-func validateFlagRevision(value FlagRevision, document *Document, flagID, expectedID string) error {
+// validateFlagRevision checks one revision. existence also requires every
+// target to exist; it is checked when a revision is written, never on load, so
+// removing a story leaves the Saga readable and status reports the dead target.
+func validateFlagRevision(value FlagRevision, document *Document, flagID, expectedID string, existence bool) error {
 	var problems validationErrors
 	sagaID := document.SagaID
 	if value.Schema != FlagRevisionSchemaURL {
@@ -619,6 +622,7 @@ func validateFlagRevision(value FlagRevision, document *Document, flagID, expect
 			problems.add("%s", err.Error())
 		case seen[target]:
 			problems.add("target %q is duplicated", target)
+		case !existence:
 		case parsed.Kind == "story" && findStory(document, parsed.ID) == nil:
 			problems.add("target story %q does not exist", target)
 		case parsed.Kind == "feature":
@@ -769,4 +773,30 @@ func (document *Document) Gates() Gate {
 		}
 	}
 	return gate
+}
+
+// MissingFlagTargets lists the targets the flag's current revision gates that
+// no longer exist.
+func (d *Document) MissingFlagTargets(flag Flag) []string {
+	if flag.CurrentRevision == nil {
+		return nil
+	}
+	var missing []string
+	for _, target := range flag.CurrentRevision.Targets {
+		parsed, err := ParseFlagTarget(d.SagaID, target)
+		if err != nil {
+			continue
+		}
+		switch parsed.Kind {
+		case "story":
+			if findStory(d, parsed.ID) == nil {
+				missing = append(missing, target)
+			}
+		case "feature":
+			if _, ok := applayout.Find(d.Features, parsed.ID); !ok {
+				missing = append(missing, target)
+			}
+		}
+	}
+	return missing
 }

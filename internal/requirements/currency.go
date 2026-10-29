@@ -261,6 +261,23 @@ func documentHeads(document Document) currencyHeads {
 	return heads
 }
 
+// storyMissing reports a story or criterion endpoint whose story no longer
+// exists, as a removed story leaves behind in a slide's projected links.
+func (heads currencyHeads) storyMissing(value string) bool {
+	parsed, err := parseEndpoint(value)
+	if err != nil || (parsed.Kind != endpointStory && parsed.Kind != endpointCriterion) {
+		return false
+	}
+	storyID := parsed.ID
+	if parsed.Kind == endpointCriterion {
+		storyID = parsed.StoryID
+	}
+	story := "urn:change-saga:" + heads.sagaID + ":story:" + storyID
+	_, known := heads.revisions[story]
+	_, conflicted := heads.conflicted[story]
+	return !known && !conflicted
+}
+
 // evaluate is the single place where relation pins are compared with heads.
 func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
 	// A relation is judged against what it is confirmed against, which is its
@@ -288,7 +305,7 @@ func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
 		add := func(code, message string, pinned string, current ...string) {
 			result.Reasons = append(result.Reasons, CurrencyReason{Endpoint: pin.name, Code: code, Pinned: pinned, Current: current, Message: pin.name + " " + message})
 		}
-		if heads.inputs.Missing[pin.endpoint] {
+		if heads.inputs.Missing[pin.endpoint] || heads.storyMissing(pin.endpoint) {
 			add(ReasonEndpointMissing, "endpoint is missing", "")
 		} else if heads.removed[pin.endpoint] {
 			add(ReasonCriterionRemoved, "criterion is absent from the current revision", pin.revision)

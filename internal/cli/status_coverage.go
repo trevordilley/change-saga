@@ -296,6 +296,12 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 			}
 		}
 	}
+	// A removed record leaves what pointed at it explaining or verifying
+	// nothing; each one is unhealthy until its author adjusts it.
+	for _, dangling := range living.Dangling {
+		examined = append(examined, healthRecord{Resource: dangling.Record, Kind: dangling.Kind})
+		problems = append(problems, areas.Problem{Resource: dangling.Record, Kind: dangling.Kind, Reason: "points at removed " + strings.Join(dangling.Missing, ", ") + "; " + dangling.Fix})
+	}
 	for _, stale := range living.Stale {
 		problems = append(problems, areas.Problem{Resource: stale.Record, Kind: stale.Kind, Feature: featureOf(stale.Affects...), Reason: stale.Kind + " is stale: " + strings.Join(stale.Reasons, "; ")})
 	}

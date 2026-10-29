@@ -688,6 +688,9 @@ func requireReviewRecord(document *saga.Saga, record string) error {
 	return requireAppRecord(document.Root, document.Manifest.ID, record)
 }
 
+// errRecordMissing marks a well-formed record URN whose record was removed.
+var errRecordMissing = errors.New("it was removed or never existed")
+
 // requireAppRecord checks that a persona, feature, or story URN names an
 // existing record.
 func requireAppRecord(root, sagaID, record string) error {
@@ -697,7 +700,7 @@ func requireAppRecord(root, sagaID, record string) error {
 			return err
 		}
 		if _, found := applayout.Find(features, id); !found {
-			return fmt.Errorf("feature %q does not exist", record)
+			return fmt.Errorf("feature %q does not exist: %w", record, errRecordMissing)
 		}
 		return nil
 	}
@@ -707,13 +710,13 @@ func requireAppRecord(root, sagaID, record string) error {
 	}
 	if id, err := requirements.ParsePersonaURN(sagaID, record); err == nil {
 		if document.FindPersona(id) == nil {
-			return fmt.Errorf("persona %q does not exist", record)
+			return fmt.Errorf("persona %q does not exist: %w", record, errRecordMissing)
 		}
 		return nil
 	}
 	if id, ok := strings.CutPrefix(record, "urn:change-saga:"+sagaID+":story:"); ok && applayout.ValidID(id) {
 		if document.FindStory(id) == nil {
-			return fmt.Errorf("story %q does not exist", record)
+			return fmt.Errorf("story %q does not exist: %w", record, errRecordMissing)
 		}
 		return nil
 	}

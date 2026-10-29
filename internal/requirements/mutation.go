@@ -773,3 +773,26 @@ func equalRelationIgnoringTime(existing, wanted Relation) bool {
 	existing.StaleReasons = nil
 	return reflect.DeepEqual(existing, wanted)
 }
+
+// StoryPackagePath is the app-relative directory that holds a story's
+// identity, revisions, and events.
+func StoryPackagePath(feature, id string) string { return storyPackagePath(feature, id) }
+
+// RelationPath is the app-relative file of one relation.
+func RelationPath(feature, id string) string { return relationPath(feature, id) }
+
+// RelationRepinsPath is the app-relative directory of one relation's repins.
+func RelationRepinsPath(feature, id string) string {
+	return applayout.FeatureRel(feature) + "/" + applayout.RequirementsDir + "/" + RepinsDir + "/" + id
+}
+
+// TouchesStory reports a relation that names the story, one of its criteria,
+// or one of its revisions at either end, in any state.
+func (relation Relation) TouchesStory(storyURN string) bool {
+	for _, value := range []string{relation.From, relation.To, relation.FromRevision, relation.ToRevision} {
+		if value == storyURN || strings.HasPrefix(value, storyURN+":") {
+			return true
+		}
+	}
+	return false
+}

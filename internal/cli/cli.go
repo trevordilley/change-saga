@@ -155,7 +155,8 @@ var commandUsage = map[string]string{
 	"prototype add-external":        "change-saga prototype add-external --feature ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
 	"prototype revise":              "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
 	"prototype annotate":            "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
-	"story":                         "change-saga story <add|revise|set-state|move|withdraw|consolidate> [flags] <saga>",
+	"story":                         "change-saga story <add|revise|set-state|move|withdraw|consolidate|remove> [flags] <saga>",
+	"story remove":                  "change-saga story remove --story URN [--dry-run] [--json] <saga>",
 	"story add":                     "change-saga story add --feature ID --id ID --revision ID --event ID --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
 	"story revise":                  "change-saga story revise --story URN --revision ID --parent URN... [--title TEXT] [--statement TEXT] [--priority TEXT] [flags] <saga>",
 	"story set-state":               "change-saga story set-state --story URN --event ID --parent URN... --state STATE [flags] <saga>",
@@ -453,6 +454,7 @@ var commandDescription = map[string]string{
 	"story add":                   "Use Title for the short value and Statement for the full authored need: As a <persona> I can <value>.\nUse --overview or --overview-source for detailed Markdown purpose, rationale and boundaries.\nAdd a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one. A proposed story\nmay remain without criteria while its behavior is unknown; do not invent them.",
 	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Naming one\nparent inherits every field you leave out, so revising a title keeps the criteria,\ncitations, personas, and overview; explicit --overview empty clears prose. Use\n--overview-source FILE|- for multiline Markdown; --from remains a complete snapshot.\nRemove a criterion with `criterion remove`. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
 	"story set-state":             "Append a lifecycle decision without rewriting the story. Acceptance records intent,\nnot implementation completion or peer-review approval. Before setting accepted, ensure\nevery current revision head has at least one pass/fail criterion; add only the narrowest\ncriterion implied by confirmed intent.",
+	"story remove":                "Delete a story and its acceptance criteria. Records that exist only to link to it\n(relations, prototype annotations, quality policies, coverage exceptions) are deleted with\nit; Git keeps the history. Slides, test cases, terms, flags, and onboarding Items that\nreferenced it are listed with how to adjust them, and status reports them until you do.",
 	"story withdraw":              "Withdraw a proposed or deferred story by appending an explicit rejected lifecycle\nevent with a reason. Accepted intent cannot be withdrawn through this convenience.",
 	"story consolidate":           "Preview, then deliberately consolidate one duplicate story into a canonical existing\nstory. Every current duplicate criterion requires an exact mapping. Applying appends an\nhonest rejected (or accepted-to-retired) lifecycle event and replaces only affected\nrelations while preserving their prior records as superseded history.",
 	"criterion":                   "Add, revise, or remove one acceptance criterion by creating a complete immutable\nstory revision from an explicit current parent head. Each criterion is one independent,\nobservable pass/fail obligation, no broader than the confirmed story requires.",
@@ -1053,7 +1055,11 @@ func appendAppIssues(root string, document *saga.Saga, validation *saga.Validati
 				if item.Record == "" {
 					continue
 				}
-				if err := requireAppRecord(root, document.Manifest.ID, item.Record); err != nil {
+				if err := requireAppRecord(root, document.Manifest.ID, item.Record); errors.Is(err, errRecordMissing) {
+					// A removed record leaves the Item explaining nothing: a
+					// link to fix, reported, not a reason the Saga cannot load.
+					validation.Issues = append(validation.Issues, saga.Issue{Severity: "warning", Path: item.Path, Message: deck.Role + " item explains a removed record; revise its --record or remove the Item: " + err.Error()})
+				} else if err != nil {
 					validation.Issues = append(validation.Issues, saga.Issue{Severity: "error", Path: item.Path, Message: deck.Role + " item: " + err.Error()})
 					validation.Valid = false
 				}

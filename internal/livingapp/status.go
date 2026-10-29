@@ -65,6 +65,9 @@ func Assemble(in StatusInputs) Status {
 	// Exceptions are annotated with citation resolution below; copy them so the
 	// caller's records are never mutated.
 	in.Exceptions = append([]coverage.Exception(nil), in.Exceptions...)
+	// Dangling links are judged against every record, archived ones included:
+	// a link to an archived story is hidden, not dead.
+	dangling := danglingReferences(in)
 	in = withoutArchivedFeatures(in)
 	a := &assembler{
 		in: in, storyRevision: map[string]string{}, byCriterion: map[string]*criterionFrame{},
@@ -120,6 +123,7 @@ func Assemble(in StatusInputs) Status {
 	status.PersonaCoverage = PersonaCoverage{Facts: readiness.PersonaCoverage(personas, personaOrphans)}
 
 	status.Stale = a.staleRecords()
+	status.Dangling = dangling
 	status.CarriedForward = a.carriedForward()
 	status.Chain = a.chain()
 	return status

@@ -108,6 +108,9 @@ type StatusInputs struct {
 
 	Prototypes prototypes.Document
 	Decks      []*saga.Deck
+	// RecordDecks are the onboarding and theme decks, whose Items explain
+	// records rather than code.
+	RecordDecks []*saga.Deck
 	// DesignDigests is the current canonical content digest of every design and
 	// visual target, used to report the current side of a stale digest pin.
 	DesignDigests map[string]string
@@ -157,6 +160,9 @@ type Status struct {
 	Axes           coverage.AxisProjection `json:"axes"`
 	Quality        QualityStatus           `json:"quality"`
 	Stale          []StaleRecord           `json:"stale"`
+	// Dangling lists current records that still point at a removed story,
+	// criterion, persona, feature, flag, or term, each with how to fix it.
+	Dangling []DanglingReference `json:"dangling"`
 	// CarriedForward lists the pins currency advanced without a judgment call,
 	// so a reader can always tell a revision somebody confirmed from one the
 	// tool carried a still-true relation past.
@@ -287,6 +293,17 @@ type QualityFactStatus struct {
 	TestCase         string   `json:"test_case,omitempty"`
 	EvidenceResolved bool     `json:"evidence_resolved"`
 	StaleReasons     []string `json:"stale_reasons"`
+}
+
+// DanglingReference is a current record that still points at something that
+// was removed. Removing a record cleans up the pure links to it; anything with
+// content of its own is left for its author to adjust, and this says how.
+type DanglingReference struct {
+	Record  string   `json:"record"`
+	Kind    string   `json:"kind"`
+	Path    string   `json:"path,omitempty"`
+	Missing []string `json:"missing"`
+	Fix     string   `json:"fix"`
 }
 
 // StaleRecord is one persisted record whose pin no longer matches the head it

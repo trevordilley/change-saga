@@ -286,7 +286,7 @@ func AddFlag(root, sagaID string, input AddFlagInput) (MutationResult, error) {
 	paths := []string{path, path + "/revisions/" + input.RevisionID + ".json", path + "/events/" + input.EventID + ".json"}
 	var result MutationResult
 	err = mutate(root, sagaID, func(document *Document) error {
-		if err := validateFlagRevision(revision, document, input.ID, ""); err != nil {
+		if err := validateFlagRevision(revision, document, input.ID, "", true); err != nil {
 			return err
 		}
 		if existing := document.FindFlag(input.ID); existing != nil {
@@ -325,7 +325,7 @@ func ReviseFlag(root, sagaID string, input ReviseFlagInput) (MutationResult, err
 	path := flagPackagePath(id) + "/revisions/" + input.ID + ".json"
 	var result MutationResult
 	err = mutate(root, sagaID, func(document *Document) error {
-		if err := validateFlagRevision(revision, document, id, ""); err != nil {
+		if err := validateFlagRevision(revision, document, id, "", true); err != nil {
 			return err
 		}
 		flag := document.FindFlag(id)

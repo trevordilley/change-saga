@@ -174,7 +174,9 @@ func TestLegacyTermSemanticAxesDefaultToUnknown(t *testing.T) {
 	}
 }
 
-func TestATermNamingAMissingStoryFailsToLoad(t *testing.T) {
+// Removing a story leaves the Saga readable: a term still naming it is a link
+// for status to report, not a reason the requirements cannot load.
+func TestATermNamingARemovedStoryLoadsAndReportsTheDeadLink(t *testing.T) {
 	root := newSaga(t)
 	if _, err := AddStory(root, "test", storyInput("checkout", "r1", "proposed", nil)); err != nil {
 		t.Fatal(err)
@@ -185,7 +187,12 @@ func TestATermNamingAMissingStoryFailsToLoad(t *testing.T) {
 	if err := os.RemoveAll(filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story")); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "___overview/terms/testtaker.term/revisions/r1.json") {
-		t.Fatalf("a dangling story link must name the revision that holds it: %v", err)
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatalf("a term naming a removed story must still load: %v", err)
+	}
+	missing := document.MissingTermLinks(*document.FindTerm("testtaker"))
+	if len(missing) != 1 || !strings.Contains(missing[0], "story:checkout") {
+		t.Fatalf("missing term links = %v", missing)
 	}
 }

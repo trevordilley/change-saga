@@ -269,6 +269,17 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "story remove", Status: StatusImplemented, Mutates: true, Writes: []string{"story", "relation", "prototype-annotation", "quality-policy", "coverage-exception"},
+		Usage:   "change-saga story remove --story URN [--dry-run] [--json] <saga>",
+		Summary: "delete a story and the records that only linked to it; list the slides, test cases, terms, flags, and Items that now need adjusting",
+		Flags: []Flag{
+			optional("dry-run", "", "report what would be removed and adjusted without writing"),
+			jsonFlag,
+			required("story", "URN", "story URN or ID"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "story move", Status: StatusImplemented, Mutates: true, Writes: []string{"story"},
 		Usage:   "change-saga story move --story URN --feature ID [--json] <saga>",
 		Summary: "move a story to another feature; its URN, revisions, and every relation and pin to it are unchanged",
