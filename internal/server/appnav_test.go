@@ -743,3 +743,34 @@ func writeAppNavDeck(t *testing.T, dir, id, role, slide, record string) {
 	}
 	writeServerFile(t, filepath.Join(bundle, itemName), fmt.Sprintf(`{"version":4,"id":"%s-point","slide":%q,"rank":0,"kind":"callout","label":"Point","description":"The point.","selector":{"type":"element","element_id":"%s-point"},"body":"The point of %s."%s}`, slide, slide, slide, slide, recordField))
 }
+
+// An archived feature leaves the Features list and its directory, while its
+// page stays reachable with an archived notice.
+func TestArchivedFeatureLeavesFeatureLists(t *testing.T) {
+	t.Parallel()
+	sources := appNavFixture(t)
+	sources.document.Features[1].Plan.Archived = true
+	sources.document.Features[1].Plan.ArchivedReason = "Changing with the Swarm work"
+	nodes := makeAppNavTree(sources)
+	if findNavByID(nodes, featureNavID("catalog")) != nil {
+		t.Fatal("an archived feature must not appear in the sidebar")
+	}
+	if findNavByID(nodes, featureNavID("billing")) == nil {
+		t.Fatal("an active feature must stay in the sidebar")
+	}
+	if got := featureCollection(sources.document, false).Features; len(got) != 1 || got[0].ID != "billing" {
+		t.Fatalf("the Features directory must drop the archived feature: %v", got)
+	}
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rendered strings.Builder
+	view := &featurePageView{ID: "catalog", Title: "Catalog", Plan: sources.document.Features[1].Plan}
+	if err := tmpl.ExecuteTemplate(&rendered, "feature-page", view); err != nil {
+		t.Fatal(err)
+	}
+	if html := rendered.String(); !strings.Contains(html, "data-feature-archived") || !strings.Contains(html, "Changing with the Swarm work") || !strings.Contains(html, "feature restore --feature catalog") {
+		t.Fatalf("the archived feature page must say it is archived: %s", html)
+	}
+}

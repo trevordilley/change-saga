@@ -231,6 +231,9 @@ func featureThemePage(document *saga.Saga, id string) (*featureThemePageView, er
 	view.Subtext, view.Abstract = theme.Subtext, theme.Abstract
 	view.Body = overviewMarkdown(theme.Overview, &deckOverviewView{DOMID: "theme-overview-" + domID(theme.Target)})
 	for _, feature := range document.Features {
+		if feature.Plan.Archived {
+			continue
+		}
 		for _, ref := range theme.Features {
 			if ref == feature.Target {
 				view.Features = append(view.Features, featureLinkView{Plan: featurePresentationPlan(document, feature.Plan), ID: feature.ID, Title: feature.Title, Href: featureHref(feature.ID)})
