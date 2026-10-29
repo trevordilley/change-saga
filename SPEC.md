@@ -865,6 +865,35 @@ and names the current revision; visuals are content-addressed
 references them. A legacy flat slide becomes the first revision the first time
 `apply-slide` updates it, and its flat records remain as migration history.
 
+`remove-slide` supports these published implementation slides: under the Saga
+lock it appends a revision with `deleted: true`, a new snapshot and request ID,
+and exactly one parent (the current snapshot). All of the parent's content,
+Items, evidence, criterion links, and asset pins remain in that revision. The
+stored record follows [slide-transaction.schema.json](schema/v5/slide-transaction.schema.json).
+Deleted revisions do not project active slides, Items, evidence, or criterion
+links; historical flat records cannot bring them back. Optional
+`--expected-snapshot` refuses a removal if the observed snapshot changed.
+Divergent histories must be reconciled before removal. A Git merge between a
+removal and a live edit exposes the live head with an authoring conflict, so
+`apply-slide` reconciliation can explicitly resolve it.
+
+`remove-deck` removes every active slide. If the bundle contains transaction
+history (including previously removed slides), it retains the bundle and marks
+the deck record `deleted: true`; otherwise it removes the bundle. A deleted
+deck is excluded from discovery and must contain no active slides. Its overview
+is retained as history without requiring its references to remain active.
+If Git merges a live slide into a deleted deck, validation reports the conflict.
+The existing removal commands still report surviving relations left dangling.
+Review decks and review slides cannot be removed by these commands.
+
+Compatibility: `deleted` is optional and omitted on live records, so existing
+snapshots and Sagas require no migration. Upgrade readers before using removal:
+older strict readers reject these fields; readers that ignore unknown fields
+may show removed content. Retained bundles and slide records reserve their
+storage locations; author a replacement under a new ID instead of overwriting
+history. Removing a transaction Item alone still requires a complete
+`apply-slide` update that omits it and adjusts the reading order.
+
 A revision's visual is either an authored asset (SVG, HTML, or raster image)
 or a **diagram source**. A diagram source is a
 [`diagram.schema.json`](schema/v5/diagram.schema.json) document: an ordered list

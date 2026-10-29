@@ -24,7 +24,8 @@ import (
 // Content records (decks, slides, Items, chapters, sections, and fragments)
 // are documentation, edited in place. A revise rewrites the fields it is
 // given and keeps the record's identity; a remove deletes the record and
-// everything it contains. Neither may leave the Saga invalid: the edit is
+// everything it contains. Complete-slide removals instead retain history and
+// append tombstones, excluded from the active document. Neither may leave the Saga invalid: the edit is
 // applied under the Saga lock, the Saga is validated, and any new error puts
 // every file back.
 
@@ -396,12 +397,27 @@ func RemoveDeck(_ context.Context, args []string, out io.Writer) error {
 				result.Resource = deck.Target
 				result.Removed = append(result.Removed, deck.Target)
 				for _, slide := range deck.Slides {
-					if err := guardCompleteSlideMutation("remove-deck", slide); err != nil {
-						return err
-					}
 					result.Removed = append(result.Removed, slideRecords(slide)...)
 				}
 				result.DanglingRelations = danglingRelations(document.Root, document.Manifest.ID, result.Removed)
+				entries, err := os.ReadDir(deck.Directory)
+				if err != nil {
+					return err
+				}
+				hasHistory := false
+				for _, entry := range entries {
+					hasHistory = hasHistory || (strings.HasPrefix(entry.Name(), "25-t-") && strings.HasSuffix(entry.Name(), ".json"))
+				}
+				if hasHistory {
+					for _, slide := range deck.Slides {
+						if err := removeDocumentationSlide(document, deck, slide, edit); err != nil {
+							return err
+						}
+					}
+					manifest := deck.DeckManifest
+					manifest.Deleted = true
+					return edit.writeJSON(filepath.Join(document.Root, filepath.FromSlash(deck.Path)), manifest)
+				}
 				return edit.remove(deck.Directory)
 			}}, out)
 	})
@@ -561,6 +577,7 @@ func (edit *contentEdit) writeFile(path string, data []byte) error {
 func RemoveSlide(_ context.Context, args []string, out io.Writer) error {
 	flags, dryRun, jsonOutput := contentEditFlags("remove-slide", out)
 	slideValue := flags.String("slide", "", "slide path, id, or URN")
+	expected := flags.String("expected-snapshot", "", "refuse removal if the slide's authoring snapshot changed")
 	return contentEditCommand("remove-slide", args, out, func() error {
 		if err := flags.Parse(args); err != nil {
 			return err
@@ -574,8 +591,8 @@ func RemoveSlide(_ context.Context, args []string, out io.Writer) error {
 				if slide == nil {
 					return fmt.Errorf("--slide must identify an existing slide; a review's slides carry its approvals and comments, so they are not removed")
 				}
-				if err := guardCompleteSlideMutation("remove-slide", slide); err != nil {
-					return err
+				if *expected != "" && *expected != slide.AuthoringSnapshot {
+					return fmt.Errorf("expected_snapshot mismatch: got %q, current is %q", *expected, slide.AuthoringSnapshot)
 				}
 				if err := guardDeckReferences(slideDeck(document, slide), slide.ID, ""); err != nil {
 					return err
@@ -583,11 +600,7 @@ func RemoveSlide(_ context.Context, args []string, out io.Writer) error {
 				result.Resource = slide.Target
 				result.Removed = slideRecords(slide)
 				result.DanglingRelations = danglingRelations(document.Root, document.Manifest.ID, result.Removed)
-				files := []string{filepath.Join(document.Root, filepath.FromSlash(slide.Path)), filepath.Join(slide.Directory, slide.Entrypoint)}
-				for _, item := range slide.Items {
-					files = append(files, itemFiles(document.Root, item)...)
-				}
-				return removeFiles(edit, files)
+				return removeDocumentationSlide(document, slideDeck(document, slide), slide, edit)
 			}}, out)
 	})
 }

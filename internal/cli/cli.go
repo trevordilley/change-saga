@@ -95,6 +95,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 var commandOrder = []string{
 	"label", "milestone", "deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
+	"setup-ci",
 	"move-deck", "move-slide", "move-chapter", "move-section", "move-fragment",
 	"theme", "serve", "open", "install-skill", "spec",
 }
@@ -113,6 +114,7 @@ var commandUsage = map[string]string{
 	"inventory":                  "change-saga inventory <adopt-format> [flags] <saga>",
 	"init":                       "change-saga init [flags] [name.saga]",
 	"setup-initial-saga":         "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
+	"setup-ci":                   "change-saga setup-ci [--repo PATH]",
 	"label":                      "change-saga label add|rename|remove [flags] <saga>",
 	"label add":                  "change-saga label add --id ID --title TEXT [--json] <saga>",
 	"label rename":               "change-saga label rename --label ID|URN --title TEXT [--json] <saga>",
@@ -220,7 +222,7 @@ var commandUsage = map[string]string{
 	"revise-deck":                   "change-saga revise-deck --deck TARGET [--title TEXT] [--objective TEXT] [--rank N] [--dry-run] [--json] <saga>",
 	"remove-deck":                   "change-saga remove-deck --deck TARGET [--dry-run] [--json] <saga>",
 	"revise-slide":                  "change-saga revise-slide [--review ID] --slide TARGET [--title TEXT] [--section TEXT] [--intent INTENT] [--layout LAYOUT] [--takeaway TEXT] [--exception-rationale TEXT] [--rank N] [--dry-run] [--json] <saga>",
-	"remove-slide":                  "change-saga remove-slide --slide TARGET [--dry-run] [--json] <saga>",
+	"remove-slide":                  "change-saga remove-slide --slide TARGET [--expected-snapshot SHA256] [--dry-run] [--json] <saga>",
 	"revise-item":                   "change-saga revise-item [--review ID] --item URN|ID [--slide TARGET] [--kind KIND] [--label TEXT] [--description TEXT] [selector] [callout flags] [--record URN] [--rank N] [--dry-run] [--json] <saga>",
 	"remove-item":                   "change-saga remove-item --item URN|ID [--slide TARGET] [--dry-run] [--json] <saga>",
 	"revise-chapter":                "change-saga revise-chapter --target TARGET [--title TEXT] [--order N] [--dry-run] [--json] <saga>",
@@ -364,6 +366,11 @@ Growing the Saga with a coding agent?
   prints the guided interview and investigation workflow. It grows a Saga that
   holds only reviews; if the Saga already holds living documentation, it
   recommends ordinary updates unless the user requests an overhaul.
+
+Separating Saga changes from application CI and review ownership?
+  Run "change-saga setup-ci" for the default of no CI and no CODEOWNERS
+  on Saga-only changes, plus optional checks and review ownership.
+  It prints guidance without changing files or repository settings.
 `)
 	printInitialSagaHelp(out)
 }
@@ -391,6 +398,7 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
+	"setup-ci":                    "Print a CI and review-ownership setup guide for a coding agent or maintainer.\nDefault: changes only under root change.saga invoke no CI and have no CODEOWNERS.\nExplains exclusions and optional checks or product, architecture and quality owners,\nincluding provider limits. Does not modify files or host settings.",
 	"review test-plan":            "Follow the named review's changed code to affected stories and select their automated tests. Returns test code, recorded commands, selection reasons, and mapping gaps without executing tests. Exit 3 means the plan is partial; --json includes a deduplicated commands list.",
 	"component":                   "Define an identifiable unit of logic with exact pinned code. Use add or revise --from with a complete technical-definition JSON document; immutable revisions preserve history.",
 	"system":                      "Define a reusable interaction diagram with pinned Components, directed data flow, and exact scoped code. Implementation Items link a specific revision without inheriting coverage.",
@@ -517,9 +525,9 @@ whole batch is resolved before anything is written, and a failing record leaves 
 untouched.`,
 	"remove-coverage":  "Delete one exact coverage record named by query mappings or fragment-diffs.",
 	"revise-deck":      "Correct a deck's title, objective, or rank in place. Its identity and slides are\nunchanged. Repeating a revise is a no-op reported as replayed.",
-	"remove-deck":      "Delete a deck with its slides, Items, and their code evidence. Relations that\npointed at them are listed; status reports them stale until superseded.",
+	"remove-deck":      "Remove a deck and its content from active design. Complete-slide history and\nassets are retained with removal events. Dangling relations are listed.",
 	"revise-slide":     "Correct a slide's title, section, intent, layout, takeaway, or rank in place;\nset-slide-content replaces its visual. Its identity and Items are unchanged.",
-	"remove-slide":     "Delete a slide with its Items and their code evidence. A review's slides carry\nits approvals and comments, so they are not removed.",
+	"remove-slide":     "Remove a slide and its Items from active design, preserving complete-slide\nhistory. --expected-snapshot guards against a newer edit. Review slides stay protected.",
 	"revise-item":      "Correct an Item's label, description, kind, selector, callout fields, record, or\nrank in place. Its identity and code evidence are unchanged.",
 	"remove-item":      "Delete an Item and its code evidence, and drop it from its slide's reading order.\nA callout about the Item must be revised or removed first.",
 	"revise-chapter":   "Correct a chapter's title or display order in place. Its identity and content are\nunchanged.",
@@ -1469,6 +1477,7 @@ func Spec(args []string, out io.Writer) error {
 				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
 				"content":        "one self-contained visual file sharing its slide manifest stem",
 				"diagram_source": diagram.Contract(),
+				"removal":        "remove-slide appends a deleted revision with one current parent; remove-deck retains transaction bundles with deleted: true. Historical revisions and assets remain; active projections exclude removed content. Upgrade older readers before use.",
 				"visual_forms": map[string]string{
 					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
 					"data-flow": "directed inputs, transformations, storage, and outputs", "sequence": "participants, time, calls, responses, and exceptional returns",
@@ -2184,6 +2193,13 @@ records. Basenames are at most 64 characters and the default portability
 budget is 240 characters for an absolute path. Each slide owns one
 self-contained SVG, image, or HTML file sharing its manifest stem. Deck
 evidence may target only Items.
+
+remove-slide and remove-deck also remove apply-slide content from active design.
+Slide removal appends a deleted revision; deck removal retains transaction
+bundles with a deleted marker. Historical revisions and assets remain intact.
+Use remove-slide --expected-snapshot to refuse a newer edit, and reconcile
+divergent heads first. Review slides stay protected. Upgrade older readers
+before using deletion markers; existing documents need no migration.
 
 Slides may add front: authored summary bullets; fallback is takeaway then Item
 labels. The existing entrypoint is Back, with the same Items and evidence.

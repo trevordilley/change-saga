@@ -19,6 +19,7 @@ operations; do not create a duplicate to simulate a rename or move.
 | Move a story, rank planned work, or change theme membership | Existing `story move`, `feature set-plan --priority`, `feature-theme set-features` |
 | Remove unused mutable entities | `feature remove`, `feature-theme remove`, `label remove`, `milestone remove`; dependencies must be resolved first |
 | Remove ordinary content | Existing `remove-deck`, `remove-slide`, `remove-item`, `remove-chapter`, `remove-section`, `remove-fragment`; inspect contained targets and dependencies |
+| Remove transaction-managed technical content | `remove-deck` and `remove-slide` append removal history and hide content; use `--dry-run --json` first and optionally `remove-slide --expected-snapshot SHA256`. Review slides remain protected; removing a transaction Item alone requires an `apply-slide` update. |
 | Retire a requirement or inventory entity | Its existing lifecycle command; preserve revisions, events, pins and evidence |
 | Remove a criterion or retire a prototype | `criterion remove` appends a story revision; `prototype revise --state retired` appends a prototype revision |
 | Change whiteboard title or discovery | `whiteboard rename --id ID --name TITLE`, `archive`, `restore`; content and history remain intact |

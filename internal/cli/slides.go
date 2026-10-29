@@ -298,6 +298,11 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 				}
 			}
 		}
+		if _, err := os.Lstat(filepath.Join(deck.Directory, saga.SlideTransactionFilename(deck.Target, target))); err == nil {
+			return fmt.Errorf("slide id %q has retained transaction history; use a new slide id", *id)
+		} else if !os.IsNotExist(err) {
+			return err
+		}
 		filename, err := saga.FlatSlideFilename(deck.Target, target, chosenRank)
 		if err != nil {
 			return err

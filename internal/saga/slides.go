@@ -63,6 +63,9 @@ func loadEmbeddedDecks(root, dir, role string, manifest Manifest, options loadOp
 			addIssue(validation, "error", deck.Path, "embedded deck directory must match the deck id")
 		}
 		validateDeckRole(deck, role, manifest.ID, validation)
+		if deck.Deleted {
+			continue
+		}
 		result = append(result, deck)
 	}
 	sort.Slice(result, func(i, j int) bool {
@@ -189,14 +192,23 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		}
 		for _, revision := range record.Revisions {
 			allowedAssets[revision.Asset] = true
+			for _, item := range revision.Items {
+				transactionItems[FlatTargetKey(targets.item(record.SlideID, item.Item.ID))] = true
+			}
 			if revision.Diagram != nil {
 				allowedAssets[revision.Diagram.Source] = true
 			}
 		}
 		heads, _ := record.Heads()
+		transactionSlides[FlatTargetKey(targets.slide(record.SlideID))] = true
+		publishedSnapshot := current.Snapshot
+		current, _ = record.ActiveRevision()
+		if current == nil {
+			continue
+		}
 		slide := &Slide{
 			Path: relativePath(root, path), Directory: recordRoot, SlideManifest: current.Slide, Target: targets.slide(current.Slide.ID),
-			AuthoringSnapshot: current.Snapshot, AuthoringHeads: heads, AuthoringConflict: len(heads) > 1, AuthoringCreatedAt: current.CreatedAt,
+			AuthoringSnapshot: publishedSnapshot, AuthoringHeads: heads, AuthoringConflict: len(heads) > 1, AuthoringCreatedAt: current.CreatedAt,
 			Diagram: current.Diagram,
 		}
 		key := FlatTargetKey(slide.Target)
@@ -378,6 +390,12 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		}
 	}
 	for _, deck := range decks {
+		if deck.Deleted {
+			if deck.Role == DeckRoleReview || len(deck.Slides) != 0 {
+				addIssue(validation, "error", deck.Path, "a deleted deck cannot contain active slides or be a review deck")
+			}
+			continue
+		}
 		result := ValidateDeckOverview(deck)
 		validation.Issues = append(validation.Issues, result.Issues...)
 	}

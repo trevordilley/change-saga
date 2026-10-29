@@ -210,7 +210,7 @@ func TestMoveRollsBackValidationFailureAndParents(t *testing.T) {
 	}
 }
 
-func TestMoveDeckPreservesTransactionHistoryAndRefusesDeletion(t *testing.T) {
+func TestMoveDeckPreservesTransactionHistoryAndSupportsRemoval(t *testing.T) {
 	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, base, commit, sagaID, "first", "create", "absent", "node")
@@ -226,19 +226,11 @@ func TestMoveDeckPreservesTransactionHistoryAndRefusesDeletion(t *testing.T) {
 	hierarchyStep(t, Feature, "add", "--id", "destination", "--title", "Destination", root)
 	hierarchyStep(t, AddDeck, "--feature", testFeature, "--objective", "Other deck", root, "other")
 	before := snapshotFiles(t, root)
-	for _, test := range []struct {
-		run  func(context.Context, []string, io.Writer) error
-		args []string
-	}{
-		{MoveSlide, []string{"--slide", "flow", "--deck", "other", root}},
-		{RemoveDeck, []string{"--deck", "implementation", root}},
-	} {
-		if _, err := runContentJSON(t, test.run, test.args...); err == nil || !strings.Contains(err.Error(), "transaction history") {
-			t.Fatalf("immutable edit error: %v", err)
-		}
-		if !reflect.DeepEqual(before, snapshotFiles(t, root)) {
-			t.Fatal("immutable history changed")
-		}
+	if _, err := runContentJSON(t, MoveSlide, "--slide", "flow", "--deck", "other", root); err == nil || !strings.Contains(err.Error(), "transaction history") {
+		t.Fatalf("immutable edit error: %v", err)
+	}
+	if !reflect.DeepEqual(before, snapshotFiles(t, root)) {
+		t.Fatal("immutable history changed")
 	}
 	document := hierarchyDocument(t, root)
 	original := findDeck(document, "implementation")
@@ -261,6 +253,19 @@ func TestMoveDeckPreservesTransactionHistoryAndRefusesDeletion(t *testing.T) {
 	}
 	if !strings.HasPrefix(deck.Directory, applayout.FeatureDir(root, "destination")) {
 		t.Fatalf("deck path %s", deck.Directory)
+	}
+	if _, err := runContentJSON(t, RemoveDeck, "--deck", deck.Target, root); err != nil {
+		t.Fatalf("remove moved deck: %v", err)
+	}
+	if findDeck(hierarchyDocument(t, root), deck.Target) != nil {
+		t.Fatal("removed deck is still active")
+	}
+	var history saga.SlideTransactionRecord
+	if err := readStrictJSONPath(filepath.Join(deck.Directory, filepath.Base(first.Path)), &history); err != nil {
+		t.Fatal(err)
+	}
+	if len(history.Revisions) != 3 || !history.Revisions[2].Deleted {
+		t.Fatalf("moved deck removal lost history: %+v", history)
 	}
 }
 

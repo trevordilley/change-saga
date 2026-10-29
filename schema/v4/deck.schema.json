@@ -13,6 +13,10 @@
     "objective"
   ],
   "properties": {
+    "deleted": {
+      "type": "boolean",
+      "description": "A removed documentation deck retained for transaction history. It must contain no active slides and cannot be a review deck."
+    },
     "version": {
       "const": 4
     },

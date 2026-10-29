@@ -18,7 +18,7 @@ different properties.
 | Flag, prototype | Existing `flag add`, `prototype add-html` / `add-external`; corresponding queries | Existing `revise` preserves identity and revision history | Revise associations through the owning API | `flag set-state`; `prototype revise --state retired` |
 | Work wave, work item | Existing `plan add-wave`, `add-item`; work-plan queries | `plan revise-wave`, `revise-item` | `revise-wave --order`; `revise-item --wave`; explicit dependencies | Progress events preserve work and merge evidence; no destructive removal |
 | Technical deck | `add-deck`; `query children`, `query overview --deck` | `revise-deck --title`, `deck overview` | `move-deck --feature`; `revise-deck --rank` | Existing `remove-deck` reports contained targets and affected relations |
-| Slide, Item | `add-slide`, `add-item`, `apply-slide`; `query slide`, `query children` | Existing `revise-slide`, `revise-item`, content editing, or complete-slide transactions | `move-slide --deck`; rank edits or complete-slide transactions | Existing removal commands account for dependents; immutable transaction restrictions apply |
+| Slide, Item | `add-slide`, `add-item`, `apply-slide`; `query slide`, `query children` | Existing `revise-slide`, `revise-item`, content editing, or complete-slide transactions | `move-slide --deck`; rank edits or complete-slide transactions | `remove-slide` preserves transaction history; removing a transaction Item alone requires an `apply-slide` update |
 | Chapter, section, fragment | Existing `add-*`; `query children`, `query fragment` | Existing `revise-* --title`; `set-fragment-content` | `move-* --target --parent`; existing `revise-* --order` | Existing `remove-*` accounts for contained content and dependent relations |
 | Whiteboard | `whiteboard publish`, `get`, `describe`, `list`; `query whiteboards` | `whiteboard rename` changes display metadata; `publish` appends content history | `assign-role`, `unassign-role` change Technical Design placement | `archive`, `restore` change discovery without deleting history |
 | Evidence, relation, review, claim, verification | Existing typed authoring and query APIs | Exact coverage replacement/repinning; immutable relation/review/claim history | Ownership changes do not confer coverage or approval | Use owning lifecycle APIs; never cascade through immutable records |
@@ -66,6 +66,28 @@ refused. Move the whole deck with `move-deck` to retain that history unchanged.
 Inspect the dry-run result, repeat without `--dry-run`, then query the source
 and destination and validate the Saga. Unsupported moves fail with no changes;
 do not work around a refusal by editing generated files.
+
+## Remove published technical decks and slides
+
+```sh
+change-saga remove-deck --deck DECK_URN --dry-run --json change.saga
+change-saga remove-deck --deck DECK_URN --json change.saga
+change-saga remove-slide --slide SLIDE_URN --expected-snapshot SNAPSHOT --dry-run --json change.saga
+```
+
+Use the returned deck or slide ID/URN, not its feature's ID. These commands
+support slides authored with `apply-slide`. They append removal revisions and
+retain historical assets; removed content disappears from active queries and
+Technical Design. Removing a deck with transaction history retains its directory
+with a deletion marker. Existing unrelated content stays active. External
+relations left dangling are listed in the result.
+
+For individual slides, obtain `authoring_snapshot` from `query slide` and pass
+it as `--expected-snapshot` to refuse a newer edit. Omit that optional flag to
+remove the current state under the Saga lock. Reconcile divergent histories
+first, and remove any references in the deck overview before removing a slide.
+Review slides remain protected. Upgrade readers before adopting deletion markers;
+older readers may reject the retained history. Use a new ID for replacement content.
 
 ## Assign the existing board to ERD
 

@@ -12,6 +12,16 @@ import (
 	"testing"
 )
 
+func TestRunSetupCI(t *testing.T) {
+	var stdout, stderr bytes.Buffer
+	if code := run([]string{"setup-ci", "--repo", t.TempDir()}, &stdout, &stderr); code != 0 {
+		t.Fatalf("exit %d: %s", code, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "# Set up CI and review ownership") || stderr.Len() != 0 {
+		t.Fatalf("unexpected output: %s\n%s", stdout.String(), stderr.String())
+	}
+}
+
 func TestRunQueryKeepsMachineOutputOnStdout(t *testing.T) {
 	tests := []struct {
 		name string

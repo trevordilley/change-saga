@@ -404,6 +404,9 @@ func transactionOwnedCriterionLinks(document *Document, duplicateStoryID string)
 			if err != nil {
 				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: %w", relative(document.Root, path), err)
 			}
+			if current.Deleted {
+				continue
+			}
 			for itemIndex, item := range current.Items {
 				for linkIndex, link := range item.CriterionLinks {
 					ref, parseErr := livingid.Parse(link.Criterion)

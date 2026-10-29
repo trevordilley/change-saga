@@ -293,7 +293,10 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		var previous *saga.SlideTransactionRevision
 		var heads []string
 		recordExists := false
-		if existing != nil && strings.HasPrefix(filepath.Base(existing.Path), "25-t-") {
+		if info, statErr := os.Lstat(recordPath); statErr == nil {
+			if !info.Mode().IsRegular() {
+				return fmt.Errorf("slide transaction must be a regular file")
+			}
 			recordExists = true
 			if err := readStrictJSONPath(recordPath, &record); err != nil {
 				return err
@@ -306,6 +309,11 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			if err != nil {
 				return err
 			}
+			if previous.Deleted && len(heads) == 1 {
+				return fmt.Errorf("slide %q was removed; its transaction history is retained, so use a new slide id", request.Slide.ID)
+			}
+		} else if !os.IsNotExist(statErr) {
+			return statErr
 		} else if existing != nil {
 			legacy, legacyErr := legacySlideRevision(existing)
 			if legacyErr != nil {

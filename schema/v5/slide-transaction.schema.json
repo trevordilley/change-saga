@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/slide-transaction.schema.json",
+  "title": "Stored complete-slide transaction history",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "deck", "slide", "current", "revisions"],
+  "properties": {
+    "version": {"const": 1},
+    "deck": {"$ref": "#/$defs/id"},
+    "slide": {"$ref": "#/$defs/id"},
+    "current": {"$ref": "#/$defs/digest"},
+    "revisions": {"type": "array", "minItems": 1, "maxItems": 256, "items": {"$ref": "#/$defs/revision"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot", "request_id", "created_at", "asset", "asset_digest", "slide", "items"],
+      "properties": {
+        "deleted": {"type": "boolean", "description": "A removal event preserves all content of its one live parent. It is not projected as an active slide. Review slide removals are forbidden."},
+        "snapshot": {"$ref": "#/$defs/digest"},
+        "parent_snapshots": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
+        "request_id": {"$ref": "#/$defs/id"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "asset": {"type": "string", "minLength": 1},
+        "asset_digest": {"$ref": "#/$defs/digest"},
+        "slide": {"$ref": "https://changesaga.dev/schema/v4/slide.schema.json"},
+        "items": {"type": "array", "items": {"$ref": "#/$defs/item"}},
+        "diagram": {
+          "type": "object", "additionalProperties": false,
+          "required": ["source", "source_digest", "renderer"],
+          "properties": {
+            "source": {"type": "string", "minLength": 1},
+            "source_digest": {"$ref": "#/$defs/digest"},
+            "renderer": {"type": "string", "minLength": 1}
+          }
+        }
+      },
+      "allOf": [{"if": {"required": ["deleted"], "properties": {"deleted": {"const": true}}}, "then": {"required": ["parent_snapshots"], "properties": {"parent_snapshots": {"minItems": 1, "maxItems": 1}}}}]
+    },
+    "item": {
+      "type": "object", "additionalProperties": false,
+      "required": ["item", "evidence", "criterion_links"],
+      "properties": {
+        "item": {"$ref": "https://changesaga.dev/schema/v4/item.schema.json"},
+        "evidence": {"type": ["array", "null"], "items": {"$ref": "https://changesaga.dev/schema/v2/code.schema.json"}},
+        "criterion_links": {"type": ["array", "null"], "items": {"$ref": "https://changesaga.dev/schema/v5/slide-transaction-request.schema.json#/$defs/criterionLink"}}
+      }
+    }
+  }
+}

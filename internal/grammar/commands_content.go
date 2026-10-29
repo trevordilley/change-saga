@@ -218,6 +218,15 @@ var contentCommands = []Command{
 		Positionals: []string(nil),
 	},
 	{
+		Name: "setup-ci", Status: StatusImplemented,
+		Usage:   "change-saga setup-ci [--repo PATH]",
+		Summary: "print guidance for no CI and no CODEOWNERS on Saga-only changes, with checks and ownership as opt-ins; does not modify files or host settings",
+		Flags: []Flag{
+			optional("repo", "PATH", "repository whose CI and review policy will be configured"),
+		},
+		Positionals: []string(nil),
+	},
+	{
 		Name: "open", Status: StatusImplemented,
 		Usage:   "change-saga open [--addr ADDR] [--repo PATH] [--against REV [--head REV]] <saga>",
 		Summary: "start a managed loopback reviewer, open it in a browser, and return after printing the PID and active URL",

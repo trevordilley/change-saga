@@ -66,6 +66,7 @@ type OverviewAnnotation struct {
 }
 
 type DeckManifest struct {
+	Deleted   bool          `json:"deleted,omitempty"`
 	Overview  *DeckOverview `json:"overview,omitempty"`
 	Version   int           `json:"version"`
 	ID        string        `json:"id"`

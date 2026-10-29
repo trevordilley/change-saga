@@ -465,7 +465,7 @@ var commands = []Command{
 	{
 		Name: "remove-deck", Status: StatusImplemented, Mutates: true, Writes: []string{"deck", "slide", "item", "code-evidence"},
 		Usage:   "change-saga remove-deck --deck TARGET [--dry-run] [--json] <saga>",
-		Summary: "delete a deck with its slides, Items, and their code evidence. Relations that pointed at them are listed; status reports them stale until superseded",
+		Summary: "remove a deck and its content from active design, preserving complete-slide history and assets. Dangling relations are listed",
 		Flags: []Flag{required("deck", "TARGET", "deck path, id, or URN"),
 			optional("dry-run", "", "report what would change without writing"), jsonFlag,
 		},
@@ -482,9 +482,9 @@ var commands = []Command{
 	},
 	{
 		Name: "remove-slide", Status: StatusImplemented, Mutates: true, Writes: []string{"slide", "item", "code-evidence"},
-		Usage:   "change-saga remove-slide --slide TARGET [--dry-run] [--json] <saga>",
-		Summary: "delete a slide with its Items and their code evidence. A review's slides carry its approvals and comments, so they are not removed",
-		Flags: []Flag{required("slide", "TARGET", "slide path, id, or URN"),
+		Usage:   "change-saga remove-slide --slide TARGET [--expected-snapshot SHA256] [--dry-run] [--json] <saga>",
+		Summary: "remove a slide and its Items from active design, preserving complete-slide history. Optional expected-snapshot guards against a newer edit; review slides stay protected",
+		Flags: []Flag{required("slide", "TARGET", "slide path, id, or URN"), optional("expected-snapshot", "SHA256", "refuse removal if the authoring snapshot changed"),
 			optional("dry-run", "", "report what would change without writing"), jsonFlag,
 		},
 		Positionals: sagaOnly,

@@ -52,6 +52,7 @@ type TransactionItem struct {
 // SlideTransactionRevision is one immutable complete-slide snapshot. Asset is
 // a content-addressed regular file committed before this record references it.
 type SlideTransactionRevision struct {
+	Deleted         bool              `json:"deleted,omitempty"`
 	Snapshot        string            `json:"snapshot"`
 	ParentSnapshots []string          `json:"parent_snapshots,omitempty"`
 	RequestID       string            `json:"request_id"`
@@ -173,6 +174,29 @@ func (record SlideTransactionRecord) CurrentRevision() (*SlideTransactionRevisio
 	return record.currentRevision()
 }
 
+// ActiveRevision excludes a removed slide. A merge with a live divergent head
+// still exposes that head, so deletion cannot hide a concurrent edit from the
+// authoring conflict and reconciliation workflow.
+func (record SlideTransactionRecord) ActiveRevision() (*SlideTransactionRevision, error) {
+	current, err := record.currentRevision()
+	if err != nil || !current.Deleted {
+		return current, err
+	}
+	heads, err := record.Heads()
+	if err != nil {
+		return nil, err
+	}
+	for _, head := range heads {
+		for i := range record.Revisions {
+			revision := &record.Revisions[i]
+			if revision.Snapshot == head && !revision.Deleted {
+				return revision, nil
+			}
+		}
+	}
+	return nil, nil
+}
+
 // Heads returns the leaf snapshots in the immutable revision DAG. A normal
 // record has one head. More than one means Git combined divergent histories;
 // Current remains a published pointer for read compatibility, but callers
@@ -247,6 +271,26 @@ func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck 
 	seenSnapshots, seenRequests := map[string]bool{}, map[string]bool{}
 	for revisionIndex := range record.Revisions {
 		revision := &record.Revisions[revisionIndex]
+		if revision.Deleted {
+			parents := record.revisionParents(revisionIndex)
+			validRemoval := false
+			if len(parents) == 1 {
+				for _, parent := range record.Revisions[:revisionIndex] {
+					if parent.Snapshot != parents[0] || parent.Deleted {
+						continue
+					}
+					candidate := parent
+					candidate.Deleted = true
+					candidate.ParentSnapshots = revision.ParentSnapshots
+					candidate.RequestID = revision.RequestID
+					want, _ := SlideRevisionSnapshot(candidate)
+					validRemoval = want == revision.Snapshot
+				}
+			}
+			if !validRemoval || deck.Role == DeckRoleReview {
+				problem("a removal must preserve its single live parent's content and cannot remove a review slide")
+			}
+		}
 		if revision.Slide.ID != record.SlideID || revision.Slide.DeckID != record.DeckID {
 			problem("every revision must preserve the record's deck and slide ids")
 		}

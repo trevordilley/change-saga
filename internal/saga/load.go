@@ -544,9 +544,20 @@ func LoadTargetCode(index MutationIndex, target string) ([]CodeFile, Validation,
 				addIssue(&validation, "error", entry.Name(), err.Error())
 				continue
 			}
-			current, currentErr := record.currentRevision()
+			current, currentErr := record.ActiveRevision()
 			if currentErr != nil {
 				addIssue(&validation, "error", entry.Name(), currentErr.Error())
+				continue
+			}
+			if current == nil {
+				// A tombstone also shadows any flat evidence retained by migration.
+				for _, revision := range record.Revisions {
+					for _, item := range revision.Items {
+						if ItemTarget(index.Manifest.ID, record.SlideID, item.Item.ID) == target {
+							diffs, transactionFound = nil, true
+						}
+					}
+				}
 				continue
 			}
 			for _, item := range current.Items {

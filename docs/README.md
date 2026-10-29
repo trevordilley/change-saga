@@ -27,6 +27,7 @@ remove, or archive existing content and assign whiteboards to navigation roles.
 
 | | |
 | --- | --- |
+| [CI and review ownership setup](../internal/cli/setup_ci_prompt.md) | The guide printed by `change-saga setup-ci`: no CI or CODEOWNERS for Saga-only changes by default, with checks and review ownership as opt-ins. |
 | [releasing.md](releasing.md) | How a release is built, signed, notarized, checksummed, and published, plus the [versioning policy](releasing.md#versioning-policy) and release checklist. |
 | [../CHANGELOG.md](../CHANGELOG.md) | Curated release history. |
 | [../e2e/README.md](../e2e/README.md) | The real-browser end-to-end suite: how to run it and what it captures on failure. |

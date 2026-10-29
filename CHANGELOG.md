@@ -10,6 +10,26 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Fixed
+
+- `remove-deck` and `remove-slide` now support slides published by `apply-slide`.
+  Removal preserves revision history and assets, hides removed content, and
+  reports dangling relations. `remove-slide --expected-snapshot` can guard
+  against deleting a newer edit.
+
+### Changed
+
+- **Format:** Optional `deleted` markers on slide revisions and retained deck
+  manifests record removal without erasing transaction history. Existing
+  documents and snapshot hashes need no migration. Upgrade readers before
+  using removal; older strict readers reject the new markers.
+
+### Added
+
+- `setup-ci` prints guidance for no CI and no CODEOWNERS on Saga-only changes
+  by default, with documentation checks and product, technical or quality
+  review ownership available as separate opt-ins, including host limitations.
+
 ## [0.5.1] - 2026-10-17
 
 ### Changed

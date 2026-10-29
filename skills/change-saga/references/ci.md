@@ -7,6 +7,16 @@ records, or a checkout that does not match the declared repository). A team
 decides which gaps fail its build, and writes that rule in its own CI. These
 are common rules; adapt them rather than adding flags.
 
+## Separate Saga iteration from application CI
+
+The default is no CI and no CODEOWNERS for changes that only touch root
+`change.saga`. For setup, run `change-saga setup-ci --repo .` and follow its
+exclusion guidance. Add Saga checks, a required gate, or review ownership only
+when the user opts in; CI and ownership are independent choices. The following
+coverage recipes are optional. Confirm the host's capabilities and existing policies;
+multiple CODEOWNERS on one line do not require approval from every listed team.
+The command only prints guidance. It does not edit workflows or change host settings.
+
 ## Ask a question: `check --covers`
 
 `change-saga check --covers AREA[,AREA...]` exits 0 when every named area is

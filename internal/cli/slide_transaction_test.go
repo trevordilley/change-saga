@@ -307,6 +307,9 @@ func TestApplySlideTransactionMigratesLegacySlideWithoutChangingStableIDs(t *tes
 	if err := AddItem(context.Background(), []string{"--slide", "flow", "--id", "worker", "--kind", "node", "--element-id", "slide-title", "--label", "Worker", "--description", "The original worker.", root}, &output); err != nil {
 		t.Fatal(err)
 	}
+	if err := Cover(context.Background(), []string{"--target", saga.ItemTarget(sagaID, "flow", "worker"), "--repo", repo, "--ref", commit + ":service.go#L3", "--note", "Legacy implementation evidence", root}, &output); err != nil {
+		t.Fatal(err)
+	}
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
 		t.Fatalf("legacy load: %v %#v", err, validation.Issues)
@@ -337,6 +340,23 @@ func TestApplySlideTransactionMigratesLegacySlideWithoutChangingStableIDs(t *tes
 	}
 	if len(record.Revisions) != 2 || !strings.HasPrefix(record.Revisions[0].RequestID, "legacy-") {
 		t.Fatalf("migration history = %#v", record)
+	}
+	beforeRemoval := snapshotFiles(t, root)
+	if err := RemoveSlide(context.Background(), []string{"--slide", "flow", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	document, validation, err = saga.Load(root)
+	if err != nil || !validation.Valid || len(document.Decks[0].Slides) != 0 {
+		t.Fatalf("legacy content reappeared after removal: %v %#v", err, validation.Issues)
+	}
+	for path, before := range beforeRemoval {
+		if path == filepath.Join(root, result.Path) {
+			continue
+		}
+		after, err := os.ReadFile(path)
+		if err != nil || string(after) != before {
+			t.Fatalf("removal lost migration history at %s: %v", path, err)
+		}
 	}
 }
 
@@ -377,9 +397,6 @@ func TestLegacySlideAndCoverageCommandsRefuseTransactionManagedTargets(t *testin
 		}},
 		{"revise-slide", func(out *bytes.Buffer) error {
 			return ReviseSlide(context.Background(), []string{"--slide", slide.Target, "--title", "Changed", root}, out)
-		}},
-		{"remove-slide", func(out *bytes.Buffer) error {
-			return RemoveSlide(context.Background(), []string{"--slide", slide.Target, root}, out)
 		}},
 		{"revise-item", func(out *bytes.Buffer) error {
 			return ReviseItem(context.Background(), []string{"--item", item.Target, "--label", "Changed", root}, out)

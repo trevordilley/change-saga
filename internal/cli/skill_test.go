@@ -318,6 +318,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"serve":         func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, false) },
 	"open":          func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, true) },
 	"install-skill": func(_ context.Context, args []string, out io.Writer) error { return InstallSkill(args, out) },
+	"setup-ci":      func(_ context.Context, args []string, out io.Writer) error { return SetupCI(args, out) },
 	"spec":          func(_ context.Context, args []string, out io.Writer) error { return Spec(args, out) },
 }
 
