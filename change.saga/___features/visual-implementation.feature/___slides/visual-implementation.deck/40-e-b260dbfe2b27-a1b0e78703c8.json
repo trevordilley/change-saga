@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
       "path": "internal/server/server.go",
-      "start": 2158,
-      "end": 2168,
-      "digest": "sha256:7a0d2d62f85b20ba65904f86ec85f9fc2a67640680dc12996227c3bec79b4f31",
+      "start": 2354,
+      "end": 2364,
+      "digest": "sha256:a6058f0ee995303145dee78426e43ccd4ede682e76b814dc2c9f9c13ac4223e8",
       "note": "App pages keep the strict script-src 'self' and frame-ancestors 'none' policy that authored responses override with their own."
     }
   ]

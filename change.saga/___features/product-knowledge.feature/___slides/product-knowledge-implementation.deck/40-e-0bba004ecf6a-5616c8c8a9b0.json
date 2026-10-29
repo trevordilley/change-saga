@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
       "path": "internal/prototypes/model.go",
-      "start": 56,
-      "end": 74,
-      "digest": "sha256:ed72b674dabd9975f3a373921bb63805fbf70484bac1fb0d5b55515011d809f5",
+      "start": 58,
+      "end": 82,
+      "digest": "sha256:a787537fa6747c0952357080dfc8b53f8f0a11065bece82546a3090350d3c3dc",
       "note": "Requires explicit provider sandbox metadata and exact embed-origin matching, with negative tests for implicit or mismatched trust."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
       "path": "internal/prototypes/validate.go",
-      "start": 139,
-      "end": 163,
-      "digest": "sha256:8305422aaa8ca0e4b17bdc504baa0e38e8b760da6ec7eb741edd6f449392b7fa",
+      "start": 156,
+      "end": 180,
+      "digest": "sha256:c132fe106ecf667623f53e4675b0237183bcc2f23f156f151d06af84c8ac6668",
       "note": "Requires explicit provider sandbox metadata and exact embed-origin matching, with negative tests for implicit or mismatched trust."
     },
     {

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "repo-source",
+  "term": "urn:change-saga:change-saga:term:prototype",
+  "parents": [
+    "urn:change-saga:change-saga:term:prototype:revision:r1"
+  ],
+  "name": "Prototype",
+  "definition": "A revisioned representation of an intended experience used for design feedback before or alongside implementation. Each revision is a complete snapshot backed by immutable local HTML, files pinned at a commit in the source repository, or an explicit external source, and annotations pin a specific prototype revision to a story or criterion.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "stories": [
+    "urn:change-saga:change-saga:story:prototype-feedback-context"
+  ],
+  "code": [
+    {
+      "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
+      "path": "internal/prototypes/model.go",
+      "start": 40,
+      "end": 75,
+      "digest": "sha256:cf0567202a9b856614999a211e6e133a375593104c36def03c979afbb4ab1ba2"
+    },
+    {
+      "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
+      "path": "internal/prototypes/model.go",
+      "start": 99,
+      "end": 113,
+      "digest": "sha256:248327511f42a679deedd1f20ed6bdc5e4457bd589a2b607a989da1efd62bd6b"
+    },
+    {
+      "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
+      "path": "internal/prototypes/model.go",
+      "start": 140,
+      "end": 168,
+      "digest": "sha256:c3375330489fbf56d60b31e63462d8e22176a5c9d06d4e5952b0a5390b057339"
+    }
+  ],
+  "created_at": "2026-10-29T16:36:36.193184Z"
+}
