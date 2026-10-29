@@ -10,6 +10,8 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-29
+
 ### Added
 
 - Records can be deleted outright: `story remove`, `persona remove`,
@@ -22,27 +24,37 @@ tool, and what they have to do about it.
   `status` and `check --covers health` report them as dangling references
   until they are fixed. `--dry-run` previews the whole effect with a one-line
   summary of its size.
-
 - Prototypes open on their own page in the reviewer, sandboxed, with their
   revisions, the annotations pinning them to criteria, and an "Open in new
   tab" link. The Prototypes sidebar rows now link to it.
-- `prototype add --path FILE` adds a prototype that is an HTML file committed
+- **Format:** `prototype add --path FILE` adds a prototype that is an HTML file committed
   in the project. Nothing is copied into the Saga; it points at the file as of
   a commit. The reviewer shows it as stale when the file changes, and
   `prototype update` records the new version. `prototype add-html` still
-  copies an app into the Saga.
-- `add-deck --feature ID --role ux` creates a feature's UX flows deck. Its
+  copies an app into the Saga. Prototype revisions gain an optional `repo`
+  source kind; upgrade readers before adopting it.
+- **Format:** `add-deck --feature ID --role ux` creates a feature's UX flows deck. Its
   slides are not asked for code, and its `addresses` relations cover the
   criterion `ux` axis.
-- `feature archive --feature ID [--reason TEXT]` hides a feature that holds
+- **Format:** `feature archive --feature ID [--reason TEXT]` hides a feature that holds
   stories or other content without removing anything: it leaves the feature
-  lists and adds no coverage gaps. `feature restore` brings it back.
+  lists and adds no coverage gaps. `feature restore` brings it back. It is
+  recorded as optional `archived` fields in the feature's `plan.json`.
 - `setup-ci` prints guidance for no CI and no CODEOWNERS on Saga-only changes
   by default, with documentation checks and product, technical or quality
   review ownership available as separate opt-ins, including host limitations.
 
 ### Changed
 
+- Feature guidance now frames built and planned capabilities around a clear user
+  outcome and value that a product owner can explain to an unfamiliar audience,
+  keeping implementation artifacts in design and technical documentation.
+- Architecture authoring guidance now starts with code and boundary evidence,
+  then a codebase map and question-led sections, scripted scratch publication,
+  light/dark visual inspection and an independent factual review. Technology
+  rationales distinguish decisions, provenance, inference and unknowns.
+- Clarified whiteboard role defaults, complete custom styles, endpoint and glyph
+  constraints, supporting Essay discovery, and managed reader shutdown.
 - A term, flag, story, or onboarding Item that names a removed record no longer
   makes the Saga fail to load; it is reported as a dangling reference. Whether
   a link exists is still checked when a new revision is written.
@@ -60,20 +72,6 @@ tool, and what they have to do about it.
   Removal preserves revision history and assets, hides removed content, and
   reports dangling relations. `remove-slide --expected-snapshot` can guard
   against deleting a newer edit.
-
-## [0.5.1] - 2026-10-17
-
-### Changed
-
-- Feature guidance now frames built and planned capabilities around a clear user
-  outcome and value that a product owner can explain to an unfamiliar audience,
-  keeping implementation artifacts in design and technical documentation.
-- Architecture authoring guidance now starts with code and boundary evidence,
-  then a codebase map and question-led sections, scripted scratch publication,
-  light/dark visual inspection and an independent factual review. Technology
-  rationales distinguish decisions, provenance, inference and unknowns.
-- Clarified whiteboard role defaults, complete custom styles, endpoint and glyph
-  constraints, supporting Essay discovery, and managed reader shutdown.
 
 ## [0.5.0] - 2026-10-16
 
@@ -1272,8 +1270,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.5.1...HEAD
-[0.5.1]: https://github.com/trevordilley/change-saga/compare/v0.5.0...v0.5.1
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/trevordilley/change-saga/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/trevordilley/change-saga/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/trevordilley/change-saga/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/trevordilley/change-saga/compare/v0.3.0...v0.3.1
