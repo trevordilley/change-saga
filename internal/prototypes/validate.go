@@ -20,6 +20,7 @@ import (
 
 var (
 	digestPattern      = regexp.MustCompile(`^sha256:[0-9a-f]{64}$`)
+	objectNamePattern  = regexp.MustCompile(`^(?:[0-9a-f]{40}|[0-9a-f]{64})$`)
 	cssPropertyPattern = regexp.MustCompile(`^--[A-Za-z0-9_-]+$`)
 	cssClassPattern    = regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_-]{0,127}$`)
 	unsafeCSS          = []*regexp.Regexp{
@@ -107,7 +108,23 @@ func validateRevision(value Revision, sagaID, prototypeID string) error {
 }
 
 func validateSource(p *validationErrors, source Source) {
+	if source.Kind != SourceRepo && (source.Root != "" || source.Commit != "" || source.Object != "") {
+		p.add("%s source cannot contain repository pin fields", source.Kind)
+	}
 	switch source.Kind {
+	case SourceRepo:
+		if !safeRelativePath(source.Entrypoint) || filepath.Ext(source.Entrypoint) != ".html" {
+			p.add("repo entrypoint must be a safe repository-relative .html path")
+		}
+		if source.Root != "" && (!safeRelativePath(source.Root) || !strings.HasPrefix(source.Entrypoint, source.Root+"/")) {
+			p.add("repo root must be a safe repository-relative directory containing the entrypoint")
+		}
+		if !objectNamePattern.MatchString(source.Commit) || !objectNamePattern.MatchString(source.Object) {
+			p.add("repo commit and object must be full lowercase Git object names")
+		}
+		if source.ContentDigest != "" || source.URL != "" || source.EmbedURL != "" || source.FallbackURL != "" || source.Allowlist != nil {
+			p.add("repo source contains fields reserved for html, external, or embed")
+		}
 	case SourceHTML:
 		if !safeRelativePath(source.Entrypoint) || filepath.Ext(source.Entrypoint) != ".html" {
 			p.add("html entrypoint must be a safe relative .html path")
@@ -144,7 +161,7 @@ func validateSource(p *validationErrors, source Source) {
 			p.add("embed source contains fields reserved for html or external")
 		}
 	default:
-		p.add("source kind must be html, external, or embed")
+		p.add("source kind must be html, external, embed, or repo")
 	}
 }
 

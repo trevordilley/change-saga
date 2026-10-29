@@ -7,7 +7,7 @@ import "github.com/twentyideas/changesaga/internal/grammar"
 func init() {
 	for _, name := range []string{
 		"move-deck", "move-slide", "move-chapter", "move-section", "move-fragment",
-		"feature rename", "feature remove", "feature-theme rename", "feature-theme remove",
+		"feature rename", "feature remove", "feature archive", "feature restore", "feature-theme rename", "feature-theme remove",
 		"label remove", "milestone remove",
 		"whiteboard list", "whiteboard rename", "whiteboard assign-role", "whiteboard unassign-role",
 		"whiteboard archive", "whiteboard restore",

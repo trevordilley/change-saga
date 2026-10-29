@@ -233,6 +233,43 @@ func TestFeatureAuditRejectsUnresolvedAndRetiredCrossFeatureIntent(t *testing.T)
 	}
 }
 
+// A ux deck explains user flows. Its Items owe no code evidence, and their
+// explains links do not stand in for the implementation's explanation.
+func TestFeatureAuditLeavesUXItemsOutOfImplementationEvidence(t *testing.T) {
+	s := auditFixture(t, true)
+	story := "urn:change-saga:test:story:checkout"
+	fast, safe := story+":criterion:fast", story+":criterion:safe"
+	flow := &saga.Item{Target: saga.ItemTarget("test", "journey", "step")}
+	ux := &saga.Deck{Target: saga.DeckTarget("test", "flows"), DeckManifest: saga.DeckManifest{ID: "flows", Role: saga.DeckRoleUX}}
+	ux.Slides = []*saga.Slide{{Target: saga.SlideTarget("test", "journey"), Items: []*saga.Item{flow}}}
+	s.saga.Features[0].Decks = append(s.saga.Features[0].Decks, ux)
+	s.saga.Decks = append(s.saga.Decks, ux)
+	links := []requirements.Relation{
+		auditRelation("exact", requirements.RelationExplains, saga.ItemTarget("test", "flow", "handler"), fast),
+		auditRelation("ux-flow", requirements.RelationExplains, flow.Target, safe),
+	}
+	s.requirements.Relations = links
+	s.currency = auditCurrency(links)
+
+	report, err := s.audit(Filters{Feature: "checkout"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, code := range []string{"item_evidence_missing", "item_intent_missing"} {
+		if auditHasFinding(report, flow.Target, code) {
+			t.Fatalf("a UX Item must not be audited as implementation: %s", code)
+		}
+	}
+	for _, target := range report.ItemTargets {
+		if target == flow.Target {
+			t.Fatal("a UX Item must not be listed as an implementation Item")
+		}
+	}
+	if !auditHasFinding(report, safe, "criterion_explanation_missing") {
+		t.Fatal("a UX Item must not satisfy the implementation explanation")
+	}
+}
+
 func TestFeatureAuditRejectsMissingAndUnknownFeature(t *testing.T) {
 	s := auditFixture(t, true)
 	for _, feature := range []string{"", "missing", "urn:change-saga:other:feature:checkout"} {

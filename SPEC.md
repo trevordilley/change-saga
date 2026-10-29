@@ -116,6 +116,16 @@ order they were created. A feature's ID and creation time are immutable;
 `urn:change-saga:<saga>:feature:<id>`. Moving a story
 between features moves its directory and changes nothing else.
 
+`feature remove` deletes only a feature that holds nothing but its metadata.
+A feature with content is archived instead: `feature archive [--reason TEXT]`
+sets `archived` (and `archived_reason`) in its `plan.json`, keeping its planned
+or built status and every record it holds. An archived feature is omitted from
+the Features and Roadmap lists and from theme pages, its page stays reachable
+with an archived notice, and status leaves it and its stories out of coverage,
+so it adds no gaps. Its records are still validated. `feature restore` clears
+the flag and returns it to its previous placement. A plan without the field is
+not archived.
+
 Product themes optionally classify features without moving or duplicating them.
 Their stable URN is `urn:change-saga:<saga>:feature-theme:<id>`. A theme records
 an authored Markdown overview and a set of canonical feature URNs; features may
@@ -791,6 +801,28 @@ checkout.saga/
 Exact diff evidence on a slide is owned only by Items, so every changed line a
 reviewer sees in the deck is attached to the specific visual element that
 explains it.
+
+A feature's `___slides/` may also hold UX flows decks, created with
+`add-deck --feature ID --role ux`. A UX deck follows the implementation Item
+rules, but its slides are not asked for code and the feature audit neither
+requires code evidence from its Items nor accepts their `explains` links as the
+implementation's explanation. Its `addresses` relations cover a criterion's
+`ux` axis. The reviewer shows each feature's sections in a fixed order, omitting
+any that are empty: Stories, Prototypes, UX, UI, Technical, then Quality.
+
+A prototype is a reading surface of its own. The reviewer opens it at
+`/prototypes/<id>`: the current revision (or `?revision=ID`) framed in a
+sandbox, its revisions, and the annotations that pin it to stories and
+criteria, with a link that opens the app in its own tab. Prototype files are
+served under `/p/` on the authored-content policy, whose `sandbox` directive
+gives them an opaque origin wherever they load, so a prototype's scripts run
+but cannot reach the reviewer. A revision's source is one of four kinds:
+`html` copies the app into the revision package; `repo` leaves it in the source
+repository and pins its `entrypoint`, the `root` directory served beside it
+(omitted for a single file), the `commit`, and the package's Git `object` at
+that commit; `external` and `embed` name an app hosted elsewhere. A `repo`
+revision is read from its pinned commit and reads as stale once the package's
+object at HEAD differs; `prototype update` appends a revision that re-pins it.
 
 ### Deck overview and slide Front/Back
 

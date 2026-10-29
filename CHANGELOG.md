@@ -10,25 +10,42 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- Prototypes open on their own page in the reviewer, sandboxed, with their
+  revisions, the annotations pinning them to criteria, and an "Open in new
+  tab" link. The Prototypes sidebar rows now link to it.
+- `prototype add --path FILE` adds a prototype that is an HTML file committed
+  in the project. Nothing is copied into the Saga; it points at the file as of
+  a commit. The reviewer shows it as stale when the file changes, and
+  `prototype update` records the new version. `prototype add-html` still
+  copies an app into the Saga.
+- `add-deck --feature ID --role ux` creates a feature's UX flows deck. Its
+  slides are not asked for code, and its `addresses` relations cover the
+  criterion `ux` axis.
+- `feature archive --feature ID [--reason TEXT]` hides a feature that holds
+  stories or other content without removing anything: it leaves the feature
+  lists and adds no coverage gaps. `feature restore` brings it back.
+- `setup-ci` prints guidance for no CI and no CODEOWNERS on Saga-only changes
+  by default, with documentation checks and product, technical or quality
+  review ownership available as separate opt-ins, including host limitations.
+
+### Changed
+
+- Each feature in the reviewer sidebar now lists Stories, Prototypes, UX, UI,
+  Technical, then Quality as separate sections. Prototypes no longer sit
+  inside Stories, and UX and UI no longer sit inside Design.
+- **Format:** Optional `deleted` markers on slide revisions and retained deck
+  manifests record removal without erasing transaction history. Existing
+  documents and snapshot hashes need no migration. Upgrade readers before
+  using removal; older strict readers reject the new markers.
+
 ### Fixed
 
 - `remove-deck` and `remove-slide` now support slides published by `apply-slide`.
   Removal preserves revision history and assets, hides removed content, and
   reports dangling relations. `remove-slide --expected-snapshot` can guard
   against deleting a newer edit.
-
-### Changed
-
-- **Format:** Optional `deleted` markers on slide revisions and retained deck
-  manifests record removal without erasing transaction history. Existing
-  documents and snapshot hashes need no migration. Upgrade readers before
-  using removal; older strict readers reject the new markers.
-
-### Added
-
-- `setup-ci` prints guidance for no CI and no CODEOWNERS on Saga-only changes
-  by default, with documentation checks and product, technical or quality
-  review ownership available as separate opt-ins, including host limitations.
 
 ## [0.5.1] - 2026-10-17
 

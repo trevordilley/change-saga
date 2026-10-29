@@ -116,32 +116,56 @@ func AddExternal(root, sagaID string, input AddExternalInput) (MutationResult, e
 		source = Source{Kind: SourceEmbed, EmbedURL: input.EmbedURL, FallbackURL: fallback, Allowlist: cloneAllowlist(input.Allowlist)}
 	}
 	revision := Revision{Schema: RevisionSchemaURL, Version: Version, ID: input.RevisionID, Prototype: prototypeURN, Parents: []string{}, Title: strings.TrimSpace(input.Title), State: input.State, Source: source, Styles: []StyleSource{}, CreatedAt: created, RequestID: input.RequestID}
-	if err := validateRevision(revision, sagaID, input.ID); err != nil {
+	return addRecordedPrototype(root, sagaID, input.Feature, identity, revision)
+}
+
+// AddRepo records a prototype whose files stay in the source repository,
+// pinned like code evidence: its entrypoint, the package served beside it,
+// the commit, and the package's Git object at that commit.
+func AddRepo(root, sagaID string, input AddRepoInput) (MutationResult, error) {
+	created := mutationTime(input.CreatedAt)
+	identity := Identity{Schema: IdentitySchemaURL, Version: Version, ID: input.ID, CreatedAt: created, RequestID: input.RequestID}
+	if err := validateIdentity(identity, input.ID); err != nil {
+		return MutationResult{}, err
+	}
+	prototypeURN, err := PrototypeURN(sagaID, input.ID)
+	if err != nil {
+		return MutationResult{}, err
+	}
+	revision := Revision{Schema: RevisionSchemaURL, Version: Version, ID: input.RevisionID, Prototype: prototypeURN, Parents: []string{}, Title: strings.TrimSpace(input.Title), State: input.State, Source: input.Source, Styles: []StyleSource{}, CreatedAt: created, RequestID: input.RequestID}
+	return addRecordedPrototype(root, sagaID, input.Feature, identity, revision)
+}
+
+// addRecordedPrototype writes a new prototype whose initial revision is a
+// record alone, with no html package beside it.
+func addRecordedPrototype(root, sagaID, requestedFeature string, identity Identity, revision Revision) (MutationResult, error) {
+	id, prototypeURN := identity.ID, revision.Prototype
+	if err := validateRevision(revision, sagaID, id); err != nil {
 		return MutationResult{}, err
 	}
 	var result MutationResult
-	err = mutate(root, sagaID, func(doc *Document) error {
-		if err := validateIdentity(identity, input.ID); err != nil {
+	err := mutate(root, sagaID, func(doc *Document) error {
+		if err := validateIdentity(identity, id); err != nil {
 			return err
 		}
-		if err := validateRevision(revision, sagaID, input.ID); err != nil {
+		if err := validateRevision(revision, sagaID, id); err != nil {
 			return err
 		}
-		feature, err := doc.feature(input.Feature)
+		feature, err := doc.feature(requestedFeature)
 		if err != nil {
 			return err
 		}
-		if existing := findPrototype(doc, input.ID); existing != nil {
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && existing.Feature == feature.ID && equalExternalCreation(*existing, identity, revision) {
-				result = MutationResult{URN: prototypeURN, Path: prototypePath(feature.ID, input.ID), Replayed: true}
+		if existing := findPrototype(doc, id); existing != nil {
+			if identity.RequestID != "" && existing.Identity.RequestID == identity.RequestID && existing.Feature == feature.ID && equalPrototypeCreation(*existing, identity, revision) {
+				result = MutationResult{URN: prototypeURN, Path: prototypePath(feature.ID, id), Replayed: true}
 				return nil
 			}
-			return fmt.Errorf("prototype id %q already exists", input.ID)
+			return fmt.Errorf("prototype id %q already exists", id)
 		}
 		if len(doc.Prototypes) >= MaxPrototypes {
 			return fmt.Errorf("prototype limit of %d reached", MaxPrototypes)
 		}
-		final := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(feature.ID, input.ID)))
+		final := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(feature.ID, id)))
 		err = store.CommitDir(doc.Root, final, func(stage string) error {
 			if err := store.WriteJSON(filepath.Join(stage, "prototype.json"), identity, true); err != nil {
 				return err
@@ -150,19 +174,19 @@ func AddExternal(root, sagaID string, input AddExternalInput) (MutationResult, e
 			if err := os.Mkdir(revisions, 0o755); err != nil {
 				return err
 			}
-			revisionPackage := filepath.Join(revisions, input.RevisionID+".revision")
+			revisionPackage := filepath.Join(revisions, revision.ID+".revision")
 			if err := os.Mkdir(revisionPackage, 0o755); err != nil {
 				return err
 			}
 			return store.WriteJSON(filepath.Join(revisionPackage, "revision.json"), revision, true)
 		})
 		if errors.Is(err, fs.ErrExist) {
-			return fmt.Errorf("prototype id %q already exists", input.ID)
+			return fmt.Errorf("prototype id %q already exists", id)
 		}
 		if err != nil {
 			return err
 		}
-		result = MutationResult{URN: prototypeURN, Path: prototypePath(feature.ID, input.ID)}
+		result = MutationResult{URN: prototypeURN, Path: prototypePath(feature.ID, id)}
 		return nil
 	})
 	return result, err
@@ -589,9 +613,6 @@ func equalPrototypeCreation(existing Prototype, identity Identity, revision Revi
 		return reflect.DeepEqual(revision, stored)
 	}
 	return false
-}
-func equalExternalCreation(existing Prototype, identity Identity, revision Revision) bool {
-	return equalPrototypeCreation(existing, identity, revision)
 }
 
 func revisionInputMatches(existing Revision, input ReviseInput) bool {

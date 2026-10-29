@@ -51,11 +51,16 @@ const (
 	SourceHTML     SourceKind = "html"
 	SourceExternal SourceKind = "external"
 	SourceEmbed    SourceKind = "embed"
+	// SourceRepo is a prototype whose files stay in the source repository.
+	SourceRepo SourceKind = "repo"
 )
 
 // Source is a closed discriminated union. HTML paths are relative to their
 // immutable revision package. Embed allowlisting is persisted explicitly so a
-// viewer never infers permission merely from a recognizable hostname.
+// viewer never infers permission merely from a recognizable hostname. A repo
+// source's Entrypoint is repository-relative; Root is the directory served
+// beside it (empty for a single-file prototype), and Commit and Object pin
+// that package the way code evidence pins lines.
 type Source struct {
 	Kind          SourceKind         `json:"kind"`
 	Entrypoint    string             `json:"entrypoint,omitempty"`
@@ -64,6 +69,9 @@ type Source struct {
 	EmbedURL      string             `json:"embed_url,omitempty"`
 	FallbackURL   string             `json:"fallback_url,omitempty"`
 	Allowlist     *ProviderAllowlist `json:"allowlist,omitempty"`
+	Root          string             `json:"root,omitempty"`
+	Commit        string             `json:"commit,omitempty"`
+	Object        string             `json:"object,omitempty"`
 }
 
 type ProviderAllowlist struct {
@@ -204,6 +212,17 @@ type AddExternalInput struct {
 	Allowlist             *ProviderAllowlist
 	CreatedAt             time.Time
 	RequestID             string
+}
+
+type AddRepoInput struct {
+	// Feature is the feature the new prototype is written into.
+	Feature               string
+	ID, RevisionID, Title string
+	State                 State
+	// Source is a resolved repo source; see ResolveRepoSource.
+	Source    Source
+	CreatedAt time.Time
+	RequestID string
 }
 
 type ReviseInput struct {

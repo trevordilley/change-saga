@@ -36,6 +36,19 @@ func (s *session) audit(filters Filters) (AuditReport, error) {
 		Risks: []IntentionalRisk{}, Conflicts: []AuditConflict{}, ItemTargets: []string{},
 	}
 	owners := s.auditOwners()
+	// A ux deck explains user flows, not code, so its Items neither need
+	// code evidence nor stand in for the implementation's explanation.
+	uxItems := map[string]bool{}
+	for _, deck := range feature.Decks {
+		if deck.Role != saga.DeckRoleUX {
+			continue
+		}
+		for _, slide := range deck.Slides {
+			for _, item := range slide.Items {
+				uxItems[item.Target] = true
+			}
+		}
+	}
 	criteria, inputs := s.auditCriteria(featureID, &report, owners)
 	storedExceptions := s.exceptions
 	if storedExceptions == nil {
@@ -103,7 +116,7 @@ func (s *session) audit(filters Filters) (AuditReport, error) {
 			})
 		}
 
-		if !current || relation.Type != requirements.RelationExplains || !auditItemTarget(relation.From) || owners[relation.From] == "" || !requirementTargets[relation.To] {
+		if !current || relation.Type != requirements.RelationExplains || !auditItemTarget(relation.From) || owners[relation.From] == "" || uxItems[relation.From] || !requirementTargets[relation.To] {
 			continue
 		}
 		intentByItem[relation.From] = append(intentByItem[relation.From], relation.To)
@@ -113,6 +126,9 @@ func (s *session) audit(filters Filters) (AuditReport, error) {
 	}
 
 	for _, deck := range feature.Decks {
+		if deck.Role == saga.DeckRoleUX {
+			continue
+		}
 		for _, slide := range deck.Slides {
 			for _, item := range slide.Items {
 				report.ItemTargets = append(report.ItemTargets, item.Target)
