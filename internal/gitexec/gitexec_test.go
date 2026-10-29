@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -358,14 +359,17 @@ func TestMemoizedCallerDoesNotInheritAnotherCallersCancellation(t *testing.T) {
 	original := spawnGit
 	t.Cleanup(func() { spawnGit = original })
 	inside := make(chan struct{})
+	// Only the first spawn blocks, and it announces itself with a blocking
+	// send: a non-blocking one raced the test reaching <-inside, and when the
+	// spawn won it answered at once and the test waited forever.
+	var spawns atomic.Int32
 	spawnGit = func(ctx context.Context, _ bool, _ []string) ([]byte, error) {
-		select {
-		case inside <- struct{}{}:
+		if spawns.Add(1) == 1 {
+			inside <- struct{}{}
 			<-ctx.Done()
 			return nil, ctx.Err()
-		default:
-			return []byte("answer"), nil
 		}
+		return []byte("answer"), nil
 	}
 	session, end := Begin(context.Background())
 	defer end()
