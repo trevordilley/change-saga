@@ -127,6 +127,34 @@ so it adds no gaps. Its records are still validated. `feature restore` clears
 the flag and returns it to its previous placement. A plan without the field is
 not archived.
 
+A planned feature can add stories to an existing feature without mixing
+planned work into it. `feature add --augments ID|URN` or `feature set-plan
+--augments ID|URN` records the canonical URN of another existing feature as
+`augments` in its `plan.json` (an empty value clears it); only a planned
+feature may augment. The reviewer's Roadmap shows the planned feature as
+extending its target, and the target's page lists its planned extensions. An
+`augments` link to a feature that no longer exists is reported by status as a
+dangling reference.
+
+`feature deliver --feature ID|URN [--into ID|URN] [--dry-run] [--json]`
+delivers a planned feature into the feature it augments (or `--into`; it
+refuses if neither is given). Under the Saga lock it moves every story,
+citation, relation and repin directory, coverage exception, prototype and
+annotation directory, test case, quality policy, and deck to the same place
+beneath the recipient, so no URN changes, then deletes the planned feature's
+directory with its `feature.json`, `plan.json`, and overview essay, and drops
+it from feature themes. Content it cannot place (report chapters and fragments
+other than the overview, design, a work plan, anything unrecognized) is
+listed, and the delivery refuses unless `--dry-run`. Like a removal it is kept
+only if it introduces no validation error, and the dry run reports the same
+moves. The output includes the planned feature's overview text, the delivered
+stories with their criteria, and the next command. The delivery appends
+`{feature, stories}` to the recipient's `overview_revision_pending`; status
+lists each such feature under `overview_revisions`, and `check --covers
+health` counts its overview as unhealthy, naming the delivered stories and
+the `feature set-overview --feature RECIPIENT` command, until `feature
+set-overview` on the recipient clears the field.
+
 ### Removing records
 
 The Saga is the current documentation and Git is its history, so a record that

@@ -19,6 +19,7 @@ operations; do not create a duplicate to simulate a rename or move.
 | Move a story, rank planned work, or change theme membership | Existing `story move`, `feature set-plan --priority`, `feature-theme set-features` |
 | Delete a record that should not exist | `story remove`, `persona remove`, `term remove`, `flag remove`, `citation remove`, `prototype remove`, `quality test-case remove`, `feature remove --with-content`. See [Deleting records](#deleting-records). |
 | Remove unused classification entities | `feature remove` (empty feature), `feature-theme remove`, `label remove`, `milestone remove`; dependencies must be resolved first |
+| Add planned stories to an existing feature, then land them | `feature add --status planned --augments EXISTING` (or `feature set-plan --augments`); when built, `feature deliver --feature ROADMAP_ID --dry-run`, then without `--dry-run`, then `feature set-overview` on the recipient. See Delivering a Roadmap feature below. |
 | Hide a feature that holds content | `feature archive --feature ID [--reason TEXT]` keeps every record and its status; `feature restore --feature ID` brings it back |
 | Remove ordinary content | Existing `remove-deck`, `remove-slide`, `remove-item`, `remove-chapter`, `remove-section`, `remove-fragment`; inspect contained targets and dependencies |
 | Remove transaction-managed technical content | `remove-deck` and `remove-slide` append removal history and hide content; use `--dry-run --json` first and optionally `remove-slide --expected-snapshot SHA256`. Review slides remain protected; removing a transaction Item alone requires an `apply-slide` update. |
@@ -61,6 +62,33 @@ plainly asked for (a whole feature, many relations), or leaves records in
 other features to adjust, show the user that summary and the list and confirm
 before running it without `--dry-run`. After removing, work through the
 listed adjustments, or tell the user which remain.
+
+## Delivering a Roadmap feature
+
+Planned stories for an existing built feature live in a separate Roadmap
+feature that records `augments`, so the built feature never mixes planned and
+built work. The reviewer's Roadmap shows "→ extends" the target, and the
+target's page lists it under Planned extensions.
+
+When the work is built, preview the delivery:
+
+```sh
+change-saga feature deliver --feature ROADMAP_ID --dry-run change.saga
+```
+
+`--into ID` names the recipient when the feature records no `augments`. The
+delivery moves every story, prototype, test case, citation, relation, and deck
+into the recipient with the same URNs, so links and slides still resolve, then
+deletes the Roadmap feature, including its overview essay (Git keeps it).
+Content it cannot place, such as design chapters, other report fragments, or a
+work plan, is listed; the real delivery refuses until you move or remove it
+(for example with `move-chapter`). Show the user that list before deciding.
+
+The output prints the Roadmap overview and the delivered stories. Use them to
+rewrite the recipient's overview essay so it describes the feature as it now
+is, then run the printed `feature set-overview --feature RECIPIENT` command.
+Until then `status` and `check --covers health` report the recipient's
+overview as needing revision.
 
 ## Technical Design roles
 
