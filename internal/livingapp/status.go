@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/prototypes"
@@ -64,6 +65,7 @@ func Assemble(in StatusInputs) Status {
 	// Exceptions are annotated with citation resolution below; copy them so the
 	// caller's records are never mutated.
 	in.Exceptions = append([]coverage.Exception(nil), in.Exceptions...)
+	in = withoutArchivedFeatures(in)
 	a := &assembler{
 		in: in, storyRevision: map[string]string{}, byCriterion: map[string]*criterionFrame{},
 		visual: map[string]visualTarget{}, staleRefs: map[string]string{}, testCases: map[string]*quality.TestCase{},
@@ -121,6 +123,32 @@ func Assemble(in StatusInputs) Status {
 	status.CarriedForward = a.carriedForward()
 	status.Chain = a.chain()
 	return status
+}
+
+// withoutArchivedFeatures drops archived features and their stories, so an
+// archived feature adds no coverage gaps. Its records stay on disk and are
+// still validated; restoring the feature brings them back into status.
+func withoutArchivedFeatures(in StatusInputs) StatusInputs {
+	archived := map[string]bool{}
+	features := make([]applayout.Feature, 0, len(in.Features))
+	for _, feature := range in.Features {
+		if feature.Plan.Archived {
+			archived[feature.ID] = true
+			continue
+		}
+		features = append(features, feature)
+	}
+	if len(archived) == 0 {
+		return in
+	}
+	stories := make([]requirements.Story, 0, len(in.Stories))
+	for _, story := range in.Stories {
+		if !archived[story.Feature] {
+			stories = append(stories, story)
+		}
+	}
+	in.Features, in.Stories = features, stories
+	return in
 }
 
 // indexStories records every story and the accepted criteria the axes cover.
