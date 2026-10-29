@@ -424,6 +424,10 @@ type featurePageView struct {
 	Design   *sectionView
 	Tests    []traceLink
 	Decks    []featureDeckView
+	// Extends is the existing feature this Roadmap feature augments;
+	// Extensions are the Roadmap features that augment this one.
+	Extends    *featureLinkView
+	Extensions []featureLinkView
 	// RelatedReviews are the reviews that touched this feature's code. They
 	// are derived, never authored, and read as a footnote.
 	RelatedReviews []relatedReviewView
@@ -470,6 +474,14 @@ func (graph *appGraph) featurePage(id string) (*featurePageView, error) {
 		return nil, errAppPageNotFound
 	}
 	view := &featurePageView{Plan: featurePresentationPlan(graph.document, feature.Plan), ID: feature.ID, Target: feature.Target, Title: feature.Title}
+	if target := augmentedFeature(graph.document, feature.Plan.Augments); target != nil {
+		view.Extends = &featureLinkView{Plan: target.Plan, ID: target.ID, Title: target.Title, Href: featureHref(target.ID)}
+	}
+	for _, candidate := range graph.document.Features {
+		if candidate.Plan.Augments == feature.Target && !candidate.Plan.Archived {
+			view.Extensions = append(view.Extensions, featureLinkView{Plan: candidate.Plan, ID: candidate.ID, Title: candidate.Title, Href: featureHref(candidate.ID)})
+		}
+	}
 	if manifest, ok := applayout.Find(graph.requirements.Features, id); ok {
 		view.Description = manifest.Description
 		view.Abstract = manifest.Description
