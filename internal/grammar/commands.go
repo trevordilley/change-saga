@@ -414,7 +414,7 @@ var commands = []Command{
 	{
 		Name: "prototype add-html", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-revision"},
 		Usage:   "change-saga prototype add-html --feature ID --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
-		Summary: "record an interactive HTML prototype and its initial immutable revision",
+		Summary: "copy an HTML prototype into the Saga, for one that does not live in the project; prefer prototype add",
 		Flags: []Flag{featureCreateFlag,
 			required("id", "ID", "stable prototype id"), required("revision", "ID", "initial revision id"), required("title", "TEXT", "prototype title"),
 			required("source", "PATH", "single .html file or directory containing index.html"), optional("state", "STATE", "draft, ready, or retired"), requestIDFlag, jsonFlag,

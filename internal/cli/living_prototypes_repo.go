@@ -13,11 +13,11 @@ import (
 	"github.com/twentyideas/changesaga/internal/prototypes"
 )
 
-// prototypeAddRepo records a prototype whose files stay in the repository.
+// prototypeAdd adds a prototype that is an HTML file in the project.
 // Nothing is copied into the Saga: the revision pins the entrypoint and the
 // directory served beside it at a commit, as code evidence pins lines.
-func prototypeAddRepo(ctx context.Context, args []string, out io.Writer) error {
-	name := "prototype add-repo"
+func prototypeAdd(ctx context.Context, args []string, out io.Writer) error {
+	name := "prototype add"
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable prototype id")
 	revision := flags.String("revision", "", "stable initial revision id")
@@ -33,7 +33,10 @@ func prototypeAddRepo(ctx context.Context, args []string, out io.Writer) error {
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *id, *revision, *title, *entry); err != nil {
+	if *revision == "" {
+		*revision = "r1"
+	}
+	if err := requireLivingArgs(flags, *id, *title, *entry); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -64,10 +67,11 @@ func prototypeAddRepo(ctx context.Context, args []string, out io.Writer) error {
 	return writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, *jsonOutput)
 }
 
-// prototypeRefresh re-pins a repository prototype after its files changed,
-// as a new revision whose parent is the current one.
-func prototypeRefresh(ctx context.Context, args []string, out io.Writer) error {
-	name := "prototype refresh"
+// prototypeUpdate records a new version of a prototype added with
+// prototype add after its files changed, as a revision whose parent is the
+// current one.
+func prototypeUpdate(ctx context.Context, args []string, out io.Writer) error {
+	name := "prototype update"
 	flags := commandFlags(name, commandUsage[name], out)
 	prototype := flags.String("prototype", "", "canonical prototype URN")
 	revision := flags.String("revision", "", "stable new revision id")
@@ -80,7 +84,7 @@ func prototypeRefresh(ctx context.Context, args []string, out io.Writer) error {
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *prototype, *revision); err != nil {
+	if err := requireLivingArgs(flags, *prototype); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -111,6 +115,9 @@ func prototypeRefresh(ctx context.Context, args []string, out io.Writer) error {
 	if source.Object == current.Source.Object {
 		return fmt.Errorf("prototype %q already matches %s at %s; nothing changed to record", id, source.RepoPackage(), source.Commit[:12])
 	}
+	if *revision == "" {
+		*revision = nextRevisionID(*found)
+	}
 	parent, _ := prototypes.RevisionURN(document.SagaID, id, current.ID)
 	input := prototypes.ReviseInput{
 		Prototype: *prototype, ID: *revision, Parents: []string{parent},
@@ -122,6 +129,16 @@ func prototypeRefresh(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	return writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, *jsonOutput)
+}
+
+// nextRevisionID is the first rN after the prototype's revision count that
+// no revision uses yet.
+func nextRevisionID(prototype prototypes.Prototype) string {
+	for n := len(prototype.Revisions) + 1; ; n++ {
+		if id := fmt.Sprintf("r%d", n); prototype.Revision(id) == nil {
+			return id
+		}
+	}
 }
 
 // repoPrototypePaths turns the authored entrypoint and root into

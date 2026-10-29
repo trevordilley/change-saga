@@ -15,9 +15,11 @@ tool, and what they have to do about it.
 - Prototypes open on their own page in the reviewer, sandboxed, with their
   revisions, the annotations pinning them to criteria, and an "Open in new
   tab" link. The Prototypes sidebar rows now link to it.
-- `prototype add-repo` records a prototype whose files stay in the repository,
-  pinned at a commit like code evidence; the reviewer shows it as stale when
-  the files change, and `prototype refresh` re-pins it.
+- `prototype add --path FILE` adds a prototype that is an HTML file committed
+  in the project. Nothing is copied into the Saga; it points at the file as of
+  a commit. The reviewer shows it as stale when the file changes, and
+  `prototype update` records the new version. `prototype add-html` still
+  copies an app into the Saga.
 - `add-deck --feature ID --role ux` creates a feature's UX flows deck. Its
   slides are not asked for code, and its `addresses` relations cover the
   criterion `ux` axis.

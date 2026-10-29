@@ -42,7 +42,7 @@ func TestPrototypeFamilyHelpListsTheAuthoringGrammar(t *testing.T) {
 	if first.String() != second.String() {
 		t.Fatalf("help is not deterministic:\n%s\n---\n%s", first.String(), second.String())
 	}
-	if !strings.Contains(first.String(), "add-html\n  add-repo\n  add-external\n  revise\n  refresh\n  annotate") {
+	if !strings.Contains(first.String(), "add\n  add-external\n  add-html\n  revise\n  update\n  annotate") {
 		t.Fatalf("help omitted the prototype operations:\n%s", first.String())
 	}
 	for _, operation := range prototypeOperations {
@@ -351,13 +351,13 @@ func TestValidateCoversPrototypeRecords(t *testing.T) {
 
 // A repository prototype stays in the repository: the Saga pins its
 // entrypoint and the directory beside it at a commit, refuses uncommitted
-// files, and records a later change only through refresh.
+// files, and records a later change only through update.
 func TestRepoPrototypePinsCommittedFilesAndRefreshesAfterTheyChange(t *testing.T) {
 	t.Parallel()
 	root, repo := coveredSaga(t)
 	writeFile(t, filepath.Join(repo, "prototypes", "sidebar", "index.html"), `<link rel="stylesheet" href="app.css"><h1 id="go">Go</h1>`)
 	writeFile(t, filepath.Join(repo, "prototypes", "sidebar", "app.css"), `h1{color:red}`)
-	add := []string{"add-repo", root, "--feature", testFeature, "--id", "sidebar", "--revision", "r1", "--title", "Sidebar", "--path", "prototypes/sidebar/index.html", "--repo", repo}
+	add := []string{"add", root, "--feature", testFeature, "--id", "sidebar", "--revision", "r1", "--title", "Sidebar", "--path", "prototypes/sidebar/index.html", "--repo", repo}
 	var refused bytes.Buffer
 	if err := Prototype(context.Background(), add, &refused); err == nil || !strings.Contains(err.Error(), "commit the prototype first") {
 		t.Fatalf("an uncommitted prototype = %v", err)
@@ -383,23 +383,23 @@ func TestRepoPrototypePinsCommittedFilesAndRefreshesAfterTheyChange(t *testing.T
 		t.Fatalf("pinned asset = %q %v", data, ok)
 	}
 
-	refresh := []string{"refresh", root, "--prototype", "urn:change-saga:batch:prototype:sidebar", "--revision", "r2", "--repo", repo}
-	if err := Prototype(context.Background(), refresh, &refused); err == nil || !strings.Contains(err.Error(), "nothing changed") {
-		t.Fatalf("refreshing an unchanged prototype = %v", err)
+	update := []string{"update", root, "--prototype", "urn:change-saga:batch:prototype:sidebar", "--repo", repo}
+	if err := Prototype(context.Background(), update, &refused); err == nil || !strings.Contains(err.Error(), "nothing changed") {
+		t.Fatalf("updating an unchanged prototype = %v", err)
 	}
 	writeFile(t, filepath.Join(repo, "prototypes", "sidebar", "app.css"), `h1{color:blue}`)
 	second := commitAll(t, repo, "restyle the sidebar prototype")
 	if stale := prototypes.RepoStaleness(context.Background(), repo, source, "HEAD"); !strings.Contains(stale, "changed since") {
 		t.Fatalf("a changed package must read as stale: %q", stale)
 	}
-	runPrototype(t, refresh...)
+	runPrototype(t, update...)
 	document, err = prototypes.Load(root, "")
 	if err != nil {
 		t.Fatal(err)
 	}
 	head := document.Find("sidebar").CurrentRevision
 	if head.ID != "r2" || head.Source.Commit != second || head.Title != "Sidebar" || len(head.Parents) != 1 {
-		t.Fatalf("refreshed revision = %#v", head)
+		t.Fatalf("updated revision = %#v", head)
 	}
 	// The first revision still shows what it pinned.
 	if data, ok := prototypes.ReadRepoFile(context.Background(), repo, source, "app.css"); !ok || string(data) != `h1{color:red}` {
@@ -415,7 +415,7 @@ func TestRepoPrototypeAtTheRootPinsTheFileAlone(t *testing.T) {
 	root, repo := coveredSaga(t)
 	writeFile(t, filepath.Join(repo, "sidebar-prototype.html"), `<h1>Go</h1>`)
 	commitAll(t, repo, "add a root prototype")
-	runPrototype(t, "add-repo", root, "--feature", testFeature, "--id", "root-sidebar", "--revision", "r1", "--title", "Sidebar", "--path", "sidebar-prototype.html", "--repo", repo)
+	runPrototype(t, "add", root, "--feature", testFeature, "--id", "root-sidebar", "--title", "Sidebar", "--path", "sidebar-prototype.html", "--repo", repo)
 	document, err := prototypes.Load(root, "")
 	if err != nil {
 		t.Fatal(err)

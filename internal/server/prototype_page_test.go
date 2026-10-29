@@ -128,7 +128,7 @@ func TestRepoPrototypeIsServedAsPinnedAndShowsWhenStale(t *testing.T) {
 
 	writeServerFile(t, filepath.Join(repo, "prototypes", "sidebar", "app.css"), `h1{color:blue}`)
 	serverGit(t, repo, "commit", "-q", "-am", "restyle")
-	if html := get("/prototypes/sidebar").Body.String(); !strings.Contains(html, "data-prototype-stale") || !strings.Contains(html, "prototype refresh") {
+	if html := get("/prototypes/sidebar").Body.String(); !strings.Contains(html, "data-prototype-stale") || !strings.Contains(html, "prototype update") {
 		t.Fatal("a changed repo prototype must say it is stale and how to record the change")
 	}
 	if asset := get("/p/sidebar/r1/app.css").Body.String(); asset != `h1{color:red}` {

@@ -822,7 +822,7 @@ repository and pins its `entrypoint`, the `root` directory served beside it
 (omitted for a single file), the `commit`, and the package's Git `object` at
 that commit; `external` and `embed` name an app hosted elsewhere. A `repo`
 revision is read from its pinned commit and reads as stale once the package's
-object at HEAD differs; `prototype refresh` appends a revision that re-pins it.
+object at HEAD differs; `prototype update` appends a revision that re-pins it.
 
 ### Deck overview and slide Front/Back
 

@@ -85,7 +85,7 @@ func RepoStaleness(ctx context.Context, repo string, source Source, head string)
 		return fmt.Sprintf("%s no longer exists at %s; this revision is shown as pinned at %s.", source.RepoPackage(), head, short(source.Commit))
 	}
 	if strings.TrimSpace(string(current)) != source.Object {
-		return fmt.Sprintf("%s changed since %s; this revision is shown as pinned. Record the change with change-saga prototype refresh.", source.RepoPackage(), short(source.Commit))
+		return fmt.Sprintf("%s changed since %s; this revision is shown as pinned. Record the change with change-saga prototype update.", source.RepoPackage(), short(source.Commit))
 	}
 	return ""
 }
