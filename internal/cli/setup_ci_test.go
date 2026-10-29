@@ -127,7 +127,8 @@ func TestSetupCIExampleClassifiesGitChanges(t *testing.T) {
 					t.Fatalf("classifier: %v: %s", err, out)
 				}
 				got, err := os.ReadFile(output)
-				if err != nil || string(got) != "application="+tc.want+"\n" {
+				// Python writes text-mode newlines, CRLF on Windows; Actions reads either.
+				if err != nil || strings.ReplaceAll(string(got), "\r\n", "\n") != "application="+tc.want+"\n" {
 					t.Fatalf("%s: got %q, %v; want %s", event, got, err, tc.want)
 				}
 			}
