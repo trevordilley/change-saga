@@ -179,11 +179,7 @@ func revealActive(node *navNodeView) bool {
 	return revealed
 }
 
-// makePrototypeNav names the prototypes that already exist. The server has no
-// prototype surface yet, so each row is a name rather than a link: a prototype
-// a reviewer cannot even see listed is harder to ask about than one that is
-// listed and not yet openable.
-// TODO: give these rows an href once a prototype review route exists.
+// makePrototypeNav lists the prototypes that exist, each opening its page.
 func makePrototypeNav(document prototypes.Document) []*navNodeView {
 	var nodes []*navNodeView
 	for _, prototype := range document.Prototypes {
@@ -195,7 +191,7 @@ func makePrototypeNav(document prototypes.Document) []*navNodeView {
 		if err != nil {
 			target = prototype.Identity.ID
 		}
-		nodes = append(nodes, &navNodeView{Title: title, NodeID: "nav-" + domID(target), Icon: "prototype"})
+		nodes = append(nodes, &navNodeView{Title: title, Href: prototypeHref(prototype.Identity.ID), NodeID: "nav-" + domID(target), Icon: "prototype"})
 	}
 	return nodes
 }

@@ -141,6 +141,7 @@ type pageData struct {
 	Persona         *personaPageView
 	Feature         *featurePageView
 	TestCase        *testCasePageView
+	Prototype       *prototypePageView
 	Features        *directoryView
 	FeatureGrouping string
 	FeatureTheme    *featureThemePageView
@@ -522,6 +523,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /features", application.page)
 	page("GET /roadmap", application.page)
 	page("GET /tests/{test}", application.page)
+	page("GET /prototypes/{prototype}", application.page)
 	page("GET /", application.page)
 	page("GET /reviews", application.reviewIndex)
 	page("GET /reviews/{id}", application.reviewPage)
@@ -567,6 +569,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /api/runtime", application.runtimeStatus)
 	handle("POST /api/runtime-stop", application.runtimeStop)
 	handle("GET /f/{id}/{path...}", application.fragmentFile)
+	handle("GET /p/{prototype}/{revision}/{path...}", application.prototypeFile)
 	return mux
 }
 
@@ -1223,6 +1226,8 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "feature", id: r.PathValue("feature")}, true
 	case strings.HasPrefix(path, "/tests/") && r.PathValue("test") != "":
 		return appRoute{kind: "test", id: r.PathValue("test")}, true
+	case strings.HasPrefix(path, "/prototypes/") && r.PathValue("prototype") != "":
+		return appRoute{kind: "prototype", id: r.PathValue("prototype")}, true
 	case path == "/reviews" || strings.HasPrefix(path, "/reviews/"):
 		return appRoute{kind: "reviews"}, true
 	}
@@ -1411,6 +1416,10 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if data.TestCase, err = a.testCasePage(r.Context(), graph, route.id); err != nil {
 			return nil, err
 		}
+	case "prototype":
+		if data.Prototype, err = a.prototypePage(graph, document.Manifest.ID, route.id, r.URL.Query().Get("revision")); err != nil {
+			return nil, err
+		}
 	}
 	// Related reviews are a footnote on a feature, a story, and a criterion,
 	// derived from the code those records reference rather than authored. Only
@@ -1434,6 +1443,9 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// which feature a reader is in is a fact about the page, never a preference
 	// kept about the reader.
 	data.PageFeature = pageFeature(route, requirementsView, tests)
+	if data.Prototype != nil {
+		data.PageFeature = data.Prototype.FeatureID
+	}
 	data.FeatureGrouping = featureGrouping(r, document)
 	roadmapGrouping := featureCollectionGrouping(r, document, true)
 	if route.kind == "features" || route.kind == "roadmap" {
@@ -1542,6 +1554,8 @@ func pageTitle(data *pageData) string {
 		return data.Feature.Title
 	case data.TestCase != nil:
 		return data.TestCase.Title
+	case data.Prototype != nil:
+		return data.Prototype.Title
 	case data.FeatureTheme != nil:
 		return data.FeatureTheme.Title
 	case data.FeatureThemes != nil:
@@ -2342,7 +2356,7 @@ func securityHeaders(next http.Handler) http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 		w.Header().Set("Referrer-Policy", "no-referrer")
-		if !strings.HasPrefix(r.URL.Path, "/f/") {
+		if !strings.HasPrefix(r.URL.Path, "/f/") && !strings.HasPrefix(r.URL.Path, "/p/") {
 			w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; form-action 'self'; frame-ancestors 'none'; object-src 'none'")
 		}
 		next.ServeHTTP(w, r)
