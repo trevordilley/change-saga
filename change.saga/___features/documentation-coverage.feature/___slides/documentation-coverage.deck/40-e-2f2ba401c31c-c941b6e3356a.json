@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "013e98e401b6a188ec2b34744f91dde00d08320c",
+      "commit": "2e44cd4e7d7f274a9b531debda3449c0d7e134a7",
       "path": "internal/livingapp/status.go",
       "start": 62,
-      "end": 125,
-      "digest": "sha256:38f3d8dd83d7cf177a92796ee58133ebe67e4de6e9d9e145b7218b20dba56eb7",
+      "end": 129,
+      "digest": "sha256:0445a7fb7f896407f2a6fa59bfdeadc6002246371019ce6b9283ffc280fbf1cf",
       "note": "Assembles current lifecycle facts before public area aggregation."
     }
   ]

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "2e44cd4e7d7f274a9b531debda3449c0d7e134a7",
       "path": "internal/requirements/currency.go",
-      "start": 284,
-      "end": 298,
-      "digest": "sha256:b3eda3673a96083259316a22a2c73ef8b0b59dd14c5c7ae30e4479d6234b6dc2",
+      "start": 308,
+      "end": 322,
+      "digest": "sha256:104ee6b348f00dce1f1c0c2db11e8efd5305ddfdf12485379cdca442384668b0",
       "note": "Treats missing endpoints, removed criteria, and unresolved external heads as invalid inputs."
     }
   ]

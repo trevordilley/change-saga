@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "2e44cd4e7d7f274a9b531debda3449c0d7e134a7",
       "path": "internal/requirements/validate.go",
-      "start": 360,
-      "end": 435,
-      "digest": "sha256:f74682d549b14c609951dd5e5ee546ea3ebfe718a339332cdbf286fe75b17064",
+      "start": 349,
+      "end": 444,
+      "digest": "sha256:42393d3d9f85f177231d3a34d5a4712b24b235d86c5d95af78cd843b893ccad8",
       "note": "Competing immutable heads remain explicit graph state"
     },
     {
