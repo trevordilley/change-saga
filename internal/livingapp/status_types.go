@@ -163,6 +163,10 @@ type Status struct {
 	// Dangling lists current records that still point at a removed story,
 	// criterion, persona, feature, flag, or term, each with how to fix it.
 	Dangling []DanglingReference `json:"dangling"`
+	// OverviewRevisions lists features whose overview essay predates stories
+	// feature deliver moved into them; each is unhealthy until the essay is
+	// revised with feature set-overview.
+	OverviewRevisions []OverviewRevisionStatus `json:"overview_revisions"`
 	// CarriedForward lists the pins currency advanced without a judgment call,
 	// so a reader can always tell a revision somebody confirmed from one the
 	// tool carried a still-true relation past.
@@ -304,6 +308,15 @@ type DanglingReference struct {
 	Path    string   `json:"path,omitempty"`
 	Missing []string `json:"missing"`
 	Fix     string   `json:"fix"`
+}
+
+// OverviewRevisionStatus is one feature whose overview must be revised to
+// describe the stories delivered into it, and the command that revises it.
+type OverviewRevisionStatus struct {
+	Feature   string   `json:"feature"`
+	Delivered []string `json:"delivered"`
+	Stories   []string `json:"stories"`
+	Fix       string   `json:"fix"`
 }
 
 // StaleRecord is one persisted record whose pin no longer matches the head it

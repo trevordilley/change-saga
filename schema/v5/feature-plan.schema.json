@@ -55,6 +55,41 @@
       "maxLength": 1000,
       "pattern": "^[^\\r\\n]*$",
       "description": "Why the feature was archived. Requires archived."
+    },
+    "augments": {
+      "type": "string",
+      "maxLength": 1000,
+      "pattern": "^urn:change-saga:[^:]+:feature:[^:]+$",
+      "description": "The existing feature this Roadmap feature extends. feature deliver moves its stories and records into that feature."
+    },
+    "overview_revision_pending": {
+      "type": "array",
+      "maxItems": 1000,
+      "description": "Deliveries the feature's overview essay has not been revised for. Set by feature deliver; cleared by feature set-overview.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "feature",
+          "stories"
+        ],
+        "properties": {
+          "feature": {
+            "type": "string",
+            "pattern": "^urn:change-saga:[^:]+:feature:[^:]+$",
+            "description": "The delivered Roadmap feature, now removed."
+          },
+          "stories": {
+            "type": "array",
+            "maxItems": 10000,
+            "items": {
+              "type": "string",
+              "pattern": "^urn:change-saga:[^:]+:story:[^:]+$"
+            },
+            "description": "The story URNs the delivery moved into this feature."
+          }
+        }
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -24,7 +25,24 @@ type FeaturePlan struct {
 	// returns the feature to the Roadmap or Features it left.
 	Archived       bool   `json:"archived,omitempty"`
 	ArchivedReason string `json:"archived_reason,omitempty"`
+	// Augments names the existing feature a Roadmap feature extends: its
+	// stories are planned work feature deliver moves into that feature.
+	Augments string `json:"augments,omitempty"`
+	// OverviewRevisionPending lists deliveries the feature's overview essay
+	// has not yet been revised for. feature deliver records one; feature
+	// set-overview clears them all.
+	OverviewRevisionPending []OverviewRevision `json:"overview_revision_pending,omitempty"`
 }
+
+// OverviewRevision is one delivery the recipient's overview must absorb: the
+// Roadmap feature delivered and the story URNs it brought.
+type OverviewRevision struct {
+	Feature string   `json:"feature"`
+	Stories []string `json:"stories"`
+}
+
+var featureURNPattern = regexp.MustCompile(`^urn:change-saga:[^:]+:feature:[^:]+$`)
+var storyURNPattern = regexp.MustCompile(`^urn:change-saga:[^:]+:story:[^:]+$`)
 
 func (p FeaturePlan) Planned() bool { return p.Status == "planned" }
 func (p FeaturePlan) State() string {
@@ -51,6 +69,25 @@ func (p FeaturePlan) Validate() error {
 	}
 	if len(p.ArchivedReason) > 1000 || strings.ContainsAny(p.ArchivedReason, "\r\n") {
 		return fmt.Errorf("archived_reason must be a single line of at most 1000 bytes")
+	}
+	if p.Augments != "" && !featureURNPattern.MatchString(p.Augments) {
+		return fmt.Errorf("augments must be a feature URN")
+	}
+	if len(p.OverviewRevisionPending) > 1000 {
+		return fmt.Errorf("a feature can have at most 1000 pending overview revisions")
+	}
+	for _, pending := range p.OverviewRevisionPending {
+		if !featureURNPattern.MatchString(pending.Feature) {
+			return fmt.Errorf("overview_revision_pending features must be feature URNs")
+		}
+		if len(pending.Stories) > 10000 {
+			return fmt.Errorf("a pending overview revision can name at most 10000 stories")
+		}
+		for _, story := range pending.Stories {
+			if !storyURNPattern.MatchString(story) {
+				return fmt.Errorf("overview_revision_pending stories must be story URNs")
+			}
+		}
 	}
 	if len(p.Labels) > 100 {
 		return fmt.Errorf("a feature can have at most 100 labels")

@@ -121,79 +121,12 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 	}
 	result := fragmentContentOutput{OK: true, Bytes: len(data)}
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		fragment := document.OverviewPart(part.pkg)
-		rel := applayout.OverviewDir + "/" + part.pkg
-		id := document.Manifest.ID + "-" + strings.TrimSuffix(part.pkg, ".fragment")
-		if part.feature {
-			featureID, ok := applayout.FeatureFromURN(document.Manifest.ID, *feature)
-			if !ok || document.FindFeature(featureID) == nil {
-				return fmt.Errorf("--feature must name an existing feature")
-			}
-			rel = applayout.FeatureRel(featureID) + "/" + part.pkg
-			id = applayout.FeatureQualifiedID(featureID, "overview")
-			fragment = document.FindFeature(featureID).Overview()
-		}
-
-		if fragment == nil {
-			if !saga.ValidID(id) {
-				return fmt.Errorf("generated fragment identity is invalid or too long; use a shorter page ID")
-			}
-			if part.feature {
-				target := saga.FragmentTarget(document.Manifest.ID, id)
-				if existing := saga.MutationIndexFromDocument(document).Targets[target]; existing != "" {
-					return fmt.Errorf("overview fragment identity %s is already used at %s", target, existing)
-				}
-			}
-			manifest := saga.FragmentManifest{
-				Version: saga.CurrentVersion, ID: id, Subtext: *subtext, Abstract: *abstract,
-				Title: part.title, MediaType: "text/markdown", Entrypoint: "content.md", Order: part.order,
-			}
-			dir := filepath.Join(document.Root, filepath.FromSlash(rel))
-			if err := store.CommitDir(document.Root, dir, func(stage string) error {
-				if err := os.Chmod(stage, 0o755); err != nil {
-					return err
-				}
-				return populateFragment(stage, manifest, "", data)
-			}); err != nil {
-				return err
-			}
-			result.Target = saga.FragmentTarget(document.Manifest.ID, manifest.ID)
-			result.Path = rel + "/" + manifest.Entrypoint
-			result.MediaType = manifest.MediaType
-			return nil
-		}
-		if (part.feature || part.pkg == applayout.OverviewDataModel || applayout.IsTechnicalDesignPart(part.pkg)) && fragment.MediaType != "text/markdown" {
-			return fmt.Errorf("the overview must be Markdown")
-		}
-		entrypoint := filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint))
-		if info, err := os.Lstat(entrypoint); err == nil && info.Mode()&os.ModeSymlink != 0 {
-			return fmt.Errorf("fragment entrypoint must not be a symlink")
-		}
-		writes := []store.WriteBatchEntry{{Path: entrypoint, Data: data}}
-		if given["subtext"] || given["abstract"] {
-			manifestPath := filepath.Join(fragment.Directory, "fragment.json")
-			var manifest saga.FragmentManifest
-			if err := readStrictJSONPath(manifestPath, &manifest); err != nil {
-				return err
-			}
-			if given["subtext"] {
-				manifest.Subtext = *subtext
-			}
-			if given["abstract"] {
-				manifest.Abstract = *abstract
-			}
-			encoded, err := json.MarshalIndent(manifest, "", "  ")
-			if err != nil {
-				return err
-			}
-			writes = append(writes, store.WriteBatchEntry{Path: manifestPath, Data: append(encoded, '\n')})
-		}
-		if err := store.WriteBatch(writes); err != nil {
+		if err := writeOverviewPart(document, part, feature, subtext, abstract, data, given, &result); err != nil {
 			return err
 		}
-		result.Target = fragment.Target
-		result.Path = filepath.ToSlash(filepath.Join(fragment.Path, fragment.Entrypoint))
-		result.MediaType = fragment.MediaType
+		if part.feature {
+			return clearOverviewRevisions(document, *feature)
+		}
 		return nil
 	})
 	if err != nil {
@@ -206,5 +139,96 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 		return writeJSON(out, result)
 	}
 	fmt.Fprintf(out, "Updated the %s: %s (%d bytes)\n", strings.ToLower(part.title), result.Path, result.Bytes)
+	return nil
+}
+
+// clearOverviewRevisions records that the feature's overview now absorbs every
+// delivery feature deliver marked it for.
+func clearOverviewRevisions(document *saga.Saga, selector string) error {
+	featureID, _ := applayout.FeatureFromURN(document.Manifest.ID, selector)
+	feature := document.FindFeature(featureID)
+	if feature == nil || len(feature.Plan.OverviewRevisionPending) == 0 {
+		return nil
+	}
+	plan := feature.Plan
+	plan.OverviewRevisionPending = nil
+	plan.Schema, plan.Version = applayout.FeaturePlanSchemaURL, 5
+	return store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(feature.Path), applayout.FeaturePlanName), plan, false)
+}
+
+func writeOverviewPart(document *saga.Saga, part overviewPart, feature, subtext, abstract *string, data []byte, given map[string]bool, result *fragmentContentOutput) error {
+	fragment := document.OverviewPart(part.pkg)
+	rel := applayout.OverviewDir + "/" + part.pkg
+	id := document.Manifest.ID + "-" + strings.TrimSuffix(part.pkg, ".fragment")
+	if part.feature {
+		featureID, ok := applayout.FeatureFromURN(document.Manifest.ID, *feature)
+		if !ok || document.FindFeature(featureID) == nil {
+			return fmt.Errorf("--feature must name an existing feature")
+		}
+		rel = applayout.FeatureRel(featureID) + "/" + part.pkg
+		id = applayout.FeatureQualifiedID(featureID, "overview")
+		fragment = document.FindFeature(featureID).Overview()
+	}
+
+	if fragment == nil {
+		if !saga.ValidID(id) {
+			return fmt.Errorf("generated fragment identity is invalid or too long; use a shorter page ID")
+		}
+		if part.feature {
+			target := saga.FragmentTarget(document.Manifest.ID, id)
+			if existing := saga.MutationIndexFromDocument(document).Targets[target]; existing != "" {
+				return fmt.Errorf("overview fragment identity %s is already used at %s", target, existing)
+			}
+		}
+		manifest := saga.FragmentManifest{
+			Version: saga.CurrentVersion, ID: id, Subtext: *subtext, Abstract: *abstract,
+			Title: part.title, MediaType: "text/markdown", Entrypoint: "content.md", Order: part.order,
+		}
+		dir := filepath.Join(document.Root, filepath.FromSlash(rel))
+		if err := store.CommitDir(document.Root, dir, func(stage string) error {
+			if err := os.Chmod(stage, 0o755); err != nil {
+				return err
+			}
+			return populateFragment(stage, manifest, "", data)
+		}); err != nil {
+			return err
+		}
+		result.Target = saga.FragmentTarget(document.Manifest.ID, manifest.ID)
+		result.Path = rel + "/" + manifest.Entrypoint
+		result.MediaType = manifest.MediaType
+		return nil
+	}
+	if (part.feature || part.pkg == applayout.OverviewDataModel || applayout.IsTechnicalDesignPart(part.pkg)) && fragment.MediaType != "text/markdown" {
+		return fmt.Errorf("the overview must be Markdown")
+	}
+	entrypoint := filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint))
+	if info, err := os.Lstat(entrypoint); err == nil && info.Mode()&os.ModeSymlink != 0 {
+		return fmt.Errorf("fragment entrypoint must not be a symlink")
+	}
+	writes := []store.WriteBatchEntry{{Path: entrypoint, Data: data}}
+	if given["subtext"] || given["abstract"] {
+		manifestPath := filepath.Join(fragment.Directory, "fragment.json")
+		var manifest saga.FragmentManifest
+		if err := readStrictJSONPath(manifestPath, &manifest); err != nil {
+			return err
+		}
+		if given["subtext"] {
+			manifest.Subtext = *subtext
+		}
+		if given["abstract"] {
+			manifest.Abstract = *abstract
+		}
+		encoded, err := json.MarshalIndent(manifest, "", "  ")
+		if err != nil {
+			return err
+		}
+		writes = append(writes, store.WriteBatchEntry{Path: manifestPath, Data: append(encoded, '\n')})
+	}
+	if err := store.WriteBatch(writes); err != nil {
+		return err
+	}
+	result.Target = fragment.Target
+	result.Path = filepath.ToSlash(filepath.Join(fragment.Path, fragment.Entrypoint))
+	result.MediaType = fragment.MediaType
 	return nil
 }

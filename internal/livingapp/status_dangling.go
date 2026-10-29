@@ -97,6 +97,13 @@ func danglingReferences(in StatusInputs) []DanglingReference {
 		add(DanglingReference{Record: urn, Kind: "test_case", Missing: missing(criteria...),
 			Fix: "change-saga quality test-case revise to verify a current criterion, or set-state retired"})
 	}
+	for _, feature := range in.Features {
+		if feature.Plan.Augments == "" {
+			continue
+		}
+		add(DanglingReference{Record: applayout.FeatureURN(in.SagaID, feature.ID), Kind: "feature", Missing: missing(feature.Plan.Augments),
+			Fix: "change-saga feature set-plan --feature " + feature.ID + " --augments EXISTING_FEATURE, or --augments '' to clear it"})
+	}
 	for _, deck := range in.Decks {
 		for _, slide := range deck.Slides {
 			for _, item := range slide.Items {
