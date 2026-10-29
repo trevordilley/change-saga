@@ -124,7 +124,7 @@ var commandUsage = map[string]string{
 	"feature-theme set-overview": "change-saga feature-theme set-overview --theme ID|URN (--text MARKDOWN | --source FILE|-) [--json] <saga>",
 	"feature-theme set-features": "change-saga feature-theme set-features --theme ID|URN [--feature ID|URN...] [--json] <saga>",
 
-	"feature":                       "change-saga feature <add|rename|remove|set-overview|set-plan> [flags] <saga>",
+	"feature":                       "change-saga feature <add|rename|remove|archive|restore|set-overview|set-plan> [flags] <saga>",
 	"feature set-overview":          "change-saga feature set-overview --feature ID|URN (--text MARKDOWN | --source FILE|-) [--subtext TEXT] [--abstract MARKDOWN] [--json|--quiet] <saga>",
 	"feature set-plan":              "change-saga feature set-plan --feature ID|URN [--status planned|built] [--milestone ID|URN] [--priority N] [--label ID|URN...] [--clear-labels] [--json] <saga>",
 	"feature add":                   "change-saga feature add --id ID --title TEXT [--description TEXT] [flags] <saga>",
@@ -408,7 +408,7 @@ var commandDescription = map[string]string{
 	"label":                       "Manage shared feature labels; features reference their stable IDs.",
 	"milestone":                   "Manage shared milestones; features reference their stable IDs.",
 	"feature-theme":               "Author optional product themes: Markdown overview and many-to-many feature membership. Use add-deck --feature-theme ID for the normal rationale deck; theme still controls visual styling.",
-	"feature":                     "Manage durable product domains: add, rename without changing identity, or remove an unused feature. A feature holds report content, stories, design, quality, work, and an implementation deck. Story identity never names a feature, so story move preserves links.",
+	"feature":                     "Manage durable product domains: add, rename without changing identity, remove an unused feature, or archive one to hide it while keeping its records. A feature holds report content, stories, design, quality, work, and an implementation deck. Story identity never names a feature, so story move preserves links.",
 	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",
 	"overview set-pitch":          "Write the elevator pitch: what the application is and who it is for, in a few\nsentences. The first write creates ___overview/pitch.fragment; later writes\nreplace its content.",
 	"overview set-description":    "Write the description: a short essay on what the application does and how it is\norganized. The first write creates ___overview/description.fragment; later\nwrites replace its content.",

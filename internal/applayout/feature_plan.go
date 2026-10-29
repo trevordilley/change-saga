@@ -19,6 +19,11 @@ type FeaturePlan struct {
 	Milestone string   `json:"milestone,omitempty"`
 	Priority  int      `json:"priority,omitempty"`
 	Labels    []string `json:"labels,omitempty"`
+	// Archived hides the feature from the reviewer's feature lists and from
+	// coverage gaps without touching its records. Status is kept, so restoring
+	// returns the feature to the Roadmap or Features it left.
+	Archived       bool   `json:"archived,omitempty"`
+	ArchivedReason string `json:"archived_reason,omitempty"`
 }
 
 func (p FeaturePlan) Planned() bool { return p.Status == "planned" }
@@ -40,6 +45,12 @@ func (p FeaturePlan) Validate() error {
 	}
 	if len(p.Milestone) > 1000 || strings.ContainsAny(p.Milestone, "\r\n") {
 		return fmt.Errorf("milestone must be a single label of at most 1000 bytes")
+	}
+	if p.ArchivedReason != "" && !p.Archived {
+		return fmt.Errorf("archived_reason requires archived")
+	}
+	if len(p.ArchivedReason) > 1000 || strings.ContainsAny(p.ArchivedReason, "\r\n") {
+		return fmt.Errorf("archived_reason must be a single line of at most 1000 bytes")
 	}
 	if len(p.Labels) > 100 {
 		return fmt.Errorf("a feature can have at most 100 labels")
