@@ -135,7 +135,7 @@ func Feature(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("feature", []string{"add", "rename", "remove", "archive", "restore", "set-overview", "set-plan"}, out)
+		return livingFamilyHelp("feature", []string{"add", "rename", "remove", "archive", "restore", "deliver", "set-overview", "set-plan"}, out)
 	}
 	if args[0] == "remove" {
 		// --with-content deletes the feature and everything in it; without it
@@ -163,6 +163,8 @@ func Feature(ctx context.Context, args []string, out io.Writer) error {
 		err = featureAdd(ctx, args[1:], out)
 	case "set-plan":
 		err = featureSetPlan(args[1:], out)
+	case "deliver":
+		err = featureDeliver(ctx, args[1:], out)
 	case "set-overview":
 		err = setOverviewPart(ctx, overviewPart{command: "feature set-overview", pkg: applayout.FeatureOverview, title: "Overview", order: -100, feature: true}, args[1:], out, os.Stdin)
 	default:
@@ -185,6 +187,7 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 	priority := flags.Int("priority", 0, "lower positive numbers come first; zero is unranked")
 	var labels stringList
 	flags.Var(&labels, "label", "shared label ID or URN; repeatable")
+	augments := flags.String("augments", "", "existing feature ID or URN this planned feature extends")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -209,6 +212,10 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 	path := applayout.FeatureRel(*id)
 	var replayed bool
 	err = store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		plan.Augments = strings.TrimSpace(*augments)
+		if err := resolveAugments(root, manifest.ID, *id, &plan, true); err != nil {
+			return err
+		}
 		if err := resolvePlanAssignments(root, manifest.ID, &plan, true, true); err != nil {
 			return err
 		}
@@ -217,7 +224,7 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 			return err
 		}
 		if existing, ok := applayout.Find(features, *id); ok {
-			if *requestID != "" && existing.RequestID == *requestID && existing.Title == strings.TrimSpace(*title) && existing.Description == strings.TrimSpace(*description) && existing.Plan.State() == plan.Status && existing.Plan.Milestone == plan.Milestone && existing.Plan.Priority == plan.Priority && slices.Equal(normalizedFeatureLabels(existing.Plan.Labels), plan.Labels) {
+			if *requestID != "" && existing.RequestID == *requestID && existing.Title == strings.TrimSpace(*title) && existing.Description == strings.TrimSpace(*description) && existing.Plan.State() == plan.Status && existing.Plan.Milestone == plan.Milestone && existing.Plan.Priority == plan.Priority && existing.Plan.Augments == plan.Augments && slices.Equal(normalizedFeatureLabels(existing.Plan.Labels), plan.Labels) {
 				replayed = true
 				return nil
 			}

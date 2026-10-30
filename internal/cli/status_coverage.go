@@ -302,6 +302,14 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 		examined = append(examined, healthRecord{Resource: dangling.Record, Kind: dangling.Kind})
 		problems = append(problems, areas.Problem{Resource: dangling.Record, Kind: dangling.Kind, Reason: "points at removed " + strings.Join(dangling.Missing, ", ") + "; " + dangling.Fix})
 	}
+	// A delivery leaves the recipient's overview essay describing the feature
+	// as it was; it is unhealthy until the essay is revised.
+	for _, revision := range living.OverviewRevisions {
+		feature := revision.Feature[strings.LastIndex(revision.Feature, ":")+1:]
+		examined = append(examined, healthRecord{Resource: revision.Feature, Kind: "feature_overview", Feature: feature})
+		problems = append(problems, areas.Problem{Resource: revision.Feature, Kind: "feature_overview", Feature: feature,
+			Reason: "overview predates delivered stories " + strings.Join(revision.Stories, ", ") + "; revise it with " + revision.Fix})
+	}
 	for _, stale := range living.Stale {
 		problems = append(problems, areas.Problem{Resource: stale.Record, Kind: stale.Kind, Feature: featureOf(stale.Affects...), Reason: stale.Kind + " is stale: " + strings.Join(stale.Reasons, "; ")})
 	}

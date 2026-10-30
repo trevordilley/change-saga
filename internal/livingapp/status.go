@@ -124,9 +124,30 @@ func Assemble(in StatusInputs) Status {
 
 	status.Stale = a.staleRecords()
 	status.Dangling = dangling
+	status.OverviewRevisions = overviewRevisions(in)
 	status.CarriedForward = a.carriedForward()
 	status.Chain = a.chain()
 	return status
+}
+
+// overviewRevisions lists the features whose overview essay has not been
+// revised since feature deliver moved stories into them.
+func overviewRevisions(in StatusInputs) []OverviewRevisionStatus {
+	result := []OverviewRevisionStatus{}
+	for _, feature := range in.Features {
+		if len(feature.Plan.OverviewRevisionPending) == 0 {
+			continue
+		}
+		value := OverviewRevisionStatus{Feature: applayout.FeatureURN(in.SagaID, feature.ID), Delivered: []string{}, Stories: []string{},
+			Fix: "change-saga feature set-overview --feature " + feature.ID + " --source FILE <saga>, describing the delivered stories"}
+		for _, pending := range feature.Plan.OverviewRevisionPending {
+			value.Delivered = append(value.Delivered, pending.Feature)
+			value.Stories = append(value.Stories, pending.Stories...)
+		}
+		result = append(result, value)
+	}
+	sort.Slice(result, func(i, j int) bool { return result[i].Feature < result[j].Feature })
+	return result
 }
 
 // withoutArchivedFeatures drops archived features and their stories, so an

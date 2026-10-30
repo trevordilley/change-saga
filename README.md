@@ -548,7 +548,8 @@ separate repository from the code.
 | `overview set-data-model` / `set-technical-design` | Write the data-model overview and the technical-design essay. |
 | `feature add` / `rename` / `remove` | Add, rename or remove a durable product area. `remove --with-content` deletes it with everything in it. |
 | `feature archive` / `restore` | Hide a feature from the feature lists and coverage gaps while keeping its records, or bring it back. |
-| `feature set-overview` / `set-plan` | Write a feature's description, or set its planning metadata. |
+| `feature set-overview` / `set-plan` | Write a feature's description, or set its planning metadata. `--augments` marks a Roadmap feature as extending an existing one. |
+| `feature deliver` | Move a Roadmap feature's stories, prototypes, test cases, citations, relations and decks into the feature it augments, delete it, and flag the recipient's overview for revision. |
 | `feature-theme add` / `rename` / `remove` / `set-overview` / `set-features` | Group features into optional product themes. |
 | `label` / `milestone` `add` / `rename` / `remove` | Shared labels and milestones for features. |
 | `persona add` / `revise` / `set-state` / `remove` | Who gets value from the app. |

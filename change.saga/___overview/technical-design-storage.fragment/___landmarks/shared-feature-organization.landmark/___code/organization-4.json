@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "59098190c1cfcdaccd9adfeffc65b0e032e47f2c",
+      "commit": "8f93b9c4abd5a306f1b8719545eefba963194b95",
       "path": "internal/cli/feature_plan.go",
-      "start": 49,
-      "end": 75,
-      "digest": "sha256:98e08315c10f0bd88000cd2d1403817acf93d6f30d8fad2bc668d19e2b773871",
+      "start": 50,
+      "end": 82,
+      "digest": "sha256:d240d63a986eb3bdb2692369dd8030cb28cf298acb18d0887a60f58221ecf3ed",
       "note": "Planning updates preserve omitted fields and resolve assignments before replacing the feature plan."
     }
   ]

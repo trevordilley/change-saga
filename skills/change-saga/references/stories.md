@@ -19,6 +19,13 @@ choose the feature boundary and wording; it is a thinking aid, not a required
 title format or a substitute for actual story records. Query existing features
 first and reuse the capability that already owns that outcome.
 
+To plan new stories for an existing built feature, keep them off that feature
+until they are built: add a Roadmap feature with `feature add --status planned
+--augments EXISTING`, author the planned stories there, and when they are
+built run `feature deliver --feature ROADMAP_ID` to move them into the
+existing feature. Then revise the recipient's overview essay with `feature
+set-overview`; health fails until you do. See [reorganize.md](reorganize.md).
+
 - **Title:** name the recognizable capability or outcome, short enough for the
   navigation. Avoid internal type names, storage formats and implementation tasks.
 - **One-line subtext:** make the benefit understandable without prior product

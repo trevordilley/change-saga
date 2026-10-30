@@ -1,10 +1,14 @@
 package server
 
 import (
-	"github.com/twentyideas/changesaga/internal/applayout"
+	"bytes"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/quality"
 )
 
 func TestRoadmapUsesFeatureNavigationAndThemeGroups(t *testing.T) {
@@ -61,5 +65,48 @@ func TestRoadmapPlanInvalidatesOutline(t *testing.T) {
 	}
 	if before == added || added == edited {
 		t.Fatal("planning updates do not invalidate cached feature placement")
+	}
+}
+
+// A Roadmap feature that augments an existing feature says so on the Roadmap,
+// and the existing feature's page lists it under Planned extensions.
+func TestRoadmapAndFeaturePageLinkAugmentingFeatures(t *testing.T) {
+	sources := appNavFixture(t)
+	doc := sources.document
+	billing, catalog := doc.Features[0], doc.Features[1]
+	catalog.Plan = applayout.FeaturePlan{Status: "planned", Augments: billing.Target}
+	graph := newAppGraph(doc, sources.requirements, quality.Document{})
+	roadmap := featureCollectionDirectory(doc, graph, "", "", "all", true)
+	if len(roadmap.Rows) != 1 || roadmap.Rows[0].Cells[1].Text != "→ extends Billing" || roadmap.Rows[0].Cells[1].Href != featureHref("billing") {
+		t.Fatalf("roadmap must show what the planned feature extends: %+v", roadmap.Rows)
+	}
+	page, err := graph.featurePage("billing")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(page.Extensions) != 1 || page.Extensions[0].Href != featureHref("catalog") {
+		t.Fatalf("billing must list its planned extensions: %+v", page.Extensions)
+	}
+	planned, err := graph.featurePage("catalog")
+	if err != nil || planned.Extends == nil || planned.Extends.Href != featureHref("billing") {
+		t.Fatalf("the planned feature must link what it extends: %+v %v", planned, err)
+	}
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var html bytes.Buffer
+	if err := tmpl.ExecuteTemplate(&html, "feature-page", page); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(html.String(), "Planned extensions") || !strings.Contains(html.String(), `href="`+featureHref("catalog")+`"`) {
+		t.Fatalf("feature page lacks its planned extensions:\n%s", html.String())
+	}
+	html.Reset()
+	if err := tmpl.ExecuteTemplate(&html, "feature-page", planned); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(html.String(), "→ extends <a href=\""+featureHref("billing")+"\">Billing</a>") {
+		t.Fatalf("planned feature page lacks its extends link:\n%s", html.String())
 	}
 }

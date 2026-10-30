@@ -238,7 +238,7 @@ func featuresDirectory(document *saga.Saga, graph *appGraph, current, query stri
 		view.Lede = "Features we plan to build, in product priority order. Lower priority numbers come first; unranked work follows. Milestones are optional targets."
 		view.Empty = "No planned features yet."
 		view.Command = "change-saga feature add --status planned"
-		view.Columns = []directoryColumn{{Title: "Feature"}, {Title: "Priority", Numeric: true}, {Title: "Milestone"}, {Title: "Labels"}, {Title: "Description", Wide: true}, {Title: "Stories", Numeric: true}}
+		view.Columns = []directoryColumn{{Title: "Feature"}, {Title: "Extends"}, {Title: "Priority", Numeric: true}, {Title: "Milestone"}, {Title: "Labels"}, {Title: "Description", Wide: true}, {Title: "Stories", Numeric: true}}
 	}
 	for _, row := range featureRows(document, graph, current) {
 		cells := []directoryCell{{Text: row.Title, Href: row.Href, Note: row.ID}, textCell(summarise(row.Description, 120)), textCell(row.Plan.Milestone), listCell(row.Plan.Labels, "Unlabeled"), countCell(row.Stories), countCell(row.Accepted), countCell(row.WithDesign), countCell(row.TestCases), countCell(row.Slides)}
@@ -251,12 +251,34 @@ func featuresDirectory(document *saga.Saga, graph *appGraph, current, query stri
 			if row.Plan.Milestone == "" {
 				milestone = gapCell("Not assigned")
 			}
-			cells = []directoryCell{cells[0], priority, milestone, cells[3], cells[1], cells[4]}
+			// A Roadmap feature that augments an existing one is delivered
+			// into it rather than becoming a feature of its own.
+			extends := gapCell("New feature")
+			// The Roadmap projection holds only planned features, so the
+			// target is found in the complete document.
+			if target := augmentedFeature(graph.document, row.Plan.Augments); target != nil {
+				extends = directoryCell{Text: "→ extends " + target.Title, Href: featureHref(target.ID), Target: target.Target}
+			}
+			cells = []directoryCell{cells[0], extends, priority, milestone, cells[3], cells[1], cells[4]}
 		}
 		view.addRow(directoryRow{Key: row.ID, Current: row.Current, Cells: cells})
 	}
 	view.apply(query)
 	return view
+}
+
+// augmentedFeature is the existing feature an augments link names, or nil
+// when it names none or a feature that no longer exists.
+func augmentedFeature(document *saga.Saga, urn string) *saga.Feature {
+	if urn == "" || document == nil {
+		return nil
+	}
+	for _, feature := range document.Features {
+		if feature.Target == urn {
+			return feature
+		}
+	}
+	return nil
 }
 
 // featureIndexRow is one feature's counts, as the directory states them.

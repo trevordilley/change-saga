@@ -25,6 +25,7 @@ func featureSetPlan(args []string, out io.Writer) error {
 	var labels stringList
 	flags.Var(&labels, "label", "replace label references with this complete set; repeatable; omitted preserves labels")
 	clearLabels := flags.Bool("clear-labels", false, "remove all labels; cannot combine with --label")
+	augments := flags.String("augments", "", "existing feature ID or URN this Roadmap feature extends; empty clears it")
 	jsonOutput := flags.Bool("json", false, "emit JSON")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -34,8 +35,8 @@ func featureSetPlan(args []string, out io.Writer) error {
 	}
 	given := map[string]bool{}
 	flags.Visit(func(f *flag.Flag) { given[f.Name] = true })
-	if !given["status"] && !given["milestone"] && !given["priority"] && !given["label"] && !*clearLabels {
-		return fmt.Errorf("provide --status, --milestone, --priority, --label, or --clear-labels")
+	if !given["status"] && !given["milestone"] && !given["priority"] && !given["label"] && !*clearLabels && !given["augments"] {
+		return fmt.Errorf("provide --status, --milestone, --priority, --label, --clear-labels, or --augments")
 	}
 	if *clearLabels && given["label"] {
 		return fmt.Errorf("--label and --clear-labels cannot be combined")
@@ -69,6 +70,12 @@ func featureSetPlan(args []string, out io.Writer) error {
 		} else if *clearLabels {
 			plan.Labels = nil
 		}
+		if given["augments"] {
+			plan.Augments = strings.TrimSpace(*augments)
+		}
+		if err := resolveAugments(root, manifest.ID, feature.ID, &plan, given["augments"]); err != nil {
+			return err
+		}
 		if err := resolvePlanAssignments(root, manifest.ID, &plan, given["milestone"], given["label"]); err != nil {
 			return err
 		}
@@ -79,6 +86,29 @@ func featureSetPlan(args []string, out io.Writer) error {
 	}
 	urn := applayout.FeatureURN(manifest.ID, feature.ID)
 	return writeLivingMutation(out, name, urn, feature.Rel+"/"+applayout.FeaturePlanName, []string{urn}, nil, false, *jsonOutput)
+}
+
+// resolveAugments canonicalizes a Roadmap feature's augments link to the URN
+// of an existing other feature. Only planned work augments: a built feature
+// with stories to add is delivered with feature deliver.
+func resolveAugments(root, sagaID, self string, plan *applayout.FeaturePlan, changed bool) error {
+	if plan.Augments == "" {
+		return nil
+	}
+	if changed {
+		target, err := applayout.Require(root, sagaID, plan.Augments)
+		if err != nil {
+			return fmt.Errorf("--augments: %w", err)
+		}
+		if target.ID == self {
+			return fmt.Errorf("--augments must name another feature; a feature cannot augment itself")
+		}
+		plan.Augments = applayout.FeatureURN(sagaID, target.ID)
+	}
+	if !plan.Planned() {
+		return fmt.Errorf("--augments applies only to a planned (Roadmap) feature; deliver it into %s with change-saga feature deliver, or clear it with --augments ''", plan.Augments)
+	}
+	return nil
 }
 
 func normalizedFeatureLabels(labels []string) []string {

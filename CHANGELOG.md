@@ -10,6 +10,25 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- A Roadmap feature can add stories to an existing feature without mixing
+  planned work into it: `feature add --augments ID` or `feature set-plan
+  --augments ID` (empty clears) records the feature it extends. The reviewer's
+  Roadmap shows "→ extends" the target, and the target's page lists its
+  Planned extensions. A link to a feature that no longer exists is reported as
+  a dangling reference.
+- `feature deliver --feature ID [--into ID] [--dry-run]` moves a Roadmap
+  feature's stories, prototypes, test cases, citations, relations, and decks
+  into the feature it augments with every URN unchanged, then deletes the
+  Roadmap feature. It refuses when content it cannot place (design chapters,
+  other report content, a work plan) would be lost, listing it. It prints the
+  Roadmap overview and the delivered stories, and marks the recipient's
+  `overview_revision_pending`, which `status` and `check --covers health`
+  report until `feature set-overview` revises the recipient's essay.
+- **Format:** `plan.json` gains optional `augments` and
+  `overview_revision_pending`; older Sagas load unchanged.
+
 ## [0.6.0] - 2026-10-29
 
 ### Added
