@@ -121,6 +121,16 @@ func TestRelatedReviewsAreDerivedFromTheChangedLines(t *testing.T) {
 	}
 }
 
+// With nothing to relate, the index holds nothing and no record lists a review.
+func TestASagaWithNoReviewsRelatesNothing(t *testing.T) {
+	t.Parallel()
+	root := validServerSaga(t)
+	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
+	if index := application.relatedReviews(requestContext(t)); len(index.byRecord) != 0 {
+		t.Fatalf("records list reviews: %#v", index.byRecord)
+	}
+}
+
 // documentationPage is a documentation page's HTML. Documentation is served
 // by the ordinary page handler, which carries no incremental-surface headers.
 func documentationPage(t *testing.T, handler http.Handler, path string) string {

@@ -18,72 +18,73 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// Related reviews are a cross product of records and reviews, so their cost is
-// measured on this repository's own app Saga rather than asserted. A
-// documentation page asks for the index once and holds it until the Saga or
-// the source head changes, so the first build is the whole cost.
-func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
-	t.Parallel()
-	requireDogfoodSaga(t)
+// BenchmarkRelatedReviewsOnThisRepository measures related reviews, a cross
+// product of records and reviews, on this repository's own Saga. A documentation
+// page asks for the index once and holds it until the Saga or the source head
+// changes, so the first build is the whole cost. It takes minutes, so it is not a
+// test; TestRelatedReviewsAreDerivedFromTheChangedLines holds that the index is
+// right. Run it with:
+//
+//	go test ./internal/server -run '^$' -bench RelatedReviewsOnThisRepository -benchtime 1x -v
+func BenchmarkRelatedReviewsOnThisRepository(b *testing.B) {
+	if _, err := os.Stat(filepath.Join(dogfoodSaga, saga.ManifestName)); err != nil {
+		b.Skip("app Saga absent")
+	}
 	document, _, err := saga.Load(dogfoodSaga)
 	if err != nil {
-		t.Fatal(err)
+		b.Fatal(err)
 	}
 	records, err := requirements.Load(dogfoodSaga, document.Manifest.ID)
 	if err != nil {
-		t.Fatal(err)
+		b.Fatal(err)
 	}
 	tests, err := quality.Load(dogfoodSaga)
 	if err != nil {
 		tests = quality.Document{SagaID: document.Manifest.ID}
 	}
-	application := &app{root: dogfoodSaga, sourceDir: ".."}
-	started := time.Now()
-	if _, err := application.relatedFingerprint(requestContext(t)); err != nil {
-		t.Fatal(err)
-	}
-	t.Logf("freshness check, shared by the shell and the related reviews: %s", time.Since(started))
-	started = time.Now()
-	index := application.relatedReviews(requestContext(t))
-	cold := time.Since(started)
-	started = time.Now()
-	application.relatedReviews(requestContext(t))
-	warm := time.Since(started)
-	t.Logf("change.saga: %d features, %d stories, %d test cases, %d reviews; %d code references; cold %s (intersection %s), warm %s, builds %d",
-		len(document.Features), len(records.Stories), len(tests.TestCases), len(document.Reviews),
-		documentedReferenceCount(document), cold, index.Elapsed, warm, application.related.builds)
-	if len(document.Reviews) == 0 && cold > 100*time.Millisecond {
-		t.Fatalf("a Saga with no reviews paid %s for related reviews", cold)
-	}
-
-	// A review over the range that last changed the file change.saga documents,
-	// so the measurement includes the work of an intersection that hits.
-	touching := copyDogfoodSagaWithReview(t, "pr-resolve", lastCommitTouching(t, "internal/coderesolve/resolve.go"))
-	hitting := &app{root: touching, sourceDir: ".."}
-	started = time.Now()
-	hit := hitting.relatedReviews(requestContext(t))
-	t.Logf("change.saga + 1 review of the commit that changed the documented file: cold %s, %d records list it", time.Since(started), len(hit.byRecord))
-	if len(hit.byRecord) == 0 {
-		t.Fatal("a review of the very commit that changed the documented code was related to nothing")
-	}
-
-	// The cross product is measured over a copy of change.saga given more
-	// reviews of real pull-request-sized ranges of this repository.
-	for _, reviews := range []int{1, 5, 20} {
-		root := copyDogfoodSagaWithReviews(t, reviews)
-		measured := &app{root: root, sourceDir: ".."}
+	for b.Loop() {
+		application := &app{root: dogfoodSaga, sourceDir: ".."}
 		started := time.Now()
-		built := measured.relatedReviews(requestContext(t))
-		elapsed := time.Since(started)
+		if _, err := application.relatedFingerprint(requestContext(b)); err != nil {
+			b.Fatal(err)
+		}
+		b.Logf("freshness check, shared by the shell and the related reviews: %s", time.Since(started))
 		started = time.Now()
-		measured.relatedReviews(requestContext(t))
-		t.Logf("change.saga + %d reviews: cold %s (intersection %s, %d records with a review), warm %s",
-			reviews, elapsed, built.Elapsed, len(built.byRecord), time.Since(started))
+		index := application.relatedReviews(requestContext(b))
+		cold := time.Since(started)
+		started = time.Now()
+		application.relatedReviews(requestContext(b))
+		warm := time.Since(started)
+		b.Logf("change.saga: %d features, %d stories, %d test cases, %d reviews; %d code references; cold %s (intersection %s), warm %s, builds %d",
+			len(document.Features), len(records.Stories), len(tests.TestCases), len(document.Reviews),
+			documentedReferenceCount(document), cold, index.Elapsed, warm, application.related.builds)
+
+		// A review over the range that last changed the file change.saga documents,
+		// so the measurement includes the work of an intersection that hits.
+		touching := copyDogfoodSagaWithReview(b, "pr-resolve", lastCommitTouching(b, "internal/coderesolve/resolve.go"))
+		hitting := &app{root: touching, sourceDir: ".."}
+		started = time.Now()
+		hit := hitting.relatedReviews(requestContext(b))
+		b.Logf("change.saga + 1 review of the commit that changed the documented file: cold %s, %d records list it", time.Since(started), len(hit.byRecord))
+
+		// The cross product is measured over a copy of change.saga given more
+		// reviews of real pull-request-sized ranges of this repository.
+		for _, reviews := range []int{1, 5, 20} {
+			root := copyDogfoodSagaWithReviews(b, reviews)
+			measured := &app{root: root, sourceDir: ".."}
+			started := time.Now()
+			built := measured.relatedReviews(requestContext(b))
+			elapsed := time.Since(started)
+			started = time.Now()
+			measured.relatedReviews(requestContext(b))
+			b.Logf("change.saga + %d reviews: cold %s (intersection %s, %d records with a review), warm %s",
+				reviews, elapsed, built.Elapsed, len(built.byRecord), time.Since(started))
+		}
 	}
 }
 
 // lastCommitTouching is the most recent commit that changed path.
-func lastCommitTouching(t *testing.T, path string) string {
+func lastCommitTouching(t testing.TB, path string) string {
 	t.Helper()
 	output, err := exec.Command("git", "-C", filepath.Join("..", ".."), "log", "--format=%H", "-1", "--", path).Output()
 	if err != nil {
@@ -97,7 +98,7 @@ func lastCommitTouching(t *testing.T, path string) string {
 }
 
 // copyDogfoodSagaWithReview is change.saga with one review of exactly commit.
-func copyDogfoodSagaWithReview(t *testing.T, id, commit string) string {
+func copyDogfoodSagaWithReview(t testing.TB, id, commit string) string {
 	t.Helper()
 	root := copySaga(t)
 	if err := reviewstore.Create(root, saga.ReviewManifest{
@@ -114,7 +115,7 @@ func copyDogfoodSagaWithReview(t *testing.T, id, commit string) string {
 // the test: under macOS's long temporary root that name alone pushes the
 // copy's deck files past the portable path limit the Saga enforces, and the
 // copy would not validate.
-func copySaga(t *testing.T) string {
+func copySaga(t testing.TB) string {
 	t.Helper()
 	dir, err := os.MkdirTemp("", "saga")
 	if err != nil {
@@ -131,7 +132,7 @@ func copySaga(t *testing.T) string {
 // copyDogfoodSagaWithReviews is change.saga with count reviews, each over a real
 // range of this repository. Only the range matters to the intersection: the
 // deck is what a review explains, not what it changed.
-func copyDogfoodSagaWithReviews(t *testing.T, count int) string {
+func copyDogfoodSagaWithReviews(t testing.TB, count int) string {
 	t.Helper()
 	root := copySaga(t)
 	for index := 0; index < count; index++ {
@@ -178,7 +179,7 @@ func documentedReferenceCount(document *saga.Saga) int {
 
 // requestContext is the context a request handler gets: its own Git session,
 // ended when the test does. The cost measured is the cost a reviewer pays.
-func requestContext(t *testing.T) context.Context {
+func requestContext(t testing.TB) context.Context {
 	ctx, end := gitexec.BeginIsolated(context.Background())
 	t.Cleanup(end)
 	return ctx
