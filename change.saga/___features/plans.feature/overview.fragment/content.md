@@ -68,7 +68,7 @@ change-saga task list --plan ID [--ready]                    # what can start no
 
 ## Open questions {#open-questions}
 
-1. **Who can object to the personas?** These stories use the architect and developer personas. "Contributor" was asked for, but the Saga has no such persona, and developer is the closest.
+1. **Are these the right personas?** "Contributor" was asked for, but the Saga has no such persona. These stories use architect and developer, the closest fit, and no new persona was created.
 2. **Is a Plan discussed and approved, as a review is?** The original idea was yes, per slide. The current direction does not say, so no story covers it.
 3. **What exactly makes a Plan done?** "Implemented and merged" could mean every Task is done, every linked Review has merged, or both. What happens when a Review merges with Tasks still open?
 4. **What does done on a Task claim?** Work-plan progress today says it "never proves correctness". Should a slide's done mark say only that an agent reported it?
