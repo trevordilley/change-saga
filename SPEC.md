@@ -1938,7 +1938,7 @@ urn:change-saga:<saga>:plan:<plan>[:deck:<deck>|:slide:<slide>[:item:<item>]|:ta
 | `story` | Canonical URN of a user story of this Saga. |
 | `depends_on` | IDs of Tasks of this Plan. What a Task unblocks is the derived inverse and is not stored. |
 | `code` | Code references naming exact lines; a whole-file reference is invalid. |
-| `sizing` | `{within_two_days, reason}`: the author's judgment that the Task would have taken two days or less before AI. |
+| `sizing` | `{within_two_days, reason}`: the author's judgment that one human developer, coding without AI help, would finish the Task in two days or less. |
 | `summary` | What was done. |
 
 `done` is what an author reports; it never proves the work is correct. A Task can

@@ -73,8 +73,8 @@ type PlanManifest struct {
 	CreatedAt   time.Time  `json:"created_at"`
 }
 
-// TaskSizing is the judgment that a Task would have taken two days or less
-// before AI, which implies it is well understood.
+// TaskSizing is the judgment that one human developer, coding without AI help,
+// would finish a Task in two days or less, which implies it is well understood.
 type TaskSizing struct {
 	WithinTwoDays bool   `json:"within_two_days"`
 	Reason        string `json:"reason,omitempty"`

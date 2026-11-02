@@ -23,10 +23,13 @@ again. A different body of work gets its own Plan.
   it, so a Task can only depend on Tasks of an earlier phase; anything else is
   refused. Keep dependencies inside one Plan. To reorder phases, add them again
   and `plan remove-phase` the old ones.
-- **Size each Task honestly.** The goal is to be confident it would have taken
-  two days or less before AI, which implies it is well understood. If you are not
-  confident, research or prototype until you are, or split it. Record the
-  judgment with `--sizing`, and never mark a Task `within-2-days` to get past this.
+- **Size each Task honestly.** Each Task should be reasonably granular: a coherent
+  piece of work that one human developer, coding it without AI help, would finish
+  in two days or less, which implies it is well understood. Judge it as that
+  developer, not by how long an agent would take. If you are not confident,
+  research or prototype until you are, or split it, but not so finely that a Task
+  stops being a meaningful unit of work. Record the judgment with `--sizing`, and
+  never mark a Task `within-2-days` to get past this.
 - **Done is a report.** `task done` says the work was finished; it never proves
   the work is correct. Mark Tasks done as you finish them, and update the Plan as
   you learn. A Plan is a working document until it is delivered.

@@ -231,8 +231,9 @@ func plansFeatureList(features []string) string {
 // is well understood. The command reports; the judgment stays with them.
 const planGuideWorkflow = `Guide to a Plan you can be confident in
 
-Work through this with the person who asked. A Plan is well understood when you are
-confident each Task would have taken two days or less before AI.
+Work through this with the person who asked. A Plan is well understood when each Task
+is reasonably granular: a coherent piece of work that one human developer, coding it
+without AI help, would finish in two days or less.
 
 1. Research. Find the stories this work serves with change-saga query requirements,
    and read the code they touch. Present what you found, including what does not exist
@@ -246,8 +247,10 @@ confident each Task would have taken two days or less before AI.
 4. Prototype. Where an experience or an approach is unclear, build a prototype and
    attach it with plan add-prototype. Research and prototypes are how confidence is
    earned, so go back to step 1 whenever a Task is still vague.
-5. Size. Record each Task's judgment with task set --sizing. Split a Task that is too
-   big or not understood. Never record within-2-days to get past this step.
+5. Size. Judge each Task as one human developer coding it without AI help, not by how
+   long an agent would take, and record it with task set --sizing. Split a Task that is
+   too big or not understood, but not so finely that it stops being a meaningful unit of
+   work. Never record within-2-days to get past this step.
 6. Explain. Write the technical design as the deck with apply-slide --plan and its
    essay with deck overview --plan, organized by phase. Give each diagram node that
    represents work an Item that selects the node and whose record names its Task: that
@@ -574,7 +577,7 @@ func taskAdd(ctx context.Context, args []string, out io.Writer) error {
 	phase := flags.String("phase", "", "phase id")
 	story := flags.String("story", "", "URN of the user story this task is part of")
 	essaySource := flags.String("essay-source", "", "Markdown file, or - for standard input")
-	sizing := flags.String("sizing", "", "within-2-days or over-2-days: whether this would have taken two days or less before AI")
+	sizing := flags.String("sizing", "", "within-2-days or over-2-days: whether one human developer, coding without AI help, would finish this in two days or less")
 	sizingReason := flags.String("sizing-reason", "", "why")
 	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
@@ -669,7 +672,7 @@ func taskSet(ctx context.Context, args []string, out io.Writer) error {
 	story := flags.String("story", "", "URN of the user story; empty clears it")
 	state := flags.String("state", "", "planned, in_progress, or done")
 	essaySource := flags.String("essay-source", "", "Markdown file, or - for standard input; an empty file removes the essay")
-	sizing := flags.String("sizing", "", "within-2-days or over-2-days: whether this would have taken two days or less before AI")
+	sizing := flags.String("sizing", "", "within-2-days or over-2-days: whether one human developer, coding without AI help, would finish this in two days or less")
 	sizingReason := flags.String("sizing-reason", "", "why")
 	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
