@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
+  "version": 5,
+  "id": "find-plans-in-their-section.plan-crosses-features.r1",
+  "criterion": "urn:change-saga:change-saga:story:find-plans-in-their-section:criterion:plan-crosses-features",
+  "story_revision": "urn:change-saga:change-saga:story:find-plans-in-their-section:revision:r1",
+  "required_kinds": [
+    "positive"
+  ],
+  "allowed_automation": [
+    "automated",
+    "hybrid",
+    "manual"
+  ],
+  "supersedes": [],
+  "rationale": "The linked test checks the behavior this criterion states, including any refusal it names. No separate edge or negative case is claimed beyond that.",
+  "created_at": "2026-11-02T22:20:34Z"
+}

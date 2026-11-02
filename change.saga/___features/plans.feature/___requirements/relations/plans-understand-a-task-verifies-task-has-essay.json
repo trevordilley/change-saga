@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-understand-a-task-verifies-task-has-essay",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-understand-a-task",
+  "to": "urn:change-saga:change-saga:story:understand-a-task:criterion:task-has-essay",
+  "scope": "self",
+  "rationale": "Step task-has-essay checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-understand-a-task:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:understand-a-task:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:19:18.017834Z"
+}

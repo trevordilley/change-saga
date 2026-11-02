@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-says-what-runs-together",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-read-plan-by-phase",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-read-plan-by-phase:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "says-what-runs-together"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/server/plans_test.go",
+      "start": 91,
+      "end": 116,
+      "digest": "sha256:9ad8976640ab13216a17436c285170c3e235c39511217e5d790af4361135f0a0"
+    },
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/saga/plan_test.go",
+      "start": 87,
+      "end": 102,
+      "digest": "sha256:25f81ed0a399ca3c1bb7a3020129fc92efe561b860384d896bf48f962de64a88"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:19:01Z"
+}

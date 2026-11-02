@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-find-plans-in-their-section-verifies-change-stays-one-plan",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-find-plans-in-their-section",
+  "to": "urn:change-saga:change-saga:story:find-plans-in-their-section:criterion:change-stays-one-plan",
+  "scope": "self",
+  "rationale": "Step change-stays-one-plan checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-find-plans-in-their-section:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:find-plans-in-their-section:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:18:35.543979Z"
+}

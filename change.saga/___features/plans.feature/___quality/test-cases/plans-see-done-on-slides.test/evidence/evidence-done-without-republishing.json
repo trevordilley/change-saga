@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-done-without-republishing",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "done-without-republishing"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "e2e/tests/plans.spec.ts",
+      "start": 83,
+      "end": 116,
+      "digest": "sha256:07e97fd96134a0d0b7194a2db4202696e0be2cd2985d5586da7f4527fca642b0"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:19:05Z"
+}

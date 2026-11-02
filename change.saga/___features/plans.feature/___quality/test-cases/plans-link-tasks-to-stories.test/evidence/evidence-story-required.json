@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-story-required",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "story-required"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/cli/plans_test.go",
+      "start": 80,
+      "end": 95,
+      "digest": "sha256:96217fed593bd186d6e8ef0f336c65691ea539468e8623db88bfa322be8a50ad"
+    },
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/saga/plan_test.go",
+      "start": 38,
+      "end": 60,
+      "digest": "sha256:e8d17ff4a6cbd0285a0bc5bc9e926b6e6f8fd03d73f66ea715fd95b33b182f81"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:18:44Z"
+}

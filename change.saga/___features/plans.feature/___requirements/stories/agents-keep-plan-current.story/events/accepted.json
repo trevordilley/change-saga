@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:agents-keep-plan-current",
+  "parents": [
+    "urn:change-saga:change-saga:story:agents-keep-plan-current:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Verified against the code and tests on 2026-11-02. An agent marks Tasks done and writes a Plan's content through the CLI, with validation applying.",
+  "created_at": "2026-11-02T22:19:18.653445Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-compare-plan-with-reviews-verifies-plan-and-reviews-link",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews",
+  "to": "urn:change-saga:change-saga:story:compare-plan-with-reviews:criterion:plan-and-reviews-link",
+  "scope": "self",
+  "rationale": "Step plan-and-reviews-link checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:compare-plan-with-reviews:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:18:27.382392Z"
+}

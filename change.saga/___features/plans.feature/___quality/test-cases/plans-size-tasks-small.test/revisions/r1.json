@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-size-tasks-small",
+  "parents": [],
+  "title": "Task sizing stands out",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "sizing-recorded",
+      "action": "Record over-2-days and within-2-days on a Task.",
+      "expected_result": "The guide reads each judgment back.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:size-tasks-small:criterion:sizing-recorded"
+      ]
+    },
+    {
+      "id": "unsized-stands-out",
+      "action": "Open the Tasks view with an unsized Task.",
+      "expected_result": "The Task is named as not confidently two days or less.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:size-tasks-small:criterion:unsized-stands-out"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-02T22:19:12Z"
+}

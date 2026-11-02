@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-several-prototypes",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-show-plan-prototypes",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-show-plan-prototypes:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "several-prototypes"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/cli/plans_test.go",
+      "start": 391,
+      "end": 408,
+      "digest": "sha256:690359d2841b99bf76c94e0c001fbf9fcac541533297887db6673d003e55c467"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:19:12Z"
+}

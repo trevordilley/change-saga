@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-one-grammar",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-one-way-to-plan",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-one-way-to-plan:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "one-grammar"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/cli/plans_test.go",
+      "start": 445,
+      "end": 453,
+      "digest": "sha256:b32770fd9f3779a4417a9ef563968c55885176b8698b39a8afe8fdb9249873d3"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:18:55Z"
+}

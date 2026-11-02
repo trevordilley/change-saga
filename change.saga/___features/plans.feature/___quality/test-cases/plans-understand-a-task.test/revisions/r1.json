@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-understand-a-task",
+  "parents": [],
+  "title": "A Task page says where it leads and why",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "task-names-story",
+      "action": "Open a Task with no story of its own.",
+      "expected_result": "It says so and links the chain.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:understand-a-task:criterion:task-names-story"
+      ]
+    },
+    {
+      "id": "task-has-essay",
+      "action": "Add a Task with an essay and open it.",
+      "expected_result": "The page shows the essay.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:understand-a-task:criterion:task-has-essay"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-02T22:19:15Z"
+}

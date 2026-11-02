@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:one-way-to-plan",
+  "parents": [
+    "urn:change-saga:change-saga:story:one-way-to-plan:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Verified against the code and tests on 2026-11-02. plan and task are the only planning commands, ___workplan is refused, and readiness reads Tasks.",
+  "created_at": "2026-11-02T22:19:20.436622Z"
+}

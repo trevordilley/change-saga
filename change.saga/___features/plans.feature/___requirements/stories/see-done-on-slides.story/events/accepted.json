@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:see-done-on-slides",
+  "parents": [
+    "urn:change-saga:change-saga:story:see-done-on-slides:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Verified against the code and tests on 2026-11-02. A slide lists its Tasks and how many are done, worked out when it renders.",
+  "created_at": "2026-11-02T22:19:20.936883Z"
+}

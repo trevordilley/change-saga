@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-hide-done-plans-verifies-deliver-is-explicit",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-hide-done-plans",
+  "to": "urn:change-saga:change-saga:story:hide-done-plans:criterion:deliver-is-explicit",
+  "scope": "self",
+  "rationale": "Step deliver-is-explicit checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-hide-done-plans:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:hide-done-plans:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:18:37.332578Z"
+}
