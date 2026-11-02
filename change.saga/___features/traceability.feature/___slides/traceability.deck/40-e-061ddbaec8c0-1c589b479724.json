@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/livingapp/compose.go",
-      "start": 445,
-      "end": 453,
-      "digest": "sha256:57eca64208fd3b97653a7133f24c9879877800ff34662ebb696a1cb49bd9c3f8",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:6f7cf41cc0ea979fcde3677097c1d112ee01ac956acdc52d736e428495913db8",
       "note": "Derives work items only from current implements relations and emits work-item-missing when none reaches the criterion."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/livingapp/compose.go",
-      "start": 476,
-      "end": 488,
-      "digest": "sha256:6b6cbe2bea262aa452d645e8c1f252b14aa5b5a0f67588aabf2abb2571e622d9",
+      "start": 284,
+      "end": 293,
+      "digest": "sha256:06a676e8188cfdf2af41b394e31e92c37cb14f43bf52a4d23cada9dc18082117",
       "note": "Derives work items only from current implements relations and emits work-item-missing when none reaches the criterion."
     }
   ]

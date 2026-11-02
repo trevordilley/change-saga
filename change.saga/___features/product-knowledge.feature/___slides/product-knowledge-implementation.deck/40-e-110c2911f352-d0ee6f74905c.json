@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/livingapp/session.go",
-      "start": 39,
-      "end": 86,
-      "digest": "sha256:233f5a64da715db8a55e7408a087a43a41d002ff9785972384802202386afa42",
+      "start": 37,
+      "end": 84,
+      "digest": "sha256:1357b06ca6af7312e03710579b22055ceddb3dd4ff6c092ae1563754614f995e",
       "note": "Opens one safe, validated snapshot and composes Saga, quality, requirements, and work-plan state."
     }
   ]
