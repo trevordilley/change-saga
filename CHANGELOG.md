@@ -57,6 +57,9 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- A whiteboard element focused during a camera change gets its actions when the
+  change ends. They could be lost for good if focus landed in that brief window;
+  actions dismissed with Escape stay dismissed.
 - `apply-slide` publishes a slide to a `--role ux` deck with no code evidence,
   as the format says it may. Code a UX Item does cite is still checked, and it
   still links a criterion.

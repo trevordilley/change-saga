@@ -285,6 +285,38 @@ test("section and imported-source focus share history without carrying a source 
 });
 
 
+// One camera change pauses the board more than once, clearing the actions each
+// time. They must come back for whatever holds focus when it ends, or a keyboard
+// reader who tabs during a change never gets them; but not once dismissed.
+test("focused actions return after a camera change unless they were dismissed", async ({page,saga}) => {
+  nativeModel(saga,true);
+  await page.goto(saga.baseURL+"/technical/erd"); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'), bar=page.locator('[data-diagram-affordance]');
+  await board.locator('[data-whiteboard-focus]').selectOption('shared');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  const pausedWhenFocused=await board.evaluate(node=>{
+    const focus=node.querySelector('[data-whiteboard-focus]') as HTMLSelectElement;
+    focus.value=''; focus.dispatchEvent(new Event('change',{bubbles:true}));
+    (node.querySelector('[data-instance-path="sync"]') as HTMLElement).focus();
+    return (node as HTMLElement).dataset.whiteboardInteracting;
+  });
+  expect(pausedWhenFocused).toBe('true');
+  await expect(bar.locator('[data-source-relationship="sync"]')).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(bar).toBeHidden();
+  await expect(board.locator('[data-instance-path="sync"]')).toBeFocused();
+  const interacted=board.evaluate(node=>new Promise<void>(resolve=>{
+    const observer=new MutationObserver(()=>{if((node as HTMLElement).dataset.whiteboardInteracting==='false'){observer.disconnect();resolve();}});
+    observer.observe(node,{attributes:true,attributeFilter:['data-whiteboard-interacting']});
+    const focus=node.querySelector('[data-whiteboard-focus]') as HTMLSelectElement;
+    focus.dispatchEvent(new Event('change',{bubbles:true}));
+  }));
+  await interacted;
+  await page.waitForTimeout(100);
+  await expect(bar).toBeHidden();
+});
+
 test("native hover reuses slide actions and loads real pinned code and Item story panels lazily", async ({page,saga}, testInfo) => {
   nativeModel(saga,true);
   const requests:string[]=[];

@@ -76,7 +76,12 @@ const diagramInteractionsJavaScript = `
     for (const [type, handler] of listeners) root.addEventListener(type, handler);
     const observer = new MutationObserver(() => {
       if (paused()) clear();
-      else { focused = controlFor(document.activeElement); paint(focused); }
+      else {
+        // A camera change hides the actions only while it runs, and one change
+        // can pause more than once. The focused element gets them back.
+        focused = controlFor(document.activeElement); paint(focused);
+        if (focused) affordance?.resume(focused);
+      }
     });
     observer.observe(interactionRoot, {attributes:true, attributeFilter:['data-whiteboard-interacting']});
     const cleanup = () => {
@@ -115,7 +120,7 @@ const diagramInteractionsJavaScript = `
     bar.setAttribute('role','group'); bar.hidden = true;
     document.body.append(bar);
     const cache = new Map(), inflight = new Map();
-    let owner = null, hideTimer = 0, pending = 0, touch = false, quietFocus = false;
+    let owner = null, hideTimer = 0, pending = 0, touch = false, quietFocus = false, dismissed = null;
     const viewport = root.closest('[data-whiteboard-viewport]');
     const inside = target => target instanceof Node && (owner?.contains(target) || bar.contains(target) || notePopover?.contains(target));
     function clear(focusTarget = null) {
@@ -190,6 +195,7 @@ const diagramInteractionsJavaScript = `
         return;
       }
       if (!place(node, pointer)) return;
+      dismissed = null;
       clear(); owner = node; const request = ++pending;
       diagramAffordanceOwners.set(bar,node); diagramAffordanceLifetimes.set(bar,{});
       bar.setAttribute('aria-label','Actions for '+(node.getAttribute('aria-label') || 'element'));
@@ -217,7 +223,7 @@ const diagramInteractionsJavaScript = `
     bar.addEventListener('focusout',leave);
     const keydown = event => {
       if (event.defaultPrevented || !owner || bar.hidden) return;
-      if (event.key === 'Escape' && !noteOwner) { clear(owner); event.preventDefault(); return; }
+      if (event.key === 'Escape' && !noteOwner) { dismissed = owner; clear(owner); event.preventDefault(); return; }
       if (event.key !== 'Tab') return;
       const buttons = qa('button,a[href]',bar);
       if (event.target === owner && !event.shiftKey && buttons.length) { event.preventDefault(); buttons[0].focus(); }
@@ -240,6 +246,8 @@ const diagramInteractionsJavaScript = `
     root.addEventListener('pointerdown',pointerdown);
     root.addEventListener('click',click,true);
     signal.addEventListener('abort',()=>{clear(); bar.remove(); cache.clear(); root.removeEventListener('keydown',keydown); root.removeEventListener('click',click,true); root.removeEventListener('pointerdown',pointerdown);},{once:true});
-    return {show,leave,clear};
+    // Brings back the actions a camera change hid, unless the reader dismissed them.
+    const resume = node => { if (node !== dismissed) void show(node); };
+    return {show,leave,clear,resume};
   }
 `
