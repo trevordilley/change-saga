@@ -51,6 +51,21 @@ of the Plan (`urn:change-saga:SAGA:plan:ID:task:TASK`) or a story, and the slide
 lists those Tasks and their done state in a slide-out. Put code references on Tasks. Read a
 Plan's slides with `diagram describe --slide SLIDE_URN`.
 
+Give each diagram node that represents work an Item that selects the node
+(`selector: {type: element, element_id: NODE}`) and names its Task in `record`:
+
+```json
+{"id": "read-tides", "rank": 10, "kind": "node", "label": "Read the tide table",
+ "description": "The work.", "selector": {"type": "element", "element_id": "read-tides"},
+ "record": "urn:change-saga:SAGA:plan:ID:task:read-tides"}
+```
+
+That Item is what makes the node interactive. The node highlights on hover, shows a
+check once the Task is done, and opens a slide-out of the Task: its state, phase,
+story, what it needs and unblocks, its essay, and its code references, each opening
+its pinned lines. A node with no such Item is only a drawing. An Item naming a story
+opens that story the same way, and a callout stays in the list under the slide.
+
 Attach prototypes with `plan add-prototype`.
 
 ## While the work happens

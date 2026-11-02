@@ -311,7 +311,7 @@ func TestPlanGuideNamesWhatIsNotReady(t *testing.T) {
 	t.Parallel()
 	fixture := newPlanFixture(t)
 	root := fixture.root
-	if workflow := run(t, Plan, "guide", root); !strings.Contains(workflow, "Research.") || strings.Contains(workflow, "Plan first:") {
+	if workflow := run(t, Plan, "guide", root); !strings.Contains(workflow, "Research.") || !strings.Contains(workflow, "whose record names its Task") || strings.Contains(workflow, "Plan first:") {
 		t.Fatalf("workflow = %q", workflow)
 	}
 	run(t, Task, "add", "--plan", "first", "--id", "feature-work", "--title", "Feature work", "--story", planStoryURN, root)

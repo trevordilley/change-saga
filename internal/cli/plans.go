@@ -249,7 +249,9 @@ confident each Task would have taken two days or less before AI.
 5. Size. Record each Task's judgment with task set --sizing. Split a Task that is too
    big or not understood. Never record within-2-days to get past this step.
 6. Explain. Write the technical design as the deck with apply-slide --plan and its
-   essay with deck overview --plan, organized by phase, with slides naming their Tasks.
+   essay with deck overview --plan, organized by phase. Give each diagram node that
+   represents work an Item that selects the node and whose record names its Task: that
+   Item is what lets a reader select the node and open the Task.
 7. Check. Run plan guide --plan ID until it has nothing left to name.
 `
 

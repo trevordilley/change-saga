@@ -956,8 +956,9 @@ type taskCodeView struct {
 // so a Task's code is not among the records /api/reference-code serves. A reference
 // that cannot be read still answers, with the reason in place of its lines.
 func (a *app) taskCode(w http.ResponseWriter, r *http.Request) {
-	document := a.loadReviewDocument(w)
+	document := a.narrativeDocument(r.Context())
 	if document == nil {
+		http.Error(w, "The Saga could not be loaded.", http.StatusInternalServerError)
 		return
 	}
 	query := r.URL.Query()
@@ -1263,6 +1264,7 @@ body:has(.diff-drawer.open.plan-node-drawer) .plan-tasks-view,body:has(.diff-dra
 .plan-code li{padding:6px 0;border-bottom:1px solid var(--line)}
 .plan-code-open{display:block;max-width:100%;padding:0;border:0;background:none;color:var(--accent);font:inherit;text-align:left;overflow-wrap:anywhere;cursor:pointer}
 .plan-code-open:hover{text-decoration:underline}
+.plan-code-open[aria-busy="true"]{opacity:.6;cursor:progress}
 .plan-code-open code{color:inherit;overflow-wrap:anywhere}
 .plan-code-note:not([hidden]){display:block}
 .plan-task-card-code h3{margin:10px 0 2px}

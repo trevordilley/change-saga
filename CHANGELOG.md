@@ -12,6 +12,13 @@ tool, and what they have to do about it.
 
 ### Added
 
+- A Plan slide's nodes are interactive. A node whose Item names a Task or story
+  highlights on hover and opens a slide-out of it, and a done Task's node shows a
+  check. Author each node that represents work with such an Item; `plan guide` and
+  the Plans reference now say so.
+- A Task's code references open their pinned lines and note in the code drawer, from
+  its page, the Tasks board, a slide's Task list, and a node's slide-out. A reference
+  whose commit or file cannot be read says so. A Task's slide-out also shows its essay.
 - **Format:** Plans and Tasks replace the work plan. A Plan is a body of work
   and how it can run in parallel: a slide deck and Tasks, in
   `___plans/<id>.plan/`, owned by no feature. Every Task must name a user story
