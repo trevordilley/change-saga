@@ -391,8 +391,8 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 	}
 	for _, deck := range decks {
 		if deck.Deleted {
-			if deck.Role == DeckRoleReview || len(deck.Slides) != 0 {
-				addIssue(validation, "error", deck.Path, "a deleted deck cannot contain active slides or be a review deck")
+			if deck.Role == DeckRoleReview || deck.Role == DeckRolePlan || len(deck.Slides) != 0 {
+				addIssue(validation, "error", deck.Path, "a deleted deck cannot contain active slides or be a review or plan deck")
 			}
 			continue
 		}
@@ -420,8 +420,8 @@ func validateDeckManifest(value DeckManifest, path, target string, validation *V
 	if err != nil || expected != path {
 		addIssue(validation, "error", path, "deck filename does not match its rank and stable target")
 	}
-	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding && value.Role != DeckRoleReview && value.Role != DeckRoleFeatureTheme && value.Role != DeckRoleUX {
-		addIssue(validation, "error", path, "deck role must be change, ux, onboarding, review, or feature-theme")
+	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding && value.Role != DeckRoleReview && value.Role != DeckRoleFeatureTheme && value.Role != DeckRoleUX && value.Role != DeckRolePlan {
+		addIssue(validation, "error", path, "deck role must be change, ux, onboarding, review, plan, or feature-theme")
 	}
 	if validFlatRank(value.Rank) != nil || strings.TrimSpace(value.Objective) == "" || utf8.RuneCountInString(value.Objective) > 240 {
 		addIssue(validation, "error", path, "deck rank must fit the portable range and objective must contain 1 to 240 characters")
@@ -605,6 +605,13 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 				// a Saga record to open beside it, both, or neither.
 				if item.Record != "" && !validReviewRecordReference(sagaID, item.Record) {
 					addIssue(validation, "error", item.Path, "review item record must be a canonical record URN of this Saga")
+				}
+			case DeckRolePlan:
+				if item.Record != "" && !validPlanRecordReference(sagaID, deck, item.Record) {
+					addIssue(validation, "error", item.Path, "plan item record must be a story URN of this Saga or a task of this plan")
+				}
+				if item.HasCode || len(item.CriterionLinks) > 0 {
+					addIssue(validation, "error", item.Path, "a plan describes intended work; its items own no code evidence or criterion links, and its tasks carry code references")
 				}
 			case DeckRoleFeatureTheme:
 				if item.Record != "" && !validRecordReference(sagaID, item.Record) {

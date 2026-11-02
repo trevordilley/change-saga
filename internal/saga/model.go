@@ -391,7 +391,10 @@ type Saga struct {
 	FeatureThemes []*FeatureTheme `json:"feature_themes,omitempty"`
 	// Reviews are the pull requests' review decks. They are not
 	// documentation and never count toward coverage.
-	Reviews       []*Review      `json:"reviews,omitempty"`
+	Reviews []*Review `json:"reviews,omitempty"`
+	// Plans are the bodies of work the team intends to do. Like reviews, they
+	// are not part of the documentation's structure and never earn it coverage.
+	Plans         []*Plan        `json:"plans,omitempty"`
 	Claims        []Claim        `json:"claims,omitempty"`
 	Verifications []Verification `json:"verifications,omitempty"`
 	Merges        []Merge        `json:"merges,omitempty"`
