@@ -76,7 +76,6 @@ change-saga task list --plan ID [--ready]                    # what can start no
 
 ## Open questions {#open-questions}
 
-1. **Which way does a Task's chain to a story run?** This assumes a Task reaches a story through the Tasks it unblocks, because prerequisite work exists to serve what comes after it. It does not count a story held only by something the Task depends on.
 1. **Are these the right personas?** "Contributor" was asked for, but the Saga has no such persona. These stories use architect and developer, the closest fit, and no new persona was created.
 2. **Is a Plan discussed and approved, as a review is?** The original idea was yes, per slide. The current direction does not say, so no story covers it.
 3. **What exactly makes a Plan done?** Reviews come after its work is done, and it is hidden once implemented and merged. Does that take every Task done, every linked Review merged, or both?
