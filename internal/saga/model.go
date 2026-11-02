@@ -104,12 +104,7 @@ type DocumentationLink = diagram.DocumentationLink
 // Evidence names a stable evidence ID in the last hop's revision and Code is the
 // selected subset of that reference: same commit/path, a narrower or equal line
 // range and the digest of the selected bytes only. It is inventory format 2.
-type ItemSelection struct {
-	ID       string              `json:"id"`
-	Path     []DocumentationLink `json:"path"`
-	Evidence string              `json:"evidence"`
-	Code     coderef.Reference   `json:"code"`
-}
+type ItemSelection = diagram.ItemSelection
 
 // MaxItemSelections and MaxSelectionPath bound one Item's selections.
 const (

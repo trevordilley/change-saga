@@ -95,7 +95,7 @@ func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revi
 		return &whiteboardView{ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	enhanced, capabilities := a.enhanceWhiteboardSources(inventory, resolved, template.HTML(visual))
-	enhanced, staleElements := a.enhanceWhiteboardElements(inventory.SagaID, id, resolved, enhanced)
+	enhanced, staleElements := a.enhanceWhiteboardElements(inventory, id, resolved, enhanced)
 	boardTarget, _ := requirements.WhiteboardURN(inventory.SagaID, id)
 	view := &whiteboardView{DeprecationTarget: boardTarget, ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
 	view.StaleElements = staleElements

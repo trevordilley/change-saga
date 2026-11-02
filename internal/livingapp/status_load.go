@@ -17,6 +17,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -96,6 +97,19 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 				}
 			}
 		}
+		for _, item := range inputs.WhiteboardItems {
+			for _, selection := range item.Selections {
+				if item.Documentation == nil {
+					continue
+				}
+				resolver, _ := options.Resolver.(inventoryview.SelectionResolver)
+				result := inventoryview.ResolveSelection(ctx, &inventory, *item.Documentation, selection, options.Changes.HeadOID, resolver)
+				for _, reason := range result.Reasons {
+					inputs.WhiteboardProblems[item.Target] = append(inputs.WhiteboardProblems[item.Target], "selection "+selection.ID+": "+reason.Code+" "+reason.Detail)
+				}
+			}
+		}
+
 	}
 	inputs.Features, err = applayout.Features(root)
 	if err != nil {

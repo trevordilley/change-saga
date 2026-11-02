@@ -39,7 +39,7 @@ func isRequirement(kind endpointKind) bool {
 }
 
 func isVisual(kind endpointKind) bool {
-	return kind == endpointDeck || kind == endpointSlide || (kind == endpointItem || kind == endpointWhiteboardElement)
+	return kind == endpointDeck || kind == endpointSlide || kind == endpointItem || kind == endpointWhiteboardElement
 }
 
 // validateV5Scope admits descendant reach only when it is explicitly declared

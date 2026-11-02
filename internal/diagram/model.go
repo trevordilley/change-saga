@@ -60,6 +60,14 @@ type DocumentationLink struct {
 }
 
 // CriterionLink is an exact semantic link pinned to its story revision.
+// ItemSelection selects exact code through a declared path of saved definitions.
+type ItemSelection struct {
+	ID       string              `json:"id"`
+	Path     []DocumentationLink `json:"path"`
+	Evidence string              `json:"evidence"`
+	Code     coderef.Reference   `json:"code"`
+}
+
 type CriterionLink struct {
 	ID            string `json:"id"`
 	Criterion     string `json:"criterion"`
@@ -144,14 +152,16 @@ type Element struct {
 	HighlightLines []int            `json:"highlight_lines,omitempty"`
 	Source         *SourceReference `json:"source,omitempty"`
 	// Evidence belongs to this semantic element; Code remains displayed code-block text.
-	Evidence       []coderef.Reference `json:"evidence,omitempty"`
-	CriterionLinks []CriterionLink     `json:"criterion_links,omitempty"`
-	Record         string              `json:"record,omitempty"`
-	Documentation  *DocumentationLink  `json:"documentation,omitempty"`
-	Summary        string              `json:"summary,omitempty"`
-	Visibility     string              `json:"visibility,omitempty"`
-	DetailScale    float64             `json:"detail_scale,omitempty"`
-	Bends          []Point             `json:"bends,omitempty"`
+	Evidence          []coderef.Reference `json:"evidence,omitempty"`
+	CriterionLinks    []CriterionLink     `json:"criterion_links,omitempty"`
+	Record            string              `json:"record,omitempty"`
+	Documentation     *DocumentationLink  `json:"documentation,omitempty"`
+	DocumentationView string              `json:"documentation_view,omitempty"`
+	Selections        []ItemSelection     `json:"selections,omitempty"`
+	Summary           string              `json:"summary,omitempty"`
+	Visibility        string              `json:"visibility,omitempty"`
+	DetailScale       float64             `json:"detail_scale,omitempty"`
+	Bends             []Point             `json:"bends,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -318,8 +328,11 @@ func (d Document) Validate() error {
 		if len([]rune(e.Label)) > MaxLabelRunes || len([]rune(e.Detail)) > MaxLabelRunes || len([]rune(e.Description)) > 2*MaxLabelRunes {
 			fail("text is too long")
 		}
-		if e.Decorative && (len(e.Evidence) > 0 || len(e.CriterionLinks) > 0 || e.Record != "" || e.Documentation != nil) {
+		if e.Decorative && (len(e.Evidence) > 0 || len(e.CriterionLinks) > 0 || e.Record != "" || e.Documentation != nil || e.DocumentationView != "" || len(e.Selections) > 0) {
 			fail("decorative elements cannot own evidence or semantic links")
+		}
+		if len(e.CriterionLinks) > 500 {
+			fail("at most 500 criterion links per element")
 		}
 		if len(e.Evidence) > 500 {
 			fail("at most 500 evidence references per element")
@@ -510,7 +523,7 @@ func Contract() map[string]any {
 		"default_styles":       styles,
 		"colors":               "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
 		"color_tokens":         colorTokenNames(),
-		"fields":               []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines", "source", "evidence", "criterion_links", "record", "documentation", "summary", "visibility", "detail_scale", "bends"},
+		"fields":               []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines", "source", "evidence", "criterion_links", "record", "documentation", "documentation_view", "selections", "summary", "visibility", "detail_scale", "bends"},
 		"reveal_modes":         RevealModes(),
 		"terminators":          TerminatorNames(),
 		"composition": map[string]any{

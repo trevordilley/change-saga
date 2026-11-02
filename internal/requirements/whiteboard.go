@@ -269,6 +269,9 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, par
 		if len(revisions) == 0 && parent != "" || len(revisions) > 0 && (len(heads) != 1 || parent != heads[0]) {
 			return fmt.Errorf("whiteboard parent must name the current head: %v", heads)
 		}
+		if err := validateWhiteboardItemPins(root, sagaID, boardID, document); err != nil {
+			return err
+		}
 		if _, err := resolveWhiteboard(root, sagaID, v); err != nil {
 			return err
 		}

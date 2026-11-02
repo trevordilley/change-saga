@@ -246,6 +246,30 @@ func pinWhiteboardEvidence(ctx context.Context, checkout string, doc *diagram.Do
 			}
 			doc.Elements[i].Evidence[j] = authored
 		}
+		for j, selection := range doc.Elements[i].Selections {
+			if resolver == nil {
+				var err error
+				resolver, err = coderesolve.New(ctx, checkout)
+				if err != nil {
+					return err
+				}
+			}
+			commit, err := resolveCommit(ctx, checkout, selection.Code.Commit)
+			if err != nil {
+				return err
+			}
+			location := selection.Code.Location()
+			location.Commit = commit
+			authored, err := resolver.Author(ctx, location, selection.Code.Note)
+			if err != nil {
+				return err
+			}
+			if selection.Code.Digest != "" && selection.Code.Digest != authored.Digest {
+				return fmt.Errorf("%s: selected-byte digest does not match saved bytes", doc.Elements[i].ID)
+			}
+			doc.Elements[i].Selections[j].Code = authored
+		}
+
 	}
 	return nil
 }

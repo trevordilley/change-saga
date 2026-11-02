@@ -52,6 +52,15 @@ func sagaReferences(document *saga.Saga) ([]ownedReference, error) {
 			}
 		}
 	})
+	items, err := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	if err != nil {
+		return nil, err
+	}
+	for _, item := range items {
+		for _, selection := range item.Selections {
+			result = append(result, ownedReference{Kind: "whiteboard", Owner: item.Target, EvidenceFile: item.Path + "#element=" + item.ID + "#selection=" + selection.ID, Index: 1, Code: selection.Code})
+		}
+	}
 	for _, claim := range document.Claims {
 		for index, reference := range claim.Evidence {
 			result = append(result, ownedReference{Kind: "claim", Owner: "urn:change-saga:" + document.Manifest.ID + ":claim:" + claim.ID, Index: index + 1, Code: reference})

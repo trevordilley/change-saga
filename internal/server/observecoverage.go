@@ -83,6 +83,25 @@ func collectDocumentedCode(document *saga.Saga, records requirements.Document, t
 		}
 	}
 	coverage.WalkDocumentCode(document, add)
+	byTarget := map[string]int{}
+	for i, record := range result {
+		byTarget[record.target] = i
+	}
+	items, _ := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	for _, item := range items {
+		var selected []coderef.Reference
+		for _, selection := range item.Selections {
+			selected = append(selected, selection.Code)
+		}
+		if len(selected) > 0 {
+			if i, ok := byTarget[item.Target]; ok {
+				result[i].references = append(result[i].references, selected...)
+			} else {
+				byTarget[item.Target] = len(result)
+				result = append(result, documentedCode{target: item.Target, references: selected})
+			}
+		}
+	}
 	for _, testCase := range tests.TestCases {
 		urn, _ := qualityid.TestCase(tests.SagaID, testCase.Identity.ID)
 		var references []coderef.Reference

@@ -10,6 +10,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -21,7 +22,16 @@ type whiteboardStaleElement struct{ Path, Label string }
 // Enhance only this board's own elements. Imported ERD sources keep their exact
 // independent ownership and existing actions. These attributes are reader state,
 // never persisted geometry or a new revision of the authored SVG.
-func (a *app) enhanceWhiteboardElements(sagaID, boardID string, resolved *requirements.ResolvedWhiteboard, visual template.HTML) (template.HTML, []whiteboardStaleElement) {
+func (a *app) enhanceWhiteboardElements(inventory requirements.Inventory, boardID string, resolved *requirements.ResolvedWhiteboard, visual template.HTML) (template.HTML, []whiteboardStaleElement) {
+
+	hasMetadata, hasEvidence := false, false
+	for _, e := range resolved.Revision.Document.Elements {
+		hasMetadata = hasMetadata || len(e.Selections) > 0 || len(e.Evidence) > 0 || len(e.CriterionLinks) > 0 || e.Record != "" || e.Documentation != nil
+		hasEvidence = hasEvidence || len(e.Evidence) > 0 || len(e.Selections) > 0
+	}
+	if !hasMetadata {
+		return visual, nil
+	}
 	tree, err := readPresentationSVG(string(visual))
 	if err != nil {
 		return visual, nil
@@ -37,16 +47,22 @@ func (a *app) enhanceWhiteboardElements(sagaID, boardID string, resolved *requir
 		}
 	}
 	ctx := context.Background()
-	resolver, err := coderesolve.New(ctx, a.sourceDir)
-	if err == nil {
-		defer resolver.Close()
+
+	var resolver *coderesolve.Resolver
+	head := ""
+	if hasEvidence {
+		resolver, _ = coderesolve.New(ctx, a.sourceDir)
+		if resolver != nil {
+			defer resolver.Close()
+		}
+		head, _ = resolveCommit(ctx, a.sourceDir, firstNonEmptyString(a.rng.Head, "HEAD"))
 	}
-	head, _ := resolveCommit(ctx, a.sourceDir, firstNonEmptyString(a.rng.Head, "HEAD"))
+
 	var stale []whiteboardStaleElement
 	tree.walk(func(node *presentationSVG) {
 		path := node.attr("data-instance-path")
 		e, ok := elements[path]
-		if !ok || e.Decorative || (len(e.Evidence) == 0 && len(e.CriterionLinks) == 0 && e.Record == "" && e.Documentation == nil) {
+		if !ok || e.Decorative || (len(e.Evidence) == 0 && len(e.CriterionLinks) == 0 && e.Record == "" && e.Documentation == nil && len(e.Selections) == 0) {
 			return
 		}
 		node.set("data-whiteboard-element", e.ID)
@@ -56,6 +72,20 @@ func (a *app) enhanceWhiteboardElements(sagaID, boardID string, resolved *requir
 		isStale := false
 		for _, ref := range e.Evidence {
 			if resolver == nil || !resolver.Resolve(ctx, ref, head).Current() {
+				isStale = true
+			}
+		}
+		for _, selection := range e.Selections {
+			if e.Documentation == nil {
+				isStale = true
+				continue
+			}
+			var selectionResolver inventoryview.SelectionResolver
+			if resolver != nil {
+				selectionResolver = resolver
+			}
+			result := inventoryview.ResolveSelection(ctx, &inventory, *e.Documentation, selection, head, selectionResolver)
+			if !result.Eligible || len(result.Reasons) > 0 {
 				isStale = true
 			}
 		}
@@ -114,13 +144,23 @@ func (a *app) whiteboardElement(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	item := requirements.WhiteboardItem(document.Manifest.ID, boardID, *revision, e)
+	appearance := "urn:change-saga:" + document.Manifest.ID + ":whiteboard:" + boardID + ":revision:" + revisionID + ":element:" + elementID
+	count := len(e.Evidence) + len(e.Selections)
 	id := domID(item.Target + ":revision:" + revision.ID)
 	if q.Get("panel") == "code" {
 		refs := make([]requirements.Evidence, len(e.Evidence))
 		for i, ref := range e.Evidence {
 			refs[i].Reference = ref
 		}
-		view := diagramAnnotationCodeView{targetCodeView: targetCodeView{DOMID: id, Target: item.Target, Title: item.Label, ReferenceCount: len(refs), Observed: a.pinnedDocumentationCode(r.Context(), refs, "whiteboard element")}}
+		view := diagramAnnotationCodeView{targetCodeView: targetCodeView{DOMID: id, Target: item.Target, Title: item.Label, ReferenceCount: count, Observed: a.pinnedDocumentationCode(r.Context(), refs, "whiteboard element")}}
+		if len(e.Selections) > 0 && e.Documentation != nil {
+			inventory, err := a.sagaFiles(r.Context()).inventory(document.Manifest.ID)
+			if err != nil {
+				http.Error(w, "The inventory could not be loaded.", 500)
+				return
+			}
+			view.Selections = a.itemSelections(r.Context(), inventory, *e.Documentation, appearance)
+		}
 		writeIncrementalHeaders(w, "text/html; charset=utf-8")
 		renderHTML(w, a.template, "diagram-annotation-code", view, "Linked code could not be rendered.")
 		return
@@ -130,8 +170,15 @@ func (a *app) whiteboardElement(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Story links could not be loaded.", 500)
 		return
 	}
-	view := annotationAffordanceView{Label: item.Label, CodeID: id, CodeCount: len(e.Evidence), Documentation: documentationControl(e.Documentation, "", 0), Stories: whiteboardElementStories(records, *item, id)}
-	if len(e.Evidence) > 0 {
+	pin := e.Documentation
+	if pin == nil && e.Source != nil {
+		pin = &saga.DocumentationLink{Target: e.Source.Target, Revision: e.Source.Revision}
+	}
+	view := annotationAffordanceView{Label: item.Label, CodeID: id, CodeCount: count, Documentation: documentationControl(pin, appearance, len(e.Selections)), Stories: whiteboardElementStories(records, *item, id)}
+	if view.Documentation != nil && e.Source != nil && e.Documentation == nil {
+		view.Documentation.Relationship = e.Source.Relationship
+	}
+	if count > 0 {
 		query := url.Values{"board": {boardID}, "revision": {revisionID}, "element": {elementID}, "panel": {"code"}}
 		view.CodeHref = "/api/whiteboard-element?" + query.Encode()
 	}
@@ -145,6 +192,7 @@ func (a *app) whiteboardElement(w http.ResponseWriter, r *http.Request) {
 
 func whiteboardElementStories(records requirements.Document, item saga.Item, id string) *storyLinksView {
 	view := &storyLinksView{DOMID: id, Title: item.Label}
+	evaluator := requirements.NewRelationEvaluator(records)
 	for _, pin := range item.CriterionLinks {
 		parts := strings.Split(pin.Criterion, ":")
 		if len(parts) != 7 {
@@ -152,15 +200,13 @@ func whiteboardElementStories(records requirements.Document, item saga.Item, id 
 		}
 		storyID := parts[4]
 		storyURN, _ := livingid.Story(records.SagaID, storyID)
-		row := storyLinkView{Story: storyID, StoryTarget: storyURN, StoryHref: requirementStoryHref(storyID), Criterion: parts[6], CriterionHref: requirementCriterionHref(storyID, parts[6]), Item: item.Label, Rationale: pin.Rationale, Status: requirements.CurrencyStale}
+		currency := evaluator.Evaluate(requirements.Relation{Version: requirements.V5RelationVersion, ID: pin.ID, Type: requirements.RelationExplains, From: item.Target, To: pin.Criterion, ToRevision: pin.StoryRevision, Scope: requirements.ScopeSelf, State: requirements.RelationActive}, requirements.StaleInputs{})
+		row := storyLinkView{Story: storyID, StoryTarget: storyURN, StoryHref: requirementStoryHref(storyID), Criterion: parts[6], CriterionHref: requirementCriterionHref(storyID, parts[6]), Item: item.Label, Rationale: pin.Rationale, Status: currency.Status}
 		if story := records.FindStory(storyID); story != nil && story.CurrentRevision != nil {
 			row.Story = story.CurrentRevision.Title
 			for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
 				if criterion.ID == parts[6] {
 					row.Criterion = criterion.Statement
-					if storyURN+":revision:"+story.CurrentRevision.ID == pin.StoryRevision {
-						row.Status = requirements.CurrencyCurrent
-					}
 				}
 			}
 		}

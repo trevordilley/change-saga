@@ -10,11 +10,19 @@ test("whiteboard element pins open the shared drawer through clicked navigation 
     return result.stdout;
   };
   run("criterion", "add", "--story", "urn:change-saga:wave-one:story:read-the-tide", "--id", "readable", "--statement", "The skipper can read the tide.", "--parent", "urn:change-saga:wave-one:story:read-the-tide:revision:r1", "--revision", "r2", saga.sagaRoot);
+  const definition=join(saga.root,"greeting-component.json");
+  run("inventory","adopt-format","--format","2",saga.sagaRoot);
+  const componentDefinition={name:"Greeting component",explanation:"The saved greeting implementation.",intent:"implemented",code:[{id:"greeting",commit:saga.identity.head,path:"src/app.go",start:3,end:5,note:"Defines the greeting."}]};
+  writeFileSync(definition,JSON.stringify(componentDefinition));
+  run("component","add","--id","greeting","--from",definition,"--delivery",saga.identity.head,"--repo",saga.sourceRepo,saga.sagaRoot);
+  const component="urn:change-saga:wave-one:component:greeting";
   const input = join(saga.root, "whiteboard.json");
   const board = { version: 1, width: 1100, height: 700, elements: [
     { id: "greeting", kind: "node", shape: "rect", label: "Greeting behavior", description: "A named greeting backed by saved code.", x: 250, y: 180, width: 420, height: 190, style: "primary", note: "The greeting serves the caller.",
       evidence: [{ commit: saga.identity.head, path: "src/app.go", start: 3, end: 5, note: "The saved greeting implementation." }],
       record: "urn:change-saga:wave-one:feature:wave-one",
+      documentation:{target:component,revision:component+":revision:r1"},
+      selections:[{id:"greeting-return",path:[{target:component,revision:component+":revision:r1"}],evidence:"greeting",code:{commit:saga.identity.head,path:"src/app.go",start:4,end:4,note:"The exact greeting returned."}}],
       criterion_links: [{ id: "board-greeting-readable", criterion: "urn:change-saga:wave-one:story:read-the-tide:criterion:readable", story_revision: "urn:change-saga:wave-one:story:read-the-tide:revision:r2", rationale: "Fixture criterion linked from this exact element." }] }
   ] };
   const publish = (revision: string, parent?: string) => {
@@ -31,6 +39,7 @@ test("whiteboard element pins open the shared drawer through clicked navigation 
       await page.emulateMedia({ colorScheme: scheme });
       await page.goto(server.baseURL);
       await waitForSettledSaga(page);
+      await expect(page.locator("[data-theme-toggle]")).toHaveAttribute("aria-pressed",String(scheme==="dark"));
       await page.locator(".sidebar").getByRole("link", { name: "Technical design", exact: true }).click();
       await page.locator(".sidebar").getByRole("link", { name: "Architecture", exact: true }).click();
       await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-revision", "r1");
@@ -51,10 +60,22 @@ test("whiteboard element pins open the shared drawer through clicked navigation 
       await expect(page.locator(".drawer-body [data-status]")).toHaveAttribute("data-status", "current");
       await page.locator("button[data-close-drawer]").click();
       await element.click();
+      await page.locator(".diagram-affordance [data-documentation-target]").click();
+      await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin",component+":revision:r1");
+      await expect(page.locator('[data-selection="greeting-return"]')).toBeVisible();
+      await page.locator("button[data-close-drawer]").click();
+      await element.click();
       await page.locator(".diagram-affordance [data-item-record]").click();
       await expect(page).toHaveURL(/\/features\/wave-one$/);
     }
-    board.elements[0]!.evidence[0]!.commit = git(saga.sourceRepo, "rev-parse", "HEAD");
+    const reassessedHead=git(saga.sourceRepo,"rev-parse","HEAD");
+    componentDefinition.code[0]!.commit=reassessedHead;
+    writeFileSync(definition,JSON.stringify(componentDefinition));
+    run("component","revise","--id","greeting","--revision","r2","--parent",component+":revision:r1","--from",definition,"--delivery",reassessedHead,"--repo",saga.sourceRepo,saga.sagaRoot);
+    board.elements[0]!.evidence[0]!.commit = reassessedHead;
+    board.elements[0]!.documentation.revision=component+":revision:r2";
+    board.elements[0]!.selections[0]!.path[0]!.revision=component+":revision:r2";
+    board.elements[0]!.selections[0]!.code.commit=reassessedHead;
     publish("r2", "r1");
     await page.goto(server.baseURL);
     await page.locator(".sidebar").getByRole("link", { name: "Technical design", exact: true }).click();
@@ -64,6 +85,15 @@ test("whiteboard element pins open the shared drawer through clicked navigation 
     await page.locator('[data-whiteboard-element="greeting"]').click();
     await page.locator(".diagram-affordance [data-target-code-href]").click();
     await expect(page.locator(".drawer-body")).toContainText("Reassessed");
+    await page.locator("button[data-close-drawer]").click();
+    await page.locator(".whiteboard-description > summary").click();
+    await page.getByRole("link",{name:"Revision r1",exact:true}).click();
+    await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-revision","r1");
+    await page.locator('[data-whiteboard-element="greeting"]').focus();
+    await page.keyboard.press("Enter");
+    await page.locator(".diagram-affordance [data-target-code-href]").click();
+    await expect(page.locator(".drawer-body")).toContainText(saga.identity.head+":src/app.go");
+    await expect(page.locator(".drawer-body")).not.toContainText("Reassessed");
   } finally {
     await stopSagaServer(server);
   }
