@@ -10,6 +10,8 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-02
+
 ### Added
 
 - A Plan slide's nodes are interactive. A node whose Item names a Task or story
@@ -30,7 +32,7 @@ tool, and what they have to do about it.
   and deck, with Deck and Tasks in the header. Tasks is a whiteboard of the Tasks
   ending at their stories.
   See [writing a Plan](skills/change-saga/references/plans.md).
-- Whiteboard elements can pin exact code evidence and carry criterion, record
+- **Format:** Whiteboard elements can pin exact code evidence and carry criterion, record
   and technical-definition links, using the same action strip and drawer as
   slide Items, including inventory code selections. `whiteboard publish --repo` authors exact commit/digest pins.
   Code changes mark the element stale in the reader, references, status, health
@@ -1341,7 +1343,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/trevordilley/change-saga/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/trevordilley/change-saga/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/trevordilley/change-saga/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/trevordilley/change-saga/compare/v0.3.1...v0.4.0
