@@ -107,6 +107,7 @@ func TestPlanTasksEndAtStoriesAndSayWhatEachTakes(t *testing.T) {
 		`0 of 2 tasks done`,
 		`id="plan-node-task-refactor"`,
 		`It takes these 2 tasks, 0 done.`,
+		"its tasks can run in parallel",
 	} {
 		if !strings.Contains(page, want) {
 			t.Errorf("the Tasks view has no %q", want)
@@ -160,6 +161,9 @@ func TestAPlanPageReadsAsAPlanAndShowsItsTasks(t *testing.T) {
 		if !strings.Contains(tasks, want) {
 			t.Errorf("the tasks view has no %q", want)
 		}
+	}
+	if blocked := getPage(t, handler, "/plans/first/tasks/feature-work").Body.String(); !strings.Contains(blocked, `data-task-depends`) || !strings.Contains(blocked, `href="/plans/first/tasks/refactor"`) {
+		t.Error("the task page does not list what it depends on")
 	}
 	task := getPage(t, handler, "/plans/first/tasks/refactor").Body.String()
 	for _, want := range []string{

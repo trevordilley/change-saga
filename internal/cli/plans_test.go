@@ -441,3 +441,16 @@ func TestADeliveredPlanRefusesEveryEdit(t *testing.T) {
 		}
 	}
 }
+
+func TestPlanAndTaskAreTheOnlyWayToPlanWork(t *testing.T) {
+	t.Parallel()
+	root := newPlanFixture(t).root
+	for _, old := range []string{"add-wave", "revise-wave", "add-item", "revise-item", "add-dependency", "add-contract", "assign", "progress", "record-merge"} {
+		if err := Plan(context.Background(), []string{old, root}, &bytes.Buffer{}); err == nil {
+			t.Errorf("plan %s still runs", old)
+		}
+	}
+	if err := Task(context.Background(), []string{"done", root}, &bytes.Buffer{}); err == nil {
+		t.Error("task done with no Task was accepted")
+	}
+}
