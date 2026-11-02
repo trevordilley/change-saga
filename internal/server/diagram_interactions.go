@@ -16,7 +16,7 @@ const diagramInteractionsJavaScript = `
       // note. Opaque source SVG descriptions are not silently reclassified.
       const authored = templates?.get(node.dataset.instancePath);
       const text = !templates && node.hasAttribute('data-diagram-kind') ? q(':scope > desc', node)?.textContent?.trim() : '';
-      if (!bound && !text && !authored) continue;
+      if (!bound && !node.hasAttribute('data-whiteboard-element') && !text && !authored) continue;
       controls.add(node);
       node.classList.add('diagram-interaction');
       if (authored) { diagramNoteTemplates.set(node,authored); notes.push(node); continue; }
@@ -141,12 +141,15 @@ const diagramInteractionsJavaScript = `
       },180);
     }
     function materialize(node) {
-      if (!node.dataset.documentationTarget || !node.dataset.documentationRevision) return Promise.resolve('');
+      const element = node.dataset.whiteboardElement;
+      if (!element && (!node.dataset.documentationTarget || !node.dataset.documentationRevision)) return Promise.resolve('');
       const query = new URLSearchParams({target:node.dataset.documentationTarget,revision:node.dataset.documentationRevision});
       if (node.dataset.sourceRelationship) query.set('relationship',node.dataset.sourceRelationship);
-      const key = query.toString();
+      if (element) { query.delete('target'); query.delete('revision'); query.set('board',node.dataset.whiteboardBoard); query.set('revision',node.dataset.whiteboardRevision); query.set('element',element); }
+      const endpoint = element ? '/api/whiteboard-element?' : '/api/diagram-annotation?';
+      const key = endpoint+query.toString();
       if (cache.has(key)) return Promise.resolve(cache.get(key));
-      if (!inflight.has(key)) inflight.set(key,fetch('/api/diagram-annotation?'+key,{credentials:'same-origin',signal}).then(async response => {
+      if (!inflight.has(key)) inflight.set(key,fetch(key,{credentials:'same-origin',signal}).then(async response => {
         const html = await response.text(); if (!response.ok) throw new Error(html.trim()); cache.set(key,html); return html;
       }).finally(() => inflight.delete(key)));
       return inflight.get(key);
@@ -192,7 +195,7 @@ const diagramInteractionsJavaScript = `
       bar.setAttribute('aria-label','Actions for '+(node.getAttribute('aria-label') || 'element'));
       addNote(node);
       bar.hidden = false;
-      if (node.dataset.documentationTarget) { bar.setAttribute('aria-busy','true'); }
+      if (node.dataset.documentationTarget || node.dataset.whiteboardElement) { bar.setAttribute('aria-busy','true'); }
       try {
         const html = await materialize(node);
         if (request !== pending || signal.aborted) return;
@@ -230,7 +233,7 @@ const diagramInteractionsJavaScript = `
     const click = event => {
       const node = event.target.closest?.('.diagram-interaction');
       const tapped = touch; touch = false;
-      if (!node || !root.contains(node) || (!tapped && node.hasAttribute('data-documentation-target'))) return;
+      if (!node || !root.contains(node) || (!tapped && node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-whiteboard-element'))) return;
       event.preventDefault(); event.stopPropagation(); void show(node);
     };
     const pointerdown = event => {touch = event.pointerType === 'touch';};

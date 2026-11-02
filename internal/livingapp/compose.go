@@ -341,6 +341,10 @@ func (s *session) reviewEvidenceIndex() (map[string][]reviewEvidence, []reviewEv
 			}
 		}
 	}
+	for _, value := range whiteboardReviewEvidence(s.saga) {
+		byTarget[value.Item] = append(byTarget[value.Item], value)
+		all = append(all, value)
+	}
 	return byTarget, all
 }
 

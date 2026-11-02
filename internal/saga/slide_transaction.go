@@ -34,12 +34,7 @@ var flatSlideTransactionName = regexp.MustCompile(`^25-t-([0-9a-f]{12})-([0-9a-f
 // CriterionLink is an exact Item-level semantic link. Criterion identifies a
 // single acceptance criterion and StoryRevision pins the complete story
 // snapshot that contained it; broad Deck/Slide sources are not representable.
-type CriterionLink struct {
-	ID            string `json:"id"`
-	Criterion     string `json:"criterion"`
-	StoryRevision string `json:"story_revision"`
-	Rationale     string `json:"rationale"`
-}
+type CriterionLink = diagram.CriterionLink
 
 // TransactionItem is one complete semantic Item revision and all evidence and
 // criterion links published with it.
@@ -391,7 +386,7 @@ func validateTransactionalSlide(root, recordRoot, path, sagaID string, deck *Dec
 				addIssue(validation, "error", path, fmt.Sprintf("transaction repeats criterion link %q", link.ID))
 			}
 			linkIDs[link.ID] = true
-			if err := validateCriterionLink(sagaID, link); err != nil {
+			if err := ValidateCriterionLink(sagaID, link); err != nil {
 				addIssue(validation, "error", path, err.Error())
 			}
 		}
@@ -400,7 +395,7 @@ func validateTransactionalSlide(root, recordRoot, path, sagaID string, deck *Dec
 	validateSlideComposition(slide, validation)
 }
 
-func validateCriterionLink(sagaID string, link CriterionLink) error {
+func ValidateCriterionLink(sagaID string, link CriterionLink) error {
 	if !livingid.ValidID(link.ID) || strings.TrimSpace(link.Rationale) == "" {
 		return fmt.Errorf("criterion link requires a stable id and rationale")
 	}

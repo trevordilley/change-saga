@@ -48,10 +48,19 @@ func sagaReferences(document *saga.Saga) ([]ownedReference, error) {
 	coverage.WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
 		for _, file := range files {
 			for index, reference := range file.References {
-				result = append(result, ownedReference{Kind: "evidence", Owner: target, EvidenceFile: filepath.ToSlash(file.Path), Index: index + 1, Code: reference})
+				result = append(result, ownedReference{Kind: referenceKind(target), Owner: target, EvidenceFile: filepath.ToSlash(file.Path), Index: index + 1, Code: reference})
 			}
 		}
 	})
+	items, err := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	if err != nil {
+		return nil, err
+	}
+	for _, item := range items {
+		for _, selection := range item.Selections {
+			result = append(result, ownedReference{Kind: "whiteboard", Owner: item.Target, EvidenceFile: item.Path + "#element=" + item.ID + "#selection=" + selection.ID, Index: 1, Code: selection.Code})
+		}
+	}
 	for _, claim := range document.Claims {
 		for index, reference := range claim.Evidence {
 			result = append(result, ownedReference{Kind: "claim", Owner: "urn:change-saga:" + document.Manifest.ID + ":claim:" + claim.ID, Index: index + 1, Code: reference})
@@ -171,7 +180,7 @@ func References(ctx context.Context, args []string, out io.Writer) error {
 		}
 		// Terms and deprecations describe code at the inspected head. A match
 		// on the old side must not hide stale evidence in the current code.
-		if base.Current() && value.Kind != "term" && value.Kind != "deprecation" {
+		if base.Current() && value.Kind != "term" && value.Kind != "deprecation" && value.Kind != "whiteboard" {
 			location := base.Location
 			health.Base, health.State = &location, coderesolve.Current
 			health.Moved = health.Moved || base.Moved && health.Head == nil
@@ -702,4 +711,11 @@ func readStrictJSONFile(path string, value any) error {
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	return decoder.Decode(value)
+}
+
+func referenceKind(target string) string {
+	if strings.Contains(target, ":whiteboard:") {
+		return "whiteboard"
+	}
+	return "evidence"
 }

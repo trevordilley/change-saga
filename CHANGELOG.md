@@ -23,6 +23,14 @@ tool, and what they have to do about it.
   and deck, with Deck and Tasks in the header. Tasks is a whiteboard of the Tasks
   ending at their stories.
   See [writing a Plan](skills/change-saga/references/plans.md).
+- Whiteboard elements can pin exact code evidence and carry criterion, record
+  and technical-definition links, using the same action strip and drawer as
+  slide Items, including inventory code selections. `whiteboard publish --repo` authors exact commit/digest pins.
+  Code changes mark the element stale in the reader, references, status, health
+  and reconciliation; reassessment publishes a new board revision and preserves
+  history. Current board evidence participates in living documented-code coverage.
+- `whiteboard check` reports repository links in element notes as non-blocking
+  warnings, encouraging pinned evidence instead of GitHub links in the info icon.
 - A Roadmap feature can add stories to an existing feature without mixing
   planned work into it: `feature add --augments ID` or `feature set-plan
   --augments ID` (empty clears) records the feature it extends. The reviewer's

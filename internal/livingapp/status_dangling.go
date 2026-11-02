@@ -116,6 +116,16 @@ func danglingReferences(in StatusInputs) []DanglingReference {
 			}
 		}
 	}
+	for _, item := range in.WhiteboardItems {
+		var refs []string
+		for _, link := range item.CriterionLinks {
+			refs = append(refs, link.Criterion)
+		}
+		if recordReference(in.SagaID, item.Record) {
+			refs = append(refs, item.Record)
+		}
+		add(DanglingReference{Record: item.Target, Kind: "whiteboard_element", Path: item.Path, Missing: missing(refs...), Fix: "Reassess the element and publish a new whiteboard revision through change-saga whiteboard publish"})
+	}
 	for _, deck := range in.RecordDecks {
 		for _, slide := range deck.Slides {
 			for _, item := range slide.Items {

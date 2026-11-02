@@ -5,12 +5,13 @@ var whiteboardCommands = []Command{
 	{
 		Name: "whiteboard publish", Status: StatusImplemented, Mutates: true,
 		Writes:  []string{"whiteboard-revision"},
-		Usage:   "change-saga whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
+		Usage:   "change-saga whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] [--repo PATH] --from FILE|- <saga>",
 		Summary: "publish a complete immutable technical-design whiteboard with exact source pins; updates require the observed current parent",
 		Flags: []Flag{
 			required("id", "ID", "whiteboard document identity"), required("revision", "ID", "new immutable board revision"),
 			optional("parent", "ID", "current board revision, required for updates"), optional("name", "TITLE", "authored board title"),
-			required("from", "FILE|-", "complete shared diagram.Document JSON"),
+			required("from", "FILE|-", "complete shared diagram.Document JSON; evidence accepts a commit-ish and omitted digest, pinned on publish"),
+			optional("repo", "PATH", "source checkout when separate"),
 		},
 		Positionals: sagaOnly,
 	},

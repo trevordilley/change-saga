@@ -44,6 +44,17 @@ func ItemSelections(ctx context.Context, document *saga.Saga, inventory *require
 			}
 		}
 	}
+	items, _ := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	for _, item := range items {
+		if item.Documentation == nil {
+			continue
+		}
+		for _, sel := range item.Selections {
+			result := ResolveSelection(ctx, inventory, *item.Documentation, sel, view, resolver)
+			result.Item = item.Target
+			out = append(out, ItemSelection{Item: item.Target, Pin: *item.Documentation, Result: result})
+		}
+	}
 	return out
 }
 

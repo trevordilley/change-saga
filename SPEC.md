@@ -521,7 +521,7 @@ may have at most 10,000 revisions, and each revision is limited to 1 MiB.
 Every named document must satisfy the whiteboard revision and
 diagram JSON contracts; a document name does not select a different schema.
 
-`whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE]
+`whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] [--repo CHECKOUT]
 --from FILE|- PATH` validates and publishes the complete diagram under the Saga
 write lock. A new update requires the current head as its parent. Repeating an
 identical publication is idempotent; changing content under an existing revision
@@ -577,6 +577,36 @@ paths, retain their semantic endpoints at overview scale and may have authored
 bends. Focused descriptions include transformed bounds, source pins and relevant
 connection context. Opaque SVG imports render as whole diagrams; explicit source
 bindings can support inspection, but internal targeting requires recorded bounds.
+**Element references.** Semantic elements may carry optional `evidence` (code
+references), `criterion_links` (the complete-slide Item link shape: stable `id`,
+exact `criterion`, `story_revision`, and `rationale`), `record` (a same-Saga record
+URN), and `documentation` (an exact Component, System or data-entity revision
+pin). Inventory-format-2 `selections` and optional `documentation_view` reuse
+Item syntax and validation: exact declared pin paths, evidence IDs, contained
+line subsets and selected-byte digests. Eligible selections contribute inherited
+coverage; selection and containing-evidence health stay separate, including
+semantic reassessment when only bytes outside a subset changed. `code` remains displayed code-block text; `source` retains its ERD/data-entity
+composition meaning. These additions are optional; existing diagrams and Sagas
+need no migration. Decorative elements cannot own evidence or semantic links.
+An evidence reference stores `commit`, `path`, optional inclusive `start`/`end`,
+`digest` and optional `note`. Publication accepts commit-ish values and omitted
+digests, resolves source bytes through `--repo` (default the Saga checkout), and
+rejects a supplied digest that disagrees. Saved references contain full commit
+OIDs and digests. Each stable owner is
+`urn:change-saga:<saga>:whiteboard:<board>:element:<element>`.
+
+Element code opens in the shared slide-out drawer at the exact saved revision.
+Changed code makes the element stale in the reader, `references`, `status`,
+health, and `reconcile`; a match at the comparison base cannot hide HEAD
+staleness. Reassessment publishes a new complete board revision with the observed
+current parent and reviewed replacement evidence; immutable historical pins are
+preserved. No automatic repair or in-place repin rewrites these revisions.
+Unchanged moved bytes use ordinary reference remapping. Current active board
+heads participate in living documented-code coverage and changed-line ownership;
+previous revisions do not inflate coverage or keep reassessed debt active.
+Review-deck coverage stays independent. Documentation inspection pins do not
+implicitly transfer their definitions' code ownership.
+
 No internal structure is inferred from SVG artwork.
 
 **Reading and validation.** `whiteboard get|describe|check --id ID PATH`
@@ -584,7 +614,9 @@ reads the named board; `--revision ID` selects its history. `get` returns the so
 document, while `get` or `describe` with `--focus PATH` describes a particular
 appearance and its context. `describe --format json` provides structured output.
 `check` without a revision validates only the selected board's complete history
-and resolves its current composition. `change-saga validate PATH` validates all
+and resolves its current composition. It also reports repository web links found
+in notes as non-blocking warnings with element IDs; it never rewrites links or
+infers code ranges from URLs. `change-saga validate PATH` validates all
 named whiteboards in the Saga. `--id` always identifies the document, including on `get`;
 `--focus PATH` selects an element appearance. There is no kind selector or
 `diagram` whiteboard command alias.

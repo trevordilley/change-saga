@@ -10,11 +10,11 @@
       "note": "Joins explaining visual targets to their exact Item code references and exposes those implementation paths."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
       "path": "internal/livingapp/compose.go",
-      "start": 524,
-      "end": 551,
-      "digest": "sha256:db45d7e6bcb65d9e8d2ecd5e309275879ebbfdf7553c6b083b64884073bef89f",
+      "start": 510,
+      "end": 541,
+      "digest": "sha256:5e8c3d224826af4bfbd8fa1bd4466a61b2ca67d7589f34fb5ba5553463f17785",
       "note": "Joins explaining visual targets to their exact Item code references and exposes those implementation paths."
     }
   ]

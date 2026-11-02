@@ -388,7 +388,7 @@ const whiteboardJavaScript = `
           const bounds = measured.get(node);
           if (!bounds || !(bounds.width > 0 || bounds.height > 0)) continue;
         }
-        if (!sections.has(node.dataset.instancePath) && !node.hasAttribute('data-frame-path') && !node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-from') && !node.hasAttribute('data-about') && !q(':scope > desc', node)) continue;
+        if (!sections.has(node.dataset.instancePath) && !node.hasAttribute('data-frame-path') && !node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-whiteboard-element') && !node.hasAttribute('data-from') && !node.hasAttribute('data-about') && !q(':scope > desc', node)) continue;
         node.dataset.whiteboardSelectable = 'true';
         const control = node.hasAttribute('data-frame-path') ? qa('[data-frame-overview]', node).find(child => child.dataset.frameOverview === node.dataset.framePath) : sections.has(node.dataset.instancePath) ? q(':scope > path', node) : node;
         if (!control) continue;

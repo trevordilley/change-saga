@@ -47,6 +47,10 @@ func documentTargets(document *saga.Saga) map[string]*codeTarget {
 		}
 		return value
 	}
+	items, _ := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	for _, item := range items {
+		at(item.Target, item.Path, item.Label)
+	}
 	for _, deck := range document.Decks {
 		at(deck.Target, deck.Path, deck.Title)
 		for _, slide := range deck.Slides {

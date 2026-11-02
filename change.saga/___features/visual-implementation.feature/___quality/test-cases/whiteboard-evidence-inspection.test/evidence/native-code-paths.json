@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "native-code-paths",
+  "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-inspection",
+  "test_revision": "urn:change-saga:change-saga:test-case:whiteboard-evidence-inspection:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "owners"
+  ],
+  "code": [
+    {
+      "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
+      "path": "internal/cli/whiteboard_traceability_test.go",
+      "start": 16,
+      "end": 77,
+      "digest": "sha256:aecce66fe8bf50923d3206385cb7872ff32f3060f2201d473c77146c94a91734"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:17:02Z"
+}

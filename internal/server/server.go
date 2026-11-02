@@ -569,6 +569,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /theme/diagram.svg", application.themePreviewDiagram)
 	handle("GET /api/documentation", application.documentationPage)
 	handle("GET /api/diagram-annotation", application.diagramAnnotation)
+	handle("GET /api/whiteboard-element", application.whiteboardElement)
 	handle("GET /api/technical-usages", application.technicalUsagesPage)
 	handle("GET /api/code", application.codePage)
 	handle("GET /api/coverage", application.coveragePage)

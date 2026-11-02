@@ -125,6 +125,9 @@ func whiteboardHistory(root, sagaID, boardID string) (map[string]WhiteboardRevis
 		if err := validateWhiteboardRevision(v, strings.TrimSuffix(entry.Name(), ".json")); err != nil {
 			return nil, nil, err
 		}
+		if err := validateWhiteboardItems(sagaID, v.Document); err != nil {
+			return nil, nil, err
+		}
 		revisions[v.ID], parents[v.ID] = v, v.Parents
 	}
 	for id, v := range revisions {
@@ -235,6 +238,9 @@ func LoadWhiteboard(root, sagaID, boardID, revision string) (*WhiteboardRevision
 // Updating requires the observed current parent; child revisions never advance
 // implicitly. Retrying identical content is idempotent.
 func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, parent, name string, document diagram.Document) (*WhiteboardRevision, error) {
+	if err := validateWhiteboardItems(sagaID, document); err != nil {
+		return nil, err
+	}
 	v := WhiteboardRevision{Schema: WhiteboardSchemaURL, Version: 1, ID: revision, Parents: []string{}, Name: name, Document: document, CreatedAt: mutationTime(time.Time{})}
 	if parent != "" {
 		v.Parents = []string{parent}
@@ -262,6 +268,9 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, par
 		}
 		if len(revisions) == 0 && parent != "" || len(revisions) > 0 && (len(heads) != 1 || parent != heads[0]) {
 			return fmt.Errorf("whiteboard parent must name the current head: %v", heads)
+		}
+		if err := validateWhiteboardItemPins(root, sagaID, boardID, document); err != nil {
+			return err
 		}
 		if _, err := resolveWhiteboard(root, sagaID, v); err != nil {
 			return err

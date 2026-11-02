@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json",
   "title": "Immutable whiteboard document revision",
+  "description": "A complete immutable diagram, including optional element-owned code evidence and semantic links. Reassessment publishes a new revision; historical pins are never rewritten.",
   "type": "object",
   "additionalProperties": false,
   "required": [

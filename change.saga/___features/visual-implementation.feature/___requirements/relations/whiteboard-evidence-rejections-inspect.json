@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "whiteboard-evidence-rejections-inspect",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections",
+  "to": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
+  "scope": "self",
+  "rationale": "The explicitly mapped negative steps exercise this whiteboard element obligation.",
+  "from_revision": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:whiteboard-element-evidence:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:11:05.265893Z"
+}

@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"errors"
+	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -103,6 +104,16 @@ func (a *app) itemSelections(ctx context.Context, inventory requirements.Invento
 		return nil
 	}
 	item := findItem(document, itemTarget)
+	if item == nil {
+		parts := strings.Split(itemTarget, ":")
+		if len(parts) == 9 && parts[0] == "urn" && parts[1] == "change-saga" && parts[2] == document.Manifest.ID && parts[3] == "whiteboard" && parts[5] == "revision" && parts[7] == "element" {
+			if revision, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, parts[4], parts[6]); err == nil && revision != nil {
+				if e, ok := revision.Document.Element(parts[8]); ok {
+					item = requirements.WhiteboardItem(document.Manifest.ID, parts[4], *revision, e)
+				}
+			}
+		}
+	}
 	if item == nil || item.Documentation == nil {
 		return nil
 	}
