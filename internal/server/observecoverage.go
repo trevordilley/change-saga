@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"slices"
 	"sort"
 	"sync"
 
@@ -101,7 +102,10 @@ func collectDocumentedCode(document *saga.Saga, records requirements.Document, t
 		urn, _ := qualityid.TestCase(tests.SagaID, testCase.Identity.ID)
 		var references []coderef.Reference
 		for _, evidence := range testCase.Evidence {
-			references = append(references, evidence.Code...)
+			evidenceURN, _ := qualityid.Evidence(tests.SagaID, testCase.Identity.ID, evidence.ID)
+			if slices.Contains(testCase.EvidenceHeads, evidenceURN) {
+				references = append(references, evidence.Code...)
+			}
 		}
 		if len(references) > 0 {
 			result = append(result, documentedCode{target: urn, references: references})

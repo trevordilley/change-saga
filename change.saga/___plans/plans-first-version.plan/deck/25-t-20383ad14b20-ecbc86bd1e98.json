@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "deck": "plans-first-version",
+  "slide": "old-work-plan-goes",
+  "current": "sha256:a5909e13458ce64f1c25038216b8f25329a1f973c4cae17afd590106af113e80",
+  "revisions": [
+    {
+      "snapshot": "sha256:d7af3e5869e989fd4d9dec70578e01a06ffd6ed928ce02e0984f83e57fcdda96",
+      "request_id": "plan-deck-old-work-plan-goes",
+      "created_at": "2026-11-02T05:23:20.279348Z",
+      "asset": "24-a-32c5e3151e6b95fd346e64ec463aaeec9ce9219fe99c320feeb4.svg",
+      "asset_digest": "sha256:32c5e3151e6b95fd346e64ec463aaeec9ce9219fe99c320feeb4ce3632179c88",
+      "slide": {
+        "front": [
+          "No records of it existed, and no reader page.",
+          "A contract could never be marked fulfilled.",
+          "No Saga outside this repository used it."
+        ],
+        "version": 4,
+        "id": "old-work-plan-goes",
+        "deck": "plans-first-version",
+        "title": "The old work plan goes, so there is one way to plan work",
+        "rank": 60,
+        "section": "Phase 6: Remove the old work plan",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-32c5e3151e6b95fd346e64ec463aaeec9ce9219fe99c320feeb4.svg",
+        "takeaway": "It was connected but unused, with part of it unreachable. Keeping the idea and rebuilding small leaves one task system, and Git as its history.",
+        "reading_order": [
+          "t-stop-reading-work-plan",
+          "t-remove-commands",
+          "t-remove-package",
+          "t-remove-docs"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-stop-reading-work-plan",
+            "slide": "old-work-plan-goes",
+            "rank": 500,
+            "kind": "node",
+            "label": "Stop reading work items",
+            "description": "Task stop-reading-work-plan.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-stop-reading-work-plan"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:stop-reading-work-plan"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-remove-commands",
+            "slide": "old-work-plan-goes",
+            "rank": 510,
+            "kind": "node",
+            "label": "Remove the old verbs",
+            "description": "Task remove-commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-remove-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:remove-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-remove-package",
+            "slide": "old-work-plan-goes",
+            "rank": 520,
+            "kind": "node",
+            "label": "Remove the package",
+            "description": "Task remove-package.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-remove-package"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:remove-package"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-remove-docs",
+            "slide": "old-work-plan-goes",
+            "rank": 530,
+            "kind": "node",
+            "label": "Remove the docs",
+            "description": "Task remove-docs.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-remove-docs"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:remove-docs"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-fb0ce4146d897421bba67a3d007d436175e9e12942ba7ec79c4e.json",
+        "source_digest": "sha256:fb0ce4146d897421bba67a3d007d436175e9e12942ba7ec79c4ec266f9d40120",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:a5909e13458ce64f1c25038216b8f25329a1f973c4cae17afd590106af113e80",
+      "parent_snapshots": [
+        "sha256:d7af3e5869e989fd4d9dec70578e01a06ffd6ed928ce02e0984f83e57fcdda96"
+      ],
+      "request_id": "old-work-plan-goes-round2",
+      "created_at": "2026-11-02T20:41:18.716662Z",
+      "asset": "24-a-7eb58d2694f7b0e9e79caa3baf8aa9177e6372a75c495b5117ea.svg",
+      "asset_digest": "sha256:7eb58d2694f7b0e9e79caa3baf8aa9177e6372a75c495b5117ead19750426190",
+      "slide": {
+        "front": [
+          "No records of it existed, and no reader page.",
+          "A contract could never be marked fulfilled.",
+          "No Saga outside this repository used it."
+        ],
+        "version": 4,
+        "id": "old-work-plan-goes",
+        "deck": "plans-first-version",
+        "title": "The old work plan goes, so there is one way to plan work",
+        "rank": 50,
+        "section": "Phase 3: Read a Plan and work through it",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7eb58d2694f7b0e9e79caa3baf8aa9177e6372a75c495b5117ea.svg",
+        "takeaway": "It was connected but unused, with part of it unreachable. Keeping the idea and rebuilding small leaves one task system, and Git as its history.",
+        "reading_order": [
+          "t-stop-reading-work-plan",
+          "t-remove-commands",
+          "t-remove-package",
+          "t-remove-docs"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-stop-reading-work-plan",
+            "slide": "old-work-plan-goes",
+            "rank": 500,
+            "kind": "node",
+            "label": "Stop reading work items",
+            "description": "Task stop-reading-work-plan.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-stop-reading-work-plan"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:stop-reading-work-plan"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-remove-commands",
+            "slide": "old-work-plan-goes",
+            "rank": 510,
+            "kind": "node",
+            "label": "Remove the old verbs",
+            "description": "Task remove-commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-remove-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:remove-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-remove-package",
+            "slide": "old-work-plan-goes",
+            "rank": 520,
+            "kind": "node",
+            "label": "Remove the package",
+            "description": "Task remove-package.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-remove-package"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:remove-package"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-remove-docs",
+            "slide": "old-work-plan-goes",
+            "rank": 530,
+            "kind": "node",
+            "label": "Remove the docs",
+            "description": "Task remove-docs.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-remove-docs"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:remove-docs"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-f1d313e87ad7a3721f9d9517ca4eb58e83d274fe6edda233dea2.json",
+        "source_digest": "sha256:f1d313e87ad7a3721f9d9517ca4eb58e83d274fe6edda233dea2a423f3ff4dbd",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

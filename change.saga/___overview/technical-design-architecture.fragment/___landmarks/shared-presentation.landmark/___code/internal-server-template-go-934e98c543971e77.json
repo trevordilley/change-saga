@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/server/template.go",
       "start": 22,
       "end": 30,
-      "digest": "sha256:c58bc2365f2383231b0a81c4aa315caf3962f67a5d954b6b0026a0a46da3e791",
+      "digest": "sha256:e6f414dcebd584cb2676655552b9acb246d47f96778aa4fe78bd5db78d03667a",
       "note": "Source for the shared presentation explanation."
     }
   ]

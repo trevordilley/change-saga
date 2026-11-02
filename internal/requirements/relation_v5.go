@@ -69,14 +69,6 @@ func validateV5Matrix(problems *validationErrors, relation Relation, from, to en
 	case RelationAddresses:
 		require((from.Kind == endpointDesign || isVisual(from.Kind)) && isRequirement(to.Kind), "a report design, Deck, Slide, or Item source and story or criterion target")
 		require(relation.FromContentDigest != "" && relation.ToRevision != "", "a source content digest and target revision pin")
-	case RelationImplements:
-		require(from.Kind == endpointWorkItem && (to.Kind == endpointDesign || to.Kind == endpointCriterion), "a work-item source and report design or criterion target")
-		require(relation.FromRevision != "", "a source work-item revision pin")
-		if to.Kind == endpointDesign {
-			require(relation.ToContentDigest != "", "a target content digest")
-		} else {
-			require(relation.ToRevision != "", "a target criterion revision pin")
-		}
 	case RelationExplains:
 		require((isVisual(from.Kind) || from.Kind == endpointDeprecation) && isRequirement(to.Kind), "a deck, slide, Item or deprecation source and story or criterion target")
 		require(relation.ToRevision != "", "a target story revision pin")
@@ -106,7 +98,7 @@ func validateV5Matrix(problems *validationErrors, relation Relation, from, to en
 // content digest, and immutable endpoints carry no pin.
 func validateV5EndpointPins(problems *validationErrors, side string, endpoint endpoint, revision, digest string) {
 	switch endpoint.Kind {
-	case endpointDeprecation, endpointStory, endpointCriterion, endpointWorkItem, endpointTestCase, endpointWave, endpointContract:
+	case endpointDeprecation, endpointStory, endpointCriterion, endpointTestCase:
 		if revision != "" && !pinsEndpointRevision(endpoint, revision) {
 			problems.add("%s_revision does not pin the %s endpoint", side, endpoint.Kind)
 		}
@@ -147,12 +139,6 @@ func pinsEndpointRevision(endpoint endpoint, revision string) bool {
 		return parentKind == livingid.KindStory && ref.ParentID == endpoint.ID
 	case endpointCriterion:
 		return parentKind == livingid.KindStory && ref.ParentID == endpoint.StoryID
-	case endpointWorkItem:
-		return parentKind == livingid.KindWorkItem && ref.ParentID == endpoint.ID
-	case endpointWave:
-		return parentKind == livingid.KindWave && ref.ParentID == endpoint.ID
-	case endpointContract:
-		return parentKind == livingid.KindContract && ref.ParentID == endpoint.ID
 	}
 	return false
 }

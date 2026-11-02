@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "70268408533141abf81061a7772b65ca556c6c3c",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/livingapp/compose.go",
-      "start": 444,
-      "end": 497,
-      "digest": "sha256:6ec29a37607a03849ea05a231cccd4250c420775be15f3a2eb618bd351d9d01e",
+      "start": 269,
+      "end": 304,
+      "digest": "sha256:b3e93cd3219925e655485d0e362cf3b3a7401ab96d4fbc570464a68ebe8c4ec7",
       "note": "Definition coverage does not prove a test passed or work was delivered. Legacy test results and execution artifacts cannot supply delivery evidence."
     },
     {

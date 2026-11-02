@@ -2,10 +2,11 @@
 
 Status: implementation contract for the first living-Saga delivery.
 
-This document resolves the exploratory requirements, work-plan, and
-implementation-map drafts. A Change Saga is a living specification from the
+A Change Saga is a living specification from the
 first requirement through peer review. There is no separate "living" feature
-inside a Saga and no persisted pivot resource.
+inside a Saga and no persisted pivot resource. Plans and Tasks are described in
+[`references/plans.md`](../skills/change-saga/references/plans.md) and section 9
+of [`SPEC.md`](../SPEC.md).
 
 ## Product model
 
@@ -15,12 +16,12 @@ Before authoring, choose between two workflows:
   Saga. A large or review-complex change uses the Saga as a guide to the
   completed implementation and exact diff. The planning surfaces are optional.
 - **New feature or exploration:** begin the Saga early and use its requirements,
-  prototype, technical-design, and work-plan surfaces as the feature develops.
+  prototype, and technical-design surfaces and a Plan as the feature develops.
 
 For new work, the usual progression is prototype, user stories and acceptance
 criteria, technical design, then implementation planning. That progression is
 orientation rather than a prerequisite chain. Prototypes and stories can be
-created in either order and iterated together; design and work-plan drafting can
+created in either order and iterated together; design and Plan drafting can
 proceed while earlier surfaces mature.
 
 The format has four authored surfaces and one review overlay:
@@ -28,30 +29,29 @@ The format has four authored surfaces and one review overlay:
 ```text
 prototype <-> requirements <-> technical design
                    \                /
-                    +-- work plan --+  -> delivery evidence -> review
+                    +---- Plan -----+  -> delivery evidence -> review
 ```
 
 - Requirements define the intended outcome and acceptance criteria.
 - Technical design explains how the requirements will be satisfied.
-- The work plan divides that design into parallel, mergeable workspace work.
+- A Plan divides the work into Tasks that can run in parallel.
 - Commits, exact diffs, and verifications establish what was delivered.
 - Review comments and approvals remain an independent overlay.
 
 Every authored surface is Git-native and partitioned for parallel work. Agents
-can own separate story revisions, prototype packages, design fragments, or work
-items, then merge those Saga changes alongside the code. Waves make the desired
-implementation fan-out, dependencies, convergence points, and merge order
-explicit. A final consolidation reconnects the delivered commits and exact
+can own separate story revisions, prototype packages, design fragments, or Tasks,
+then merge those Saga changes alongside the code. A Plan's Task dependencies make
+the desired implementation fan-out and convergence points explicit. A final consolidation reconnects the delivered commits and exact
 diffs to the acceptance criteria and design they satisfy.
 
 The governing invariants are:
 
 1. Every accepted acceptance criterion is addressable by stable ID.
 2. Every substantive design element identifies the criteria it addresses.
-3. Every active work item identifies the design and requirements it advances.
+3. Every Task names a user story or unblocks a Task that leads to one.
 4. Every implementation claim needs immutable evidence before peer review.
-5. A recorded progress state is never proof that an implementation is correct.
-6. Requirement, design, and plan updates preserve history and invalidate stale
+5. A Task marked done is never proof that an implementation is correct.
+6. Requirement and design updates preserve history and invalidate stale
    downstream assumptions rather than silently redirecting them.
 
 ## Format boundary
@@ -71,12 +71,8 @@ change.saga/
 |   `-- relations/
 |-- ___design/                       (optional)
 |   `-- <chapter, section, fragment, and landmark packages>
-|-- ___workplan/                     (optional)
-|   |-- waves/
-|   |-- work-items/
-|   |-- dependencies/
-|   |-- contracts/
-|   `-- events/
+|-- ___plans/                        (optional)
+|   `-- <id>.plan/
 `-- ___review/
 ```
 
@@ -200,7 +196,7 @@ Design content remains editable through supported fragment mutations. Git
 history records prior content. Independent fragments merge independently;
 concurrent changes to the same fragment conflict normally and must be
 reconciled. Relations pin both the target and a content digest so a design edit
-marks dependent plan references stale until they are intentionally refreshed.
+marks dependent references stale until they are intentionally refreshed.
 
 ## Relations
 
@@ -213,22 +209,18 @@ The initial vocabulary is deliberately small:
 | --- | --- | --- | --- |
 | `refines` | story or criterion | story or criterion | Decomposes intent |
 | `addresses` | design target | story or criterion revision | Design coverage |
-| `implements` | work item | design target or criterion revision | Planned delivery |
 | `verifies` | claim or verification | criterion revision | Delivery evidence |
 | `supersedes` | same resource kind | same resource kind | Explicit replacement |
 | `conflicts_with` | compatible resources | compatible resources | Known incompatibility |
 
-Work dependencies are first-class work-plan records rather than generic
-relations because they carry readiness conditions and lifecycle state.
-
-Changing a requirement, design target, or work item never silently retargets a
+Changing a requirement or design target never silently retargets a
 relation. Queries report the relation as stale until a writer creates a new
 relation or explicitly supersedes the old one.
 
 ### Cross-Saga references
 
 Any relation or citation may reference an acceptance criterion, prototype,
-chapter, section, fragment, landmark, work item, or other stable target in a
+chapter, section, fragment, landmark, or other stable target in a
 different Saga. A portable `saga-ref://v1` URI contains the canonical
 repository identity, Saga path and ID, immutable Git revision, and target URN.
 An optional tracking branch may be recorded as refresh metadata, but resolution
@@ -242,89 +234,29 @@ query API rather than reading its metadata files directly.
 
 Markdown links may use the same URI for ordinary navigation. Typed relations
 use it as an endpoint when the external target participates in traceability,
-dependency, refinement, or evidence coverage. This allows, for example, one
+refinement, or evidence coverage. This allows, for example, one
 Saga's story to refine another Saga's acceptance criterion or a design chapter
 to build upon a fragment maintained elsewhere.
 
-## Work plan
+## Plans and Tasks
 
-### Waves
-
-A wave is a first-class coordination cohort for work intended to proceed in
-parallel. It has a stable ID, title, objective, display order, entry conditions,
-and exit conditions.
-
-Wave order is not an implicit dependency or barrier. A later-wave item may
-start whenever its explicit dependencies are satisfied. A same-wave item may
-still be blocked by an explicit dependency.
-
-```text
-urn:change-saga:<saga>:wave:<wave>
-```
-
-### Work items
-
-A work item is an independently assignable and mergeable delivery objective.
-It records:
-
-- objective and deliverables;
-- current wave membership;
-- requirement and design relations;
-- expected touch areas;
-- dependencies and shared contracts;
-- workspace assignments;
-- completion checks;
-- progress events; and
-- resulting merge units and diff evidence.
-
-```text
-urn:change-saga:<saga>:work-item:<item>
-```
-
-Definitions use stable per-resource packages. Changes to scope create a new
-definition revision with explicit parents, just like requirement revisions.
-This makes a work-plan change ordinary living-document maintenance rather than
-a special pivot operation.
-
-### Dependencies and contracts
-
-Dependencies form a validated DAG. Each dependency names a prerequisite, a
-dependent work item, and one satisfaction condition:
-
-- `progress_done`
-- `merge_integrated`
-- `contract_fulfilled`
-
-Contracts are stable resources describing an interface or decision on which
-parallel work relies. Contract revisions behave like other authored revisions;
-a changed contract makes pinned dependencies stale until reconciled.
-
-### Workspace assignments and progress
-
-Assignments are append-only events. A DevSwarm assignment persists the
-workspace UUID, repository identity, branch, and optional source branch. It
-never persists a local path or treats process liveness as authored state.
-
-Progress events use `planned`, `ready`, `in_progress`, `blocked`, `done`, or
-`cancelled`. Concurrent transitions from one parent event create an explicit
-multi-head conflict. A reconciliation event names every competing head.
-
-Completion and integration are distinct. `done` means the work item owner has
-completed its declared deliverables. `merge_integrated` requires immutable Git
-evidence showing that the result reached the integration target.
+A Plan is a body of work and how it can run in parallel: a slide deck and the
+Tasks that carry it out, stored in `___plans/<id>.plan/` and owned by no feature.
+Git is its history. Every Task names a user story or unblocks a Task that leads to
+one, and a Task marked done is a report, not evidence. Plans never count toward
+coverage. See [`references/plans.md`](../skills/change-saga/references/plans.md)
+and section 9 of [`SPEC.md`](../SPEC.md).
 
 ## Updating the living Saga
 
 A material change is represented by ordinary revisions and relation updates:
 
-1. Revise the affected story, criteria, design fragment, contract, wave, or
-   work item.
+1. Revise the affected story, criteria, or design fragment.
 2. Preserve stable IDs for concepts whose meaning remains continuous; create a
    replacement resource and `supersedes` relation when the meaning changes.
 3. Recompute downstream references against their pinned revision or digest.
-4. Report stale relations, dependencies, and delivery paths.
-5. Reconcile the work plan by revising, replacing, cancelling, or adding work
-   items and dependencies.
+4. Report stale relations and delivery paths.
+5. Update any open Plan by changing, adding, or removing Tasks and dependencies.
 6. Commit the coherent update. Git records who changed the direction, when,
    and why.
 
@@ -361,15 +293,8 @@ change-saga design add-section SAGA PATH
 change-saga design add-fragment SAGA [flags]
 change-saga design set-fragment-content SAGA --target TARGET --source FILE|-
 
-change-saga plan add-wave SAGA
-change-saga plan revise-wave SAGA --wave URN --parent REVISION...
-change-saga plan add-item SAGA
-change-saga plan revise-item SAGA --item URN --parent REVISION...
-change-saga plan add-dependency SAGA
-change-saga plan add-contract SAGA
-change-saga plan assign SAGA --item URN --workspace UUID
-change-saga plan progress SAGA --item URN --from EVENT --to STATE
-change-saga plan record-merge SAGA --item URN --commit OID
+change-saga plan create|add-phase|add-prototype|link-review|deliver SAGA
+change-saga task add|depend|set|done|remove SAGA
 ```
 
 Initial implementation may deliver these command families incrementally, but
@@ -395,10 +320,6 @@ change-saga query prototype-annotations
 change-saga query prototype-coverage
 change-saga query external-targets
 change-saga query design-coverage
-change-saga query waves
-change-saga query work-items
-change-saga query work-events
-change-saga query work-conflicts
 change-saga query traceability
 change-saga query readiness
 ```
@@ -406,38 +327,35 @@ change-saga query readiness
 Coverage is reported on three independent axes:
 
 - requirement coverage: accepted criteria with current design;
-- plan coverage: current design and criteria with active work items; and
+- plan coverage: accepted criteria whose story a Task names; and
 - delivery coverage: accepted criteria with a complete path to current,
   immutable evidence.
 
 Only delivery coverage participates in peer-review readiness. Readiness is a
-projection, never a stored approval or percentage.
+projection, never a stored approval or percentage. Plans are read with `plan list`
+and `task list`, not the query API.
 
 ## Live viewer
 
-The viewer renders requirements, design, work-plan waves, workspace
-assignments, progress, merges, evidence, and review as projections of one
-snapshot. It watches for a new snapshot and swaps the complete projection; it
+The viewer renders requirements, design, Plans, merges, evidence, and review as
+projections of one snapshot. It watches for a new snapshot and swaps the complete projection; it
 does not combine records from different snapshots.
 
-The default plan view emphasizes waves and parallel workspace lanes. It also
-shows dependency blockers, predicted touch-area collisions, stale references,
-contract changes, current multi-head conflicts, convergence points, and merge
-order.
+A Plan's page shows its deck, its Tasks by phase and by story, a dependency graph
+whose columns could run at the same time, its prototypes, and a comparison with
+its linked reviews.
 
-## Implementation waves
+## Implementation order
 
 1. **Format foundation:** v3 manifest, stable living resource IDs, schemas,
    strict loading, validation, and v2 read compatibility.
 2. **Requirements, prototypes, and design:** story/citation/relation mutations,
    local and external prototypes, annotations, optional repository styles,
    design root, revisions, and coverage queries.
-3. **Parallel work plan:** waves, work items, dependencies, contracts,
-   assignments, progress, and conflict queries.
-4. **Traceability and readiness:** stale-reference detection, revision-pinned
+3. **Traceability and readiness:** stale-reference detection, revision-pinned
    cross-Saga resolution, and transitive requirement-to-evidence paths.
-5. **Live experience:** wave/workspace plan UI, snapshot refresh, and history.
+4. **Live experience:** snapshot refresh and history.
 
-Each implementation wave must preserve independent package ownership and
+Each step must preserve independent package ownership and
 serialize edits to the central Saga loader, CLI dispatcher, query registry, and
 published specification.

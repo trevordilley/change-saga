@@ -20,7 +20,7 @@ record formats rather than rewriting them:
 
 - chapter, section, fragment, landmark, diff, claim, verification, and review
   records use the v2 component schemas;
-- story, citation, work-plan, and existing relation records use the v3 schemas;
+- story, citation, and existing relation records use the v3 schemas;
 - deck, slide, Item, asset, and Item evidence records inside
   `___slides/<deck-id>.deck/` use the v4 deck schemas; and
 - the format adds the relation extensions, coverage exceptions, and quality
@@ -160,7 +160,6 @@ checkout-refund.saga/
 |       |-- 20-s-....svg
 |       |-- 30-i-....json
 |       `-- 40-e-....json                  # exact diffs remain Item-owned
-|-- ___workplan/                           # existing v3 plan, optional
 |-- ___quality/
 |   |-- policies/
 |   |   `-- refund-cutoff-kinds.json        # per-criterion required test kinds
@@ -372,7 +371,6 @@ displayed from requirement outward for readability.
 | --- | --- | --- | --- | --- |
 | `refines` | story or criterion | story or criterion | story revision pins when mutable | Navigational decomposition; not evidence. Existing acyclic rule remains. |
 | `addresses` | report design target, Deck, Slide, or Item | story or criterion | source digest and target story revision | Counts current requirement-to-design coverage. `descendants` may traverse Deck/Slide containment. |
-| `implements` | work item | report design target or criterion | work-item revision and design digest/story revision | Planning path only; progress never proves delivery. |
 | `explains` | Deck, Slide, or Item | story or criterion | target story revision; v5 visual digest recommended | Existing review-explanation and reverse-code path. It does not count as design coverage. |
 | `verifies` | claim, verification, or test case | criterion | criterion revision; test case also pins its revision | Verification intent with current definition/mapping pins; execution results are irrelevant. |
 | `supersedes` | resource | same resource kind | pins as applicable | Explicit replacement; no automatic lifecycle mutation. Existing acyclic rule remains. |
@@ -448,7 +446,7 @@ accepted current criterion
 ```
 
 The query must never infer an `addresses` edge from proximity, slide reading
-order, matching words, code paths, work-item links, Git blame, or an AI model.
+order, matching words, code paths, Task links, Git blame, or an AI model.
 It may suggest candidate links in a separate non-readiness operation, but a
 candidate is not coverage until persisted by an author.
 

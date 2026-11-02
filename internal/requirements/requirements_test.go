@@ -441,9 +441,9 @@ func TestRelationTypeMatrixRejectsInvalidEndpoints(t *testing.T) {
 	root := newSaga(t)
 	_, err := AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "invalid", Type: RelationAddresses,
-		From: "urn:change-saga:test:work-item:one", To: "urn:change-saga:test:work-item:two",
-		Rationale: "Wrong kinds", FromRevision: "urn:change-saga:test:work-item:one:revision:r1",
-		ToRevision: "urn:change-saga:test:work-item:two:revision:r1", CreatedAt: testTime,
+		From: "urn:change-saga:test:citation:one", To: "urn:change-saga:test:citation:two",
+		Rationale: "Wrong kinds", FromContentDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		ToRevision: "urn:change-saga:test:story:two:revision:r1", CreatedAt: testTime,
 	})
 	if err == nil || !strings.Contains(err.Error(), "addresses relation") {
 		t.Fatalf("invalid relation error = %v", err)

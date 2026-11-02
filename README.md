@@ -135,10 +135,10 @@ the documentation that explains it. `change-saga serve status` and
 `serve stop` manage the running reviewer; `serve --open` keeps it attached to
 the terminal instead.
 
-The header divides the application in two: **Documentation** is what the app
-is, and **Review** is how it is changing. The **Overview** (pitch,
-description, personas, terms, design system, onboarding deck, and feature
-flags) appears on both sides.
+The header divides the application: **Documentation** is what the app is,
+**Plans** is what we intend to do, and **Review** is how it is changing. The
+**Overview** (pitch, description, personas, terms, design system, onboarding
+deck, and feature flags) sits under Documentation.
 
 - **Documentation** lists every feature. Inside a feature the sidebar is
   always Stories, Prototypes, UX, UI, Technical, and Quality, in that order,
@@ -237,6 +237,10 @@ A grown Saga holds:
   decks), **UI** (visual references), **Technical** (a slide deck whose visual
   elements reference the exact code they explain, plus technical design), and
   **Quality** (test cases and their evidence).
+- **Plans**, each a body of work before it is built: the technical design as a
+  slide deck, and the Tasks that carry it out. A review explains what a change
+  did; a Plan says what it will do. See
+  [writing a Plan](skills/change-saga/references/plans.md).
 
 It uses four presentation forms:
 
@@ -621,14 +625,16 @@ imports; component and system pins are not supported yet.
 | `quality evidence add` | Attach test code, the code under test, or run artifacts to a test case. |
 | `quality run record` | Deprecated: record run history, with no coverage effect. |
 
-### Work planning
+### Plans and Tasks
 
 | Command | What it does |
 | --- | --- |
-| `plan add-wave` / `revise-wave` | Delivery phases with entry and exit conditions. |
-| `plan add-item` / `revise-item` | Independently assignable units of work. |
-| `plan add-dependency` / `add-contract` | Prerequisites and interfaces between work items. |
-| `plan assign` / `progress` / `record-merge` | Bind work to a workspace and branch, and record its progress and merges. |
+| `plan create` / `list` / `guide` | Start a Plan, list Plans (`--all` includes delivered ones), and see the workflow or what a Plan still needs. |
+| `plan add-phase` / `remove-phase` / `add-prototype` | Add or remove a phase, a set of Tasks that can run in parallel, and attach a prototype. |
+| `apply-slide --plan` / `deck overview --plan` | Author the Plan's deck, the technical design for the work. |
+| `plan link-review` / `deliver` | Link a pull request review that implements the Plan, and mark the Plan delivered once every Task is done and every linked review has merged. |
+| `task add` / `depend` / `set` / `remove` | Add, connect, edit and remove Tasks. Every Task leads to a user story; a change that breaks that is refused. |
+| `task done` / `list` | Mark a Task finished, and list a Plan's Tasks (`--ready` shows what can start now). |
 
 ## Security
 

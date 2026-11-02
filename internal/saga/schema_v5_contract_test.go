@@ -31,6 +31,8 @@ var v5RecordSchemas = []string{
 	"review.schema.json",
 	"review-approval.schema.json",
 	"review-comment.schema.json",
+	"plan.schema.json",
+	"task.schema.json",
 	"diagram.schema.json",
 }
 
@@ -114,7 +116,7 @@ func TestV5SchemaRuntimeParity(t *testing.T) {
 		}
 	}
 
-	wantRelations := []string{"addresses", "conflicts_with", "explains", "implements", "refines", "supersedes", "verifies"}
+	wantRelations := []string{"addresses", "conflicts_with", "explains", "refines", "supersedes", "verifies"}
 	if got := schemaEnum(t, loadV5Schema(t, "relation.schema.json"), "properties", "type", "enum"); !reflect.DeepEqual(got, wantRelations) {
 		t.Errorf("relation enum = %v, want %v", got, wantRelations)
 	}
@@ -287,7 +289,7 @@ func loadErrors(t *testing.T, root string) []string {
 
 func TestSagaLoadsReportComponentsAndEveryLivingRoot(t *testing.T) {
 	root := writeV5Composition(t, v5TestManifest)
-	for _, name := range []string{"___requirements", "___workplan", "___design", QualityRootDir, EmbeddedSlidesDir} {
+	for _, name := range []string{"___requirements", "___design", QualityRootDir, EmbeddedSlidesDir} {
 		if err := os.MkdirAll(filepath.Join(root, testFeatureDir, name), 0o755); err != nil {
 			t.Fatal(err)
 		}
@@ -375,7 +377,7 @@ func TestSagaLoadRefusesEveryOtherContainer(t *testing.T) {
 func TestV5SchemaListIsStable(t *testing.T) {
 	got := append([]string(nil), v5RecordSchemas...)
 	sort.Strings(got)
-	want := []string{"coverage-exception.schema.json", "diagram.schema.json", "quality-evidence.schema.json", "quality-policy.schema.json", "relation.schema.json", "review-approval.schema.json", "review-comment.schema.json", "review.schema.json", "saga.schema.json", "test-case-event.schema.json", "test-case-revision.schema.json", "test-case.schema.json", "test-run.schema.json"}
+	want := []string{"coverage-exception.schema.json", "diagram.schema.json", "plan.schema.json", "quality-evidence.schema.json", "quality-policy.schema.json", "relation.schema.json", "review-approval.schema.json", "review-comment.schema.json", "review.schema.json", "saga.schema.json", "task.schema.json", "test-case-event.schema.json", "test-case-revision.schema.json", "test-case.schema.json", "test-run.schema.json"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("record schema set = %v, want %v", got, want)
 	}

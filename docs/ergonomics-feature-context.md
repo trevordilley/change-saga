@@ -1,6 +1,6 @@
 # Feature context query
 
-`change-saga query context` gives an AI a bounded view of one durable feature without making it read every requirements, design, slide, and work-plan record independently.
+`change-saga query context` gives an AI a bounded view of one durable feature without making it read every requirements, design, and slide record independently.
 
 ## Interface
 
@@ -20,7 +20,7 @@ The default projection is a compact, cursor-paged story index. It includes:
 - related terms by identity and name, with independent
   `definition_maturity` and `implementation_evidence` values;
 - related slide and Item identities, exact story/criterion links, relation URNs, and code-reference counts;
-- known stale links, readiness gaps, requirement/work-plan conflicts, and explicit completeness bounds.
+- known stale links, readiness gaps, requirement conflicts, and explicit completeness bounds.
 
 The compact projection omits story statements, criterion statements, term definitions, citations, full relation records, and code-reference bodies. Use `--expand STORY-ID|URN` to request those for one owned story. Expansion cannot be combined with `--cursor`; selecting a story outside the feature returns `not_found`.
 

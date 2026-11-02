@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "plan-deck",
+  "title": "Give a Plan a deck that holds its technical design",
+  "phase": "tasks-section-deck",
+  "story": "urn:change-saga:change-saga:story:draft-design-in-the-plan",
+  "depends_on": [
+    "plan-record"
+  ],
+  "code": [
+    {
+      "commit": "4ede5cad1a5127a7f347d58de85b3cb62a07e758",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 187,
+      "end": 229,
+      "digest": "sha256:1204865b3ce599e1974e83c2b6f4452936590212bce623adf668e9edb35f114b",
+      "note": "Where a review's slide is told apart from an implementation slide"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Reuses the review deck path."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:43.959494Z"
+}

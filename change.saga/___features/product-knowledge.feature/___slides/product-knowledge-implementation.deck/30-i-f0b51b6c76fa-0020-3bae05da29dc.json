@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "edge",
   "label": "Forward projection",
-  "description": "Addresses, implements, explains and verifies relations derive design, work, review Item, code and test-definition paths. Test results do not supply immutable delivery evidence.",
+  "description": "Addresses, explains and verifies relations, and Tasks that name the story, derive design, Task, review Item, code and test-definition paths. Test results do not supply immutable delivery evidence.",
   "selector": {
     "type": "element",
     "element_id": "forward-projection"

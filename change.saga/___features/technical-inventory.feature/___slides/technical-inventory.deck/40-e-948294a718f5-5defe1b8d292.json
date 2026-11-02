@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/cli/testdata/query/help.golden",
       "start": 1,
       "end": 1,
-      "digest": "sha256:1731598903c26b5852442c5802a4c4c22519e1dfb2c75c1ccf856fde3077af90",
+      "digest": "sha256:1b1881fcfb5732105236e504a7a6ebc442fe7418c981e10643827f51f51a2197",
       "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
     }
   ]

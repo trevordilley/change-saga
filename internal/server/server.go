@@ -175,6 +175,10 @@ type pageData struct {
 	// Documentation is the overview and the feature set, Review the current
 	// and completed reviews.
 	ReviewSide bool
+	// PlanSide says the page is on the Plans side of the header.
+	PlanSide bool
+	// PlanTabs are the views of the Plan on screen, shown in the header.
+	PlanTabs []planTabView
 	// DeckLabel names the Review side's first view: the reviews themselves,
 	// or one review's deck.
 	DeckLabel string
@@ -227,6 +231,17 @@ func oobPart(data any, swap bool) (oobView, error) {
 		return oobView{pageData: &page, OOB: swap}, nil
 	}
 	return oobView{}, fmt.Errorf("oob: %T is not a page", data)
+}
+
+// Side names the header side the page is on, for the side tabs.
+func (data *pageData) Side() string {
+	switch {
+	case data.ReviewSide:
+		return "review"
+	case data.PlanSide:
+		return "plans"
+	}
+	return "documentation"
 }
 
 // Page is the page the part belongs to, for parts that compose others.
@@ -525,6 +540,11 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /tests/{test}", application.page)
 	page("GET /prototypes/{prototype}", application.page)
 	page("GET /", application.page)
+	page("GET /plans", application.planIndex)
+	page("GET /plans/{id}", application.planPage)
+	page("GET /plans/{id}/tasks/{task}", application.taskPage)
+	page("GET /plans/{id}/tasks", application.planTasksPage)
+	handle("GET /plans/{id}/visual/{slide}", application.planVisual)
 	page("GET /reviews", application.reviewIndex)
 	page("GET /reviews/{id}", application.reviewPage)
 	handle("GET /reviews/{id}/summary", application.reviewSummary)
@@ -1024,6 +1044,7 @@ func templateFuncs() template.FuncMap {
 	return template.FuncMap{
 		"comparing":            func() bool { return true },
 		"short":                shortCommit,
+		"planHref":             planHref,
 		"kindTitle":            technicalKindTitle,
 		"documentationControl": documentationControl,
 		"roleTitle":            technicalRoleTitle,
@@ -1230,6 +1251,8 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "prototype", id: r.PathValue("prototype")}, true
 	case path == "/reviews" || strings.HasPrefix(path, "/reviews/"):
 		return appRoute{kind: "reviews"}, true
+	case path == plansIndexPath || strings.HasPrefix(path, plansIndexPath+"/"):
+		return appRoute{kind: "plans"}, true
 	}
 	return appRoute{}, false
 }
@@ -1354,6 +1377,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// Documentation keeps the documented code, which is the same references
 	// resolved at the head rather than a diff.
 	data.ReviewSide = route.kind == "reviews"
+	data.PlanSide = route.kind == "plans"
 	data.DeckLabel = "Reviews"
 	if data.ReviewSide && data.Comparing {
 		data.ReviewCodeHref, data.ReviewCoverageHref = "/api/code", "/api/coverage"
@@ -1363,8 +1387,10 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		graph.decorateRequirements(requirementsView)
 	}
 	storyTitles := map[string]string{}
-	for _, story := range requirementsView.Stories {
+	for index := range requirementsView.Stories {
+		story := requirementsView.Stories[index]
 		storyTitles[story.Target] = story.Title
+		requirementsView.Stories[index].Plans = plansTouching(document, map[string]bool{story.Target: true})
 	}
 	data.Terms, err = a.makeTermsPage(r.Context(), requirementsDocument, storyTitles, r.URL.Path, r.PathValue("term"), directoryQuery(r))
 	if err != nil {
@@ -1501,7 +1527,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		pageFeature: data.PageFeature, featureGrouping: data.FeatureGrouping, roadmapGrouping: roadmapGrouping, reviewSide: data.ReviewSide, mergedReviews: merged,
+		pageFeature: data.PageFeature, featureGrouping: data.FeatureGrouping, roadmapGrouping: roadmapGrouping, reviewSide: data.ReviewSide, planSide: data.PlanSide, mergedReviews: merged,
 		technical: technicalRows,
 	})
 	// The sidebar is the same on every page, so it outlives the page it was

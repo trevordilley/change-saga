@@ -52,6 +52,9 @@ Otherwise, keep a coding session about the code: do not end it with Saga
 upkeep nobody asked for. A deck that lags the branch between PR updates is
 expected. When the user asks for Saga work directly, do it then.
 
+A Plan is the deliberate exception: it is written before the code exists, and its
+Tasks are marked done as the work happens. See [writing a Plan](references/plans.md).
+
 If a user asks to document features while iterating on a PR deck, follow the
 feature authoring workflow at that scope in the same Saga. Keep the PR deck
 focused on the change and connect it to the feature records where relevant;
@@ -275,6 +278,7 @@ reference. When a task crosses rows, combine only those rows.
 | Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
 | Categorize features by optional product themes, author rationale overviews and decks | [Product themes](references/feature-themes.md) |
 | Theme the reviewer and its slides: brand colours, fonts, dark mode | [Theming](references/theme.md) |
+| Plan work before building it; draft a technical design for a change; break work into Tasks; mark Tasks done; compare a Plan with its Reviews | [Writing a Plan](references/plans.md), and [diagrams and evidence](references/diagrams.md) for its deck |
 | Reconcile a comparison, work with a companion repository, repin landed evidence, recover, or hand off work without changing visuals | [Query](references/query.md), then [integration and recovery](references/integration.md) |
 | Compare parallel proposal branches or deliberately withdraw/consolidate a duplicate proposal | [Query](references/query.md), [integration](references/integration.md), and [stories](references/stories.md); use only capabilities confirmed by the installed CLI |
 | Prepare or update a pull-request review artifact alongside living documentation, or change visuals while integrating | [Query](references/query.md), [integration](references/integration.md), and [diagrams](references/diagrams.md) |

@@ -15,15 +15,8 @@ func TestResourceURNsRoundTrip(t *testing.T) {
 		{"story", func() (string, error) { return Story("checkout", "retry") }, "urn:change-saga:checkout:story:retry", Reference{SagaID: "checkout", Kind: KindStory, ID: "retry"}},
 		{"criterion", func() (string, error) { return Criterion("checkout", "retry", "idempotent") }, "urn:change-saga:checkout:story:retry:criterion:idempotent", Reference{SagaID: "checkout", Kind: KindCriterion, ParentID: "retry", ID: "idempotent"}},
 		{"revision", func() (string, error) { return Revision("checkout", "retry", "rev.2") }, "urn:change-saga:checkout:story:retry:revision:rev.2", Reference{SagaID: "checkout", Kind: KindRevision, ParentID: "retry", ID: "rev.2"}},
-		{"wave revision", func() (string, error) { return DefinitionRevision("checkout", KindWave, "foundation", "rev.2") }, "urn:change-saga:checkout:wave:foundation:revision:rev.2", Reference{SagaID: "checkout", Kind: KindRevision, ParentKind: KindWave, ParentID: "foundation", ID: "rev.2"}},
-		{"work-item revision", func() (string, error) { return DefinitionRevision("checkout", KindWorkItem, "add-key", "rev.2") }, "urn:change-saga:checkout:work-item:add-key:revision:rev.2", Reference{SagaID: "checkout", Kind: KindRevision, ParentKind: KindWorkItem, ParentID: "add-key", ID: "rev.2"}},
-		{"contract revision", func() (string, error) { return DefinitionRevision("checkout", KindContract, "key-format", "rev.2") }, "urn:change-saga:checkout:contract:key-format:revision:rev.2", Reference{SagaID: "checkout", Kind: KindRevision, ParentKind: KindContract, ParentID: "key-format", ID: "rev.2"}},
 		{"citation", func() (string, error) { return Citation("checkout", "decision-1") }, "urn:change-saga:checkout:citation:decision-1", Reference{SagaID: "checkout", Kind: KindCitation, ID: "decision-1"}},
 		{"relation", func() (string, error) { return Relation("checkout", "addresses-retry") }, "urn:change-saga:checkout:relation:addresses-retry", Reference{SagaID: "checkout", Kind: KindRelation, ID: "addresses-retry"}},
-		{"wave", func() (string, error) { return Wave("checkout", "foundation") }, "urn:change-saga:checkout:wave:foundation", Reference{SagaID: "checkout", Kind: KindWave, ID: "foundation"}},
-		{"work item", func() (string, error) { return WorkItem("checkout", "add-key") }, "urn:change-saga:checkout:work-item:add-key", Reference{SagaID: "checkout", Kind: KindWorkItem, ID: "add-key"}},
-		{"dependency", func() (string, error) { return Dependency("checkout", "storage-first") }, "urn:change-saga:checkout:dependency:storage-first", Reference{SagaID: "checkout", Kind: KindDependency, ID: "storage-first"}},
-		{"contract", func() (string, error) { return Contract("checkout", "key-format") }, "urn:change-saga:checkout:contract:key-format", Reference{SagaID: "checkout", Kind: KindContract, ID: "key-format"}},
 	}
 
 	for _, test := range tests {

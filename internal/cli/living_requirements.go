@@ -406,7 +406,7 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 	usage := commandUsage[name]
 	flags := commandFlags(name, usage, out)
 	id := flags.String("id", "", "stable relation id")
-	typeName := flags.String("type", "", "refines, addresses, implements, explains, verifies, supersedes, or conflicts_with")
+	typeName := flags.String("type", "", "refines, addresses, explains, verifies, supersedes, or conflicts_with")
 	from := flags.String("from", "", "source endpoint URN; visual story links require a slide Item")
 	to := flags.String("to", "", "target endpoint URN")
 	rationale := flags.String("rationale", "", "why the endpoints are related")
@@ -477,7 +477,7 @@ type relationAddOutput struct {
 }
 
 // defaultV5RelationPins fills each omitted revision pin of a revision-bearing
-// endpoint (story, criterion, work item, test case) with its unique current
+// endpoint (story, criterion, test case) with its unique current
 // head, and reports each default so the author sees exactly what was pinned.
 // supersedes never defaults: its pins are optional history, not currency.
 func defaultV5RelationPins(root string, input *requirements.AddRelationInput) ([]string, error) {
@@ -515,7 +515,7 @@ func defaultV5RelationPinsWithGuardedSaga(root string, input *requirements.AddRe
 			defaulted = append(defaulted, fmt.Sprintf("%s to current head %s", side.name, head))
 		}
 	}
-	if input.Type == requirements.RelationAddresses || input.Type == requirements.RelationImplements {
+	if input.Type == requirements.RelationAddresses {
 		// A design endpoint is pinned by its content digest. Defaulting it to
 		// the current digest matches the revision rule above and is reported.
 		document, _, err := saga.Load(root)

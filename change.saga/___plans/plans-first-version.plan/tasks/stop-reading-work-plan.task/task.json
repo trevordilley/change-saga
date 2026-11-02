@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "stop-reading-work-plan",
+  "title": "Stop readiness, audit, and status reading work items",
+  "phase": "start-the-records",
+  "code": [
+    {
+      "commit": "4ede5cad1a5127a7f347d58de85b3cb62a07e758",
+      "path": "internal/livingapp/compose.go",
+      "start": 470,
+      "end": 491,
+      "digest": "sha256:66b40af1376aad22c653b568ebcfceb3c67e512000649836138b262c6776e222",
+      "note": "Readiness's plan axis"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A small set of readers, listed in the design."
+  },
+  "state": "done",
+  "summary": "Readiness's plan coverage counts criteria whose story a Task names, and traceability returns tasks.",
+  "created_at": "2026-11-02T05:05:48.9818Z"
+}

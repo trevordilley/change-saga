@@ -1,0 +1,287 @@
+{
+  "version": 1,
+  "deck": "plans-first-version",
+  "slide": "a-plan-stands-alone",
+  "current": "sha256:cd4c813acf9da7a302a40ef612cb9e3bd96f96001b95f101496ebbbf30d1509c",
+  "revisions": [
+    {
+      "snapshot": "sha256:bb9fde9607199199b6e5383df954c3a81e1bfa22f01ea2701c45f438c766b8d9",
+      "request_id": "plan-deck-a-plan-stands-alone",
+      "created_at": "2026-11-02T05:19:39.4708Z",
+      "asset": "24-a-7e9e385fbfc02e62f1263c695bb0e83ee29bf1cad5e8030de0c9.svg",
+      "asset_digest": "sha256:7e9e385fbfc02e62f1263c695bb0e83ee29bf1cad5e8030de0c9c8227f3137fd",
+      "slide": {
+        "front": [
+          "A Plan is one body of work, in its own section.",
+          "When it changes it is the same record, committed again.",
+          "Its stories and features are worked out from its Tasks."
+        ],
+        "version": 4,
+        "id": "a-plan-stands-alone",
+        "deck": "plans-first-version",
+        "title": "A Plan stands on its own, and reaches stories through its Tasks",
+        "rank": 10,
+        "section": "Phase 1: A Plan exists",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7e9e385fbfc02e62f1263c695bb0e83ee29bf1cad5e8030de0c9.svg",
+        "takeaway": "A Plan belongs to no feature. Its stories come from its Tasks and its features from those stories, so nobody keeps those lists by hand.",
+        "reading_order": [
+          "t-plan-record",
+          "t-plan-commands",
+          "t-plans-section"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-record",
+            "slide": "a-plan-stands-alone",
+            "rank": 500,
+            "kind": "node",
+            "label": "Add the Plan record",
+            "description": "Task plan-record.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-record"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-record"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-commands",
+            "slide": "a-plan-stands-alone",
+            "rank": 510,
+            "kind": "node",
+            "label": "plan create, plan list",
+            "description": "Task plan-commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plans-section",
+            "slide": "a-plan-stands-alone",
+            "rank": 520,
+            "kind": "node",
+            "label": "A Plans section",
+            "description": "Task plans-section.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plans-section"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plans-section"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-490f989863af250e0b59a1528dd292ae8336da11ab6bc4192c64.json",
+        "source_digest": "sha256:490f989863af250e0b59a1528dd292ae8336da11ab6bc4192c6438b5dcdd0b6c",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:b33398bb4dff358cf0c5e3b4badda463f9bfd79bcd1ec620c1913904b4f25a94",
+      "parent_snapshots": [
+        "sha256:bb9fde9607199199b6e5383df954c3a81e1bfa22f01ea2701c45f438c766b8d9"
+      ],
+      "request_id": "a-plan-stands-alone-factcheck",
+      "created_at": "2026-11-02T05:55:34.374607Z",
+      "asset": "24-a-fd7f086bb3f415ef11b540d0b0d1d5b66e912c82d212df40be52.svg",
+      "asset_digest": "sha256:fd7f086bb3f415ef11b540d0b0d1d5b66e912c82d212df40be5282c7e76a3d06",
+      "slide": {
+        "front": [
+          "A Plan is one body of work, in its own section.",
+          "When it changes it is the same record, committed again.",
+          "Its stories and features are worked out from its Tasks."
+        ],
+        "version": 4,
+        "id": "a-plan-stands-alone",
+        "deck": "plans-first-version",
+        "title": "A Plan stands on its own, and reaches stories through its Tasks",
+        "rank": 10,
+        "section": "Phase 1: A Plan exists",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-fd7f086bb3f415ef11b540d0b0d1d5b66e912c82d212df40be52.svg",
+        "takeaway": "A Plan belongs to no feature. Its stories come from its Tasks and its features from those stories, so nobody keeps those lists by hand.",
+        "reading_order": [
+          "t-plan-record",
+          "t-plan-commands",
+          "t-plans-section"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-record",
+            "slide": "a-plan-stands-alone",
+            "rank": 500,
+            "kind": "node",
+            "label": "Add the Plan record",
+            "description": "Task plan-record.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-record"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-record"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-commands",
+            "slide": "a-plan-stands-alone",
+            "rank": 510,
+            "kind": "node",
+            "label": "plan create, plan list",
+            "description": "Task plan-commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plans-section",
+            "slide": "a-plan-stands-alone",
+            "rank": 520,
+            "kind": "node",
+            "label": "A Plans section",
+            "description": "Task plans-section.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plans-section"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plans-section"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-9c9e18a4a591667f4e3df151c3e9eeedc2fa57c2b3bc7b8c6575.json",
+        "source_digest": "sha256:9c9e18a4a591667f4e3df151c3e9eeedc2fa57c2b3bc7b8c6575d9c7f6a244b1",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:cd4c813acf9da7a302a40ef612cb9e3bd96f96001b95f101496ebbbf30d1509c",
+      "parent_snapshots": [
+        "sha256:b33398bb4dff358cf0c5e3b4badda463f9bfd79bcd1ec620c1913904b4f25a94"
+      ],
+      "request_id": "a-plan-stands-alone-round2",
+      "created_at": "2026-11-02T20:41:15.29788Z",
+      "asset": "24-a-77e38b20ff492385ef8358df4bf6c4b192e51da3736771b8eb47.svg",
+      "asset_digest": "sha256:77e38b20ff492385ef8358df4bf6c4b192e51da3736771b8eb4771ea7fab7a07",
+      "slide": {
+        "front": [
+          "A Plan is one body of work, in its own section.",
+          "When it changes it is the same record, committed again.",
+          "Its stories and features are worked out from its Tasks."
+        ],
+        "version": 4,
+        "id": "a-plan-stands-alone",
+        "deck": "plans-first-version",
+        "title": "A Plan stands on its own, and reaches stories through its Tasks",
+        "rank": 10,
+        "section": "Phase 1: Start the records, and stop reading the old work plan",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-77e38b20ff492385ef8358df4bf6c4b192e51da3736771b8eb47.svg",
+        "takeaway": "A Plan belongs to no feature. Its stories come from its Tasks and its features from those stories, so nobody keeps those lists by hand.",
+        "reading_order": [
+          "t-plan-record",
+          "t-plan-commands",
+          "t-plans-section"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-record",
+            "slide": "a-plan-stands-alone",
+            "rank": 500,
+            "kind": "node",
+            "label": "Add the Plan record",
+            "description": "Task plan-record.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-record"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-record"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-commands",
+            "slide": "a-plan-stands-alone",
+            "rank": 510,
+            "kind": "node",
+            "label": "plan create, plan list",
+            "description": "Task plan-commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plans-section",
+            "slide": "a-plan-stands-alone",
+            "rank": 520,
+            "kind": "node",
+            "label": "A Plans section",
+            "description": "Task plans-section.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plans-section"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plans-section"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-cae63601ba90d133ff902d49aab162aae116c8ddcb3edde281bc.json",
+        "source_digest": "sha256:cae63601ba90d133ff902d49aab162aae116c8ddcb3edde281bc8a0cbc8a3005",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

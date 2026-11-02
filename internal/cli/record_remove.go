@@ -425,7 +425,7 @@ func fullValidation(root string) (saga.Validation, string, error) {
 }
 
 // featureRemoveWithContent deletes a feature and everything inside it: its
-// report, stories, prototypes, test cases, decks, and work plan. Relations and
+// report, stories, prototypes, test cases, and decks. Relations and
 // other links elsewhere that point at anything inside it are deleted, and
 // feature themes stop listing it. What other features still reference is
 // reported to adjust.

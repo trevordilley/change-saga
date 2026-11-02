@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "guidance-wizard",
+  "title": "Guide authors to a Plan they trust",
+  "phase": "guide-and-rebuild",
+  "story": "urn:change-saga:change-saga:story:plan-with-a-guide",
+  "depends_on": [
+    "task-sizing",
+    "plan-prototypes"
+  ],
+  "code": [
+    {
+      "commit": "4ede5cad1a5127a7f347d58de85b3cb62a07e758",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 42,
+      "end": 53,
+      "digest": "sha256:8912226b25fb3564dff50c43cebb64b543fe03a5ec8f047ba85b6c2a85509246",
+      "note": "Says to author Saga content near completion; a Plan is the exception"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A guide an agent follows, plus a report of what is not ready."
+  },
+  "state": "done",
+  "summary": "plan guide prints the workflow and names what is not ready; the skill routes to writing a Plan.",
+  "created_at": "2026-11-02T05:05:47.283807Z"
+}

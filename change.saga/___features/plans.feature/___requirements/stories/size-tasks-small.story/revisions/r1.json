@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:size-tasks-small",
+  "parents": [],
+  "title": "Know each Task is small enough to be well understood",
+  "statement": "As an architect, I can record my confidence that each Task would have taken two days or less before AI, so anything not yet well understood stands out before work starts.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "sizing-recorded",
+      "statement": "A Task can record whether it is judged to be two days or less of pre-AI work."
+    },
+    {
+      "id": "unsized-stands-out",
+      "statement": "A Plan's Tasks with no such judgment, or judged larger, are identified as such on the Plan's page."
+    }
+  ],
+  "created_at": "2026-11-02T04:33:46.698131Z"
+}

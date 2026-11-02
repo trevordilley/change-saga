@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "task-page",
+  "title": "Give each Task a page",
+  "phase": "read-and-work",
+  "story": "urn:change-saga:change-saga:story:understand-a-task",
+  "depends_on": [
+    "task-records",
+    "plans-section"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One page from existing parts."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:42.186459Z"
+}

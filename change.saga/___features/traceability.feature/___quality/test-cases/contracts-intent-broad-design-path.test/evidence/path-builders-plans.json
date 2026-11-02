@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "path-builders-plans",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-broad-design-path",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-intent-broad-design-path:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "broad"
+  ],
+  "code": [
+    {
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+      "path": "internal/livingapp/compose.go",
+      "start": 250,
+      "end": 268,
+      "digest": "sha256:9d010fb20bfdd564b1edadafbf93e3d2d31d521c1806c173a393ed7ca1d10925"
+    },
+    {
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+      "path": "internal/livingapp/compose.go",
+      "start": 292,
+      "end": 299,
+      "digest": "sha256:f03341690b413e76009c8ef40bbb3dd1be259ac03ecd1e4b9d2764d5ad5c65c4"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-intent-broad-design-path:evidence:path-builders"
+  ],
+  "created_at": "2026-11-02T05:45:27Z"
+}

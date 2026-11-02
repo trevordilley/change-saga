@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:compare-plan-with-reviews",
+  "parents": [],
+  "title": "Compare what we said with what we did",
+  "statement": "As a developer, I can see a Plan side by side with the Review or Reviews that implement it, so I can judge how what we did differs from what we said we would do.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "plan-and-reviews-link",
+      "statement": "A Plan and the Reviews that implement it reference each other, and a Plan can have more than one."
+    },
+    {
+      "id": "comparison-shows-differences",
+      "statement": "The comparison shows the planned work beside what the Reviews delivered, identifying planned work that no Review delivered and delivered work the Plan did not include."
+    }
+  ],
+  "created_at": "2026-11-02T04:33:47.412994Z"
+}

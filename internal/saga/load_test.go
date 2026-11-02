@@ -138,7 +138,7 @@ func TestLoadDesignRejectsIDsDuplicatedByRootNarrative(t *testing.T) {
 }
 
 func TestLivingRootsAreReservedAndMustBeRealDirectories(t *testing.T) {
-	for _, name := range []string{"___requirements", "___design", "___workplan", QualityRootDir, EmbeddedSlidesDir} {
+	for _, name := range []string{"___requirements", "___design", QualityRootDir, EmbeddedSlidesDir} {
 		t.Run(name, func(t *testing.T) {
 			present := buildSaga(t, nil)
 			if err := os.MkdirAll(filepath.Join(present, testFeatureDir, name), 0o755); err != nil {
@@ -175,6 +175,17 @@ func TestLivingRootsAreReservedAndMustBeRealDirectories(t *testing.T) {
 				t.Fatalf("accepted symlinked %s:\n%s", name, report)
 			}
 		})
+	}
+}
+
+func TestRemovedWorkplanDirectoryIsAnUnknownReservedDirectory(t *testing.T) {
+	root := buildSaga(t, nil)
+	if err := os.MkdirAll(filepath.Join(root, testFeatureDir, "___workplan"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	validation, report := loadIssues(t, root)
+	if validation.Valid || !strings.Contains(report, "unknown reserved directory") {
+		t.Fatalf("accepted ___workplan in a feature:\n%s", report)
 	}
 }
 

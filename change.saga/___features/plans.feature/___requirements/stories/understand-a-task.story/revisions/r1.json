@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:understand-a-task",
+  "parents": [],
+  "title": "Find everything needed to start a Task",
+  "statement": "As a developer, I can open a Task and find its user story, a small essay, and the code that matters, so I can start it without reconstructing the context.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "task-names-story",
+      "statement": "A Task's page links to the user story it leads to, and a Task with no story of its own shows the chain of Tasks leading there."
+    },
+    {
+      "id": "task-has-essay",
+      "statement": "A Task can have a short essay, and its page shows it."
+    },
+    {
+      "id": "task-cites-code",
+      "statement": "A Task can reference specific code, and its page shows each reference and opens that code."
+    }
+  ],
+  "created_at": "2026-11-02T04:33:46.480018Z"
+}

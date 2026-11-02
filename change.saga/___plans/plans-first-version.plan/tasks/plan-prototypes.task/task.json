@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "plan-prototypes",
+  "title": "Attach prototypes to a Plan",
+  "phase": "tasks-section-deck",
+  "story": "urn:change-saga:change-saga:story:show-plan-prototypes",
+  "depends_on": [
+    "plan-record"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A list of URNs and a tab."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:46.772647Z"
+}

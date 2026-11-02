@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "context-errors-plans",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection:revision:plans-v1",
+  "role": "test_implementation",
+  "steps": [
+    "reject"
+  ],
+  "code": [
+    {
+      "commit": "98473391d188d9237c9125192769eef2214fa4d8",
+      "path": "internal/livingapp/session_test.go",
+      "start": 76,
+      "end": 88,
+      "digest": "sha256:1034ef07a261e6f46cace782d897ac4f0fd3fe3c845f664d333190b39fc6b1fe"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection:evidence:context-errors"
+  ],
+  "created_at": "2026-11-02T05:45:02Z"
+}

@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plans prototype</title>
+<style>
+:root { color-scheme: light; --bg:#fff; --subtle:#f6f7f9; --inset:#eef0f4; --ink:#1b2130; --muted:#5b6475; --line:#d9dde5; --accent:#0b63ce; --accent-soft:#e7f0fc;
+  --done:#14713c; --done-bg:#e3f4e9; --ready:#0b63ce; --ready-bg:#e7f0fc; --work:#8a5a00; --work-bg:#fdf1d6; --wait:#5b6475; --wait-bg:#eef0f4; --warn:#a4262c; --warn-bg:#fde8e8; --slide:#fff; --edge:#9aa3b2; }
+.dark { color-scheme: dark; --bg:#14161b; --subtle:#1b1e25; --inset:#23272f; --ink:#e8eaf0; --muted:#a2a9b7; --line:#343a45; --accent:#7db4ff; --accent-soft:#1c2c44;
+  --done:#6fdc9a; --done-bg:#15331f; --ready:#7db4ff; --ready-bg:#1c2c44; --work:#f1c663; --work-bg:#3a2d0f; --wait:#a2a9b7; --wait-bg:#272b34; --warn:#ff9c9c; --warn-bg:#401c1e; --slide:#1b1e25; --edge:#68707f; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+a { color:var(--accent); } button { font:inherit; color:inherit; cursor:pointer; }
+code, pre { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+.banner { background:var(--work-bg); color:var(--work); padding:6px 20px; font-size:13px; border-bottom:1px solid var(--line); }
+.top { display:flex; align-items:center; gap:18px; padding:10px 20px; border-bottom:1px solid var(--line); }
+.top strong { font-size:14px; } .top .spacer { flex:1; }
+.crumbs { color:var(--muted); font-size:13px; padding:7px 20px; border-bottom:1px solid var(--line); }
+.sections { display:flex; gap:2px; } .sections a { padding:4px 11px; border-radius:6px; text-decoration:none; color:var(--muted); font-size:14px; } .sections a.on { background:var(--accent-soft); color:var(--accent); font-weight:600; }
+.ghost { background:none; border:1px solid var(--line); border-radius:6px; padding:3px 10px; font-size:13px; }
+main { max-width:1180px; margin:0 auto; padding:22px 24px 60px; }
+h1 { font-size:26px; margin:2px 0 4px; letter-spacing:-.01em; } h2 { font-size:18px; margin:26px 0 8px; } h3 { font-size:15px; margin:18px 0 6px; }
+.eyebrow { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.sub { color:var(--muted); margin:0 0 16px; max-width:760px; }
+.tabs { display:flex; gap:2px; border-bottom:1px solid var(--line); margin:14px 0 20px; flex-wrap:wrap; }
+.tabs a { padding:8px 13px; text-decoration:none; color:var(--muted); border-bottom:2px solid transparent; font-size:14px; }
+.tabs a.on { color:var(--ink); border-color:var(--accent); font-weight:600; }
+table { border-collapse:collapse; width:100%; } th { text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:8px 10px; border-bottom:1px solid var(--line); }
+td { padding:10px; border-bottom:1px solid var(--line); vertical-align:top; }
+.bar { height:6px; background:var(--inset); border-radius:3px; overflow:hidden; width:120px; margin-top:5px; } .bar i { display:block; height:100%; background:var(--done); }
+.chip { display:inline-flex; align-items:center; gap:5px; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:600; white-space:nowrap; }
+.s-done { color:var(--done); background:var(--done-bg); } .s-ready { color:var(--ready); background:var(--ready-bg); } .s-work { color:var(--work); background:var(--work-bg); } .s-wait { color:var(--wait); background:var(--wait-bg); } .s-warn { color:var(--warn); background:var(--warn-bg); }
+.filter { display:flex; align-items:center; gap:10px; margin:6px 0 10px; }
+.toggle { background:var(--subtle); border:1px solid var(--line); border-radius:6px; padding:4px 11px; font-size:13px; }
+.toggle[aria-pressed="true"] { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+tr.done-row td { background:var(--subtle); }
+.deck { display:grid; grid-template-columns:250px 1fr; gap:20px; }
+.outline { font-size:13.5px; } .outline h4 { font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin:14px 0 4px; }
+.outline a { display:block; padding:5px 9px; border-radius:6px; text-decoration:none; color:var(--ink); } .outline a.on { background:var(--accent-soft); color:var(--accent); font-weight:600; }
+.outline small { color:var(--muted); display:block; font-size:11.5px; font-weight:400; }
+.slide { background:var(--slide); border:1px solid var(--line); border-radius:10px; padding:26px 28px; min-height:380px; }
+.slide h2 { font-size:23px; margin:2px 0 6px; } .slide .take { color:var(--muted); margin:0 0 18px; }
+.flow { display:flex; gap:10px; align-items:stretch; flex-wrap:wrap; margin:10px 0; } .box { flex:1 1 150px; border:1.5px solid var(--line); border-radius:8px; padding:10px 12px; background:var(--subtle); font-size:13.5px; } .box b { display:block; } .box.key { border-color:var(--accent); background:var(--accent-soft); }
+.arrow { align-self:center; color:var(--muted); }
+.tasks-on { margin-top:20px; border-top:1px solid var(--line); padding-top:12px; } .tasks-on .row { display:flex; justify-content:space-between; gap:12px; padding:5px 0; align-items:center; }
+.para { background:var(--accent-soft); border-radius:8px; padding:9px 13px; margin-top:12px; font-size:13.5px; }
+.graph-wrap { overflow:auto; border:1px solid var(--line); border-radius:10px; background:var(--subtle); }
+svg text { font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+.node { cursor:pointer; } .node:focus { outline:none; } .node:focus rect { stroke-width:3; }
+.legend { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; align-items:center; }
+.dim { opacity:.15; } .edge { opacity:.7; }
+.cols { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:28px; } .side { border-left:1px solid var(--line); padding-left:22px; }
+.side ul { list-style:none; margin:0 0 8px; padding:0; } .side li { padding:3px 0; font-size:14px; }
+.cmd { background:var(--inset); border-radius:6px; padding:8px 11px; margin:8px 0; overflow:auto; white-space:pre; display:block; }
+.primary { background:var(--accent); color:var(--bg); border:0; border-radius:6px; padding:6px 13px; font-weight:600; font-size:13.5px; }
+.primary:disabled { opacity:.45; cursor:default; }
+.ref { display:block; padding:7px 0; border-bottom:1px solid var(--line); } .ref code { color:var(--accent); }
+.compare td:nth-child(1), .compare td:nth-child(2) { width:38%; } .note { color:var(--muted); font-size:13px; } .why { font-size:13px; color:var(--muted); margin-top:3px; }
+.stats { display:flex; gap:10px; margin:6px 0 16px; flex-wrap:wrap; }
+pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
+.card { border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:10px; }
+.step { display:grid; grid-template-columns:26px 1fr; gap:10px; margin-bottom:12px; } .step i { font-style:normal; width:24px; height:24px; border-radius:50%; background:var(--accent-soft); color:var(--accent); text-align:center; font-weight:700; font-size:13px; line-height:24px; }
+[hidden] { display:none !important; }
+@media (max-width:820px) { .deck,.cols { grid-template-columns:1fr; } .side { border-left:0; padding-left:0; } }
+</style>
+</head>
+<body>
+<div class="banner" id="banner"><strong>Prototype.</strong> The direction explored before Plans were built, kept as it was. All content is illustrative: no Task here is really done, no review listed here exists, and code paths may no longer exist.</div>
+<div class="top"><strong>change-saga</strong><nav class="sections" id="sections" aria-label="Sections"></nav><span class="spacer"></span><button class="ghost" id="reset" title="Undo any Tasks marked done on this page">Reset Tasks</button><button class="ghost" id="theme">Dark</button></div>
+<div class="crumbs" id="crumbs"></div>
+<main>
+  <section id="view-plans" hidden></section>
+  <section id="view-feature" hidden></section>
+  <section id="view-story" hidden></section>
+  <section id="view-reviews" hidden></section>
+  <div id="plan-head" hidden></div>
+  <section id="view-deck" hidden></section>
+  <section id="view-stories" hidden></section>
+  <section id="view-graph" hidden></section>
+  <section id="view-tasks" hidden></section>
+  <section id="view-compare" hidden></section>
+  <section id="view-prototypes" hidden></section>
+  <section id="view-guide" hidden></section>
+  <section id="view-cli" hidden></section>
+  <section id="view-task" hidden></section>
+</main>
+<script>
+(function () {
+  var PLANS_FEATURE = 'Plans: map out the work before building it';
+  var STORIES = {
+    'find-plans-in-their-section': ['Find Plans in their own section', PLANS_FEATURE],
+    'link-tasks-to-stories': ['Trace every Task to a user story', PLANS_FEATURE],
+    'see-plans-from-stories': ['See which Plans touch a story or feature', PLANS_FEATURE],
+    'read-plan-by-phase': ['Read a Plan phase by phase', PLANS_FEATURE],
+    'map-task-dependencies': ['See what can run in parallel from mapped dependencies', PLANS_FEATURE],
+    'understand-a-task': ['Find everything needed to start a Task', PLANS_FEATURE],
+    'size-tasks-small': ['Know each Task is small enough to be well understood', PLANS_FEATURE],
+    'see-done-on-slides': ['See progress on the slides', PLANS_FEATURE],
+    'agents-keep-plan-current': ['Let agents keep the Plan current as they work', PLANS_FEATURE],
+    'compare-plan-with-reviews': ['Compare what we said with what we did', PLANS_FEATURE],
+    'hide-done-plans': ['Keep finished Plans out of the way', PLANS_FEATURE],
+    'show-plan-prototypes': ['See what a Plan will build', PLANS_FEATURE],
+    'plan-with-a-guide': ['Get guided to a Plan you can be confident in', PLANS_FEATURE]
+  };
+  var PHASES = [
+    { id: 'p1', title: 'Phase 1: A Plan exists' },
+    { id: 'p2', title: 'Phase 2: Tasks' },
+    { id: 'p3', title: 'Phase 3: The deck shows progress' },
+    { id: 'p4', title: 'Phase 4: Reviews and finishing' },
+    { id: 'p5', title: 'Phase 5: Guided authoring' }
+  ];
+  function T(id, short, title, phase, story, deps, state, sizing, essay, code) {
+    return { id: id, short: short, title: title, phase: phase, story: story, deps: deps, state: state, initial: state, sizing: sizing, essay: essay, code: code };
+  }
+  var TASKS = [
+    T('plan-record', 'Plan record', 'Add the Plan record', 'p1', null, [], 'done', 'within',
+      'A Plan is a record of its own, not owned by a feature: one per body of work, holding its title, deck, prototypes and Reviews. When it changes it is the same record, committed again. This Task adds the record and its schema and nothing else: no reader page and no Tasks yet.',
+      [['internal/saga/load.go', '767', 'Reserved names a new directory must join'], ['internal/applayout/feature_plan.go', '15-35', 'The existing plan.json is Roadmap status; keep the two apart']]),
+    T('merge-grammar', 'Remove work plan', 'Remove the old work plan', 'p1', null, [], 'done', 'within',
+      'The work plan is connected but unused, and it holds the plan command. Removing it frees that name for Plans. It has no story of its own: it exists to clear the way for the task commands.',
+      [['internal/cli/living_plan.go', '18-52', 'The plan command family today'], ['internal/workplan/model.go', '227-239', 'The Plan type being removed']]),
+    T('plans-tab', 'Plans tab', 'Add a Plans tab to the sidebar', 'p1', 'find-plans-in-their-section', ['plan-record'], 'done', 'within',
+      'Documentation, Plans, Reviews: what is, what we will do, what we did. The sidebar has two of the three already.',
+      [['internal/server/appnav.go', '305-325', 'How the Reviews section is built']]),
+    T('feature-lists-plans', 'Plans on stories', 'Show Plans on stories and features', 'p3', 'see-plans-from-stories', ['task-story-link'], 'ready', 'within',
+      'Nobody authors this. A Plan\u2019s stories come from its Tasks, and a feature\u2019s Plans come from its stories, so the links are worked out when the page is read and cannot drift.',
+      [['internal/server/apppages.go', '470-490', 'The feature page view'], ['internal/server/relatedreviews.go', '28-40', 'Related reviews are derived the same way']]),
+    T('task-extends-item', 'Task records', 'Add Task records', 'p2', 'link-tasks-to-stories', ['plan-record'], 'done', 'within',
+      'A Task is one plain file in its Plan: title, phase, story, dependencies, code references, sizing and state, with an optional essay. Git is its history, so there are no revisions or event graphs. It replaces work items.',
+      [['internal/workplan/model.go', '81-100', 'WorkItemRevision: what this replaces'], ['internal/workplan/model.go', '51-65', 'WaveRevision: replaced by a Plan\u2019s phases']]),
+    T('task-story-link', 'Require a story', 'Require every Task to reach a story', 'p2', 'link-tasks-to-stories', ['task-extends-item'], 'ready', 'within',
+      'A Task must lead to a story: directly, or by unblocking a Task that does. Anything else is refused, because there has to be a story somewhere. The record keeping falls to the agent.',
+      []),
+    T('task-page', 'Task page', 'Give each Task a page', 'p2', 'understand-a-task', ['task-extends-item'], 'work', 'within',
+      'The reader shows no work plan today. This page is the first place a Task is visible: its essay, story, code references, what it depends on, what it blocks, and its done state.',
+      [['internal/workplan/readiness.go', '8-68', 'DependencySatisfied gives depends-on status']]),
+    T('task-sizing', 'Record sizing', 'Record whether a Task is two days or less', 'p2', 'size-tasks-small', ['task-extends-item'], 'ready', 'within',
+      'A Task records the judgment that it would have taken two days or less before AI. Tasks with no judgment, or judged larger, stand out on the Plan. The record’s exact shape is an open question.',
+      [['internal/workplan/model.go', '81-100', 'Where the judgment would live']]),
+    T('dep-graph', 'Dependency graph', 'Show the dependency graph', 'p2', 'map-task-dependencies', ['task-extends-item'], 'ready', 'within',
+      'A graph of a Plan\u2019s Tasks showing which can start now. It reads each Task\u2019s dependencies, and validation refuses cycles.',
+      [['internal/workplan/validate.go', '278-330', 'The old cycle check, to carry over in spirit']]),
+    T('plan-deck', 'Plan deck', 'Give a Plan a deck grouped by phase', 'p3', 'read-plan-by-phase', ['plan-record'], 'done', 'within',
+      'A Plan owns a slide deck in a new deck role that owes no code evidence. Slide sections already group slides, so a section names a phase.',
+      [['internal/saga/app.go', '73-86', 'Deck roles'], ['internal/server/decksections.go', '', 'How slide sections are grouped today']]),
+    T('slide-task-refs', 'Slides reference Tasks', 'Let slides reference Tasks', 'p3', 'see-done-on-slides', ['plan-deck', 'task-extends-item'], 'ready', 'within',
+      'A slide Item can name a Task, as a review Item can name a record today. The reader lists a slide’s Tasks beside it with a link to each.',
+      [['internal/saga/model.go', '143', 'Item.Record, the field to follow'], ['internal/saga/slides.go', '639-641', 'Which records an Item may name']]),
+    T('task-done-cmd', 'task done command', 'Let agents mark Tasks done', 'p3', 'agents-keep-plan-current', ['merge-grammar', 'task-extends-item'], 'ready', 'within',
+      'change-saga task done sets the Task\u2019s state. Each Task is its own file, so agents on different branches marking different Tasks touch different files.',
+      [['internal/workplan/model.go', '186-191', 'ProgressEvent: what this replaces']]),
+    T('done-on-slides', 'Done on slides', 'Show done state on the slides', 'p3', 'see-done-on-slides', ['slide-task-refs', 'task-done-cmd'], 'wait', 'within',
+      'Done state is read when the page renders, not stored in the slide, so marking a Task done changes the slide without republishing it.',
+      []),
+    T('plan-review-link', 'Link Plan to Reviews', 'Link a Plan to the Reviews that implement it', 'p4', 'compare-plan-with-reviews', ['plan-record'], 'ready', 'within',
+      'A Plan and its Reviews reference each other, and they share a Git history, so checking out a Review gives the Plan as it stood. A Plan can have several, because phases ship separately.',
+      [['internal/saga/review.go', '65-82', 'ReviewManifest']]),
+    T('comparison', 'Plan vs Review', 'Compare a Plan with its Reviews', 'p4', 'compare-plan-with-reviews', ['plan-review-link', 'slide-task-refs'], 'wait', 'over',
+      'The key value of a Plan. Judged larger than two days for now, because what it compares is still open: this Task should be split once that is decided.',
+      []),
+    T('hide-done', 'Hide delivered', 'Hide delivered Plans by default', 'p4', 'hide-done-plans', ['plan-review-link'], 'ready', 'within',
+      'An author marks a Plan delivered once every Task is done and its Reviews have merged. It is then hidden from the Plans section, and filtered from plan list unless --all is given. Reviews already do this for merged reviews, so it should read the same way.',
+      [['internal/server/directories.go', '372-382', 'The Reviews table sets merged reviews aside'], ['internal/cli/reviews.go', '580-584', 'review list hides merged reviews']]),
+    T('plan-prototypes', 'Plan prototypes', 'Attach prototypes to a Plan', 'p5', 'show-plan-prototypes', ['plan-record'], 'ready', 'within',
+      'Prototypes already exist on a feature. A Plan points at the ones it uses and shows them on its page.',
+      []),
+    T('guide', 'Guidance wizard', 'Guide authors to a Plan they trust', 'p5', 'plan-with-a-guide', ['task-sizing', 'plan-prototypes'], 'wait', 'none',
+      'Researches the feature and the code, and creates prototypes until each Task is confidently small. Not yet sized: where the wizard lives is still an open question.',
+      [['skills/change-saga/SKILL.md', '42-53', 'The skill says to author Saga content near completion; a Plan is the exception']])
+  ];
+  var BY_ID = {}; TASKS.forEach(function (t) { BY_ID[t.id] = t; });
+  var SLIDES = [
+    { id: 'whole', section: 'Overview', title: 'Five phases; each could ship on its own', take: 'Everything we intend to build for Plans, in an order that lets work run side by side.', body: 'phases', tasks: [] },
+    { id: 'own-section', section: 'p1', title: 'A Plan stands on its own and reaches stories through its Tasks', take: 'Documentation is what is, Plans is what we will do, Reviews is what we did. A Plan has no owner; its links say what it touches.',
+      body: '<div class="flow"><div class="box key"><b>Plan</b>One per body of work</div><div class="arrow">has</div><div class="box"><b>Tasks</b>Each must lead to a story</div><div class="arrow">link to</div><div class="box"><b>Stories</b>Worked out, not authored</div><div class="arrow">live in</div><div class="box"><b>Features</b>One or several</div></div>', tasks: ['plan-record', 'plans-tab', 'feature-lists-plans'] },
+    { id: 'one-grammar', section: 'p1', title: 'plan and task replace the work plan’s verbs', take: 'The old work plan goes, which frees its name for this.',
+      body: '<table><tr><th>Today</th><th>Proposed</th></tr><tr><td><code>plan add-wave</code></td><td><code>plan add-phase</code></td></tr><tr><td><code>plan add-item</code></td><td><code>task add</code></td></tr><tr><td><code>plan add-dependency</code></td><td><code>task depend</code></td></tr><tr><td><code>plan progress --to done</code></td><td><code>task done</code></td></tr></table>', tasks: ['merge-grammar'] },
+    { id: 'task-is-item', section: 'p2', title: 'A Task is a plain record, and Git is its history', take: 'The old work items carried much more than a Task needs. A Task holds what a person needs in order to start.',
+      body: '<div class="flow"><div class="box"><b>Removed from work items</b>Revisions, event graphs, contracts, workspaces, merge units</div><div class="arrow">becomes</div><div class="box key"><b>A Task</b>Its Plan, what it depends on, its story, a small essay, pinned code references, a two-day sizing judgment, its state</div></div>', tasks: ['task-extends-item', 'task-story-link', 'task-page', 'task-sizing'] },
+    { id: 'parallel', section: 'p2', title: 'Dependencies decide what can run in parallel', take: 'Order on a page is not a dependency. Anything whose dependencies are done can start, whatever phase it is in.', body: 'parallel', tasks: ['dep-graph'] },
+    { id: 'slides-tasks', section: 'p3', title: 'Slides reference Tasks and show when they are done', take: 'Done state is read when the page opens, so nobody republishes a slide to report progress.',
+      body: '<div class="flow"><div class="box"><b>Agent finishes work</b><code>task done</code></div><div class="arrow">records</div><div class="box"><b>Task state</b>In its file</div><div class="arrow">read by</div><div class="box key"><b>Every slide citing it</b>Shows Done, as below</div></div>', tasks: ['plan-deck', 'slide-task-refs', 'task-done-cmd', 'done-on-slides'] },
+    { id: 'said-did', section: 'p4', title: 'A Plan and its Reviews reference each other', take: 'Reviews come after the Plan is done. Comparing them shows what we said beside what we did, and a merged Plan steps out of the way.',
+      body: '<div class="flow"><div class="box key"><b>Plan</b>What we said</div><div class="arrow">implemented by</div><div class="box"><b>Review pr-101</b>Phases 1 and 2</div><div class="box"><b>Review pr-104</b>Phase 3</div></div><p>See the <a href="#/plan/compare">comparison</a>.</p>', tasks: ['plan-review-link', 'comparison', 'hide-done'] },
+    { id: 'guide', section: 'p5', title: 'A guide builds confidence before work starts', take: 'It researches and prototypes until each Task is confidently two days or less, and says which are not.',
+      body: '<div class="flow"><div class="box"><b>Research</b>The feature, its stories, the code</div><div class="arrow">then</div><div class="box"><b>Prototype</b>What is still unclear</div><div class="arrow">until</div><div class="box key"><b>Confident</b>Each Task sized, or named as not yet</div></div><p>See the <a href="#/plan/guide">guide</a>.</p>', tasks: ['plan-prototypes', 'guide'] }
+  ];
+  var showDone = false;
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function phaseOf(id) { return PHASES.filter(function (p) { return p.id === id; })[0]; }
+  function isDone(t) { return t.state === 'done'; }
+  function canStart(t) { return !isDone(t) && t.state !== 'work' && t.deps.every(function (d) { return isDone(BY_ID[d]); }); }
+  function status(t) {
+    if (isDone(t)) return { cls: 's-done', word: '✓ Done' };
+    if (t.state === 'work') return { cls: 's-work', word: 'In progress' };
+    if (canStart(t)) return { cls: 's-ready', word: 'Can start now' };
+    return { cls: 's-wait', word: 'Waiting' };
+  }
+  function chip(t) { var s = status(t); return '<span class="chip ' + s.cls + '">' + s.word + '</span>'; }
+  function blocks(t) { return TASKS.filter(function (o) { return o.deps.indexOf(t.id) >= 0; }); }
+  function pathToStory(t) {
+    if (t.story) return [t];
+    var next = blocks(t);
+    for (var i = 0; i < next.length; i++) { var p = pathToStory(next[i]); if (p) return [t].concat(p); }
+    return null;
+  }
+  function prerequisites(list) {
+    var seen = {}, out = [];
+    (function walk(ts) { ts.forEach(function (t) { t.deps.forEach(function (d) { if (!seen[d]) { seen[d] = 1; out.push(BY_ID[d]); walk([BY_ID[d]]); } }); }); })(list);
+    return out.filter(function (t) { return list.indexOf(t) < 0; });
+  }
+  function doneCount(list) { return list.filter(isDone).length; }
+  function taskLink(t) { return '<a href="#/task/' + t.id + '">' + esc(t.title) + '</a>'; }
+  function sizingChip(t) {
+    if (t.sizing === 'within') return '<span class="chip s-done">2 days or less</span>';
+    if (t.sizing === 'over') return '<span class="chip s-warn">Judged larger: split it</span>';
+    return '<span class="chip s-warn">Not sized yet</span>';
+  }
+
+  var views = ['plans', 'feature', 'story', 'reviews', 'deck', 'stories', 'graph', 'tasks', 'compare', 'prototypes', 'guide', 'cli', 'task'];
+  function show(name) { views.forEach(function (v) { document.getElementById('view-' + v).hidden = v !== name; }); }
+
+  function planStories() {
+    var seen = {}; TASKS.forEach(function (t) { if (t.story) seen[t.story] = 1; }); return Object.keys(seen);
+  }
+  function planFeatures() {
+    var seen = {}; planStories().forEach(function (s) { seen[STORIES[s][1]] = 1; }); return Object.keys(seen);
+  }
+  function renderPlans() {
+    var total = TASKS.length, done = doneCount(TASKS);
+    var rows = [
+      ['<a href="#/plan/deck/whole">Plans and Tasks: first version</a>', planStories().length + ' stories in ' + planFeatures().length + ' features', done + ' of ' + total, done / total, 'pr-101, pr-104', '<span class="chip s-work">In progress</span>', false],
+      ['Roadmap shows Plan progress', '4 stories in 1 feature', '0 of 6', 0, 'None yet', '<span class="chip s-wait">Not started</span>', false],
+      ['Spike: a first page for Tasks', '2 stories in 1 feature', '4 of 4', 1, 'pr-96 merged', '<span class="chip s-done">\u2713 Delivered</span>', true]
+    ];
+    var html = '<h1>Plans</h1><p class="sub">The work we intend to do. A Plan is one body of work; each of its Tasks leads to a user story.</p>';
+    html += '<div class="filter"><span class="note" id="plan-count"></span><button class="toggle" id="toggle-done" aria-pressed="' + showDone + '">' + (showDone ? 'Hide' : 'Show') + ' delivered (1)</button></div>';
+    html += '<table><thead><tr><th>Plan</th><th>Touches</th><th>Tasks done</th><th>Reviews</th><th>State</th></tr></thead><tbody>';
+    var shown = 0;
+    rows.forEach(function (r) {
+      if (r[6] && !showDone) return;
+      shown++;
+      html += '<tr class="' + (r[6] ? 'done-row' : '') + '"><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '<div class="bar"><i style="width:' + Math.round(r[3] * 100) + '%"></i></div></td><td>' + r[4] + '</td><td>' + r[5] + '</td></tr>';
+    });
+    html += '</tbody></table><p class="note">Every Task is done and its Reviews have merged, so an author marked it delivered. It is hidden here by default, as merged Reviews are, and still opens if someone asks for it. <a href="#/cli">The CLI does the same.</a></p>';
+    document.getElementById('view-plans').innerHTML = html;
+    document.getElementById('plan-count').textContent = shown + ' shown';
+    document.getElementById('toggle-done').onclick = function () { showDone = !showDone; renderPlans(); };
+  }
+
+  function renderFeature() {
+    var ids = planStories().filter(function (s) { return STORIES[s][1] === PLANS_FEATURE; });
+    document.getElementById('view-feature').innerHTML =
+      '<div class="eyebrow">Planned feature</div><h1>' + esc(PLANS_FEATURE) + '</h1><p class="sub">Lay out the work phase by phase, see what can run in parallel, and compare it with what ships.</p>' +
+      '<h2>Plans touching this feature</h2><p class="note">Worked out from Plan to Tasks to stories. Nobody keeps this list.</p><table><tbody><tr><td><a href="#/plan/deck/whole">Plans and Tasks: first version</a></td><td>' + ids.length + ' of this feature\u2019s stories</td><td>' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks done</td></tr></tbody></table>' +
+      '<h2>Stories</h2><table><tbody>' + ids.map(function (s) { var ts = TASKS.filter(function (t) { return t.story === s; }); return '<tr><td><a href="#/story/' + s + '">' + esc(STORIES[s][0]) + '</a></td><td>' + doneCount(ts) + ' of ' + ts.length + ' Tasks done</td></tr>'; }).join('') + '</tbody></table>';
+  }
+
+  function renderStory(id) {
+    var s = STORIES[id] || STORIES['understand-a-task'], ts = TASKS.filter(function (t) { return t.story === id; });
+    document.getElementById('view-story').innerHTML =
+      '<div class="eyebrow">Story in <a href="#/feature">' + esc(s[1]) + '</a></div><h1>' + esc(s[0]) + '</h1><p><span class="chip s-wait">Proposed</span></p>' +
+      '<h2>Plans and Tasks delivering it</h2><p class="note">Plan: <a href="#/plan/deck/whole">Plans and Tasks: first version</a>. Every link here comes from a Task naming this story.</p><table><tbody>' +
+      ts.map(function (t) { return '<tr><td>' + taskLink(t) + '</td><td>' + chip(t) + '</td></tr>'; }).join('') + '</tbody></table>' +
+      '<h2>Tasks leading to them</h2><p class="note">Prerequisites, followed through dependencies. Some have no story of their own; this is why they exist.</p><table><tbody>' +
+      prerequisites(ts).map(function (t) { return '<tr><td>' + taskLink(t) + '</td><td>' + chip(t) + '</td></tr>'; }).join('') + '</tbody></table>';
+  }
+
+  function renderReviews() {
+    document.getElementById('view-reviews').innerHTML =
+      '<h1>Reviews</h1><p class="sub">Unchanged, except that a Review names the Plan it implements, and the Plan names it back.</p>' +
+      '<table><thead><tr><th>Review</th><th>Plan</th><th>State</th></tr></thead><tbody><tr><td>pr-104</td><td><a href="#/plan/compare">Plans and Tasks: first version</a></td><td><span class="chip s-work">Open</span></td></tr><tr><td>pr-101</td><td><a href="#/plan/compare">Plans and Tasks: first version</a></td><td><span class="chip s-done">Merged</span></td></tr></tbody></table>';
+  }
+
+  function renderStories() {
+    var html = '<p class="sub">Not authored on the Plan: these come from its Tasks, each of which must name a story. A Task may lead to its story through the Tasks it unblocks, but there has to be a story somewhere: a Task that reaches none is refused.</p>';
+    planFeatures().forEach(function (f) {
+      html += '<h3>' + esc(f) + '</h3><table><tbody>' + planStories().filter(function (s) { return STORIES[s][1] === f; }).map(function (s) {
+        var ts = TASKS.filter(function (t) { return t.story === s; });
+        return '<tr><td><a href="#/story/' + s + '">' + esc(STORIES[s][0]) + '</a></td><td>' + doneCount(ts) + ' of ' + ts.length + ' Tasks done</td></tr>';
+      }).join('') + '</tbody></table>';
+    });
+    document.getElementById('view-stories').innerHTML = html;
+  }
+
+  function planHead(tab) {
+    var tabs = [['deck/whole', 'deck', 'Deck'], ['graph', 'graph', 'Dependencies'], ['tasks', 'tasks', 'Tasks'], ['stories', 'stories', 'Stories'], ['compare', 'compare', 'Plan vs Reviews'], ['prototypes', 'prototypes', 'Prototypes'], ['guide', 'guide', 'Guide']];
+    var el = document.getElementById('plan-head'); el.hidden = false;
+    el.innerHTML = '<div class="eyebrow">Plan, not a review. Describes intended work</div><h1>Plans and Tasks: first version</h1><p class="sub">Touches ' + planStories().length + ' stories in ' + planFeatures().length + ' features. ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks done.</p><nav class="tabs">' +
+      tabs.map(function (t) { return '<a href="#/plan/' + t[0] + '" class="' + (t[1] === tab ? 'on' : '') + '">' + t[2] + '</a>'; }).join('') + '</nav>';
+  }
+
+  function parallelNow() { return TASKS.filter(canStart); }
+
+  function slideBody(s) {
+    if (s.body === 'phases') {
+      return '<table><thead><tr><th>Phase</th><th>Tasks done</th><th>Can start now</th></tr></thead><tbody>' + PHASES.map(function (p) {
+        var ts = TASKS.filter(function (t) { return t.phase === p.id; });
+        return '<tr><td>' + esc(p.title) + '</td><td>' + doneCount(ts) + ' of ' + ts.length + '<div class="bar"><i style="width:' + Math.round(doneCount(ts) / ts.length * 100) + '%"></i></div></td><td>' + ts.filter(canStart).length + '</td></tr>';
+      }).join('') + '</tbody></table>';
+    }
+    if (s.body === 'parallel') {
+      var now = parallelNow();
+      return '<div class="para"><strong>' + now.length + ' Tasks can start now</strong>, in parallel: ' + now.map(function (t) { return esc(t.short); }).join(', ') + '.</div><p>Open the <a href="#/plan/graph">dependency graph</a> to see why.</p>';
+    }
+    return s.body;
+  }
+
+  function renderDeck(id) {
+    var s = SLIDES.filter(function (x) { return x.id === id; })[0] || SLIDES[0];
+    var out = '<nav class="outline" aria-label="Slides by phase">', last = '';
+    SLIDES.forEach(function (x) {
+      if (x.section !== last) { last = x.section; out += '<h4>' + esc(x.section === 'Overview' ? 'Overview' : phaseOf(x.section).title) + '</h4>'; }
+      var ts = x.tasks.map(function (t) { return BY_ID[t]; });
+      out += '<a href="#/plan/deck/' + x.id + '" class="' + (x.id === s.id ? 'on' : '') + '">' + esc(x.title) + (ts.length ? '<small>' + doneCount(ts) + ' of ' + ts.length + ' Tasks done</small>' : '') + '</a>';
+    });
+    out += '</nav>';
+    var ts = s.tasks.map(function (t) { return BY_ID[t]; });
+    var body = '<article class="slide"><div class="eyebrow">' + esc(s.section === 'Overview' ? 'Overview' : phaseOf(s.section).title) + '</div><h2>' + esc(s.title) + '</h2><p class="take">' + esc(s.take) + '</p>' + slideBody(s);
+    if (s.section !== 'Overview') {
+      var inPhase = TASKS.filter(function (t) { return t.phase === s.section; }), now = inPhase.filter(canStart);
+      body += '<div class="para">' + (now.length > 1 ? '<strong>' + now.length + ' Tasks in this phase can run in parallel now:</strong> ' + now.map(function (t) { return esc(t.short); }).join(', ') + '.' : now.length === 1 ? 'One Task in this phase can start now: ' + esc(now[0].short) + '.' : 'Nothing further in this phase can start right now.') + ' <a href="#/plan/graph">See why</a>.</div>';
+    }
+    if (ts.length) {
+      body += '<div class="tasks-on" id="slide-tasks"><div class="eyebrow">Tasks on this slide</div>' + ts.map(function (t) {
+        return '<div class="row"><span>' + taskLink(t) + '</span>' + chip(t) + '</div>';
+      }).join('') + '</div>';
+    }
+    body += '</article>';
+    document.getElementById('view-deck').innerHTML = '<div class="deck">' + out + body + '</div>';
+  }
+
+  function renderGraph() {
+    var depth = {};
+    function d(t) { if (depth[t.id] === undefined) { depth[t.id] = t.deps.length ? 1 + Math.max.apply(null, t.deps.map(function (x) { return d(BY_ID[x]); })) : 0; } return depth[t.id]; }
+    TASKS.forEach(d);
+    var ORDER = ['plan-record', 'merge-grammar', 'plan-deck', 'task-extends-item', 'plans-tab', 'plan-review-link', 'plan-prototypes',
+      'slide-task-refs', 'task-done-cmd', 'task-story-link', 'task-page', 'dep-graph', 'task-sizing', 'hide-done', 'done-on-slides', 'comparison', 'feature-lists-plans', 'guide'];
+    var cols = []; ORDER.forEach(function (id) { var t = BY_ID[id]; (cols[depth[t.id]] = cols[depth[t.id]] || []).push(t); });
+    var W = 172, H = 54, GX = 50, GY = 10, M = 20, TOP = 36, pos = {};
+    cols.forEach(function (c, i) { c.forEach(function (t, j) { pos[t.id] = { x: M + i * (W + GX), y: TOP + j * (H + GY) }; }); });
+    var rowsMax = Math.max.apply(null, cols.map(function (c) { return c.length; }));
+    var width = M * 2 + cols.length * W + (cols.length - 1) * GX, height = TOP + rowsMax * (H + GY) + 10;
+    var svg = '<svg role="img" aria-label="Task dependency graph" viewBox="0 0 ' + width + ' ' + height + '" width="' + width + '" height="' + height + '">';
+    svg += '<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="var(--edge)"/></marker></defs>';
+    cols.forEach(function (c, i) { svg += '<text x="' + (M + i * (W + GX)) + '" y="24" font-size="12" font-weight="600" fill="var(--muted)">' + (i === 0 ? 'No dependencies' : i + (i === 1 ? ' step' : ' steps') + ' in') + '</text>'; });
+    TASKS.forEach(function (t) {
+      t.deps.forEach(function (dep) {
+        var a = pos[dep], b = pos[t.id], x1 = a.x + W, y1 = a.y + H / 2, x2 = b.x - 2, y2 = b.y + H / 2, mx = (x1 + x2) / 2;
+        svg += '<path class="edge" data-from="' + dep + '" data-to="' + t.id + '" d="M' + x1 + ' ' + y1 + 'C' + mx + ' ' + y1 + ' ' + mx + ' ' + y2 + ' ' + x2 + ' ' + y2 + '" fill="none" stroke="var(--edge)" stroke-width="1.5" marker-end="url(#arrow)"/>';
+      });
+    });
+    var colours = { 's-done': ['--done-bg', '--done'], 's-ready': ['--ready-bg', '--ready'], 's-work': ['--work-bg', '--work'], 's-wait': ['--wait-bg', '--wait'] };
+    TASKS.forEach(function (t) {
+      var p = pos[t.id], s = status(t), c = colours[s.cls];
+      svg += '<g class="node" tabindex="0" role="link" aria-label="' + esc(t.title + ': ' + s.word) + '" data-id="' + t.id + '" transform="translate(' + p.x + ' ' + p.y + ')">' +
+        '<rect width="' + W + '" height="' + H + '" rx="8" fill="var(' + c[0] + ')" stroke="var(' + c[1] + ')" stroke-width="' + (canStart(t) ? 2.5 : 1) + '"/>' +
+        '<text x="11" y="21" font-size="13.5" font-weight="600" fill="var(--ink)">' + esc(t.short) + '</text>' +
+        '<text x="11" y="41" font-size="12" font-weight="600" fill="var(' + c[1] + ')">' + s.word + '</text>' +
+        '<text x="' + (W - 10) + '" y="41" font-size="11" text-anchor="end" fill="var(--muted)">' + t.phase.toUpperCase() + '</text></g>';
+    });
+    svg += '</svg>';
+    var now = parallelNow();
+    document.getElementById('view-graph').innerHTML =
+      '<div class="para"><strong>' + now.length + ' Tasks can start now, at the same time.</strong> Every Task they depend on is done. Assign each to its own agent or workspace.</div>' +
+      '<div class="legend"><span class="chip s-done">✓ Done</span><span class="chip s-work">In progress</span><span class="chip s-ready">Can start now</span><span class="chip s-wait">Waiting</span><span class="note">P1 to P5 is the Task’s phase. Hover a Task to trace it; click to open it.</span></div>' +
+      '<div class="graph-wrap">' + svg + '</div>' +
+      '<p class="note">Columns come from the dependencies, not from phases: a Task in a later phase can start early if nothing holds it back. Try marking a Task done on its page and coming back.</p>';
+    var root = document.getElementById('view-graph');
+    function chain(id) {
+      var keep = {}; keep[id] = 1;
+      (function up(x) { BY_ID[x].deps.forEach(function (d) { keep[d] = 1; up(d); }); })(id);
+      (function down(x) { blocks(BY_ID[x]).forEach(function (o) { keep[o.id] = 1; down(o.id); }); })(id);
+      return keep;
+    }
+    function highlight(id) {
+      var keep = id ? chain(id) : null;
+      root.querySelectorAll('.node').forEach(function (n) { n.classList.toggle('dim', !!keep && !keep[n.getAttribute('data-id')]); });
+      root.querySelectorAll('.edge').forEach(function (e) { e.classList.toggle('dim', !!keep && !(keep[e.getAttribute('data-from')] && keep[e.getAttribute('data-to')])); });
+    }
+    root.querySelectorAll('.node').forEach(function (n) {
+      var id = n.getAttribute('data-id');
+      n.addEventListener('mouseenter', function () { highlight(id); });
+      n.addEventListener('mouseleave', function () { highlight(null); });
+      n.addEventListener('focus', function () { highlight(id); });
+      n.addEventListener('blur', function () { highlight(null); });
+      n.addEventListener('click', function () { location.hash = '#/task/' + id; });
+      n.addEventListener('keydown', function (e) { if (e.key === 'Enter') location.hash = '#/task/' + id; });
+    });
+  }
+
+  function renderTasks() {
+    var unsized = TASKS.filter(function (t) { return t.sizing !== 'within'; });
+    var html = '<div class="para"><strong>' + unsized.length + ' of ' + TASKS.length + ' Tasks are not yet confidently two days or less:</strong> ' + unsized.map(function (t) { return esc(t.short); }).join(', ') + '. The sizing goal is a test of understanding.</div>';
+    PHASES.forEach(function (p) {
+      html += '<h3>' + esc(p.title) + '</h3><table style="table-layout:fixed"><colgroup><col style="width:46%"><col style="width:17%"><col style="width:22%"><col></colgroup><tbody>';
+      TASKS.filter(function (t) { return t.phase === p.id; }).forEach(function (t) {
+        html += '<tr><td>' + taskLink(t) + '</td><td>' + chip(t) + '</td><td>' + sizingChip(t) + '</td><td class="note">' + (t.deps.length ? 'Needs ' + t.deps.length : 'No dependencies') + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    });
+    document.getElementById('view-tasks').innerHTML = html;
+  }
+
+  function storyBlock(t) {
+    var path = pathToStory(t), last = path[path.length - 1];
+    var link = '<p><a href="#/story/' + last.story + '">' + esc(STORIES[last.story][0]) + '</a> <span class="note">in ' + esc(STORIES[last.story][1]) + '</span></p>';
+    if (path.length === 1) return link;
+    return link + '<p class="note">No story of its own. It leads there by unblocking:</p><ul>' + path.slice(1).map(function (o) { return '<li>' + taskLink(o) + '</li>'; }).join('') + '</ul>';
+  }
+
+  function renderTask(id) {
+    var t = BY_ID[id] || TASKS[0];
+    var slides = SLIDES.filter(function (s) { return s.tasks.indexOf(t.id) >= 0; });
+    var refs = t.code.length ? t.code.map(function (c) { return '<span class="ref"><code>' + esc(c[0]) + (c[1] ? ':' + esc(c[1]) : '') + '</code><br><span class="note">' + esc(c[2]) + '</span></span>'; }).join('') : '<p class="note">No code references: nothing here exists to point at yet.</p>';
+    var list = function (ts, none) { return ts.length ? '<ul>' + ts.map(function (o) { return '<li>' + taskLink(o) + ' ' + chip(o) + '</li>'; }).join('') + '</ul>' : '<p class="note">' + none + '</p>'; };
+    var cmd = 'change-saga task done --task ' + t.id + ' change.saga';
+    document.getElementById('view-task').innerHTML =
+      '<div class="eyebrow">Task in <a href="#/plan/deck/whole">Plans and Tasks: first version</a>, ' + esc(phaseOf(t.phase).title) + '</div><h1>' + esc(t.title) + '</h1>' +
+      '<p>' + chip(t) + ' ' + sizingChip(t) + '</p><div class="cols"><div><h2>Essay</h2><p>' + esc(t.essay) + '</p><h2>Code that matters</h2>' + refs +
+      '<h2>Mark it done</h2><p class="note">This is what an agent would run as it finishes. Try it here: its slides and the graph update.</p><code class="cmd">' + esc(cmd) + '</code><button class="primary" id="mark-done"' + (isDone(t) ? ' disabled' : '') + '>' + (isDone(t) ? 'Done' : 'Mark done, as an agent would') + '</button></div>' +
+      '<aside class="side" id="task-story"><h3>User story</h3>' + storyBlock(t) + '<h3>Depends on</h3>' + list(t.deps.map(function (d) { return BY_ID[d]; }), 'Nothing: it could start any time.') +
+      '<h3>Blocks</h3>' + list(blocks(t), 'Nothing is waiting on it.') + '<h3>Slides that show it</h3>' + (slides.length ? '<ul>' + slides.map(function (s) { return '<li><a href="#/plan/deck/' + s.id + '">' + esc(s.title) + '</a></li>'; }).join('') + '</ul>' : '<p class="note">None.</p>') + '</aside></div>';
+    var button = document.getElementById('mark-done');
+    if (button && !isDone(t)) button.onclick = function () { t.state = 'done'; renderTask(t.id); };
+  }
+
+  function renderCompare() {
+    var rows = [
+      ['Add the Plan record under its feature', 'Plans load with their feature. <span class="note">pr-101, slide 2</span>', 's-done', 'Delivered', ''],
+      ['Remove the old work plan', 'Removed; old verbs print where they went. <span class="note">pr-101, slide 3</span>', 's-work', 'Departed', 'The Plan said to remove the verbs outright; a pointer was kept for one release.'],
+      ['Add Task records', 'Task files with essays and code references. <span class="note">pr-101, slide 4</span>', 's-work', 'Departed', 'Sizing moved to its own record, because it changes more often than the rest.'],
+      ['Add a Plans tab to the sidebar', 'Plans tab beside Documentation and Reviews. <span class="note">pr-101, slide 5</span>', 's-done', 'Delivered', ''],
+      ['Give a Plan a deck grouped by phase', 'New deck role; sections name phases. <span class="note">pr-104, slide 1</span>', 's-done', 'Delivered', ''],
+      ['Show the dependency graph', '<span class="note">Nothing delivered yet.</span>', 's-wait', 'Not delivered', ''],
+      ['<span class="note">Not in the Plan</span>', 'Reader cache change needed for new pages. <span class="note">pr-104, slide 3</span>', 's-warn', 'Not planned', 'Pages were too slow once Plans listed Tasks.']
+    ];
+    document.getElementById('view-compare').innerHTML =
+      '<div class="stats"><span class="chip s-done">3 delivered</span><span class="chip s-work">2 departed</span><span class="chip s-wait">1 not delivered</span><span class="chip s-warn">1 not planned</span></div>' +
+      '<p class="note">Implemented by <a href="#/plan/compare">pr-101</a> (merged) and <a href="#/plan/compare">pr-104</a> (open). A few rows shown. This reports differences; it never blocks a merge, and a person still judges whether the work matches.</p>' +
+      '<table class="compare"><thead><tr><th>What we said (Plan)</th><th>What we did (Reviews)</th><th>Result</th></tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td><span class="chip ' + r[2] + '">' + r[3] + '</span>' + (r[4] ? '<div class="why">' + esc(r[4]) + '</div>' : '') + '</td></tr>'; }).join('') + '</tbody></table>';
+  }
+
+  function renderPrototypes() {
+    document.getElementById('view-prototypes').innerHTML =
+      '<p class="sub">A Plan has prototypes showing what it will build.</p><div class="card"><strong>Plans in the reader</strong> <span class="chip s-ready">This page</span><p class="note">The page you are looking at: feature list, deck, dependencies, Task page and comparison.</p></div><div class="card"><strong>Task board on the Roadmap</strong> <span class="chip s-wait">Illustrative</span><p class="note">A later Plan’s prototype would appear here. Each opens on its own page, sandboxed, as prototypes do today.</p></div>';
+  }
+
+  function renderGuide() {
+    document.getElementById('view-guide').innerHTML =
+      '<p class="sub">How an author might reach a Plan they trust. Where this runs (skill, command, or both) is an open question; this shows the conversation, not a screen design.</p>' +
+      '<div class="step"><i>1</i><div><strong>Research.</strong> Read ' + Object.keys(STORIES).length + ' stories in one feature. Found <code>internal/workplan</code> already has waves, dependencies and progress. The reader shows none of it.</div></div>' +
+      '<div class="step"><i>2</i><div><strong>Ask.</strong> Should a Task store what it depends on, or what it unblocks? <span class="note">Your answer: what it depends on.</span></div></div>' +
+      '<div class="step"><i>3</i><div><strong>Prototype.</strong> The graph was unclear, so I drew one. <a href="#/plan/graph">See it.</a></div></div>' +
+      '<div class="step"><i>4</i><div><strong>Size.</strong> Drafted ' + TASKS.length + ' Tasks. I am confident of ' + TASKS.filter(function (t) { return t.sizing === 'within'; }).length + ' as two days or less.</div></div>' +
+      '<div class="step"><i>5</i><div><strong>Not ready yet:</strong><ul>' + TASKS.filter(function (t) { return t.sizing !== 'within'; }).map(function (t) { return '<li>' + taskLink(t) + ' ' + sizingChip(t) + '</li>'; }).join('') + '</ul></div></div>';
+  }
+
+  function renderCli() {
+    var ready = TASKS.filter(canStart).map(function (t) { return '  ' + t.id; }).join('\n');
+    document.getElementById('view-cli').innerHTML =
+      '<div class="eyebrow">Design sketch, from before the commands existed</div><h1>Proposed grammar</h1><p class="sub">change-saga plan becomes the Plan\u2019s command once the old work plan is removed.</p>' +
+      '<pre class="cmd"><span class="c"># Plans</span>\nchange-saga plan create --id first-version --title TEXT\nchange-saga plan list [--feature ID] [--story URN] [--all]   <span class="c"># delivered Plans hidden without --all</span>\nchange-saga plan link-review --plan ID --review pr-101\nchange-saga plan add-prototype --plan ID --prototype URN\nchange-saga plan add-phase --plan ID --id ID --title TEXT   <span class="c"># replaces plan add-wave</span>\nchange-saga plan deliver --plan ID                  <span class="c"># refused unless every Task is done and its Reviews merged</span>\nchange-saga plan guide --story URN...               <span class="c"># the wizard</span>\n\n<span class="c"># Its deck: the existing commands, pointed at a Plan</span>\nchange-saga apply-slide --plan ID --from SLIDE.json\nchange-saga deck overview --plan ID --file OVERVIEW.json\n\n<span class="c"># Tasks</span>\nchange-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --unblocks TASK)   <span class="c"># must lead to a story. Replaces plan add-item</span>\nchange-saga task depend --task ID --on ID           <span class="c"># replaces plan add-dependency</span>\nchange-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days\nchange-saga task done --task ID [--summary TEXT]    <span class="c"># replaces plan progress --to done</span>\nchange-saga task list --plan ID [--ready]</pre>' +
+      '<h2>Delivered Plans are filtered by default</h2><pre class="cmd">$ change-saga plan list\nfirst-version        in progress   ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks   pr-101, pr-104\nroadmap-progress     not started   0 of 6 Tasks\n1 delivered Plan hidden; --all shows it.</pre>' +
+      '<h2>What can start now</h2><pre class="cmd">$ change-saga task list --plan first-version --ready\n' + ready + '</pre>';
+  }
+
+  function route() {
+    var parts = (location.hash.replace(/^#\/?/, '') || 'plans').split('/');
+    var head = document.getElementById('plan-head'); head.hidden = true;
+    var section = 'plans', crumbs = '<a href="#/plans">Plans</a>';
+    if (parts[0] === 'plan') {
+      var tab = parts[1] || 'deck';
+      planHead(tab); crumbs += ' / Plans and Tasks: first version';
+      if (tab === 'deck') renderDeck(parts[2]); if (tab === 'graph') renderGraph(); if (tab === 'tasks') renderTasks(); if (tab === 'stories') renderStories(); if (tab === 'compare') renderCompare(); if (tab === 'prototypes') renderPrototypes(); if (tab === 'guide') renderGuide();
+      show(tab);
+    } else if (parts[0] === 'task') {
+      renderTask(parts[1]); show('task'); crumbs += ' / <a href="#/plan/deck/whole">Plans and Tasks: first version</a> / Task';
+    } else if (parts[0] === 'cli') {
+      renderCli(); show('cli'); crumbs += ' / CLI';
+    } else if (parts[0] === 'feature') {
+      section = 'docs'; crumbs = 'Documentation / Feature'; renderFeature(); show('feature');
+    } else if (parts[0] === 'story') {
+      section = 'docs'; crumbs = 'Documentation / <a href="#/feature">Feature</a> / Story'; renderStory(parts[1]); show('story');
+    } else if (parts[0] === 'reviews') {
+      section = 'reviews'; crumbs = 'Reviews'; renderReviews(); show('reviews');
+    } else { renderPlans(); show('plans'); }
+    document.getElementById('sections').innerHTML = [['docs', '#/feature', 'Documentation'], ['plans', '#/plans', 'Plans'], ['reviews', '#/reviews', 'Reviews']].map(function (s) {
+      return '<a href="' + s[1] + '" class="' + (s[0] === section ? 'on' : '') + '">' + s[2] + '</a>';
+    }).join('');
+    document.getElementById('crumbs').innerHTML = crumbs + (parts[0] === 'cli' ? '' : ' <span class="note"> | <a href="#/cli">Proposed CLI</a></span>');
+    window.scrollTo(0, 0);
+  }
+
+  var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  function applyTheme() { document.documentElement.classList.toggle('dark', dark); document.getElementById('theme').textContent = dark ? 'Light' : 'Dark'; }
+  document.getElementById('theme').onclick = function () { dark = !dark; applyTheme(); };
+  document.getElementById('reset').onclick = function () { TASKS.forEach(function (t) { t.state = t.initial; }); route(); };
+  window.addEventListener('hashchange', route);
+  applyTheme(); route();
+})();
+</script>
+</body>
+</html>

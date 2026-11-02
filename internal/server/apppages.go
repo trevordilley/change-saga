@@ -280,7 +280,7 @@ func (graph *appGraph) traceTo(urn string) traceGroups {
 			groups.Tests = append(groups.Tests, link)
 		case relation.Type == requirements.RelationAddresses:
 			groups.Design = append(groups.Design, link)
-		case relation.Type == requirements.RelationExplains || relation.Type == requirements.RelationImplements:
+		case relation.Type == requirements.RelationExplains:
 			groups.Slides = append(groups.Slides, link)
 		default:
 			link.Title = link.Title + " (" + strings.ReplaceAll(string(relation.Type), "_", " ") + ")"
@@ -428,6 +428,9 @@ type featurePageView struct {
 	// Extensions are the Roadmap features that augment this one.
 	Extends    *featureLinkView
 	Extensions []featureLinkView
+	// Plans are the Plans with a Task naming one of this feature's stories,
+	// worked out from those links.
+	Plans []featureLinkView
 	// RelatedReviews are the reviews that touched this feature's code. They
 	// are derived, never authored, and read as a footnote.
 	RelatedReviews []relatedReviewView
@@ -482,6 +485,13 @@ func (graph *appGraph) featurePage(id string) (*featurePageView, error) {
 			view.Extensions = append(view.Extensions, featureLinkView{Plan: candidate.Plan, ID: candidate.ID, Title: candidate.Title, Href: featureHref(candidate.ID)})
 		}
 	}
+	stories := map[string]bool{}
+	for _, story := range graph.requirements.Stories {
+		if story.Feature == feature.ID {
+			stories["urn:change-saga:"+graph.document.Manifest.ID+":story:"+story.Identity.ID] = true
+		}
+	}
+	view.Plans = plansTouching(graph.document, stories)
 	if manifest, ok := applayout.Find(graph.requirements.Features, id); ok {
 		view.Description = manifest.Description
 		view.Abstract = manifest.Description

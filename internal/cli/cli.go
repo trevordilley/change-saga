@@ -93,7 +93,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"label", "milestone", "deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"label", "milestone", "deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "task", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"setup-ci",
 	"move-deck", "move-slide", "move-chapter", "move-section", "move-fragment",
@@ -184,16 +184,8 @@ var commandUsage = map[string]string{
 	"design-add-section":            "change-saga design add-section [flags] <saga> <section/path>",
 	"design-add-fragment":           "change-saga design add-fragment (--feature ID | --section TARGET) [flags] <saga>",
 	"design-set-fragment-content":   "change-saga design set-fragment-content --target TARGET --source FILE|- [--feature ID] [--json|--quiet] <saga>",
-	"plan":                          "change-saga plan <add-wave|revise-wave|add-item|revise-item|add-dependency|add-contract|assign|progress|record-merge> [flags] <saga>",
-	"plan add-wave":                 "change-saga plan add-wave --feature ID --id ID --revision ID --title TEXT --objective TEXT --request-id ID [flags] <saga>",
-	"plan revise-wave":              "change-saga plan revise-wave --wave URN --revision ID --parent URN... --title TEXT --objective TEXT --request-id ID [flags] <saga>",
-	"plan add-item":                 "change-saga plan add-item --feature ID --id ID --revision ID --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",
-	"plan revise-item":              "change-saga plan revise-item --item URN --revision ID --parent URN... --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",
-	"plan add-dependency":           "change-saga plan add-dependency --feature ID --id ID --prerequisite URN --dependent URN --condition KIND --reason TEXT --request-id ID [flags] <saga>",
-	"plan add-contract":             "change-saga plan add-contract --feature ID --id ID --revision ID --kind KIND --provider URN --consumer URN --statement TEXT --acceptance TEXT... --request-id ID [flags] <saga>",
-	"plan assign":                   "change-saga plan assign --item URN --workspace UUID --repository-id ID --branch NAME --request-id ID [flags] <saga>",
-	"plan progress":                 "change-saga plan progress --item URN --from EVENT... --to STATE --request-id ID [flags] <saga>",
-	"plan record-merge":             "change-saga plan record-merge --item URN --unit ID --state STATE --request-id ID [flags] <saga>",
+	"task":                          "change-saga task <add|depend|set|done|remove|list> [flags] <saga>",
+	"plan":                          "change-saga plan <create|list|guide|add-phase|remove-phase|add-prototype|link-review|deliver> [flags] <saga>",
 	"quality":                       "change-saga quality <test-case|policy|evidence|run> <operation> [flags] <saga>",
 	"quality test-case":             "change-saga quality test-case <add|revise|set-state|remove> [flags] <saga>",
 	"quality test-case remove":      "change-saga quality test-case remove --test-case URN [--dry-run] [--json] <saga>",
@@ -207,10 +199,10 @@ var commandUsage = map[string]string{
 	"quality run":                   "change-saga quality run record [flags] <saga>",
 	"quality run record":            "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
 	"deck":                          "change-saga deck overview [flags] <saga>",
-	"deck overview":                 "change-saga deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
+	"deck overview":                 "change-saga deck overview (--deck TARGET | --review ID | --plan ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
 	"add-deck":                      "change-saga add-deck (--feature ID [--role ux] | --role onboarding | --feature-theme ID) [flags] <saga> <name>",
 	"add-slide":                     "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
-	"apply-slide":                   "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
+	"apply-slide":                   "change-saga apply-slide (--from FILE|- [--review ID] [--plan ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID] [--plan ID]) <saga>",
 	"whiteboard":                    "change-saga whiteboard <publish|get|describe|check|list|rename|assign-role|unassign-role|archive|restore> [flags] <saga>",
 	"whiteboard publish":            "change-saga whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
 	"whiteboard get":                "change-saga whiteboard get --id ID [--revision ID] [--focus PATH] <saga>",
@@ -354,7 +346,7 @@ Growing the Saga, if and when the team wants it (never required):
     health. Neither proves semantic correctness.
 
 Records are Git-native and partitioned so parallel workspaces can author them
-and merge cleanly; "plan" organizes larger work into dependency-aware waves.
+and merge cleanly; "plan" and "task" lay out larger work before it is built.
 
 Usage:
 `)
@@ -426,7 +418,7 @@ var commandDescription = map[string]string{
 	"label":                       "Manage shared feature labels; features reference their stable IDs.",
 	"milestone":                   "Manage shared milestones; features reference their stable IDs.",
 	"feature-theme":               "Author optional product themes: Markdown overview and many-to-many feature membership. Use add-deck --feature-theme ID for the normal rationale deck; theme still controls visual styling.",
-	"feature":                     "Manage durable product domains: add, rename without changing identity, remove an unused feature, or archive one to hide it while keeping its records. A Roadmap feature that augments an existing one is delivered into it with feature deliver. A feature holds report content, stories, design, quality, work, and an implementation deck. Story identity never names a feature, so story move preserves links.",
+	"feature":                     "Manage durable product domains: add, rename without changing identity, remove an unused feature, or archive one to hide it while keeping its records. A Roadmap feature that augments an existing one is delivered into it with feature deliver. A feature holds report content, stories, design, quality, and an implementation deck. Story identity never names a feature, so story move preserves links.",
 	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",
 	"overview set-pitch":          "Write the elevator pitch: what the application is and who it is for, in a few\nsentences. The first write creates ___overview/pitch.fragment; later writes\nreplace its content.",
 	"overview set-description":    "Write the description: a short essay on what the application does and how it is\norganized. The first write creates ___overview/description.fragment; later\nwrites replace its content.",
@@ -478,7 +470,7 @@ var commandDescription = map[string]string{
 	"citation remove":             "Delete a citation and the relations that named it. Records that existed only to link to it are deleted with it; Git keeps the history.\nAnything with content of its own that referenced it is listed with how to adjust it, and\nstatus and check --covers health report it until you do.",
 	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.\n--feature only chooses where the citation is stored: its URN names no feature, so a\nstory in any feature may cite it.",
 	"relation":                    "Create, re-affirm, explicitly supersede, or check the currency of pinned traceability relations.",
-	"relation add":                "Link stories and criteria to design, work items, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits. Test cases may verify criteria,\nscope is self unless a Deck/Slide source declares descendants, and each omitted required\nrevision pin defaults to the endpoint's unique current head (reported as it is pinned).",
+	"relation add":                "Link stories and criteria to design, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits. Test cases may verify criteria,\nscope is self unless a Deck/Slide source declares descendants, and each omitted required\nrevision pin defaults to the endpoint's unique current head (reported as it is pinned).",
 	"relation repin":              "Say that one relation still holds, and advance its pins to the heads it is behind.\nThe relation keeps its id, its rationale, and every revision anyone read it against: the\nconfirmation is appended beside it and the relation record itself is never rewritten. Use it\nwhen a criterion was reworded and you have read the new wording; a revision that left the\ncriterion alone carries its pin forward on its own and asks nothing.",
 	"relation supersede":          "Retire one relation without erasing it. Add its corrected replacement separately;\na pivot is represented by normal requirement, design, plan, and relation revisions.",
 	"relation status":             "Report each relation as current, stale, conflicted, invalid, or superseded by comparing\nits persisted revision and digest pins with current heads. Only a current relation counts\nas coverage; every other status lists concrete reasons.",
@@ -487,16 +479,8 @@ var commandDescription = map[string]string{
 	"design-add-section":          "Partition a design chapter around one coherent subsystem, workflow, or decision so\nconcurrent agents can work without contending on a shared fragment.",
 	"design-add-fragment":         "Add an addressable technical-design artifact. Prefer a diagram, prototype walkthrough,\nor concrete example and relate it to the stories and acceptance criteria it develops.",
 	"design-set-fragment-content": "Replace authored design content while preserving its stable target. Refresh\ncontent-digest-pinned relations after intentional changes so downstream work is not stale.",
-	"plan":                        "Turn requirements and design into dependency-aware waves, parallel workspace\nassignments, explicit convergence, progress, and immutable merge evidence. Planning\nmay begin while the technical design is still maturing and must track later revisions.",
-	"plan add-wave":               "Add one delivery phase with explicit entry and exit conditions. Waves describe when\nparallel workspace lanes may fan out or must converge; display order is not dependency.",
-	"plan revise-wave":            "Append a complete wave revision as sequencing or convergence changes. Reconcile every\ncurrent parent head so concurrent planning remains visible until intentionally merged.",
-	"plan add-item":               "Add one independently assignable, mergeable unit of work and link it to the\nrequirements and design it advances. Keep ownership narrow enough for parallel work.",
-	"plan revise-item":            "Append a complete work-item revision when scope, touch areas, deliverables, or merge\nunits change. Preserve prior plans and refresh revision-pinned downstream contracts.",
-	"plan add-dependency":         "Record a real prerequisite between work items. Do not serialize independent items;\nuse dependencies to express the minimum safe fan-out and convergence graph.",
-	"plan add-contract":           "Define the versioned interface between parallel provider and consumer work items.\nUse its acceptance checks as the stable seam that lets both workspaces proceed safely.",
-	"plan assign":                 "Bind a work item to a concrete workspace and branch so progress can be shown in the\nlive Saga. Assignment is coordination state, not evidence of implementation.",
-	"plan progress":               "Append explicit workspace progress against the item. Progress helps coordination but\nnever proves correctness, acceptance-criterion coverage, or delivery.",
-	"plan record-merge":           "Append merge evidence for a declared merge unit. A merged state contributes delivery\nevidence only when its immutable commit and diff links resolve.",
+	"task":                        "A Task is one well-understood piece of a Plan's work, which you are confident would have taken two days or less before AI.\nEvery Task must name a user story or unblock a Task that leads to one. Dependencies decide what can run in parallel.",
+	"plan":                        "A Plan is a body of work and how it can be executed in parallel: the technical design for a change,\nas a slide deck organized by phase, and the Tasks that carry it out. It belongs to no feature;\nits stories and features are worked out from its Tasks.",
 	"deck":                        "Author a deck overview report with references to its existing slides and Items.",
 	"deck overview":               "Replace a deck overview from a JSON object with body (Markdown) and annotations\n([{id,label,slide,item?}]). Cite annotations with [label](annotation:ID); every slide\nshould be referenced. Missing slide coverage warns; broken or cross-deck references\nfail before writing. References navigate existing evidence and never add code coverage.\n--check checks authored every-slide citation coverage (exit 3 for gaps, 1 for errors).\nUse ![alt](slide:SLIDE_ID) to reuse an existing same-deck image asset.",
 	"add-deck":                    "Add an implementation deck. The implementation decks appear in the Saga's Technical\nsection; split the delivered change into decks only where a concern warrants its own review.",
@@ -1408,7 +1392,7 @@ func Spec(args []string, out io.Writer) error {
 			"target_scheme":        "urn:change-saga",
 			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
 			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir},
+			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir},
 			"app_layout": map[string]any{
 				"app_roots":       applayout.AppRootDirs,
 				"feature_storage": applayout.FeaturesDir + "/<id>" + applayout.FeatureSuffix + "/" + applayout.FeatureManifestName,
@@ -1470,6 +1454,14 @@ func Spec(args []string, out io.Writer) error {
 				"schema":     querySchema,
 				"operations": querySpecOperations(),
 				"discovery":  queryUsage["schema"],
+			},
+			"plans": map[string]any{
+				"storage":     saga.PlansDir + "/<id>" + saga.PlanSuffix + "/{" + saga.PlanManifestName + "," + saga.PlanDeckDir + "/," + saga.PlanTasksDir + "/<task>" + saga.TaskSuffix + "/{" + saga.TaskManifestName + "," + saga.TaskEssayName + "}}",
+				"deck_role":   saga.DeckRolePlan,
+				"urns":        "urn:change-saga:<saga>:plan:<plan>[:deck:<deck>|:slide:<slide>[:item:<item>]|:task:<task>]",
+				"task_states": []string{saga.TaskPlanned, saga.TaskInProgress, saga.TaskDone},
+				"story_rule":  "every Task names a user story or unblocks a Task that leads to one; a write that would leave a Task with no path to a story is refused",
+				"delivered":   "plan deliver is explicit and refused until every Task is done and every linked Review has merged; a delivered Plan is hidden by default and refuses edits",
 			},
 			"reviews": map[string]any{
 				"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",
@@ -2205,7 +2197,7 @@ const specText = `Change Saga format (experimental)
 
 A Change Saga is one directory whose saga.json declares version 5. It carries
 the whole of a big change: prototypes and user stories under ___requirements,
-UX/UI and technical design under ___design, delivery waves under ___workplan,
+UX/UI and technical design under ___design, 
 test cases under ___quality, and the implementation deck under ___slides.
 
 The implementation deck is a set of independently mergeable bundles under

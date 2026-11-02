@@ -198,13 +198,6 @@ func (s *session) audit(filters Filters) (AuditReport, error) {
 }
 
 func (s *session) auditDomainConflicts(featureID string, owners map[string]string, report *AuditReport) {
-	for _, conflict := range s.plan.Conflicts {
-		resource := strings.Split(conflict.Resource, "#")[0]
-		if owners[resource] != featureID {
-			continue
-		}
-		report.Conflicts = append(report.Conflicts, AuditConflict{ID: conflict.Resource, Kind: "work_" + conflict.Kind, Heads: uniqueSorted(conflict.Heads), Reasons: []string{"work plan has competing current heads"}})
-	}
 	for _, testCase := range s.quality.TestCases {
 		if testCase.Feature != featureID {
 			continue
@@ -344,22 +337,6 @@ func (s *session) auditOwners() map[string]string {
 	for _, story := range s.requirements.Stories {
 		storyURN, _ := livingid.Story(s.requirements.SagaID, story.Identity.ID)
 		owners[storyURN] = story.Feature
-	}
-	for id, item := range s.plan.WorkItems {
-		urn, _ := livingid.WorkItem(s.plan.SagaID, id)
-		owners[urn] = item.Feature
-	}
-	for id, wave := range s.plan.Waves {
-		urn, _ := livingid.Wave(s.plan.SagaID, id)
-		owners[urn] = wave.Feature
-	}
-	for id, contract := range s.plan.Contracts {
-		urn, _ := livingid.Contract(s.plan.SagaID, id)
-		owners[urn] = contract.Feature
-	}
-	for id, dependency := range s.plan.Dependencies {
-		urn, _ := livingid.Dependency(s.plan.SagaID, id)
-		owners[urn] = dependency.Feature
 	}
 	for _, testCase := range s.quality.TestCases {
 		urn, _ := qualityid.TestCase(s.quality.SagaID, testCase.Identity.ID)

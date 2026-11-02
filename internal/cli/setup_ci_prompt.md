@@ -234,11 +234,11 @@ with the required access.
 # Technical and quality overrides across all feature packages.
 /change.saga/___features/*.feature/___design/ @example/architecture
 /change.saga/___features/*.feature/___slides/ @example/engineering
-/change.saga/___features/*.feature/___workplan/ @example/engineering
 /change.saga/___features/*.feature/___quality/ @example/quality
 /change.saga/___features/*.feature/___requirements/relations/ @example/architecture
 /change.saga/___features/*.feature/___requirements/coverage-exceptions/ @example/quality
 /change.saga/___whiteboards/ @example/architecture
+/change.saga/___plans/ @example/architecture
 /change.saga/___inventory/ @example/architecture
 /change.saga/___overview/technical-design*.fragment/ @example/architecture
 /change.saga/___overview/data-model.fragment/ @example/architecture

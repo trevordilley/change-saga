@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "dependency-graph",
+  "title": "Show the dependency graph",
+  "phase": "read-and-work",
+  "story": "urn:change-saga:change-saga:story:map-task-dependencies",
+  "depends_on": [
+    "task-records",
+    "plans-section"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A small server-drawn graph."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:42.604852Z"
+}

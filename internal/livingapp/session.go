@@ -22,13 +22,11 @@ import (
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/sagaref"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 type session struct {
 	snapshot     string
 	requirements requirements.Document
-	plan         workplan.Plan
 	saga         *saga.Saga
 	quality      quality.Document
 	currency     []requirements.RelationCurrency
@@ -82,7 +80,7 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 			return nil, appError(CodeInvalidSaga, "the coverage exceptions could not be loaded", false, nil, err)
 		}
 	}
-	return &session{snapshot: snapshot, requirements: graph.requirements, plan: graph.plan, saga: doc, quality: qualityDocument, currency: graph.currency, exceptions: exceptions, adopted: adopted}, nil
+	return &session{snapshot: snapshot, requirements: graph.requirements, saga: doc, quality: qualityDocument, currency: graph.currency, exceptions: exceptions, adopted: adopted}, nil
 }
 
 func livingRootPresent(root, name string) bool {
@@ -91,11 +89,11 @@ func livingRootPresent(root, name string) bool {
 }
 
 // crossDomainInputs adds the facts requirements cannot derive without
-// importing the work-plan and design domains: which relation endpoints no
-// longer exist, and which work items have competing revision heads. They are
+// importing the design domain: which relation endpoints no
+// longer exist. They are
 // inputs to requirements.EvaluateRelations, the one place relation pins and
 // endpoints are judged; nothing here compares a pin.
-func crossDomainInputs(document requirements.Document, plan workplan.Plan, doc *saga.Saga, designDigests map[string]string, inputs *requirements.StaleInputs) {
+func crossDomainInputs(document requirements.Document, doc *saga.Saga, designDigests map[string]string, inputs *requirements.StaleInputs) {
 	targets := saga.MutationIndexFromDocument(doc).Targets
 	claims := map[string]bool{}
 	for _, claim := range doc.Claims {
@@ -118,13 +116,6 @@ func crossDomainInputs(document requirements.Document, plan workplan.Plan, doc *
 		for _, endpoint := range []string{relation.From, relation.To} {
 			if ref, err := livingid.Parse(endpoint); err == nil {
 				switch ref.Kind {
-				case livingid.KindWorkItem:
-					item := plan.WorkItems[ref.ID]
-					if item == nil {
-						inputs.Missing[endpoint] = true
-					} else if len(item.Heads) > 1 {
-						inputs.ConflictedRevisions[endpoint] = copyStrings(item.Heads)
-					}
 				case livingid.KindDesign:
 					if _, exists := designDigests[endpoint]; !exists {
 						inputs.Missing[endpoint] = true
@@ -188,18 +179,6 @@ func (s *session) Query(_ context.Context, query Query) (Result, error) {
 	case "relations":
 		values := s.relationRows(query.Filters)
 		rows, key = values, "relations"
-	case "waves":
-		values := s.waveRows(query.Filters)
-		rows, key = values, "waves"
-	case "work-items":
-		values := s.workItemRows(query.Filters)
-		rows, key = values, "items"
-	case "work-events":
-		values := s.workEventRows(query.Filters)
-		rows, key = values, "events"
-	case "work-conflicts":
-		values := s.conflictRows(query.Filters)
-		rows, key = values, "conflicts"
 	case "traceability":
 		return s.traceabilityResult(query)
 	case "readiness":
@@ -230,21 +209,11 @@ func (s *session) pageRows(query Query, key string, rows any) (Result, error) {
 	case "requirements":
 		data = RequirementPage{Requirements: sliced.([]Requirement)}
 	case "events":
-		if query.Operation == "requirement-history" {
-			data = HistoryPage{Events: sliced.([]HistoryEvent)}
-		} else {
-			data = WorkEventPage{Events: sliced.([]WorkEvent)}
-		}
+		data = HistoryPage{Events: sliced.([]HistoryEvent)}
 	case "citations":
 		data = CitationPage{Citations: sliced.([]Citation)}
 	case "relations":
 		data = RelationPage{Relations: sliced.([]Relation)}
-	case "waves":
-		data = WavePage{Waves: sliced.([]Wave)}
-	case "items":
-		data = WorkItemPage{Items: sliced.([]WorkItem)}
-	case "conflicts":
-		data = ConflictPage{Conflicts: sliced.([]Conflict)}
 	}
 	return Result{Data: data, Page: page}, nil
 }
@@ -388,13 +357,6 @@ func appError(code ErrorCode, message string, retryable bool, details map[string
 	return &Error{Code: code, Message: message, Retryable: retryable, Details: details, cause: cause}
 }
 
-func sanitizePlanIssues(issues []workplan.Issue) []map[string]string {
-	result := make([]map[string]string, 0, len(issues))
-	for _, issue := range issues {
-		result = append(result, map[string]string{"severity": issue.Severity, "path": filepath.ToSlash(issue.Path), "message": issue.Message})
-	}
-	return result
-}
 func sanitizeSagaIssues(issues []saga.Issue) []map[string]string {
 	result := make([]map[string]string, 0, len(issues))
 	for _, issue := range issues {
@@ -426,14 +388,6 @@ func sliceLength(rows any) int {
 		return len(v)
 	case []Relation:
 		return len(v)
-	case []Wave:
-		return len(v)
-	case []WorkItem:
-		return len(v)
-	case []WorkEvent:
-		return len(v)
-	case []Conflict:
-		return len(v)
 	case []Traceability:
 		return len(v)
 	}
@@ -452,14 +406,6 @@ func sliceRange(rows any, start, end int) any {
 	case []Citation:
 		return v[start:end]
 	case []Relation:
-		return v[start:end]
-	case []Wave:
-		return v[start:end]
-	case []WorkItem:
-		return v[start:end]
-	case []WorkEvent:
-		return v[start:end]
-	case []Conflict:
 		return v[start:end]
 	case []Traceability:
 		return v[start:end]

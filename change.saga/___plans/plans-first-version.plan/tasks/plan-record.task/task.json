@@ -1,0 +1,23 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "plan-record",
+  "title": "Add the Plan record",
+  "phase": "start-the-records",
+  "code": [
+    {
+      "commit": "4ede5cad1a5127a7f347d58de85b3cb62a07e758",
+      "path": "internal/saga/review.go",
+      "start": 372,
+      "end": 421,
+      "digest": "sha256:27a9ba0970540311ff8bb4d19ad54efee5cfdc0515cd4d89739c3903785ec7bd",
+      "note": "The review loader this follows"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One record and its loader."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:40.863936Z"
+}

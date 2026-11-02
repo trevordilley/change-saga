@@ -1,0 +1,19 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "plans-on-stories",
+  "title": "Show Plans on stories and features",
+  "phase": "read-and-work",
+  "story": "urn:change-saga:change-saga:story:see-plans-from-stories",
+  "depends_on": [
+    "task-records",
+    "plans-section"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Worked out from links; feature pages are done, story pages are not."
+  },
+  "state": "done",
+  "summary": "Feature and story pages list the Plans whose Tasks name their stories.",
+  "created_at": "2026-11-02T05:05:45.447312Z"
+}

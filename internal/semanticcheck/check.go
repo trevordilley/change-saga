@@ -204,7 +204,6 @@ func immutableIdentities(root string) (map[string]identityRecord, error) {
 	kinds := map[string]string{
 		"feature.json": "feature", "story.json": "story", "persona.json": "persona", "flag.json": "flag",
 		"term.json": "term", "prototype.json": "prototype", "test-case.json": "test-case",
-		"wave.json": "wave", "work-item.json": "work-item", "contract.json": "contract",
 	}
 	result := map[string]identityRecord{}
 	err := filepath.WalkDir(root, func(path string, entry os.DirEntry, walkErr error) error {

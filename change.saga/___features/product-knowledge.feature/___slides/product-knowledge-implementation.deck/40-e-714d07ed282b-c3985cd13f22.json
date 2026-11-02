@@ -10,11 +10,11 @@
       "note": "Defines requirements-domain identities, complete story revisions, typed pinned relations, and the aggregate document."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/requirements/model.go",
-      "start": 121,
-      "end": 180,
-      "digest": "sha256:76c58b411b5c238c32bf0aab9e23b546e0c4546965ba7c5bad8d31c8ab88eb12",
+      "start": 127,
+      "end": 185,
+      "digest": "sha256:ce5e961f55568cb2383d801ead0c2b62ba954e6ae1198fe26d92750c78842847",
       "note": "Defines requirements-domain identities, complete story revisions, typed pinned relations, and the aggregate document."
     },
     {

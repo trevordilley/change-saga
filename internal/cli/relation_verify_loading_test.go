@@ -211,11 +211,11 @@ func TestVerifyLoadingRetainsEmbeddedIDCollisionGuard(t *testing.T) {
 }
 
 func TestVerifyLoadingRetainsDomainValidation(t *testing.T) {
-	for _, domain := range []string{"work-plan", "quality"} {
+	for _, domain := range []string{"plans", "quality"} {
 		t.Run(domain, func(t *testing.T) {
 			root, input := newVerifyLoadingFixture(t)
-			if domain == "work-plan" {
-				writeFile(t, filepath.Join(testFeatureDir(root), "___workplan", "unexpected.json"), `{}`)
+			if domain == "plans" {
+				writeFile(t, filepath.Join(root, saga.PlansDir, "bad.plan", saga.PlanManifestName), `{}`)
 			} else {
 				writeFile(t, filepath.Join(testFeatureDir(root), "___quality", "test-cases", "fast.test", "test-case.json"), `{}`)
 			}

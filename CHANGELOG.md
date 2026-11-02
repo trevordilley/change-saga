@@ -12,6 +12,17 @@ tool, and what they have to do about it.
 
 ### Added
 
+- **Format:** Plans and Tasks replace the work plan. A Plan is a body of work
+  and how it can run in parallel: a slide deck and Tasks, in
+  `___plans/<id>.plan/`, owned by no feature. Every Task must name a user story
+  or unblock a Task that leads to one. Use `plan create`, `list`, `guide`,
+  `add-phase`, `remove-phase`, `add-prototype`, `link-review`, and `deliver`; `task add`,
+  `depend`, `set`, `done`, `remove`, and `list`; and `--plan` on `apply-slide`
+  and `deck overview`. A phase's Tasks can run in parallel, so a Task depends only on earlier phases.
+  The reader shows Plans beside Documentation and Review: each opens on its essay
+  and deck, with Deck and Tasks in the header. Tasks is a whiteboard of the Tasks
+  ending at their stories.
+  See [writing a Plan](skills/change-saga/references/plans.md).
 - A Roadmap feature can add stories to an existing feature without mixing
   planned work into it: `feature add --augments ID` or `feature set-plan
   --augments ID` (empty clears) records the feature it extends. The reviewer's
@@ -22,12 +33,24 @@ tool, and what they have to do about it.
   feature's stories, prototypes, test cases, citations, relations, and decks
   into the feature it augments with every URN unchanged, then deletes the
   Roadmap feature. It refuses when content it cannot place (design chapters,
-  other report content, a work plan) would be lost, listing it. It prints the
+  other report content) would be lost, listing it. It prints the
   Roadmap overview and the delivered stories, and marks the recipient's
   `overview_revision_pending`, which `status` and `check --covers health`
   report until `feature set-overview` revises the recipient's essay.
 - **Format:** `plan.json` gains optional `augments` and
   `overview_revision_pending`; older Sagas load unchanged.
+
+### Removed
+
+- **Format:** the old work plan is gone: `plan add-wave`, `revise-wave`,
+  `add-item`, `revise-item`, `add-dependency`, `add-contract`, `assign`,
+  `progress`, and `record-merge`; queries `waves`, `work-items`, `work-events`,
+  and `work-conflicts`; the `implements` relation type; the wave, work-item,
+  dependency, and contract URN kinds; and readiness's transitive blocker paths.
+  `query traceability` returns `tasks` in place of `work_items`, and readiness's
+  plan coverage counts criteria whose story a Task names. A feature's
+  `___workplan` directory is now an invalid reserved directory: move anything
+  still useful into a Plan, then delete the directory (Git keeps it).
 
 ## [0.6.0] - 2026-10-29
 

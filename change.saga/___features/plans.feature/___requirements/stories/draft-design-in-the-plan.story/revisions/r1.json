@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:draft-design-in-the-plan",
+  "parents": [],
+  "title": "Draft the technical design in the Plan",
+  "statement": "As an architect, I can draft the technical design for a change in its Plan, and break it into the Tasks that carry it out, so the design and the work to do it stay in one place.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "design-in-plan",
+      "statement": "A Plan's deck and essay can hold the technical design for its change before any of that code exists."
+    },
+    {
+      "id": "tasks-carry-out-design",
+      "statement": "A Plan's slides can reference the Tasks that carry out the design they describe."
+    }
+  ],
+  "created_at": "2026-11-02T04:33:45.745153Z"
+}

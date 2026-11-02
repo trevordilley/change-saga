@@ -311,18 +311,6 @@ func TestCreateCommandsRequireAnFeatureAmongSeveral(t *testing.T) {
 		{"prototype add-external", func(out *bytes.Buffer) error {
 			return Prototype(ctx, []string{"add-external", root, "--id", "p", "--revision", "r1", "--title", "P", "--url", "https://example.test/p"}, out)
 		}},
-		{"plan add-wave", func(out *bytes.Buffer) error {
-			return Plan(ctx, []string{"add-wave", root, "--id", "w", "--revision", "r1", "--title", "W", "--objective", "O", "--request-id", "w"}, out)
-		}},
-		{"plan add-item", func(out *bytes.Buffer) error {
-			return Plan(ctx, []string{"add-item", root, "--id", "i", "--revision", "r1", "--title", "I", "--objective", "O", "--deliverable", "D", "--request-id", "i"}, out)
-		}},
-		{"plan add-dependency", func(out *bytes.Buffer) error {
-			return Plan(ctx, []string{"add-dependency", root, "--id", "d", "--prerequisite", "urn:change-saga:atomic:work-item:a", "--dependent", "urn:change-saga:atomic:work-item:b", "--condition", "progress_done", "--reason", "R", "--request-id", "d"}, out)
-		}},
-		{"plan add-contract", func(out *bytes.Buffer) error {
-			return Plan(ctx, []string{"add-contract", root, "--id", "k", "--revision", "r1", "--kind", "handoff", "--provider", "urn:change-saga:atomic:work-item:a", "--consumer", "urn:change-saga:atomic:work-item:b", "--statement", "S", "--acceptance", "A", "--request-id", "k"}, out)
-		}},
 		{"quality test-case add", func(out *bytes.Buffer) error {
 			return Quality(ctx, []string{"test-case", "add", root, "--id", "t", "--title", "T", "--kind", "positive", "--automation", "manual", "--step", `{"id":"s1","action":"A","expected_result":"E"}`, "--expected-result", "E"}, out)
 		}},

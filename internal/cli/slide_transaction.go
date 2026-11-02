@@ -40,7 +40,10 @@ type SlideTransactionRequest struct {
 	Deck      string `json:"deck,omitempty"`
 	// Review names the pull request review whose deck holds the slide. Its
 	// Items take their code from cover, not from evidence in the request.
-	Review            string                        `json:"review,omitempty"`
+	Review string `json:"review,omitempty"`
+	// Plan names the Plan whose deck holds the slide. Its Items carry no evidence
+	// or criterion links, and may name the Plan's Tasks and user stories.
+	Plan              string                        `json:"plan,omitempty"`
 	ExpectedSnapshot  string                        `json:"expected_snapshot,omitempty"`
 	ExpectedSnapshots []string                      `json:"expected_snapshots,omitempty"`
 	Slide             SlideTransactionSlide         `json:"slide"`
@@ -185,7 +188,11 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		revision.Diagram = &saga.DiagramSource{Source: sourceName, SourceDigest: coderef.DigestBytes(source), Renderer: diagram.Renderer}
 	}
 	reviewID := transactionReview(request)
-	if reviewID == "" && request.Deck != "" && !strings.HasPrefix(request.Deck, "urn:") {
+	planID := transactionPlan(request)
+	if reviewID != "" && planID != "" {
+		return SlideTransactionResult{}, fmt.Errorf("a slide belongs to a review or a plan, not both")
+	}
+	if reviewID == "" && planID == "" && request.Deck != "" && !strings.HasPrefix(request.Deck, "urn:") {
 		// A review's deck id defaults to its review id; name the review
 		// before evidence checks that only implementation decks need.
 		if info, statErr := os.Stat(filepath.Join(saga.ReviewDir(root, request.Deck), saga.ReviewDeckDir)); statErr == nil && info.IsDir() && !appDeckExists(root, request.Deck) {
@@ -193,7 +200,7 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		}
 	}
 	themeDeck := false
-	if reviewID == "" {
+	if reviewID == "" && planID == "" {
 		preview, _, err := saga.LoadOutline(root)
 		if err != nil {
 			return SlideTransactionResult{}, err
@@ -204,6 +211,10 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 	}
 	if reviewID != "" {
 		if err := refuseReviewItemEvidence(revision.Items); err != nil {
+			return SlideTransactionResult{}, err
+		}
+	} else if planID != "" {
+		if err := refusePlanItemEvidence(revision.Items); err != nil {
 			return SlideTransactionResult{}, err
 		}
 	} else {
@@ -261,8 +272,16 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		if loadErr != nil {
 			return loadErr
 		}
-		deck, review, err := transactionDeck(document, request, reviewID)
-		if err != nil {
+		var deck *saga.Deck
+		var review *saga.Review
+		var plan *saga.Plan
+		if planID != "" {
+			plan, err = findEditablePlan(document, planID)
+			if err != nil {
+				return err
+			}
+			deck = plan.Deck
+		} else if deck, review, err = transactionDeck(document, request, reviewID); err != nil {
 			return err
 		}
 		if deck.Role == saga.DeckRoleFeatureTheme {
@@ -285,6 +304,8 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		var existing *saga.Slide
 		if review != nil {
 			existing = review.Slide(request.Slide.ID)
+		} else if plan != nil {
+			existing = plan.Slide(request.Slide.ID)
 		} else {
 			existing = findSlide(document, target)
 		}
@@ -369,6 +390,10 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			if err := admitReviewItems(document, review, existing, revision.Items); err != nil {
 				return err
 			}
+		} else if plan != nil {
+			if err := admitPlanItems(document, plan, revision.Items); err != nil {
+				return err
+			}
 		} else if deck.Role == saga.DeckRoleChange || deck.Role == saga.DeckRoleUX {
 			if err := validateTransactionCriteria(document, revision.Items); err != nil {
 				return err
@@ -376,7 +401,7 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		}
 
 		if request.Operation == "create" {
-			if existing != nil || (review == nil && targetIDExists(document, request.Slide.ID)) {
+			if existing != nil || (review == nil && plan == nil && targetIDExists(document, request.Slide.ID)) {
 				return fmt.Errorf("slide id %q already exists", request.Slide.ID)
 			}
 			revision.ParentSnapshots = []string{}
@@ -543,6 +568,59 @@ func transactionReview(request SlideTransactionRequest) string {
 		return request.Review
 	}
 	return saga.ReviewIDOf(request.Deck)
+}
+
+// transactionPlan is the Plan whose deck request addresses, by its plan field
+// or by the Plan deck's URN, or "".
+func transactionPlan(request SlideTransactionRequest) string {
+	if request.Plan != "" {
+		return request.Plan
+	}
+	return saga.PlanIDOf(request.Deck)
+}
+
+// findEditablePlan finds a Plan whose deck may still change.
+func findEditablePlan(document *saga.Saga, planID string) (*saga.Plan, error) {
+	plan := document.FindPlan(planID)
+	if plan == nil || plan.Deck == nil {
+		return nil, fmt.Errorf("plan %q does not exist or has no deck", planID)
+	}
+	if plan.Delivered() {
+		return nil, fmt.Errorf("plan %q was delivered and no longer changes", planID)
+	}
+	return plan, nil
+}
+
+// refusePlanItemEvidence keeps code out of a Plan's slides: a Plan describes
+// intended work, and its Tasks carry the code references that matter.
+func refusePlanItemEvidence(items []saga.TransactionItem) error {
+	for _, item := range items {
+		if len(item.Evidence) > 0 || len(item.CriterionLinks) > 0 {
+			return fmt.Errorf("plan item %q carries evidence or criterion_links; a Plan describes intended work, so name a Task or story with record, and put code references on the Task", item.Item.ID)
+		}
+	}
+	return nil
+}
+
+// admitPlanItems checks what a Plan slide's Items point at: a user story, or a
+// Task of this Plan.
+func admitPlanItems(document *saga.Saga, plan *saga.Plan, items []saga.TransactionItem) error {
+	for _, item := range items {
+		record := item.Item.Record
+		if record == "" {
+			continue
+		}
+		if saga.PlanIDOf(record) != "" {
+			if plan.FindTask(record) == nil {
+				return fmt.Errorf("item %s names %s, which is not a task of plan %s", item.Item.ID, record, plan.ID)
+			}
+			continue
+		}
+		if err := requireAppRecord(document.Root, document.Manifest.ID, record); err != nil {
+			return fmt.Errorf("item %s: %w", item.Item.ID, err)
+		}
+	}
+	return nil
 }
 
 // transactionDeck resolves the deck a request publishes into: a feature's
@@ -1073,6 +1151,7 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("apply-slide", commandUsage["apply-slide"], out)
 	from := flags.String("from", "", "complete slide transaction JSON file, or - for standard input")
 	review := flags.String("review", "", "publish into this pull request review's deck; the same as the request's review field")
+	plan := flags.String("plan", "", "publish into this Plan's deck; the same as the request's plan field")
 	repo := flags.String("repo", "", "code repository used to verify every exact evidence digest")
 	dryRun := flags.Bool("dry-run", false, "validate and return the semantic diff without publishing")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
@@ -1084,7 +1163,7 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 		if flags.NArg() != 1 || *from != "" || *dryRun {
 			return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
 		}
-		return printCurrentSlideRequest(flags.Arg(0), *printCurrent, *review, out)
+		return printCurrentSlideRequest(flags.Arg(0), *printCurrent, *review, *plan, out)
 	}
 	if flags.NArg() != 1 || *from == "" {
 		return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
@@ -1122,6 +1201,12 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 		}
 		request.Review = *review
 	}
+	if *plan != "" {
+		if request.Plan != "" && request.Plan != planIDOf(*plan) {
+			return fmt.Errorf("--plan %s conflicts with the request's plan %q", *plan, request.Plan)
+		}
+		request.Plan = planIDOf(*plan)
+	}
 	result, err := ApplySlideTransaction(ctx, flags.Arg(0), base, *repo, request, *dryRun)
 	if err != nil {
 		return err
@@ -1145,7 +1230,7 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 // managed slide's current revision, with a fresh request_id, so an author
 // edits one field and applies it instead of rebuilding the whole slide.
 // With review, a slide ID or target names that review's slide.
-func printCurrentSlideRequest(root, target, review string, out io.Writer) error {
+func printCurrentSlideRequest(root, target, review, plan string, out io.Writer) error {
 	document, _, err := saga.Load(root)
 	if err != nil {
 		return err
@@ -1155,6 +1240,12 @@ func printCurrentSlideRequest(root, target, review string, out io.Writer) error 
 		owner := document.FindReview(review)
 		if owner == nil {
 			return fmt.Errorf("review %q does not exist", review)
+		}
+		slide = owner.Slide(target)
+	} else if plan != "" {
+		owner := document.FindPlan(planIDOf(plan))
+		if owner == nil {
+			return fmt.Errorf("plan %q does not exist", plan)
 		}
 		slide = owner.Slide(target)
 	} else if slide, err = findManagedSlide(document, target); err != nil {

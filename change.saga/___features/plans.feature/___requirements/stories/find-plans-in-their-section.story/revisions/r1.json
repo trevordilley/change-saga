@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:find-plans-in-their-section",
+  "parents": [],
+  "title": "Find Plans in their own section",
+  "statement": "As a developer, I can find Plans in their own section beside Documentation and Reviews, so I can tell what we intend to do from what exists and what has changed.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "plans-section",
+      "statement": "The reader has a Plans section beside Documentation and Reviews that lists the Plans."
+    },
+    {
+      "id": "reads-as-a-plan",
+      "statement": "A reader on a Plan's page can tell from that page that it describes intended work and is not a Review."
+    },
+    {
+      "id": "plan-crosses-features",
+      "statement": "A Plan's Tasks can link to stories in more than one feature."
+    },
+    {
+      "id": "change-stays-one-plan",
+      "statement": "Changing a Plan and committing it updates that Plan and does not create another."
+    }
+  ],
+  "created_at": "2026-11-02T04:33:44.811678Z"
+}

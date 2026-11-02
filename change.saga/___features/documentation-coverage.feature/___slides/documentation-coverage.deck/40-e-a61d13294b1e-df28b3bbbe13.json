@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "2e44cd4e7d7f274a9b531debda3449c0d7e134a7",
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
       "path": "internal/livingapp/status_load.go",
-      "start": 51,
+      "start": 50,
       "end": 81,
-      "digest": "sha256:cabb01f74c9247cedcf64c10fc1720b6cb9a14662cce8ec9f31ff8c710aaa8ba",
+      "digest": "sha256:e163a847cb7aae098e9eb95e381eab6219cac74a4ba3ae8e55e8b7de74c9618f",
       "note": "Loads the Saga records from the same status snapshot without mutation."
     }
   ]

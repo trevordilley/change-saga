@@ -28,11 +28,23 @@ func Deck(ctx context.Context, args []string, out io.Writer) error {
 	return err
 }
 
+// notExactlyOne reports whether anything other than one of values is set.
+func notExactlyOne(values ...string) bool {
+	given := 0
+	for _, value := range values {
+		if value != "" {
+			given++
+		}
+	}
+	return given != 1
+}
+
 // DeckOverview replaces only the optional authored report on a deck record.
 func DeckOverview(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("deck overview", commandUsage["deck overview"], out)
 	target := flags.String("deck", "", "existing deck ID, path, or stable URN")
 	reviewID := flags.String("review", "", "author the overview of this review's deck instead of --deck")
+	planID := flags.String("plan", "", "author the overview of this Plan's deck instead of --deck")
 	file := flags.String("file", "", "JSON object with body and optional annotations")
 	check := flags.Bool("check", false, "check authored every-slide overview coverage without writing; exit 3 for gaps")
 	dryRun := flags.Bool("dry-run", false, "validate without writing")
@@ -40,7 +52,7 @@ func DeckOverview(_ context.Context, args []string, out io.Writer) error {
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if flags.NArg() != 1 || (*file == "") == !*check || (*check && *dryRun) || (*target == "") == (*reviewID == "") {
+	if flags.NArg() != 1 || (*file == "") == !*check || (*check && *dryRun) || notExactlyOne(*target, *reviewID, *planID) {
 		return fmt.Errorf("usage: %s", commandUsage["deck overview"])
 	}
 	var overview saga.DeckOverview
@@ -59,7 +71,20 @@ func DeckOverview(_ context.Context, args []string, out io.Writer) error {
 	}
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
 		deck := findDeck(document, *target)
-		if *reviewID != "" {
+		if *planID != "" {
+			plan := document.FindPlan(planIDOf(*planID))
+			var err error
+			if !*check {
+				plan, err = findEditablePlan(document, planIDOf(*planID))
+			}
+			if err == nil && (plan == nil || plan.Deck == nil) {
+				err = fmt.Errorf("plan %q has no deck", *planID)
+			}
+			if err != nil {
+				return err
+			}
+			deck = plan.Deck
+		} else if *reviewID != "" {
 			review := document.FindReview(*reviewID)
 			var err error
 			if !*check {

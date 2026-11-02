@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "node",
   "label": "Living graph",
-  "description": "Loads requirements, work plan, design digests, and test heads, then derives relation currency once.",
+  "description": "Loads requirements, design digests, and test heads, then derives relation currency once.",
   "selector": {
     "type": "element",
     "element_id": "living-graph"

@@ -4,7 +4,7 @@ A product owner should be able to describe future work in enough detail for a te
 
 Built and planned are mutually exclusive delivery categories. They behave like built-in status labels, while ordinary labels and themes can have multiple memberships. Changing delivery status moves a feature between the two views without recreating its Essay, stories, acceptance criteria, prototype associations, design, quality records or implementation deck. Its canonical URL and identity stay the same. Story acceptance and evidence coverage remain separate facts; they do not automatically mark a feature built.
 
-A planned feature can carry the same product and implementation context as a built feature. The owner can articulate outcomes and criteria, explore prototypes and UX, and develop design before handing work to a teammate. Optional numeric priority orders Roadmap work: lower positive numbers come first, unranked work follows, and ties retain creation order. [Dependency-aware work planning](/features/work-planning) describes the separate execution and integration workflow.
+A planned feature can carry the same product and implementation context as a built feature. The owner can articulate outcomes and criteria, explore prototypes and UX, and develop design before handing work to a teammate. Optional numeric priority orders Roadmap work: lower positive numbers come first, unranked work follows, and ties retain creation order. [Plans](/features/plans) describe the separate work of carrying a change out.
 
 ## Define organization once {#shared-organization}
 

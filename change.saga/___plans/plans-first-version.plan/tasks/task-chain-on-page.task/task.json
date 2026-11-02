@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "task-chain-on-page",
+  "title": "Show a Task within its chain on its page",
+  "phase": "select-on-the-board",
+  "story": "urn:change-saga:change-saga:story:understand-a-task",
+  "depends_on": [
+    "coverage-whiteboard"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A contained change to known code, built and checked in a session."
+  },
+  "state": "done",
+  "summary": "A Task's page draws only its chain on the board, with the Task selected.",
+  "created_at": "2026-11-02T21:08:33.782107Z"
+}

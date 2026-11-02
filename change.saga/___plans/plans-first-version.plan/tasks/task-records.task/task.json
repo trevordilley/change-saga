@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "task-records",
+  "title": "Require every Task to lead to a story",
+  "phase": "tasks-section-deck",
+  "story": "urn:change-saga:change-saga:story:link-tasks-to-stories",
+  "depends_on": [
+    "plan-record"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One graph walk over plain records."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:41.292846Z"
+}

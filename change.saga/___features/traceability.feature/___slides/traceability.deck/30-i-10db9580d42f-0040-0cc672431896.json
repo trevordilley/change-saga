@@ -5,7 +5,7 @@
   "rank": 40,
   "kind": "risk",
   "label": "Delivery proof missing",
-  "description": "No integrated merge, passing verification, or other immutable evidence completes any criterion's delivery path.",
+  "description": "No claim or verified verification completes any criterion's delivery path.",
   "selector": {
     "type": "element",
     "element_id": "delivery-evidence-gap"

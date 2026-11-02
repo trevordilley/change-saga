@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "delivery-evidence-plans",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path:revision:plans-v1",
+  "role": "test_implementation",
+  "steps": [
+    "delivered"
+  ],
+  "code": [
+    {
+      "commit": "98473391d188d9237c9125192769eef2214fa4d8",
+      "path": "internal/livingapp/session_test.go",
+      "start": 100,
+      "end": 118,
+      "digest": "sha256:aff8053e3e4166464c6b67e3553969ee785f77c974a51c85fff759d46772cd82"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path:evidence:delivery-evidence"
+  ],
+  "created_at": "2026-11-02T05:45:02Z"
+}

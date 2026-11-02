@@ -273,14 +273,6 @@ func validateRelationMatrix(problems *validationErrors, relation Relation, from,
 	case RelationAddresses:
 		require(from.Kind == endpointDesign && requirement(to.Kind), "a design source and story or criterion target")
 		require(relation.FromContentDigest != "" && relation.ToRevision != "", "a source content digest and target revision pin")
-	case RelationImplements:
-		require(from.Kind == endpointWorkItem && (to.Kind == endpointDesign || to.Kind == endpointCriterion), "a work-item source and design or criterion target")
-		require(relation.FromRevision != "", "a source work-item revision pin")
-		if to.Kind == endpointDesign {
-			require(relation.ToContentDigest != "", "a target content digest")
-		} else {
-			require(relation.ToRevision != "", "a target criterion revision pin")
-		}
 	case RelationExplains:
 		reviewTarget := from.Kind == endpointDeck || from.Kind == endpointSlide || from.Kind == endpointItem
 		require(reviewTarget && requirement(to.Kind), "a deck, slide, or Item source and story or criterion target")
@@ -314,16 +306,6 @@ func validateEndpointPins(problems *validationErrors, side string, endpoint endp
 	case endpointDesign:
 		if revision != "" {
 			problems.add("%s design endpoint cannot use a definition revision", side)
-		}
-	case endpointWorkItem:
-		if revision != "" {
-			ref, err := livingid.Parse(revision)
-			if err != nil || ref.Kind != livingid.KindRevision || ref.ParentKind != livingid.KindWorkItem || ref.SagaID != endpoint.SagaID || ref.ParentID != endpoint.ID {
-				problems.add("%s_revision does not pin the work-item endpoint", side)
-			}
-		}
-		if digest != "" {
-			problems.add("%s work-item endpoint cannot use a content digest", side)
 		}
 	case endpointDeck, endpointSlide, endpointItem, endpointClaim, endpointVerification, endpointCitation, endpointRelation:
 		if revision != "" || digest != "" {
@@ -576,9 +558,6 @@ func parseEndpointRevision(value string) (endpointKind, error) {
 	if ref.ParentKind == "" || ref.ParentKind == livingid.KindStory {
 		return endpointStory, nil
 	}
-	if ref.ParentKind == livingid.KindWorkItem {
-		return endpointWorkItem, nil
-	}
 	return "", nil
 }
 
@@ -706,7 +685,7 @@ func validCitationKind(value CitationKind) bool {
 
 func validRelationType(value RelationType) bool {
 	switch value {
-	case RelationRefines, RelationAddresses, RelationImplements, RelationExplains, RelationVerifies, RelationSupersedes, RelationConflictsWith:
+	case RelationRefines, RelationAddresses, RelationExplains, RelationVerifies, RelationSupersedes, RelationConflictsWith:
 		return true
 	default:
 		return false

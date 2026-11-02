@@ -61,7 +61,6 @@ one Saga is neither invalid nor reported as a problem.
       coverage-exceptions/     # immutable per-criterion, per-axis decisions
     ___design/                 # technical design chapters
     ___slides/                 # the feature's implementation deck
-    ___workplan/               # waves, work items, dependencies, contracts
     ___quality/
       policies/
       test-cases/<id>.test/
@@ -69,6 +68,7 @@ one Saga is neither invalid nor reported as a problem.
   ___verifications/
   ___merges/                   # landed commits and their branch messages
   ___reviews/<id>.review/      # pull-request reviews: a deck, approvals, comments
+  ___plans/<id>.plan/          # Plans: a deck and Tasks (section 9)
 ```
 
 Report content and feature roots are invalid at the application root. No URN names
@@ -77,8 +77,8 @@ slide, fragment, or any other resource can move between features without breakin
 a link to it.
 
 Each record is interpreted by the schema its `$schema` names. Report content
-records use the v2 component schemas, living requirement and work-plan records
-the v3 schemas, and deck, slide, and item records the v4 deck schemas; those
+records use the v2 component schemas, living requirement records the v3 schemas,
+and deck, slide, and item records the v4 deck schemas; those
 component versions are part of this one format, not separate formats. The
 records introduced with the format are listed below. Every listed object
 boundary is closed; record files are bounded to one MiB, collection limits are
@@ -100,6 +100,8 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | current code references, resolved local URNs, acyclic supersession |
 | Test run (deprecated history) | `v5/test-run.schema.json` | test revision, parents, source identity, result, evidence, execution time | immutable history, one root, acyclic graph; never a coverage/readiness input |
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
+| Plan | `v5/plan.schema.json` | title, ordered phases, prototypes, reviews, delivery time; Git history | one role `plan` deck; section 9 |
+| Task | `v5/task.schema.json` | title, state, phase, story, same-Plan dependencies, code, sizing; Git history | every Task leads to a story, no dependency cycle; section 9 |
 
 Nothing in a Saga is required up front. A first change is asked only to have
 its implementation explained; personas, stories, design, quality, and terms
@@ -144,7 +146,7 @@ annotation directory, test case, quality policy, and deck to the same place
 beneath the recipient, so no URN changes, then deletes the planned feature's
 directory with its `feature.json`, `plan.json`, and overview essay, and drops
 it from feature themes. Content it cannot place (report chapters and fragments
-other than the overview, design, a work plan, anything unrecognized) is
+other than the overview, design, anything unrecognized) is
 listed, and the delivery refuses unless `--dry-run`. Like a removal it is kept
 only if it introduces no validation error, and the dry run reports the same
 moves. The output includes the planned feature's overview text, the delivered
@@ -741,7 +743,6 @@ Every digest is lowercase `sha256:` followed by 64 hexadecimal digits.
 | --- | --- | --- | --- |
 | `refines` | story or criterion | story or criterion | source and target story revisions |
 | `addresses` | report design, Deck, Slide, or Item | story or criterion | source content digest and target story revision |
-| `implements` | work item | report design or criterion | work-item revision; target design digest or target story revision |
 | `explains` | Deck, Slide, or Item | story or criterion | target story revision; source digest is recommended |
 | `verifies` | claim, verification, or test case | criterion | target story revision; test cases also pin their revision |
 | `supersedes` | resource | same resource kind | pins applicable to each mutable endpoint |
@@ -819,7 +820,7 @@ of the change a reviewer came to read. It lives beneath
 `___slides/<deck-id>.deck/`, and the reviewer presents it as the
 Implementation section itself. A Saga normally has one deck; several decks are
 allowed when the change has separable implementations. Stories, acceptance
-criteria, technical design, work-plan history, prototypes, chapters, and
+criteria, technical design, prototypes, chapters, and
 ordinary fragments are never converted into slides.
 
 Each deck bundle is flat and independently mergeable. It contains exactly one
@@ -1755,7 +1756,7 @@ scoped to the review, `urn:change-saga:<saga>:review:<id>[:deck:<d>|:slide:<s>[:
 so slide IDs never collide across reviews. An Item may reference code, which a
 reviewer sees as a diff against the review's base, and may carry a `record`: the
 URN of a persona, feature, story, test case, deck, slide, chapter, section, or
-fragment in the documentation. Review decks never join the documentation's
+fragment in the documentation, or of a Plan's Task (section 9). Review decks never join the documentation's
 structure, so they have no effect on coverage, readiness, or comparison layers.
 
 **A review deck must account for its change.** Review coverage is computed,
@@ -1853,15 +1854,127 @@ the exact base and head commits and the landed commit, and the merge record in
 range and refuses new decisions and deck edits. A node's history lists the
 reviews that changed it.
 
+## 9. Plans and Tasks
+
+A **Plan** describes a body of work and how it can be executed in parallel: the
+technical design for a change, as a slide deck, and the **Tasks** that carry it
+out. A review explains what a change did; a Plan says what it will do. A Plan
+belongs to no feature; its stories and features are derived from its Tasks. Git
+is a Plan's history: a change rewrites the same small `plan.json` or `task.json`,
+with no revisions or events. Its slides keep the revision record any deck's
+slides keep.
+
+```text
+___plans/<id>.plan/
+├── plan.json
+├── deck/                      # one flat deck bundle with role "plan"
+│   ├── 10-d-....json
+│   ├── 24-a-...               # diagram sources and rendered slides
+│   └── 25-t-....json
+└── tasks/<id>.task/
+    ├── task.json
+    └── essay.md               # optional
+```
+
+A Plan MUST have a real `deck/` directory holding exactly one deck record.
+`tasks/` is optional. Any other entry in a Plan or a Task is invalid, and each
+directory name must equal its record's `id`. Slide, Item, and Task URNs are
+scoped to the Plan, so their IDs never collide across Plans:
+
+```text
+urn:change-saga:<saga>:plan:<plan>[:deck:<deck>|:slide:<slide>[:item:<item>]|:task:<task>]
+```
+
+### Plan and Task records
+
+`plan.json` conforms to [`schema/v5/plan.schema.json`](schema/v5/plan.schema.json):
+
+| Field | Meaning |
+| --- | --- |
+| `id`, `title`, `created_at` | Required identity. |
+| `phases` | Ordered `{id, title}` entries with unique IDs. Optional. A phase's Tasks can run in parallel and the next phase follows, so a Task depends only on Tasks of earlier phases. |
+| `prototypes` | URNs of prototypes showing what the Plan builds. |
+| `reviews` | IDs of the pull request reviews that implement the Plan. |
+| `delivered_at` | Set only by `plan deliver`. |
+
+`task.json` conforms to [`schema/v5/task.schema.json`](schema/v5/task.schema.json):
+
+| Field | Meaning |
+| --- | --- |
+| `id`, `title`, `state`, `created_at` | Required. `state` is `planned`, `in_progress`, or `done`. |
+| `phase` | A phase of this Plan. |
+| `story` | Canonical URN of a user story of this Saga. |
+| `depends_on` | IDs of Tasks of this Plan. What a Task unblocks is the derived inverse and is not stored. |
+| `code` | Code references naming exact lines; a whole-file reference is invalid. |
+| `sizing` | `{within_two_days, reason}`: the author's judgment that the Task would have taken two days or less before AI. |
+| `summary` | What was done. |
+
+`done` is what an author reports; it never proves the work is correct. A Task can
+start when it is `planned` and every dependency is `done`. `plan guide --plan ID`
+reports a Task that is unsized or judged larger than two days, a Plan without
+Tasks, and a deck without slides or an essay. None of these is invalid.
+
+### The Task graph
+
+- Every Task MUST lead to a user story: it names one in `story`, or a Task that
+  leads to one depends on it. `task add --unblocks TASK` adds the new Task to
+  that Task's `depends_on`, so a Task with no story is added after what it
+  unblocks.
+- `depends_on` MUST stay inside one Plan and MUST NOT name the Task itself or the
+  same Task twice. Cycles are refused.
+- A write that touches the graph checks the whole resulting graph first, and a
+  write that would strand a Task or close a cycle is refused and names each Task.
+  The check is a linear walk over the Tasks and their dependencies, so every write
+  can afford it. Loading reports the same problems as validation errors.
+- `task remove` also removes every dependency on the Task. It is refused when
+  that would strand another Task, or while a slide of the Plan still names it.
+- `task add` and `task set` refuse a story that does not exist. A Task whose story
+  is later removed is reported as a dangling reference by `status` and
+  `check --covers health`.
+
+### Plan decks
+
+A Plan's deck is authored with `apply-slide --plan ID` and `deck overview --plan
+ID`. A Plan Item MUST NOT own code evidence or criterion links; code references
+belong on Tasks. An Item's optional `record` MUST name a Task of this Plan or a
+story of this Saga. The reader shows a named Task's state on the slide.
+
+### Plans and reviews
+
+`plan link-review` records a review in `reviews`. In a review deck, an Item whose
+`record` is a Task's URN says the review delivers that Task, and a callout whose
+`record` is a Task's URN says why the work departed from it. A linked review's
+slide that names no Task of the Plan is listed as not in the Plan. This comparison
+only reports differences. It never blocks a merge, and a person judges whether the
+work matches.
+
+### Delivery
+
+`plan deliver` is explicit; nothing marks a Plan delivered on its own. It is
+refused, naming what is outstanding, until every Task is `done`, at least one
+review is linked, and every linked review exists and has merged. It then sets
+`delivered_at`.
+
+A delivered Plan is hidden by default, as a merged review is: `plan list --all`,
+`plan list --json`, and the reader's delivered filter show it, and it still reads.
+Every edit to it, including its deck, is refused. Further work gets a new Plan.
+
+### Plans and coverage
+
+Plans never count toward coverage. A Plan deck joins no feature, so its slides are
+not design or implementation coverage, and a `done` Task is not delivery evidence.
+Readiness's `plan_coverage` axis counts the criteria whose story a Task names. It
+is planning guidance and never gates peer-review readiness.
+
 ## 10. Reserved names
 
 `___code` is reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
 `___overview`, `___designsystem`, `___personas`, `___featureflags`,
-`___onboarding`, `___features`, `___reviews`, `___claims`, `___verifications`,
-`___merges` and `___whiteboards` are reserved at the saga root.
+`___onboarding`, `___features`, `___reviews`, `___plans`, `___claims`,
+`___verifications`, `___merges` and `___whiteboards` are reserved at the saga root.
 `___requirements`, `___design`,
-`___workplan`, `___slides`, and `___quality` are reserved at a feature root;
+`___slides`, and `___quality` are reserved at a feature root;
 `___slides` contains only real `<deck-id>.deck` directories.
 Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,

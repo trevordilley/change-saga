@@ -60,7 +60,7 @@ var resources = []Resource{
 		Kind: "feature", URN: "urn:change-saga:<saga>:feature:<feature>", Storage: "___features/<feature>.feature/feature.json",
 		Schema: schemaBase + "v5/feature.schema.json", Versions: []int{5}, History: "immutable identity of a durable product domain",
 		Writers: []string{"feature add", "feature rename", "feature remove"},
-		Notes:   "holds the domain's report content, requirements, design, quality, work plan, and implementation deck; no resource URN names its feature, so IDs are unique across the app",
+		Notes:   "holds the domain's report content, requirements, design, quality, and implementation deck; no resource URN names its feature, so IDs are unique across the app",
 	},
 	{
 		Kind: "feature-overview", URN: "urn:change-saga:<saga>:fragment:<id>", Storage: "___features/<feature>.feature/overview.fragment/{fragment.json,content.md}",
@@ -269,11 +269,6 @@ var relations = []Relation{
 		Type: "addresses", Sources: []string{reportDesign, "deck", "slide", item}, Targets: []string{story, criterion}, Scopes: []string{"self", "descendants"},
 		RequiredPins: []string{"from_content_digest", "to_revision"}, Axes: []string{"ux", "technical", "implementation"},
 		Meaning: "counts design coverage; descendants is legal only for a deck or slide source and lets the path reach contained Items and their code references",
-	},
-	{
-		Type: "implements", Sources: []string{"work-item"}, Targets: []string{reportDesign, criterion}, Scopes: []string{"self"},
-		RequiredPins: []string{"from_revision", "to_revision or to_content_digest"}, Axes: []string{},
-		Meaning: "planning path only; progress never proves delivery",
 	},
 	{
 		Type: "explains", Sources: []string{deckSlide, item}, Targets: []string{story, criterion}, Scopes: []string{"self", "descendants"},

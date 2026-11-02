@@ -47,6 +47,11 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "requires target, ref or file", 400)
 		return
 	}
+	// A Plan describes intended work, so nothing in it can be deprecated.
+	if strings.HasPrefix(target, "urn:change-saga:"+manifest.ID+":plan:") {
+		render()
+		return
+	}
 	if target != "" {
 		if _, err := requirements.DeprecationTargetKind(manifest.ID, target); err != nil {
 			http.Error(w, "invalid target", 400)

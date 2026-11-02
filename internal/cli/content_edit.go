@@ -471,7 +471,17 @@ func findAuthoredSlide(document *saga.Saga, review, value string) (deck *saga.De
 			}
 		}
 	}
-	return nil, nil, "", fmt.Errorf("slide %q does not exist; name a review's slide by its URN or with --review", value)
+	for _, found := range document.Plans {
+		if found.Deck == nil {
+			continue
+		}
+		for _, candidate := range found.Deck.Slides {
+			if value == candidate.Target || filepath.Clean(value) == filepath.Clean(candidate.Path) {
+				return found.Deck, candidate, "", nil
+			}
+		}
+	}
+	return nil, nil, "", fmt.Errorf("slide %q does not exist; name a review's or Plan's slide by its URN, or a review's with --review", value)
 }
 
 func slideDeck(document *saga.Saga, slide *saga.Slide) *saga.Deck {

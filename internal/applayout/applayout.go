@@ -17,7 +17,7 @@
 //	  ___featureflags/    flags and the features and stories each one gates
 //	  ___features/<id>.feature/
 //	    feature.json
-//	    <report content, ___requirements, ___design, ___slides, ___quality, ___workplan>
+//	    <report content, ___requirements, ___design, ___slides, ___quality>
 //
 // Resource identity is independent of feature membership: a story, test case, or
 // deck URN never names its feature. Loaders therefore read every feature into one
@@ -82,7 +82,6 @@ const (
 	DesignDir       = "___design"
 	SlidesDir       = "___slides"
 	QualityDir      = "___quality"
-	WorkplanDir     = "___workplan"
 )
 
 // AppRootDirs are the reserved directories allowed directly beneath an app
@@ -90,7 +89,7 @@ const (
 var AppRootDirs = []string{LabelsDir, MilestonesDir, FeatureThemesDir, OverviewDir, PersonasDir, DesignSystemDir, OnboardingDir, FeatureFlagsDir, FeaturesDir, "___inventory", "___deprecations", WhiteboardsDir}
 
 // FeatureRootDirs are the reserved directories allowed directly beneath a feature.
-var FeatureRootDirs = []string{RequirementsDir, DesignDir, SlidesDir, QualityDir, WorkplanDir}
+var FeatureRootDirs = []string{RequirementsDir, DesignDir, SlidesDir, QualityDir}
 
 var (
 	stableID          = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$`)

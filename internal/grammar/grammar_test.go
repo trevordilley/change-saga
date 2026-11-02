@@ -50,7 +50,7 @@ func TestEveryResourceWriterIsADeclaredCommand(t *testing.T) {
 }
 
 func TestRelationMatrixCoversEveryPersistedRelationType(t *testing.T) {
-	want := []string{"addresses", "conflicts_with", "explains", "implements", "refines", "supersedes", "verifies"}
+	want := []string{"addresses", "conflicts_with", "explains", "refines", "supersedes", "verifies"}
 	got := []string{}
 	for _, relation := range Relations() {
 		got = append(got, relation.Type)

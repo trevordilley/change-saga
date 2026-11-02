@@ -15,16 +15,12 @@ const prefix = "urn:change-saga:"
 type Kind string
 
 const (
-	KindStory      Kind = "story"
-	KindCriterion  Kind = "criterion"
-	KindRevision   Kind = "revision"
-	KindCitation   Kind = "citation"
-	KindRelation   Kind = "relation"
-	KindDesign     Kind = "design"
-	KindWave       Kind = "wave"
-	KindWorkItem   Kind = "work-item"
-	KindDependency Kind = "dependency"
-	KindContract   Kind = "contract"
+	KindStory     Kind = "story"
+	KindCriterion Kind = "criterion"
+	KindRevision  Kind = "revision"
+	KindCitation  Kind = "citation"
+	KindRelation  Kind = "relation"
+	KindDesign    Kind = "design"
 )
 
 // DesignKind is the existing addressable package kind reused beneath the v3
@@ -70,7 +66,7 @@ func Build(reference Reference) (string, error) {
 
 	base := prefix + reference.SagaID + ":"
 	switch reference.Kind {
-	case KindStory, KindCitation, KindRelation, KindWave, KindWorkItem, KindDependency, KindContract:
+	case KindStory, KindCitation, KindRelation:
 		if reference.ParentID != "" || reference.ParentKind != "" || reference.DesignKind != "" {
 			return "", fmt.Errorf("%s reference cannot have a parent or design kind", reference.Kind)
 		}
@@ -88,8 +84,8 @@ func Build(reference Reference) (string, error) {
 		if parentKind == "" {
 			parentKind = KindStory
 		}
-		if parentKind != KindStory && parentKind != KindWave && parentKind != KindWorkItem && parentKind != KindContract {
-			return "", fmt.Errorf("revision parent kind must be story, wave, work-item, or contract")
+		if parentKind != KindStory {
+			return "", fmt.Errorf("revision parent kind must be story")
 		}
 		if err := validateID(string(parentKind), reference.ParentID); err != nil {
 			return "", err
@@ -156,14 +152,6 @@ func parseTopLevel(parts []string) Reference {
 		reference.Kind = KindCitation
 	case string(KindRelation):
 		reference.Kind = KindRelation
-	case string(KindWave):
-		reference.Kind = KindWave
-	case string(KindWorkItem):
-		reference.Kind = KindWorkItem
-	case string(KindDependency):
-		reference.Kind = KindDependency
-	case string(KindContract):
-		reference.Kind = KindContract
 	case string(DesignChapter):
 		reference.Kind, reference.DesignKind = KindDesign, DesignChapter
 	case string(DesignSection):
@@ -213,8 +201,7 @@ func Revision(sagaID, storyID, revisionID string) (string, error) {
 	return Build(Reference{SagaID: sagaID, Kind: KindRevision, ParentID: storyID, ID: revisionID})
 }
 
-// DefinitionRevision builds a stable revision URN for a story, wave,
-// work-item, or contract definition.
+// DefinitionRevision builds a stable revision URN for a story definition.
 func DefinitionRevision(sagaID string, parentKind Kind, parentID, revisionID string) (string, error) {
 	return Build(Reference{SagaID: sagaID, Kind: KindRevision, ParentKind: parentKind, ParentID: parentID, ID: revisionID})
 }
@@ -238,24 +225,4 @@ func Design(sagaID string, kind DesignKind, designID string) (string, error) {
 // Landmark builds a stable landmark design target within a fragment.
 func Landmark(sagaID, fragmentID, landmarkID string) (string, error) {
 	return Build(Reference{SagaID: sagaID, Kind: KindDesign, ID: landmarkID, ParentID: fragmentID, DesignKind: DesignLandmark})
-}
-
-// Wave builds a stable wave URN.
-func Wave(sagaID, waveID string) (string, error) {
-	return Build(Reference{SagaID: sagaID, Kind: KindWave, ID: waveID})
-}
-
-// WorkItem builds a stable work-item URN.
-func WorkItem(sagaID, itemID string) (string, error) {
-	return Build(Reference{SagaID: sagaID, Kind: KindWorkItem, ID: itemID})
-}
-
-// Dependency builds a stable dependency URN.
-func Dependency(sagaID, dependencyID string) (string, error) {
-	return Build(Reference{SagaID: sagaID, Kind: KindDependency, ID: dependencyID})
-}
-
-// Contract builds a stable contract URN.
-func Contract(sagaID, contractID string) (string, error) {
-	return Build(Reference{SagaID: sagaID, Kind: KindContract, ID: contractID})
 }

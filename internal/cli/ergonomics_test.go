@@ -254,7 +254,7 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 		"Product:", "prototype", "user stories",
 		"Design:", "UX, UI, and technical design",
 		"Quality:", "test cases",
-		"dependency-aware waves",
+		"lay out larger work before it is built",
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("top-level help omitted workflow guidance %q:\n%s", want, text)
@@ -297,16 +297,16 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			_ = Criterion(context.Background(), []string{"add", "-h"}, &output)
 			return output.String()
 		}, want: []string{"independent pass/fail criterion", "narrowest", "confirmed intent"}},
-		{name: "plan add-wave", run: func() string {
+		{name: "plan create", run: func() string {
 			var output bytes.Buffer
-			_ = Plan(context.Background(), []string{"add-wave", "-h"}, &output)
+			_ = Plan(context.Background(), []string{"create", "-h"}, &output)
 			return output.String()
-		}, want: []string{"parallel workspace lanes", "converge", "not dependency"}},
-		{name: "plan add-item", run: func() string {
+		}, want: []string{"one body of work", "technical design"}},
+		{name: "task add", run: func() string {
 			var output bytes.Buffer
-			_ = Plan(context.Background(), []string{"add-item", "-h"}, &output)
+			_ = Task(context.Background(), []string{"add", "-h"}, &output)
 			return output.String()
-		}, want: []string{"independently assignable", "parallel work"}},
+		}, want: []string{"must name a user story", "unblock"}},
 	}
 	for _, check := range checks {
 		t.Run(check.name, func(t *testing.T) {
