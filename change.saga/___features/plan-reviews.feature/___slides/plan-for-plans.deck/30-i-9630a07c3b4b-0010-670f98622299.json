@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "g-r",
+  "slide": "plan-said-did",
+  "rank": 10,
+  "kind": "region",
+  "label": "What we did",
+  "description": "The delivering Reviews' slides, whose Items can name a Plan slide using the existing record field.",
+  "selector": {
+    "type": "element",
+    "element_id": "g-r"
+  }
+}

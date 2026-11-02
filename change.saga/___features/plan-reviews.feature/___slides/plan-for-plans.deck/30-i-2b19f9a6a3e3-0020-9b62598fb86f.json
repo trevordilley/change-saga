@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "review",
+  "slide": "plan-in-the-chain",
+  "rank": 20,
+  "kind": "node",
+  "label": "The Review",
+  "description": "Unchanged: it still explains the pull request and accounts for every changed line.",
+  "selector": {
+    "type": "element",
+    "element_id": "review"
+  }
+}

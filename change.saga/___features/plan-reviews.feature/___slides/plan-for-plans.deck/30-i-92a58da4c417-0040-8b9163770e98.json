@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "storylink",
+  "slide": "plan-data-model",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Link stories, not the feature",
+  "description": "You would expect a Plan to name its feature. feature deliver deletes the Roadmap feature and keeps story URNs, so a Plan links stories, whose identity survives; the feature is reached through them.",
+  "selector": {
+    "type": "element",
+    "element_id": "rel"
+  },
+  "about": "rel",
+  "body": "You would expect a Plan to name its feature. feature deliver deletes the Roadmap feature and keeps story URNs, so a Plan links stories, whose identity survives; the feature is reached through them."
+}

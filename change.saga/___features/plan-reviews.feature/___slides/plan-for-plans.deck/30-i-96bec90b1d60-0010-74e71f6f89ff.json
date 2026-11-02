@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "shared-col",
+  "slide": "plan-what-is",
+  "rank": 10,
+  "kind": "region",
+  "label": "What a Plan reuses",
+  "description": "The deck, per-slide decisions, comments, and the reading surface that reviews already have.",
+  "selector": {
+    "type": "element",
+    "element_id": "shared-col"
+  }
+}

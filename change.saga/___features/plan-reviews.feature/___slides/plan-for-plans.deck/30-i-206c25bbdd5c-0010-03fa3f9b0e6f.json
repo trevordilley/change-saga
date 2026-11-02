@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "rev",
+  "slide": "plan-trial-findings",
+  "rank": 10,
+  "kind": "region",
+  "label": "Review: the closest",
+  "description": "Working per-slide decisions and comments on a branch with no code, which is the strongest evidence for treating a Plan as a kind of review.",
+  "selector": {
+    "type": "element",
+    "element_id": "rev"
+  }
+}

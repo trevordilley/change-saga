@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ship",
+  "slide": "plan-lifecycle",
+  "rank": 10,
+  "kind": "node",
+  "label": "Shipped",
+  "description": "Frozen and kept, as the said half of the comparison with its Reviews.",
+  "selector": {
+    "type": "element",
+    "element_id": "ship"
+  }
+}

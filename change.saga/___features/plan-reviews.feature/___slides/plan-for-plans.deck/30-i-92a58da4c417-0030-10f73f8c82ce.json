@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "deckrec",
+  "slide": "plan-data-model",
+  "rank": 30,
+  "kind": "node",
+  "label": "Same deck bundle",
+  "description": "Slides, Items and the Overview essay use the existing flat deck records.",
+  "selector": {
+    "type": "element",
+    "element_id": "deckrec"
+  }
+}

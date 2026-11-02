@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "g-risk",
+  "slide": "plan-risks-questions",
+  "rank": 0,
+  "kind": "region",
+  "label": "Risks",
+  "description": "What could go wrong, and how the design limits each.",
+  "selector": {
+    "type": "element",
+    "element_id": "g-risk"
+  }
+}

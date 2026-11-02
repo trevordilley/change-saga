@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "plan",
+  "slide": "plan-in-the-chain",
+  "rank": 0,
+  "kind": "node",
+  "label": "The Plan",
+  "description": "The new record: a reviewable account of how a feature will be built, placed before the code it describes.",
+  "selector": {
+    "type": "element",
+    "element_id": "plan"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "front": [
+    "Decisions already record a digest of the slide they judged.",
+    "Edit a slide and only its decisions go out of date.",
+    "The tool never says a Plan as a whole is approved."
+  ],
+  "version": 4,
+  "id": "plan-decisions",
+  "deck": "plan-for-plans",
+  "title": "A decision on a Plan goes stale when its slide changes",
+  "rank": 80,
+  "section": "The design",
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-07c1e29cb113-0080-bbe7c10e925d.svg",
+  "takeaway": "The currency check already compares a slide digest. A Plan only has to give it a head with no base, because its slides usually cite no code.",
+  "reading_order": [
+    "dec",
+    "q",
+    "g-code",
+    "verdict"
+  ]
+}

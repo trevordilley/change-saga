@@ -1,0 +1,24 @@
+{
+  "front": [
+    "Stories say what; Reviews explain what changed.",
+    "Nothing today carries a reviewable how before code.",
+    "The Review closes the loop by comparing with the Plan."
+  ],
+  "version": 4,
+  "id": "plan-in-the-chain",
+  "deck": "plan-for-plans",
+  "title": "A Plan sits between the stories and the code",
+  "rank": 20,
+  "section": "The idea",
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-07c1e29cb113-0020-2b19f9a6a3e3.svg",
+  "takeaway": "Stories say what a person needs and a Review explains what changed. A Plan fills the gap between them: a reviewable account of the approach before code exists.",
+  "reading_order": [
+    "plan",
+    "cmp",
+    "review",
+    "impl"
+  ]
+}

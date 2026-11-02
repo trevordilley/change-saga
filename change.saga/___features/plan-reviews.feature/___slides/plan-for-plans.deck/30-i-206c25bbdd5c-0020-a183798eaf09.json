@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "chg",
+  "slide": "plan-trial-findings",
+  "rank": 20,
+  "kind": "region",
+  "label": "Implementation deck: refused",
+  "description": "Complete-slide publishing refuses an Item with no exact code evidence, and the Technical section promises current code.",
+  "selector": {
+    "type": "element",
+    "element_id": "chg"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "front": [
+    "A Plan is authored and discussed with existing review commands.",
+    "New: --kind plan, relation type plans, --delivers, review close.",
+    "Proposed; none of the highlighted lines run today."
+  ],
+  "version": 4,
+  "id": "plan-cli",
+  "deck": "plan-for-plans",
+  "title": "Four additions; the rest of the grammar already exists",
+  "rank": 60,
+  "section": "The design",
+  "intent": "explain",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-07c1e29cb113-0060-b5dd39a1fe88.svg",
+  "takeaway": "Plans reuse the review verbs. Only the highlighted lines are new, and none of this runs today: this is a proposed grammar.",
+  "reading_order": [
+    "cli",
+    "noun"
+  ]
+}

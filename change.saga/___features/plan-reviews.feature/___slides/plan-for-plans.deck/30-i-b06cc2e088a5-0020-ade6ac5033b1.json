@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "optc",
+  "slide": "plan-storage-decision",
+  "rank": 20,
+  "kind": "region",
+  "label": "Rejected: one slice",
+  "description": "Cheapest at first, but every existing use of document.Reviews would have to remember to filter Plans out.",
+  "selector": {
+    "type": "element",
+    "element_id": "optc"
+  }
+}

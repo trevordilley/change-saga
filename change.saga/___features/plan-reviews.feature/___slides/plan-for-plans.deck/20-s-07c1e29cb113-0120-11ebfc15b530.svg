@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">What could go wrong, and what we still have to decide</title>
+  <desc id="diagram-desc">The largest risks are Plans leaking into pull-request code paths and Plans nobody closes. Five questions need a product decision before phase 1.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-on-accent:#ffffff;--diagram-pink-accent:#be185d;--diagram-pink-tint:#ffe8f0;--diagram-title-ink:#172033;--diagram-yellow-accent:#a16207;--diagram-yellow-ink:#3f2d00;--diagram-yellow-tint:#fff8d6;}@media (prefers-color-scheme:dark){:root{--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-on-accent:#0d1117;--diagram-pink-accent:#f778ba;--diagram-pink-tint:#2f1420;--diagram-title-ink:#e6edf3;--diagram-yellow-accent:#e3b341;--diagram-yellow-ink:#fff5b1;--diagram-yellow-tint:#2b2508;}}</style>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 24)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">What could go wrong, and what we still have to decide</tspan></text>
+  </g>
+  <g id="g-risk" data-diagram-kind="group" transform="translate(40 90)" role="group" aria-label="Risks and what limits them">
+    <title>Risks and what limits them</title>
+    <rect width="590" height="500" rx="10" fill="#ffe8f0" stroke="#be185d" stroke-width="1" style="fill:var(--diagram-pink-tint,#ffe8f0);stroke:var(--diagram-pink-accent,#be185d)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H238.136A10 10 0 0 1 248.136 10V34.5Z" fill="#be185d" style="fill:var(--diagram-pink-accent,#be185d)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Risks and what limits them</tspan></text>
+    <g id="risk0" data-diagram-kind="node" transform="translate(14 44)" role="group" aria-label="A Plan leaks into pull-request code">
+      <rect width="562" height="85" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">A Plan leaks into pull-request code</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">A separate slice means code must opt in to seeing one.</tspan></text>
+    </g>
+    <g id="risk1" data-diagram-kind="node" transform="translate(14 132)" role="group" aria-label="Plans nobody closes">
+      <rect width="562" height="85" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">Plans nobody closes</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">status can list open Plans whose stories are all built, as a report.</tspan></text>
+    </g>
+    <g id="risk2" data-diagram-kind="node" transform="translate(14 220)" role="group" aria-label="More process for its own sake">
+      <rect width="562" height="85" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">More process for its own sake</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">Optional and report-only: no check requires a Plan.</tspan></text>
+    </g>
+    <g id="risk3" data-diagram-kind="node" transform="translate(14 308)" role="group" aria-label="Older strict readers refuse a Saga">
+      <rect width="562" height="85" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">Older strict readers refuse a Saga</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">As with every additive field, upgrade readers before writing one.</tspan></text>
+    </g>
+    <g id="risk4" data-diagram-kind="node" transform="translate(14 396)" role="group" aria-label="A Plan that drifts from reality">
+      <rect width="562" height="85" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">A Plan that drifts from reality</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">The comparison is explicit, and a Plan never reads as current.</tspan></text>
+    </g>
+  </g>
+  <g id="g-q" data-diagram-kind="group" transform="translate(650 90)" role="group" aria-label="Decisions needed">
+    <title>Decisions needed</title>
+    <rect width="590" height="500" rx="10" fill="#fff8d6" stroke="#a16207" stroke-width="1" style="fill:var(--diagram-yellow-tint,#fff8d6);stroke:var(--diagram-yellow-accent,#a16207)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H163.776A10 10 0 0 1 173.776 10V34.5Z" fill="#a16207" style="fill:var(--diagram-yellow-accent,#a16207)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Decisions needed</tspan></text>
+    <g id="q0" data-diagram-kind="node" transform="translate(14 44)" role="group" aria-label="Is it called a Plan?">
+      <rect width="562" height="85" rx="8" fill="#fff8d6" stroke="#a16207" stroke-width="2" style="fill:var(--diagram-yellow-tint,#fff8d6);stroke:var(--diagram-yellow-accent,#a16207)"/>
+      <text x="18" y="35" font-size="17" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="35">Is it called a Plan?</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="73">change-saga plan and plan.json already mean something else.</tspan></text>
+    </g>
+    <g id="q1" data-diagram-kind="node" transform="translate(14 132)" role="group" aria-label="Own feature, or part of Rich visual review?">
+      <rect width="562" height="85" rx="8" fill="#fff8d6" stroke="#a16207" stroke-width="2" style="fill:var(--diagram-yellow-tint,#fff8d6);stroke:var(--diagram-yellow-accent,#a16207)"/>
+      <text x="18" y="35" font-size="17" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="35">Own feature, or part of Rich visual review?</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="73">This Roadmap entry assumes it augments reviews.</tspan></text>
+    </g>
+    <g id="q2" data-diagram-kind="node" transform="translate(14 220)" role="group" aria-label="One Plan to how many Reviews?">
+      <rect width="562" height="85" rx="8" fill="#fff8d6" stroke="#a16207" stroke-width="2" style="fill:var(--diagram-yellow-tint,#fff8d6);stroke:var(--diagram-yellow-accent,#a16207)"/>
+      <text x="18" y="35" font-size="17" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="35">One Plan to how many Reviews?</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="73">Recommended: several, as phases need it.</tspan></text>
+    </g>
+    <g id="q3" data-diagram-kind="node" transform="translate(14 308)" role="group" aria-label="What counts as agreed?">
+      <rect width="562" height="85" rx="8" fill="#fff8d6" stroke="#a16207" stroke-width="2" style="fill:var(--diagram-yellow-tint,#fff8d6);stroke:var(--diagram-yellow-accent,#a16207)"/>
+      <text x="18" y="35" font-size="17" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="35">What counts as agreed?</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="73">Recommended: per-slide decisions, with the rule left to teams.</tspan></text>
+    </g>
+    <g id="q4" data-diagram-kind="node" transform="translate(14 396)" role="group" aria-label="Keep or delete a closed Plan?">
+      <rect width="562" height="85" rx="8" fill="#fff8d6" stroke="#a16207" stroke-width="2" style="fill:var(--diagram-yellow-tint,#fff8d6);stroke:var(--diagram-yellow-accent,#a16207)"/>
+      <text x="18" y="35" font-size="17" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="35">Keep or delete a closed Plan?</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="73">Recommended: keep shipped; keep abandoned with a reason.</tspan></text>
+    </g>
+  </g>
+  <g id="foot" data-diagram-kind="text" transform="translate(40 604)" role="group" aria-label="Nothing here is decided or built. Stories stay proposed until these are answered.">
+    <text x="600" y="18" font-size="18" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-title-ink,#172033)"><tspan x="600" y="18">Nothing here is decided or built. Stories stay proposed until these are answered.</tspan></text>
+  </g>
+</svg>

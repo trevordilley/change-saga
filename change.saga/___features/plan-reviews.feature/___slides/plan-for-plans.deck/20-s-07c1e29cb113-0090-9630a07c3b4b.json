@@ -1,0 +1,25 @@
+{
+  "front": [
+    "Review Items name the Plan slide they deliver.",
+    "The report lists unaccounted and unplanned slides.",
+    "It reports and never blocks a merge."
+  ],
+  "version": 4,
+  "id": "plan-said-did",
+  "deck": "plan-for-plans",
+  "title": "A Review accounts for its Plan the way it accounts for lines",
+  "rank": 90,
+  "section": "The design",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-07c1e29cb113-0090-9630a07c3b4b.svg",
+  "takeaway": "A review Item can already name a record to open beside the change. Pointing Items at Plan slides yields a report of what was skipped, what was unplanned, and why.",
+  "reading_order": [
+    "g-p",
+    "g-r",
+    "g-rep",
+    "m3",
+    "notsem"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "rel",
+  "slide": "plan-data-model",
+  "rank": 10,
+  "kind": "node",
+  "label": "The plans relation",
+  "description": "A new relation type pins each story's revision, so reworded stories show as stale through the relation machinery that already exists.",
+  "selector": {
+    "type": "element",
+    "element_id": "rel"
+  }
+}

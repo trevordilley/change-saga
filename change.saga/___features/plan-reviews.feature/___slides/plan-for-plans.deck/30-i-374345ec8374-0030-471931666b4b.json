@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ph4",
+  "slide": "plan-phases",
+  "rank": 30,
+  "kind": "region",
+  "label": "Phase 4: close and teach",
+  "description": "Closing, delivery behaviour, and the documentation and skill.",
+  "selector": {
+    "type": "element",
+    "element_id": "ph4"
+  }
+}

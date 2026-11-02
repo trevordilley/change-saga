@@ -1,0 +1,23 @@
+{
+  "front": [
+    "A Plan is a slide deck plus an essay written before the code exists.",
+    "It is discussed slide by slide, like a review deck.",
+    "It owes no code coverage and claims none."
+  ],
+  "version": 4,
+  "id": "plan-what-is",
+  "deck": "plan-for-plans",
+  "title": "A Plan is what you will do; a Review is what you did",
+  "rank": 10,
+  "section": "The idea",
+  "intent": "orient",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-07c1e29cb113-0010-96bec90b1d60.svg",
+  "takeaway": "A Plan and a Review share a deck, its decisions and its comments. A Plan explains intent before code exists; a Review explains a diff after.",
+  "reading_order": [
+    "plan-col",
+    "shared-col",
+    "review-col"
+  ]
+}

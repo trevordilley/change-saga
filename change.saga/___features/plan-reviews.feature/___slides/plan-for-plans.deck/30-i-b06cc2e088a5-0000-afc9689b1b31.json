@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "opta",
+  "slide": "plan-storage-decision",
+  "rank": 0,
+  "kind": "region",
+  "label": "Recommended: kind field, own slice",
+  "description": "Stored as a review with a kind, loaded into a separate slice.",
+  "selector": {
+    "type": "element",
+    "element_id": "opta"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "g-code",
+  "slide": "plan-decisions",
+  "rank": 20,
+  "kind": "region",
+  "label": "The code change",
+  "description": "Range resolution loses its base requirement for a Plan; freeze checks extend to closed Plans.",
+  "selector": {
+    "type": "element",
+    "element_id": "g-code"
+  }
+}

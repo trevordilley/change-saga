@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "review-col",
+  "slide": "plan-what-is",
+  "rank": 20,
+  "kind": "region",
+  "label": "What a Review keeps",
+  "description": "A pull request range, coverage of every changed line, and a freeze at merge. None of it changes.",
+  "selector": {
+    "type": "element",
+    "element_id": "review-col"
+  }
+}

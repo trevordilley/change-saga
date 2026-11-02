@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "drop",
+  "slide": "plan-reader",
+  "rank": 10,
+  "kind": "region",
+  "label": "Surfaces with no diff to read",
+  "description": "Coverage, Item diffs, code, file diffs and line threads all read a pull request range, which a Plan has none of.",
+  "selector": {
+    "type": "element",
+    "element_id": "drop"
+  }
+}

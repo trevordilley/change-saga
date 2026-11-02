@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "drop2",
+  "slide": "plan-lifecycle",
+  "rank": 20,
+  "kind": "node",
+  "label": "Abandoned",
+  "description": "Frozen with its reason. Whether it should instead be deleted is an open question.",
+  "selector": {
+    "type": "element",
+    "element_id": "drop2"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "notsem",
+  "slide": "plan-said-did",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Coverage, not proof",
+  "description": "You would expect this to tell you the work matches the Plan. It cannot: it shows what each author chose to link, as line coverage shows what was linked. A person still judges whether a slide was really delivered.",
+  "selector": {
+    "type": "element",
+    "element_id": "g-rep"
+  },
+  "about": "g-rep",
+  "body": "You would expect this to tell you the work matches the Plan. It cannot: it shows what each author chose to link, as line coverage shows what was linked. A person still judges whether a slide was really delivered."
+}

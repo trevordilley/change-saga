@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">A Plan sits between the stories and the code</title>
+  <desc id="diagram-desc">Stories say what a person needs and a Review explains what changed. A Plan fills the gap between them: a reviewable account of the approach before code exists.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-ink:#172554;--diagram-blue-sticky:#c7defe;--diagram-blue-tint:#e8f1ff;--diagram-gray-accent:#475569;--diagram-gray-ink:#0f172a;--diagram-gray-sticky:#e2e8f0;--diagram-gray-tint:#f1f5f9;--diagram-green-accent:#15803d;--diagram-green-ink:#052e16;--diagram-green-sticky:#c6efcf;--diagram-green-tint:#e7f8eb;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-on-accent:#ffffff;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-shadow:#0f172a;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-ink:#cae8ff;--diagram-blue-sticky:#15315e;--diagram-blue-tint:#121d2f;--diagram-gray-accent:#9198a1;--diagram-gray-ink:#e6edf3;--diagram-gray-sticky:#2d333b;--diagram-gray-tint:#1c2128;--diagram-green-accent:#56d364;--diagram-green-ink:#d2f8d9;--diagram-green-sticky:#16402a;--diagram-green-tint:#12261e;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-on-accent:#0d1117;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-shadow:#010409;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-e1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-e2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-e3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-e4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-cmp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <filter id="diagram-shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2" style="flood-color:var(--diagram-shadow,#0f172a)"/>
+    </filter>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 24)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">A Plan sits between the stories and the code</tspan></text>
+  </g>
+  <g id="g-intent" data-diagram-kind="group" transform="translate(40 120)" role="group" aria-label="Intent (exists)">
+    <title>Intent (exists)</title>
+    <rect width="220" height="220" rx="10" fill="#f1f5f9" stroke="#475569" stroke-width="1" style="fill:var(--diagram-gray-tint,#f1f5f9);stroke:var(--diagram-gray-accent,#475569)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H129.408A10 10 0 0 1 139.408 10V34.5Z" fill="#475569" style="fill:var(--diagram-gray-accent,#475569)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Intent (exists)</tspan></text>
+    <g id="story" data-diagram-kind="node" transform="translate(10 60)" role="group" aria-label="Stories and criteria">
+      <rect width="200" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">Stories and criteria</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">What should a person</tspan><tspan x="18" y="91.75">be able to do?</tspan></text>
+    </g>
+  </g>
+  <g id="g-plan" data-diagram-kind="group" transform="translate(280 120)" role="group" aria-label="Proposed (planned)">
+    <title>Proposed (planned)</title>
+    <rect width="240" height="220" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="1" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H179.344A10 10 0 0 1 189.344 10V34.5Z" fill="#1d4ed8" style="fill:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Proposed (planned)</tspan></text>
+    <g id="plan" data-diagram-kind="node" transform="translate(20 60)" role="group" aria-label="Plan">
+      <rect width="200" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="3" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+      <text x="18" y="40" font-size="22" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="40">Plan</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="73">How will we build it,</tspan><tspan x="18" y="91.75">and do we agree?</tspan></text>
+    </g>
+  </g>
+  <g id="g-del" data-diagram-kind="group" transform="translate(540 120)" role="group" aria-label="Delivery (exists)">
+    <title>Delivery (exists)</title>
+    <rect width="470" height="220" rx="10" fill="#e7f8eb" stroke="#15803d" stroke-width="1" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H149.021A10 10 0 0 1 159.021 10V34.5Z" fill="#15803d" style="fill:var(--diagram-green-accent,#15803d)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Delivery (exists)</tspan></text>
+    <g id="code" data-diagram-kind="node" transform="translate(20 60)" role="group" aria-label="Code">
+      <rect width="130" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">Code</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">By a person</tspan><tspan x="18" y="91.75">or an agent</tspan></text>
+    </g>
+    <g id="review" data-diagram-kind="node" transform="translate(170 60)" role="group" aria-label="Review">
+      <rect width="280" height="110" rx="8" fill="#e7f8eb" stroke="#15803d" stroke-width="2" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
+      <text x="18" y="35" font-size="17" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="18" y="35">Review</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="18" y="73">What did this pull request do, and</tspan><tspan x="18" y="91.75">is every changed line explained?</tspan></text>
+    </g>
+  </g>
+  <g id="g-cur" data-diagram-kind="group" transform="translate(1025 120)" role="group" aria-label="Current (exists)">
+    <title>Current (exists)</title>
+    <rect width="225" height="220" rx="10" fill="#f1f5f9" stroke="#475569" stroke-width="1" style="fill:var(--diagram-gray-tint,#f1f5f9);stroke:var(--diagram-gray-accent,#475569)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H142.635A10 10 0 0 1 152.635 10V34.5Z" fill="#475569" style="fill:var(--diagram-gray-accent,#475569)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Current (exists)</tspan></text>
+    <g id="impl" data-diagram-kind="node" transform="translate(5 60)" role="group" aria-label="Implementation deck">
+      <rect width="215" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">Implementation deck</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">How does it work now?</tspan></text>
+    </g>
+  </g>
+  <g id="e1" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="plan to story" data-from="plan" data-to="story">
+    <path d="M300 235 L240 235" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-e1)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="e2" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="plan to code" data-from="plan" data-to="code">
+    <path d="M500 235 L560 235" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-e2)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="e3" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="code to review" data-from="code" data-to="review">
+    <path d="M690 235 L710 235" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-e3)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="e4" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review to impl" data-from="review" data-to="impl">
+    <path d="M990 235 L1045 235" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-e4)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="cmp" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="compare: what we said with what we did" data-from="review" data-to="plan">
+    <path d="M845 290 L845 395 L400 395 L400 290" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#diagram-head-cmp)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="445" y="380" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="445" y="380">compare: what we said with what we did</tspan></text>
+  </g>
+  <g id="names" data-diagram-kind="text" transform="translate(60 355)" role="group" aria-label="Names the stories it intends to deliver">
+    <text x="0" y="16" font-size="16" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="0" y="16">Names the stories it intends</tspan><tspan x="0" y="36">to deliver</tspan></text>
+  </g>
+  <g id="here" data-diagram-kind="sticky" transform="translate(290 430)" role="group" aria-label="The approach is discussed here, slide by slide, before anyone builds it. An architect proposes; developers and product managers question it." data-about="plan">
+    <rect width="330" height="210" rx="3" fill="#c7defe" filter="url(#diagram-shadow)" style="fill:var(--diagram-blue-sticky,#c7defe)"/>
+    <text x="16" y="38" font-size="22" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="16" y="38">The approach is discussed</tspan><tspan x="16" y="65.5">here, slide by slide, before</tspan><tspan x="16" y="93">anyone builds it. An architect</tspan><tspan x="16" y="120.5">proposes; developers and</tspan><tspan x="16" y="148">product managers question</tspan><tspan x="16" y="175.5">it.</tspan></text>
+  </g>
+  <g id="today" data-diagram-kind="sticky" transform="translate(650 430)" role="group" aria-label="Today the first structured discussion of an approach starts here, when the code is already written." data-about="review">
+    <rect width="260" height="210" rx="3" fill="#c6efcf" filter="url(#diagram-shadow)" style="fill:var(--diagram-green-sticky,#c6efcf)"/>
+    <text x="16" y="38" font-size="22" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="16" y="38">Today the first</tspan><tspan x="16" y="65.5">structured discussion</tspan><tspan x="16" y="93">of an approach starts</tspan><tspan x="16" y="120.5">here, when the code</tspan><tspan x="16" y="148">is already written.</tspan></text>
+  </g>
+  <g id="notdoc" data-diagram-kind="sticky" transform="translate(960 430)" role="group" aria-label="A Plan never becomes living documentation. Implementation decks say what is; a Plan says what was intended." data-about="impl">
+    <rect width="280" height="210" rx="3" fill="#e2e8f0" filter="url(#diagram-shadow)" style="fill:var(--diagram-gray-sticky,#e2e8f0)"/>
+    <text x="16" y="38" font-size="22" fill="#0f172a" xml:space="preserve" style="fill:var(--diagram-gray-ink,#0f172a)"><tspan x="16" y="38">A Plan never becomes</tspan><tspan x="16" y="65.5">living documentation.</tspan><tspan x="16" y="93">Implementation decks</tspan><tspan x="16" y="120.5">say what is; a Plan says</tspan><tspan x="16" y="148">what was intended.</tspan></text>
+  </g>
+  <g id="wp" data-diagram-kind="text" transform="translate(40 470)" role="group" aria-label="The work plan (change-saga plan) still divides the work into waves after a Plan is agreed. A Plan does not replace it.">
+    <text x="0" y="16" font-size="16" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="0" y="16">The work plan (change-saga</tspan><tspan x="0" y="36">plan) still divides the work into</tspan><tspan x="0" y="56">waves after a Plan is agreed.</tspan><tspan x="0" y="76">A Plan does not replace it.</tspan></text>
+  </g>
+</svg>

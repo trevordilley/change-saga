@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "add",
+  "slide": "plan-reader",
+  "rank": 20,
+  "kind": "region",
+  "label": "New reader work",
+  "description": "A banner, listing beside Reviews, and links from features, stories, and delivering Reviews.",
+  "selector": {
+    "type": "element",
+    "element_id": "add"
+  }
+}

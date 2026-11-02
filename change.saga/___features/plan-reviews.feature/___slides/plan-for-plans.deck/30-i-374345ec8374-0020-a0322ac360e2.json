@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ph3",
+  "slide": "plan-phases",
+  "rank": 20,
+  "kind": "region",
+  "label": "Phase 3: connect it",
+  "description": "Links to stories and delivering Reviews, and the comparison report.",
+  "selector": {
+    "type": "element",
+    "element_id": "ph3"
+  }
+}
