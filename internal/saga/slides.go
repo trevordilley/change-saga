@@ -644,7 +644,18 @@ var RecordReferenceKinds = []string{"persona", "feature", "story"}
 var ReviewRecordReferenceKinds = []string{"persona", "feature", "story", "test-case", "deck", "slide", "chapter", "section", "fragment"}
 
 func validReviewRecordReference(sagaID, value string) bool {
-	return validRecordOfKinds(sagaID, value, ReviewRecordReferenceKinds)
+	return validRecordOfKinds(sagaID, value, ReviewRecordReferenceKinds) || validTaskReference(sagaID, value)
+}
+
+// validTaskReference reports whether value names a Task of a Plan. A review Item
+// naming one says the review delivers it, which is what compares the two.
+func validTaskReference(sagaID, value string) bool {
+	planID := PlanIDOf(value)
+	if planID == "" {
+		return false
+	}
+	id, found := strings.CutPrefix(value, PlanTarget(sagaID, planID)+":task:")
+	return found && ValidID(id)
 }
 
 func validRecordReference(sagaID, value string) bool {

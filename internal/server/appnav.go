@@ -71,6 +71,8 @@ type appNavSources struct {
 	// reviewSide says the page is on the Review side of the header, which
 	// lists the reviews where Documentation lists the features.
 	reviewSide bool
+	// planSide says the page is on the Plans side, which lists the Plans.
+	planSide bool
 	// mergedReviews names the reviews whose change has merged, which the
 	// sidebar sets aside as the Reviews page does.
 	mergedReviews map[string]bool
@@ -129,14 +131,16 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	// Both sides remain in the persistent shell; navigation state hides the
 	// other side's rows when the reader switches tabs.
 	features, reviews := makeFeaturesNav(sources, deckRows), makeReviewsNav(document, sources.mergedReviews)
+	plans := makePlansNav(document)
 	roadmap := makeFeatureCollectionNav(sources, deckRows, true)
-	if sources.reviewSide {
-		roadmap.Hidden, roadmap.dormant = true, true
-		clearActiveNav(roadmap.Children)
+	documentationSide := !sources.reviewSide && !sources.planSide
+	dormant := func(section *navNodeView) {
+		section.Hidden, section.dormant = true, true
+		clearActiveNav(section.Children)
 	}
-	other := reviews
-	if sources.reviewSide {
-		other = features
+	if !documentationSide {
+		dormant(roadmap)
+		dormant(features)
 		overview.Hidden, overview.dormant = true, true
 		overview.Expanded, overview.Active = false, false
 		clearActiveNav(overview.Children)
@@ -145,10 +149,14 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 			child.Hidden = true
 		}
 	}
-	other.Hidden, other.dormant = true, true
-	clearActiveNav(other.Children)
+	if !sources.reviewSide {
+		dormant(reviews)
+	}
+	if !sources.planSide {
+		dormant(plans)
+	}
 	navigation := []*navNodeView{overview}
-	for _, section := range []*navNodeView{features, roadmap, reviews} {
+	for _, section := range []*navNodeView{features, roadmap, plans, reviews} {
 		if len(section.Children) > 0 || section == roadmap {
 			navigation = append(navigation, section)
 		}
@@ -545,8 +553,8 @@ func pageFeature(route appRoute, page *requirementsPageView, tests quality.Docum
 func sidebarOutline(nodes []*navNodeView) []*navNodeView {
 	var outline []*navNodeView
 	for _, node := range nodes {
-		if node.NodeID == "nav-reviews" {
-			// The Reviews tab already names and opens the directory.
+		if node.NodeID == "nav-reviews" || node.NodeID == "nav-plans" {
+			// The tab already names and opens the directory.
 			for _, child := range node.Children {
 				row := *child
 				row.Hidden = row.Hidden || node.Hidden

@@ -670,6 +670,13 @@ func checkItemRecord(document *saga.Saga, slide *saga.Slide, record string) erro
 // section, or fragment of the living Saga.
 func requireReviewRecord(document *saga.Saga, record string) error {
 	prefix := "urn:change-saga:" + document.Manifest.ID + ":"
+	if planID := saga.PlanIDOf(record); planID != "" {
+		plan := document.FindPlan(planID)
+		if plan == nil || plan.FindTask(record) == nil {
+			return fmt.Errorf("task %q does not exist in the Saga", record)
+		}
+		return nil
+	}
 	for _, kind := range []string{"deck", "slide", "chapter", "section", "fragment"} {
 		if strings.HasPrefix(record, prefix+kind+":") {
 			found := false
