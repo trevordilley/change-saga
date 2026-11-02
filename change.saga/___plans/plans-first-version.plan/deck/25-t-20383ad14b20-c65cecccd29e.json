@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "plans-first-version",
   "slide": "guide-builds-confidence",
-  "current": "sha256:e36aadff3552bd6dbd17f59eb89d67513595f9d40c2aef8d6d82e87310a1b066",
+  "current": "sha256:6a599e0c2e3776d21d03921076df1361abd9bbd09d0ecf3c725611fe6a7f0ceb",
   "revisions": [
     {
       "snapshot": "sha256:e36aadff3552bd6dbd17f59eb89d67513595f9d40c2aef8d6d82e87310a1b066",
@@ -27,6 +27,81 @@
         "media_type": "image/svg+xml",
         "entrypoint": "24-a-c2a8df0a989a72345a543a4711d11ee87defc0bc3474531d6778.svg",
         "takeaway": "plan guide gives an agent the workflow, then names the Tasks it cannot yet be confident of, so it cannot report a Plan as ready too early.",
+        "reading_order": [
+          "t-plan-prototypes",
+          "t-guidance-wizard"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-prototypes",
+            "slide": "guide-builds-confidence",
+            "rank": 500,
+            "kind": "node",
+            "label": "Attach prototypes",
+            "description": "Task plan-prototypes.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-prototypes"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-prototypes"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-guidance-wizard",
+            "slide": "guide-builds-confidence",
+            "rank": 510,
+            "kind": "node",
+            "label": "plan guide, and the skill's route",
+            "description": "Task guidance-wizard.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-guidance-wizard"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:guidance-wizard"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-d729077d1beb7e5f25d9d924beb9a8e2668f27677f7f05efc3d3.json",
+        "source_digest": "sha256:d729077d1beb7e5f25d9d924beb9a8e2668f27677f7f05efc3d3965d2ddd0362",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:6a599e0c2e3776d21d03921076df1361abd9bbd09d0ecf3c725611fe6a7f0ceb",
+      "parent_snapshots": [
+        "sha256:e36aadff3552bd6dbd17f59eb89d67513595f9d40c2aef8d6d82e87310a1b066"
+      ],
+      "request_id": "guide-builds-confidence-factcheck",
+      "created_at": "2026-11-02T05:55:35.034378Z",
+      "asset": "24-a-48514a6abd306ac356f9ea60c942e10f095a4ea25c0f35ac4f8e.svg",
+      "asset_digest": "sha256:48514a6abd306ac356f9ea60c942e10f095a4ea25c0f35ac4f8e4b80a8964a27",
+      "slide": {
+        "front": [
+          "Research and prototypes are how confidence is earned.",
+          "The goal is each Task being two days or less before AI.",
+          "Whether a Plan is right is still for people to judge."
+        ],
+        "version": 4,
+        "id": "guide-builds-confidence",
+        "deck": "plans-first-version",
+        "title": "A guide builds confidence before work starts",
+        "rank": 50,
+        "section": "Phase 5: Guided authoring",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-48514a6abd306ac356f9ea60c942e10f095a4ea25c0f35ac4f8e.svg",
+        "takeaway": "plan guide gives an agent the workflow, then names the Tasks it cannot yet be confident of, so what is not ready gets named.",
         "reading_order": [
           "t-plan-prototypes",
           "t-guidance-wizard"

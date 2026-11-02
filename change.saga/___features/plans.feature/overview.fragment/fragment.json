@@ -1,6 +1,6 @@
 {
   "subtext": "Lay out the work phase by phase, see what can run in parallel, and compare it with what ships.",
-  "abstract": "A Plan describes a body of work and how it can be executed in parallel: a phase-organized slide deck, prototypes, and Tasks with mapped dependencies, each leading to a user story. Comparing a Plan with the Reviews that implement it is the key value. Nothing here is built yet.",
+  "abstract": "A Plan describes a body of work and how it can be executed in parallel: a phase-organized slide deck, prototypes, and Tasks with mapped dependencies, each leading to a user story. Comparing a Plan with the Reviews that implement it is the key value.",
   "version": 2,
   "id": "plans--overview",
   "title": "Overview",

@@ -26,11 +26,11 @@ The sizing goal is that a team is confident each Task would have taken two days 
 - A **developer** can see what can start now, open a Task and find everything needed to begin it, and read how far along a Plan is from its slides.
 - As work happens, agents mark Tasks done and update the Plan, so it stays a working document.
 - A Plan and the Reviews that implement it reference each other, and share one Git history, so checking out a Review gives the Plan as it stood. Reviews come after the Plan's work is done. **Comparing them is the key value of keeping a Plan**: what we said we would do against what we did.
-- When every Task is done and its Reviews have merged, an author marks the Plan delivered with an explicit command. It is then hidden from the Plans section and filtered out of the CLI by default, as merged Reviews are, and still there when someone asks for it.
+- When every Task is done and its Reviews have merged, with at least one linked, an author marks the Plan delivered with an explicit command. It is then hidden from the Plans section and from the text of `plan list` by default, as merged Reviews are, and still there when someone asks for it.
 
 ## What is true today {#what-is-true-today}
 
-Plans and Tasks are built. These stories are proposed, because the people who asked for them have not yet accepted them. [Plans for Plans](/plans/plans-first-version) is the first real Plan: it holds the technical design for this feature and the Tasks that built it. The [prototype](/prototypes/plans) shows the direction explored beforehand, and its content and done states are illustrative.
+Plans and Tasks are built. These stories are proposed, because the people who asked for them have not yet accepted them. [Plans and Tasks: first version](/plans/plans-first-version) is the first real Plan: it holds the technical design for this feature and the Tasks that built it. The [prototype](/prototypes/plans) shows the direction explored beforehand, and its content and done states are illustrative.
 
 A Plan's slides are shown as images, so element notes and the reader's theme toggle do not apply to them yet.
 
@@ -42,12 +42,12 @@ Plans and Tasks replaced an earlier work plan that was built but never used. Git
 
 ```sh
 change-saga plan create --id ID --title TEXT
-change-saga plan list [--feature ID] [--story URN] [--all]   # delivered Plans are hidden without --all
+change-saga plan list [--feature ID] [--story URN] [--all]   # text hides delivered Plans without --all
 change-saga plan guide [--plan ID]                           # the workflow, and what a Plan still needs
 change-saga plan add-phase --plan ID --id ID --title TEXT
 change-saga plan add-prototype --plan ID --prototype URN
 change-saga plan link-review --plan ID --review ID
-change-saga plan deliver --plan ID                           # refused until every Task is done and its Reviews merged
+change-saga plan deliver --plan ID                           # refused until every Task is done and a linked Review, all merged
 
 change-saga apply-slide --plan ID --from SLIDE.json          # slide.section names its phase
 change-saga deck overview --plan ID --file OVERVIEW.json
