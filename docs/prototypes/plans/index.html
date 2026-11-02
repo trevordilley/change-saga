@@ -119,21 +119,21 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     T('plan-record', 'Plan record', 'Add the Plan record', 'p1', null, [], 'done', 'within',
       'A Plan is a record of its own, not owned by a feature: one per body of work, holding its title, deck, prototypes and Reviews. When it changes it is the same record, committed again. This Task adds the record and its schema and nothing else: no reader page and no Tasks yet.',
       [['internal/saga/load.go', '767', 'Reserved names a new directory must join'], ['internal/applayout/feature_plan.go', '15-35', 'The existing plan.json is Roadmap status; keep the two apart']]),
-    T('merge-grammar', 'Merge the grammar', 'Merge the work plan’s verbs into plan and task', 'p1', null, [], 'done', 'within',
-      'change-saga plan is taken by the work plan. Its verbs move: phases under plan, units of work under a new task noun. This is the naming decision made real, and it can run beside the Plan record because neither depends on the other.',
-      [['internal/cli/living_plan.go', '18-52', 'The plan command family today']]),
+    T('merge-grammar', 'Remove work plan', 'Remove the old work plan', 'p1', null, [], 'done', 'within',
+      'The work plan is connected but unused, and it holds the plan command. Removing it frees that name for Plans. It has no story of its own: it exists to clear the way for the task commands.',
+      [['internal/cli/living_plan.go', '18-52', 'The plan command family today'], ['internal/workplan/model.go', '227-239', 'The Plan type being removed']]),
     T('plans-tab', 'Plans tab', 'Add a Plans tab to the sidebar', 'p1', 'find-plans-in-their-section', ['plan-record'], 'done', 'within',
       'Documentation, Plans, Reviews: what is, what we will do, what we did. The sidebar has two of the three already.',
       [['internal/server/appnav.go', '305-325', 'How the Reviews section is built']]),
     T('feature-lists-plans', 'Plans on stories', 'Show Plans on stories and features', 'p3', 'see-plans-from-stories', ['task-story-link'], 'ready', 'within',
       'Nobody authors this. A Plan\u2019s stories come from its Tasks, and a feature\u2019s Plans come from its stories, so the links are worked out when the page is read and cannot drift.',
       [['internal/server/apppages.go', '470-490', 'The feature page view'], ['internal/server/relatedreviews.go', '28-40', 'Related reviews are derived the same way']]),
-    T('task-extends-item', 'Tasks extend items', 'Extend work items into Tasks', 'p2', 'dependency-aware-work-plan', ['plan-record'], 'done', 'within',
-      'A Task is a work item that belongs to a Plan, moved out of its feature\u2019s work plan, and has an essay, pinned code references and a sizing judgment. Dependencies, progress and contracts already exist and are reused. A wave is a phase of the Plan.',
-      [['internal/workplan/model.go', '81-100', 'WorkItemRevision: the record being extended'], ['internal/workplan/model.go', '51-65', 'WaveRevision: becomes a Plan’s phase']]),
+    T('task-extends-item', 'Task records', 'Add Task records', 'p2', 'dependency-aware-work-plan', ['plan-record'], 'done', 'within',
+      'A Task is one plain file in its Plan: title, phase, story, dependencies, code references, sizing and state, with an optional essay. Git is its history, so there are no revisions or event graphs. It replaces work items.',
+      [['internal/workplan/model.go', '81-100', 'WorkItemRevision: what this replaces'], ['internal/workplan/model.go', '51-65', 'WaveRevision: replaced by a Plan\u2019s phases']]),
     T('task-story-link', 'Require a story', 'Require every Task to reach a story', 'p2', 'link-tasks-to-stories', ['task-extends-item'], 'ready', 'within',
-      'A Task must lead to a story: directly, or by unblocking a Task that does. Anything else is refused, because there has to be a story somewhere. A work item can only reach a criterion or a design through an implements relation today, so the relation needs to allow a story. The record keeping falls to the agent.',
-      [['internal/requirements/validate.go', '276', 'The implements relation rules']]),
+      'A Task must lead to a story: directly, or by unblocking a Task that does. Anything else is refused, because there has to be a story somewhere. The record keeping falls to the agent.',
+      []),
     T('task-page', 'Task page', 'Give each Task a page', 'p2', 'understand-a-task', ['task-extends-item'], 'work', 'within',
       'The reader shows no work plan today. This page is the first place a Task is visible: its essay, story, code references, what it depends on, what it blocks, and its done state.',
       [['internal/workplan/readiness.go', '8-68', 'DependencySatisfied gives depends-on status']]),
@@ -141,8 +141,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
       'A Task records the judgment that it would have taken two days or less before AI. Tasks with no judgment, or judged larger, stand out on the Plan. The record’s exact shape is an open question.',
       [['internal/workplan/model.go', '81-100', 'Where the judgment would live']]),
     T('dep-graph', 'Dependency graph', 'Show the dependency graph', 'p2', 'map-task-dependencies', ['task-extends-item'], 'ready', 'within',
-      'A graph of a Plan’s Tasks showing which can start now. It reads the dependency records that exist already, which refuse cycles when validated.',
-      [['internal/workplan/validate.go', '282-314', 'Cycle detection already exists'], ['internal/workplan/readiness.go', '8-68', 'What counts as satisfied']]),
+      'A graph of a Plan\u2019s Tasks showing which can start now. It reads each Task\u2019s dependencies, and validation refuses cycles.',
+      [['internal/workplan/validate.go', '278-330', 'The old cycle check, to carry over in spirit']]),
     T('plan-deck', 'Plan deck', 'Give a Plan a deck grouped by phase', 'p3', 'read-plan-by-phase', ['plan-record'], 'done', 'within',
       'A Plan owns a slide deck in a new deck role that owes no code evidence. Slide sections already group slides, so a section names a phase.',
       [['internal/saga/app.go', '73-86', 'Deck roles'], ['internal/server/decksections.go', '', 'How slide sections are grouped today']]),
@@ -150,8 +150,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
       'A slide Item can name a Task, as a review Item can name a record today. The reader lists a slide’s Tasks beside it with a link to each.',
       [['internal/saga/model.go', '143', 'Item.Record, the field to follow'], ['internal/saga/slides.go', '639-641', 'Which records an Item may name']]),
     T('task-done-cmd', 'task done command', 'Let agents mark Tasks done', 'p3', 'track-work-delivery', ['merge-grammar', 'task-extends-item'], 'ready', 'within',
-      'change-saga task done records a progress event. Progress events are already append-only and keep conflicting heads, so two agents cannot silently overwrite each other.',
-      [['internal/workplan/model.go', '186-191', 'ProgressEvent'], ['internal/cli/living_plan.go', '366', 'plan progress today']]),
+      'change-saga task done sets the Task\u2019s state. Each Task is its own file, so agents on different branches marking different Tasks touch different files.',
+      [['internal/workplan/model.go', '186-191', 'ProgressEvent: what this replaces']]),
     T('done-on-slides', 'Done on slides', 'Show done state on the slides', 'p3', 'see-done-on-slides', ['slide-task-refs', 'task-done-cmd'], 'wait', 'within',
       'Done state is read when the page renders, not stored in the slide, so marking a Task done changes the slide without republishing it.',
       []),
@@ -176,13 +176,13 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     { id: 'whole', section: 'Overview', title: 'Five phases; each could ship on its own', take: 'Everything we intend to build for Plans, in an order that lets work run side by side.', body: 'phases', tasks: [] },
     { id: 'own-section', section: 'p1', title: 'A Plan stands on its own and reaches stories through its Tasks', take: 'Documentation is what is, Plans is what we will do, Reviews is what we did. A Plan has no owner; its links say what it touches.',
       body: '<div class="flow"><div class="box key"><b>Plan</b>One per body of work</div><div class="arrow">has</div><div class="box"><b>Tasks</b>Each must lead to a story</div><div class="arrow">link to</div><div class="box"><b>Stories</b>Worked out, not authored</div><div class="arrow">live in</div><div class="box"><b>Features</b>One or several</div></div>', tasks: ['plan-record', 'plans-tab', 'feature-lists-plans'] },
-    { id: 'one-grammar', section: 'p1', title: 'plan and task replace the work plan’s verbs', take: 'change-saga plan is already the work plan. We merge the two ideas rather than add a second noun.',
+    { id: 'one-grammar', section: 'p1', title: 'plan and task replace the work plan’s verbs', take: 'The old work plan goes, which frees its name for this.',
       body: '<table><tr><th>Today</th><th>Proposed</th></tr><tr><td><code>plan add-wave</code></td><td><code>plan add-phase</code></td></tr><tr><td><code>plan add-item</code></td><td><code>task add</code></td></tr><tr><td><code>plan add-dependency</code></td><td><code>task depend</code></td></tr><tr><td><code>plan progress --to done</code></td><td><code>task done</code></td></tr></table>', tasks: ['merge-grammar'] },
-    { id: 'task-is-item', section: 'p2', title: 'A Task is a work item, extended', take: 'Dependencies and progress exist and are tested. A Task adds what a person needs in order to start.',
-      body: '<div class="flow"><div class="box"><b>Exists in work items</b>Objective, deliverables, dependencies, progress, contracts, workspace assignment, merge events</div><div class="arrow">+</div><div class="box key"><b>Task adds</b>Its Plan, its story, a small essay, pinned code references, a two-day sizing judgment</div></div>', tasks: ['task-extends-item', 'task-story-link', 'task-page', 'task-sizing'] },
+    { id: 'task-is-item', section: 'p2', title: 'A Task is a plain record, and Git is its history', take: 'The old work items carried much more than a Task needs. A Task holds what a person needs in order to start.',
+      body: '<div class="flow"><div class="box"><b>Removed from work items</b>Revisions, event graphs, contracts, workspaces, merge units</div><div class="arrow">becomes</div><div class="box key"><b>A Task</b>Its Plan, what it depends on, its story, a small essay, pinned code references, a two-day sizing judgment, its state</div></div>', tasks: ['task-extends-item', 'task-story-link', 'task-page', 'task-sizing'] },
     { id: 'parallel', section: 'p2', title: 'Dependencies decide what can run in parallel', take: 'Order on a page is not a dependency. Anything whose dependencies are done can start, whatever phase it is in.', body: 'parallel', tasks: ['dep-graph'] },
     { id: 'slides-tasks', section: 'p3', title: 'Slides reference Tasks and show when they are done', take: 'Done state is read when the page opens, so nobody republishes a slide to report progress.',
-      body: '<div class="flow"><div class="box"><b>Agent finishes work</b><code>task done</code></div><div class="arrow">records</div><div class="box"><b>Progress event</b>On the Task</div><div class="arrow">read by</div><div class="box key"><b>Every slide citing it</b>Shows Done, as below</div></div>', tasks: ['plan-deck', 'slide-task-refs', 'task-done-cmd', 'done-on-slides'] },
+      body: '<div class="flow"><div class="box"><b>Agent finishes work</b><code>task done</code></div><div class="arrow">records</div><div class="box"><b>Task state</b>In its file</div><div class="arrow">read by</div><div class="box key"><b>Every slide citing it</b>Shows Done, as below</div></div>', tasks: ['plan-deck', 'slide-task-refs', 'task-done-cmd', 'done-on-slides'] },
     { id: 'said-did', section: 'p4', title: 'A Plan and its Reviews reference each other', take: 'Reviews come after the Plan is done. Comparing them shows what we said beside what we did, and a merged Plan steps out of the way.',
       body: '<div class="flow"><div class="box key"><b>Plan</b>What we said</div><div class="arrow">implemented by</div><div class="box"><b>Review pr-101</b>Phases 1 and 2</div><div class="box"><b>Review pr-104</b>Phase 3</div></div><p>See the <a href="#/plan/compare">comparison</a>.</p>', tasks: ['plan-review-link', 'comparison', 'hide-done'] },
     { id: 'guide', section: 'p5', title: 'A guide builds confidence before work starts', take: 'It researches and prototypes until each Task is confidently two days or less, and says which are not.',
@@ -235,7 +235,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     var rows = [
       ['<a href="#/plan/deck/whole">Plans and Tasks: first version</a>', planStories().length + ' stories in ' + planFeatures().length + ' features', done + ' of ' + total, done / total, 'pr-101, pr-104', '<span class="chip s-work">In progress</span>', false],
       ['Roadmap shows Plan progress', '4 stories in 1 feature', '0 of 6', 0, 'None yet', '<span class="chip s-wait">Not started</span>', false],
-      ['Spike: read work items in the reader', '2 stories in 1 feature', '4 of 4', 1, 'pr-96 merged', '<span class="chip s-done">\u2713 Done</span>', true]
+      ['Spike: a first page for Tasks', '2 stories in 1 feature', '4 of 4', 1, 'pr-96 merged', '<span class="chip s-done">\u2713 Done</span>', true]
     ];
     var html = '<h1>Plans</h1><p class="sub">The work we intend to do. A Plan is one body of work; each of its Tasks leads to a user story.</p>';
     html += '<div class="filter"><span class="note" id="plan-count"></span><button class="toggle" id="toggle-done" aria-pressed="' + showDone + '">' + (showDone ? 'Hide' : 'Show') + ' done (1)</button></div>';
@@ -432,8 +432,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
   function renderCompare() {
     var rows = [
       ['Add the Plan record under its feature', 'Plans load with their feature. <span class="note">pr-101, slide 2</span>', 's-done', 'Delivered', ''],
-      ['Merge the work plan’s verbs into plan and task', 'Verbs moved; old ones print where they went. <span class="note">pr-101, slide 3</span>', 's-work', 'Departed', 'Kept old verbs as aliases for one release, which the Plan did not say.'],
-      ['Extend work items into Tasks', 'Plan link, essay and code references added. <span class="note">pr-101, slide 4</span>', 's-work', 'Departed', 'Sizing moved to its own record, because it changes more often than the rest.'],
+      ['Remove the old work plan', 'Removed; old verbs print where they went. <span class="note">pr-101, slide 3</span>', 's-work', 'Departed', 'The Plan said to remove the verbs outright; a pointer was kept for one release.'],
+      ['Add Task records', 'Task files with essays and code references. <span class="note">pr-101, slide 4</span>', 's-work', 'Departed', 'Sizing moved to its own record, because it changes more often than the rest.'],
       ['Add a Plans tab to the sidebar', 'Plans tab beside Documentation and Reviews. <span class="note">pr-101, slide 5</span>', 's-done', 'Delivered', ''],
       ['Give a Plan a deck grouped by phase', 'New deck role; sections name phases. <span class="note">pr-104, slide 1</span>', 's-done', 'Delivered', ''],
       ['Show the dependency graph', '<span class="note">Nothing delivered yet.</span>', 's-wait', 'Not delivered', ''],
@@ -455,7 +455,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     document.getElementById('view-guide').innerHTML =
       '<p class="sub">How an author might reach a Plan they trust. Where this runs (skill, command, or both) is an open question; this shows the conversation, not a screen design.</p>' +
       '<div class="step"><i>1</i><div><strong>Research.</strong> Read ' + Object.keys(STORIES).length + ' stories across 2 features. Found <code>internal/workplan</code> already has waves, dependencies and progress. The reader shows none of it.</div></div>' +
-      '<div class="step"><i>2</i><div><strong>Ask.</strong> Should a Plan own its work items, or link to them? <span class="note">Your answer: own them.</span></div></div>' +
+      '<div class="step"><i>2</i><div><strong>Ask.</strong> Should a Task store what it depends on, or what it unblocks? <span class="note">Your answer: what it depends on.</span></div></div>' +
       '<div class="step"><i>3</i><div><strong>Prototype.</strong> The graph was unclear, so I drew one. <a href="#/plan/graph">See it.</a></div></div>' +
       '<div class="step"><i>4</i><div><strong>Size.</strong> Drafted ' + TASKS.length + ' Tasks. I am confident of ' + TASKS.filter(function (t) { return t.sizing === 'within'; }).length + ' as two days or less.</div></div>' +
       '<div class="step"><i>5</i><div><strong>Not ready yet:</strong><ul>' + TASKS.filter(function (t) { return t.sizing !== 'within'; }).map(function (t) { return '<li>' + taskLink(t) + ' ' + sizingChip(t) + '</li>'; }).join('') + '</ul></div></div>';
@@ -464,8 +464,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
   function renderCli() {
     var ready = TASKS.filter(canStart).map(function (t) { return '  ' + t.id; }).join('\n');
     document.getElementById('view-cli').innerHTML =
-      '<div class="eyebrow">Design sketch. None of the new commands exist</div><h1>Proposed grammar</h1><p class="sub">change-saga plan is already the work plan, so its verbs move here and the two ideas merge.</p>' +
-      '<pre class="cmd"><span class="c"># Plans</span>\nchange-saga plan create --id first-version --title TEXT\nchange-saga plan list [--feature ID] [--story URN] [--all]   <span class="c"># done Plans hidden without --all</span>\nchange-saga plan link-review --plan ID --review pr-101\nchange-saga plan add-prototype --plan ID --prototype URN\nchange-saga plan add-phase --plan ID --id ID --title TEXT   <span class="c"># today: plan add-wave</span>\nchange-saga plan guide --story URN...               <span class="c"># the wizard</span>\n\n<span class="c"># Its deck: the existing commands, pointed at a Plan</span>\nchange-saga apply-slide --plan ID --from SLIDE.json\nchange-saga deck overview --plan ID --file OVERVIEW.json\n\n<span class="c"># Tasks</span>\nchange-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --blocks TASK)   <span class="c"># must lead to a story. Today: plan add-item</span>\nchange-saga task depend --task ID --on ID           <span class="c"># today: plan add-dependency</span>\nchange-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days\nchange-saga task done --task ID [--summary TEXT]    <span class="c"># today: plan progress --to done</span>\nchange-saga task list --plan ID [--ready]</pre>' +
+      '<div class="eyebrow">Design sketch. None of the new commands exist</div><h1>Proposed grammar</h1><p class="sub">change-saga plan becomes the Plan\u2019s command once the old work plan is removed.</p>' +
+      '<pre class="cmd"><span class="c"># Plans</span>\nchange-saga plan create --id first-version --title TEXT\nchange-saga plan list [--feature ID] [--story URN] [--all]   <span class="c"># done Plans hidden without --all</span>\nchange-saga plan link-review --plan ID --review pr-101\nchange-saga plan add-prototype --plan ID --prototype URN\nchange-saga plan add-phase --plan ID --id ID --title TEXT   <span class="c"># replaces plan add-wave</span>\nchange-saga plan guide --story URN...               <span class="c"># the wizard</span>\n\n<span class="c"># Its deck: the existing commands, pointed at a Plan</span>\nchange-saga apply-slide --plan ID --from SLIDE.json\nchange-saga deck overview --plan ID --file OVERVIEW.json\n\n<span class="c"># Tasks</span>\nchange-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --blocks TASK)   <span class="c"># must lead to a story. Replaces plan add-item</span>\nchange-saga task depend --task ID --on ID           <span class="c"># replaces plan add-dependency</span>\nchange-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days\nchange-saga task done --task ID [--summary TEXT]    <span class="c"># replaces plan progress --to done</span>\nchange-saga task list --plan ID [--ready]</pre>' +
       '<h2>Done Plans are filtered by default</h2><pre class="cmd">$ change-saga plan list\nfirst-version        in progress   ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks   pr-101, pr-104\nroadmap-progress     not started   0 of 6 Tasks\n1 done Plan hidden; --all shows it.</pre>' +
       '<h2>What can start now</h2><pre class="cmd">$ change-saga task list --plan first-version --ready\n' + ready + '</pre>';
   }
