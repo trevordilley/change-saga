@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "whiteboard-evidence-decision-20261102",
+  "kind": "decision",
+  "title": "Whiteboard elements keep exact evidence and require reassessment",
+  "reference": "Trevor, whiteboard-code-references task conversation, 2026-11-02: \"We treat them just like reviews and other docs. The code changing is the POINT. That marks those elements of the whiteboard stale and need to be re-assessed! They should support the same stuff nodes in a slide deck support.\"",
+  "created_at": "2026-11-02T22:10:19.533689Z"
+}

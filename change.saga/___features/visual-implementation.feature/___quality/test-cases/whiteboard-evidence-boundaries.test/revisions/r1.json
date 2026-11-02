@@ -1,0 +1,53 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",
+  "parents": [],
+  "title": "Keep comparison, subset and historical evidence boundaries visible",
+  "coverage_kinds": [
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Use committed fixture code, an accepted linked criterion and an inventory-format-2 selected subset."
+  ],
+  "steps": [
+    {
+      "id": "base",
+      "action": "Change code while the saved reference still matches the comparison base.",
+      "expected_result": "The matching base does not hide HEAD staleness in references, health or reconciliation.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+      ]
+    },
+    {
+      "id": "subset",
+      "action": "Change containing inventory evidence outside the selected bytes.",
+      "expected_result": "The saved subset stays unchanged while its owning whiteboard element remains stale and counts against health.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+      ]
+    },
+    {
+      "id": "criterion",
+      "action": "Revise the linked criterion while code is unchanged, then explicitly publish the updated criterion pin.",
+      "expected_result": "The old criterion link is stale until the new complete board revision names the reassessed story revision.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+      ]
+    },
+    {
+      "id": "history",
+      "action": "Publish a successor, reopen the exact old revision through history, and list current references.",
+      "expected_result": "History opens its original code; the shared reference list contains only the current head rather than duplicate historical evidence.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
+      ]
+    }
+  ],
+  "expected_result": "All defined steps retain exact context, report currency honestly and respect native element ownership.",
+  "created_at": "2026-11-02T22:11:06Z"
+}

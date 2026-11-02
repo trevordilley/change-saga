@@ -160,6 +160,17 @@ func (graph *appGraph) link(urn string) traceLink {
 	}
 	kind, id := parts[3], parts[4]
 	switch kind {
+	case "whiteboard":
+		link.Kind, link.Title, link.Href = "Whiteboard element", id, whiteboardHref(id, "")
+		if len(parts) == 7 && parts[5] == "element" {
+			link.Title = parts[6]
+			if revision, err := requirements.LoadWhiteboard(graph.document.Root, parts[2], id, ""); err == nil && revision != nil {
+				if e, ok := revision.Document.Element(parts[6]); ok {
+					link.Title = e.Label
+					link.Href = whiteboardFocusHref(link.Href, boardElementPath(revision.Document, e.ID))
+				}
+			}
+		}
 	case "story":
 		story := graph.requirements.FindStory(id)
 		link.Kind, link.Href, link.Title = "Story", requirementStoryHref(id), id

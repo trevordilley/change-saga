@@ -11,6 +11,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -82,21 +83,25 @@ func collectDocumentedCode(document *saga.Saga, records requirements.Document, t
 			result = append(result, documentedCode{target: target, references: references})
 		}
 	}
-	var walk func(*saga.Section)
-	walk = func(section *saga.Section) {
-		add(section.Target, section.Code)
-		for _, fragment := range section.Fragments {
-			add(fragment.Target, fragment.Code)
-			for _, landmark := range fragment.Landmarks {
-				add(landmark.Target, landmark.Code)
+	coverage.WalkDocumentCode(document, add)
+	byTarget := map[string]int{}
+	for i, record := range result {
+		byTarget[record.target] = i
+	}
+	items, _ := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	for _, item := range items {
+		var selected []coderef.Reference
+		for _, selection := range item.Selections {
+			selected = append(selected, selection.Code)
+		}
+		if len(selected) > 0 {
+			if i, ok := byTarget[item.Target]; ok {
+				result[i].references = append(result[i].references, selected...)
+			} else {
+				byTarget[item.Target] = len(result)
+				result = append(result, documentedCode{target: item.Target, references: selected})
 			}
 		}
-		for _, child := range section.Children {
-			walk(child)
-		}
-	}
-	if document.Section != nil {
-		walk(document.Section)
 	}
 	for _, testCase := range tests.TestCases {
 		urn, _ := qualityid.TestCase(tests.SagaID, testCase.Identity.ID)

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:whiteboard-element-evidence",
+  "parents": [],
+  "title": "Inspect and reassess whiteboard evidence",
+  "statement": "As an architect, I can inspect a whiteboard element's exact code and related intent, and see when it needs reassessment, so the design remains trustworthy as the implementation changes.",
+  "overview": "Whiteboard elements carry the semantic evidence and links that slide Items carry: pinned code, criterion and record links, exact technical-definition pins, and explicit inventory code selections. The element supplies its own geometry and reading context.\n\nChanged code is a reason to reassess the design. Current documentation reports that debt; an author reads the changed code and publishes a new complete revision with the observed parent. Previous revisions remain inspectable at their original pins. A bare definition link does not acquire its code ownership, and a review deck retains independent changed-line coverage.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:whiteboard-evidence-decision-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "inspect",
+      "statement": "An element can carry exact code evidence, criterion and record links, saved documentation definitions and explicit inventory code selections; its separate reader actions open the corresponding saved content through the shared drawer or record page."
+    },
+    {
+      "id": "currency",
+      "statement": "When referenced code changes, the element remains stale in the reader, references, status, health and reconcile until explicit reassessment publishes a new parented revision; historical revisions retain their original evidence."
+    },
+    {
+      "id": "coverage",
+      "statement": "References and documented-code coverage attribute direct evidence and eligible explicit inventory selections from the current active board revision to its stable element owner; historical revisions, unselected code and bare definition links do not add inherited coverage."
+    }
+  ],
+  "created_at": "2026-11-02T22:10:19.710091Z"
+}

@@ -203,7 +203,7 @@ func (usages technicalUsageIndex) view(target string) technicalUsagesView {
 
 // itemCount is the directory's "used by Items" count: direct Item pins.
 func (usages technicalUsageIndex) itemCount(target string) (int, int) {
-	page := usages.index.Uses(target, inventoryview.UseOptions{Limit: inventoryview.MaxLimit, Roles: []string{inventoryview.RoleImplementationItem, inventoryview.RoleReviewItem}})
+	page := usages.index.Uses(target, inventoryview.UseOptions{Limit: inventoryview.MaxLimit, Roles: []string{inventoryview.RoleImplementationItem, inventoryview.RoleReviewItem, inventoryview.RoleWhiteboardElement}})
 	current := 0
 	for _, use := range page.Uses {
 		if use.Status == "current" {
@@ -219,6 +219,16 @@ func (usages technicalUsageIndex) usage(use inventoryview.Use) technicalUsage {
 		usage.Via = append(usage.Via, traceLink{Title: entityName(usages.inventory, hop), Href: technicalPinHref(hop), Target: hop.Target})
 	}
 	switch use.Role {
+	case inventoryview.RoleWhiteboardElement:
+		usage.Context = "Whiteboard"
+		usage.Item = use.Label
+		parts := strings.Split(use.Item, ":")
+		if len(parts) == 7 {
+			usage.Href = whiteboardHref(parts[4], "")
+			if revision, err := requirements.LoadWhiteboard(usages.document.Root, parts[2], parts[4], ""); err == nil && revision != nil {
+				usage.Href = whiteboardFocusHref(usage.Href, boardElementPath(revision.Document, parts[6]))
+			}
+		}
 	case inventoryview.RoleImplementationItem, inventoryview.RoleReviewItem:
 		usage.Item = use.Label
 		if usage.Item == "" {

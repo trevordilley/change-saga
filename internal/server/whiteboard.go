@@ -29,6 +29,7 @@ type whiteboardView struct {
 	Note                  string
 	Frames                []whiteboardFrameView
 	Sections              []whiteboardSectionView
+	StaleElements         []whiteboardStaleElement
 	Notes                 []whiteboardNoteView
 }
 
@@ -94,8 +95,10 @@ func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revi
 		return &whiteboardView{ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	enhanced, capabilities := a.enhanceWhiteboardSources(inventory, resolved, template.HTML(visual))
+	enhanced, staleElements := a.enhanceWhiteboardElements(inventory, id, resolved, enhanced)
 	boardTarget, _ := requirements.WhiteboardURN(inventory.SagaID, id)
 	view := &whiteboardView{DeprecationTarget: boardTarget, ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	view.StaleElements = staleElements
 	view.Role = metadata.Role(id)
 	if revision == "" && metadata.Boards[id].Name != "" {
 		view.Name = metadata.Boards[id].Name
@@ -288,6 +291,7 @@ const whiteboardTemplates = `
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Whiteboard{{end}}</h1>
 <div class="whiteboard-deprecations whiteboard-overlay" data-deprecation-load hx-get="/api/deprecations?compact=1&amp;target={{urlquery .DeprecationTarget}}&amp;children=1&amp;revision={{urlquery .Revision}}" hx-trigger="load, saga:deprecations" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>
+{{if .StaleElements}}<details class="whiteboard-stale-elements"><summary>{{len .StaleElements}} stale {{if eq (len .StaleElements) 1}}element{{else}}elements{{end}} · reassessment required</summary><p>Referenced code changed. Reassess each element and publish a new whiteboard revision.</p><ul>{{range .StaleElements}}<li><button type="button" data-whiteboard-focus-frame="{{.Path}}">{{.Label}}</button></li>{{end}}</ul></details>{{end}}
 <details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">
 {{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Focus a section to explore this document. Linked entities open their saved definitions.</p>{{end}}
 <p class="whiteboard-help">Scroll or drag to pan · Shift + scroll pans sideways · Ctrl/Cmd + scroll or + / − to zoom · 0 to fit</p>
@@ -332,6 +336,8 @@ body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
 .whiteboard-viewport{position:absolute;inset:0;overflow:hidden;background:var(--bg);cursor:grab;touch-action:none}
 .whiteboard-canvas:not([data-whiteboard-fields="true"]) .whiteboard-viewport [data-field],.whiteboard-canvas:not([data-whiteboard-fields="true"]) .whiteboard-viewport [data-diagram-detail="field"]{display:none}
 .whiteboard-toolbar button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.whiteboard-stale-elements{color:var(--warning-ink,var(--ink));max-width:340px}
+.whiteboard-viewport [data-evidence-badge]{fill:var(--warning-ink,var(--ink));font-size:16px;font-weight:700;paint-order:stroke;stroke:var(--bg);stroke-width:3px;pointer-events:none}
 .whiteboard-viewport>svg{display:block;width:100%;height:100%;max-width:none}
 .whiteboard-viewport [data-diagram-summary] rect{fill:var(--bg);stroke:var(--accent);stroke-width:1.5}
 .whiteboard-viewport [data-diagram-summary] text:not([font-weight]){fill:var(--ink);font-weight:600}

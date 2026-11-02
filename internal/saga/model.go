@@ -5,6 +5,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/diagram"
 )
 
 const (
@@ -95,10 +96,7 @@ type SlideManifest struct {
 
 // DocumentationLink pins a reusable Component, System or data-entity definition.
 // It never transfers that record's code ownership to the linking Item.
-type DocumentationLink struct {
-	Target   string `json:"target"`
-	Revision string `json:"revision"`
-}
+type DocumentationLink = diagram.DocumentationLink
 
 // ItemSelection explicitly selects part of one evidence reference reached
 // through declared links from the Item's documentation pin. Path[0] is that
@@ -106,12 +104,7 @@ type DocumentationLink struct {
 // Evidence names a stable evidence ID in the last hop's revision and Code is the
 // selected subset of that reference: same commit/path, a narrower or equal line
 // range and the digest of the selected bytes only. It is inventory format 2.
-type ItemSelection struct {
-	ID       string              `json:"id"`
-	Path     []DocumentationLink `json:"path"`
-	Evidence string              `json:"evidence"`
-	Code     coderef.Reference   `json:"code"`
-}
+type ItemSelection = diagram.ItemSelection
 
 // MaxItemSelections and MaxSelectionPath bound one Item's selections.
 const (

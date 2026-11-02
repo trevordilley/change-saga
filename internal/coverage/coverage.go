@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -270,6 +272,16 @@ func visitReferences(ctx context.Context, target string, files []saga.CodeFile, 
 		for i, reference := range file.References {
 			assignment := Assignment{Target: target, EvidenceFile: file.Path, Reference: i + 1}
 			current, reason := Sides(ctx, reference, changes, resolver)
+			// A living whiteboard must be reassessed when code changes at the head,
+			// even if the old pin still describes the comparison base.
+			if strings.Contains(target, ":whiteboard:") {
+				head := resolver.Resolve(ctx, reference, changes.HeadOID)
+				current = nil
+				reason = head.Reason
+				if head.Current() {
+					current = []coderesolve.Resolution{head}
+				}
+			}
 			if len(current) == 0 {
 				report.StaleReferences = append(report.StaleReferences, StaleReference{Assignment: assignment, Reference: reference, Reason: reason})
 				continue
@@ -343,6 +355,11 @@ func (index atomIndex) within(location coderef.Location) []int {
 
 // WalkDocumentCode visits every narrative target's evidence records.
 func WalkDocumentCode(document *saga.Saga, visit func(string, []saga.CodeFile)) {
+	// Whiteboard storage is optional. Structural failures are reported by validation.
+	items, _ := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	for _, item := range items {
+		visit(item.Target, item.Code)
+	}
 	visit(document.Section.Target, document.Section.Code)
 	walkSections(document.Section, func(section *saga.Section) {
 		if section != document.Section {

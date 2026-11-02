@@ -42,6 +42,19 @@ func ProjectSlideCriterionLinks(document *saga.Saga, records *requirements.Docum
 			}
 		}
 	}
+	items, err := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+	if err != nil {
+		return err
+	}
+	for _, item := range items {
+		for _, link := range item.CriterionLinks {
+			if previous := seen[link.ID]; previous != "" {
+				return fmt.Errorf("relation id %q is shared by %s and whiteboard element %s", link.ID, previous, item.Target)
+			}
+			seen[link.ID] = item.Target
+			records.Relations = append(records.Relations, requirements.Relation{Schema: requirements.V5RelationSchemaURL, Version: requirements.V5RelationVersion, ID: link.ID, Type: requirements.RelationExplains, From: item.Target, To: link.Criterion, Scope: requirements.ScopeSelf, Rationale: link.Rationale, ToRevision: link.StoryRevision, State: requirements.RelationActive})
+		}
+	}
 	if len(records.Relations) > requirements.MaxRelations {
 		return fmt.Errorf("the app has more than %d relations after complete-slide links are projected", requirements.MaxRelations)
 	}

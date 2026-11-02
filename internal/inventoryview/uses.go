@@ -21,6 +21,7 @@ import (
 const (
 	RoleImplementationItem = "implementation_item"
 	RoleReviewItem         = "review_item"
+	RoleWhiteboardElement  = "whiteboard_element"
 	RoleSystemMember       = "system_member"
 	RoleDataHolder         = "data_holder"
 	RoleRelationship       = "relationship_destination"
@@ -122,6 +123,12 @@ func Build(document *saga.Saga, inventory *requirements.Inventory) *Index {
 				walkDeck(deck, func(slide *saga.Slide, item *saga.Item) {
 					add(Use{Role: RoleImplementationItem, Feature: feature.ID, Deck: deck.Target, Slide: slide.Target, Item: item.Target, ItemID: item.ID, Label: item.Label, Pin: *item.Documentation})
 				})
+			}
+		}
+		items, _ := requirements.CurrentWhiteboardItems(document.Root, document.Manifest.ID)
+		for _, item := range items {
+			if item.Documentation != nil {
+				add(Use{Role: RoleWhiteboardElement, Item: item.Target, ItemID: item.ID, Label: item.Label, Pin: *item.Documentation})
 			}
 		}
 		for _, review := range document.Reviews {
@@ -257,7 +264,7 @@ func (ix *Index) collect(target, revision string, depth int) ([]Use, UsePage) {
 // any revision of target, following current owner revisions to MaxDepth. The
 // caller must treat an incomplete page as unknown, never as zero uses.
 func (ix *Index) ImplementationUses(target string) UsePage {
-	return ix.Uses(target, UseOptions{Depth: MaxDepth, Limit: MaxLimit, Roles: []string{RoleImplementationItem}})
+	return ix.Uses(target, UseOptions{Depth: MaxDepth, Limit: MaxLimit, Roles: []string{RoleImplementationItem, RoleWhiteboardElement}})
 }
 
 // UseCounts summarizes declared uses of any revision of a target. Counts of an
@@ -265,6 +272,7 @@ func (ix *Index) ImplementationUses(target string) UsePage {
 type UseCounts struct {
 	Implementation int  `json:"implementation_items"`
 	Review         int  `json:"review_items"`
+	Whiteboards    int  `json:"whiteboard_elements,omitempty"`
 	Owners         int  `json:"technical_owners"`
 	Complete       bool `json:"complete"`
 }
@@ -278,6 +286,8 @@ func (ix *Index) Counts(target string) UseCounts {
 			counts.Implementation++
 		case RoleReviewItem:
 			counts.Review++
+		case RoleWhiteboardElement:
+			counts.Whiteboards++
 		case RoleSystemMember, RoleDataHolder, RoleRelationship, RoleERDDirectory, RoleERDOverlay:
 			counts.Owners++
 		}

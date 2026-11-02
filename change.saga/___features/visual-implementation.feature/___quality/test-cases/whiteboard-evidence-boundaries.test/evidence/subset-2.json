@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "subset-2",
+  "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",
+  "test_revision": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "subset"
+  ],
+  "code": [
+    {
+      "commit": "e6ea4f1f27942751c3afef227c3201e2b7acedc3",
+      "path": "internal/cli/whiteboard_evidence_test.go",
+      "start": 229,
+      "end": 260,
+      "digest": "sha256:6834e69e10faf7cb19c60686d134dcecdd0ae9f758ed64037c6059eec1f5804c"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:11:38Z"
+}

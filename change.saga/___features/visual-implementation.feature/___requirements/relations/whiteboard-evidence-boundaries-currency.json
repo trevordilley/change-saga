@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "whiteboard-evidence-boundaries-currency",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",
+  "to": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency",
+  "scope": "self",
+  "rationale": "The explicitly mapped edge steps exercise this whiteboard element obligation.",
+  "from_revision": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:whiteboard-element-evidence:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:11:07.895767Z"
+}

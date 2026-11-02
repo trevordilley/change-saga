@@ -17,6 +17,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -78,6 +79,37 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 		Prototypes: prototypes.Document{SagaID: doc.Manifest.ID, Prototypes: []prototypes.Prototype{}, Annotations: []prototypes.Annotation{}},
 		Exceptions: []coverage.Exception{}, Report: options.Report, Changes: options.Changes, Diagnostics: []Diagnostic{},
 		Quality: quality.Document{SagaID: doc.Manifest.ID, TestCases: []quality.TestCase{}, Policies: []quality.Policy{}, PolicySets: []quality.PolicySet{}},
+	}
+	inputs.WhiteboardItems, err = requirements.CurrentWhiteboardItems(root, doc.Manifest.ID)
+	if err != nil {
+		return StatusInputs{}, err
+	}
+	inputs.WhiteboardProblems = map[string][]string{}
+	if len(inputs.WhiteboardItems) > 0 {
+		inventory, err := requirements.LoadInventory(root, doc.Manifest.ID)
+		if err != nil {
+			return StatusInputs{}, err
+		}
+		for _, item := range inputs.WhiteboardItems {
+			if item.Documentation != nil {
+				if state := inventory.LinkStatus(*item.Documentation); state != "current" {
+					inputs.WhiteboardProblems[item.Target] = append(inputs.WhiteboardProblems[item.Target], "documentation pin is "+state+"; reassess and publish a new whiteboard revision")
+				}
+			}
+		}
+		for _, item := range inputs.WhiteboardItems {
+			for _, selection := range item.Selections {
+				if item.Documentation == nil {
+					continue
+				}
+				resolver, _ := options.Resolver.(inventoryview.SelectionResolver)
+				result := inventoryview.ResolveSelection(ctx, &inventory, *item.Documentation, selection, options.Changes.HeadOID, resolver)
+				for _, reason := range result.Reasons {
+					inputs.WhiteboardProblems[item.Target] = append(inputs.WhiteboardProblems[item.Target], "selection "+selection.ID+": "+reason.Code+" "+reason.Detail)
+				}
+			}
+		}
+
 	}
 	inputs.Features, err = applayout.Features(root)
 	if err != nil {

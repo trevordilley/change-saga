@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "8f93b9c4abd5a306f1b8719545eefba963194b95",
+      "commit": "9ffb9bec3505218593bfd28a54d796d829d0b3ac",
       "path": "internal/livingapp/status.go",
       "start": 62,
-      "end": 130,
-      "digest": "sha256:464aec525eba488c04eee97aa593fc6e26519f61815236eddb694222655e6820",
+      "end": 133,
+      "digest": "sha256:a60d8b6f31243c608eb1234792bc4b9ec926d45fac0b0ca29346d8765ffa85ac",
       "note": "Purely assembles criterion axes, changed-source facts, app facts, and traceability chain."
     }
   ]

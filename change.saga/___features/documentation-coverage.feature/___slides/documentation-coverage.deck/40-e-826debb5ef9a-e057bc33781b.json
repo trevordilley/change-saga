@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "9ffb9bec3505218593bfd28a54d796d829d0b3ac",
       "path": "internal/coverage/coverage.go",
-      "start": 268,
-      "end": 289,
-      "digest": "sha256:d65976a20ae9f05691dc94b4313aa9186042a5572341dae75a96e6a049f80c0e",
+      "start": 270,
+      "end": 301,
+      "digest": "sha256:800e71bb883c7431b126746dcf2a75c45bf1a8c0e15f100835b16445eb17842e",
       "note": "Lets only current resolved locations match their contained changed atoms."
     }
   ]

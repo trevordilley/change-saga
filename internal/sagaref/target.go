@@ -12,18 +12,19 @@ import (
 type TargetKind string
 
 const (
-	TargetStory        TargetKind = "story"
-	TargetCriterion    TargetKind = "criterion"
-	TargetPrototype    TargetKind = "prototype"
-	TargetChapter      TargetKind = "chapter"
-	TargetSection      TargetKind = "section"
-	TargetFragment     TargetKind = "fragment"
-	TargetLandmark     TargetKind = "landmark"
-	TargetDeck         TargetKind = "deck"
-	TargetSlide        TargetKind = "slide"
-	TargetItem         TargetKind = "item"
-	TargetClaim        TargetKind = "claim"
-	TargetVerification TargetKind = "verification"
+	TargetStory             TargetKind = "story"
+	TargetCriterion         TargetKind = "criterion"
+	TargetPrototype         TargetKind = "prototype"
+	TargetChapter           TargetKind = "chapter"
+	TargetSection           TargetKind = "section"
+	TargetFragment          TargetKind = "fragment"
+	TargetLandmark          TargetKind = "landmark"
+	TargetDeck              TargetKind = "deck"
+	TargetSlide             TargetKind = "slide"
+	TargetItem              TargetKind = "item"
+	TargetWhiteboardElement TargetKind = "whiteboard-element"
+	TargetClaim             TargetKind = "claim"
+	TargetVerification      TargetKind = "verification"
 )
 
 // Target is the parsed identity embedded in Reference.TargetURN. ParentID is
@@ -60,6 +61,8 @@ func ParseTarget(value string) (Target, error) {
 			target.Kind = TargetCriterion
 		case parts[3] == "fragment" && parts[5] == "landmark":
 			target.Kind = TargetLandmark
+		case parts[3] == "whiteboard" && parts[5] == "element":
+			target.Kind = TargetWhiteboardElement
 		case parts[3] == "slide" && parts[5] == "item":
 			target.Kind = TargetItem
 		default:
@@ -101,6 +104,11 @@ func (target Target) URN() string {
 			return ""
 		}
 		return base + "fragment:" + target.ParentID + ":landmark:" + target.ID
+	case TargetWhiteboardElement:
+		if !livingid.ValidID(target.ParentID) {
+			return ""
+		}
+		return base + "whiteboard:" + target.ParentID + ":element:" + target.ID
 	case TargetItem:
 		if !livingid.ValidID(target.ParentID) {
 			return ""

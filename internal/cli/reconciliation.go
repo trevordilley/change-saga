@@ -602,6 +602,12 @@ func reconciliationRoute(root, repo, head string, mismatch bool, document *saga.
 			return task
 		}
 	}
+	if strings.Contains(resource, ":whiteboard:") {
+		id := strings.Split(strings.Split(resource, ":whiteboard:")[1], ":")[0]
+		task.Inspect = append(task.Inspect, grammar.MustInvoke("whiteboard get", root, grammar.V("id", id)))
+		task.Guidance = "Reassess the element against the changed code and intent. Export whiteboard get, author exact evidence and links, then whiteboard publish --id " + id + " --parent <observed-current-revision> --revision <new-revision> --from <complete-document>. Never rewrite a saved revision or accept a proposal without reassessment."
+		return task
+	}
 	switch kind {
 	case "persona":
 		task.Inspect = append(task.Inspect, query("query personas", grammar.V("persona", resource)))

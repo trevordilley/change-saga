@@ -196,7 +196,20 @@ connections keep their distinct semantics.
 
 Pin depicted entities and recorded relationships to exact definitions. A
 relationship reference includes its owning entity revision and relationship ID.
-Preserve commit/path/line evidence through the existing reference features.
+Pin arbitrary implementation code directly on the native element using its
+optional `evidence` array (`commit`, `path`, optional inclusive `start`/`end`,
+`note`). `whiteboard publish --repo CHECKOUT` resolves the commit and authors the
+digest. Elements also carry optional `criterion_links`, `record` and exact
+Component/System/data-entity `documentation` pins, with the same shapes as slide
+Item metadata. The `code` field remains literal code-block text.
+
+Use pinned evidence instead of repository URLs in the info note. `whiteboard
+check` reports these URLs as warnings without blocking or rewriting them. When
+referenced code changes, the element reads stale in the reader and status and
+counts against health. Reassess the element and publish a new revision with the
+observed `--parent`; historical revisions keep their original pins. Current
+active board evidence joins `references`, `reconcile`, and living documented-code
+coverage. Review decks retain their own independent coverage.
 Overview explanations also identify their sources. A reader should be able to
 inspect the meaning and evidence without leaving the model's spatial context.
 Hover and keyboard focus use the implementation slides’ annotation action strip,

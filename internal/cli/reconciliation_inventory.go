@@ -4,6 +4,7 @@ import (
 	"context"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderef"
@@ -117,7 +118,7 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 	}
 	usesOf := func(target string) []changeview.Cause {
 		causes := []changeview.Cause{}
-		page := ix.Uses(target, inventoryview.UseOptions{Depth: inventoryview.MaxDepth, Roles: []string{inventoryview.RoleImplementationItem}, Limit: 20})
+		page := ix.Uses(target, inventoryview.UseOptions{Depth: inventoryview.MaxDepth, Roles: []string{inventoryview.RoleImplementationItem, inventoryview.RoleWhiteboardElement}, Limit: 20})
 		for _, u := range page.Uses {
 			causes = append(causes, changeview.Cause{Kind: "declared_use", Via: u.Item, Detail: "implementation Item in feature " + u.Feature + " pins " + u.Pin.Revision + " (" + u.Status + ") through " + strconv.Itoa(len(u.Path)) + " declared hop(s)"})
 		}
@@ -261,7 +262,9 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 			task.Because = append(task.Because, changeview.Cause{Kind: "selection_" + reason.Code, Via: sel.Result.Selection.ID, Detail: reason.Detail})
 		}
 		task.Inspect = append(task.Inspect, reconciliationQuery(in.root, in.repo, in.head, "query inventory-selections", grammar.V("item", sel.Item)))
-		task.Guidance = "Read the Item, its selection path and the current code. Selected-byte drift needs a new exact subset; a change outside the subset leaves the selected bytes current but may change what the entity means. Keep saved pins unless the Item deliberately adopts a newer revision."
+		if !strings.Contains(sel.Item, ":whiteboard:") {
+			task.Guidance = "Read the Item, its selection path and the current code. Selected-byte drift needs a new exact subset; a change outside the subset leaves the selected bytes current but may change what the entity means. Keep saved pins unless the Item deliberately adopts a newer revision."
+		}
 		tasks = append(tasks, task)
 	}
 	sort.SliceStable(summary.Exempt, func(i, j int) bool { return summary.Exempt[i].Target < summary.Exempt[j].Target })

@@ -368,7 +368,7 @@ func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error
 	revision := flags.String("revision", "", "exact revision URN")
 	depth := flags.Int("depth", 0, "additional declared owner hops")
 	var roles stringList
-	flags.Var(&roles, "role", "implementation_item, review_item or system_member; repeatable")
+	flags.Var(&roles, "role", "implementation_item, review_item, whiteboard_element or system_member; repeatable")
 	limit := flags.Int("limit", 50, "page size")
 	cursor := flags.String("cursor", "", "snapshot-bound page cursor")
 	fail := func(code string, err error) error {

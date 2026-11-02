@@ -91,7 +91,7 @@ column inventory is not required. Pin depicted data entities and recorded
 associations to exact source revisions, including relationship IDs. Distinguish
 conceptual flows from recorded relationships and use declared crow's-foot
 cardinalities. Existing ERD frames are optional imports. Component and system inventory pins are not
-supported whiteboard sources.
+supported whiteboard composition sources; use an element's `documentation` pin to inspect a Component or System.
 
 Use `change-saga whiteboard publish --id ID --revision r1 --name TITLE --from board.json PATH`
 for the complete document. Subsequent publications require `--parent` naming
@@ -121,10 +121,49 @@ the document shown by convention at `/technical/erd`; other names can explain
 other designs without changing the supported source adapters. Existing feature
 `___design` fragments are not automatically migrated.
 
-The viewer reuses slide annotation actions where applicable to reach source
-code, stories and documentation. Whiteboard pins do not transfer slide/review
-line coverage. Keep the opening view legible; readers can pan into other sections
-and focus detail without fitting the entire model on one screen.
+Whiteboard elements own optional `evidence`, `criterion_links`, `record`, and
+`documentation` metadata. Pin code here, not as a repository URL in the note:
+
+```json
+{
+  "id": "resolver", "kind": "node", "shape": "rect", "label": "Resolver",
+  "x": 80, "y": 100, "width": 260, "height": 120, "style": "normal",
+  "evidence": [{"commit": "HEAD", "path": "internal/coderesolve/resolver.go",
+                "start": 10, "end": 30, "note": "Resolves the saved bytes."}]
+}
+```
+
+Use an actual verified path/range. `whiteboard publish --repo CHECKOUT` resolves
+the commit-ish and authors the digest; if a digest is supplied, it must match.
+The stored revision contains full exact references. `code` still means code-block
+text. `criterion_links` uses the same `{id, criterion, story_revision, rationale}`
+shape as complete-slide Items. `record` names a canonical same-Saga record.
+`documentation` uses `{target, revision}` for a Component, System or data entity;
+this inspection link does not transfer that definition's code ownership.
+Inventory-format-2 `selections` and `documentation_view` carry over from Items
+unchanged: an explicit path of exact definition pins, a stable evidence ID and
+an exact selected code range with its own digest and note. The CLI verifies
+saved hops, containment and selected bytes. Only eligible selections contribute
+inherited coverage; stale, retired, conflicted or missing pins stay visible.
+Changes to the containing evidence outside the subset still require semantic
+reassessment. Inspect with `query inventory-selections --item ELEMENT_URN`.
+Decorative elements cannot carry these semantic links.
+
+Slide selectors, hotspots, slide/rank ownership and review decisions do not
+carry over: the native element already supplies geometry, reading order and
+annotation shape, and a whiteboard remains living documentation. Use native
+annotations and notes for callouts rather than fabricating slide Items.
+
+The viewer reuses the slide action strip and drawer for code, stories and
+records. When referenced code changes, the element is stale in the reader,
+`references`, `status`, health and `reconcile`, even when the comparison base
+still matches. Reassess the explanation and code, get the complete source, then
+publish a new revision with `--parent CURRENT --revision NEW`; previous revisions
+stay exact and inspectable. A move of unchanged bytes follows ordinary code
+reference remapping. Only current active board revisions contribute living
+documented-code coverage. A review's own deck retains independent coverage.
+`whiteboard check` warns about repository links in notes without blocking or
+rewriting them. Keep the opening view legible; readers can pan and focus detail.
 
 ## Make the depth readable
 
