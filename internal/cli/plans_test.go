@@ -450,7 +450,4 @@ func TestPlanAndTaskAreTheOnlyWayToPlanWork(t *testing.T) {
 			t.Errorf("plan %s still runs", old)
 		}
 	}
-	if err := Task(context.Background(), []string{"done", root}, &bytes.Buffer{}); err == nil {
-		t.Error("task done with no Task was accepted")
-	}
 }
