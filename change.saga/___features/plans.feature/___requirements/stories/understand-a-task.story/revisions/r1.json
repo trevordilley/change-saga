@@ -15,7 +15,7 @@
   "acceptance_criteria": [
     {
       "id": "task-names-story",
-      "statement": "A Task's page links to the user story it is part of."
+      "statement": "A Task's page links to the user story it leads to, and a Task with no story of its own shows the chain of Tasks leading there."
     },
     {
       "id": "task-has-essay",
@@ -26,5 +26,5 @@
       "statement": "A Task can reference specific code, and its page shows each reference and opens that code."
     }
   ],
-  "created_at": "2026-11-02T03:32:28.869575Z"
+  "created_at": "2026-11-02T04:00:58.091013Z"
 }

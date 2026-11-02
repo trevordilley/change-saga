@@ -4,7 +4,7 @@
   "id": "plans-hide-done-plans",
   "prototype": "urn:change-saga:change-saga:prototype:plans",
   "target": "urn:change-saga:change-saga:story:hide-done-plans",
-  "rationale": "Feature view (#/feature): the done Plan stays hidden until the filter reveals it. The CLI view (#/cli) leaves it out by default.",
+  "rationale": "Plans section (#/plans): the done Plan stays hidden until the filter reveals it. The CLI view (#/cli) leaves it out by default.",
   "prototype_revision": "urn:change-saga:change-saga:prototype:plans:revision:r1",
   "story_revision": "urn:change-saga:change-saga:story:hide-done-plans:revision:r1",
   "selector": {
@@ -16,5 +16,5 @@
       "height": 1
     }
   },
-  "created_at": "2026-11-02T03:39:38.335292Z"
+  "created_at": "2026-11-02T04:01:00.251242Z"
 }

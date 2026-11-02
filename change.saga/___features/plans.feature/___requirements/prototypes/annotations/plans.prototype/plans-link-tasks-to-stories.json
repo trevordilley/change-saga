@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/prototype-annotation.schema.json",
+  "version": 3,
+  "id": "plans-link-tasks-to-stories",
+  "prototype": "urn:change-saga:change-saga:prototype:plans",
+  "target": "urn:change-saga:change-saga:story:link-tasks-to-stories",
+  "rationale": "Stories tab (#/plan/stories): a Plan's stories come from its Tasks, grouped by feature; the Task page (#/task/merge-grammar) shows a chain to a story.",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plans:revision:r1",
+  "story_revision": "urn:change-saga:change-saga:story:link-tasks-to-stories:revision:r1",
+  "selector": {
+    "kind": "region",
+    "region": {
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1
+    }
+  },
+  "created_at": "2026-11-02T04:01:00.064155Z"
+}

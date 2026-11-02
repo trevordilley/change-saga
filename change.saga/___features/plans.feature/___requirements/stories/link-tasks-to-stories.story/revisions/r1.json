@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:link-tasks-to-stories",
+  "parents": [],
+  "title": "Trace every Task to a user story",
+  "statement": "As an architect, I can rely on every Task leading to a user story, directly or through the Tasks it unblocks, so all planned work traces back to why we are doing it and the chain of dependencies is clear.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "story-required",
+      "statement": "A Task that neither links to a user story nor unblocks a Task that leads to one is refused, whatever kind of work it describes."
+    },
+    {
+      "id": "plan-stories-from-tasks",
+      "statement": "A Plan's page lists the stories its Tasks lead to, grouped by feature."
+    },
+    {
+      "id": "follow-the-chain",
+      "statement": "A reader can follow links from a Plan to a Task, through any Tasks it unblocks, to a story, and to that story's feature."
+    }
+  ],
+  "created_at": "2026-11-02T04:00:57.36627Z"
+}

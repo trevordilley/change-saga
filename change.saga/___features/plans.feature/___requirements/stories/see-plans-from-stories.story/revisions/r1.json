@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-plans-from-stories",
+  "parents": [],
+  "title": "See which Plans touch a story or feature",
+  "statement": "As an architect, I can see from a story or a feature which Plans touch it, so I can find the work planned against it without anyone keeping that list by hand.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "story-shows-plans",
+      "statement": "A story's page lists the Tasks that link to it, the Tasks leading to those, and the Plans they belong to."
+    },
+    {
+      "id": "feature-shows-plans",
+      "statement": "A feature's page lists the Plans whose Tasks link to its stories."
+    },
+    {
+      "id": "worked-out-from-links",
+      "statement": "Those lists come from Tasks' story links; nobody authors a link from a Plan to a story or a feature."
+    },
+    {
+      "id": "survives-delivery",
+      "statement": "After feature deliver moves a story to another feature, its Tasks still link to it and that feature's page lists their Plans."
+    }
+  ],
+  "created_at": "2026-11-02T04:00:57.544546Z"
+}

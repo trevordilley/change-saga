@@ -2,7 +2,7 @@
   "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
   "version": 5,
   "id": "plans",
-  "title": "Plans: map out a feature's work before building it",
-  "description": "Teams lay out how a feature will be built as a phase-by-phase deck of well-understood Tasks, see what can run in parallel, and compare the Plan with the Reviews that implement it.",
-  "created_at": "2026-11-02T03:32:28.028508Z"
+  "title": "Plans: map out the work before building it",
+  "description": "Teams lay out a body of work as a phase-by-phase deck of well-understood Tasks, each leading to a user story, see what can run in parallel, and compare the Plan with the Reviews that implement it.",
+  "created_at": "2026-11-02T04:00:56.961833Z"
 }

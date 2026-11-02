@@ -14,13 +14,13 @@
   ],
   "acceptance_criteria": [
     {
-      "id": "plan-names-reviews",
-      "statement": "A Plan can name more than one Review that implements it, and each of those Reviews links back to the Plan."
+      "id": "plan-and-reviews-link",
+      "statement": "A Plan and the Reviews that implement it reference each other, and a Plan can have more than one."
     },
     {
       "id": "comparison-shows-differences",
       "statement": "The comparison shows the planned work beside what the Reviews delivered, identifying planned work that no Review delivered and delivered work the Plan did not include."
     }
   ],
-  "created_at": "2026-11-02T03:32:29.68712Z"
+  "created_at": "2026-11-02T04:00:58.882237Z"
 }
