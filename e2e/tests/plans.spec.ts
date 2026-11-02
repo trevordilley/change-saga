@@ -26,28 +26,25 @@ test("a Plan's tabs can be followed, and back returns to the last one", async ({
   const tabs = page.getByRole("navigation", { name: "Plan views" });
 
   await tabs.getByRole("link", { name: "Tasks" }).click();
-  await expect(page.locator('[data-plan-tasks] [data-plan-task-row="read-tides"]')).toHaveCount(1);
+  await expect(page.locator('[data-plan-node="task:tide-source"]')).toHaveCount(1);
   await expect(tabs.getByRole("link", { name: "Tasks" })).toHaveAttribute("aria-current", "page");
-
-  await tabs.getByRole("link", { name: "Coverage" }).click();
-  const source = page.locator('[data-plan-node="task:tide-source"]');
-  await expect(source).toHaveCount(1);
+  await expect(tabs.getByRole("link")).toHaveCount(2);
 
   await page.goBack();
-  await expect(page.locator('[data-plan-tasks] [data-plan-task-row="read-tides"]')).toHaveCount(1);
+  await expect(page.locator('[data-plan-node="task:tide-source"]')).toHaveCount(0);
+  await expect(page.locator("[data-plan-deck], [data-plan] [data-deck-viewer]").first()).toBeVisible();
 
-  await tabs.getByRole("link", { name: "Deck" }).click();
-  await expect(page.locator("[data-plan]")).toHaveCount(1);
-  await expect(page.locator("[data-plan-tasks]")).toHaveCount(0);
+  await page.goForward();
+  await expect(page.locator('[data-plan-node="task:tide-source"]')).toHaveCount(1);
 });
 
-test("selecting a node on Coverage marks its path and shows its detail", async ({ page, saga }) => {
+test("selecting a node on Tasks marks its path and shows its detail", async ({ page, saga }) => {
   run(saga, "plan", "create", "--id", "tides", "--title", "Plan the tides");
   run(saga, "task", "add", "--plan", "tides", "--id", "read-tides", "--title", "Read the tide table",
     "--story", "urn:change-saga:wave-one:story:read-the-tide");
   run(saga, "task", "add", "--plan", "tides", "--id", "tide-source", "--title", "Find a tide source", "--unblocks", "read-tides");
 
-  await page.goto(`${saga.baseURL}/plans/tides/coverage`);
+  await page.goto(`${saga.baseURL}/plans/tides/tasks`);
   await waitForSettledSaga(page);
 
   await page.locator('[data-plan-node="task:read-tides"]').click();
@@ -59,6 +56,28 @@ test("selecting a node on Coverage marks its path and shows its detail", async (
   await page.locator('[data-plan-node^="story:"]').click();
   await expect(page.locator(".diff-drawer.open [data-plan-story-detail]")).toContainText("It takes these 2 tasks, 0 done.");
   await expect(page.locator('[data-plan-node="task:tide-source"]')).toHaveClass(/plan-path/);
+});
+
+test("a Task's page shows it selected on the board, within its chain", async ({ page, saga }) => {
+  run(saga, "plan", "create", "--id", "tides", "--title", "Plan the tides");
+  run(saga, "task", "add", "--plan", "tides", "--id", "read-tides", "--title", "Read the tide table",
+    "--story", "urn:change-saga:wave-one:story:read-the-tide");
+  run(saga, "task", "add", "--plan", "tides", "--id", "tide-source", "--title", "Find a tide source", "--unblocks", "read-tides");
+
+  await page.goto(`${saga.baseURL}/plans/tides/tasks`);
+  await waitForSettledSaga(page);
+  await page.locator('[data-plan-node="task:tide-source"]').click();
+  await page.locator(".diff-drawer.open").getByRole("link", { name: "Open this task" }).click();
+
+  const board = page.locator("[data-plan-task-board]");
+  await expect(board.locator('[data-plan-node="task:tide-source"]')).toHaveClass(/plan-selected/);
+  await expect(board.locator('[data-plan-node="task:read-tides"]')).toHaveClass(/plan-onward/);
+  await expect(board.locator('[data-plan-node^="story:"]')).toHaveClass(/plan-onward/);
+
+  // The board still works: selecting another node moves the selection.
+  await board.locator('[data-plan-node="task:read-tides"]').click();
+  await expect(board.locator('[data-plan-node="task:read-tides"]')).toHaveClass(/plan-selected/);
+  await expect(page.locator('.diff-drawer.open [data-plan-node-detail="read-tides"]')).toBeVisible();
 });
 
 test("a Plan opens on its essay, and a slide's Tasks appear in a slide-out", async ({ page, saga }) => {

@@ -66,14 +66,14 @@ func TestAPlanPageHoldsItsEssayInTheDeckViewer(t *testing.T) {
 	}
 }
 
-func TestAPlanHasDeckTasksAndCoverageViews(t *testing.T) {
+func TestAPlanHasDeckAndTasksViews(t *testing.T) {
 	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	addServerPlan(t, fixture.root, "first")
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
-	for _, path := range []string{"/plans/first", "/plans/first/tasks", "/plans/first/coverage"} {
+	for _, path := range []string{"/plans/first", "/plans/first/tasks"} {
 		page := getPage(t, handler, path).Body.String()
-		for _, want := range []string{`href="/plans/first"`, `href="/plans/first/tasks"`, `href="/plans/first/coverage"`} {
+		for _, want := range []string{`href="/plans/first"`, `href="/plans/first/tasks"`} {
 			if !strings.Contains(page, want) {
 				t.Errorf("%s has no header link %s", path, want)
 			}
@@ -84,7 +84,7 @@ func TestAPlanHasDeckTasksAndCoverageViews(t *testing.T) {
 	}
 }
 
-func TestPlanCoverageEndsAtStoriesAndSaysWhatEachTakes(t *testing.T) {
+func TestPlanTasksEndAtStoriesAndSayWhatEachTakes(t *testing.T) {
 	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	addServerPlan(t, fixture.root, "first")
@@ -93,7 +93,7 @@ func TestPlanCoverageEndsAtStoriesAndSaysWhatEachTakes(t *testing.T) {
 	addServerTask(t, fixture.root, "first", "refactor", "", "feature-work")
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 
-	page := getPage(t, handler, "/plans/first/coverage").Body.String()
+	page := getPage(t, handler, "/plans/first/tasks").Body.String()
 	for _, want := range []string{
 		`data-whiteboard-view`,
 		`data-plan-node="task:refactor"`,
@@ -105,8 +105,27 @@ func TestPlanCoverageEndsAtStoriesAndSaysWhatEachTakes(t *testing.T) {
 		`It takes these 2 tasks, 0 done.`,
 	} {
 		if !strings.Contains(page, want) {
-			t.Errorf("the Coverage view has no %q", want)
+			t.Errorf("the Tasks view has no %q", want)
 		}
+	}
+}
+
+func TestATaskPageDrawsOnlyItsChain(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	addServerPlan(t, fixture.root, "first")
+	story := "urn:change-saga:" + serverSagaID(t, fixture.root) + ":story:missing"
+	addServerTask(t, fixture.root, "first", "feature-work", story)
+	addServerTask(t, fixture.root, "first", "refactor", "", "feature-work")
+	addServerTask(t, fixture.root, "first", "elsewhere", story)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+
+	page := getPage(t, handler, "/plans/first/tasks/refactor").Body.String()
+	if !strings.Contains(page, `data-plan-node="story:`+story+`"`) {
+		t.Error("the chain does not reach its story")
+	}
+	if strings.Contains(page, `data-plan-node="task:elsewhere"`) {
+		t.Error("a Task outside the chain was drawn")
 	}
 }
 
@@ -139,7 +158,12 @@ func TestAPlanPageReadsAsAPlanAndShowsItsTasks(t *testing.T) {
 		}
 	}
 	task := getPage(t, handler, "/plans/first/tasks/refactor").Body.String()
-	for _, want := range []string{`data-task-chain`, "No story of its own", `data-task-unblocks`, "Done"} {
+	for _, want := range []string{
+		`data-task-chain`, "No story of its own", `data-task-unblocks`, "Done",
+		`class="plan-board plan-selecting"`,
+		`plan-selected plan-path" data-plan-node="task:refactor"`,
+		`plan-onward" data-plan-node="task:feature-work"`,
+	} {
 		if !strings.Contains(task, want) {
 			t.Errorf("the task page has no %q", want)
 		}

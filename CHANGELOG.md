@@ -20,8 +20,8 @@ tool, and what they have to do about it.
   `depend`, `set`, `done`, `remove`, and `list`; and `--plan` on `apply-slide`
   and `deck overview`. A phase's Tasks can run in parallel, so a Task depends only on earlier phases.
   The reader shows Plans beside Documentation and Review: each opens on its essay
-  and deck, with Deck, Tasks, and Coverage in the header. Coverage is a whiteboard
-  of the Tasks ending at their stories.
+  and deck, with Deck and Tasks in the header. Tasks is a whiteboard of the Tasks
+  ending at their stories.
   See [writing a Plan](skills/change-saga/references/plans.md).
 - A Roadmap feature can add stories to an existing feature without mixing
   planned work into it: `feature add --augments ID` or `feature set-plan
