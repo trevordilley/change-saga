@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "work-planning--overview",
-  "title": "Overview",
-  "media_type": "text/markdown",
-  "entrypoint": "content.md",
-  "order": -100
-}

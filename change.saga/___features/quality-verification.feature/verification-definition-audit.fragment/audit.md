@@ -1,6 +1,6 @@
 # Verification definitions and gaps {#verification-definitions-and-gaps}
 
-This is an assessment of verification definitions, authored on 2026-10-16 against the repository source at `cc75d453cd7cd65aa1f675533c07fb34404b1e6c`. It records what the inspected code asserts and what still needs verification. It contains no test execution results or delivery verdicts. All cases remain proposed for review.
+This is an assessment of verification definitions, authored on 2026-10-16 against the repository source at `cc75d453cd7cd65aa1f675533c07fb34404b1e6c`. It records what the inspected code asserts and what still needs verification. It contains no test execution results or delivery verdicts. All cases remain proposed for review. The old work plan was removed after this assessment, so its stories and cases are gone from it; the counts below are as assessed.
 
 The assessment covers **63 current stories and 211 acceptance criteria**, expressed as **178 canonical cases** with **306 implementation evidence records**. Each criterion has a case-level revision-pinned verifies relation and an explicit step mapping. Cases reuse canonical requirement and evidence identities. Requirements-only cases are valid definitions and can gain code links later without changing identity.
 
@@ -21,7 +21,6 @@ Start at a story, open its acceptance criterion, follow its linked test case, th
 
 Existing kind policies were preserved. Twenty-two criteria currently have only negative or edge cases; the default positive-kind policy can therefore still report a missing kind. Review the intended policy or add a meaningful positive scenario where the criterion calls for one. A mapped definition does not by itself satisfy every policy.
 
-- **Public work authoring:** contract lifecycle transitions lack a public writer, and typed technical-entity assignments do not yet connect work-item scope, queries and reconciliation. Definitions preserve those desired capabilities as planned checks.
 - **Product intent:** first-slide navigation may conflict with the newer deck overview entry point; feature-scoped coverage currently includes unowned lines despite the recorded only-named-feature wording; delegated AI principal attribution is Git-derived. Clarify these contracts before treating current behavior as acceptance.
 - **Historical context:** complete public history field fidelity, omitted-parent rejection, design-to-requirement context, and visible stale/conflicted reverse paths need stronger assertions. A successful path or a filtered-out stale path does not establish those obligations.
 - **Browser behavior:** freehand gestures, cross-participant annotation authorship, source visual byte preservation, presentation mode, reopen/ordered discussion history, and broader media/sandbox behavior have planned or partial verification.
@@ -683,44 +682,6 @@ As a developer reviewing a change, I can annotate a specific part of a slide or 
 | [anchored](/requirements/visual-annotation/criteria/anchored) | partial-evidence | [Keep an annotation attached to its slide through resizing and navigation](/tests/review-annotation-anchor). Normalized viewport scaling asserted; navigation, reload and no leakage to another slide remain planned. |
 | [visible-author](/requirements/visual-annotation/criteria/visible-author) | planned | [Show an annotation and its author to another participant](/tests/review-annotation-participant-author). No inspected test changes participants and asserts visible annotation author; manual definition retains requirement. |
 | [preserves-source](/requirements/visual-annotation/criteria/preserves-source) | planned | [Leave original visual bytes unchanged after annotation edits](/tests/review-annotation-source-immutable). Annotation history test preserves original anchor, not original source visual. No inspected byte-level visual immutability assertion. |
-
-### work-planning {#feature-work-planning}
-
-#### [Gate dependent work on a versioned contract](/requirements/contract-gated-handoff) {#story-contract-gated-handoff}
-
-As an architect coordinating parallel work, I can define a versioned provider-consumer contract and record its lifecycle so dependent work opens only against the agreed revision.
-
-| Criterion | Assessment | Definitions and findings |
-| --- | --- | --- |
-| [versioned-contract](/requirements/contract-gated-handoff/criteria/versioned-contract) | partial-evidence | [Persist a versioned provider-consumer contract definition](/tests/contracts-contract-definition). Create success is tested; exact field round-trip through public queries is not. query work-events exposes lifecycle events, not a dedicated full contract-definition projection; inspect step may reveal a public read gap. |
-| [exact-revision-gate](/requirements/contract-gated-handoff/criteria/exact-revision-gate) | partial-evidence | [Require fulfillment of the current pinned contract revision](/tests/contracts-contract-exact-revision), [Keep unfulfilled or conflicted contract heads blocking](/tests/contracts-contract-conflicted-head). Exact revision mismatch is tested. Separate planned case covers lifecycle conflict and nonfulfilled states; no direct assertions for those contract-gate branches located. Requirements-only definition: public contract-state writer is absent, so do not emulate reconciliation by metadata editing. Gate branch implementation was inspected but is not test evidence. |
-| [public-contract-state](/requirements/contract-gated-handoff/criteria/public-contract-state) | planned | [Append and query contract states through the public plan API](/tests/contracts-public-contract-state). Confirmed product gap: installed plan --help and internal/cli/living_plan.go:13-46 expose add-contract only, no state writer. Domain RecordContractState and workEventRows exist, but do not satisfy the public-command criterion. Do not invent a command name or claim this case is automated. |
-
-#### [Plan work with explicit dependencies](/requirements/dependency-aware-work-plan) {#story-dependency-aware-work-plan}
-
-As a product manager, I can organize work into ordered waves with explicit dependency gates so contributors can see what can start and why blocked work must wait.
-
-| Criterion | Assessment | Definitions and findings |
-| --- | --- | --- |
-| [ordered-waves](/requirements/dependency-aware-work-plan/criteria/ordered-waves) | planned | [Read ordered waves without creating implicit wave barriers](/tests/contracts-waves-and-readiness). Inspected waveRows order sort (compose.go:123-166) and projectWorkItem (192-212); no exact query order/assignment or no-wave-barrier assertion located. TestWavesDoNotCreateImplicitBarriersAndDependenciesFormADAG only asserts DAG creation/rejection and count despite its name. |
-| [no-wave-barrier](/requirements/dependency-aware-work-plan/criteria/no-wave-barrier) | planned | [Read ordered waves without creating implicit wave barriers](/tests/contracts-waves-and-readiness). Inspected waveRows order sort (compose.go:123-166) and projectWorkItem (192-212); no exact query order/assignment or no-wave-barrier assertion located. TestWavesDoNotCreateImplicitBarriersAndDependenciesFormADAG only asserts DAG creation/rejection and count despite its name. |
-| [fact-gates](/requirements/dependency-aware-work-plan/criteria/fact-gates) | partial-evidence | [Evaluate progress, merge and exact-contract dependency facts](/tests/contracts-dependency-fact-gates). Inspected assertions exercise valid three-gate forms and missing merge reason. Public per-dependency blocker identities, all conflict branches, and invalid mixed-gate rejection need explicit assertions. |
-| [blocker-reasons](/requirements/dependency-aware-work-plan/criteria/blocker-reasons) | partial-evidence | [Evaluate progress, merge and exact-contract dependency facts](/tests/contracts-dependency-fact-gates). Inspected assertions exercise valid three-gate forms and missing merge reason. Public per-dependency blocker identities, all conflict branches, and invalid mixed-gate rejection need explicit assertions. |
-| [acyclic](/requirements/dependency-aware-work-plan/criteria/acyclic) | evidence-linked | [Reject a dependency that closes a cycle](/tests/contracts-dependency-cycle-rejection).  |
-
-#### [Track work from assignment through integration](/requirements/track-work-delivery) {#story-track-work-delivery}
-
-As an Architect or Developer coordinating delivery, I can associate specific technical entity identities with a work item's workspace, progress, and merge evidence so contributors and their AI workers can discover their assigned scope and collaborators can track it through integration.
-
-| Criterion | Assessment | Definitions and findings |
-| --- | --- | --- |
-| [workspace-ownership](/requirements/track-work-delivery/criteria/workspace-ownership) | partial-evidence | [Retain portable workspace assignment and release history](/tests/contracts-workspace-ownership-events). Missing exact query field round-trip and released-not-active assertions; current test validates persistence portability and parent linkage only. |
-| [progress-history](/requirements/track-work-delivery/criteria/progress-history) | partial-evidence | [Preserve progress history and expose current state only for a unique head](/tests/contracts-progress-history-heads). Domain heads/reconciliation are covered, but public history complete contents and current-progress round trip need direct assertions. |
-| [merge-evidence](/requirements/track-work-delivery/criteria/merge-evidence) | partial-evidence | [Record required merge lifecycle with exact head and merge commit](/tests/contracts-merge-delivery-evidence). No public query assertion for exact integrated OIDs, each required unit lifecycle and event ancestry located; mutation success alone is insufficient. |
-| [done-is-not-delivery](/requirements/track-work-delivery/criteria/done-is-not-delivery) | partial-evidence | [Keep done work undelivered until immutable evidence exists](/tests/contracts-done-not-delivery). Traceability delivery is directly asserted. The criterion names peer-review readiness; add an exact readiness API assertion rather than silently substituting delivered for ready. |
-| [technical-entity-scope](/requirements/track-work-delivery/criteria/technical-entity-scope) | planned | [Assign existing technical identities without duplicating inventory or personas](/tests/contracts-assigned-entity-scope). Product gap in inspected workplan model: WorkItemRevision has relations/touch areas but no typed System/Component/data-entity assignment, and WorkspaceEvent has workspace-only fields. No supported assignment/query bridge or automated assertions found; do not infer entity ownership from file touch areas. |
-| [query-assigned-entities](/requirements/track-work-delivery/criteria/query-assigned-entities) | planned | [Retrieve only a worker’s assigned entity roadmap context](/tests/contracts-assigned-entity-query). Public inventory can report intent/code health, but no typed work-assignment filter/bridge is present in the inspected model/query work-item projection. This is not covered by ordinary inventory query tests. |
-| [entity-reconciliation](/requirements/track-work-delivery/criteria/entity-reconciliation) | planned | [Update an assigned entity roadmap without erasing proposal or assignment history](/tests/contracts-assigned-entity-reconciliation). No assigned-entity reconciliation bridge or combined assignment/proposal/integration assertions located. Existing inventory lifecycle and generic done-not-delivery mechanisms do not establish this cross-domain criterion. |
 
 ## Evidence inspection notes {#evidence-inspection-notes}
 
@@ -1798,86 +1759,3 @@ Requirements-only definition; no implementation evidence is claimed.
 | --- | --- | --- |
 | `evidence-1` | test_implementation → `place` | Clicks chosen coordinates and asserts displayed note text; resulting coordinates are not asserted. |
 | `evidence-2` | implementation_under_test → `place`, `location` | Records note text with normalized pointer location and slide target. |
-
-### [Retrieve only a worker’s assigned entity roadmap context](/tests/contracts-assigned-entity-query) {#case-contracts-assigned-entity-query}
-
-Requirements-only definition; no implementation evidence is claimed.
-
-### [Update an assigned entity roadmap without erasing proposal or assignment history](/tests/contracts-assigned-entity-reconciliation) {#case-contracts-assigned-entity-reconciliation}
-
-Requirements-only definition; no implementation evidence is claimed.
-
-### [Assign existing technical identities without duplicating inventory or personas](/tests/contracts-assigned-entity-scope) {#case-contracts-assigned-entity-scope}
-
-Requirements-only definition; no implementation evidence is claimed.
-
-### [Keep unfulfilled or conflicted contract heads blocking](/tests/contracts-contract-conflicted-head) {#case-contracts-contract-conflicted-head}
-
-Requirements-only definition; no implementation evidence is claimed.
-
-### [Persist a versioned provider-consumer contract definition](/tests/contracts-contract-definition) {#case-contracts-contract-definition}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `cli-create` | test_implementation → `create` | Asserts successful public creation and initial event count, not round-trip field equality. |
-| `contract-fields` | implementation_under_test → `create` | Requires contract input and forwards all definition fields to domain writer. |
-
-### [Require fulfillment of the current pinned contract revision](/tests/contracts-contract-exact-revision) {#case-contracts-contract-exact-revision}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `fulfilled-and-stale` | test_implementation → `fulfill`, `revise` | Asserts fulfillment at v1 and rejection after v2 becomes current. |
-| `gate` | implementation_under_test → `fulfill`, `revise` | Requires unique matching revision head and unique fulfilled event head. |
-
-### [Reject a dependency that closes a cycle](/tests/contracts-dependency-cycle-rejection) {#case-contracts-dependency-cycle-rejection}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `cycle-no-publication` | test_implementation → `cycle`, `unchanged` | Asserts cycle error, absent destination and surviving dependency count. |
-
-### [Evaluate progress, merge and exact-contract dependency facts](/tests/contracts-dependency-fact-gates) {#case-contracts-dependency-fact-gates}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `progress-merge` | test_implementation → `done`, `integrate` | Exercises progress and merge fact evaluation with nonempty missing-merge reason. |
-| `contract` | test_implementation → `contract` | Exercises contract fulfillment using exact revision. |
-| `blocker-projection` | implementation_under_test → `public-blockers` | Public projection associates each failed dependency with its identity, reason and path; no assertion evidence for exhaustive table. |
-| `condition-validation` | implementation_under_test → `reject-condition` | Validates endpoint identity and the discriminated gate condition. |
-
-### [Keep done work undelivered until immutable evidence exists](/tests/contracts-done-not-delivery) {#case-contracts-done-not-delivery}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `no-delivery` | test_implementation → `done` | Asserts done/planned path is not delivered and names immutable evidence missing. |
-| `delivery` | test_implementation → `evidence` | Asserts integrated evidence changes delivery projection. |
-| `missing-evidence` | implementation_under_test → `done` | Adds explicit blocker when evidence is absent. |
-
-### [Record required merge lifecycle with exact head and merge commit](/tests/contracts-merge-delivery-evidence) {#case-contracts-merge-delivery-evidence}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `merge-chain` | test_implementation → `record` | Exercises all three public mutations with exact OIDs; asserts mutation success/event count, not full query payload. |
-| `merge-event-query` | implementation_under_test → `query` | Public work events carry full merge lifecycle payload. |
-
-### [Preserve progress history and expose current state only for a unique head](/tests/contracts-progress-history-heads) {#case-contracts-progress-history-heads}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `progress-conflict` | test_implementation → `conflict` | Creates both branch events and asserts no current progress. |
-| `progress-reconcile` | test_implementation → `reconcile` | Asserts a single new event and one remaining head. |
-| `progress-projection` | implementation_under_test → `history` | Public projection includes full progress events with parents. |
-
-### [Append and query contract states through the public plan API](/tests/contracts-public-contract-state) {#case-contracts-public-contract-state}
-
-Requirements-only definition; no implementation evidence is claimed.
-
-### [Read ordered waves without creating implicit wave barriers](/tests/contracts-waves-and-readiness) {#case-contracts-waves-and-readiness}
-
-Requirements-only definition; no implementation evidence is claimed.
-
-### [Retain portable workspace assignment and release history](/tests/contracts-workspace-ownership-events) {#case-contracts-workspace-ownership-events}
-
-| Evidence | Role and steps | Inspected scope |
-| --- | --- | --- |
-| `workspace-parent` | test_implementation → `assign-release` | Asserts separate event, parent reference and absence of transient identity; does not assert all field equality/public projection. |
-| `workspace-query` | implementation_under_test → `query` | Public event output retains structured WorkspaceEvent fields. |

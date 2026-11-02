@@ -1,7 +1,7 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/feature-plan.schema.json",
   "version": 5,
-  "status": "planned",
+  "status": "built",
   "labels": [
     "urn:change-saga:change-saga:label:product-planning"
   ]

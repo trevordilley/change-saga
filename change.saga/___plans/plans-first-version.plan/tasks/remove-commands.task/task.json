@@ -18,6 +18,7 @@
     "within_two_days": true,
     "reason": "Deleting commands and their tests."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "The old plan verbs and four work queries are gone, with the implements relation.",
   "created_at": "2026-11-02T05:05:48.509143Z"
 }

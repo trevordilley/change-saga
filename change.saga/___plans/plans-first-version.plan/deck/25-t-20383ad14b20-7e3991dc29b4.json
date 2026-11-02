@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "deck": "plans-first-version",
+  "slide": "tasks-lead-to-stories",
+  "current": "sha256:ef4faa4f83a99b617dc01e5cd5926be886757a42b9e3c8584e85da88c166cb13",
+  "revisions": [
+    {
+      "snapshot": "sha256:ef4faa4f83a99b617dc01e5cd5926be886757a42b9e3c8584e85da88c166cb13",
+      "request_id": "plan-deck-tasks-lead-to-stories",
+      "created_at": "2026-11-02T05:19:40.953899Z",
+      "asset": "24-a-de2abc12ef48fcab2de8304600e54cda35f27f91706651548bd4.svg",
+      "asset_digest": "sha256:de2abc12ef48fcab2de8304600e54cda35f27f91706651548bd4734bf7528f03",
+      "slide": {
+        "front": [
+          "A Task may reach its story through what it unblocks.",
+          "There has to be a story somewhere; otherwise it is refused.",
+          "What can start now comes from the same dependencies."
+        ],
+        "version": 4,
+        "id": "tasks-lead-to-stories",
+        "deck": "plans-first-version",
+        "title": "Every Task leads to a story; dependencies decide what runs in parallel",
+        "rank": 20,
+        "section": "Phase 2: Tasks",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-de2abc12ef48fcab2de8304600e54cda35f27f91706651548bd4.svg",
+        "takeaway": "A Task names a story or unblocks a Task that leads to one. One walk over the graph checks it on every write, in linear time.",
+        "reading_order": [
+          "t-task-records",
+          "t-task-commands",
+          "t-task-page",
+          "t-dependency-graph",
+          "t-task-sizing"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-task-records",
+            "slide": "tasks-lead-to-stories",
+            "rank": 500,
+            "kind": "node",
+            "label": "Require a path to a story",
+            "description": "Task task-records.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-task-records"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:task-records"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-task-commands",
+            "slide": "tasks-lead-to-stories",
+            "rank": 510,
+            "kind": "node",
+            "label": "The task commands",
+            "description": "Task task-commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-task-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:task-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-task-page",
+            "slide": "tasks-lead-to-stories",
+            "rank": 520,
+            "kind": "node",
+            "label": "A Task page",
+            "description": "Task task-page.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-task-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:task-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-dependency-graph",
+            "slide": "tasks-lead-to-stories",
+            "rank": 530,
+            "kind": "node",
+            "label": "Dependency graph",
+            "description": "Task dependency-graph.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-dependency-graph"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:dependency-graph"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-task-sizing",
+            "slide": "tasks-lead-to-stories",
+            "rank": 540,
+            "kind": "node",
+            "label": "Sizing",
+            "description": "Task task-sizing.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-task-sizing"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:task-sizing"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-717d1bb587a2ff419cc57fac286da15ae99b803d450dd03807de.json",
+        "source_digest": "sha256:717d1bb587a2ff419cc57fac286da15ae99b803d450dd03807dea1f778033592",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "deck": "plans-first-version",
+  "slide": "plan-and-reviews",
+  "current": "sha256:bd570f0eaf44fc6c3af9b26ef4fbe58fa84b9e8ee1ee0a3a022853d0e531e024",
+  "revisions": [
+    {
+      "snapshot": "sha256:bd570f0eaf44fc6c3af9b26ef4fbe58fa84b9e8ee1ee0a3a022853d0e531e024",
+      "request_id": "plan-deck-plan-and-reviews",
+      "created_at": "2026-11-02T05:19:43.240984Z",
+      "asset": "24-a-7da50bd004a82b4ff9b7d3fe614d1727150c1dcc4b65fadd56e8.svg",
+      "asset_digest": "sha256:7da50bd004a82b4ff9b7d3fe614d1727150c1dcc4b65fadd56e81a280e3c4a5a",
+      "slide": {
+        "front": [
+          "Comparing what we said with what we did is the key value.",
+          "It reports and never blocks a merge.",
+          "plan deliver is refused until the work is done."
+        ],
+        "version": 4,
+        "id": "plan-and-reviews",
+        "deck": "plans-first-version",
+        "title": "A Plan and its Reviews reference each other, and delivery is explicit",
+        "rank": 40,
+        "section": "Phase 4: Reviews and delivery",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7da50bd004a82b4ff9b7d3fe614d1727150c1dcc4b65fadd56e8.svg",
+        "takeaway": "A review Item naming a Task says it delivers that Task. The comparison reads those links and only reports. A Plan is delivered by a command that checks the work is finished.",
+        "reading_order": [
+          "t-compare-with-reviews",
+          "t-deliver-plans"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-compare-with-reviews",
+            "slide": "plan-and-reviews",
+            "rank": 500,
+            "kind": "node",
+            "label": "Plan vs Reviews",
+            "description": "Task compare-with-reviews.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-compare-with-reviews"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:compare-with-reviews"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-deliver-plans",
+            "slide": "plan-and-reviews",
+            "rank": 510,
+            "kind": "node",
+            "label": "Mark Plans delivered",
+            "description": "Task deliver-plans.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-deliver-plans"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:deliver-plans"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-3fb14812ab5b2bdce432b8b99967a232b2bda81a2949111eba77.json",
+        "source_digest": "sha256:3fb14812ab5b2bdce432b8b99967a232b2bda81a2949111eba7780f3c51ac7a5",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

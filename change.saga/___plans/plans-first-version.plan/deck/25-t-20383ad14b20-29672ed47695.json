@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "deck": "plans-first-version",
+  "slide": "deck-holds-the-design",
+  "current": "sha256:3260f8bec3663d3c6e6a13c00d0417eb4240a8bb013f04f8b8fb496a87d24adf",
+  "revisions": [
+    {
+      "snapshot": "sha256:3260f8bec3663d3c6e6a13c00d0417eb4240a8bb013f04f8b8fb496a87d24adf",
+      "request_id": "plan-deck-deck-holds-the-design",
+      "created_at": "2026-11-02T05:19:42.151231Z",
+      "asset": "24-a-e09142fc9da61af350075a98290a0f5ec944bf8ed38731642030.svg",
+      "asset_digest": "sha256:e09142fc9da61af350075a98290a0f5ec944bf8ed38731642030af9ec6814d57",
+      "slide": {
+        "front": [
+          "A Plan's deck owes no code evidence.",
+          "Slide sections name phases.",
+          "Slides show their Tasks' done state."
+        ],
+        "version": 4,
+        "id": "deck-holds-the-design",
+        "deck": "plans-first-version",
+        "title": "The deck holds the technical design, and shows the work's progress",
+        "rank": 30,
+        "section": "Phase 3: The deck shows progress",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e09142fc9da61af350075a98290a0f5ec944bf8ed38731642030.svg",
+        "takeaway": "A Plan's deck uses the review deck's path with a new role. Slide Items name Tasks, and done state is read when the page opens, so nobody republishes a slide to report progress.",
+        "reading_order": [
+          "t-plan-deck",
+          "t-phase-sections",
+          "t-slides-show-tasks",
+          "t-plans-on-stories"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-deck",
+            "slide": "deck-holds-the-design",
+            "rank": 500,
+            "kind": "node",
+            "label": "A Plan's deck",
+            "description": "Task plan-deck.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-deck"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-deck"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-phase-sections",
+            "slide": "deck-holds-the-design",
+            "rank": 510,
+            "kind": "node",
+            "label": "Slides by phase",
+            "description": "Task phase-sections.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-phase-sections"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:phase-sections"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-slides-show-tasks",
+            "slide": "deck-holds-the-design",
+            "rank": 520,
+            "kind": "node",
+            "label": "Tasks on slides",
+            "description": "Task slides-show-tasks.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-slides-show-tasks"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:slides-show-tasks"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plans-on-stories",
+            "slide": "deck-holds-the-design",
+            "rank": 530,
+            "kind": "node",
+            "label": "Plans on stories",
+            "description": "Task plans-on-stories.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plans-on-stories"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plans-on-stories"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-52b38bf4347ff8cbf720a380ae7d8dd20097831ae05331d4cb0b.json",
+        "source_digest": "sha256:52b38bf4347ff8cbf720a380ae7d8dd20097831ae05331d4cb0bb28f50c912b8",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

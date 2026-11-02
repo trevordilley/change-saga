@@ -6,7 +6,7 @@ Change Saga explains a change after it is built. Before that, how the work will 
 
 **A Plan describes a body of work and how it can be executed effectively in parallel.** It is its own kind of document, in its own section: Documentation is what is, Plans is what we will do, Reviews is what we did.
 
-A Plan is where the technical design for a change is drafted, and its Tasks are how the work gets done. It is a slide deck, like a review, but organized by implementation: the deck is encouraged to run phase by phase. It has prototypes showing what will be built. Underneath it is a set of Tasks. When a Plan changes it is the same Plan, committed again; Git keeps every earlier version. A different body of work gets its own Plan.
+A Plan is where the technical design for a change is drafted, and its Tasks are how the work gets done. It is a slide deck, like a review, but organized by implementation: the deck is encouraged to run phase by phase. It can have prototypes showing what will be built. Underneath it is a set of Tasks. When a Plan changes it is the same Plan, committed again; Git keeps every earlier version. A different body of work gets its own Plan.
 
 A **Task** is one well-understood piece of work. It has dependencies on other Tasks, so what can run in parallel is visible rather than guessed. It can have a small essay and references to the code that matters. The Plan's slides reference Tasks, and a slide shows which of its Tasks are done.
 
@@ -30,45 +30,38 @@ The sizing goal is that a team is confident each Task would have taken two days 
 
 ## What is true today {#what-is-true-today}
 
-Nothing here is built. There is no Plan, no Task, and no command or page for either. These stories are proposed. The [prototype](/prototypes/plans) shows the direction using this feature as its own example; its content and done states are illustrative.
+Plans and Tasks are built. These stories are proposed, because the people who asked for them have not yet accepted them. [Plans for Plans](/plans/plans-first-version) is the first real Plan: it holds the technical design for this feature and the Tasks that built it. The [prototype](/prototypes/plans) shows the direction explored beforehand, and its content and done states are illustrative.
 
-## The old work plan {#work-plan-overlap}
+A Plan's slides are shown as images, so element notes and the reader's theme toggle do not apply to them yet.
 
-[Dependency-aware work planning](/features/work-planning) is an earlier version of the same idea, in `internal/workplan` under `change-saga plan`. A work item is what a Task is, and a wave is what a Phase is. But an audit found it connected and unused: this repository has no records of it, the reader has no page for it, and part of it has no public command.
+## One way to plan work {#one-way-to-plan-work}
 
-**Decision: keep the idea and rebuild the implementation.** No Saga outside this repository uses it. A Task is a plain record and Git is its history. `change-saga plan` becomes the Plan's grammar, a new `task` noun joins it, and "work plan" stops being a separate idea. The technical design, under Technical on this page, has the evidence, what this gives up, and what would be removed. Each feature's `plan.json`, written by `feature set-plan`, is Roadmap status and stays as it is, though the word then means two things there.
+Plans and Tasks replaced an earlier work plan that was built but never used. Git has it, and [the Plan](/plans/plans-first-version) says what its removal gave up. Each feature's `plan.json`, written by `feature set-plan`, is Roadmap status and is a separate thing, though the word means two things there.
 
-## Proposed grammar {#proposed-grammar}
-
-This is a design sketch. None of the new commands exist.
+## Using it {#using-it}
 
 ```sh
 change-saga plan create --id ID --title TEXT
-change-saga plan list [--feature ID] [--story URN] [--all]   # done Plans are hidden without --all
-change-saga plan link-review --plan ID --review ID
+change-saga plan list [--feature ID] [--story URN] [--all]   # delivered Plans are hidden without --all
+change-saga plan guide [--plan ID]                           # the workflow, and what a Plan still needs
+change-saga plan add-phase --plan ID --id ID --title TEXT
 change-saga plan add-prototype --plan ID --prototype URN
-change-saga plan add-phase --plan ID --id ID --title TEXT    # replaces plan add-wave
-change-saga plan deliver --plan ID                           # refused unless every Task is done and its Reviews merged
-change-saga plan guide --story URN...                        # the wizard
+change-saga plan link-review --plan ID --review ID
+change-saga plan deliver --plan ID                           # refused until every Task is done and its Reviews merged
 
 change-saga apply-slide --plan ID --from SLIDE.json          # slide.section names its phase
 change-saga deck overview --plan ID --file OVERVIEW.json
 
-change-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --unblocks TASK)   # must lead to a story
-change-saga task depend --task ID --on ID                    # replaces plan add-dependency
-change-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days
-change-saga task done --task ID [--summary TEXT]             # replaces plan progress --to done
-change-saga task list --plan ID [--ready]                    # what can start now
+change-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --unblocks TASK)
+change-saga task depend --plan ID --task ID --on ID
+change-saga task set --plan ID --task ID --sizing within-2-days --sizing-reason TEXT --code PATH:START-END
+change-saga task done --plan ID --task ID [--summary TEXT]
+change-saga task list --plan ID [--ready]
 ```
 
 ## Open questions {#open-questions}
 
-1. **Are these the right personas?** "Contributor" was asked for, but the Saga has no such persona. These stories use architect and developer, the closest fit, and no new persona was created.
-2. **Is a Plan discussed and approved, as a review is?** The original idea was yes, per slide. It is left out of the first version, so no story covers it; the deck format would allow adding it later.
-4. **What happens when a Review departs from its Plan?** The comparison shows it, but nothing here says what should happen next.
-5. **What does done on a Task claim?** Work-plan progress today says it "never proves correctness". Should a slide's done mark say only that an agent reported it?
-6. **What is a sizing judgment, in the record?** A yes or no with a reason, or a number? Who may make it, and can an agent?
-7. **What does the comparison compare, and should a Review's slides name Tasks?** Tasks against Reviews is simple to report and follows the same linking rule if a Review's Items name the Tasks they deliver. Slides against slides says more but relies on authors linking them.
-8. **How far can an agent update a Plan?** Marking Tasks done is clear. Should it also be free to add Tasks or rewrite slides, or only to propose that?
-9. **Where does the wizard live?** A skill, a CLI command, or both, and when has it done enough?
-10. **What happens to a Plan's technical design when it ships?** It describes intent, and Documentation describes what is. Does it stay with the done Plan while someone writes the living documentation, or does some of it move?
+1. **Is a Plan discussed and approved, as a review is?** The original idea was yes, per slide. It is left out of this version, so no story covers it; the deck format would allow adding it later.
+2. **What happens when a Review departs from its Plan?** The comparison shows it, but nothing here says what should happen next.
+3. **How far can an agent update a Plan?** Marking Tasks done is clear. The commands also let it add Tasks or rewrite slides, and whether it should is untested.
+4. **What happens to a Plan's technical design when it ships?** It describes intent, and Documentation describes what is. Does it stay with the delivered Plan while someone writes the living documentation, or does some of it move?

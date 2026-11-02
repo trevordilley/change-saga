@@ -18,6 +18,7 @@
     "within_two_days": true,
     "reason": "A small set of readers, listed in the design."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "Readiness's plan coverage counts criteria whose story a Task names, and traceability returns tasks.",
   "created_at": "2026-11-02T05:05:48.9818Z"
 }

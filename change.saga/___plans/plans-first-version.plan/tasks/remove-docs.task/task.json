@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "Deleting records through the CLI, then checking health."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "Docs, skill references, the work-planning feature and its terms no longer describe the old work plan.",
   "created_at": "2026-11-02T05:05:47.687733Z"
 }
