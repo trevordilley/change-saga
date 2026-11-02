@@ -217,10 +217,6 @@ var queryOperations = []string{
 	"requirement-history",
 	"citations",
 	"relations",
-	"waves",
-	"work-items",
-	"work-events",
-	"work-conflicts",
 	"traceability",
 	"quality",
 	"quality-history",
@@ -272,11 +268,7 @@ var queryPurpose = map[string]string{
 	"requirement-history":  "append-only revision and lifecycle history in deterministic graph order",
 	"citations":            "immutable requirement provenance records",
 	"relations":            "typed current, stale, and superseded living-Saga relations",
-	"waves":                "ordered work-plan coordination cohorts and derived item counts",
-	"work-items":           "current work-item definitions, progress, explicit dependency blockers, workspaces, and merge evidence",
-	"work-events":          "normalized append-only progress, workspace, merge, and contract events",
-	"work-conflicts":       "deterministically identified work-plan conflicts and competing heads",
-	"traceability":         "current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers",
+	"traceability":         "current story-to-design/task/review/code/test paths (design that addresses the whole story is also listed as broad), and reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit",
 	"quality":              "verification definitions, criterion-to-step mappings, and implementation evidence; no run results",
 	"quality-history":      "immutable case history including deprecated legacy_runs; inert metadata only",
 	"readiness":            "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
@@ -319,10 +311,6 @@ var queryUsage = map[string]string{
 	"requirement-history":  "change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"citations":            "change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"relations":            "change-saga query relations --saga PATH [--relation ID|URN] [--type TYPE] [--from URN] [--to URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
-	"waves":                "change-saga query waves --saga PATH [--wave ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
-	"work-items":           "change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
-	"work-events":          "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
-	"work-conflicts":       "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"traceability":         "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"quality":              "change-saga query quality --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]",
 	"quality-history":      "change-saga query quality-history --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]",
@@ -574,10 +562,6 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"requirement-history":  {"data.events", "data.events[].revision.overview"},
 		"citations":            {"data.citations"},
 		"relations":            {"data.relations"},
-		"waves":                {"data.waves"},
-		"work-items":           {"data.items"},
-		"work-events":          {"data.events"},
-		"work-conflicts":       {"data.conflicts"},
 		"traceability":         {"data.criteria", "data.unlinked_code_evidence"},
 		"quality":              {"data.test_cases"},
 		"quality-history":      {"data.test_cases"},
@@ -615,10 +599,6 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"requirement-history":  "data.events",
 		"citations":            "data.citations",
 		"relations":            "data.relations",
-		"waves":                "data.waves",
-		"work-items":           "data.items",
-		"work-events":          "data.events",
-		"work-conflicts":       "data.conflicts",
 		"traceability":         "data.criteria",
 		"quality":              "data.test_cases",
 		"quality-history":      "data.test_cases",
@@ -671,7 +651,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	opening := registerOpenFlags(flags)
 
 	var parent, target, ref, cursor, conflictCursor, state, kind, sortOrder, claim string
-	var feature, expand, requirement, persona, term, citation, relation, from, to, wave, item, criterion, commit string
+	var feature, expand, requirement, persona, term, citation, relation, from, to, testCase, criterion, commit string
 	var offset int64
 	var limit optionalInt
 	var conflictLimit optionalInt
@@ -759,27 +739,6 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&state, "state", "", "active, superseded, stale, or current")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
-	case "waves":
-		flags.StringVar(&wave, "wave", "", "optional wave ID or URN")
-		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
-		flags.Var(&limit, "limit", "page size")
-	case "work-items":
-		flags.StringVar(&item, "item", "", "optional work-item ID or URN")
-		flags.StringVar(&wave, "wave", "", "optional wave ID or URN")
-		flags.StringVar(&state, "status", "", "optional progress state")
-		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
-		flags.Var(&limit, "limit", "page size")
-	case "work-events":
-		flags.StringVar(&item, "item", "", "optional work-item ID or URN")
-		flags.StringVar(&kind, "kind", "", "progress, workspace, merge, or contract")
-		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
-		flags.Var(&limit, "limit", "page size")
-	case "work-conflicts":
-		flags.StringVar(&item, "item", "", "optional work-item ID or URN")
-		flags.StringVar(&wave, "wave", "", "optional wave ID or URN")
-		flags.StringVar(&kind, "kind", "", "optional conflict kind")
-		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
-		flags.Var(&limit, "limit", "page size")
 	case "traceability":
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
 		flags.StringVar(&criterion, "criterion", "", "optional criterion ID or URN")
@@ -788,7 +747,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
 	case "quality", "quality-history":
-		flags.StringVar(&item, "test", "", "optional test-case ID or URN")
+		flags.StringVar(&testCase, "test", "", "optional test-case ID or URN")
 		flags.StringVar(&feature, "feature", "", "optional feature ID or URN")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
@@ -898,12 +857,6 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 			commit = strings.ToLower(commit)
 		}
 	}
-	if operation == "work-items" && state != "" && state != "planned" && state != "ready" && state != "in_progress" && state != "blocked" && state != "done" && state != "cancelled" && state != "conflicted" {
-		return nil, queryOpenOptions{}, false, errors.New("--status is not a valid progress state")
-	}
-	if operation == "work-events" && kind != "" && kind != "progress" && kind != "workspace" && kind != "merge" && kind != "contract" {
-		return nil, queryOpenOptions{}, false, errors.New("--kind must be progress, workspace, merge, or contract")
-	}
 	if operation == "readiness" && state != "" && state != "ready" && state != "blocked" {
 		return nil, queryOpenOptions{}, false, errors.New("--status must be ready or blocked")
 	}
@@ -934,18 +887,17 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return claimQuery{Target: target, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "verifications":
 		return verificationQuery{Claim: claim, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
-	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "quality", "quality-history", "readiness", "audit":
+	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "traceability", "quality", "quality-history", "readiness", "audit":
 		filters := livingapp.Filters{
 			Feature: feature, Expand: expand, Requirement: requirement, Persona: persona, Term: term, Kind: firstNonempty(kind, criterion), Citation: citation,
-			Relation: relation, From: from, To: to, Wave: wave, Item: item, Ref: ref, Commit: commit,
+			Relation: relation, From: from, To: to, Ref: ref, Commit: commit,
 		}
 		if operation == "quality" || operation == "quality-history" {
-			filters.TestCase = item
-			filters.Item = ""
+			filters.TestCase = testCase
 		}
 		if operation == "requirements" || operation == "relations" {
 			filters.State = state
-		} else if operation == "work-items" || operation == "readiness" {
+		} else if operation == "readiness" {
 			filters.Status = state
 		}
 		return livingQuery{Operation: operation, Filters: filters, Cursor: cursor, Limit: limit.value, ConflictCursor: conflictCursor, ConflictLimit: conflictLimit.value}, options, false, nil

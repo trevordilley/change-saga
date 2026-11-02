@@ -85,7 +85,7 @@ type Node struct {
 	// relationType is the relation's type for a relation node.
 	relationType string
 	// Targets are the stories and criteria the record addresses, explains,
-	// verifies, or implements through its active relations, kept at criterion
+	// or verifies through its active relations, kept at criterion
 	// granularity so two records that explain the same criterion can be paired.
 	Targets []string `json:"-"`
 	// contained marks a record whose parent holds it as part of one
@@ -181,7 +181,7 @@ func Build(root string, document *saga.Saga, inputs livingapp.StatusInputs) *Inv
 			continue
 		}
 		switch relation.relationType {
-		case "addresses", "explains", "verifies", "implements":
+		case "addresses", "explains", "verifies":
 			if from := builder.inventory.Nodes[relation.Explains[0]]; from != nil {
 				from.Targets = append(from.Targets, relation.Explains[1])
 				// A slide's replacement identity summarizes its Items' intent.

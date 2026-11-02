@@ -167,19 +167,19 @@ func TestConsolidationRequiresCurrentExternalPinsAndWritesFreshPins(t *testing.T
 
 func TestConsolidationRefusesConflictedAffectedRelation(t *testing.T) {
 	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
-	workItem := "urn:change-saga:test:work-item:implement-checkout"
-	workRevision := workItem + ":revision:r1"
+	testCase := "urn:change-saga:test:test-case:checkout-flow"
+	testCaseRevision := testCase + ":revision:r1"
 	if _, err := AddRelation(root, "test", AddRelationInput{
-		Feature: "core", ID: "work-implements-duplicate", Type: RelationImplements,
-		From: workItem, To: duplicateCriterion, FromRevision: workRevision,
-		ToRevision: duplicateURN + ":revision:r1", Rationale: "The work item implements the criterion.",
+		Feature: "core", ID: "test-verifies-duplicate", Type: RelationVerifies,
+		From: testCase, To: duplicateCriterion, FromRevision: testCaseRevision,
+		ToRevision: duplicateURN + ":revision:r1", Rationale: "The test case verifies the criterion.",
 	}); err != nil {
 		t.Fatal(err)
 	}
 	input := ConsolidateInput{
 		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
 		CriterionMap:   map[string]string{duplicateCriterion: canonicalCriterion},
-		CurrencyInputs: StaleInputs{ConflictedRevisions: map[string][]string{workItem: {workRevision, workItem + ":revision:r2"}}},
+		CurrencyInputs: StaleInputs{TestCasesSupplied: true, ConflictedRevisions: map[string][]string{testCase: {testCaseRevision, testCase + ":revision:r2"}}},
 	}
 	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "relation is conflicted") {
 		t.Fatalf("conflicted relation refusal = %v", err)

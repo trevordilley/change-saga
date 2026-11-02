@@ -90,7 +90,7 @@ func TestParseRejectsNonCanonicalAndMalformedReferences(t *testing.T) {
 }
 
 func TestBuildRejectsStructurallyInvalidReferences(t *testing.T) {
-	valid := testReference("urn:change-saga:checkout:work-item:resolver")
+	valid := testReference("urn:change-saga:checkout:claim:resolver")
 	tests := []struct {
 		name   string
 		mutate func(*Reference)
@@ -103,7 +103,7 @@ func TestBuildRejectsStructurallyInvalidReferences(t *testing.T) {
 		{"invalid Saga ID", func(r *Reference) { r.SagaID = "bad:id" }},
 		{"symbolic revision", func(r *Reference) { r.Revision = "main" }},
 		{"abbreviated revision", func(r *Reference) { r.Revision = "0123456" }},
-		{"wrong target Saga", func(r *Reference) { r.TargetURN = "urn:change-saga:payments:work-item:resolver" }},
+		{"wrong target Saga", func(r *Reference) { r.TargetURN = "urn:change-saga:payments:claim:resolver" }},
 		{"unsupported target", func(r *Reference) { r.TargetURN = "urn:change-saga:checkout:citation:source" }},
 		{"full branch ref", func(r *Reference) { r.TrackingBranch = "refs/heads/main" }},
 		{"invalid branch", func(r *Reference) { r.TrackingBranch = "bad..branch" }},

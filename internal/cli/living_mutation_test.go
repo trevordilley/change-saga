@@ -15,7 +15,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
-	"github.com/twentyideas/changesaga/internal/workplan"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 func decodeLivingOutput(t *testing.T, output *bytes.Buffer) livingMutationOutput {
@@ -50,7 +50,7 @@ func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
 		{name: "criterion", run: Criterion, want: "add\n  revise\n  remove"},
 		{name: "citation", run: Citation, want: "  add"},
 		{name: "relation", run: Relation, want: "add\n  repin\n  supersede"},
-		{name: "plan", run: Plan, want: "record-merge"},
+		{name: "plan", run: Plan, want: "deliver"},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -273,8 +273,8 @@ func TestLivingMutationSubcommandHelpExplainsSemantics(t *testing.T) {
 		{Citation, []string{"add", "-h"}, []string{"requirement or decision came from", "not delivery evidence"}},
 		{Relation, []string{"add", "-h"}, []string{"typed rationale", "content digest", "go stale"}},
 		{Relation, []string{"supersede", "-h"}, []string{"without erasing", "pivot"}},
-		{Plan, []string{"add-contract", "-h"}, []string{"parallel provider and consumer", "stable seam"}},
-		{Plan, []string{"progress", "-h"}, []string{"helps coordination", "never proves"}},
+		{Task, []string{"depend", "-h"}, []string{"cycle", "strand a Task"}},
+		{Task, []string{"done", "-h"}, []string{"as an agent does when it finishes", "never proves"}},
 	}
 	for _, check := range checks {
 		var output bytes.Buffer
@@ -380,7 +380,7 @@ func TestMutationFamiliesAdoptOnlyTheirOwnedOptionalRoot(t *testing.T) {
 	t.Parallel()
 	root := newLivingSaga(t)
 	featureDir := testFeatureDir(root)
-	for _, name := range []string{"___requirements", "___design", "___workplan"} {
+	for _, name := range []string{"___requirements", "___design"} {
 		if err := os.RemoveAll(filepath.Join(featureDir, name)); err != nil {
 			t.Fatal(err)
 		}
@@ -403,203 +403,16 @@ func TestMutationFamiliesAdoptOnlyTheirOwnedOptionalRoot(t *testing.T) {
 		t.Fatalf("requirements root was not adopted: %v", err)
 	}
 	assertAbsent("___design")
-	assertAbsent("___workplan")
+	assertAbsent(saga.PlansDir)
 
 	output.Reset()
 	if err := Plan(context.Background(), []string{
-		"add-wave", root, "--feature", testFeature, "--id", "delivery", "--revision", "delivery-r1", "--title", "Delivery",
-		"--objective", "Coordinate delivery", "--request-id", "optional-workplan", "--json",
+		"create", root, "--id", "delivery", "--title", "Delivery", "--json",
 	}, &output); err != nil {
-		t.Fatalf("adopt work-plan root: %v\n%s", err, output.String())
+		t.Fatalf("adopt plans root: %v\n%s", err, output.String())
 	}
-	if info, err := os.Stat(filepath.Join(featureDir, "___workplan")); err != nil || !info.IsDir() {
-		t.Fatalf("work-plan root was not adopted: %v", err)
+	if info, err := os.Stat(filepath.Join(root, saga.PlansDir)); err != nil || !info.IsDir() {
+		t.Fatalf("plans root was not adopted: %v", err)
 	}
 	assertAbsent("___design")
-}
-
-func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
-	t.Parallel()
-	root := newLivingSaga(t)
-	ctx := context.Background()
-	var output bytes.Buffer
-
-	waveArgs := []string{
-		"add-wave", root, "--feature", testFeature, "--id", "delivery", "--revision", "delivery-r1", "--title", "Delivery",
-		"--objective", "Ship independently", "--request-id", "wave-request", "--json",
-	}
-	if err := Plan(ctx, waveArgs, &output); err != nil {
-		t.Fatalf("wave add: %v\n%s", err, output.String())
-	}
-	wave := decodeLivingOutput(t, &output)
-	if !wave.OK || wave.Replayed || wave.Resource != "urn:change-saga:atomic:wave:delivery" {
-		t.Fatalf("wave result = %#v", wave)
-	}
-	output.Reset()
-	if err := Plan(ctx, waveArgs, &output); err != nil {
-		t.Fatal(err)
-	}
-	if replay := decodeLivingOutput(t, &output); !replay.OK || !replay.Replayed {
-		t.Fatalf("wave replay = %#v", replay)
-	}
-	waveParent, err := livingid.DefinitionRevision("atomic", livingid.KindWave, "delivery", "delivery-r1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"revise-wave", root, "--wave", wave.Resource, "--revision", "delivery-r2", "--parent", waveParent,
-		"--title", "Delivery", "--objective", "Ship mergeable work", "--request-id", "wave-revise-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if revised := decodeLivingOutput(t, &output); !revised.OK || !strings.HasSuffix(revised.Resource, ":revision:delivery-r2") {
-		t.Fatalf("wave revision = %#v", revised)
-	}
-
-	mergeUnit := `{"id":"primary","repository":"https://example.test/acme/app.git","source_branch":"feature/item","target_branch":"main","required":true}`
-	itemArgs := []string{
-		"add-item", root, "--feature", testFeature, "--id", "cli", "--revision", "cli-r1", "--title", "CLI", "--objective", "Expose writers",
-		"--deliverable", "Mutation commands", "--wave", wave.Resource, "--merge-unit", mergeUnit,
-		"--request-id", "item-request", "--json",
-	}
-	output.Reset()
-	if err := Plan(ctx, itemArgs, &output); err != nil {
-		t.Fatal(err)
-	}
-	item := decodeLivingOutput(t, &output)
-	if !item.OK || item.Resource != "urn:change-saga:atomic:work-item:cli" || len(item.EventIDs) != 1 {
-		t.Fatalf("item result = %#v", item)
-	}
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"add-item", root, "--feature", testFeature, "--id", "docs", "--revision", "docs-r1", "--title", "Docs", "--objective", "Document the CLI",
-		"--deliverable", "CLI examples", "--wave", wave.Resource, "--request-id", "docs-item-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	docsItem := decodeLivingOutput(t, &output)
-	itemParent, err := livingid.DefinitionRevision("atomic", livingid.KindWorkItem, "cli", "cli-r1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"revise-item", root, "--item", item.Resource, "--revision", "cli-r2", "--parent", itemParent,
-		"--title", "CLI", "--objective", "Expose supported writers", "--deliverable", "Mutation commands",
-		"--wave", wave.Resource, "--merge-unit", mergeUnit, "--request-id", "item-revise-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if revised := decodeLivingOutput(t, &output); !revised.OK || !strings.HasSuffix(revised.Resource, ":revision:cli-r2") {
-		t.Fatalf("item revision = %#v", revised)
-	}
-
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"add-dependency", root, "--feature", testFeature, "--id", "cli-before-docs", "--prerequisite", item.Resource, "--dependent", docsItem.Resource,
-		"--condition", "progress_done", "--reason", "Examples follow the command contract", "--request-id", "dependency-valid-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if dependency := decodeLivingOutput(t, &output); !dependency.OK {
-		t.Fatalf("dependency result = %#v", dependency)
-	}
-
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"add-contract", root, "--feature", testFeature, "--id", "cli-docs", "--revision", "cli-docs-r1", "--kind", "handoff",
-		"--provider", item.Resource, "--consumer", docsItem.Resource, "--statement", "Publish stable help",
-		"--acceptance", "Every command has deterministic help", "--request-id", "contract-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if contract := decodeLivingOutput(t, &output); !contract.OK || len(contract.EventIDs) != 1 {
-		t.Fatalf("contract result = %#v", contract)
-	}
-
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"assign", root, "--item", item.Resource, "--workspace", "dacab14f-c2d6-4dde-99e4-4132090cd897",
-		"--repository-id", "repo-1", "--branch", "feature/cli", "--request-id", "assignment-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if assignment := decodeLivingOutput(t, &output); !assignment.OK || len(assignment.EventIDs) != 1 {
-		t.Fatalf("assignment result = %#v", assignment)
-	}
-
-	progressParent, err := workplan.ProgressEventURN("atomic", "cli", item.EventIDs[0])
-	if err != nil {
-		t.Fatal(err)
-	}
-	progressArgs := []string{
-		"progress", root, "--item", item.Resource, "--from", progressParent, "--to", "ready",
-		"--request-id", "progress-request", "--json",
-	}
-	output.Reset()
-	if err := Plan(ctx, progressArgs, &output); err != nil {
-		t.Fatal(err)
-	}
-	progress := decodeLivingOutput(t, &output)
-	if !progress.OK || len(progress.EventIDs) != 1 {
-		t.Fatalf("progress result = %#v", progress)
-	}
-	output.Reset()
-	if err := Plan(ctx, progressArgs, &output); err != nil {
-		t.Fatal(err)
-	}
-	if replay := decodeLivingOutput(t, &output); !replay.OK || !replay.Replayed || replay.EventIDs[0] != progress.EventIDs[0] {
-		t.Fatalf("progress replay = %#v", replay)
-	}
-
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"record-merge", root, "--item", item.Resource, "--unit", "primary", "--state", "planned",
-		"--request-id", "merge-planned-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	planned := decodeLivingOutput(t, &output)
-	plannedURN, err := workplan.MergeEventURN("atomic", "cli", planned.EventIDs[0])
-	if err != nil {
-		t.Fatal(err)
-	}
-	headOID := strings.Repeat("1", 40)
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"record-merge", root, "--item", item.Resource, "--unit", "primary", "--state", "ready", "--from", plannedURN,
-		"--head-oid", headOID, "--request-id", "merge-ready-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	ready := decodeLivingOutput(t, &output)
-	readyURN, err := workplan.MergeEventURN("atomic", "cli", ready.EventIDs[0])
-	if err != nil {
-		t.Fatal(err)
-	}
-	output.Reset()
-	if err := Plan(ctx, []string{
-		"record-merge", root, "--item", item.Resource, "--unit", "primary", "--state", "integrated", "--from", readyURN,
-		"--head-oid", headOID, "--commit", strings.Repeat("2", 40), "--request-id", "merge-integrated-request", "--json",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if integrated := decodeLivingOutput(t, &output); !integrated.OK || len(integrated.EventIDs) != 1 {
-		t.Fatalf("merge result = %#v", integrated)
-	}
-
-	output.Reset()
-	err = Plan(ctx, []string{
-		"add-dependency", root, "--feature", testFeature, "--id", "self", "--prerequisite", item.Resource, "--dependent", item.Resource,
-		"--condition", "progress_done", "--reason", "invalid self edge", "--request-id", "dependency-request", "--json",
-	}, &output)
-	var status *StatusError
-	if !errors.As(err, &status) || status.Code != 1 {
-		t.Fatalf("JSON validation error = %T %v", err, err)
-	}
-	failure := decodeLivingOutput(t, &output)
-	if failure.OK || failure.Error == nil || !strings.Contains(failure.Error.Message, "self-edge") {
-		t.Fatalf("dependency failure = %#v", failure)
-	}
 }

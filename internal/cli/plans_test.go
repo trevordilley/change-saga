@@ -201,6 +201,9 @@ func TestPlanSlidesOweNoCodeAndNameTasks(t *testing.T) {
 
 	// It can be read and edited through its URN, as a review slide can.
 	run(t, Diagram, "describe", "--slide", slide.Target, root)
+	if output := run(t, Diagram, "check", root); !strings.Contains(output, slide.Target) {
+		t.Fatalf("diagram check did not report the Plan's slide:\n%s", output)
+	}
 	update := planSlideRequest(taskURN)
 	update.Operation, update.RequestID, update.ExpectedSnapshot = "update", "the-work-2", result.Snapshot
 	update.Slide.Title = "The work, revised"

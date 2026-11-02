@@ -18,20 +18,10 @@ func TestEvaluateKeepsCoverageAxesIndependentAndProgressOutOfEvidence(t *testing
 	}
 }
 
-func TestEvaluateRetainsTransitiveBlockerPaths(t *testing.T) {
-	projection := Evaluate([]Criterion{{
-		URN: "criterion:a", Designed: true, Planned: true, Evidence: []string{"git-oid:abc"},
-		UpstreamPaths: []BlockerPath{{Path: []string{"item:a", "item:b", "item:c"}, Blocker: Blocker{Code: "merge_not_integrated", Resource: "item:c"}}},
-	}})
-	if projection.Criteria[0].Delivered || len(projection.Criteria[0].TransitivePaths) != 1 {
-		t.Fatalf("transitive blocker was lost: %+v", projection.Criteria[0])
-	}
-}
-
 func TestOptionalPlanningGapsDoNotVetoImmutableDeliveryEvidence(t *testing.T) {
 	projection := Evaluate([]Criterion{{
 		URN: "criterion:a", Evidence: []string{"git-oid:abc"},
-		DirectBlockers: []Blocker{{Code: "design_missing"}, {Code: "work_item_missing"}},
+		DirectBlockers: []Blocker{{Code: "design_missing"}, {Code: "task_missing"}},
 	}})
 	if !projection.PeerReviewReady || !projection.Criteria[0].Delivered {
 		t.Fatalf("optional planning axes vetoed delivery: %+v", projection)

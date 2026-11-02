@@ -51,7 +51,6 @@ const (
 	endpointStory        endpointKind = "story"
 	endpointCriterion    endpointKind = "criterion"
 	endpointDesign       endpointKind = "design"
-	endpointWorkItem     endpointKind = "work-item"
 	endpointDeck         endpointKind = "deck"
 	endpointSlide        endpointKind = "slide"
 	endpointItem         endpointKind = "item"
@@ -63,9 +62,6 @@ const (
 	// The remaining kinds are legal only on v5 relations.
 	endpointDeprecation       endpointKind = "deprecation"
 	endpointTestCase          endpointKind = "test-case"
-	endpointWave              endpointKind = "wave"
-	endpointDependency        endpointKind = "dependency"
-	endpointContract          endpointKind = "contract"
 	endpointQualityPolicy     endpointKind = "quality-policy"
 	endpointCoverageException endpointKind = "coverage-exception"
 )
@@ -73,7 +69,7 @@ const (
 // v3 reports whether a v3 relation record may name this endpoint kind.
 func (kind endpointKind) v3() bool {
 	switch kind {
-	case endpointDeprecation, endpointTestCase, endpointWave, endpointDependency, endpointContract, endpointQualityPolicy, endpointCoverageException:
+	case endpointDeprecation, endpointTestCase, endpointQualityPolicy, endpointCoverageException:
 		return false
 	default:
 		return true
@@ -98,18 +94,10 @@ func parseEndpoint(value string) (endpoint, error) {
 			ep.Kind = endpointCriterion
 		case livingid.KindDesign:
 			ep.Kind = endpointDesign
-		case livingid.KindWorkItem:
-			ep.Kind = endpointWorkItem
 		case livingid.KindCitation:
 			ep.Kind = endpointCitation
 		case livingid.KindRelation:
 			ep.Kind = endpointRelation
-		case livingid.KindWave:
-			ep.Kind = endpointWave
-		case livingid.KindDependency:
-			ep.Kind = endpointDependency
-		case livingid.KindContract:
-			ep.Kind = endpointContract
 		default:
 			return endpoint{}, fmt.Errorf("unsupported relation endpoint kind %q", ref.Kind)
 		}

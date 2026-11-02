@@ -20,6 +20,41 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
+var planOperations = []string{"create", "list", "guide", "add-phase", "add-prototype", "link-review", "deliver"}
+
+// Plan dispatches the Plan commands.
+func Plan(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
+	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
+		return livingFamilyHelp("plan", planOperations, out)
+	}
+	operation := "plan " + args[0]
+	var err error
+	switch args[0] {
+	case "create":
+		err = planCreate(ctx, args[1:], out)
+	case "list":
+		err = planList(ctx, args[1:], out)
+	case "guide":
+		err = planGuide(ctx, args[1:], out)
+	case "add-phase":
+		err = planAddPhase(ctx, args[1:], out)
+	case "add-prototype":
+		err = planAddPrototype(ctx, args[1:], out)
+	case "link-review":
+		err = planLinkReview(ctx, args[1:], out)
+	case "deliver":
+		err = planDeliver(ctx, args[1:], out)
+	default:
+		err = fmt.Errorf("usage: %s", commandUsage["plan"])
+	}
+	if err != nil && jsonFlagRequested(args) {
+		return reportLivingMutationFailure(out, operation, err)
+	}
+	return err
+}
+
 // planIDOf accepts a Plan's id or URN.
 func planIDOf(value string) string {
 	if id := saga.PlanIDOf(value); id != "" {

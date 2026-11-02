@@ -29,9 +29,9 @@ change.saga/
     ___requirements/
     ___design/
     ___quality/
-    ___workplan/
     ___slides/<deck>.deck/
   ___reviews/<review>.review/
+  ___plans/<plan>.plan/
   ___claims/
   ___verifications/
   ___merges/

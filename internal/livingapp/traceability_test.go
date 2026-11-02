@@ -8,7 +8,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 // A criterion's traceability includes design that addresses its whole story,
@@ -18,7 +17,6 @@ func TestTraceabilityDoesNotTreatRunsAsDeliveryEvidence(t *testing.T) {
 	failing := requirements.Relation{ID: "failing-verifies", Type: requirements.RelationVerifies, From: testURN("failing"), To: criterionURN("cutoff"), State: requirements.RelationActive}
 	s := &session{
 		saga: &saga.Saga{},
-		plan: workplan.Plan{},
 		requirements: requirements.Document{SagaID: fixtureSaga, Stories: []requirements.Story{refundStory("cutoff")}, Relations: []requirements.Relation{
 			{ID: "design-addresses", Type: requirements.RelationAddresses, From: design, To: storyURN, State: requirements.RelationActive},
 			verifies("cutoff-verifies", "cutoff-test", "r1", "cutoff", storyR2),

@@ -116,7 +116,7 @@ func TestV5SchemaRuntimeParity(t *testing.T) {
 		}
 	}
 
-	wantRelations := []string{"addresses", "conflicts_with", "explains", "implements", "refines", "supersedes", "verifies"}
+	wantRelations := []string{"addresses", "conflicts_with", "explains", "refines", "supersedes", "verifies"}
 	if got := schemaEnum(t, loadV5Schema(t, "relation.schema.json"), "properties", "type", "enum"); !reflect.DeepEqual(got, wantRelations) {
 		t.Errorf("relation enum = %v, want %v", got, wantRelations)
 	}
@@ -289,7 +289,7 @@ func loadErrors(t *testing.T, root string) []string {
 
 func TestSagaLoadsReportComponentsAndEveryLivingRoot(t *testing.T) {
 	root := writeV5Composition(t, v5TestManifest)
-	for _, name := range []string{"___requirements", "___workplan", "___design", QualityRootDir, EmbeddedSlidesDir} {
+	for _, name := range []string{"___requirements", "___design", QualityRootDir, EmbeddedSlidesDir} {
 		if err := os.MkdirAll(filepath.Join(root, testFeatureDir, name), 0o755); err != nil {
 			t.Fatal(err)
 		}

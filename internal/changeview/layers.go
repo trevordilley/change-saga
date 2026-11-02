@@ -442,7 +442,7 @@ func pinned(inventory *Inventory, changed map[string]*Change, affected *affected
 
 // chain follows the persona, story, design, and code chain upward from every
 // seed: an Item to its slide and deck, a landmark to its fragment, a record to
-// what it addresses, explains, verifies, or implements, and a story to the
+// what it addresses, explains, or verifies, and a story to the
 // personas it serves.
 func chain(inventory *Inventory, seeds []string, affected *affectedSet) {
 	up := map[string][]string{}
@@ -455,7 +455,7 @@ func chain(inventory *Inventory, seeds []string, affected *affectedSet) {
 		}
 		if node.Kind == KindRelation && !node.Retired() {
 			switch node.relationType {
-			case "addresses", "explains", "verifies", "implements":
+			case "addresses", "explains", "verifies":
 				from, to := inventory.Resolve(node.Explains[0]), inventory.Resolve(node.Explains[1])
 				if from != nil && to != nil {
 					up[from.URN] = append(up[from.URN], to.URN)

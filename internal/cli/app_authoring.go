@@ -18,7 +18,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 // Feature content is always written to a feature. Every command that authors feature
@@ -582,22 +581,6 @@ func recordFeature(root, urn string) (string, error) {
 			if kind == "quality-policy" && policy.ID == id {
 				return policy.Feature, nil
 			}
-		}
-		return "", missing
-	case "wave", "work-item", "dependency", "contract":
-		plan, _, err := workplan.Load(root)
-		if err != nil {
-			return "", err
-		}
-		switch {
-		case kind == "wave" && plan.Waves[id] != nil:
-			return plan.Waves[id].Feature, nil
-		case kind == "work-item" && plan.WorkItems[id] != nil:
-			return plan.WorkItems[id].Feature, nil
-		case kind == "dependency" && plan.Dependencies[id] != nil:
-			return plan.Dependencies[id].Feature, nil
-		case kind == "contract" && plan.Contracts[id] != nil:
-			return plan.Contracts[id].Feature, nil
 		}
 		return "", missing
 	case "claim":

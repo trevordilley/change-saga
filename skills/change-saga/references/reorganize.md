@@ -80,8 +80,8 @@ change-saga feature deliver --feature ROADMAP_ID --dry-run change.saga
 delivery moves every story, prototype, test case, citation, relation, and deck
 into the recipient with the same URNs, so links and slides still resolve, then
 deletes the Roadmap feature, including its overview essay (Git keeps it).
-Content it cannot place, such as design chapters, other report fragments, or a
-work plan, is listed; the real delivery refuses until you move or remove it
+Content it cannot place, such as design chapters or other report fragments, is
+listed; the real delivery refuses until you move or remove it
 (for example with `move-chapter`). Show the user that list before deciding.
 
 The output prints the Roadmap overview and the delivered stories. Use them to

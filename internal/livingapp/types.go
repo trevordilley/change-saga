@@ -1,5 +1,5 @@
 // Package livingapp is the transport-neutral application boundary for living
-// Saga reads. It composes the requirements and work-plan projections without
+// Saga reads. It composes the requirements projections without
 // teaching either leaf domain about the other.
 package livingapp
 
@@ -10,7 +10,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 const (
@@ -54,8 +53,6 @@ type Filters struct {
 	Relation    string
 	From        string
 	To          string
-	Wave        string
-	Item        string
 	Status      string
 	// Ref selects code evidence whose location overlaps this code location;
 	// Commit selects evidence pinned at this commit.
@@ -282,57 +279,6 @@ type Relation struct {
 	requirements.Relation
 }
 
-type WavePage struct {
-	Waves []Wave `json:"waves"`
-}
-type Wave struct {
-	Wave            string                 `json:"wave"`
-	ID              string                 `json:"id"`
-	Heads           []string               `json:"heads"`
-	CurrentRevision *workplan.WaveRevision `json:"current_revision"`
-	Conflicted      bool                   `json:"conflicted"`
-	ItemCounts      map[string]int         `json:"item_counts"`
-}
-
-type WorkItemPage struct {
-	Items []WorkItem `json:"items"`
-}
-type WorkItem struct {
-	WorkItem         string                     `json:"work_item"`
-	ID               string                     `json:"id"`
-	Heads            []string                   `json:"heads"`
-	CurrentRevision  *workplan.WorkItemRevision `json:"current_revision"`
-	CurrentProgress  *workplan.ProgressEvent    `json:"current_progress"`
-	Conflicted       bool                       `json:"conflicted"`
-	Ready            bool                       `json:"ready"`
-	Blockers         []DependencyBlocker        `json:"blockers"`
-	ActiveWorkspaces []workplan.Workspace       `json:"active_workspaces"`
-	MergeEvidence    []string                   `json:"merge_evidence"`
-}
-
-type DependencyBlocker struct {
-	Dependency string   `json:"dependency"`
-	Reason     string   `json:"reason"`
-	Path       []string `json:"path"`
-}
-
-type WorkEventPage struct {
-	Events []WorkEvent `json:"events"`
-}
-type WorkEvent struct {
-	Kind      string                   `json:"kind"`
-	Resource  string                   `json:"resource"`
-	Item      string                   `json:"item,omitempty"`
-	CreatedAt time.Time                `json:"created_at"`
-	Progress  *workplan.ProgressEvent  `json:"progress,omitempty"`
-	Workspace *workplan.WorkspaceEvent `json:"workspace,omitempty"`
-	Merge     *workplan.MergeEvent     `json:"merge,omitempty"`
-	Contract  *workplan.ContractEvent  `json:"contract,omitempty"`
-}
-
-type ConflictPage struct {
-	Conflicts []Conflict `json:"conflicts"`
-}
 type Conflict struct {
 	ID       string   `json:"id"`
 	Kind     string   `json:"kind"`
@@ -346,19 +292,18 @@ type TraceabilityPage struct {
 	UnlinkedCodeEvidence []UnlinkedCodeEvidence `json:"unlinked_code_evidence"`
 }
 type Traceability struct {
-	Criterion              string                  `json:"criterion"`
-	Story                  string                  `json:"story"`
-	Revision               string                  `json:"revision"`
-	Design                 []string                `json:"design"`
-	BroadDesign            []string                `json:"broad_design"`
-	WorkItems              []string                `json:"work_items"`
-	ReviewTargets          []string                `json:"review_targets"`
-	CodeEvidence           []string                `json:"code_evidence"`
-	Evidence               []string                `json:"evidence"`
-	Paths                  [][]string              `json:"paths"`
-	Blockers               []readiness.Blocker     `json:"blockers"`
-	TransitiveBlockerPaths []readiness.BlockerPath `json:"transitive_blocker_paths"`
-	Delivered              bool                    `json:"delivered"`
+	Criterion     string              `json:"criterion"`
+	Story         string              `json:"story"`
+	Revision      string              `json:"revision"`
+	Design        []string            `json:"design"`
+	BroadDesign   []string            `json:"broad_design"`
+	Tasks         []string            `json:"tasks"`
+	ReviewTargets []string            `json:"review_targets"`
+	CodeEvidence  []string            `json:"code_evidence"`
+	Evidence      []string            `json:"evidence"`
+	Paths         [][]string          `json:"paths"`
+	Blockers      []readiness.Blocker `json:"blockers"`
+	Delivered     bool                `json:"delivered"`
 }
 
 type UnlinkedCodeEvidence struct {

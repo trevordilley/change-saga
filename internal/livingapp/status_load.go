@@ -24,7 +24,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/semanticgraph"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 const (
@@ -167,7 +166,6 @@ func LinksFromCurrency(document requirements.Document, currency []requirements.R
 
 type livingGraph struct {
 	requirements  requirements.Document
-	plan          workplan.Plan
 	designDigests map[string]string
 	currency      []requirements.RelationCurrency
 }
@@ -190,41 +188,28 @@ func revisionHeads(document quality.Document) map[string][]string {
 	return heads
 }
 
-// loadLivingGraph is the one composition path for requirements, work plan,
+// loadLivingGraph is the one composition path for requirements,
 // design digests, and relation currency, shared by query sessions and status.
 // Relation currency comes only from requirements.EvaluateRelations; this
 // function supplies the heads other domains own, including test-case heads,
 // so a test-case link is never judged without them.
 func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string) (livingGraph, error) {
-	plan, validation, err := workplan.Load(root)
-	if err != nil {
-		return livingGraph{}, appError(CodeInvalidSaga, "the work plan could not be loaded", false, nil, err)
-	}
-	if !validation.Valid {
-		return livingGraph{}, appError(CodeInvalidSaga, "the work plan is invalid", false, map[string]any{"issues": sanitizePlanIssues(validation.Issues)}, nil)
-	}
 	designDigests, err := saga.CurrentDesignContentDigests(doc)
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the technical design could not be indexed", false, nil, err)
 	}
 	stale := requirements.StaleInputs{CurrentRevisions: map[string]string{}, CurrentContentDigests: designDigests, Missing: map[string]bool{}, ConflictedRevisions: map[string][]string{}}
-	for _, id := range sortedKeys(plan.WorkItems) {
-		item := plan.WorkItems[id]
-		if item.CurrentRevision != nil && len(item.Heads) == 1 {
-			stale.CurrentRevisions[item.CurrentRevision.WorkItem] = item.Heads[0]
-		}
-	}
 	if testCases != nil {
 		stale.SetTestCaseHeads(doc.Manifest.ID, testCases)
 	}
-	document, err := requirements.LoadWithOptions(root, plan.SagaID, requirements.LoadOptions{StaleInputs: stale})
+	document, err := requirements.LoadWithOptions(root, doc.Manifest.ID, requirements.LoadOptions{StaleInputs: stale})
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the requirements could not be loaded", false, nil, err)
 	}
 	if err := semanticgraph.ProjectSlideCriterionLinks(doc, &document); err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "complete-slide criterion links could not be projected", false, nil, err)
 	}
-	crossDomainInputs(document, plan, doc, designDigests, &stale)
+	crossDomainInputs(document, doc, designDigests, &stale)
 	currency := requirements.EvaluateRelations(document, stale)
 	for index := range document.Relations {
 		relation := &document.Relations[index]
@@ -235,7 +220,7 @@ func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string)
 		relation.StaleReasons = reasons
 		relation.Stale = len(reasons) > 0
 	}
-	return livingGraph{requirements: document, plan: plan, designDigests: designDigests, currency: currency}, nil
+	return livingGraph{requirements: document, designDigests: designDigests, currency: currency}, nil
 }
 
 type coverageExceptionRecord struct {

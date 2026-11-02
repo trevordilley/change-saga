@@ -280,7 +280,7 @@ func (graph *appGraph) traceTo(urn string) traceGroups {
 			groups.Tests = append(groups.Tests, link)
 		case relation.Type == requirements.RelationAddresses:
 			groups.Design = append(groups.Design, link)
-		case relation.Type == requirements.RelationExplains || relation.Type == requirements.RelationImplements:
+		case relation.Type == requirements.RelationExplains:
 			groups.Slides = append(groups.Slides, link)
 		default:
 			link.Title = link.Title + " (" + strings.ReplaceAll(string(relation.Type), "_", " ") + ")"

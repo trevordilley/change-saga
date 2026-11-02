@@ -271,11 +271,6 @@ var relations = []Relation{
 		Meaning: "counts design coverage; descendants is legal only for a deck or slide source and lets the path reach contained Items and their code references",
 	},
 	{
-		Type: "implements", Sources: []string{"work-item"}, Targets: []string{reportDesign, criterion}, Scopes: []string{"self"},
-		RequiredPins: []string{"from_revision", "to_revision or to_content_digest"}, Axes: []string{},
-		Meaning: "planning path only; progress never proves delivery",
-	},
-	{
 		Type: "explains", Sources: []string{deckSlide, item}, Targets: []string{story, criterion}, Scopes: []string{"self", "descendants"},
 		RequiredPins: []string{"to_revision"}, Axes: []string{"implementation"},
 		Meaning: "reviewer explanation (legacy_review_explanation); reaches code through Items but never counts as design coverage",

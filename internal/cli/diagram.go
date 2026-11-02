@@ -266,6 +266,18 @@ func diagramCheck(args []string, out io.Writer) error {
 			decks = append(decks, candidate.Deck)
 		}
 	}
+	// A delivered Plan is history in the same way.
+	for _, plan := range document.Plans {
+		if plan.Deck == nil {
+			continue
+		}
+		if plan.Delivered() {
+			merged[plan.Deck] = true
+		}
+		if *review == "" && (!plan.Delivered() || (only != nil && plan.Slide(only.Target) == only)) {
+			decks = append(decks, plan.Deck)
+		}
+	}
 	if *review != "" {
 		found := document.FindReview(*review)
 		if found == nil || found.Deck == nil {

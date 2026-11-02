@@ -22,7 +22,6 @@ const (
 	TargetDeck         TargetKind = "deck"
 	TargetSlide        TargetKind = "slide"
 	TargetItem         TargetKind = "item"
-	TargetWorkItem     TargetKind = "work-item"
 	TargetClaim        TargetKind = "claim"
 	TargetVerification TargetKind = "verification"
 )
@@ -50,7 +49,7 @@ func ParseTarget(value string) (Target, error) {
 		target.Kind = TargetKind(parts[3])
 		target.ID = parts[4]
 		switch target.Kind {
-		case TargetStory, TargetPrototype, TargetChapter, TargetSection, TargetFragment, TargetDeck, TargetSlide, TargetWorkItem, TargetClaim, TargetVerification:
+		case TargetStory, TargetPrototype, TargetChapter, TargetSection, TargetFragment, TargetDeck, TargetSlide, TargetClaim, TargetVerification:
 		default:
 			return Target{}, fmt.Errorf("unsupported cross-Saga target kind %q", parts[3])
 		}
@@ -87,7 +86,7 @@ func (target Target) URN() string {
 	}
 	base := "urn:change-saga:" + target.SagaID + ":"
 	switch target.Kind {
-	case TargetStory, TargetPrototype, TargetChapter, TargetSection, TargetFragment, TargetDeck, TargetSlide, TargetWorkItem, TargetClaim, TargetVerification:
+	case TargetStory, TargetPrototype, TargetChapter, TargetSection, TargetFragment, TargetDeck, TargetSlide, TargetClaim, TargetVerification:
 		if target.ParentID != "" {
 			return ""
 		}

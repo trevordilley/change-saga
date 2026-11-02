@@ -11,11 +11,12 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingid"
+	"github.com/twentyideas/changesaga/internal/planstore"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 var fixtureTime = time.Date(2026, 8, 31, 18, 0, 0, 0, time.UTC)
@@ -59,8 +60,9 @@ func TestLivingQueriesAreDeterministicSnapshotBoundAndProgressIsNotProof(t *test
 	root := livingFixture(t)
 	addAcceptedStory(t, root, "checkout", "fast")
 	addAcceptedStory(t, root, "refund", "clear")
-	createDeliveryItem(t, root, "checkout", "fast")
-	recordDoneProgress(t, root, "checkout")
+	createDeliveryDesign(t, root, "checkout", "fast")
+	addPlanTask(t, root, "checkout")
+	finishPlanTask(t, root, "checkout")
 
 	session := openFixture(t, root)
 	first, err := session.Query(context.Background(), Query{Operation: "requirements", Limit: 1})
@@ -76,7 +78,7 @@ func TestLivingQueriesAreDeterministicSnapshotBoundAndProgressIsNotProof(t *test
 	if !errorHasCode(err, CodeInvalidArgument) {
 		t.Fatalf("tampered cursor error = %#v", err)
 	}
-	_, err = session.Query(context.Background(), Query{Operation: "waves", Limit: 1, Cursor: *first.Page.NextCursor})
+	_, err = session.Query(context.Background(), Query{Operation: "relations", Limit: 1, Cursor: *first.Page.NextCursor})
 	if !errorHasCode(err, CodeInvalidArgument) {
 		t.Fatalf("cross-operation cursor error = %#v", err)
 	}
@@ -99,7 +101,7 @@ func TestLivingQueriesAreDeterministicSnapshotBoundAndProgressIsNotProof(t *test
 		t.Fatalf("done/planned work was treated as proof: %+v", checkout)
 	}
 
-	recordIntegratedMerge(t, root, "checkout")
+	verification := addVerifiedVerification(t, root, "checkout", "fast")
 	reopened := openFixture(t, root)
 	_, err = reopened.Query(context.Background(), Query{Operation: "requirements", Limit: 1, Cursor: *first.Page.NextCursor})
 	var domainErr *Error
@@ -111,47 +113,65 @@ func TestLivingQueriesAreDeterministicSnapshotBoundAndProgressIsNotProof(t *test
 		t.Fatal(err)
 	}
 	checkout = traceResult.Data.(TraceabilityPage).Criteria[0]
-	if !checkout.Delivered || len(checkout.Evidence) != 1 || !strings.HasPrefix(checkout.Evidence[0], "git-oid:") {
-		t.Fatalf("integrated immutable evidence did not complete the path: %+v", checkout)
+	if !checkout.Delivered || len(checkout.Evidence) != 1 || checkout.Evidence[0] != verification {
+		t.Fatalf("verified immutable evidence did not complete the path: %+v", checkout)
 	}
 }
 
-func TestTransitiveDependencyBlockerPathIsExposed(t *testing.T) {
+func TestTaskNamingAStoryPlansItsCriteria(t *testing.T) {
 	root := livingFixture(t)
 	addAcceptedStory(t, root, "checkout", "fast")
-	createDeliveryItem(t, root, "checkout", "fast")
-	createPlainItem(t, root, "middle")
-	createPlainItem(t, root, "foundation")
-	checkout, _ := livingid.WorkItem("test", "checkout")
-	middle, _ := livingid.WorkItem("test", "middle")
-	foundation, _ := livingid.WorkItem("test", "foundation")
-	if _, err := workplan.CreateDependency(root, fixtureFeature, workplan.Dependency{ID: "middle-checkout", Prerequisite: middle, Dependent: checkout, Condition: workplan.DependencyCondition{Kind: "progress_done"}, Reason: "middle first"}, "dep-middle"); err != nil {
-		t.Fatal(err)
+	addAcceptedStory(t, root, "refund", "clear")
+
+	readinessOf := func() ReadinessPage {
+		t.Helper()
+		result, err := openFixture(t, root).Query(context.Background(), Query{Operation: "readiness"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		return result.Data.(ReadinessPage)
 	}
-	if _, err := workplan.CreateDependency(root, fixtureFeature, workplan.Dependency{ID: "foundation-middle", Prerequisite: foundation, Dependent: middle, Condition: workplan.DependencyCondition{Kind: "merge_integrated"}, Reason: "foundation first"}, "dep-foundation"); err != nil {
-		t.Fatal(err)
+	if covered := readinessOf().Summary.PlanCoverage.Covered; covered != 0 {
+		t.Fatalf("plan coverage before any Task = %d", covered)
 	}
+
+	task := addPlanTask(t, root, "checkout")
+	if covered := readinessOf().Summary.PlanCoverage.Covered; covered != 1 {
+		t.Fatalf("plan coverage after a Task named the story = %d, want 1", covered)
+	}
+
 	result, err := openFixture(t, root).Query(context.Background(), Query{Operation: "traceability"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	trace := result.Data.(TraceabilityPage).Criteria[0]
-	if len(trace.TransitiveBlockerPaths) < 2 {
-		t.Fatalf("transitive paths = %+v", trace.TransitiveBlockerPaths)
-	}
-	deep := false
-	for _, blocker := range trace.TransitiveBlockerPaths {
-		deep = deep || len(blocker.Path) >= 3
-	}
-	if !deep {
-		t.Fatalf("deep path missing: %+v", trace.TransitiveBlockerPaths)
+	for _, trace := range result.Data.(TraceabilityPage).Criteria {
+		planned := strings.HasSuffix(trace.Criterion, ":fast")
+		if planned == hasBlocker(trace.Blockers, "task_missing") {
+			t.Fatalf("task_missing blocker on %s: %+v", trace.Criterion, trace.Blockers)
+		}
+		if !planned {
+			if len(trace.Tasks) != 0 {
+				t.Fatalf("a story no Task names was planned: %+v", trace)
+			}
+			continue
+		}
+		if len(trace.Tasks) != 1 || trace.Tasks[0] != task {
+			t.Fatalf("tasks = %v, want %s", trace.Tasks, task)
+		}
+		found := false
+		for _, path := range trace.Paths {
+			found = found || (len(path) == 3 && path[2] == task)
+		}
+		if !found {
+			t.Fatalf("paths %v do not reach the Task", trace.Paths)
+		}
 	}
 }
 
 func TestMissingCrossDomainEndpointsMakeRelationsAndPathsStale(t *testing.T) {
 	root := livingFixture(t)
 	addAcceptedStory(t, root, "checkout", "fast")
-	createDeliveryItem(t, root, "checkout", "fast")
+	createDeliveryDesign(t, root, "checkout", "fast")
 	if err := os.RemoveAll(filepath.Join(applayout.FeatureDir(root, fixtureFeature), "___design", "checkout-design.fragment")); err != nil {
 		t.Fatal(err)
 	}
@@ -161,7 +181,7 @@ func TestMissingCrossDomainEndpointsMakeRelationsAndPathsStale(t *testing.T) {
 		t.Fatal(err)
 	}
 	relations := result.Data.(RelationPage).Relations
-	if len(relations) != 2 {
+	if len(relations) != 1 {
 		t.Fatalf("stale relations = %+v", relations)
 	}
 	traceResult, err := session.Query(context.Background(), Query{Operation: "traceability"})
@@ -177,7 +197,7 @@ func TestMissingCrossDomainEndpointsMakeRelationsAndPathsStale(t *testing.T) {
 func TestDesignContentChangeStalesPinnedRelations(t *testing.T) {
 	root := livingFixture(t)
 	addAcceptedStory(t, root, "checkout", "fast")
-	createDeliveryItem(t, root, "checkout", "fast")
+	createDeliveryDesign(t, root, "checkout", "fast")
 	path := filepath.Join(applayout.FeatureDir(root, fixtureFeature), "___design", "checkout-design.fragment", "content.txt")
 	if err := os.WriteFile(path, []byte("revised design\n"), 0o644); err != nil {
 		t.Fatal(err)
@@ -187,7 +207,7 @@ func TestDesignContentChangeStalesPinnedRelations(t *testing.T) {
 		t.Fatal(err)
 	}
 	relations := result.Data.(RelationPage).Relations
-	if len(relations) != 2 {
+	if len(relations) != 1 {
 		t.Fatalf("stale relations = %+v", relations)
 	}
 	for _, relation := range relations {
@@ -211,7 +231,7 @@ func livingFixture(t *testing.T) string {
 	if _, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: fixtureFeature, Title: "Main", CreatedAt: fixtureTime}); err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"___requirements", "___design", "___workplan"} {
+	for _, name := range []string{"___requirements", "___design"} {
 		if err := os.Mkdir(filepath.Join(applayout.FeatureDir(root, fixtureFeature), name), 0o755); err != nil {
 			t.Fatal(err)
 		}
@@ -234,17 +254,8 @@ func addAcceptedStory(t *testing.T, root, id, criterion string) {
 	}
 }
 
-func createPlainItem(t *testing.T, root, id string) {
+func createDeliveryDesign(t *testing.T, root, storyID, criterionID string) {
 	t.Helper()
-	revision := workplan.WorkItemRevision{ID: "r1", Title: id, Objective: "Deliver " + id, Deliverables: []string{id}, Relations: []string{}, Dependencies: []string{}, Contracts: []string{}, ExpectedTouchAreas: []workplan.TouchArea{}, CompletionChecks: []string{}, MergeUnits: []workplan.MergeUnit{{ID: "main", Repository: "https://example.com/repo.git", SourceBranch: "feature/" + id, TargetBranch: "main", Required: true}}}
-	if _, err := workplan.CreateWorkItem(root, fixtureFeature, id, revision, "item-"+id); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func createDeliveryItem(t *testing.T, root, storyID, criterionID string) {
-	t.Helper()
-	createPlainItem(t, root, storyID)
 	criterion, _ := livingid.Criterion("test", storyID, criterionID)
 	revision, _ := livingid.Revision("test", storyID, "r1")
 	design, _ := livingid.Design("test", livingid.DesignFragment, storyID+"-design")
@@ -260,8 +271,6 @@ func createDeliveryItem(t *testing.T, root, storyID, criterionID string) {
 	if err := os.WriteFile(filepath.Join(designDir, "content.txt"), []byte("current design\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	item, _ := livingid.WorkItem("test", storyID)
-	itemRevision, _ := livingid.DefinitionRevision("test", livingid.KindWorkItem, storyID, "r1")
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
 		t.Fatalf("load design: valid=%v err=%v issues=%+v", validation.Valid, err, validation.Issues)
@@ -273,41 +282,63 @@ func createDeliveryItem(t *testing.T, root, storyID, criterionID string) {
 	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{Feature: fixtureFeature, ID: "addresses-" + storyID, Type: requirements.RelationAddresses, From: design, To: criterion, Rationale: "current design", FromContentDigest: digest, ToRevision: revision, CreatedAt: fixtureTime, RequestID: "addresses-" + storyID}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{Feature: fixtureFeature, ID: "implements-" + storyID, Type: requirements.RelationImplements, From: item, To: design, Rationale: "current plan", FromRevision: itemRevision, ToContentDigest: digest, CreatedAt: fixtureTime, RequestID: "implements-" + storyID}); err != nil {
+}
+
+// addPlanTask adds a Plan with one Task naming the story, and returns the Task's URN.
+func addPlanTask(t *testing.T, root, storyID string) string {
+	t.Helper()
+	deck := saga.DeckManifest{ID: storyID, Title: "Deliver " + storyID, Objective: "Deliver " + storyID}
+	if err := planstore.Create(root, saga.PlanManifest{ID: storyID, Title: "Deliver " + storyID, CreatedAt: fixtureTime}, deck); err != nil {
+		t.Fatal(err)
+	}
+	story, _ := livingid.Story("test", storyID)
+	task, err := planstore.AddTask(root, storyID, saga.TaskManifest{ID: storyID, Title: "Deliver " + storyID, Story: story, CreatedAt: fixtureTime}, nil, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	return task
+}
+
+func finishPlanTask(t *testing.T, root, storyID string) {
+	t.Helper()
+	err := planstore.UpdateTask(root, storyID, storyID, func(task *saga.TaskManifest) error {
+		task.State = saga.TaskDone
+		return nil
+	}, nil)
+	if err != nil {
 		t.Fatal(err)
 	}
 }
 
-func recordIntegratedMerge(t *testing.T, root, item string) {
+// addVerifiedVerification records a claim, its verified result, and a verifies
+// relation to the criterion, and returns the verification's URN.
+func addVerifiedVerification(t *testing.T, root, storyID, criterionID string) string {
 	t.Helper()
-	planned, err := workplan.RecordMerge(root, item, workplan.MergeEvent{EventBase: workplan.EventBase{Parents: []string{}}, Unit: "main", State: "planned"}, "merge-planned")
-	if err != nil {
+	id := storyID + "-verified"
+	writeRecord := func(dir string, value any) {
+		t.Helper()
+		data, err := json.Marshal(value)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.MkdirAll(filepath.Join(root, dir), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(root, dir, id+".json"), data, 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	design, _ := livingid.Design("test", livingid.DesignFragment, storyID+"-design")
+	writeRecord("___claims", saga.Claim{Version: saga.CurrentVersion, ID: id, Target: design, Kind: "behavior", Statement: "It works", CreatedAt: fixtureTime,
+		Evidence: []coderef.Reference{{Commit: strings.Repeat("a", 40), Path: "checkout.go", Start: 1, End: 2, Digest: "sha256:" + strings.Repeat("b", 64)}}})
+	writeRecord("___verifications", saga.Verification{Version: saga.CurrentVersion, ID: id, Claim: id, Status: "verified", Method: "test", Summary: "It passed", CreatedAt: fixtureTime})
+	criterion, _ := livingid.Criterion("test", storyID, criterionID)
+	revision, _ := livingid.Revision("test", storyID, "r1")
+	verification := "urn:change-saga:test:verification:" + id
+	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{Feature: fixtureFeature, ID: "verifies-" + storyID, Type: requirements.RelationVerifies, From: verification, To: criterion, Rationale: "verified", ToRevision: revision, CreatedAt: fixtureTime, RequestID: "verifies-" + storyID}); err != nil {
 		t.Fatal(err)
 	}
-	ready, err := workplan.RecordMerge(root, item, workplan.MergeEvent{EventBase: workplan.EventBase{Parents: []string{planned.URN}}, Unit: "main", State: "ready", HeadOID: strings.Repeat("a", 40)}, "merge-ready")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, err := workplan.RecordMerge(root, item, workplan.MergeEvent{EventBase: workplan.EventBase{Parents: []string{ready.URN}}, Unit: "main", State: "integrated", HeadOID: strings.Repeat("a", 40), MergeOID: strings.Repeat("b", 40)}, "merge-integrated"); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func recordDoneProgress(t *testing.T, root, item string) {
-	t.Helper()
-	plan, validation, err := workplan.Load(root)
-	if err != nil || !validation.Valid || plan.WorkItems[item].CurrentProgress == nil {
-		t.Fatalf("load current progress: validation=%+v err=%v", validation, err)
-	}
-	current := plan.WorkItems[item].CurrentProgress
-	parent, _ := workplan.ProgressEventURN("test", item, current.ID)
-	inProgress, err := workplan.RecordProgress(root, item, workplan.ProgressEvent{EventBase: workplan.EventBase{Parents: []string{parent}}, State: "in_progress"}, "progress-in-progress")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, err := workplan.RecordProgress(root, item, workplan.ProgressEvent{EventBase: workplan.EventBase{Parents: []string{inProgress.URN}}, State: "done"}, "progress-done"); err != nil {
-		t.Fatal(err)
-	}
+	return verification
 }
 
 func openFixture(t *testing.T, root string) Session {

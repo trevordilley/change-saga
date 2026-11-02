@@ -11,11 +11,10 @@ import (
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 // relationHeads gathers every current head a relation can be pinned to:
-// requirements heads come from the document itself, and work-item, design,
+// requirements heads come from the document itself, and design,
 // and (on a v5 Saga) test-case heads are loaded from their owning domains.
 type relationHeads struct {
 	document  requirements.Document
@@ -46,27 +45,6 @@ func loadRelationHeadsWithSaga(root string, report *saga.Saga) (relationHeads, e
 		return relationHeads{}, err
 	}
 	inputs := requirements.StaleInputs{CurrentRevisions: map[string]string{}, CurrentContentDigests: map[string]string{}, Missing: map[string]bool{}}
-	plan, validation, err := workplan.Load(root)
-	if err != nil {
-		return relationHeads{}, fmt.Errorf("load work plan: %w", err)
-	}
-	if !validation.Valid {
-		return relationHeads{}, fmt.Errorf("the work plan is invalid; run change-saga validate")
-	}
-	for id, item := range plan.WorkItems {
-		urn, err := livingid.WorkItem(document.SagaID, id)
-		if err != nil {
-			continue
-		}
-		if len(item.Heads) == 1 {
-			inputs.CurrentRevisions[urn] = item.Heads[0]
-		} else if len(item.Heads) > 1 {
-			if inputs.ConflictedRevisions == nil {
-				inputs.ConflictedRevisions = map[string][]string{}
-			}
-			inputs.ConflictedRevisions[urn] = item.Heads
-		}
-	}
 	if report == nil {
 		report, _, err = saga.Load(root)
 		if err != nil {
@@ -140,14 +118,6 @@ func (heads relationHeads) currentRevisionHead(endpoint string) (string, bool, e
 			}
 		}
 		return "", true, fmt.Errorf("story for %q does not exist", endpoint)
-	case livingid.KindWorkItem:
-		if head, ok := heads.inputs.CurrentRevisions[endpoint]; ok {
-			return head, true, nil
-		}
-		if conflicting, ok := heads.inputs.ConflictedRevisions[endpoint]; ok {
-			return uniqueRevisionHead(endpoint, conflicting)
-		}
-		return "", true, fmt.Errorf("work item %q does not exist", endpoint)
 	}
 	return "", false, nil
 }

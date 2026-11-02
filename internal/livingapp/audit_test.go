@@ -10,7 +10,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 func TestFeatureAuditFindsEveryBroadLinkAndExactAuthoringGaps(t *testing.T) {
@@ -307,8 +306,6 @@ func auditFixture(t *testing.T, evidence bool) *session {
 		saga:       &saga.Saga{Manifest: saga.Manifest{ID: "test"}, Features: []*saga.Feature{feature}, Decks: []*saga.Deck{deck}},
 		quality:    quality.Document{SagaID: "test", TestCases: []quality.TestCase{}},
 		exceptions: []coverage.Exception{},
-		plan: workplan.Plan{SagaID: "test", WorkItems: map[string]*workplan.WorkItem{},
-			Waves: map[string]*workplan.Wave{}, Dependencies: map[string]*workplan.Dependency{}, Contracts: map[string]*workplan.Contract{}},
 	}
 }
 

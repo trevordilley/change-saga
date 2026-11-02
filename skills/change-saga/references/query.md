@@ -207,15 +207,7 @@ covered lines are not proof of a correct explanation.
   `change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `relations`: typed current, stale, and superseded living-Saga relations.
   `change-saga query relations --saga PATH [--relation ID|URN] [--type TYPE] [--from URN] [--to URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
-- `waves`: ordered work-plan coordination cohorts and derived item counts.
-  `change-saga query waves --saga PATH [--wave ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
-- `work-items`: current work-item definitions, progress, explicit dependency blockers, workspaces, and merge evidence.
-  `change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
-- `work-events`: normalized append-only progress, workspace, merge, and contract events.
-  `change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
-- `work-conflicts`: deterministically identified work-plan conflicts and competing heads.
-  `change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
-- `traceability`: current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers.
+- `traceability`: current story-to-design/task/review/code/test paths (design that addresses the whole story is also listed as broad), and reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit.
   `change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `quality`: verification definitions, criterion-to-step mappings, and implementation evidence; no run results.
   `change-saga query quality --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]`
