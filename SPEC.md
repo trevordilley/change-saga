@@ -1971,6 +1971,18 @@ ID`. A Plan Item MUST NOT own code evidence or criterion links; code references
 belong on Tasks. An Item's optional `record` MUST name a Task of this Plan or a
 story of this Saga. The reader shows a named Task's state on the slide.
 
+An Item that names a Task or story and selects an element or region is
+interactive in the reader, except a callout, which stays in the slide's list. Its
+place highlights on hover, a `done` Task's place is marked done, and selecting it
+opens the Task or story in a slide-out. A Task's slide-out shows its title, state,
+phase, story, dependencies, what it unblocks, essay, and code references, and links
+to its page.
+
+Wherever a Task is shown, each of its code references opens that reference's lines
+at its pinned commit, with its note, in the shared code drawer. A reference whose
+commit or file cannot be read says so in the drawer, and no other lines are
+substituted.
+
 ### Plans and reviews
 
 `plan link-review` records a review in `reviews`. In a review deck, an Item whose

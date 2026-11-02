@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
@@ -127,4 +127,114 @@ test("a record link in an essay opens that record's page", async ({ page, saga }
 
   const missing = await page.request.get(`${saga.baseURL}/records/${encodeURIComponent("urn:change-saga:wave-one:story:absent")}`);
   expect(missing.status()).toBe(404);
+});
+
+/** A Plan with one done Task pinned to real code, and a slide whose two nodes name it and a story. */
+function planWithInteractiveSlide(saga: SagaFixture): void {
+  run(saga, "plan", "create", "--id", "tides", "--title", "Plan the tides");
+  run(saga, "plan", "add-phase", "--plan", "tides", "--id", "first", "--title", "Read first");
+  const essay = join(saga.tempDir, "essay.md");
+  writeFileSync(essay, "Why the **tide table** comes first.\n");
+  run(saga, "task", "add", "--plan", "tides", "--id", "read-tides", "--title", "Read the tide table", "--phase", "first",
+    "--story", "urn:change-saga:wave-one:story:read-the-tide", "--essay-source", essay,
+    "--repo", saga.sourceRepo, "--code", "src/app.go:3-5=Where the tide is read");
+  run(saga, "task", "add", "--plan", "tides", "--id", "tide-source", "--title", "Find a tide source", "--unblocks", "read-tides");
+  run(saga, "task", "done", "--plan", "tides", "--task", "read-tides", "--summary", "Reads the table.");
+  const node = { kind: "node", shape: "service", style: "primary", width: 400, height: 120 };
+  const slide = {
+    version: 1, operation: "create", request_id: "tide-nodes", plan: "tides", expected_snapshot: "absent",
+    slide: { id: "the-nodes", title: "The nodes", rank: 10, intent: "explain", layout: "diagram", takeaway: "Each node is work.", front: ["Select a node."], reading_order: ["read-tides", "the-story"] },
+    diagram: {
+      version: 1, width: 1280, height: 720,
+      styles: { primary: { fill: "@diagram-blue-tint", stroke: "@diagram-blue-accent", ink: "@diagram-blue-ink", font_size: 18, stroke_width: 2 } },
+      elements: [
+        { ...node, id: "read-tides", label: "Read the tide table", x: 100, y: 100 },
+        { ...node, id: "the-story", label: "Read the tide", x: 700, y: 100 },
+      ],
+    },
+    items: [
+      { id: "read-tides", rank: 10, kind: "node", label: "Read the tide table", description: "The work.", selector: { type: "element", element_id: "read-tides" }, record: "urn:change-saga:wave-one:plan:tides:task:read-tides" },
+      { id: "the-story", rank: 20, kind: "node", label: "Read the tide", description: "The story.", selector: { type: "element", element_id: "the-story" }, record: "urn:change-saga:wave-one:story:read-the-tide" },
+    ],
+  };
+  const request = join(saga.tempDir, "tide-nodes.json");
+  writeFileSync(request, JSON.stringify(slide));
+  run(saga, "apply-slide", "--from", request);
+}
+
+test("a Plan slide's node highlights, opens its Task, and its code opens in the drawer", async ({ page, saga }) => {
+  planWithInteractiveSlide(saga);
+  await page.goto(`${saga.baseURL}/plans/tides`);
+  await waitForSettledSaga(page);
+  await page.locator("[data-plan-deck] [data-slide-thumbnail]").click();
+
+  const stage = page.locator(".review-deck-slide.active .fragment-stage");
+  const taskNode = stage.locator('.landmark-hotspot[data-element-id="read-tides"]');
+  await expect(taskNode).toHaveAttribute("data-plan-task-state", "done");
+  await expect(taskNode).toHaveCSS("border-top-color", "rgba(0, 0, 0, 0)");
+  await taskNode.hover();
+  await expect(taskNode).toHaveCSS("border-top-color", "rgb(211, 148, 24)");
+  await expect(taskNode.locator(".landmark-affordance")).toHaveCSS("opacity", "1");
+
+  await taskNode.click({ position: { x: 40, y: 60 } });
+  const drawer = page.locator(".diff-drawer.open");
+  const detail = drawer.locator('[data-plan-node-detail="read-tides"]');
+  await expect(detail.locator(".plan-task-title")).toHaveText("Read the tide table");
+  await expect(detail.locator(".plan-state.done")).toHaveText("Done");
+  await expect(detail.locator("[data-plan-task-phase]")).toContainText("Read first");
+  await expect(detail.locator("[data-plan-chain]")).toContainText("Read the tide");
+  await expect(detail.locator("[data-plan-task-essay] strong")).toHaveText("tide table");
+  await expect(detail.getByRole("link", { name: "Open this task" })).toBeVisible();
+
+  await detail.locator("[data-task-code-list] button").click();
+  const code = drawer.locator("[data-task-code-view]");
+  await expect(code.locator("figure tr.referenced").first()).toBeVisible();
+  await expect(code).toContainText("Where the tide is read");
+  await expect(drawer.locator(".drawer-head strong")).toContainText("Read the tide table");
+
+  await drawer.getByRole("button", { name: "Back to task" }).click();
+  await expect(detail).toBeVisible();
+  await drawer.locator("[data-close-drawer]").click();
+  await expect(drawer).toHaveCount(0);
+
+  await stage.locator('.landmark-hotspot[data-element-id="the-story"]').click({ position: { x: 40, y: 60 } });
+  await expect(drawer.locator("[data-plan-story-detail]")).toContainText("It takes these 2 tasks, 1 done.");
+  await drawer.locator("[data-close-drawer]").click();
+
+  // The slide's own list of Tasks reaches the same code.
+  await page.locator('[data-plan-drawer^="plan-tasks-"]').click();
+  await drawer.locator('[data-plan-slide-tasks] [data-task-code-list] button').click();
+  await expect(drawer.locator("[data-task-code-view] figure")).toContainText("src/app.go");
+});
+
+test("a Task's references open from its page and the board, and an unreadable one says so", async ({ page, saga }) => {
+  planWithInteractiveSlide(saga);
+  await page.goto(`${saga.baseURL}/plans/tides/tasks`);
+  await waitForSettledSaga(page);
+  await page.locator('[data-plan-node="task:read-tides"]').click();
+  const drawer = page.locator(".diff-drawer.open");
+  await drawer.locator("[data-task-code-list] button").click();
+  await expect(drawer.locator("[data-task-code-view] figure tr.referenced").first()).toBeVisible();
+  // The code needs the room the node's narrow detail does not.
+  await expect(drawer).not.toHaveClass(/plan-node-drawer/);
+  await drawer.getByRole("button", { name: "Back to task" }).click();
+  await expect(drawer).toHaveClass(/plan-node-drawer/);
+  await drawer.getByRole("link", { name: "Open this task" }).click();
+
+  const taskCode = page.locator("#page [data-task-code] [data-task-code-list] button");
+  await taskCode.click();
+  await expect(drawer.locator("[data-task-code-view]")).toContainText("Where the tide is read");
+  await drawer.locator("[data-close-drawer]").click();
+  await expect(taskCode).toBeVisible();
+
+  const record = join(saga.sagaRoot, "___plans/tides.plan/tasks/read-tides.task/task.json");
+  const task = JSON.parse(readFileSync(record, "utf8"));
+  task.code[0].commit = "a".repeat(40);
+  writeFileSync(record, JSON.stringify(task));
+  await expect(async () => {
+    await page.reload();
+    await waitForSettledSaga(page);
+    await taskCode.click();
+    await expect(drawer.locator("[data-task-code-view]")).toContainText("could not be read from this checkout", { timeout: 2000 });
+  }).toPass();
 });
