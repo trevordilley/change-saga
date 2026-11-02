@@ -703,6 +703,7 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 type reviewSurfaces struct {
 	deckLabel, codeHref, coverageHref, title string
 	reviewDeck                               bool
+	planTabs                                 []planTabView
 }
 
 // inShell renders a review surface inside the app shell, so the reviews sit
@@ -722,6 +723,7 @@ func (a *app) inShell(w http.ResponseWriter, r *http.Request, name string, view 
 		data.DeckLabel = surfaces.deckLabel
 	}
 	data.ReviewDeck = surfaces.reviewDeck
+	data.PlanTabs = surfaces.planTabs
 	data.PageTitle = surfaces.title
 	if surfaces.codeHref != "" || surfaces.coverageHref != "" {
 		data.ReviewCodeHref, data.ReviewCoverageHref = surfaces.codeHref, surfaces.coverageHref

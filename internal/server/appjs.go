@@ -2553,7 +2553,7 @@ const appJavaScript = `(() => {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     const wasOpen = drawer.classList.contains('open');
-    drawer.classList.remove('open');
+    drawer.classList.remove('open', 'plan-node-drawer');
     drawer.setAttribute('aria-hidden', 'true');
     // Return focus before the drawer becomes inert. WebKit does not always make
     // a clicked close button active, so do not condition this on activeElement
@@ -3256,7 +3256,7 @@ const appJavaScript = `(() => {
     }
   }
 
-` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + deprecationJavaScript + `
+` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + deprecationJavaScript + planJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the
@@ -3447,6 +3447,7 @@ const appJavaScript = `(() => {
   let arrival = 'link';
   function arrived(root, how) {
     const settled = preparePage(root);
+    openPlanEssay(root);
     if (how !== 'first') {
       if (how === 'history' && scrollPositions.has(location.href)) scrollTo(0, scrollPositions.get(location.href));
       else if (!location.hash) scrollTo(0, 0);

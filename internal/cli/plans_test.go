@@ -39,6 +39,10 @@ func taskCommand(ctx context.Context, args []string, out *bytes.Buffer) error {
 	return Task(ctx, args, out)
 }
 
+func planCommand(ctx context.Context, args []string, out *bytes.Buffer) error {
+	return Plan(ctx, args, out)
+}
+
 func loadedPlan(t *testing.T, root, id string) *saga.Plan {
 	t.Helper()
 	document, validation, err := saga.Load(root)
@@ -175,6 +179,22 @@ func planSlideRequest(record string) SlideTransactionRequest {
 		Items: []SlideTransactionItemRequest{
 			{ID: "work", Rank: 10, Kind: "node", Label: "Work", Description: "The work.", Selector: saga.LandmarkSelector{Type: "element", ElementID: "work"}, Record: record},
 		},
+	}
+}
+
+func TestRemovingAPhaseIsRefusedWhileATaskIsInIt(t *testing.T) {
+	t.Parallel()
+	fixture := newPlanFixture(t)
+	root := fixture.root
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "one", "--title", "One", root)
+	run(t, Task, "add", "--plan", "first", "--id", "work", "--title", "Work", "--phase", "one", "--story", planStoryURN, root)
+	if message := refused(t, planCommand, "remove-phase", "--plan", "first", "--id", "one", root); !strings.Contains(message, "still holds task work") {
+		t.Fatalf("message = %q", message)
+	}
+	run(t, Task, "set", "--plan", "first", "--task", "work", "--phase", "", root)
+	run(t, Plan, "remove-phase", "--plan", "first", "--id", "one", root)
+	if phases := loadedPlan(t, root, "first").Phases; len(phases) != 0 {
+		t.Fatalf("phases = %+v", phases)
 	}
 }
 

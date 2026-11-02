@@ -297,8 +297,14 @@ func PlanTaskProblems(phases []PlanPhase, tasks []TaskManifest) []TaskProblem {
 		known[task.ID] = true
 	}
 	phaseIDs := make(map[string]bool, len(phases))
-	for _, phase := range phases {
+	phaseOrder := make(map[string]int, len(phases))
+	for index, phase := range phases {
 		phaseIDs[phase.ID] = true
+		phaseOrder[phase.ID] = index
+	}
+	taskPhase := make(map[string]string, len(tasks))
+	for _, task := range tasks {
+		taskPhase[task.ID] = task.Phase
 	}
 	dependencies := make(map[string][]string, len(tasks))
 	for _, task := range tasks {
@@ -316,6 +322,11 @@ func PlanTaskProblems(phases []PlanPhase, tasks []TaskManifest) []TaskProblem {
 				problems = append(problems, TaskProblem{task.ID, fmt.Sprintf("it depends on %q more than once", dependency)})
 			default:
 				dependencies[task.ID] = append(dependencies[task.ID], dependency)
+				// A phase's Tasks can all run in parallel, and the next phase
+				// follows, so a Task can only need Tasks of an earlier phase.
+				if needed := taskPhase[dependency]; phaseIDs[task.Phase] && phaseIDs[needed] && phaseOrder[needed] >= phaseOrder[task.Phase] {
+					problems = append(problems, TaskProblem{task.ID, fmt.Sprintf("it depends on %q, which is in phase %q: a task can only depend on tasks of an earlier phase, because a phase's tasks run in parallel", dependency, needed)})
+				}
 			}
 			seen[dependency] = true
 		}

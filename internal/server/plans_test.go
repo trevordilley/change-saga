@@ -1,6 +1,8 @@
 package server
 
 import (
+	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -43,10 +45,9 @@ func TestPlansHaveTheirOwnSide(t *testing.T) {
 	}
 }
 
-// The review viewer's script reveals its hidden essay; a Plan's page has no such
-// viewer, so its essay must already show, and must not ask about deprecations
-// for a target that cannot have them.
-func TestAPlanPageShowsItsEssay(t *testing.T) {
+// A Plan's essay and slides are in the viewer a review's deck uses. Nothing in a
+// Plan can be deprecated, so the viewer's request for that must not fail.
+func TestAPlanPageHoldsItsEssayInTheDeckViewer(t *testing.T) {
 	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	overview := &saga.DeckOverview{Body: "Why this work is shaped this way."}
@@ -56,11 +57,56 @@ func TestAPlanPageShowsItsEssay(t *testing.T) {
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 
 	page := getPage(t, handler, "/plans/first").Body.String()
-	if !strings.Contains(page, `data-plan-essay>`) || !strings.Contains(page, "Why this work is shaped this way.") {
-		t.Errorf("the Plan's essay is not shown:\n%s", page)
+	if !strings.Contains(page, `data-deck-overview=`) || !strings.Contains(page, "Why this work is shaped this way.") {
+		t.Errorf("the Plan's essay is not in the viewer:\n%s", page)
 	}
-	if strings.Contains(page, `data-deck-overview=`) || strings.Contains(page, "/api/deprecations") {
-		t.Errorf("the Plan page uses the review viewer's essay:\n%s", page)
+	target := "urn:change-saga:" + serverSagaID(t, fixture.root) + ":plan:first:deck:first"
+	if panel := getPage(t, handler, "/api/deprecations?compact=1&target="+url.QueryEscape(target)); panel.Code != http.StatusOK {
+		t.Errorf("deprecations of a Plan's deck = %d, want 200", panel.Code)
+	}
+}
+
+func TestAPlanHasDeckTasksAndCoverageViews(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	addServerPlan(t, fixture.root, "first")
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	for _, path := range []string{"/plans/first", "/plans/first/tasks", "/plans/first/coverage"} {
+		page := getPage(t, handler, path).Body.String()
+		for _, want := range []string{`href="/plans/first"`, `href="/plans/first/tasks"`, `href="/plans/first/coverage"`} {
+			if !strings.Contains(page, want) {
+				t.Errorf("%s has no header link %s", path, want)
+			}
+		}
+		if !strings.Contains(page, `href="`+path+`" aria-current="page"`) {
+			t.Errorf("%s does not mark its own header link current", path)
+		}
+	}
+}
+
+func TestPlanCoverageEndsAtStoriesAndSaysWhatEachTakes(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	addServerPlan(t, fixture.root, "first")
+	story := "urn:change-saga:" + serverSagaID(t, fixture.root) + ":story:missing"
+	addServerTask(t, fixture.root, "first", "feature-work", story)
+	addServerTask(t, fixture.root, "first", "refactor", "", "feature-work")
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+
+	page := getPage(t, handler, "/plans/first/coverage").Body.String()
+	for _, want := range []string{
+		`data-whiteboard-view`,
+		`data-plan-node="task:refactor"`,
+		`data-plan-node="story:` + story + `"`,
+		`data-plan-edge-from="task:refactor" data-plan-edge-to="task:feature-work"`,
+		`data-plan-edge-from="task:feature-work" data-plan-edge-to="story:` + story + `"`,
+		`0 of 2 tasks done`,
+		`id="plan-node-task-refactor"`,
+		`It takes these 2 tasks, 0 done.`,
+	} {
+		if !strings.Contains(page, want) {
+			t.Errorf("the Coverage view has no %q", want)
+		}
 	}
 }
 
@@ -86,15 +132,11 @@ func TestAPlanPageReadsAsAPlanAndShowsItsTasks(t *testing.T) {
 			t.Errorf("the deck view has no %q", want)
 		}
 	}
-	graph := getPage(t, handler, "/plans/first?tab=dependencies").Body.String()
-	for _, want := range []string{`1 task can start now.`, `data-plan-graph-task="refactor"`, `No dependencies`, `1 step in`} {
-		if !strings.Contains(graph, want) {
-			t.Errorf("the dependency view has no %q", want)
+	tasks := getPage(t, handler, "/plans/first/tasks").Body.String()
+	for _, want := range []string{`data-plan-unsized`, "Not sized yet", `data-plan-ready`, "1 task can start now", `data-plan-chain`, "Leads to", "through "} {
+		if !strings.Contains(tasks, want) {
+			t.Errorf("the tasks view has no %q", want)
 		}
-	}
-	tasks := getPage(t, handler, "/plans/first?tab=tasks").Body.String()
-	if !strings.Contains(tasks, `data-plan-unsized`) || !strings.Contains(tasks, "Not sized yet") {
-		t.Errorf("the tasks view does not single out the unsized task")
 	}
 	task := getPage(t, handler, "/plans/first/tasks/refactor").Body.String()
 	for _, want := range []string{`data-task-chain`, "No story of its own", `data-task-unblocks`, "Done"} {
@@ -140,7 +182,7 @@ func TestPlanComparisonReadsWhatTheReviewsNamed(t *testing.T) {
 	}
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 
-	page := getPage(t, handler, "/plans/first?tab=reviews").Body.String()
+	page := getPage(t, handler, "/plans/first/tasks").Body.String()
 	for _, want := range []string{`data-plan-comparison-row="feature-work"`, "Not delivered", `data-plan-unplanned`} {
 		if !strings.Contains(page, want) {
 			t.Errorf("the comparison has no %q", want)

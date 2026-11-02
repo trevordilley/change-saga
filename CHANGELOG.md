@@ -16,9 +16,12 @@ tool, and what they have to do about it.
   and how it can run in parallel: a slide deck and Tasks, in
   `___plans/<id>.plan/`, owned by no feature. Every Task must name a user story
   or unblock a Task that leads to one. Use `plan create`, `list`, `guide`,
-  `add-phase`, `add-prototype`, `link-review`, and `deliver`; `task add`,
+  `add-phase`, `remove-phase`, `add-prototype`, `link-review`, and `deliver`; `task add`,
   `depend`, `set`, `done`, `remove`, and `list`; and `--plan` on `apply-slide`
-  and `deck overview`. The reader shows Plans beside Documentation and Review.
+  and `deck overview`. A phase's Tasks can run in parallel, so a Task depends only on earlier phases.
+  The reader shows Plans beside Documentation and Review: each opens on its essay
+  and deck, with Deck, Tasks, and Coverage in the header. Coverage is a whiteboard
+  of the Tasks ending at their stories.
   See [writing a Plan](skills/change-saga/references/plans.md).
 - A Roadmap feature can add stories to an existing feature without mixing
   planned work into it: `feature add --augments ID` or `feature set-plan

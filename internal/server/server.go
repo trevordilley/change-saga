@@ -177,6 +177,8 @@ type pageData struct {
 	ReviewSide bool
 	// PlanSide says the page is on the Plans side of the header.
 	PlanSide bool
+	// PlanTabs are the views of the Plan on screen, shown in the header.
+	PlanTabs []planTabView
 	// DeckLabel names the Review side's first view: the reviews themselves,
 	// or one review's deck.
 	DeckLabel string
@@ -541,6 +543,8 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /plans", application.planIndex)
 	page("GET /plans/{id}", application.planPage)
 	page("GET /plans/{id}/tasks/{task}", application.taskPage)
+	page("GET /plans/{id}/tasks", application.planTasksPage)
+	page("GET /plans/{id}/coverage", application.planCoveragePage)
 	handle("GET /plans/{id}/visual/{slide}", application.planVisual)
 	page("GET /reviews", application.reviewIndex)
 	page("GET /reviews/{id}", application.reviewPage)

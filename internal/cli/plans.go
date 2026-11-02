@@ -20,7 +20,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var planOperations = []string{"create", "list", "guide", "add-phase", "add-prototype", "link-review", "deliver"}
+var planOperations = []string{"create", "list", "guide", "add-phase", "remove-phase", "add-prototype", "link-review", "deliver"}
 
 // Plan dispatches the Plan commands.
 func Plan(ctx context.Context, args []string, out io.Writer) error {
@@ -38,6 +38,8 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planList(ctx, args[1:], out)
 	case "guide":
 		err = planGuide(ctx, args[1:], out)
+	case "remove-phase":
+		err = planRemovePhase(ctx, args[1:], out)
 	case "add-phase":
 		err = planAddPhase(ctx, args[1:], out)
 	case "add-prototype":
@@ -237,7 +239,8 @@ confident each Task would have taken two days or less before AI.
    yet and what surprised you, before proposing anything.
 2. Ask. Settle what you cannot answer from the code. Do not invent intent. If the work
    has no story to serve, write the story first: every Task must lead to one.
-3. Draft. Create the Plan with plan create, its phases with plan add-phase, and its
+3. Draft. Create the Plan with plan create, its phases with plan add-phase (a phase's
+   Tasks run in parallel, so a Task only depends on earlier phases), and its
    Tasks top-down with task add: the Task naming the story, then the prerequisites it
    needs with --unblocks. Dependencies decide what can run in parallel.
 4. Prototype. Where an experience or an approach is unclear, build a prototype and
@@ -311,6 +314,24 @@ func planAddPhase(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	if err := planstore.AddPhase(flags.Arg(0), planIDOf(*plan), saga.PlanPhase{ID: *id, Title: strings.TrimSpace(*title)}); err != nil {
+		return err
+	}
+	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
+}
+
+func planRemovePhase(_ context.Context, args []string, out io.Writer) error {
+	name := "plan remove-phase"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	id := flags.String("id", "", "phase id")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *id); err != nil {
+		return err
+	}
+	if err := planstore.RemovePhase(flags.Arg(0), planIDOf(*plan), *id); err != nil {
 		return err
 	}
 	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)

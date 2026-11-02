@@ -125,6 +125,28 @@ func AddPhase(root, planID string, phase saga.PlanPhase) error {
 	})
 }
 
+// RemovePhase drops a phase no Task is in, so a Plan's phases can be reordered
+// by adding them again.
+func RemovePhase(root, planID, phaseID string) error {
+	return mutate(root, func(document *saga.Saga) error {
+		plan, err := editable(document, planID)
+		if err != nil {
+			return err
+		}
+		index := slices.IndexFunc(plan.Phases, func(phase saga.PlanPhase) bool { return phase.ID == phaseID })
+		if index < 0 {
+			return fmt.Errorf("phase %q is not a phase of plan %q", phaseID, planID)
+		}
+		for _, task := range plan.Tasks {
+			if task.Phase == phaseID {
+				return fmt.Errorf("phase %q still holds task %s; move it first with task set --phase", phaseID, task.ID)
+			}
+		}
+		plan.Phases = slices.Delete(plan.Phases, index, index+1)
+		return writePlan(plan)
+	})
+}
+
 // LinkReview records a pull request review that implements the Plan.
 func LinkReview(root, planID, reviewID string) error {
 	return mutate(root, func(document *saga.Saga) error {

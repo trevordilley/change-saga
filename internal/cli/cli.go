@@ -185,7 +185,7 @@ var commandUsage = map[string]string{
 	"design-add-fragment":           "change-saga design add-fragment (--feature ID | --section TARGET) [flags] <saga>",
 	"design-set-fragment-content":   "change-saga design set-fragment-content --target TARGET --source FILE|- [--feature ID] [--json|--quiet] <saga>",
 	"task":                          "change-saga task <add|depend|set|done|remove|list> [flags] <saga>",
-	"plan":                          "change-saga plan <create|list|guide|add-phase|add-prototype|link-review|deliver> [flags] <saga>",
+	"plan":                          "change-saga plan <create|list|guide|add-phase|remove-phase|add-prototype|link-review|deliver> [flags] <saga>",
 	"quality":                       "change-saga quality <test-case|policy|evidence|run> <operation> [flags] <saga>",
 	"quality test-case":             "change-saga quality test-case <add|revise|set-state|remove> [flags] <saga>",
 	"quality test-case remove":      "change-saga quality test-case remove --test-case URN [--dry-run] [--json] <saga>",

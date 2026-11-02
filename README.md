@@ -630,7 +630,7 @@ imports; component and system pins are not supported yet.
 | Command | What it does |
 | --- | --- |
 | `plan create` / `list` / `guide` | Start a Plan, list Plans (`--all` includes delivered ones), and see the workflow or what a Plan still needs. |
-| `plan add-phase` / `add-prototype` | Add a phase, which orders the Plan for readers, and attach a prototype. |
+| `plan add-phase` / `remove-phase` / `add-prototype` | Add or remove a phase, a set of Tasks that can run in parallel, and attach a prototype. |
 | `apply-slide --plan` / `deck overview --plan` | Author the Plan's deck, the technical design for the work. |
 | `plan link-review` / `deliver` | Link a pull request review that implements the Plan, and mark the Plan delivered once every Task is done and every linked review has merged. |
 | `task add` / `depend` / `set` / `remove` | Add, connect, edit and remove Tasks. Every Task leads to a user story; a change that breaks that is refused. |

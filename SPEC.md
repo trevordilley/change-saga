@@ -1892,7 +1892,7 @@ urn:change-saga:<saga>:plan:<plan>[:deck:<deck>|:slide:<slide>[:item:<item>]|:ta
 | Field | Meaning |
 | --- | --- |
 | `id`, `title`, `created_at` | Required identity. |
-| `phases` | Ordered `{id, title}` entries with unique IDs. Optional. A phase is an order for readers, never a dependency; Tasks in different phases may run together. |
+| `phases` | Ordered `{id, title}` entries with unique IDs. Optional. A phase's Tasks can run in parallel and the next phase follows, so a Task depends only on Tasks of earlier phases. |
 | `prototypes` | URNs of prototypes showing what the Plan builds. |
 | `reviews` | IDs of the pull request reviews that implement the Plan. |
 | `delivered_at` | Set only by `plan deliver`. |

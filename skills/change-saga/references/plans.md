@@ -19,8 +19,10 @@ again. A different body of work gets its own Plan.
 - **Add Tasks top-down.** Add the Task that names the story, then add its
   prerequisites with `--unblocks`. A storyless Task cannot exist before what it
   unblocks does.
-- **Dependencies decide what runs in parallel.** A phase is an order for readers,
-  not a dependency. Keep dependencies inside one Plan.
+- **A phase is a set of Tasks that can run in parallel.** The next phase follows
+  it, so a Task can only depend on Tasks of an earlier phase; anything else is
+  refused. Keep dependencies inside one Plan. To reorder phases, add them again
+  and `plan remove-phase` the old ones.
 - **Size each Task honestly.** The goal is to be confident it would have taken
   two days or less before AI, which implies it is well understood. If you are not
   confident, research or prototype until you are, or split it. Record the
@@ -42,10 +44,11 @@ change-saga task list --plan ID --ready change.saga
 
 The deck is authored as a review's is, with `apply-slide --plan ID --from
 SLIDE.json` and `deck overview --plan ID --file OVERVIEW.json`; see
-[diagrams and evidence](diagrams.md). Organize it by phase with `slide.section`.
+[diagrams and evidence](diagrams.md). Group its slides under `slide.section`,
+usually by phase.
 A Plan Item carries no evidence and no criterion links: its `record` names a Task
-of the Plan (`urn:change-saga:SAGA:plan:ID:task:TASK`) or a story, and the reader
-shows that Task's done state on the slide. Put code references on Tasks. Read a
+of the Plan (`urn:change-saga:SAGA:plan:ID:task:TASK`) or a story, and the slide
+lists those Tasks and their done state in a slide-out. Put code references on Tasks. Read a
 Plan's slides with `diagram describe --slide SLIDE_URN`.
 
 Attach prototypes with `plan add-prototype`.

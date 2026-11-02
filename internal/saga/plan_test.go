@@ -84,6 +84,23 @@ func TestPlanTaskProblemsChecksPhases(t *testing.T) {
 }
 
 // A long chain and a wide fan both finish quickly: the walk is linear.
+func TestPlanTaskProblemsKeepsAPhaseParallel(t *testing.T) {
+	t.Parallel()
+	phases := []PlanPhase{{ID: "one", Title: "One"}, {ID: "two", Title: "Two"}}
+	story := "urn:change-saga:app:story:s"
+	accepted := []TaskManifest{{ID: "first", Phase: "one"}, {ID: "second", Phase: "two", Story: story, DependsOn: []string{"first"}}}
+	if problems := PlanTaskProblems(phases, accepted); len(problems) != 0 {
+		t.Fatalf("a dependency on an earlier phase was refused: %+v", problems)
+	}
+	for _, phase := range []string{"one", "two"} {
+		tasks := []TaskManifest{{ID: "first", Phase: "two"}, {ID: "second", Phase: phase, Story: story, DependsOn: []string{"first"}}}
+		problems := PlanTaskProblems(phases, tasks)
+		if len(problems) != 1 || problems[0].Task != "second" || !strings.Contains(problems[0].Message, "earlier phase") {
+			t.Errorf("phase %s: problems = %+v", phase, problems)
+		}
+	}
+}
+
 func TestPlanTaskProblemsHandlesLargeGraphs(t *testing.T) {
 	tasks := []TaskManifest{task("t0", "")}
 	for index := 1; index < 20000; index++ {
