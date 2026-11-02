@@ -10,11 +10,11 @@
       "note": "The server derives deduplicated slide summaries and Item controls only from active exact-Item links, while preserving legacy guidance and relation currency, judged through one RelationEvaluator per loaded document."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "d16a47f1c2b157832203072d59833b4408792e7a",
       "path": "internal/server/storylinks.go",
       "start": 68,
       "end": 167,
-      "digest": "sha256:0961469b2d1d9c601483588575f67e96af9744e7ba144f3d246a3fd508cadcfb",
+      "digest": "sha256:47d38d3fdaaf518de2916614a81503cf4548b82defe8d9d91dc70a3c8150cb5a",
       "note": "The server derives deduplicated slide summaries and Item controls only from active exact-Item links, while preserving legacy guidance and relation currency, judged through one RelationEvaluator per loaded document."
     }
   ]
