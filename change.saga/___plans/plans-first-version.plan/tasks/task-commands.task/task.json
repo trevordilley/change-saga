@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "task-commands",
+  "title": "Add the task commands, so agents can mark Tasks done",
+  "phase": "tasks",
+  "story": "urn:change-saga:change-saga:story:agents-keep-plan-current",
+  "depends_on": [
+    "task-records"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Small commands over one store."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:41.742099Z"
+}

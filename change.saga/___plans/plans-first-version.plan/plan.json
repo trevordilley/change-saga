@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/plan.schema.json",
+  "version": 5,
+  "id": "plans-first-version",
+  "title": "Plans and Tasks: first version",
+  "phases": [
+    {
+      "id": "a-plan-exists",
+      "title": "Phase 1: A Plan exists"
+    },
+    {
+      "id": "tasks",
+      "title": "Phase 2: Tasks"
+    },
+    {
+      "id": "the-deck",
+      "title": "Phase 3: The deck shows progress"
+    },
+    {
+      "id": "reviews",
+      "title": "Phase 4: Reviews and delivery"
+    },
+    {
+      "id": "guide",
+      "title": "Phase 5: Guided authoring"
+    },
+    {
+      "id": "clean-up",
+      "title": "Phase 6: Remove the old work plan"
+    }
+  ],
+  "prototypes": [
+    "urn:change-saga:change-saga:prototype:plans"
+  ],
+  "created_at": "2026-11-02T05:05:37.227912Z"
+}

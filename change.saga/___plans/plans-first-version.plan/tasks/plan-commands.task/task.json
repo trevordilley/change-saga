@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "plan-commands",
+  "title": "Add plan create and plan list",
+  "phase": "a-plan-exists",
+  "story": "urn:change-saga:change-saga:story:find-plans-in-their-section",
+  "depends_on": [
+    "plan-record"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Two small commands on a new record."
+  },
+  "state": "done",
+  "created_at": "2026-11-02T05:05:40.444566Z"
+}

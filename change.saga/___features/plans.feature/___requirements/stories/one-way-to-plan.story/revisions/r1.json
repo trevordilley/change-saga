@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:one-way-to-plan",
+  "parents": [],
+  "title": "Plan work in one way",
+  "statement": "As a developer, I can plan work in one way, so nobody has to choose between two overlapping task systems.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "one-grammar",
+      "statement": "change-saga plan and change-saga task are the only commands that plan work."
+    },
+    {
+      "id": "no-old-records",
+      "statement": "A Saga has no ___workplan directory, and the reader and queries read Plans and Tasks."
+    }
+  ],
+  "created_at": "2026-11-02T05:05:37.058059Z"
+}

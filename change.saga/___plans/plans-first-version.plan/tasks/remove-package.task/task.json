@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "remove-package",
+  "title": "Remove internal/workplan, its schemas, and ___workplan",
+  "phase": "clean-up",
+  "depends_on": [
+    "remove-commands",
+    "stop-reading-work-plan"
+  ],
+  "code": [
+    {
+      "commit": "4ede5cad1a5127a7f347d58de85b3cb62a07e758",
+      "path": "internal/workplan/model.go",
+      "start": 227,
+      "end": 239,
+      "digest": "sha256:5d0b166460f6cd2bbb996cd9de1a812231226244c5c8229da3b71a3696a98d63",
+      "note": "The Plan type being removed"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Deletion, once nothing reads it."
+  },
+  "state": "planned",
+  "created_at": "2026-11-02T05:05:48.075217Z"
+}

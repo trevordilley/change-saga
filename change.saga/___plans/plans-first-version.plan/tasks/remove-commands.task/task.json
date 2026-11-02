@@ -1,0 +1,23 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "remove-commands",
+  "title": "Remove the old plan verbs and work queries",
+  "phase": "clean-up",
+  "code": [
+    {
+      "commit": "4ede5cad1a5127a7f347d58de85b3cb62a07e758",
+      "path": "internal/cli/living_plan.go",
+      "start": 13,
+      "end": 16,
+      "digest": "sha256:3ec804da68306d7a5205b43811ca54530caa219c200a3c6a52a68c7903446446",
+      "note": "The old verbs"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Deleting commands and their tests."
+  },
+  "state": "planned",
+  "created_at": "2026-11-02T05:05:48.509143Z"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "remove-docs",
+  "title": "Remove the work plan's docs, feature, and terms",
+  "phase": "clean-up",
+  "story": "urn:change-saga:change-saga:story:one-way-to-plan",
+  "depends_on": [
+    "remove-package"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Deleting records through the CLI, then checking health."
+  },
+  "state": "planned",
+  "created_at": "2026-11-02T05:05:47.687733Z"
+}
