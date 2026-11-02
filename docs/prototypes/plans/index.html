@@ -161,8 +161,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     T('comparison', 'Plan vs Review', 'Compare a Plan with its Reviews', 'p4', 'compare-plan-with-reviews', ['plan-review-link', 'slide-task-refs'], 'wait', 'over',
       'The key value of a Plan. Judged larger than two days for now, because what it compares is still open: this Task should be split once that is decided.',
       []),
-    T('hide-done', 'Hide done Plans', 'Hide done Plans by default', 'p4', 'hide-done-plans', ['plan-review-link'], 'ready', 'within',
-      'A Plan that is implemented and merged is hidden from the Plans section, and filtered from plan list unless --all is given. Reviews already do this for merged reviews, so it should read the same way.',
+    T('hide-done', 'Hide delivered', 'Hide delivered Plans by default', 'p4', 'hide-done-plans', ['plan-review-link'], 'ready', 'within',
+      'An author marks a Plan delivered once every Task is done and its Reviews have merged. It is then hidden from the Plans section, and filtered from plan list unless --all is given. Reviews already do this for merged reviews, so it should read the same way.',
       [['internal/server/directories.go', '372-382', 'The Reviews table sets merged reviews aside'], ['internal/cli/reviews.go', '580-584', 'review list hides merged reviews']]),
     T('plan-prototypes', 'Plan prototypes', 'Attach prototypes to a Plan', 'p5', 'show-plan-prototypes', ['plan-record'], 'ready', 'within',
       'Prototypes already exist on a feature. A Plan points at the ones it uses and shows them on its page.',
@@ -235,10 +235,10 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     var rows = [
       ['<a href="#/plan/deck/whole">Plans and Tasks: first version</a>', planStories().length + ' stories in ' + planFeatures().length + ' features', done + ' of ' + total, done / total, 'pr-101, pr-104', '<span class="chip s-work">In progress</span>', false],
       ['Roadmap shows Plan progress', '4 stories in 1 feature', '0 of 6', 0, 'None yet', '<span class="chip s-wait">Not started</span>', false],
-      ['Spike: a first page for Tasks', '2 stories in 1 feature', '4 of 4', 1, 'pr-96 merged', '<span class="chip s-done">\u2713 Done</span>', true]
+      ['Spike: a first page for Tasks', '2 stories in 1 feature', '4 of 4', 1, 'pr-96 merged', '<span class="chip s-done">\u2713 Delivered</span>', true]
     ];
     var html = '<h1>Plans</h1><p class="sub">The work we intend to do. A Plan is one body of work; each of its Tasks leads to a user story.</p>';
-    html += '<div class="filter"><span class="note" id="plan-count"></span><button class="toggle" id="toggle-done" aria-pressed="' + showDone + '">' + (showDone ? 'Hide' : 'Show') + ' done (1)</button></div>';
+    html += '<div class="filter"><span class="note" id="plan-count"></span><button class="toggle" id="toggle-done" aria-pressed="' + showDone + '">' + (showDone ? 'Hide' : 'Show') + ' delivered (1)</button></div>';
     html += '<table><thead><tr><th>Plan</th><th>Touches</th><th>Tasks done</th><th>Reviews</th><th>State</th></tr></thead><tbody>';
     var shown = 0;
     rows.forEach(function (r) {
@@ -246,7 +246,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
       shown++;
       html += '<tr class="' + (r[6] ? 'done-row' : '') + '"><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '<div class="bar"><i style="width:' + Math.round(r[3] * 100) + '%"></i></div></td><td>' + r[4] + '</td><td>' + r[5] + '</td></tr>';
     });
-    html += '</tbody></table><p class="note">A done Plan is implemented and merged. It is hidden here by default, as merged Reviews are, and still opens if someone asks for it. <a href="#/cli">The CLI does the same.</a></p>';
+    html += '</tbody></table><p class="note">Every Task is done and its Reviews have merged, so an author marked it delivered. It is hidden here by default, as merged Reviews are, and still opens if someone asks for it. <a href="#/cli">The CLI does the same.</a></p>';
     document.getElementById('view-plans').innerHTML = html;
     document.getElementById('plan-count').textContent = shown + ' shown';
     document.getElementById('toggle-done').onclick = function () { showDone = !showDone; renderPlans(); };
@@ -465,8 +465,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     var ready = TASKS.filter(canStart).map(function (t) { return '  ' + t.id; }).join('\n');
     document.getElementById('view-cli').innerHTML =
       '<div class="eyebrow">Design sketch. None of the new commands exist</div><h1>Proposed grammar</h1><p class="sub">change-saga plan becomes the Plan\u2019s command once the old work plan is removed.</p>' +
-      '<pre class="cmd"><span class="c"># Plans</span>\nchange-saga plan create --id first-version --title TEXT\nchange-saga plan list [--feature ID] [--story URN] [--all]   <span class="c"># done Plans hidden without --all</span>\nchange-saga plan link-review --plan ID --review pr-101\nchange-saga plan add-prototype --plan ID --prototype URN\nchange-saga plan add-phase --plan ID --id ID --title TEXT   <span class="c"># replaces plan add-wave</span>\nchange-saga plan guide --story URN...               <span class="c"># the wizard</span>\n\n<span class="c"># Its deck: the existing commands, pointed at a Plan</span>\nchange-saga apply-slide --plan ID --from SLIDE.json\nchange-saga deck overview --plan ID --file OVERVIEW.json\n\n<span class="c"># Tasks</span>\nchange-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --blocks TASK)   <span class="c"># must lead to a story. Replaces plan add-item</span>\nchange-saga task depend --task ID --on ID           <span class="c"># replaces plan add-dependency</span>\nchange-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days\nchange-saga task done --task ID [--summary TEXT]    <span class="c"># replaces plan progress --to done</span>\nchange-saga task list --plan ID [--ready]</pre>' +
-      '<h2>Done Plans are filtered by default</h2><pre class="cmd">$ change-saga plan list\nfirst-version        in progress   ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks   pr-101, pr-104\nroadmap-progress     not started   0 of 6 Tasks\n1 done Plan hidden; --all shows it.</pre>' +
+      '<pre class="cmd"><span class="c"># Plans</span>\nchange-saga plan create --id first-version --title TEXT\nchange-saga plan list [--feature ID] [--story URN] [--all]   <span class="c"># delivered Plans hidden without --all</span>\nchange-saga plan link-review --plan ID --review pr-101\nchange-saga plan add-prototype --plan ID --prototype URN\nchange-saga plan add-phase --plan ID --id ID --title TEXT   <span class="c"># replaces plan add-wave</span>\nchange-saga plan deliver --plan ID                  <span class="c"># refused unless every Task is done and its Reviews merged</span>\nchange-saga plan guide --story URN...               <span class="c"># the wizard</span>\n\n<span class="c"># Its deck: the existing commands, pointed at a Plan</span>\nchange-saga apply-slide --plan ID --from SLIDE.json\nchange-saga deck overview --plan ID --file OVERVIEW.json\n\n<span class="c"># Tasks</span>\nchange-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --unblocks TASK)   <span class="c"># must lead to a story. Replaces plan add-item</span>\nchange-saga task depend --task ID --on ID           <span class="c"># replaces plan add-dependency</span>\nchange-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days\nchange-saga task done --task ID [--summary TEXT]    <span class="c"># replaces plan progress --to done</span>\nchange-saga task list --plan ID [--ready]</pre>' +
+      '<h2>Delivered Plans are filtered by default</h2><pre class="cmd">$ change-saga plan list\nfirst-version        in progress   ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks   pr-101, pr-104\nroadmap-progress     not started   0 of 6 Tasks\n1 delivered Plan hidden; --all shows it.</pre>' +
       '<h2>What can start now</h2><pre class="cmd">$ change-saga task list --plan first-version --ready\n' + ready + '</pre>';
   }
 
