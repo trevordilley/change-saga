@@ -598,8 +598,20 @@ change-saga whiteboard describe --id data-model change.saga
 change-saga whiteboard check --id data-model change.saga
 ```
 
-Source references currently support exact ERD and data-entity pins and ERD
-imports; component and system pins are not supported yet.
+Pin code directly on the element that explains it: add an `evidence` array with
+`commit`, `path`, optional `start`/`end`, and a short `note` to `board.json`.
+`whiteboard publish --repo CHECKOUT` resolves a commit-ish such as `HEAD` and
+records the exact digest. Elements also support pinned `criterion_links`,
+`record` links, and Component/System/data-entity `documentation` pins, using the
+shared slide action strip and drawer, including inventory-format-2 code selections.
+
+Changed code marks the element stale and reduces health. Reassess it, export
+with `whiteboard get`, and publish a new revision with `--parent CURRENT`;
+previous revisions retain their exact pins. `references`, `reconcile` and living
+documented-code coverage include these references. Put code in `evidence`, not
+repository links in the note; `whiteboard check` reports such links as warnings.
+Composition `source` references still support ERDs and data entities; ERD imports
+remain separate from documentation inspection pins.
 
 ### Narrative content
 

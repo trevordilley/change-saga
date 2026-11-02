@@ -168,11 +168,23 @@ Package manifests establish declared use/version, never why a team chose a tool.
 Supporting pages are discoverable from the Technical Design essay and their
 `/technical/pages/ID` URLs, not extra sidebar children. Supply their own subtext.
 
-Use verified, revision-specific repository web links for readable source citations
-when available. A relative filesystem link in an Essay is not a supported code
-viewer link. For exact CLI-tracked evidence, use supported narrative landmarks or
-slide Items; do not invent an Essay code-link scheme. Whiteboards do not earn
-slide/review line coverage, and the ERD source adapter cannot pin arbitrary code.
+Pin exact code on the whiteboard element that explains it using its optional
+`evidence` array; do not put repository web links in the note/info icon as a
+substitute. Publication resolves commit-ish values and records commit, path,
+line range and digest. Readers open the same linked-code drawer as slide Items.
+Use the narrowest meaningful range and explain its relevance in the reference's
+`note`. The element's ordinary `note` remains local explanatory Markdown.
+
+Changed referenced code makes the element visibly stale and counts against
+health. Read the changed code and intent, export with `whiteboard get`, update
+the element's explanation and evidence, then publish a new revision with the
+observed `--parent`. Never rewrite history or silently accept replacement code.
+`references` and `reconcile` include these references; current element evidence
+contributes living documented-code coverage independently of review decks.
+`whiteboard check` reports repository links found in notes as warnings only.
+Essays should link readers to the evidenced board section or use supported
+narrative landmarks; do not invent an Essay code-link scheme.
+
 
 Feature decks link to relevant Architecture sections rather than redrawing the
 map. They explain the local behavior, algorithm, decisions and failure paths in
