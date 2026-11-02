@@ -199,7 +199,7 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			return SlideTransactionResult{}, fmt.Errorf("deck %q is a pull request review's deck; set \"review\": %q or pass --review %s", request.Deck, request.Deck, request.Deck)
 		}
 	}
-	themeDeck := false
+	themeDeck, uxDeck := false, false
 	if reviewID == "" && planID == "" {
 		preview, _, err := saga.LoadOutline(root)
 		if err != nil {
@@ -207,6 +207,7 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		}
 		if deck := findDeck(preview, request.Deck); deck != nil {
 			themeDeck = deck.Role == saga.DeckRoleFeatureTheme
+			uxDeck = deck.Role == saga.DeckRoleUX
 		}
 	}
 	if reviewID != "" {
@@ -223,8 +224,9 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 				return SlideTransactionResult{}, fmt.Errorf("item %q: record is for review Items; implementation Items explain code", item.Item.ID)
 			}
 		}
+		// Theme and UX decks owe no code, but any code they do cite must be exact.
 		evidenceItems := revision.Items
-		if themeDeck {
+		if themeDeck || uxDeck {
 			evidenceItems = nil
 			for _, item := range revision.Items {
 				if len(item.Evidence) > 0 {
