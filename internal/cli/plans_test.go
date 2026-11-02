@@ -9,6 +9,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/planstore"
+	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -363,5 +364,80 @@ func TestRemovingAStoryReportsTheTasksThatNamedIt(t *testing.T) {
 	err := Check(context.Background(), []string{"--covers", "health", root}, &output)
 	if err == nil || !strings.Contains(output.String(), "feature-work") {
 		t.Fatalf("health did not report the task: err=%v\n%s", err, output.String())
+	}
+}
+
+func TestAPlanCrossesFeaturesAndFollowsAMovedStory(t *testing.T) {
+	t.Parallel()
+	root := newPlanFixture(t).root
+	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "search", "--title", "Search", "--status", "planned", "--augments", testFeature)
+	run(t, Story, "add", "--feature", "search", "--id", "second-story", "--revision", "r1", "--event", "proposed",
+		"--title", "Second story", "--statement", "As a user I can do the second thing", "--persona", personaURNFor("app"), root)
+	run(t, Task, "add", "--plan", "first", "--id", "one", "--title", "One", "--story", planStoryURN, root)
+	run(t, Task, "add", "--plan", "first", "--id", "two", "--title", "Two", "--story", "urn:change-saga:app:story:second-story", root)
+	if listed := run(t, Plan, "list", root); !strings.Contains(listed, "touches 2 stories in "+testFeature+", search") && !strings.Contains(listed, "touches 2 stories in search, "+testFeature) {
+		t.Fatalf("list = %q", listed)
+	}
+
+	run(t, Feature, "deliver", "--feature", "search", root)
+	if got := loadedPlan(t, root, "first").FindTask("two").Story; got != "urn:change-saga:app:story:second-story" {
+		t.Fatalf("the Task lost its story: %q", got)
+	}
+	if listed := run(t, Plan, "list", "--feature", testFeature, "--json", root); !strings.Contains(listed, `"first"`) {
+		t.Fatalf("the receiving feature does not list the Plan: %s", listed)
+	}
+}
+
+func TestPlanHoldsManyPrototypesAndReviews(t *testing.T) {
+	t.Parallel()
+	root := newPlanFixture(t).root
+	for _, prototype := range []string{"one", "two"} {
+		if err := planstore.AddPrototype(root, "first", "urn:change-saga:app:prototype:"+prototype); err != nil {
+			t.Fatal(err)
+		}
+	}
+	run(t, Plan, "link-review", "--plan", "first", "--review", "pr-7", root)
+	if err := reviewstore.Create(root, saga.ReviewManifest{ID: "pr-8", Title: "More", Base: "main", Head: "feature/more", PullRequest: &saga.PullRequest{Number: 8, URL: "https://github.com/acme/app/pull/8"}}, saga.DeckManifest{ID: "pr-8", Title: "PR 8", Objective: "Explain the rest."}); err != nil {
+		t.Fatal(err)
+	}
+	run(t, Plan, "link-review", "--plan", "first", "--review", "pr-8", root)
+	plan := loadedPlan(t, root, "first")
+	if len(plan.Prototypes) != 2 || len(plan.Reviews) != 2 {
+		t.Fatalf("plan = %#v", plan.PlanManifest)
+	}
+}
+
+func TestADeliveredPlanRefusesEveryEdit(t *testing.T) {
+	t.Parallel()
+	fixture := newPlanFixture(t)
+	root := fixture.root
+	run(t, Task, "add", "--plan", "first", "--id", "feature-work", "--title", "Feature work", "--story", planStoryURN, root)
+	run(t, Task, "done", "--plan", "first", "--task", "feature-work", root)
+	run(t, Plan, "link-review", "--plan", "first", "--review", "pr-7", root)
+	if err := planstore.Deliver(root, "first", func(*saga.Review) bool { return true }); err != nil {
+		t.Fatal(err)
+	}
+	overview := t.TempDir() + "/overview.json"
+	writeFile(t, overview, `{"body":"Rewritten after delivery."}`)
+	for name, attempt := range map[string]func() error{
+		"add a phase": func() error {
+			return Plan(context.Background(), []string{"add-phase", "--plan", "first", "--id", "late", "--title", "Late", root}, &bytes.Buffer{})
+		},
+		"link a review": func() error {
+			return Plan(context.Background(), []string{"link-review", "--plan", "first", "--review", "pr-8", root}, &bytes.Buffer{})
+		},
+		"add a task": func() error {
+			return Task(context.Background(), []string{"add", "--plan", "first", "--id", "late", "--title", "Late", "--story", planStoryURN, root}, &bytes.Buffer{})
+		},
+		"remove a task": func() error {
+			return Task(context.Background(), []string{"remove", "--plan", "first", "--task", "feature-work", root}, &bytes.Buffer{})
+		},
+		"write the essay": func() error {
+			return Deck(context.Background(), []string{"overview", "--plan", "first", "--file", overview, root}, &bytes.Buffer{})
+		},
+	} {
+		if err := attempt(); err == nil || !strings.Contains(err.Error(), "delivered") {
+			t.Errorf("%s on a delivered Plan: %v", name, err)
+		}
 	}
 }

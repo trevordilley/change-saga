@@ -2,12 +2,16 @@ package server
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"net/url"
+	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/planstore"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -214,6 +218,84 @@ func TestPlanComparisonReadsWhatTheReviewsNamed(t *testing.T) {
 	}
 	if review := getPage(t, handler, "/reviews/pr-7").Body.String(); !strings.Contains(review, "data-review-plan") {
 		t.Error("the review does not link back to its Plan")
+	}
+}
+
+// A review Item naming a Task is what says the Review delivered it.
+func TestPlanComparisonShowsWhatAReviewDelivered(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	addServerPlan(t, fixture.root, "first")
+	task := "urn:change-saga:app:plan:first:task:feature-work"
+	addServerTask(t, fixture.root, "first", "feature-work", "urn:change-saga:app:story:missing")
+	addServerTask(t, fixture.root, "first", "not-done-yet", "urn:change-saga:app:story:missing")
+	if err := planstore.LinkReview(fixture.root, "first", "pr-7"); err != nil {
+		t.Fatal(err)
+	}
+	item := saga.ReviewItemTarget("app", "pr-7", "queue", "node")
+	itemName, err := saga.FlatItemFilename(saga.ReviewSlideTarget("app", "pr-7", "queue"), item, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeServerJSON(t, filepath.Join(saga.ReviewDir(fixture.root, "pr-7"), saga.ReviewDeckDir, itemName), saga.ItemManifest{Version: saga.DeckRecordVersion, ID: "node", SlideID: "queue", Kind: "node", Label: "Enqueue", Description: "Enqueue writes to Postgres.", Selector: saga.LandmarkSelector{Type: "element", ElementID: "node"}, Record: task})
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+
+	page := getPage(t, handler, "/plans/first/tasks").Body.String()
+	row := page[strings.Index(page, `data-plan-comparison-row="feature-work"`):]
+	row = row[:strings.Index(row, "</tr>")]
+	if !strings.Contains(row, "Queue moves to Postgres") || strings.Contains(row, "Not delivered") {
+		t.Errorf("the delivered Task's row:\n%s", row)
+	}
+	row = page[strings.Index(page, `data-plan-comparison-row="not-done-yet"`):]
+	if row = row[:strings.Index(row, "</tr>")]; !strings.Contains(row, "Not delivered") {
+		t.Errorf("the undelivered Task's row:\n%s", row)
+	}
+}
+
+// The Plans a story or feature shows are worked out from Tasks, not authored.
+func TestStoryAndFeaturePagesListThePlansTouchingThem(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	if _, err := requirements.AddStory(fixture.root, "app", requirements.AddStoryInput{Feature: serverFeature, ID: "move-queue", RevisionID: "r1", EventID: "proposed",
+		Title: "Move the queue", Statement: "As an operator, I run one store", Priority: "high", CreatedAt: time.Date(2026, 9, 1, 0, 0, 0, 0, time.UTC)}); err != nil {
+		t.Fatal(err)
+	}
+	addServerPlan(t, fixture.root, "first")
+	addServerPlan(t, fixture.root, "unrelated")
+	addServerTask(t, fixture.root, "first", "feature-work", "urn:change-saga:app:story:move-queue")
+	addServerTask(t, fixture.root, "unrelated", "other", "urn:change-saga:app:story:missing")
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+
+	for path, marker := range map[string]string{"/requirements/move-queue": "data-story-plans", featureHref(serverFeature): "data-feature-plans"} {
+		recorder := httptest.NewRecorder()
+		handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+		page := recorder.Body.String()
+		if recorder.Code != http.StatusOK || !strings.Contains(page, marker) {
+			t.Fatalf("%s = %d, with no %s", path, recorder.Code, marker)
+		}
+		section := page[strings.Index(page, marker):]
+		section = section[:strings.Index(section, "</ul>")]
+		if !strings.Contains(section, `href="/plans/first"`) || strings.Contains(section, `href="/plans/unrelated"`) {
+			t.Errorf("%s lists:\n%s", path, section)
+		}
+	}
+	tasks := getPage(t, handler, "/plans/first/tasks").Body.String()
+	stories := tasks[strings.Index(tasks, "data-plan-stories"):]
+	if stories = stories[:strings.Index(stories, "</details>")]; !strings.Contains(stories, `href="`+featureHref(serverFeature)+`"`) || !strings.Contains(stories, `href="/requirements/move-queue"`) {
+		t.Errorf("stories by feature:\n%s", stories)
+	}
+}
+
+func TestATaskPageShowsItsEssay(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	addServerPlan(t, fixture.root, "first")
+	if _, err := planstore.AddTask(fixture.root, "first", saga.TaskManifest{ID: "feature-work", Title: "Task", Story: "urn:change-saga:app:story:missing"}, nil, "Why this comes first."); err != nil {
+		t.Fatal(err)
+	}
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	if page := getPage(t, handler, "/plans/first/tasks/feature-work").Body.String(); !strings.Contains(page, "data-task-essay") || !strings.Contains(page, "Why this comes first.") {
+		t.Error("the Task page does not show its essay")
 	}
 }
 

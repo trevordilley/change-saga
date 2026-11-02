@@ -86,7 +86,7 @@ test("a Plan opens on its essay, and a slide's Tasks appear in a slide-out", asy
     "--story", "urn:change-saga:wave-one:story:read-the-tide");
   const slide = {
     version: 1, operation: "create", request_id: "tide-slide", plan: "tides", expected_snapshot: "absent",
-    slide: { id: "the-work", title: "The work", rank: 10, intent: "explain", layout: "diagram", takeaway: "One task reads the tides.", front: ["Read the tide table."], reading_order: ["read-tides"] },
+    slide: { id: "the-work", title: "The work", section: "First phase", rank: 10, intent: "explain", layout: "diagram", takeaway: "One task reads the tides.", front: ["Read the tide table."], reading_order: ["read-tides"] },
     diagram: {
       version: 1, width: 1280, height: 720,
       styles: { primary: { fill: "@diagram-blue-tint", stroke: "@diagram-blue-accent", ink: "@diagram-blue-ink", font_size: 18, stroke_width: 2 } },
@@ -101,8 +101,16 @@ test("a Plan opens on its essay, and a slide's Tasks appear in a slide-out", asy
   await page.goto(`${saga.baseURL}/plans/tides`);
   await waitForSettledSaga(page);
   await expect(page.locator("[data-plan-deck] [data-deck-viewer]")).toHaveAttribute("data-deck-face", "overview");
+  await expect(page.locator("[data-plan-deck] .slide-thumbnail-list")).toContainText("First phase");
 
   await page.locator("[data-plan-deck] [data-slide-thumbnail]").click();
   await page.locator('[data-plan-drawer^="plan-tasks-"]').click();
   await expect(page.locator('.diff-drawer.open [data-plan-task-row="read-tides"]')).toContainText("Read the tide table");
+
+  // Marking the Task done changes what the slide says, with nothing republished.
+  await expect(page.locator("[data-plan-drawer^=\"plan-tasks-\"]")).toContainText("0 of 1 tasks done");
+  run(saga, "task", "done", "--plan", "tides", "--task", "read-tides");
+  await page.goto(`${saga.baseURL}/plans/tides`);
+  await waitForSettledSaga(page);
+  await expect(page.locator("[data-plan-drawer^=\"plan-tasks-\"]")).toContainText("1 of 1 tasks done");
 });
