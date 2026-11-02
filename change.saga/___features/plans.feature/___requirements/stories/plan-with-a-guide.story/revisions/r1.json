@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:plan-with-a-guide",
+  "parents": [],
+  "title": "Get guided to a Plan you can be confident in",
+  "statement": "As an architect, I can use a guided wizard that does research and creates prototypes until I am confident in each Task's size, so I end with a Plan that is well understood rather than merely written down.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "guide-researches",
+      "statement": "The wizard researches the feature and the existing code, and presents what it found."
+    },
+    {
+      "id": "guide-prototypes",
+      "statement": "The wizard can create prototypes as part of building that confidence."
+    },
+    {
+      "id": "guide-names-unready-tasks",
+      "statement": "The wizard names the Tasks it is not yet confident are two days or less, rather than reporting the Plan as ready."
+    }
+  ],
+  "created_at": "2026-11-02T03:32:30.294036Z"
+}

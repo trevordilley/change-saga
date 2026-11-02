@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:map-task-dependencies",
+  "parents": [],
+  "title": "See what can run in parallel from mapped dependencies",
+  "statement": "As an architect, I can break a Plan into Tasks with their dependencies mapped, so the team and its agents can see what can run in parallel and what must wait.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "tasks-belong-to-plan",
+      "statement": "A Plan has a set of Tasks, and each Task belongs to one Plan."
+    },
+    {
+      "id": "dependencies-shown-both-ways",
+      "statement": "A Task's page lists both the Tasks it depends on and the Tasks it blocks."
+    },
+    {
+      "id": "graph-shows-parallel",
+      "statement": "A Plan's dependency graph shows which Tasks that are not done can start now because everything they depend on is done."
+    }
+  ],
+  "created_at": "2026-11-02T03:32:28.664012Z"
+}

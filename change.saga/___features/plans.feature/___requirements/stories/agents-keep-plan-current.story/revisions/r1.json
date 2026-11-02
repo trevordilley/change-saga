@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:agents-keep-plan-current",
+  "parents": [],
+  "title": "Let agents keep the Plan current as they work",
+  "statement": "As a developer, I can have the agents doing the work mark Tasks done and update the Plan, so the Plan stays accurate without someone maintaining it by hand.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "agent-marks-done",
+      "statement": "An agent can mark a Task done through a CLI command."
+    },
+    {
+      "id": "agent-updates-plan",
+      "statement": "An agent can update a Plan's content through the CLI as it works, and validation still applies to what it writes."
+    }
+  ],
+  "created_at": "2026-11-02T03:32:29.485664Z"
+}

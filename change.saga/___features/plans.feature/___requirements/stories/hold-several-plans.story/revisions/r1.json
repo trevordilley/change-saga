@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:hold-several-plans",
+  "parents": [],
+  "title": "Keep several Plans for one feature",
+  "statement": "As an architect, I can give a feature one or more Plans, whether it is on the Roadmap or being updated, so separate bodies of work on one feature are each planned on their own.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plans-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "roadmap-or-built",
+      "statement": "A Plan can be added to a planned Roadmap feature and to a built feature."
+    },
+    {
+      "id": "several-listed",
+      "statement": "A feature with more than one Plan lists each of them on its page."
+    },
+    {
+      "id": "plan-names-feature",
+      "statement": "A Plan's page names the feature it goes with and links to it."
+    }
+  ],
+  "created_at": "2026-11-02T03:32:28.285275Z"
+}

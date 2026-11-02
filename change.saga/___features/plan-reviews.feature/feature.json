@@ -1,8 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
-  "version": 5,
-  "id": "plan-reviews",
-  "title": "Plans: agree how to build before building",
-  "description": "Teams review how a feature will be built, as a slide deck and an essay, before any code exists, then compare that Plan with the Review that delivers it.",
-  "created_at": "2026-11-02T01:50:30.097419Z"
-}

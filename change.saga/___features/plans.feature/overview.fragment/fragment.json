@@ -1,0 +1,10 @@
+{
+  "subtext": "Lay out a feature's work phase by phase, see what can run in parallel, and compare it with what ships.",
+  "abstract": "A Plan describes the work to be done on a feature and how it can be executed in parallel: a phase-organized slide deck, prototypes, and Tasks with mapped dependencies. Comparing a Plan with the Reviews that implement it is the key value. Nothing here is built yet.",
+  "version": 2,
+  "id": "plans--overview",
+  "title": "Overview",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": -100
+}
