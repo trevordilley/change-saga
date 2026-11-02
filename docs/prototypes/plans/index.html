@@ -277,7 +277,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     var ORDER = ['plan-record', 'merge-grammar', 'plan-deck', 'task-extends-item', 'feature-lists-plans', 'plan-review-link', 'plan-prototypes',
       'slide-task-refs', 'task-done-cmd', 'task-story-link', 'task-page', 'dep-graph', 'task-sizing', 'hide-done', 'done-on-slides', 'comparison', 'guide'];
     var cols = []; ORDER.forEach(function (id) { var t = BY_ID[id]; (cols[depth[t.id]] = cols[depth[t.id]] || []).push(t); });
-    var W = 196, H = 54, GX = 70, GY = 10, M = 26, TOP = 36, pos = {};
+    var W = 172, H = 54, GX = 50, GY = 10, M = 20, TOP = 36, pos = {};
     cols.forEach(function (c, i) { c.forEach(function (t, j) { pos[t.id] = { x: M + i * (W + GX), y: TOP + j * (H + GY) }; }); });
     var rowsMax = Math.max.apply(null, cols.map(function (c) { return c.length; }));
     var width = M * 2 + cols.length * W + (cols.length - 1) * GX, height = TOP + rowsMax * (H + GY) + 10;
