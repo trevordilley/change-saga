@@ -11,6 +11,7 @@ import (
 )
 
 var planOperations = []string{
+	"create", "list", "add-phase", "add-prototype", "link-review", "deliver",
 	"add-wave", "revise-wave", "add-item", "revise-item", "add-dependency",
 	"add-contract", "assign", "progress", "record-merge",
 }
@@ -24,6 +25,18 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 	operation := "plan " + args[0]
 	var err error
 	switch args[0] {
+	case "create":
+		err = planCreate(ctx, args[1:], out)
+	case "list":
+		err = planList(ctx, args[1:], out)
+	case "add-phase":
+		err = planAddPhase(ctx, args[1:], out)
+	case "add-prototype":
+		err = planAddPrototype(ctx, args[1:], out)
+	case "link-review":
+		err = planLinkReview(ctx, args[1:], out)
+	case "deliver":
+		err = planDeliver(ctx, args[1:], out)
 	case "add-wave":
 		err = planAddWave(ctx, args[1:], out)
 	case "revise-wave":

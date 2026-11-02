@@ -104,7 +104,7 @@ func loadDiagramRevision(root, review, target, snapshot string) (diagramSlideSta
 func requestFromRevision(state diagramSlideState, requestID, expected string, source diagram.Document) SlideTransactionRequest {
 	value := state.revision.Slide
 	request := SlideTransactionRequest{
-		Version: saga.SlideTransactionVersion, Operation: "update", RequestID: requestID, Deck: state.deck.ID, Review: state.review, ExpectedSnapshot: expected,
+		Version: saga.SlideTransactionVersion, Operation: "update", RequestID: requestID, Deck: state.deck.ID, Review: state.review, Plan: saga.PlanIDOf(state.deck.Target), ExpectedSnapshot: expected,
 		Slide: SlideTransactionSlide{
 			ID: value.ID, Title: value.Title, Rank: value.Rank, Section: value.Section, Intent: value.Intent, Layout: value.Layout,
 			MediaType: value.MediaType, Front: append([]string(nil), value.Front...), Takeaway: value.Takeaway, ReadingOrder: append([]string{}, value.ReadingOrder...), ExceptionRationale: value.ExceptionRationale,

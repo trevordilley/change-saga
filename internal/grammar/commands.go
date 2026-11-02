@@ -58,10 +58,10 @@ var commands = []Command{
 	{
 		Name: "apply-slide", Status: StatusImplemented, Mutates: true,
 		Writes:  []string{"slide-transaction", "slide-asset", "diagram-source", "item", "code-evidence", "criterion-link"},
-		Usage:   "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
+		Usage:   "change-saga apply-slide (--from FILE|- [--review ID] [--plan ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID] [--plan ID]) <saga>",
 		Summary: "atomically publish one complete implementation or pull request review slide, its visual or rendered diagram source, and semantic Items; implementation Items carry exact code evidence and pinned criterion links, review Items are covered afterwards with cover",
 		Flags: []Flag{
-			optional("from", "FILE|-", "complete versioned JSON request"), optional("review", "ID", "publish into (or, with --print-current, read from) this pull request review's deck"),
+			optional("from", "FILE|-", "complete versioned JSON request"), optional("review", "ID", "publish into (or, with --print-current, read from) this pull request review's deck"), optional("plan", "ID", "publish into (or, with --print-current, read from) this Plan's deck"),
 			optional("repo", "PATH", "code checkout used to verify exact evidence digests"),
 			{Name: "dry-run", Description: "validate and return the semantic diff without publishing"}, jsonFlag,
 			optional("print-current", "SLIDE", "print the slide's complete current request, ready to edit and apply; SLIDE is an ID, target, or path (an ID several decks share needs the target)"),
@@ -513,9 +513,9 @@ var commands = []Command{
 	},
 	{
 		Name: "deck overview", Status: StatusImplemented, Mutates: true, Writes: []string{"deck"},
-		Usage:       "change-saga deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
+		Usage:       "change-saga deck overview (--deck TARGET | --review ID | --plan ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
 		Summary:     "author an overview with same-deck slide/Item citations, or check authored every-slide coverage (exit 3 for gaps); overview references never add code coverage",
-		Flags:       []Flag{optional("deck", "TARGET", "existing deck ID, path, or URN"), optional("review", "ID", "review whose deck to use"), optional("file", "JSON", "overview body and annotations JSON"), optional("check", "", "check overview coverage without writing"), optional("dry-run", "", "validate without writing"), jsonFlag},
+		Flags:       []Flag{optional("deck", "TARGET", "existing deck ID, path, or URN"), optional("review", "ID", "review whose deck to use"), optional("plan", "ID", "Plan whose deck to use"), optional("file", "JSON", "overview body and annotations JSON"), optional("check", "", "check overview coverage without writing"), optional("dry-run", "", "validate without writing"), jsonFlag},
 		Positionals: sagaOnly,
 	},
 	{
