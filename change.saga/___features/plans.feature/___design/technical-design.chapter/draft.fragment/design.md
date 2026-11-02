@@ -1,10 +1,10 @@
-**Draft. Nothing here is built or agreed.** This sits in a feature design chapter only because a Plan record does not exist yet. Once it does, this is what a Plan's deck and essay would hold.
+**Draft. Nothing here is built.** The decision to rebuild is made; the rest is a proposal. This sits in a feature design chapter only because a Plan record does not exist yet. Once it does, this is what a Plan's deck and essay would hold.
 
 The Plan is where the technical design for a change is drafted, and its Tasks are how the work gets done.
 
-## Verdict on the work plan {#verdict-on-the-work-plan}
+## The work plan {#the-work-plan}
 
-**Keep the idea, delete the implementation.** The concepts match Tasks and Phases. The code should not be extended: it is connected but unused, and most of what it records is not what a Task needs. This is a judgement, not a clear-cut case of dead code, and the arguments on the other side are listed below.
+**Decision: keep the idea and rebuild the implementation, as what we want it to be.** No Saga outside this repository uses the work plan, so no migration is needed. The concepts match Tasks and Phases. The code is connected but unused, and most of what it records is not what a Task needs.
 
 What an audit of `internal/workplan` and its callers found:
 
@@ -18,16 +18,6 @@ What an audit of `internal/workplan` and its callers found:
 | Part of it cannot be reached | `RecordContractState` and `ReviseContract` have no callers outside tests, so a `contract_fulfilled` dependency cannot be satisfied through any public command |
 | Its readiness axis is empty | `query readiness` reports `plan_coverage` at 0 of 29 accepted criteria, because no work items exist. Delivery is also 0 of 29, for a separate reason below |
 | Its model is heavier than a Task needs | Immutable revisions, append-only event graphs, and competing heads. Stories, prototypes, and terms still use revisions and events, so this is a direction for Tasks, not something the whole Saga has already done |
-
-An earlier version of this feature recommended extending work items because the machinery existed and was tested. That was judged from the schema and the tests, before this audit. Very little of it is what a Task needs.
-
-### Options {#options}
-
-| Option | Result | Cost |
-| --- | --- | --- |
-| **Rebuild small (recommended)** | One small package and plain records. Git is the history | Deletes at least 3,700 lines of Go, plus edits across about 20 other packages, tests, and docs; readiness must change |
-| Strip in place | Remove contracts, workspaces, and merge units, and rename the rest | Less churn, but revisions, event graphs, and heads remain, and a Task's done state still needs a graph of parents |
-| Extend as it stands | Least deletion | Two vocabularies, and every Task carries machinery nothing uses |
 
 What carries over in spirit is small: a dependency edge, cycle detection (`internal/workplan/validate.go:278-330`), and readiness of a Task from its prerequisites (`internal/workplan/readiness.go`).
 
@@ -44,11 +34,11 @@ Kept:
 
 - **`--request-id` on writes.** Git does not make a retried command safe, and other commands declare it.
 
-### The case for keeping it {#the-case-for-keeping-it}
+### What this gives up {#what-this-gives-up}
 
-- **`plan record-merge` is the only path from a criterion to a merge commit** (`internal/livingapp/compose.go:651`). A Review records when it merged, but it links to criteria only through `explains`. Removing it loses that path, though nothing here uses it today.
-- **Deletion touches far more than the package.** The table below is long, and each entry is a chance to break something.
-- **Stripping in place is cheaper to start.** If the plain-record model proves too simple, for example when parallel agents need conflicting state kept visible, that work would have to come back.
+- **`plan record-merge` is the only path from a criterion to a merge commit** (`internal/livingapp/compose.go:651`). A Review records when it merged, but links to criteria only through `explains`. Nothing here uses that path today.
+- **Tasks will work differently from stories and terms,** which keep revisions and event graphs. A Task's history is in Git.
+- **Conflicting state stops being kept visible.** If parallel agents turn out to need it, it comes back as a deliberate design.
 
 ## Records {#records}
 
@@ -116,7 +106,7 @@ Other code also depends on the work plan loading: `internal/livingapp/status_loa
 | Schemas and docs | `schema/v3` wave, work-item, dependency, contract, revision, and event schemas; `docs/living-saga-work-plan-api.md`, `living-saga-api.md`, `living-saga-implementation-map.md`, and about 14 others; `README.md` |
 | The Saga's own account | The Dependency-aware work planning feature, deck, and stories, folded into this one; terms `work-item`, `wave`, `contract`, and `merge-unit`, which pin this code; references in `quality-verification` and `product-knowledge` records. CI's health gate depends on these being handled |
 
-A Saga that still holds `___workplan` should fail with a message saying what happened, not be silently ignored.
+Once `___workplan` is no longer reserved, the existing rule applies: other names beginning with `___` are invalid.
 
 ## Order of work {#order-of-work}
 
@@ -129,8 +119,6 @@ A Saga that still holds `___workplan` should fail with a message saying what hap
 
 ## Risks {#risks}
 
-- **Deleting something an external Saga relies on.** Unknown until checked. If one does, step 1 needs a migration.
 - **Readiness behaviour changes.** Its output shape and meaning are public through `query`, so plan coverage needs a deliberate answer.
-- **The relation matrix and strict readers.** Removing `implements` makes old Sagas that used it invalid, so it may need to stay readable.
 - **Dropping contracts and assignment early.** If parallel agents need them, they return as a deliberate feature with a CLI and a reader.
 - **Not verified:** the line counts and locations above come from reading and searching the code, and an independent review of it. No removal has been tried, so tests may reveal further coupling.

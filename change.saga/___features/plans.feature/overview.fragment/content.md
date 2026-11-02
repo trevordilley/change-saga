@@ -36,7 +36,7 @@ Nothing here is built. There is no Plan, no Task, and no command or page for eit
 
 [Dependency-aware work planning](/features/work-planning) is an earlier version of the same idea, in `internal/workplan` under `change-saga plan`. A work item is what a Task is, and a wave is what a Phase is. But an audit found it connected and unused: this repository has no records of it, the reader has no page for it, and part of it has no public command.
 
-**Recommendation: keep the idea, delete the implementation.** A Task is a plain record and Git is its history. `change-saga plan` becomes the Plan's grammar, a new `task` noun joins it, and "work plan" stops being a separate idea. The technical design, under Technical on this page, has the evidence, the case for keeping it, the options, and what would be removed. Each feature's `plan.json`, written by `feature set-plan`, is Roadmap status and stays as it is, though the word then means two things there.
+**Decision: keep the idea and rebuild the implementation.** No Saga outside this repository uses it. A Task is a plain record and Git is its history. `change-saga plan` becomes the Plan's grammar, a new `task` noun joins it, and "work plan" stops being a separate idea. The technical design, under Technical on this page, has the evidence, what this gives up, and what would be removed. Each feature's `plan.json`, written by `feature set-plan`, is Roadmap status and stays as it is, though the word then means two things there.
 
 ## Proposed grammar {#proposed-grammar}
 
@@ -71,5 +71,4 @@ change-saga task list --plan ID [--ready]                    # what can start no
 7. **What does the comparison compare, and should a Review's slides name Tasks?** Tasks against Reviews is simple to report and follows the same linking rule if a Review's Items name the Tasks they deliver. Slides against slides says more but relies on authors linking them.
 8. **How far can an agent update a Plan?** Marking Tasks done is clear. Should it also be free to add Tasks or rewrite slides, or only to propose that?
 9. **Where does the wizard live?** A skill, a CLI command, or both, and when has it done enough?
-10. **Do any external Sagas use the work plan?** If so, removing it needs a migration.
-11. **What happens to a Plan's technical design when it ships?** It describes intent, and Documentation describes what is. Does it stay with the done Plan while someone writes the living documentation, or does some of it move?
+10. **What happens to a Plan's technical design when it ships?** It describes intent, and Documentation describes what is. Does it stay with the done Plan while someone writes the living documentation, or does some of it move?
