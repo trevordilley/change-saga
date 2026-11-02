@@ -83,6 +83,20 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 	if err != nil {
 		return StatusInputs{}, err
 	}
+	inputs.WhiteboardProblems = map[string][]string{}
+	if len(inputs.WhiteboardItems) > 0 {
+		inventory, err := requirements.LoadInventory(root, doc.Manifest.ID)
+		if err != nil {
+			return StatusInputs{}, err
+		}
+		for _, item := range inputs.WhiteboardItems {
+			if item.Documentation != nil {
+				if state := inventory.LinkStatus(*item.Documentation); state != "current" {
+					inputs.WhiteboardProblems[item.Target] = append(inputs.WhiteboardProblems[item.Target], "documentation pin is "+state+"; reassess and publish a new whiteboard revision")
+				}
+			}
+		}
+	}
 	inputs.Features, err = applayout.Features(root)
 	if err != nil {
 		return StatusInputs{}, err

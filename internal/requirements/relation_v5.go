@@ -39,7 +39,7 @@ func isRequirement(kind endpointKind) bool {
 }
 
 func isVisual(kind endpointKind) bool {
-	return kind == endpointDeck || kind == endpointSlide || kind == endpointItem
+	return kind == endpointDeck || kind == endpointSlide || (kind == endpointItem || kind == endpointWhiteboardElement)
 }
 
 // validateV5Scope admits descendant reach only when it is explicitly declared
@@ -113,7 +113,7 @@ func validateV5EndpointPins(problems *validationErrors, side string, endpoint en
 		if digest != "" {
 			problems.add("%s %s endpoint cannot use a content digest", side, endpoint.Kind)
 		}
-	case endpointDesign, endpointDeck, endpointSlide, endpointItem:
+	case endpointDesign, endpointDeck, endpointSlide, endpointItem, endpointWhiteboardElement:
 		if revision != "" {
 			problems.add("%s design endpoint cannot use a definition revision", side)
 		}

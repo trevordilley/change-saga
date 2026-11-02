@@ -48,17 +48,18 @@ func StoryEventURN(sagaID, storyID, eventID string) (string, error) {
 type endpointKind string
 
 const (
-	endpointStory        endpointKind = "story"
-	endpointCriterion    endpointKind = "criterion"
-	endpointDesign       endpointKind = "design"
-	endpointWorkItem     endpointKind = "work-item"
-	endpointDeck         endpointKind = "deck"
-	endpointSlide        endpointKind = "slide"
-	endpointItem         endpointKind = "item"
-	endpointClaim        endpointKind = "claim"
-	endpointVerification endpointKind = "verification"
-	endpointCitation     endpointKind = "citation"
-	endpointRelation     endpointKind = "relation"
+	endpointStory             endpointKind = "story"
+	endpointCriterion         endpointKind = "criterion"
+	endpointDesign            endpointKind = "design"
+	endpointWorkItem          endpointKind = "work-item"
+	endpointDeck              endpointKind = "deck"
+	endpointSlide             endpointKind = "slide"
+	endpointItem              endpointKind = "item"
+	endpointWhiteboardElement endpointKind = "whiteboard-element"
+	endpointClaim             endpointKind = "claim"
+	endpointVerification      endpointKind = "verification"
+	endpointCitation          endpointKind = "citation"
+	endpointRelation          endpointKind = "relation"
 
 	// The remaining kinds are legal only on v5 relations.
 	endpointDeprecation       endpointKind = "deprecation"
@@ -122,6 +123,8 @@ func parseEndpoint(value string) (endpoint, error) {
 			ep.Kind = endpointDeck
 		case sagaref.TargetSlide:
 			ep.Kind = endpointSlide
+		case sagaref.TargetWhiteboardElement:
+			ep.Kind, ep.StoryID = endpointWhiteboardElement, target.ParentID
 		case sagaref.TargetItem:
 			ep.Kind, ep.StoryID = endpointItem, target.ParentID
 		case sagaref.TargetClaim:

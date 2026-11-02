@@ -122,6 +122,9 @@ func Assemble(in StatusInputs) Status {
 	status.NewTerminology = append([]TermSuggestion{}, in.TermSuggestions...)
 	status.PersonaCoverage = PersonaCoverage{Facts: readiness.PersonaCoverage(personas, personaOrphans)}
 
+	for target, reasons := range in.WhiteboardProblems {
+		a.markStale(target, "whiteboard_element", historyReview, reasons, nil, nil)
+	}
 	status.Stale = a.staleRecords()
 	status.Dangling = dangling
 	status.OverviewRevisions = overviewRevisions(in)

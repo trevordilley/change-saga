@@ -41,7 +41,9 @@ func CurrentWhiteboardItems(root, sagaID string) ([]*saga.Item, error) {
 		}
 		revision, err := LoadWhiteboard(root, sagaID, id, "")
 		if err != nil {
-			return nil, err
+			// A broken board must not hide independently readable siblings. Full
+			// history validation reports the error; no replacement head is invented.
+			continue
 		}
 		if revision == nil {
 			continue
