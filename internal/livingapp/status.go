@@ -242,6 +242,9 @@ func (a *assembler) indexStories() []StoryStatus {
 // indexVisual resolves deck, slide, and Item targets. Containment is exact
 // parent identity from the validated v4 records; nothing is inferred from order.
 func (a *assembler) indexVisual() {
+	for _, item := range a.in.WhiteboardItems {
+		a.visual[item.Target] = visualTarget{deckRole: "implementation", kind: sagaref.TargetWhiteboardElement, chain: []string{item.Target}, items: []*saga.Item{item}}
+	}
 	for _, deck := range a.in.Decks {
 		deckItems := []*saga.Item{}
 		for _, slide := range deck.Slides {
@@ -368,7 +371,7 @@ func (a *assembler) implementationLink(link Link, visual visualTarget, criterion
 		scope = scopeSelf
 	}
 	items := visual.items
-	if visual.kind != sagaref.TargetItem && scope != scopeDescendants {
+	if visual.kind != sagaref.TargetItem && visual.kind != sagaref.TargetWhiteboardElement && scope != scopeDescendants {
 		value.Unsatisfied = append(value.Unsatisfied, "scope self on a "+string(visual.kind)+" does not reach contained Items; relate the Item or use scope descendants")
 		return value
 	}
@@ -666,7 +669,7 @@ func (a *assembler) targetCriteria() map[string][]string {
 			criteria = []string{link.To}
 		}
 		result[link.From] = append(result[link.From], criteria...)
-		if visual, ok := a.visual[link.From]; ok && (visual.kind == sagaref.TargetItem || link.Scope == scopeDescendants) {
+		if visual, ok := a.visual[link.From]; ok && (visual.kind == sagaref.TargetItem || visual.kind == sagaref.TargetWhiteboardElement || link.Scope == scopeDescendants) {
 			for _, item := range visual.items {
 				result[item.Target] = append(result[item.Target], criteria...)
 			}

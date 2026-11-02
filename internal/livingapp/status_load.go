@@ -79,6 +79,10 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 		Exceptions: []coverage.Exception{}, Report: options.Report, Changes: options.Changes, Diagnostics: []Diagnostic{},
 		Quality: quality.Document{SagaID: doc.Manifest.ID, TestCases: []quality.TestCase{}, Policies: []quality.Policy{}, PolicySets: []quality.PolicySet{}},
 	}
+	inputs.WhiteboardItems, err = requirements.CurrentWhiteboardItems(root, doc.Manifest.ID)
+	if err != nil {
+		return StatusInputs{}, err
+	}
 	inputs.Features, err = applayout.Features(root)
 	if err != nil {
 		return StatusInputs{}, err

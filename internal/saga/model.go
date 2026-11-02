@@ -5,6 +5,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/diagram"
 )
 
 const (
@@ -95,10 +96,7 @@ type SlideManifest struct {
 
 // DocumentationLink pins a reusable Component, System or data-entity definition.
 // It never transfers that record's code ownership to the linking Item.
-type DocumentationLink struct {
-	Target   string `json:"target"`
-	Revision string `json:"revision"`
-}
+type DocumentationLink = diagram.DocumentationLink
 
 // ItemSelection explicitly selects part of one evidence reference reached
 // through declared links from the Item's documentation pin. Path[0] is that

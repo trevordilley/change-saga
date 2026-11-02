@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -40,6 +41,7 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 	boardID := flags.String("id", "", "whiteboard document ID")
 	revision := flags.String("revision", "", "exact board revision; reads default to the unique current head")
 	focus := flags.String("focus", "", "frame or element instance path")
+	repo := flags.String("repo", "", "source checkout used to pin evidence on publish")
 	from := flags.String("from", "", "complete diagram.Document JSON file, or - for stdin")
 	parent := flags.String("parent", "", "observed current board revision ID, required on updates")
 	title := flags.String("name", "Whiteboard", "whiteboard title")
@@ -75,6 +77,9 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 		}
 		var doc diagram.Document
 		if err := requirements.DecodeInventoryJSON(data, &doc); err != nil {
+			return err
+		}
+		if err := pinWhiteboardEvidence(ctx, firstNonEmpty(*repo, root), &doc); err != nil {
 			return err
 		}
 		value, err := requirements.PublishWhiteboard(ctx, root, manifest.ID, *boardID, *revision, *parent, *title, doc)
@@ -188,4 +193,41 @@ func appendWhiteboardIssues(root string, document *saga.Saga, validation *saga.V
 	if err := requirements.ValidateWhiteboards(root, document.Manifest.ID); err != nil {
 		appendLoadIssues(validation, requirements.WhiteboardDir, err)
 	}
+}
+
+// Inputs may name a commit-ish and omit a digest. Publication records the exact
+// authored bytes; a supplied digest must match, never silently replacing it.
+func pinWhiteboardEvidence(ctx context.Context, checkout string, doc *diagram.Document) error {
+	var resolver *coderesolve.Resolver
+	defer func() {
+		if resolver != nil {
+			resolver.Close()
+		}
+	}()
+	for i := range doc.Elements {
+		for j, ref := range doc.Elements[i].Evidence {
+			if resolver == nil {
+				var err error
+				resolver, err = coderesolve.New(ctx, checkout)
+				if err != nil {
+					return err
+				}
+			}
+			commit, err := resolveCommit(ctx, checkout, ref.Commit)
+			if err != nil {
+				return err
+			}
+			location := ref.Location()
+			location.Commit = commit
+			authored, err := resolver.Author(ctx, location, ref.Note)
+			if err != nil {
+				return err
+			}
+			if ref.Digest != "" && ref.Digest != authored.Digest {
+				return fmt.Errorf("%s: evidence digest does not match saved bytes", doc.Elements[i].ID)
+			}
+			doc.Elements[i].Evidence[j] = authored
+		}
+	}
+	return nil
 }

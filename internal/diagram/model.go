@@ -19,6 +19,8 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 const (
@@ -50,6 +52,20 @@ var (
 	frameShapes   = map[string]bool{"rect": true, "boundary": true, "section": true}
 	textAlignment = map[string]bool{"": true, "start": true, "middle": true, "end": true}
 )
+
+// DocumentationLink pins the exact saved definition inspected by an element.
+type DocumentationLink struct {
+	Target   string `json:"target"`
+	Revision string `json:"revision"`
+}
+
+// CriterionLink is an exact semantic link pinned to its story revision.
+type CriterionLink struct {
+	ID            string `json:"id"`
+	Criterion     string `json:"criterion"`
+	StoryRevision string `json:"story_revision"`
+	Rationale     string `json:"rationale"`
+}
 
 type Point struct {
 	X float64 `json:"x"`
@@ -127,10 +143,15 @@ type Element struct {
 	LineNumbers    bool             `json:"line_numbers,omitempty"`
 	HighlightLines []int            `json:"highlight_lines,omitempty"`
 	Source         *SourceReference `json:"source,omitempty"`
-	Summary        string           `json:"summary,omitempty"`
-	Visibility     string           `json:"visibility,omitempty"`
-	DetailScale    float64          `json:"detail_scale,omitempty"`
-	Bends          []Point          `json:"bends,omitempty"`
+	// Evidence belongs to this semantic element; Code remains displayed code-block text.
+	Evidence       []coderef.Reference `json:"evidence,omitempty"`
+	CriterionLinks []CriterionLink     `json:"criterion_links,omitempty"`
+	Record         string              `json:"record,omitempty"`
+	Documentation  *DocumentationLink  `json:"documentation,omitempty"`
+	Summary        string              `json:"summary,omitempty"`
+	Visibility     string              `json:"visibility,omitempty"`
+	DetailScale    float64             `json:"detail_scale,omitempty"`
+	Bends          []Point             `json:"bends,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -296,6 +317,17 @@ func (d Document) Validate() error {
 		}
 		if len([]rune(e.Label)) > MaxLabelRunes || len([]rune(e.Detail)) > MaxLabelRunes || len([]rune(e.Description)) > 2*MaxLabelRunes {
 			fail("text is too long")
+		}
+		if e.Decorative && (len(e.Evidence) > 0 || len(e.CriterionLinks) > 0 || e.Record != "" || e.Documentation != nil) {
+			fail("decorative elements cannot own evidence or semantic links")
+		}
+		if len(e.Evidence) > 500 {
+			fail("at most 500 evidence references per element")
+		}
+		for _, ref := range e.Evidence {
+			if err := coderef.Validate(ref); err != nil {
+				fail("evidence: %v", err)
+			}
 		}
 		if e.Note != "" {
 			if e.Decorative {
@@ -478,7 +510,7 @@ func Contract() map[string]any {
 		"default_styles":       styles,
 		"colors":               "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
 		"color_tokens":         colorTokenNames(),
-		"fields":               []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines", "source", "summary", "visibility", "detail_scale", "bends"},
+		"fields":               []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines", "source", "evidence", "criterion_links", "record", "documentation", "summary", "visibility", "detail_scale", "bends"},
 		"reveal_modes":         RevealModes(),
 		"terminators":          TerminatorNames(),
 		"composition": map[string]any{

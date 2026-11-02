@@ -106,8 +106,9 @@ type StatusInputs struct {
 	TermCode        map[string]coderesolve.Resolution
 	TermSuggestions []TermSuggestion
 
-	Prototypes prototypes.Document
-	Decks      []*saga.Deck
+	Prototypes      prototypes.Document
+	Decks           []*saga.Deck
+	WhiteboardItems []*saga.Item
 	// RecordDecks are the onboarding and theme decks, whose Items explain
 	// records rather than code.
 	RecordDecks []*saga.Deck

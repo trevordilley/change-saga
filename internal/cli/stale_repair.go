@@ -127,7 +127,7 @@ func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver,
 		if resolution.Current() {
 			continue
 		}
-		if ref.Code.Commit == base && base != head && resolver.Removed(ctx, base, head, ref.Code.Path, ref.Code.Start, ref.Code.End) && written != nil && written(ref) {
+		if ref.Kind != "whiteboard" && ref.Code.Commit == base && base != head && resolver.Removed(ctx, base, head, ref.Code.Path, ref.Code.Start, ref.Code.End) && written != nil && written(ref) {
 			result.DeletedSide++
 			continue
 		}
@@ -212,6 +212,8 @@ func printChangeStaleness(out io.Writer, staleness changeStaleness, preExistingH
 	for _, row := range staleness.References {
 		fmt.Fprintf(out, "  %s  %s", row.Owner, describeProposal(row.Pinned, row.Proposal))
 		switch row.Kind {
+		case "whiteboard":
+			fmt.Fprint(out, " (reassess the element and publish a new whiteboard revision with --parent; saved revisions are immutable)")
 		case "inventory":
 			fmt.Fprint(out, " (revise the definition with focused current references)")
 		case "deprecation":
