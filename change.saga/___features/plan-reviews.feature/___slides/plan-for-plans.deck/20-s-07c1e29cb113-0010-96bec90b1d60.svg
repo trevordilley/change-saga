@@ -80,9 +80,9 @@
       <rect width="330" height="76" rx="8" fill="#e7f8eb" stroke="#15803d" stroke-width="2" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
       <text x="18" y="35" font-size="17" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="18" y="35">A decision goes stale when its slide</tspan><tspan x="18" y="56.25">or cited code changes</tspan></text>
     </g>
-    <g id="r4" data-diagram-kind="node" transform="translate(20 402)" role="group" aria-label="Ends frozen when the change merges">
+    <g id="r4" data-diagram-kind="node" transform="translate(20 402)" role="group" aria-label="Ends frozen by repin after the change lands">
       <rect width="330" height="76" rx="8" fill="#e7f8eb" stroke="#15803d" stroke-width="2" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
-      <text x="18" y="35" font-size="17" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="18" y="35">Ends frozen when the change</tspan><tspan x="18" y="56.25">merges</tspan></text>
+      <text x="18" y="35" font-size="17" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="18" y="35">Ends frozen by repin after the change</tspan><tspan x="18" y="56.25">lands</tspan></text>
     </g>
   </g>
   <g id="rule" data-diagram-kind="text" transform="translate(50 615)" role="group" aria-label="Only the question changes: a Review asks whether the work is explained; a Plan asks whether the approach is right.">

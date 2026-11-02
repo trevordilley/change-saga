@@ -24,22 +24,22 @@ A Plan does not replace any of these, and none of them requires a Plan:
 | Review | What did this pull request do, and is every changed line explained? | At the pull request |
 | Implementation deck | How does it work now? | After it ships |
 
-This feature augments [Rich visual review](urn:change-saga:change-saga:feature:visual-review) rather than standing alone. A Plan is a new kind of review: it uses the same deck, the same per-slide decisions and comments, and the same reading surface, and a reader looking for how a team reviews should find both in one place. When Plans are built, `feature deliver` will move these stories there. Whether Plans deserve their own durable feature instead is listed below.
+This feature augments [Rich visual review](/features/visual-review) rather than standing alone. A Plan is a new kind of review: it uses the same deck, the same per-slide decisions and comments, and the same reading surface, and a reader looking for how a team reviews should find both in one place. When Plans are built, `feature deliver` will move these stories there. Whether Plans deserve their own durable feature instead is listed below.
 
 ## What is true today {#what-is-true-today}
 
 Nothing here is built. There is no Plan record, command, or page. These stories are proposed: they record the intent as stated and have not been accepted. The stories' criteria describe outcomes, not a chosen design.
 
-The design itself is the deck under this feature, [How we would build Plans](urn:change-saga:change-saga:deck:plan-for-plans), which is also the trial of the idea: a Plan for Plans, written using only what exists today. It sits in a UX deck because that is the only feature deck that does not claim to explain code it has never seen, and it is not a UX flow. It has no approvals and no comments, because the Saga carries none outside reviews. Those gaps are the case for this feature.
+The design itself is the deck under this feature's UX section, How we would build Plans, which is also the trial of the idea: a Plan for Plans, written using only what exists today. It sits in a UX deck because that is the only feature deck that does not claim to explain code it has never seen, and it is not a UX flow. It has no approvals and no comments, because the Saga carries none outside reviews. Those gaps are the case for this feature.
 
 ## What the trial taught us {#what-the-trial-taught-us}
 
 Writing the Plan for Plans with today's tools found these limits, each of which shaped a story:
 
 - **There is no container shaped like a Plan.** A UX deck reads as user flows in the navigation. An implementation deck would sit under Technical, which promises a description of current code. This is why a Plan must say plainly what it is.
-- **`apply-slide` asks UX decks for code.** The specification says a UX deck's slides are not asked for code, but complete-slide publishing refuses an Item without evidence, so a code-free deck loses diagram sources, element notes, and `diagram edit`.
+- **`apply-slide` asks UX decks for code.** The specification says a UX deck's slides are not asked for code, but complete-slide publishing refuses an Item without evidence, so a code-free deck loses diagram sources and `diagram edit`.
 - **Nowhere to agree.** The deck can be read but not approved or commented on, so its review has to happen somewhere nothing links to.
-- **A slide cannot link to its story honestly.** The relation that connects a UX Item to a criterion also earns that criterion its UX coverage, which a plan has not done. The Plan for Plans therefore links to stories only from its prose.
+- **A slide cannot link to its story honestly.** An `addresses` relation from a UX Item earns the criterion its UX coverage, which a plan has not done, and `explains` means an implementation explanation. The Plan for Plans therefore links to stories only from its prose.
 - **Nothing retires it.** `feature deliver` would move this deck into Rich visual review with the stories, where it would read as a description of current behavior until someone removes it by hand.
 
 A Review can in fact hold a Plan today: in a scratch copy, `review create` on a branch with no code gave working per-slide approvals and comments, reporting 0 of 0 lines covered. That is the strongest evidence for treating a Plan as a kind of review. It stops working the moment code lands on that branch, because the same review then owes coverage of every changed line.

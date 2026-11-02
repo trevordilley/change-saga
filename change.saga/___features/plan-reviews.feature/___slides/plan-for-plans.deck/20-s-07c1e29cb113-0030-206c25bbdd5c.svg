@@ -50,9 +50,9 @@
     <rect width="190" height="108" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
     <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">Implementation</tspan><tspan x="18" y="56.25">deck</tspan></text>
   </g>
-  <g id="chg0" data-diagram-kind="node" transform="translate(250 240)" role="group" aria-label="No: every Item needs exact evidence">
-    <rect width="190" height="108" rx="8" fill="#ffe8f0" stroke="#be185d" stroke-width="1" style="fill:var(--diagram-pink-tint,#ffe8f0);stroke:var(--diagram-pink-accent,#be185d)"/>
-    <text x="18" y="33" font-size="15" fill="#500724" xml:space="preserve" style="fill:var(--diagram-pink-ink,#500724)"><tspan x="18" y="33">No: every Item needs</tspan><tspan x="18" y="51.75">exact evidence</tspan></text>
+  <g id="chg0" data-diagram-kind="node" transform="translate(250 240)" role="group" aria-label="apply-slide needs evidence; add-item does not">
+    <rect width="190" height="108" rx="8" fill="#fff8d6" stroke="#a16207" stroke-width="1" style="fill:var(--diagram-yellow-tint,#fff8d6);stroke:var(--diagram-yellow-accent,#a16207)"/>
+    <text x="18" y="33" font-size="15" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="18" y="33">apply-slide needs</tspan><tspan x="18" y="51.75">evidence; add-item</tspan><tspan x="18" y="70.5">does not</tspan></text>
   </g>
   <g id="chg1" data-diagram-kind="node" transform="translate(450 240)" role="group" aria-label="No: documentation has no comments or approvals">
     <rect width="190" height="108" rx="8" fill="#ffe8f0" stroke="#be185d" stroke-width="1" style="fill:var(--diagram-pink-tint,#ffe8f0);stroke:var(--diagram-pink-accent,#be185d)"/>

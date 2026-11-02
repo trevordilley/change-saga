@@ -251,7 +251,7 @@
     <path d="M390 170 L470 170" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-start="url(#diagram-marker-d6-tail)" marker-end="url(#diagram-marker-d6-head)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
     <text x="392" y="150" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="392" y="150">delivers</tspan></text>
   </g>
-  <g id="foot" data-diagram-kind="text" transform="translate(40 610)" role="group" aria-label="Approval and comment records are unchanged: their schemas already target slide URNs and carry a commit. Everything marked new is additive, and a strict older reader refuses it, as with every earlier field.">
-    <text x="0" y="16" font-size="16" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="0" y="16">Approval and comment records are unchanged: their schemas already target slide URNs and carry a commit. Everything marked new is additive, and a strict</tspan><tspan x="0" y="36">older reader refuses it, as with every earlier field.</tspan></text>
+  <g id="foot" data-diagram-kind="text" transform="translate(40 610)" role="group" aria-label="Approval and comment records are unchanged: approvals name a slide and require a commit; comments target a slide or Item URN. Everything marked new is additive, but readers decode strictly, so an older one refuses it.">
+    <text x="0" y="16" font-size="16" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="0" y="16">Approval and comment records are unchanged: approvals name a slide and require a commit; comments target a slide or Item URN. Everything marked new is</tspan><tspan x="0" y="36">additive, but readers decode strictly, so an older one refuses it.</tspan></text>
   </g>
 </svg>

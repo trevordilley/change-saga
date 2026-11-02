@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
   <title id="diagram-title">Four additions; the rest of the grammar already exists</title>
-  <desc id="diagram-desc">Plans reuse the review verbs. Only the highlighted lines are new, and none of this runs today: this is a proposed grammar.</desc>
+  <desc id="diagram-desc">Plans reuse the review verbs. Only the highlighted lines are new, and none of them runs today: this is a proposed grammar.</desc>
   <defs>
     <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}@font-face{font-family:"Change Saga Code";src:url("/_diagram/fonts/go-mono.ttf") format("truetype")}text.diagram-code{font-family:"Change Saga Code",ui-monospace,Menlo,Consolas,monospace}:root{color-scheme:light dark;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-title-ink:#e6edf3;}}</style>
   </defs>

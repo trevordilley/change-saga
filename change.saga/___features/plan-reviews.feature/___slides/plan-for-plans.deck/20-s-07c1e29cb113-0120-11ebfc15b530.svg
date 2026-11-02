@@ -30,7 +30,7 @@
     <g id="risk3" data-diagram-kind="node" transform="translate(14 308)" role="group" aria-label="Older strict readers refuse a Saga">
       <rect width="562" height="85" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
       <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">Older strict readers refuse a Saga</tspan></text>
-      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">As with every additive field, upgrade readers before writing one.</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">Readers decode strictly, so upgrade them before writing one.</tspan></text>
     </g>
     <g id="risk4" data-diagram-kind="node" transform="translate(14 396)" role="group" aria-label="A Plan that drifts from reality">
       <rect width="562" height="85" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>

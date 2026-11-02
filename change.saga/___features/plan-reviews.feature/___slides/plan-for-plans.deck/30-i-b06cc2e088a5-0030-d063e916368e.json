@@ -4,12 +4,12 @@
   "slide": "plan-storage-decision",
   "rank": 30,
   "kind": "callout",
-  "label": "71 uses assume a pull request",
-  "description": "You would expect one slice to be simplest. document.Reviews is used 71 times in 30 non-test Go files, and much of that assumes a range: coverage, status, related reviews, stale repair. A separate slice is safe by default.",
+  "label": "Many uses assume a pull request",
+  "description": "You would expect one slice to be simplest. The Saga's Reviews field is used 48 times in 27 Go files, many assuming a range: coverage, status, related reviews, stale repair. A separate slice is safe by default.",
   "selector": {
     "type": "element",
     "element_id": "a3"
   },
   "about": "opta",
-  "body": "You would expect one slice to be simplest. document.Reviews is used 71 times in 30 non-test Go files, and much of that assumes a range: coverage, status, related reviews, stale repair. A separate slice is safe by default."
+  "body": "You would expect one slice to be simplest. The Saga's Reviews field is used 48 times in 27 Go files, many assuming a range: coverage, status, related reviews, stale repair. A separate slice is safe by default."
 }

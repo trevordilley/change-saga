@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "region",
   "label": "What a Review keeps",
-  "description": "A pull request range, coverage of every changed line, and a freeze at merge. None of it changes.",
+  "description": "A pull request range, coverage of every changed line, and a freeze by repin once it lands. None of it changes.",
   "selector": {
     "type": "element",
     "element_id": "review-col"
