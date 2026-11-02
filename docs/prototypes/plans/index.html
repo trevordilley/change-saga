@@ -16,7 +16,8 @@ code, pre { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; fo
 .banner { background:var(--work-bg); color:var(--work); padding:6px 20px; font-size:13px; border-bottom:1px solid var(--line); }
 .top { display:flex; align-items:center; gap:18px; padding:10px 20px; border-bottom:1px solid var(--line); }
 .top strong { font-size:14px; } .top .spacer { flex:1; }
-.crumbs { color:var(--muted); font-size:13px; }
+.crumbs { color:var(--muted); font-size:13px; padding:7px 20px; border-bottom:1px solid var(--line); }
+.sections { display:flex; gap:2px; } .sections a { padding:4px 11px; border-radius:6px; text-decoration:none; color:var(--muted); font-size:14px; } .sections a.on { background:var(--accent-soft); color:var(--accent); font-weight:600; }
 .ghost { background:none; border:1px solid var(--line); border-radius:6px; padding:3px 10px; font-size:13px; }
 main { max-width:1180px; margin:0 auto; padding:22px 24px 60px; }
 h1 { font-size:26px; margin:2px 0 4px; letter-spacing:-.01em; } h2 { font-size:18px; margin:26px 0 8px; } h3 { font-size:15px; margin:18px 0 6px; }
@@ -66,11 +67,16 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
 </head>
 <body>
 <div class="banner" id="banner"><strong>Prototype.</strong> Plans are not built. All content is illustrative: no Task here is really done and no review listed here exists. It plans out the Plans feature itself.</div>
-<div class="top"><strong>change-saga</strong><span class="crumbs" id="crumbs"></span><span class="spacer"></span><button class="ghost" id="reset" title="Undo any Tasks marked done on this page">Reset Tasks</button><button class="ghost" id="theme">Dark</button></div>
+<div class="top"><strong>change-saga</strong><nav class="sections" id="sections" aria-label="Sections"></nav><span class="spacer"></span><button class="ghost" id="reset" title="Undo any Tasks marked done on this page">Reset Tasks</button><button class="ghost" id="theme">Dark</button></div>
+<div class="crumbs" id="crumbs"></div>
 <main>
+  <section id="view-plans" hidden></section>
   <section id="view-feature" hidden></section>
+  <section id="view-story" hidden></section>
+  <section id="view-reviews" hidden></section>
   <div id="plan-head" hidden></div>
   <section id="view-deck" hidden></section>
+  <section id="view-stories" hidden></section>
   <section id="view-graph" hidden></section>
   <section id="view-tasks" hidden></section>
   <section id="view-compare" hidden></section>
@@ -81,18 +87,23 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
 </main>
 <script>
 (function () {
+  var PLANS_FEATURE = 'Plans: map out the work before building it', WORK_FEATURE = 'Dependency-aware work planning';
   var STORIES = {
-    'hold-several-plans': 'Keep several Plans for one feature',
-    'read-plan-by-phase': 'Read a Plan phase by phase',
-    'map-task-dependencies': 'See what can run in parallel from mapped dependencies',
-    'understand-a-task': 'Find everything needed to start a Task',
-    'size-tasks-small': 'Know each Task is small enough to be well understood',
-    'see-done-on-slides': 'See progress on the slides',
-    'agents-keep-plan-current': 'Let agents keep the Plan current as they work',
-    'compare-plan-with-reviews': 'Compare what we said with what we did',
-    'hide-done-plans': 'Keep finished Plans out of the way',
-    'show-plan-prototypes': 'See what a Plan will build',
-    'plan-with-a-guide': 'Get guided to a Plan you can be confident in'
+    'find-plans-in-their-section': ['Find Plans in their own section', PLANS_FEATURE],
+    'link-tasks-to-stories': ['Trace every Task to a user story', PLANS_FEATURE],
+    'see-plans-from-stories': ['See which Plans touch a story or feature', PLANS_FEATURE],
+    'read-plan-by-phase': ['Read a Plan phase by phase', PLANS_FEATURE],
+    'map-task-dependencies': ['See what can run in parallel from mapped dependencies', PLANS_FEATURE],
+    'understand-a-task': ['Find everything needed to start a Task', PLANS_FEATURE],
+    'size-tasks-small': ['Know each Task is small enough to be well understood', PLANS_FEATURE],
+    'see-done-on-slides': ['See progress on the slides', PLANS_FEATURE],
+    'agents-keep-plan-current': ['Let agents keep the Plan current as they work', PLANS_FEATURE],
+    'compare-plan-with-reviews': ['Compare what we said with what we did', PLANS_FEATURE],
+    'hide-done-plans': ['Keep finished Plans out of the way', PLANS_FEATURE],
+    'show-plan-prototypes': ['See what a Plan will build', PLANS_FEATURE],
+    'plan-with-a-guide': ['Get guided to a Plan you can be confident in', PLANS_FEATURE],
+    'dependency-aware-work-plan': ['Plan work with explicit dependencies', WORK_FEATURE],
+    'track-work-delivery': ['Track work from assignment through integration', WORK_FEATURE]
   };
   var PHASES = [
     { id: 'p1', title: 'Phase 1: A Plan exists' },
@@ -105,20 +116,23 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     return { id: id, short: short, title: title, phase: phase, story: story, deps: deps, state: state, initial: state, sizing: sizing, essay: essay, code: code };
   }
   var TASKS = [
-    T('plan-record', 'Plan record', 'Add the Plan record under its feature', 'p1', 'hold-several-plans', [], 'done', 'within',
-      'A Plan is a record that goes with a feature, holding its title, deck, prototypes and Reviews. It loads with the feature it belongs to, so a feature can hold several. This Task adds the record and its schema and nothing else: no reader page and no Tasks yet.',
+    T('plan-record', 'Plan record', 'Add the Plan record', 'p1', 'find-plans-in-their-section', [], 'done', 'within',
+      'A Plan is a record of its own, not owned by a feature: one per body of work, holding its title, deck, prototypes and Reviews. When it changes it is the same record, committed again. This Task adds the record and its schema and nothing else: no reader page and no Tasks yet.',
       [['internal/saga/load.go', '767', 'Reserved names a new directory must join'], ['internal/applayout/feature_plan.go', '15-35', 'The existing plan.json is Roadmap status; keep the two apart']]),
     T('merge-grammar', 'Merge the grammar', 'Merge the work plan’s verbs into plan and task', 'p1', 'agents-keep-plan-current', [], 'done', 'within',
       'change-saga plan is taken by the work plan. Its verbs move: phases under plan, units of work under a new task noun. This is the naming decision made real, and it can run beside the Plan record because neither depends on the other.',
       [['internal/cli/living_plan.go', '18-52', 'The plan command family today']]),
-    T('feature-lists-plans', 'List Plans on feature', 'List a feature’s Plans on its page', 'p1', 'hold-several-plans', ['plan-record'], 'done', 'within',
-      'The feature page gains a Plans section. A Roadmap feature and a built feature both show one. Done Plans come later, in their own Task.',
-      [['internal/server/apppages.go', '470-490', 'The feature page view']]),
-    T('task-extends-item', 'Tasks extend items', 'Extend work items into Tasks', 'p2', 'map-task-dependencies', ['plan-record'], 'done', 'within',
-      'A Task is a work item that belongs to a Plan and has an essay, pinned code references and a sizing judgment. Dependencies, progress and contracts already exist and are reused. A wave is a phase of the Plan.',
+    T('plans-tab', 'Plans tab', 'Add a Plans tab to the sidebar', 'p1', 'find-plans-in-their-section', ['plan-record'], 'done', 'within',
+      'Documentation, Plans, Reviews: what is, what we will do, what we did. The sidebar has two of the three already.',
+      [['internal/server/appnav.go', '305-325', 'How the Reviews section is built']]),
+    T('feature-lists-plans', 'Plans on stories', 'Show Plans on stories and features', 'p3', 'see-plans-from-stories', ['task-story-link'], 'ready', 'within',
+      'Nobody authors this. A Plan\u2019s stories come from its Tasks, and a feature\u2019s Plans come from its stories, so the links are worked out when the page is read and cannot drift.',
+      [['internal/server/apppages.go', '470-490', 'The feature page view'], ['internal/server/relatedreviews.go', '28-40', 'Related reviews are derived the same way']]),
+    T('task-extends-item', 'Tasks extend items', 'Extend work items into Tasks', 'p2', 'dependency-aware-work-plan', ['plan-record'], 'done', 'within',
+      'A Task is a work item that belongs to a Plan, moved out of its feature\u2019s work plan, and has an essay, pinned code references and a sizing judgment. Dependencies, progress and contracts already exist and are reused. A wave is a phase of the Plan.',
       [['internal/workplan/model.go', '81-100', 'WorkItemRevision: the record being extended'], ['internal/workplan/model.go', '51-65', 'WaveRevision: becomes a Plan’s phase']]),
-    T('task-story-link', 'Link Task to story', 'Link a Task to its user story', 'p2', 'understand-a-task', ['task-extends-item'], 'ready', 'within',
-      'A work item can reach a criterion or a design through an implements relation. A Task names the story it is part of, so the relation needs to allow a story as its target.',
+    T('task-story-link', 'Require a story', 'Require every Task to link to a story', 'p2', 'link-tasks-to-stories', ['task-extends-item'], 'ready', 'within',
+      'A Task with no story is refused, refactors included. A work item can only reach a criterion or a design through an implements relation today, so the relation needs to allow a story, and the link becomes required. The record keeping falls to the agent.',
       [['internal/requirements/validate.go', '276', 'The implements relation rules']]),
     T('task-page', 'Task page', 'Give each Task a page', 'p2', 'understand-a-task', ['task-extends-item'], 'work', 'within',
       'The reader shows no work plan today. This page is the first place a Task is visible: its essay, story, code references, what it depends on, what it blocks, and its done state.',
@@ -135,20 +149,20 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     T('slide-task-refs', 'Slides reference Tasks', 'Let slides reference Tasks', 'p3', 'see-done-on-slides', ['plan-deck', 'task-extends-item'], 'ready', 'within',
       'A slide Item can name a Task, as a review Item can name a record today. The reader lists a slide’s Tasks beside it with a link to each.',
       [['internal/saga/model.go', '143', 'Item.Record, the field to follow'], ['internal/saga/slides.go', '639-641', 'Which records an Item may name']]),
-    T('task-done-cmd', 'task done command', 'Let agents mark Tasks done', 'p3', 'agents-keep-plan-current', ['merge-grammar', 'task-extends-item'], 'ready', 'within',
+    T('task-done-cmd', 'task done command', 'Let agents mark Tasks done', 'p3', 'track-work-delivery', ['merge-grammar', 'task-extends-item'], 'ready', 'within',
       'change-saga task done records a progress event. Progress events are already append-only and keep conflicting heads, so two agents cannot silently overwrite each other.',
       [['internal/workplan/model.go', '186-191', 'ProgressEvent'], ['internal/cli/living_plan.go', '366', 'plan progress today']]),
     T('done-on-slides', 'Done on slides', 'Show done state on the slides', 'p3', 'see-done-on-slides', ['slide-task-refs', 'task-done-cmd'], 'wait', 'within',
       'Done state is read when the page renders, not stored in the slide, so marking a Task done changes the slide without republishing it.',
       []),
     T('plan-review-link', 'Link Plan to Reviews', 'Link a Plan to the Reviews that implement it', 'p4', 'compare-plan-with-reviews', ['plan-record'], 'ready', 'within',
-      'A Plan names its Reviews and each Review links back. A Plan can have several, because phases ship separately.',
+      'A Plan and its Reviews reference each other, and they share a Git history, so checking out a Review gives the Plan as it stood. A Plan can have several, because phases ship separately.',
       [['internal/saga/review.go', '65-82', 'ReviewManifest']]),
     T('comparison', 'Plan vs Review', 'Compare a Plan with its Reviews', 'p4', 'compare-plan-with-reviews', ['plan-review-link', 'slide-task-refs'], 'wait', 'over',
       'The key value of a Plan. Judged larger than two days for now, because what it compares is still open: this Task should be split once that is decided.',
       []),
     T('hide-done', 'Hide done Plans', 'Hide done Plans by default', 'p4', 'hide-done-plans', ['plan-review-link'], 'ready', 'within',
-      'A Plan that is implemented and merged is hidden from lists, and filtered from plan list unless --all is given. Reviews already do this for merged reviews, so it should read the same way.',
+      'A Plan that is implemented and merged is hidden from the Plans section, and filtered from plan list unless --all is given. Reviews already do this for merged reviews, so it should read the same way.',
       [['internal/server/directories.go', '372-382', 'The Reviews table sets merged reviews aside'], ['internal/cli/reviews.go', '580-584', 'review list hides merged reviews']]),
     T('plan-prototypes', 'Plan prototypes', 'Attach prototypes to a Plan', 'p5', 'show-plan-prototypes', ['plan-record'], 'ready', 'within',
       'Prototypes already exist on a feature. A Plan points at the ones it uses and shows them on its page.',
@@ -160,8 +174,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
   var BY_ID = {}; TASKS.forEach(function (t) { BY_ID[t.id] = t; });
   var SLIDES = [
     { id: 'whole', section: 'Overview', title: 'Five phases; each could ship on its own', take: 'Everything we intend to build for Plans, in an order that lets work run side by side.', body: 'phases', tasks: [] },
-    { id: 'with-feature', section: 'p1', title: 'A Plan goes with a feature, and a feature can have several', take: 'A Plan is its own document. It is not a review and does not need one to exist.',
-      body: '<div class="flow"><div class="box"><b>Feature</b>On the Roadmap, or built and being updated</div><div class="arrow">has</div><div class="box key"><b>Plans</b>One or more, each a body of work</div><div class="arrow">each with</div><div class="box"><b>Deck</b>By phase</div><div class="box"><b>Prototypes</b>What it will look like</div><div class="box"><b>Tasks</b>With dependencies</div></div>', tasks: ['plan-record', 'feature-lists-plans'] },
+    { id: 'own-section', section: 'p1', title: 'A Plan stands on its own and reaches stories through its Tasks', take: 'Documentation is what is, Plans is what we will do, Reviews is what we did. A Plan has no owner; its links say what it touches.',
+      body: '<div class="flow"><div class="box key"><b>Plan</b>One per body of work</div><div class="arrow">has</div><div class="box"><b>Tasks</b>Each must name a story</div><div class="arrow">link to</div><div class="box"><b>Stories</b>Worked out, not authored</div><div class="arrow">live in</div><div class="box"><b>Features</b>One or several</div></div>', tasks: ['plan-record', 'plans-tab', 'feature-lists-plans'] },
     { id: 'one-grammar', section: 'p1', title: 'plan and task replace the work plan’s verbs', take: 'change-saga plan is already the work plan. We merge the two ideas rather than add a second noun.',
       body: '<table><tr><th>Today</th><th>Proposed</th></tr><tr><td><code>plan add-wave</code></td><td><code>plan add-phase</code></td></tr><tr><td><code>plan add-item</code></td><td><code>task add</code></td></tr><tr><td><code>plan add-dependency</code></td><td><code>task depend</code></td></tr><tr><td><code>plan progress --to done</code></td><td><code>task done</code></td></tr></table>', tasks: ['merge-grammar'] },
     { id: 'task-is-item', section: 'p2', title: 'A Task is a work item, extended', take: 'Dependencies and progress exist and are tested. A Task adds what a person needs in order to start.',
@@ -169,7 +183,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     { id: 'parallel', section: 'p2', title: 'Dependencies decide what can run in parallel', take: 'Order on a page is not a dependency. Anything whose dependencies are done can start, whatever phase it is in.', body: 'parallel', tasks: ['dep-graph'] },
     { id: 'slides-tasks', section: 'p3', title: 'Slides reference Tasks and show when they are done', take: 'Done state is read when the page opens, so nobody republishes a slide to report progress.',
       body: '<div class="flow"><div class="box"><b>Agent finishes work</b><code>task done</code></div><div class="arrow">records</div><div class="box"><b>Progress event</b>On the Task</div><div class="arrow">read by</div><div class="box key"><b>Every slide citing it</b>Shows Done, as below</div></div>', tasks: ['plan-deck', 'slide-task-refs', 'task-done-cmd', 'done-on-slides'] },
-    { id: 'said-did', section: 'p4', title: 'A Plan is compared with the Reviews that implement it', take: 'What we said beside what we did. When it is implemented and merged, the Plan is done and steps out of the way.',
+    { id: 'said-did', section: 'p4', title: 'A Plan and its Reviews reference each other', take: 'Reviews come after the Plan is done. Comparing them shows what we said beside what we did, and a merged Plan steps out of the way.',
       body: '<div class="flow"><div class="box key"><b>Plan</b>What we said</div><div class="arrow">implemented by</div><div class="box"><b>Review pr-101</b>Phases 1 and 2</div><div class="box"><b>Review pr-104</b>Phase 3</div></div><p>See the <a href="#/plan/compare">comparison</a>.</p>', tasks: ['plan-review-link', 'comparison', 'hide-done'] },
     { id: 'guide', section: 'p5', title: 'A guide builds confidence before work starts', take: 'It researches and prototypes until each Task is confidently two days or less, and says which are not.',
       body: '<div class="flow"><div class="box"><b>Research</b>The feature, its stories, the code</div><div class="arrow">then</div><div class="box"><b>Prototype</b>What is still unclear</div><div class="arrow">until</div><div class="box key"><b>Confident</b>Each Task sized, or named as not yet</div></div><p>See the <a href="#/plan/guide">guide</a>.</p>', tasks: ['plan-prototypes', 'guide'] }
@@ -196,37 +210,74 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     return '<span class="chip s-warn">Not sized yet</span>';
   }
 
-  var views = ['feature', 'deck', 'graph', 'tasks', 'compare', 'prototypes', 'guide', 'cli', 'task'];
+  var views = ['plans', 'feature', 'story', 'reviews', 'deck', 'stories', 'graph', 'tasks', 'compare', 'prototypes', 'guide', 'cli', 'task'];
   function show(name) { views.forEach(function (v) { document.getElementById('view-' + v).hidden = v !== name; }); }
 
-  function renderFeature() {
+  function planStories() {
+    var seen = {}; TASKS.forEach(function (t) { seen[t.story] = 1; }); return Object.keys(seen);
+  }
+  function planFeatures() {
+    var seen = {}; planStories().forEach(function (s) { seen[STORIES[s][1]] = 1; }); return Object.keys(seen);
+  }
+  function renderPlans() {
     var total = TASKS.length, done = doneCount(TASKS);
     var rows = [
-      ['<a href="#/plan/deck/whole">Plans and Tasks: first version</a>', '5', done + ' of ' + total, done / total, 'pr-101, pr-104', '<span class="chip s-work">In progress</span>', false],
-      ['Roadmap shows Plan progress', '2', '0 of 6', 0, 'None yet', '<span class="chip s-wait">Not started</span>', false],
-      ['Spike: read work items in the reader', '1', '4 of 4', 1, 'pr-96 merged', '<span class="chip s-done">✓ Done</span>', true]
+      ['<a href="#/plan/deck/whole">Plans and Tasks: first version</a>', planStories().length + ' stories in ' + planFeatures().length + ' features', done + ' of ' + total, done / total, 'pr-101, pr-104', '<span class="chip s-work">In progress</span>', false],
+      ['Roadmap shows Plan progress', '4 stories in 1 feature', '0 of 6', 0, 'None yet', '<span class="chip s-wait">Not started</span>', false],
+      ['Spike: read work items in the reader', '2 stories in 1 feature', '4 of 4', 1, 'pr-96 merged', '<span class="chip s-done">\u2713 Done</span>', true]
     ];
-    var html = '<div class="eyebrow">Planned feature</div><h1>Plans: map out a feature’s work before building it</h1><p class="sub">Lay out a feature’s work phase by phase, see what can run in parallel, and compare it with what ships.</p>';
-    html += '<h2>Plans</h2><div class="filter"><span class="note" id="plan-count"></span><button class="toggle" id="toggle-done" aria-pressed="' + showDone + '">' + (showDone ? 'Hide' : 'Show') + ' done (1)</button></div>';
-    html += '<table><thead><tr><th>Plan</th><th>Phases</th><th>Tasks done</th><th>Reviews</th><th>State</th></tr></thead><tbody>';
+    var html = '<h1>Plans</h1><p class="sub">The work we intend to do. A Plan is one body of work; each of its Tasks links to a user story.</p>';
+    html += '<div class="filter"><span class="note" id="plan-count"></span><button class="toggle" id="toggle-done" aria-pressed="' + showDone + '">' + (showDone ? 'Hide' : 'Show') + ' done (1)</button></div>';
+    html += '<table><thead><tr><th>Plan</th><th>Touches</th><th>Tasks done</th><th>Reviews</th><th>State</th></tr></thead><tbody>';
     var shown = 0;
     rows.forEach(function (r) {
       if (r[6] && !showDone) return;
       shown++;
       html += '<tr class="' + (r[6] ? 'done-row' : '') + '"><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '<div class="bar"><i style="width:' + Math.round(r[3] * 100) + '%"></i></div></td><td>' + r[4] + '</td><td>' + r[5] + '</td></tr>';
     });
-    html += '</tbody></table>';
-    html += '<h2>Stories</h2><p class="note">' + Object.keys(STORIES).length + ' proposed stories. Each Task on a Plan names one of them.</p>';
-    html += '<p class="note">A done Plan is implemented and merged. It is hidden here by default, and still opens if someone asks for it. <a href="#/cli">The CLI does the same.</a></p>';
-    var el = document.getElementById('view-feature'); el.innerHTML = html;
+    html += '</tbody></table><p class="note">A done Plan is implemented and merged. It is hidden here by default, as merged Reviews are, and still opens if someone asks for it. <a href="#/cli">The CLI does the same.</a></p>';
+    document.getElementById('view-plans').innerHTML = html;
     document.getElementById('plan-count').textContent = shown + ' shown';
-    document.getElementById('toggle-done').onclick = function () { showDone = !showDone; renderFeature(); };
+    document.getElementById('toggle-done').onclick = function () { showDone = !showDone; renderPlans(); };
+  }
+
+  function renderFeature() {
+    var ids = planStories().filter(function (s) { return STORIES[s][1] === PLANS_FEATURE; });
+    document.getElementById('view-feature').innerHTML =
+      '<div class="eyebrow">Planned feature</div><h1>' + esc(PLANS_FEATURE) + '</h1><p class="sub">Lay out the work phase by phase, see what can run in parallel, and compare it with what ships.</p>' +
+      '<h2>Plans touching this feature</h2><p class="note">Worked out from Plan to Tasks to stories. Nobody keeps this list.</p><table><tbody><tr><td><a href="#/plan/deck/whole">Plans and Tasks: first version</a></td><td>' + ids.length + ' of this feature\u2019s stories</td><td>' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks done</td></tr></tbody></table>' +
+      '<h2>Stories</h2><table><tbody>' + ids.map(function (s) { var ts = TASKS.filter(function (t) { return t.story === s; }); return '<tr><td><a href="#/story/' + s + '">' + esc(STORIES[s][0]) + '</a></td><td>' + doneCount(ts) + ' of ' + ts.length + ' Tasks done</td></tr>'; }).join('') + '</tbody></table>';
+  }
+
+  function renderStory(id) {
+    var s = STORIES[id] || STORIES['understand-a-task'], ts = TASKS.filter(function (t) { return t.story === id; });
+    document.getElementById('view-story').innerHTML =
+      '<div class="eyebrow">Story in <a href="#/feature">' + esc(s[1]) + '</a></div><h1>' + esc(s[0]) + '</h1><p><span class="chip s-wait">Proposed</span></p>' +
+      '<h2>Plans and Tasks delivering it</h2><p class="note">Plan: <a href="#/plan/deck/whole">Plans and Tasks: first version</a>. Every link here comes from a Task naming this story.</p><table><tbody>' +
+      ts.map(function (t) { return '<tr><td>' + taskLink(t) + '</td><td>' + chip(t) + '</td></tr>'; }).join('') + '</tbody></table>';
+  }
+
+  function renderReviews() {
+    document.getElementById('view-reviews').innerHTML =
+      '<h1>Reviews</h1><p class="sub">Unchanged, except that a Review names the Plan it implements, and the Plan names it back.</p>' +
+      '<table><thead><tr><th>Review</th><th>Plan</th><th>State</th></tr></thead><tbody><tr><td>pr-104</td><td><a href="#/plan/compare">Plans and Tasks: first version</a></td><td><span class="chip s-work">Open</span></td></tr><tr><td>pr-101</td><td><a href="#/plan/compare">Plans and Tasks: first version</a></td><td><span class="chip s-done">Merged</span></td></tr></tbody></table>';
+  }
+
+  function renderStories() {
+    var html = '<p class="sub">Not authored on the Plan: these come from its Tasks, each of which must name a story. A Task with no story is refused, refactors included.</p>';
+    planFeatures().forEach(function (f) {
+      html += '<h3>' + esc(f) + '</h3><table><tbody>' + planStories().filter(function (s) { return STORIES[s][1] === f; }).map(function (s) {
+        var ts = TASKS.filter(function (t) { return t.story === s; });
+        return '<tr><td><a href="#/story/' + s + '">' + esc(STORIES[s][0]) + '</a></td><td>' + doneCount(ts) + ' of ' + ts.length + ' Tasks done</td></tr>';
+      }).join('') + '</tbody></table>';
+    });
+    document.getElementById('view-stories').innerHTML = html;
   }
 
   function planHead(tab) {
-    var tabs = [['deck/whole', 'deck', 'Deck'], ['graph', 'graph', 'Dependencies'], ['tasks', 'tasks', 'Tasks'], ['compare', 'compare', 'Plan vs Reviews'], ['prototypes', 'prototypes', 'Prototypes'], ['guide', 'guide', 'Guide']];
+    var tabs = [['deck/whole', 'deck', 'Deck'], ['graph', 'graph', 'Dependencies'], ['tasks', 'tasks', 'Tasks'], ['stories', 'stories', 'Stories'], ['compare', 'compare', 'Plan vs Reviews'], ['prototypes', 'prototypes', 'Prototypes'], ['guide', 'guide', 'Guide']];
     var el = document.getElementById('plan-head'); el.hidden = false;
-    el.innerHTML = '<div class="eyebrow">Plan, not a review. Describes intended work</div><h1>Plans and Tasks: first version</h1><p class="sub">Goes with <a href="#/feature">Plans: map out a feature’s work before building it</a>. ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks done.</p><nav class="tabs">' +
+    el.innerHTML = '<div class="eyebrow">Plan, not a review. Describes intended work</div><h1>Plans and Tasks: first version</h1><p class="sub">Touches ' + planStories().length + ' stories in ' + planFeatures().length + ' features. ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks done.</p><nav class="tabs">' +
       tabs.map(function (t) { return '<a href="#/plan/' + t[0] + '" class="' + (t[1] === tab ? 'on' : '') + '">' + t[2] + '</a>'; }).join('') + '</nav>';
   }
 
@@ -274,8 +325,8 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     var depth = {};
     function d(t) { if (depth[t.id] === undefined) { depth[t.id] = t.deps.length ? 1 + Math.max.apply(null, t.deps.map(function (x) { return d(BY_ID[x]); })) : 0; } return depth[t.id]; }
     TASKS.forEach(d);
-    var ORDER = ['plan-record', 'merge-grammar', 'plan-deck', 'task-extends-item', 'feature-lists-plans', 'plan-review-link', 'plan-prototypes',
-      'slide-task-refs', 'task-done-cmd', 'task-story-link', 'task-page', 'dep-graph', 'task-sizing', 'hide-done', 'done-on-slides', 'comparison', 'guide'];
+    var ORDER = ['plan-record', 'merge-grammar', 'plan-deck', 'task-extends-item', 'plans-tab', 'plan-review-link', 'plan-prototypes',
+      'slide-task-refs', 'task-done-cmd', 'task-story-link', 'task-page', 'dep-graph', 'task-sizing', 'hide-done', 'done-on-slides', 'comparison', 'feature-lists-plans', 'guide'];
     var cols = []; ORDER.forEach(function (id) { var t = BY_ID[id]; (cols[depth[t.id]] = cols[depth[t.id]] || []).push(t); });
     var W = 172, H = 54, GX = 50, GY = 10, M = 20, TOP = 36, pos = {};
     cols.forEach(function (c, i) { c.forEach(function (t, j) { pos[t.id] = { x: M + i * (W + GX), y: TOP + j * (H + GY) }; }); });
@@ -352,7 +403,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
       '<div class="eyebrow">Task in <a href="#/plan/deck/whole">Plans and Tasks: first version</a>, ' + esc(phaseOf(t.phase).title) + '</div><h1>' + esc(t.title) + '</h1>' +
       '<p>' + chip(t) + ' ' + sizingChip(t) + '</p><div class="cols"><div><h2>Essay</h2><p>' + esc(t.essay) + '</p><h2>Code that matters</h2>' + refs +
       '<h2>Mark it done</h2><p class="note">This is what an agent would run as it finishes. Try it here: its slides and the graph update.</p><code class="cmd">' + esc(cmd) + '</code><button class="primary" id="mark-done"' + (isDone(t) ? ' disabled' : '') + '>' + (isDone(t) ? 'Done' : 'Mark done, as an agent would') + '</button></div>' +
-      '<aside class="side"><h3>User story</h3><p><a href="#/feature">' + esc(STORIES[t.story]) + '</a></p><h3>Depends on</h3>' + list(t.deps.map(function (d) { return BY_ID[d]; }), 'Nothing: it could start any time.') +
+      '<aside class="side"><h3>User story</h3><p><a href="#/story/' + t.story + '">' + esc(STORIES[t.story][0]) + '</a> <span class="note">in ' + esc(STORIES[t.story][1]) + '</span></p><h3>Depends on</h3>' + list(t.deps.map(function (d) { return BY_ID[d]; }), 'Nothing: it could start any time.') +
       '<h3>Blocks</h3>' + list(blocks(t), 'Nothing is waiting on it.') + '<h3>Slides that show it</h3>' + (slides.length ? '<ul>' + slides.map(function (s) { return '<li><a href="#/plan/deck/' + s.id + '">' + esc(s.title) + '</a></li>'; }).join('') + '</ul>' : '<p class="note">None.</p>') + '</aside></div>';
     var button = document.getElementById('mark-done');
     if (button && !isDone(t)) button.onclick = function () { t.state = 'done'; renderTask(t.id); };
@@ -363,7 +414,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
       ['Add the Plan record under its feature', 'Plans load with their feature. <span class="note">pr-101, slide 2</span>', 's-done', 'Delivered', ''],
       ['Merge the work plan’s verbs into plan and task', 'Verbs moved; old ones print where they went. <span class="note">pr-101, slide 3</span>', 's-work', 'Departed', 'Kept old verbs as aliases for one release, which the Plan did not say.'],
       ['Extend work items into Tasks', 'Plan link, essay and code references added. <span class="note">pr-101, slide 4</span>', 's-work', 'Departed', 'Sizing moved to its own record, because it changes more often than the rest.'],
-      ['List a feature’s Plans on its page', 'Plans section on the feature page. <span class="note">pr-101, slide 5</span>', 's-done', 'Delivered', ''],
+      ['Add a Plans tab to the sidebar', 'Plans tab beside Documentation and Reviews. <span class="note">pr-101, slide 5</span>', 's-done', 'Delivered', ''],
       ['Give a Plan a deck grouped by phase', 'New deck role; sections name phases. <span class="note">pr-104, slide 1</span>', 's-done', 'Delivered', ''],
       ['Show the dependency graph', '<span class="note">Nothing delivered yet.</span>', 's-wait', 'Not delivered', ''],
       ['<span class="note">Not in the Plan</span>', 'Reader cache change needed for new pages. <span class="note">pr-104, slide 3</span>', 's-warn', 'Not planned', 'Pages were too slow once Plans listed Tasks.']
@@ -383,7 +434,7 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
   function renderGuide() {
     document.getElementById('view-guide').innerHTML =
       '<p class="sub">How an author might reach a Plan they trust. Where this runs (skill, command, or both) is an open question; this shows the conversation, not a screen design.</p>' +
-      '<div class="step"><i>1</i><div><strong>Research.</strong> Read 11 stories for this feature. Found <code>internal/workplan</code> already has waves, dependencies and progress. The reader shows none of it.</div></div>' +
+      '<div class="step"><i>1</i><div><strong>Research.</strong> Read ' + Object.keys(STORIES).length + ' stories across 2 features. Found <code>internal/workplan</code> already has waves, dependencies and progress. The reader shows none of it.</div></div>' +
       '<div class="step"><i>2</i><div><strong>Ask.</strong> Should a Plan own its work items, or link to them? <span class="note">Your answer: own them.</span></div></div>' +
       '<div class="step"><i>3</i><div><strong>Prototype.</strong> The graph was unclear, so I drew one. <a href="#/plan/graph">See it.</a></div></div>' +
       '<div class="step"><i>4</i><div><strong>Size.</strong> Drafted ' + TASKS.length + ' Tasks. I am confident of ' + TASKS.filter(function (t) { return t.sizing === 'within'; }).length + ' as two days or less.</div></div>' +
@@ -394,25 +445,34 @@ pre.cmd span.new { color:var(--accent); } pre.cmd span.c { color:var(--muted); }
     var ready = TASKS.filter(canStart).map(function (t) { return '  ' + t.id; }).join('\n');
     document.getElementById('view-cli').innerHTML =
       '<div class="eyebrow">Design sketch. None of the new commands exist</div><h1>Proposed grammar</h1><p class="sub">change-saga plan is already the work plan, so its verbs move here and the two ideas merge.</p>' +
-      '<pre class="cmd"><span class="c"># Plans</span>\nchange-saga plan create --feature plans --id first-version --title TEXT\nchange-saga plan list [--feature ID] [--all]        <span class="c"># done Plans hidden without --all</span>\nchange-saga plan link-review --plan ID --review pr-101\nchange-saga plan add-prototype --plan ID --prototype URN\nchange-saga plan add-phase --plan ID --id ID --title TEXT   <span class="c"># today: plan add-wave</span>\nchange-saga plan guide --feature ID                 <span class="c"># the wizard</span>\n\n<span class="c"># Its deck: the existing commands, pointed at a Plan</span>\nchange-saga apply-slide --plan ID --from SLIDE.json\nchange-saga deck overview --plan ID --file OVERVIEW.json\n\n<span class="c"># Tasks</span>\nchange-saga task add --plan ID --phase ID --id ID --title TEXT --story URN   <span class="c"># today: plan add-item</span>\nchange-saga task depend --task ID --on ID           <span class="c"># today: plan add-dependency</span>\nchange-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days\nchange-saga task done --task ID [--summary TEXT]    <span class="c"># today: plan progress --to done</span>\nchange-saga task list --plan ID [--ready]</pre>' +
-      '<h2>Done Plans are filtered by default</h2><pre class="cmd">$ change-saga plan list --feature plans\nfirst-version        in progress   ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks   pr-101, pr-104\nroadmap-progress     not started   0 of 6 Tasks\n1 done Plan hidden; --all shows it.</pre>' +
+      '<pre class="cmd"><span class="c"># Plans</span>\nchange-saga plan create --id first-version --title TEXT\nchange-saga plan list [--feature ID] [--story URN] [--all]   <span class="c"># done Plans hidden without --all</span>\nchange-saga plan link-review --plan ID --review pr-101\nchange-saga plan add-prototype --plan ID --prototype URN\nchange-saga plan add-phase --plan ID --id ID --title TEXT   <span class="c"># today: plan add-wave</span>\nchange-saga plan guide --story URN...               <span class="c"># the wizard</span>\n\n<span class="c"># Its deck: the existing commands, pointed at a Plan</span>\nchange-saga apply-slide --plan ID --from SLIDE.json\nchange-saga deck overview --plan ID --file OVERVIEW.json\n\n<span class="c"># Tasks</span>\nchange-saga task add --plan ID --phase ID --id ID --title TEXT --story URN   <span class="c"># --story is required. Today: plan add-item</span>\nchange-saga task depend --task ID --on ID           <span class="c"># today: plan add-dependency</span>\nchange-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days\nchange-saga task done --task ID [--summary TEXT]    <span class="c"># today: plan progress --to done</span>\nchange-saga task list --plan ID [--ready]</pre>' +
+      '<h2>Done Plans are filtered by default</h2><pre class="cmd">$ change-saga plan list\nfirst-version        in progress   ' + doneCount(TASKS) + ' of ' + TASKS.length + ' Tasks   pr-101, pr-104\nroadmap-progress     not started   0 of 6 Tasks\n1 done Plan hidden; --all shows it.</pre>' +
       '<h2>What can start now</h2><pre class="cmd">$ change-saga task list --plan first-version --ready\n' + ready + '</pre>';
   }
 
   function route() {
-    var parts = (location.hash.replace(/^#\/?/, '') || 'feature').split('/');
+    var parts = (location.hash.replace(/^#\/?/, '') || 'plans').split('/');
     var head = document.getElementById('plan-head'); head.hidden = true;
-    var crumbs = '<a href="#/feature">Plans feature</a>';
+    var section = 'plans', crumbs = '<a href="#/plans">Plans</a>';
     if (parts[0] === 'plan') {
       var tab = parts[1] || 'deck';
       planHead(tab); crumbs += ' / Plans and Tasks: first version';
-      if (tab === 'deck') renderDeck(parts[2]); if (tab === 'graph') renderGraph(); if (tab === 'tasks') renderTasks(); if (tab === 'compare') renderCompare(); if (tab === 'prototypes') renderPrototypes(); if (tab === 'guide') renderGuide();
+      if (tab === 'deck') renderDeck(parts[2]); if (tab === 'graph') renderGraph(); if (tab === 'tasks') renderTasks(); if (tab === 'stories') renderStories(); if (tab === 'compare') renderCompare(); if (tab === 'prototypes') renderPrototypes(); if (tab === 'guide') renderGuide();
       show(tab);
     } else if (parts[0] === 'task') {
       renderTask(parts[1]); show('task'); crumbs += ' / <a href="#/plan/deck/whole">Plans and Tasks: first version</a> / Task';
     } else if (parts[0] === 'cli') {
       renderCli(); show('cli'); crumbs += ' / CLI';
-    } else { renderFeature(); show('feature'); }
+    } else if (parts[0] === 'feature') {
+      section = 'docs'; crumbs = 'Documentation / Feature'; renderFeature(); show('feature');
+    } else if (parts[0] === 'story') {
+      section = 'docs'; crumbs = 'Documentation / <a href="#/feature">Feature</a> / Story'; renderStory(parts[1]); show('story');
+    } else if (parts[0] === 'reviews') {
+      section = 'reviews'; crumbs = 'Reviews'; renderReviews(); show('reviews');
+    } else { renderPlans(); show('plans'); }
+    document.getElementById('sections').innerHTML = [['docs', '#/feature', 'Documentation'], ['plans', '#/plans', 'Plans'], ['reviews', '#/reviews', 'Reviews']].map(function (s) {
+      return '<a href="' + s[1] + '" class="' + (s[0] === section ? 'on' : '') + '">' + s[2] + '</a>';
+    }).join('');
     document.getElementById('crumbs').innerHTML = crumbs + (parts[0] === 'cli' ? '' : ' <span class="note"> | <a href="#/cli">Proposed CLI</a></span>');
     window.scrollTo(0, 0);
   }
