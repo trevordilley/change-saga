@@ -14,7 +14,7 @@ const (
 
 	// SagaVersion is the one Change Saga container format and SagaSchemaURL
 	// its manifest schema. Every Saga is this report container: requirements,
-	// design, work plan, quality, and the embedded implementation deck.
+	// design, quality, and the embedded implementation deck.
 	SagaVersion   = 5
 	SagaSchemaURL = "https://changesaga.dev/schema/v5/saga.schema.json"
 

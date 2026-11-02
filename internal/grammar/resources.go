@@ -60,7 +60,7 @@ var resources = []Resource{
 		Kind: "feature", URN: "urn:change-saga:<saga>:feature:<feature>", Storage: "___features/<feature>.feature/feature.json",
 		Schema: schemaBase + "v5/feature.schema.json", Versions: []int{5}, History: "immutable identity of a durable product domain",
 		Writers: []string{"feature add", "feature rename", "feature remove"},
-		Notes:   "holds the domain's report content, requirements, design, quality, work plan, and implementation deck; no resource URN names its feature, so IDs are unique across the app",
+		Notes:   "holds the domain's report content, requirements, design, quality, and implementation deck; no resource URN names its feature, so IDs are unique across the app",
 	},
 	{
 		Kind: "feature-overview", URN: "urn:change-saga:<saga>:fragment:<id>", Storage: "___features/<feature>.feature/overview.fragment/{fragment.json,content.md}",

@@ -517,9 +517,6 @@ func (s *session) contextProblems(feature string, endpoints map[string]bool, rel
 		}
 		for _, blocker := range trace.Blockers {
 			gaps = append(gaps, FeatureContextGap{Code: blocker.Code, Resource: blocker.Resource, Detail: blocker.Detail})
-			if blocker.Code == "work_conflict" {
-				conflicts = append(conflicts, FeatureContextConflict{Kind: "work_plan", Resource: blocker.Resource})
-			}
 		}
 	}
 	sort.Slice(gaps, func(i, j int) bool {

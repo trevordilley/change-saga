@@ -88,7 +88,7 @@ func (decorator *storyLinkDecorator) decorate(view *fragmentView) error {
 		item.Stories = &storyLinksView{DOMID: item.DOMID, Title: item.Title}
 		owners[item.Target] = item
 	}
-	// Compute only this deck's visual pins. No source/code, work plan, quality
+	// Compute only this deck's visual pins. No source/code, quality
 	// evidence, or unrelated design content is loaded by a story affordance.
 	if decorator.digests == nil {
 		decorator.digests = map[*saga.Deck]map[string]string{}

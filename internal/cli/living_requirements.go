@@ -477,7 +477,7 @@ type relationAddOutput struct {
 }
 
 // defaultV5RelationPins fills each omitted revision pin of a revision-bearing
-// endpoint (story, criterion, work item, test case) with its unique current
+// endpoint (story, criterion, test case) with its unique current
 // head, and reports each default so the author sees exactly what was pinned.
 // supersedes never defaults: its pins are optional history, not currency.
 func defaultV5RelationPins(root string, input *requirements.AddRelationInput) ([]string, error) {

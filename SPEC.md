@@ -1860,16 +1860,17 @@ A **Plan** describes a body of work and how it can be executed in parallel: the
 technical design for a change, as a slide deck, and the **Tasks** that carry it
 out. A review explains what a change did; a Plan says what it will do. A Plan
 belongs to no feature; its stories and features are derived from its Tasks. Git
-is a Plan's history: a change rewrites the same small record, with no revisions
-or events.
+is a Plan's history: a change rewrites the same small `plan.json` or `task.json`,
+with no revisions or events. Its slides keep the revision record any deck's
+slides keep.
 
 ```text
 ___plans/<id>.plan/
 ├── plan.json
 ├── deck/                      # one flat deck bundle with role "plan"
 │   ├── 10-d-....json
-│   ├── 20-s-....json
-│   └── 30-i-....json
+│   ├── 24-a-...               # diagram sources and rendered slides
+│   └── 25-t-....json
 └── tasks/<id>.task/
     ├── task.json
     └── essay.md               # optional

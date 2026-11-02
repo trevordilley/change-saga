@@ -18,10 +18,9 @@ type Criterion struct {
 
 // Blocker describes one fact preventing a current delivery path.
 type Blocker struct {
-	Code     string   `json:"code"`
-	Resource string   `json:"resource,omitempty"`
-	Detail   string   `json:"detail,omitempty"`
-	Path     []string `json:"path,omitempty"`
+	Code     string `json:"code"`
+	Resource string `json:"resource,omitempty"`
+	Detail   string `json:"detail,omitempty"`
 }
 
 type CriterionResult struct {

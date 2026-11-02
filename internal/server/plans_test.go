@@ -43,6 +43,27 @@ func TestPlansHaveTheirOwnSide(t *testing.T) {
 	}
 }
 
+// The review viewer's script reveals its hidden essay; a Plan's page has no such
+// viewer, so its essay must already show, and must not ask about deprecations
+// for a target that cannot have them.
+func TestAPlanPageShowsItsEssay(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	overview := &saga.DeckOverview{Body: "Why this work is shaped this way."}
+	if err := planstore.Create(fixture.root, saga.PlanManifest{ID: "first", Title: "Plan first"}, saga.DeckManifest{ID: "first", Title: "Plan first", Objective: "Explain the work.", Overview: overview}); err != nil {
+		t.Fatal(err)
+	}
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+
+	page := getPage(t, handler, "/plans/first").Body.String()
+	if !strings.Contains(page, `data-plan-essay>`) || !strings.Contains(page, "Why this work is shaped this way.") {
+		t.Errorf("the Plan's essay is not shown:\n%s", page)
+	}
+	if strings.Contains(page, `data-deck-overview=`) || strings.Contains(page, "/api/deprecations") {
+		t.Errorf("the Plan page uses the review viewer's essay:\n%s", page)
+	}
+}
+
 func TestAPlanPageReadsAsAPlanAndShowsItsTasks(t *testing.T) {
 	t.Parallel()
 	fixture := newServerReviewFixture(t)

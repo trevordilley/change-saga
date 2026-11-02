@@ -779,6 +779,11 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 			}
 		}
 	}
+	for _, plan := range document.Plans {
+		if plan.Deck != nil && plan.Slide(slide.Target) == slide {
+			deck = plan.Deck
+		}
+	}
 	if deck == nil {
 		return SlideTransactionRequest{}, fmt.Errorf("slide %s belongs to no deck", slide.Target)
 	}
@@ -804,6 +809,11 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 	for _, review := range document.Reviews {
 		if review.Deck == deck {
 			request.Deck, request.Review = "", review.ID
+		}
+	}
+	for _, plan := range document.Plans {
+		if plan.Deck == deck {
+			request.Deck, request.Plan = "", plan.ID
 		}
 	}
 	if revision.Diagram != nil {

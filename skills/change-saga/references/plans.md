@@ -68,6 +68,6 @@ delivers it, and a callout whose `record` is a Task's URN says why the work
 departed from it. The Plan's comparison reads those links. It only reports
 differences; a person judges whether the work matches.
 
-`plan deliver` is explicit, and is refused until every Task is done and every
-linked Review has merged. A delivered Plan is hidden by default, as a merged
+`plan deliver` is explicit, and is refused until every Task is done, at least
+one Review is linked, and every linked Review has merged. A delivered Plan is hidden by default, as a merged
 review is (`plan list --all` shows it), still reads, and no longer changes.

@@ -324,7 +324,7 @@ func describeDelivery(root, sagaID, featureID string, result *deliveryOutput) er
 // planDelivery pairs every record entry beneath source with the same place
 // beneath recipient, and lists, relative to source, what holds content no
 // delivery container accounts for: report chapters and fragments other than
-// the overview, design, the work plan, and anything unrecognized.
+// the overview, design, and anything unrecognized.
 func planDelivery(source, recipient string) (moves [][2]string, unplaced []string, err error) {
 	container := map[string]bool{}
 	for _, rel := range deliveryContainers {

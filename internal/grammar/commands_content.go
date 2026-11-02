@@ -2,7 +2,7 @@ package grammar
 
 // contentCommands are the shapes that author content and run the tools
 // around it: init, the design and implementation-deck writers, coverage
-// repair, claims, the work plan, and the read-only commands. With the living
+// repair, claims, and the read-only commands. With the living
 // record writers in commands they make the table every command the CLI runs.
 var contentCommands = []Command{
 	{

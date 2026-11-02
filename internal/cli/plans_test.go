@@ -204,6 +204,13 @@ func TestPlanSlidesOweNoCodeAndNameTasks(t *testing.T) {
 	if output := run(t, Diagram, "check", root); !strings.Contains(output, slide.Target) {
 		t.Fatalf("diagram check did not report the Plan's slide:\n%s", output)
 	}
+	var printed SlideTransactionRequest
+	if err := json.Unmarshal([]byte(run(t, ApplySlide, "--plan", "first", "--print-current", slide.Target, root)), &printed); err != nil {
+		t.Fatalf("decode print-current: %v", err)
+	}
+	if printed.Plan != "first" || printed.Deck != "" || printed.ExpectedSnapshot != result.Snapshot {
+		t.Fatalf("print-current does not name the Plan: %+v", printed)
+	}
 	update := planSlideRequest(taskURN)
 	update.Operation, update.RequestID, update.ExpectedSnapshot = "update", "the-work-2", result.Snapshot
 	update.Slide.Title = "The work, revised"
