@@ -3,7 +3,7 @@
   "version": 5,
   "id": "stop-reading-work-plan",
   "title": "Stop readiness, audit, and status reading work items",
-  "phase": "clean-up",
+  "phase": "start-the-records",
   "code": [
     {
       "commit": "4ede5cad1a5127a7f347d58de85b3cb62a07e758",

@@ -3,7 +3,7 @@
   "version": 5,
   "id": "task-sizing",
   "title": "Record whether a Task is two days or less",
-  "phase": "tasks",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:size-tasks-small",
   "depends_on": [
     "task-records"

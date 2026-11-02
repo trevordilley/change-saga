@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Every Task leads to a story; dependencies decide what runs in parallel</title>
+  <desc id="diagram-desc">A Task names a story or unblocks a Task that leads to one. One walk over the graph checks it on every write, in linear time.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-tint:#e8f1ff;--diagram-gray-accent:#475569;--diagram-gray-tint:#f1f5f9;--diagram-green-accent:#15803d;--diagram-green-ink:#052e16;--diagram-green-tint:#e7f8eb;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-on-accent:#ffffff;--diagram-pink-accent:#be185d;--diagram-pink-ink:#500724;--diagram-pink-tint:#ffe8f0;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-tint:#121d2f;--diagram-gray-accent:#9198a1;--diagram-gray-tint:#1c2128;--diagram-green-accent:#56d364;--diagram-green-ink:#d2f8d9;--diagram-green-tint:#12261e;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-on-accent:#0d1117;--diagram-pink-accent:#f778ba;--diagram-pink-ink:#ffd6e8;--diagram-pink-tint:#2f1420;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-c-e1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-c-e2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 24)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Every Task leads to a story; dependencies decide what runs in parallel</tspan></text>
+  </g>
+  <g id="g-chain" data-diagram-kind="group" transform="translate(40 90)" role="group" aria-label="A refactor unblocks work that names a story">
+    <title>A refactor unblocks work that names a story</title>
+    <rect width="590" height="190" rx="10" fill="#e7f8eb" stroke="#15803d" stroke-width="1" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H379.479A10 10 0 0 1 389.479 10V34.5Z" fill="#15803d" style="fill:var(--diagram-green-accent,#15803d)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">A refactor unblocks work that names a story</tspan></text>
+    <g id="c1" data-diagram-kind="node" transform="translate(20 60)" role="group" aria-label="Refactor">
+      <rect width="150" height="90" rx="8" fill="#e7f8eb" stroke="#15803d" stroke-width="2" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
+      <text x="18" y="35" font-size="17" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="18" y="35">Refactor</tspan></text>
+    </g>
+    <g id="c2" data-diagram-kind="node" transform="translate(215 60)" role="group" aria-label="Feature work">
+      <rect width="150" height="90" rx="8" fill="#e7f8eb" stroke="#15803d" stroke-width="2" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
+      <text x="18" y="35" font-size="17" fill="#052e16" xml:space="preserve" style="fill:var(--diagram-green-ink,#052e16)"><tspan x="18" y="35">Feature work</tspan></text>
+    </g>
+    <g id="c3" data-diagram-kind="node" transform="translate(410 60)" role="group" aria-label="User story">
+      <rect width="150" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="35" font-size="17" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="35">User story</tspan></text>
+    </g>
+  </g>
+  <g id="c-e1" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="c1 to c2" data-from="c1" data-to="c2">
+    <path d="M210 195 L255 195" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-c-e1)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="c-e2" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="c2 to c3" data-from="c2" data-to="c3">
+    <path d="M405 195 L450 195" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-c-e2)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="g-refused" data-diagram-kind="group" transform="translate(650 90)" role="group" aria-label="Refused: it leads nowhere">
+    <title>Refused: it leads nowhere</title>
+    <rect width="590" height="190" rx="10" fill="#ffe8f0" stroke="#be185d" stroke-width="1" style="fill:var(--diagram-pink-tint,#ffe8f0);stroke:var(--diagram-pink-accent,#be185d)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H232.449A10 10 0 0 1 242.449 10V34.5Z" fill="#be185d" style="fill:var(--diagram-pink-accent,#be185d)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Refused: it leads nowhere</tspan></text>
+    <g id="r1" data-diagram-kind="node" transform="translate(20 60)" role="group" aria-label="Lonely Task">
+      <rect width="180" height="90" rx="8" fill="#ffe8f0" stroke="#be185d" stroke-width="1" style="fill:var(--diagram-pink-tint,#ffe8f0);stroke:var(--diagram-pink-accent,#be185d)"/>
+      <text x="18" y="33" font-size="15" fill="#500724" xml:space="preserve" style="fill:var(--diagram-pink-ink,#500724)"><tspan x="18" y="33">Lonely Task</tspan></text>
+    </g>
+    <g id="r-note" data-diagram-kind="text" transform="translate(220 50)" role="group" aria-label="A write that would leave a Task like this, or make a cycle, is refused and names the Tasks. Removing a dependency, clearing a story, or deleting a Task are all checked.">
+      <text x="0" y="16" font-size="16" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="0" y="16">A write that would leave a Task like this, or</tspan><tspan x="0" y="36">make a cycle, is refused and names the Tasks.</tspan><tspan x="0" y="56">Removing a dependency, clearing a story, or</tspan><tspan x="0" y="76">deleting a Task are all checked.</tspan></text>
+    </g>
+  </g>
+  <g id="g-walk" data-diagram-kind="group" transform="translate(40 295)" role="group" aria-label="How it is checked">
+    <title>How it is checked</title>
+    <rect width="1200" height="160" rx="10" fill="#f1f5f9" stroke="#475569" stroke-width="1" style="fill:var(--diagram-gray-tint,#f1f5f9);stroke:var(--diagram-gray-accent,#475569)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H160.689A10 10 0 0 1 170.689 10V34.5Z" fill="#475569" style="fill:var(--diagram-gray-accent,#475569)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">How it is checked</tspan></text>
+    <g id="w1" data-diagram-kind="text" transform="translate(20 44)" role="group" aria-label="Start from every Task that names a story, and walk backwards through depends_on. If a Task leads to a story and depends on another, that other Task unblocks it, so it leads there too. Any Task the walk does not reach is refused. Each Task and dependency is visited once, so commands can afford it on every write.">
+      <text x="0" y="16" font-size="16" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="0" y="16">Start from every Task that names a story, and walk backwards through depends_on. If a Task leads to a story and depends on another, that other Task</tspan><tspan x="0" y="36">unblocks it, so it leads there too. Any Task the walk does not reach is refused. Each Task and dependency is visited once, so commands can afford it on</tspan><tspan x="0" y="56">every write.</tspan></text>
+    </g>
+  </g>
+  <g id="g-tasks" data-diagram-kind="group" transform="translate(40 470)" role="group" aria-label="Tasks on this slide">
+    <title>Tasks on this slide</title>
+    <rect width="1200" height="200" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="1" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <path d="M0 34.5V10A10 10 0 0 1 10 0H169.87A10 10 0 0 1 179.87 10V34.5Z" fill="#1d4ed8" style="fill:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="12" y="24" font-size="18" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="24">Tasks on this slide</tspan></text>
+    <g id="t-task-records" data-diagram-kind="node" transform="translate(14 44)" role="group" aria-label="Require a path to a story&#10;Plain records, one file each">
+      <rect width="226" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="33" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="33">Require a path to a story</tspan><tspan x="18" y="51.75">Plain records, one file each</tspan></text>
+    </g>
+    <g id="t-task-commands" data-diagram-kind="node" transform="translate(250 44)" role="group" aria-label="The task commands&#10;Agents mark Tasks done">
+      <rect width="226" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="33" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="33">The task commands</tspan><tspan x="18" y="51.75">Agents mark Tasks done</tspan></text>
+    </g>
+    <g id="t-task-page" data-diagram-kind="node" transform="translate(486 44)" role="group" aria-label="A Task page&#10;Essay, story, code, chain">
+      <rect width="226" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="33" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="33">A Task page</tspan><tspan x="18" y="51.75">Essay, story, code, chain</tspan></text>
+    </g>
+    <g id="t-dependency-graph" data-diagram-kind="node" transform="translate(722 44)" role="group" aria-label="Dependency graph&#10;What can start now">
+      <rect width="226" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="33" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="33">Dependency graph</tspan><tspan x="18" y="51.75">What can start now</tspan></text>
+    </g>
+    <g id="t-task-sizing" data-diagram-kind="node" transform="translate(958 44)" role="group" aria-label="Sizing&#10;Two days or less, before AI">
+      <rect width="226" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="33" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="33">Sizing</tspan><tspan x="18" y="51.75">Two days or less, before</tspan><tspan x="18" y="70.5">AI</tspan></text>
+    </g>
+  </g>
+</svg>

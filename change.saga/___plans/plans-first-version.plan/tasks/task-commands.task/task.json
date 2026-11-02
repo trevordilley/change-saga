@@ -3,7 +3,7 @@
   "version": 5,
   "id": "task-commands",
   "title": "Add the task commands, so agents can mark Tasks done",
-  "phase": "tasks",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:agents-keep-plan-current",
   "depends_on": [
     "task-records"

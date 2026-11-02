@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "deck": "plans-first-version",
+  "slide": "deck-tasks-coverage",
+  "current": "sha256:be35d4da82310575391ee140dcea02e9bb426a7336079dc3bbb3320d38514801",
+  "revisions": [
+    {
+      "snapshot": "sha256:be35d4da82310575391ee140dcea02e9bb426a7336079dc3bbb3320d38514801",
+      "request_id": "plan-deck-three-views",
+      "created_at": "2026-11-02T20:42:00.715048Z",
+      "asset": "24-a-58e562aa635139b1630c5d554820b0f28f6d362883d5a4045482.svg",
+      "asset_digest": "sha256:58e562aa635139b1630c5d554820b0f28f6d362883d5a4045482d8421bd842d6",
+      "slide": {
+        "front": [
+          "A Plan opens on its essay, in the viewer a review uses.",
+          "A phase's Tasks can run in parallel; the next phase follows.",
+          "Coverage is a whiteboard that ends at the stories."
+        ],
+        "version": 4,
+        "id": "deck-tasks-coverage",
+        "deck": "plans-first-version",
+        "title": "Each Plan reads as an essay and a deck, then Tasks and Coverage",
+        "rank": 70,
+        "section": "Phase 5: Slide-outs, the Tasks list, and Coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-58e562aa635139b1630c5d554820b0f28f6d362883d5a4045482.svg",
+        "takeaway": "Deck, Tasks, and Coverage sit in the header, as a review's views do. Coverage ends every path at a story, and selecting a node marks the path to it.",
+        "reading_order": [
+          "t-phases-run-in-parallel",
+          "t-plan-deck-viewer",
+          "t-plan-header-views",
+          "t-slide-tasks-out",
+          "t-tasks-by-phase",
+          "t-coverage-whiteboard",
+          "t-select-a-node"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-phases-run-in-parallel",
+            "slide": "deck-tasks-coverage",
+            "rank": 500,
+            "kind": "node",
+            "label": "Parallel phases",
+            "description": "Task phases-run-in-parallel.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-phases-run-in-parallel"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:phases-run-in-parallel"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-deck-viewer",
+            "slide": "deck-tasks-coverage",
+            "rank": 510,
+            "kind": "node",
+            "label": "The deck viewer",
+            "description": "Task plan-deck-viewer.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-deck-viewer"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-deck-viewer"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-header-views",
+            "slide": "deck-tasks-coverage",
+            "rank": 520,
+            "kind": "node",
+            "label": "Header views",
+            "description": "Task plan-header-views.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-header-views"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-header-views"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-slide-tasks-out",
+            "slide": "deck-tasks-coverage",
+            "rank": 530,
+            "kind": "node",
+            "label": "Slide-out",
+            "description": "Task slide-tasks-out.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-slide-tasks-out"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:slide-tasks-out"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-tasks-by-phase",
+            "slide": "deck-tasks-coverage",
+            "rank": 540,
+            "kind": "node",
+            "label": "Tasks by phase",
+            "description": "Task tasks-by-phase.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-tasks-by-phase"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:tasks-by-phase"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-coverage-whiteboard",
+            "slide": "deck-tasks-coverage",
+            "rank": 550,
+            "kind": "node",
+            "label": "The whiteboard",
+            "description": "Task coverage-whiteboard.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-coverage-whiteboard"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:coverage-whiteboard"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-select-a-node",
+            "slide": "deck-tasks-coverage",
+            "rank": 560,
+            "kind": "node",
+            "label": "Select a node",
+            "description": "Task select-a-node.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-select-a-node"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:select-a-node"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-3118824fa02ee3f8fc214b64291e5f266d41f9adfa081114c547.json",
+        "source_digest": "sha256:3118824fa02ee3f8fc214b64291e5f266d41f9adfa081114c547405545e62672",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

@@ -1,0 +1,350 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "bad": {
+      "fill": "@diagram-pink-tint",
+      "stroke": "@diagram-pink-accent",
+      "ink": "@diagram-pink-ink",
+      "stroke_width": 1,
+      "font_size": 15
+    },
+    "body": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "@diagram-normal-ink",
+      "stroke_width": 1,
+      "font_size": 16
+    },
+    "cell": {
+      "fill": "@diagram-normal-fill",
+      "stroke": "@diagram-normal-stroke",
+      "ink": "@diagram-normal-ink",
+      "stroke_width": 1,
+      "font_size": 15
+    },
+    "head": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "@diagram-title-ink",
+      "stroke_width": 1,
+      "font_size": 18
+    },
+    "mid": {
+      "fill": "@diagram-yellow-tint",
+      "stroke": "@diagram-yellow-accent",
+      "ink": "@diagram-yellow-ink",
+      "stroke_width": 1,
+      "font_size": 15
+    },
+    "new": {
+      "fill": "@diagram-yellow-tint",
+      "stroke": "@diagram-yellow-accent",
+      "ink": "@diagram-yellow-ink",
+      "stroke_width": 2,
+      "font_size": 17
+    },
+    "ok": {
+      "fill": "@diagram-green-tint",
+      "stroke": "@diagram-green-accent",
+      "ink": "@diagram-green-ink",
+      "stroke_width": 1,
+      "font_size": 15
+    },
+    "plan": {
+      "fill": "@diagram-blue-tint",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 2,
+      "font_size": 17
+    },
+    "planstrong": {
+      "fill": "@diagram-blue-tint",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 3,
+      "font_size": 22
+    },
+    "review": {
+      "fill": "@diagram-green-tint",
+      "stroke": "@diagram-green-accent",
+      "ink": "@diagram-green-ink",
+      "stroke_width": 2,
+      "font_size": 17
+    },
+    "shared": {
+      "fill": "@diagram-normal-fill",
+      "stroke": "@diagram-normal-stroke",
+      "ink": "@diagram-normal-ink",
+      "stroke_width": 2,
+      "font_size": 17
+    }
+  },
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "A Plan stands on its own, and reaches stories through its Tasks",
+      "x": 60,
+      "y": 24,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-sides",
+      "kind": "group",
+      "shape": "section",
+      "label": "Three sides of the header",
+      "description": "Three sides of the header",
+      "x": 40,
+      "y": 90,
+      "width": 430,
+      "height": 350,
+      "style": "head",
+      "color": "gray"
+    },
+    {
+      "id": "docs",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Documentation\nWhat is",
+      "x": 20,
+      "y": 50,
+      "width": 390,
+      "height": 80,
+      "parent": "g-sides",
+      "style": "shared",
+      "wrap": true
+    },
+    {
+      "id": "plans",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Plans\nWhat we will do",
+      "x": 20,
+      "y": 145,
+      "width": 390,
+      "height": 80,
+      "parent": "g-sides",
+      "style": "plan",
+      "wrap": true
+    },
+    {
+      "id": "reviews",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Reviews\nWhat we did",
+      "x": 20,
+      "y": 240,
+      "width": 390,
+      "height": 80,
+      "parent": "g-sides",
+      "style": "review",
+      "wrap": true
+    },
+    {
+      "id": "g-links",
+      "kind": "group",
+      "shape": "section",
+      "label": "What links to what",
+      "description": "What links to what",
+      "x": 490,
+      "y": 90,
+      "width": 750,
+      "height": 350,
+      "style": "head",
+      "color": "blue"
+    },
+    {
+      "id": "n-plan",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Plan",
+      "x": 20,
+      "y": 60,
+      "width": 150,
+      "height": 90,
+      "parent": "g-links",
+      "style": "plan",
+      "wrap": true
+    },
+    {
+      "id": "n-task",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Tasks",
+      "x": 200,
+      "y": 60,
+      "width": 150,
+      "height": 90,
+      "parent": "g-links",
+      "style": "plan",
+      "wrap": true
+    },
+    {
+      "id": "n-story",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Stories",
+      "x": 380,
+      "y": 60,
+      "width": 150,
+      "height": 90,
+      "parent": "g-links",
+      "style": "shared",
+      "wrap": true
+    },
+    {
+      "id": "n-feature",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Features",
+      "x": 560,
+      "y": 60,
+      "width": 150,
+      "height": 90,
+      "parent": "g-links",
+      "style": "shared",
+      "wrap": true
+    },
+    {
+      "id": "e1",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "n-plan",
+      "to": "n-task",
+      "points": [
+        {
+          "x": 660,
+          "y": 195
+        },
+        {
+          "x": 690,
+          "y": 195
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "e2",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "n-task",
+      "to": "n-story",
+      "points": [
+        {
+          "x": 840,
+          "y": 195
+        },
+        {
+          "x": 870,
+          "y": 195
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "e3",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "n-story",
+      "to": "n-feature",
+      "points": [
+        {
+          "x": 1020,
+          "y": 195
+        },
+        {
+          "x": 1050,
+          "y": 195
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "links-note",
+      "kind": "text",
+      "label": "Only the first two links are authored. A story's Plans and a feature's Plans are read back from these, so they cannot drift. A Plan can cross features, and a feature can have several Plans.",
+      "x": 20,
+      "y": 180,
+      "width": 710,
+      "height": 90,
+      "parent": "g-links",
+      "style": "body",
+      "wrap": true
+    },
+    {
+      "id": "git-note",
+      "kind": "text",
+      "label": "Plans and Tasks keep no revisions or events: Git is their history.",
+      "x": 20,
+      "y": 280,
+      "width": 710,
+      "height": 40,
+      "parent": "g-links",
+      "style": "head",
+      "wrap": true
+    },
+    {
+      "id": "g-tasks",
+      "kind": "group",
+      "shape": "section",
+      "label": "Tasks on this slide",
+      "description": "Tasks on this slide",
+      "x": 40,
+      "y": 470,
+      "width": 1200,
+      "height": 200,
+      "style": "head",
+      "color": "blue"
+    },
+    {
+      "id": "t-plan-record",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Add the Plan record\nOne record and its loader",
+      "x": 14,
+      "y": 44,
+      "width": 384,
+      "height": 140,
+      "parent": "g-tasks",
+      "style": "cell",
+      "wrap": true
+    },
+    {
+      "id": "t-plan-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "plan create, plan list\nDelivered Plans hidden by default",
+      "x": 408,
+      "y": 44,
+      "width": 384,
+      "height": 140,
+      "parent": "g-tasks",
+      "style": "cell",
+      "wrap": true
+    },
+    {
+      "id": "t-plans-section",
+      "kind": "node",
+      "shape": "rect",
+      "label": "A Plans section\nBeside Documentation and Reviews",
+      "x": 802,
+      "y": 44,
+      "width": 384,
+      "height": 140,
+      "parent": "g-tasks",
+      "style": "cell",
+      "wrap": true
+    }
+  ]
+}

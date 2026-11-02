@@ -3,7 +3,7 @@
   "version": 5,
   "id": "remove-docs",
   "title": "Remove the work plan's docs, feature, and terms",
-  "phase": "clean-up",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:one-way-to-plan",
   "depends_on": [
     "remove-package"

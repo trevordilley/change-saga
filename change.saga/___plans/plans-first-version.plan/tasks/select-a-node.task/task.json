@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "select-a-node",
+  "title": "Select a node to see its path and detail",
+  "phase": "select-a-node",
+  "story": "urn:change-saga:change-saga:story:see-plans-from-stories",
+  "depends_on": [
+    "coverage-whiteboard"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A contained change to known code, built and checked in a session."
+  },
+  "state": "done",
+  "summary": "A Task shows its detail. A story shows every Task it takes. The path stays in view beside the detail.",
+  "created_at": "2026-11-02T20:41:13.3629Z"
+}

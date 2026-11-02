@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "plans-first-version",
   "slide": "deck-holds-the-design",
-  "current": "sha256:3260f8bec3663d3c6e6a13c00d0417eb4240a8bb013f04f8b8fb496a87d24adf",
+  "current": "sha256:a8c4eefe047669ccc5a04a0e78d95f87d27f9117278f7c44dada2f92fa76fe20",
   "revisions": [
     {
       "snapshot": "sha256:3260f8bec3663d3c6e6a13c00d0417eb4240a8bb013f04f8b8fb496a87d24adf",
@@ -111,6 +111,119 @@
       "diagram": {
         "source": "24-a-52b38bf4347ff8cbf720a380ae7d8dd20097831ae05331d4cb0b.json",
         "source_digest": "sha256:52b38bf4347ff8cbf720a380ae7d8dd20097831ae05331d4cb0bb28f50c912b8",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:a8c4eefe047669ccc5a04a0e78d95f87d27f9117278f7c44dada2f92fa76fe20",
+      "parent_snapshots": [
+        "sha256:3260f8bec3663d3c6e6a13c00d0417eb4240a8bb013f04f8b8fb496a87d24adf"
+      ],
+      "request_id": "deck-holds-the-design-round2",
+      "created_at": "2026-11-02T20:41:16.707368Z",
+      "asset": "24-a-c21100593d6b04507d764c21a474bcbf531a30b2beabd18b61fb.svg",
+      "asset_digest": "sha256:c21100593d6b04507d764c21a474bcbf531a30b2beabd18b61fbb18855d8d1a5",
+      "slide": {
+        "front": [
+          "A Plan's deck owes no code evidence.",
+          "Slide sections usually name phases.",
+          "Slides show their Tasks' done state."
+        ],
+        "version": 4,
+        "id": "deck-holds-the-design",
+        "deck": "plans-first-version",
+        "title": "The deck holds the technical design, and shows the work's progress",
+        "rank": 30,
+        "section": "Phase 2: Tasks, the Plans section, and the deck",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-c21100593d6b04507d764c21a474bcbf531a30b2beabd18b61fb.svg",
+        "takeaway": "A Plan's deck uses the review deck's path with a new role. Slide Items name Tasks, and done state is read when the page opens, so nobody republishes a slide to report progress.",
+        "reading_order": [
+          "t-plan-deck",
+          "t-phase-sections",
+          "t-slides-show-tasks",
+          "t-plans-on-stories"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-deck",
+            "slide": "deck-holds-the-design",
+            "rank": 500,
+            "kind": "node",
+            "label": "A Plan's deck",
+            "description": "Task plan-deck.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-deck"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-deck"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-phase-sections",
+            "slide": "deck-holds-the-design",
+            "rank": 510,
+            "kind": "node",
+            "label": "Slides by phase",
+            "description": "Task phase-sections.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-phase-sections"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:phase-sections"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-slides-show-tasks",
+            "slide": "deck-holds-the-design",
+            "rank": 520,
+            "kind": "node",
+            "label": "Tasks on slides",
+            "description": "Task slides-show-tasks.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-slides-show-tasks"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:slides-show-tasks"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plans-on-stories",
+            "slide": "deck-holds-the-design",
+            "rank": 530,
+            "kind": "node",
+            "label": "Plans on stories",
+            "description": "Task plans-on-stories.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plans-on-stories"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plans-on-stories"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-3fa42ed1914ad18239bc23c330b2efe35c0e0ab984a87bb6c7ab.json",
+        "source_digest": "sha256:3fa42ed1914ad18239bc23c330b2efe35c0e0ab984a87bb6c7abc004c6304749",
         "renderer": "change-saga-diagram/2"
       }
     }

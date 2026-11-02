@@ -3,7 +3,7 @@
   "version": 5,
   "id": "guidance-wizard",
   "title": "Guide authors to a Plan they trust",
-  "phase": "guide",
+  "phase": "guide-and-rebuild",
   "story": "urn:change-saga:change-saga:story:plan-with-a-guide",
   "depends_on": [
     "task-sizing",

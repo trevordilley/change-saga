@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "slide-tasks-out",
+  "title": "List a slide's Tasks in a slide-out",
+  "phase": "views",
+  "story": "urn:change-saga:change-saga:story:see-done-on-slides",
+  "depends_on": [
+    "plan-deck-viewer"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A contained change to known code, built and checked in a session."
+  },
+  "state": "done",
+  "summary": "A button on each slide says how many Tasks are done and opens them in the drawer.",
+  "created_at": "2026-11-02T20:41:08.469766Z"
+}

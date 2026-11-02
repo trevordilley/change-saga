@@ -3,7 +3,7 @@
   "version": 5,
   "id": "plan-prototypes",
   "title": "Attach prototypes to a Plan",
-  "phase": "guide",
+  "phase": "tasks-section-deck",
   "story": "urn:change-saga:change-saga:story:show-plan-prototypes",
   "depends_on": [
     "plan-record"

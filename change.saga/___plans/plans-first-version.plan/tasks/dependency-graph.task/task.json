@@ -3,7 +3,7 @@
   "version": 5,
   "id": "dependency-graph",
   "title": "Show the dependency graph",
-  "phase": "tasks",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:map-task-dependencies",
   "depends_on": [
     "task-records",

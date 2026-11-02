@@ -6,9 +6,11 @@ Change Saga explains a change after it is built. Before that, how the work will 
 
 **A Plan describes a body of work and how it can be executed effectively in parallel.** It is its own kind of document, in its own section: Documentation is what is, Plans is what we will do, Reviews is what we did.
 
-A Plan is where the technical design for a change is drafted, and its Tasks are how the work gets done. It is a slide deck, like a review, but organized by implementation: the deck is encouraged to run phase by phase. It can have prototypes showing what will be built. Underneath it is a set of Tasks. When a Plan changes it is the same Plan, committed again; Git keeps every earlier version. A different body of work gets its own Plan.
+A Plan is where the technical design for a change is drafted, and its Tasks are how the work gets done. It opens on an overview essay, then a slide deck in the viewer a review uses, usually organized by phase. It can have prototypes showing what will be built. Underneath it is a set of Tasks. When a Plan changes it is the same Plan, committed again; Git keeps every earlier version. A different body of work gets its own Plan.
 
-A **Task** is one well-understood piece of work. It has dependencies on other Tasks, so what can run in parallel is visible rather than guessed. It can have a small essay and references to the code that matters. The Plan's slides reference Tasks, and a slide shows which of its Tasks are done.
+A **Task** is one well-understood piece of work. It has dependencies on other Tasks, and a phase is a set of Tasks that can run in parallel, so a Task can only depend on an earlier phase. It can have a small essay and references to the code that matters. The Plan's slides reference Tasks, and a slide's Tasks and their done state open in a slide-out.
+
+A Plan has three views in its header, as a review does. **Deck** is the essay and slides. **Tasks** lists them by phase, with what each needs, unblocks, and leads to. **Coverage** is a whiteboard of the Tasks ending at the stories they lead to: selecting a node marks the path to it, a Task shows its detail, and a story shows every Task it takes.
 
 ## Everything links to a story {#everything-links-to-a-story}
 
@@ -32,8 +34,6 @@ The sizing goal is that a team is confident each Task would have taken two days 
 
 Plans and Tasks are built. These stories are proposed, because the people who asked for them have not yet accepted them. [Plans and Tasks: first version](/plans/plans-first-version) is the first real Plan: it holds the technical design for this feature and the Tasks that built it. The [prototype](/prototypes/plans) shows the direction explored beforehand, and its content and done states are illustrative.
 
-A Plan's slides are shown as images, so element notes and the reader's theme toggle do not apply to them yet.
-
 ## One way to plan work {#one-way-to-plan-work}
 
 Plans and Tasks replaced an earlier work plan that was built but never used. Git has it, and [the Plan](/plans/plans-first-version) says what its removal gave up. Each feature's `plan.json`, written by `feature set-plan`, is Roadmap status and is a separate thing, though the word means two things there.
@@ -44,7 +44,8 @@ Plans and Tasks replaced an earlier work plan that was built but never used. Git
 change-saga plan create --id ID --title TEXT
 change-saga plan list [--feature ID] [--story URN] [--all]   # text hides delivered Plans without --all
 change-saga plan guide [--plan ID]                           # the workflow, and what a Plan still needs
-change-saga plan add-phase --plan ID --id ID --title TEXT
+change-saga plan add-phase --plan ID --id ID --title TEXT    # a phase's Tasks run in parallel
+change-saga plan remove-phase --plan ID --id ID
 change-saga plan add-prototype --plan ID --prototype URN
 change-saga plan link-review --plan ID --review ID
 change-saga plan deliver --plan ID                           # refused until every Task is done and a linked Review, all merged

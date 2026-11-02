@@ -3,7 +3,7 @@
   "version": 5,
   "id": "plans-on-stories",
   "title": "Show Plans on stories and features",
-  "phase": "the-deck",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:see-plans-from-stories",
   "depends_on": [
     "task-records",

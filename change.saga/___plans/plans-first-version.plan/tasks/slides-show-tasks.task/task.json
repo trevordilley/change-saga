@@ -3,7 +3,7 @@
   "version": 5,
   "id": "slides-show-tasks",
   "title": "Show a slide's Tasks and their done state",
-  "phase": "the-deck",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:see-done-on-slides",
   "depends_on": [
     "plan-deck",

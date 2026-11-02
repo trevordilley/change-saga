@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "phases-run-in-parallel",
+  "title": "Make a phase a set of Tasks that can run in parallel",
+  "phase": "guide-and-rebuild",
+  "story": "urn:change-saga:change-saga:story:read-plan-by-phase",
+  "depends_on": [
+    "phase-sections"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A contained change to known code, built and checked in a session."
+  },
+  "state": "done",
+  "summary": "A Task can only depend on Tasks of an earlier phase, and plan remove-phase lets phases be reordered.",
+  "created_at": "2026-11-02T20:41:03.722734Z"
+}

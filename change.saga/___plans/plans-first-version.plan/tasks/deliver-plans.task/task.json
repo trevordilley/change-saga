@@ -3,7 +3,7 @@
   "version": 5,
   "id": "deliver-plans",
   "title": "Mark Plans delivered and hide them",
-  "phase": "reviews",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:hide-done-plans",
   "depends_on": [
     "compare-with-reviews"

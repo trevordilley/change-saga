@@ -3,7 +3,7 @@
   "version": 5,
   "id": "phase-sections",
   "title": "Group a Plan's slides by phase",
-  "phase": "the-deck",
+  "phase": "read-and-work",
   "story": "urn:change-saga:change-saga:story:read-plan-by-phase",
   "depends_on": [
     "plan-deck"

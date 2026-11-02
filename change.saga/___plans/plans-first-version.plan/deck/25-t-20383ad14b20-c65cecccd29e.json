@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "plans-first-version",
   "slide": "guide-builds-confidence",
-  "current": "sha256:6a599e0c2e3776d21d03921076df1361abd9bbd09d0ecf3c725611fe6a7f0ceb",
+  "current": "sha256:70a90304f0c9aa4694f803b6b142fa1ba6b29a36afd65b867ddf5d5f95327196",
   "revisions": [
     {
       "snapshot": "sha256:e36aadff3552bd6dbd17f59eb89d67513595f9d40c2aef8d6d82e87310a1b066",
@@ -148,6 +148,81 @@
       "diagram": {
         "source": "24-a-d729077d1beb7e5f25d9d924beb9a8e2668f27677f7f05efc3d3.json",
         "source_digest": "sha256:d729077d1beb7e5f25d9d924beb9a8e2668f27677f7f05efc3d3965d2ddd0362",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:70a90304f0c9aa4694f803b6b142fa1ba6b29a36afd65b867ddf5d5f95327196",
+      "parent_snapshots": [
+        "sha256:6a599e0c2e3776d21d03921076df1361abd9bbd09d0ecf3c725611fe6a7f0ceb"
+      ],
+      "request_id": "guide-builds-confidence-round2",
+      "created_at": "2026-11-02T20:41:19.546879Z",
+      "asset": "24-a-45ed69e3af9871631b245df7549a186a8f02cb5331fc0e2d71b9.svg",
+      "asset_digest": "sha256:45ed69e3af9871631b245df7549a186a8f02cb5331fc0e2d71b92f88617bc39e",
+      "slide": {
+        "front": [
+          "Research and prototypes are how confidence is earned.",
+          "The goal is each Task being two days or less before AI.",
+          "Whether a Plan is right is still for people to judge."
+        ],
+        "version": 4,
+        "id": "guide-builds-confidence",
+        "deck": "plans-first-version",
+        "title": "A guide builds confidence before work starts",
+        "rank": 60,
+        "section": "Phase 4: The guide, and a Plan page like a review's",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-45ed69e3af9871631b245df7549a186a8f02cb5331fc0e2d71b9.svg",
+        "takeaway": "plan guide gives an agent the workflow, then names the Tasks it cannot yet be confident of, so what is not ready gets named.",
+        "reading_order": [
+          "t-plan-prototypes",
+          "t-guidance-wizard"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-plan-prototypes",
+            "slide": "guide-builds-confidence",
+            "rank": 500,
+            "kind": "node",
+            "label": "Attach prototypes",
+            "description": "Task plan-prototypes.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-plan-prototypes"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:plan-prototypes"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-guidance-wizard",
+            "slide": "guide-builds-confidence",
+            "rank": 510,
+            "kind": "node",
+            "label": "plan guide, and the skill's route",
+            "description": "Task guidance-wizard.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-guidance-wizard"
+            },
+            "record": "urn:change-saga:change-saga:plan:plans-first-version:task:guidance-wizard"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-208286cf5d591f6972f02a4d272bb3812c3353aab4ccd839c34d.json",
+        "source_digest": "sha256:208286cf5d591f6972f02a4d272bb3812c3353aab4ccd839c34dc8ebbc32b602",
         "renderer": "change-saga-diagram/2"
       }
     }

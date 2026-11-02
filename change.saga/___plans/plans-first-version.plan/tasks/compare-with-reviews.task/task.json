@@ -3,7 +3,7 @@
   "version": 5,
   "id": "compare-with-reviews",
   "title": "Compare a Plan with the Reviews that implement it",
-  "phase": "reviews",
+  "phase": "tasks-section-deck",
   "story": "urn:change-saga:change-saga:story:compare-plan-with-reviews",
   "depends_on": [
     "plan-record"

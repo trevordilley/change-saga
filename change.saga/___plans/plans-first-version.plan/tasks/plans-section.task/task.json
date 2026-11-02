@@ -3,7 +3,7 @@
   "version": 5,
   "id": "plans-section",
   "title": "Add a Plans section beside Documentation and Reviews",
-  "phase": "a-plan-exists",
+  "phase": "tasks-section-deck",
   "story": "urn:change-saga:change-saga:story:find-plans-in-their-section",
   "depends_on": [
     "plan-record"

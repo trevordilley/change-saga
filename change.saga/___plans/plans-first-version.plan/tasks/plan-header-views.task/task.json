@@ -1,0 +1,19 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "plan-header-views",
+  "title": "Put Deck, Tasks, and Coverage in the header",
+  "phase": "guide-and-rebuild",
+  "story": "urn:change-saga:change-saga:story:find-plans-in-their-section",
+  "depends_on": [
+    "task-page",
+    "dependency-graph"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A contained change to known code, built and checked in a session."
+  },
+  "state": "done",
+  "summary": "They replace the tabs on the page, and each is its own page.",
+  "created_at": "2026-11-02T20:41:06.727855Z"
+}

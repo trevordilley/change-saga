@@ -3,7 +3,7 @@
   "version": 5,
   "id": "plan-commands",
   "title": "Add plan create and plan list",
-  "phase": "a-plan-exists",
+  "phase": "tasks-section-deck",
   "story": "urn:change-saga:change-saga:story:find-plans-in-their-section",
   "depends_on": [
     "plan-record"

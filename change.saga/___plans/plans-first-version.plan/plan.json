@@ -5,28 +5,28 @@
   "title": "Plans and Tasks: first version",
   "phases": [
     {
-      "id": "a-plan-exists",
-      "title": "Phase 1: A Plan exists"
+      "id": "start-the-records",
+      "title": "Phase 1: Start the records, and stop reading the old work plan"
     },
     {
-      "id": "tasks",
-      "title": "Phase 2: Tasks"
+      "id": "tasks-section-deck",
+      "title": "Phase 2: Tasks, the Plans section, and the deck"
     },
     {
-      "id": "the-deck",
-      "title": "Phase 3: The deck shows progress"
+      "id": "read-and-work",
+      "title": "Phase 3: Read a Plan and work through it"
     },
     {
-      "id": "reviews",
-      "title": "Phase 4: Reviews and delivery"
+      "id": "guide-and-rebuild",
+      "title": "Phase 4: The guide, and a Plan page like a review's"
     },
     {
-      "id": "guide",
-      "title": "Phase 5: Guided authoring"
+      "id": "views",
+      "title": "Phase 5: Slide-outs, the Tasks list, and Coverage"
     },
     {
-      "id": "clean-up",
-      "title": "Phase 6: Remove the old work plan"
+      "id": "select-a-node",
+      "title": "Phase 6: Select a node to see its path"
     }
   ],
   "prototypes": [

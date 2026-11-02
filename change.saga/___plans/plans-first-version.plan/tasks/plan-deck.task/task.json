@@ -3,7 +3,7 @@
   "version": 5,
   "id": "plan-deck",
   "title": "Give a Plan a deck that holds its technical design",
-  "phase": "the-deck",
+  "phase": "tasks-section-deck",
   "story": "urn:change-saga:change-saga:story:draft-design-in-the-plan",
   "depends_on": [
     "plan-record"

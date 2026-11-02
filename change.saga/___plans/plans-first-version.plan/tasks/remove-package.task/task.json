@@ -3,7 +3,7 @@
   "version": 5,
   "id": "remove-package",
   "title": "Remove internal/workplan, its schemas, and ___workplan",
-  "phase": "clean-up",
+  "phase": "tasks-section-deck",
   "depends_on": [
     "remove-commands",
     "stop-reading-work-plan"

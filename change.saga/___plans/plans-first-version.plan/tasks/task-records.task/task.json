@@ -3,7 +3,7 @@
   "version": 5,
   "id": "task-records",
   "title": "Require every Task to lead to a story",
-  "phase": "tasks",
+  "phase": "tasks-section-deck",
   "story": "urn:change-saga:change-saga:story:link-tasks-to-stories",
   "depends_on": [
     "plan-record"
