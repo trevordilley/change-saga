@@ -227,3 +227,29 @@ func TestReviewSelectionIsRecordedAndDeckHonored(t *testing.T) {
 		}
 	}
 }
+
+// The navigation starts a feature's UX section collapsed, so a UX deck's
+// thumbnails are hidden until it is opened. Selecting one must open it, not wait
+// for a thumbnail no reader could click.
+func TestRealRenderReachesADeckUnderACollapsedHeading(t *testing.T) {
+	playwright, err := findPlaywright("")
+	if err != nil {
+		t.Skip(err)
+	}
+	root := visualFixture(t, false)
+	deckName, _ := saga.FlatDeckFilename(saga.DeckTarget("visual", "workflow"), 0)
+	writeFixtureFile(t, filepath.Join(root, "___features", "rendering.feature", saga.EmbeddedSlidesDir, "workflow"+saga.EmbeddedDeckSuffix, deckName),
+		`{"version":4,"id":"workflow","title":"Workflow","role":"ux","rank":0,"objective":"Walk the render workflow."}`)
+	report, err := Run(context.Background(), Options{SagaRoot: root, OutputDir: filepath.Join(t.TempDir(), "visual-output"), PlaywrightDir: playwright, Deck: "workflow"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, value := range report.Findings {
+		if strings.Contains(value.Code, "reviewer") {
+			t.Errorf("finding: %#v", value)
+		}
+	}
+	if len(report.Slides) != 1 || len(report.Slides[0].Artifacts) != 8 {
+		t.Fatalf("report = %#v", report)
+	}
+}
