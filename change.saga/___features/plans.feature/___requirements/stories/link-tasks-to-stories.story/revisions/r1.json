@@ -24,7 +24,11 @@
     {
       "id": "follow-the-chain",
       "statement": "A reader can follow links from a Plan to a Task, through any Tasks it unblocks, to a story, and to that story's feature."
+    },
+    {
+      "id": "stranding-refused",
+      "statement": "A change that would leave a Task with no path to a story is refused, and names the Tasks it would strand."
     }
   ],
-  "created_at": "2026-11-02T04:00:57.36627Z"
+  "created_at": "2026-11-02T04:33:45.125729Z"
 }

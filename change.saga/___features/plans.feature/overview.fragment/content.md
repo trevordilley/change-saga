@@ -26,7 +26,7 @@ The sizing goal is that a team is confident each Task would have taken two days 
 - A **developer** can see what can start now, open a Task and find everything needed to begin it, and read how far along a Plan is from its slides.
 - As work happens, agents mark Tasks done and update the Plan, so it stays a working document.
 - A Plan and the Reviews that implement it reference each other, and share one Git history, so checking out a Review gives the Plan as it stood. Reviews come after the Plan's work is done. **Comparing them is the key value of keeping a Plan**: what we said we would do against what we did.
-- Once a Plan is implemented and merged, it is done: hidden from the Plans section and filtered out of the CLI by default, as merged Reviews are, and still there when someone asks for it.
+- When every Task is done and its Reviews have merged, an author marks the Plan delivered with an explicit command. It is then hidden from the Plans section and filtered out of the CLI by default, as merged Reviews are, and still there when someone asks for it.
 
 ## What is true today {#what-is-true-today}
 
@@ -48,12 +48,13 @@ change-saga plan list [--feature ID] [--story URN] [--all]   # done Plans are hi
 change-saga plan link-review --plan ID --review ID
 change-saga plan add-prototype --plan ID --prototype URN
 change-saga plan add-phase --plan ID --id ID --title TEXT    # replaces plan add-wave
+change-saga plan deliver --plan ID                           # refused unless every Task is done and its Reviews merged
 change-saga plan guide --story URN...                        # the wizard
 
 change-saga apply-slide --plan ID --from SLIDE.json          # slide.section names its phase
 change-saga deck overview --plan ID --file OVERVIEW.json
 
-change-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --blocks TASK)   # must lead to a story
+change-saga task add --plan ID --phase ID --id ID --title TEXT (--story URN | --unblocks TASK)   # must lead to a story
 change-saga task depend --task ID --on ID                    # replaces plan add-dependency
 change-saga task set --task ID --essay-source FILE --code PATH:START-END --sizing within-2-days
 change-saga task done --task ID [--summary TEXT]             # replaces plan progress --to done
@@ -63,8 +64,7 @@ change-saga task list --plan ID [--ready]                    # what can start no
 ## Open questions {#open-questions}
 
 1. **Are these the right personas?** "Contributor" was asked for, but the Saga has no such persona. These stories use architect and developer, the closest fit, and no new persona was created.
-2. **Is a Plan discussed and approved, as a review is?** The original idea was yes, per slide. The current direction does not say, so no story covers it.
-3. **What exactly makes a Plan done?** Reviews come after its work is done, and it is hidden once implemented and merged. Does that take every Task done, every linked Review merged, or both?
+2. **Is a Plan discussed and approved, as a review is?** The original idea was yes, per slide. It is left out of the first version, so no story covers it; the deck format would allow adding it later.
 4. **What happens when a Review departs from its Plan?** The comparison shows it, but nothing here says what should happen next.
 5. **What does done on a Task claim?** Work-plan progress today says it "never proves correctness". Should a slide's done mark say only that an agent reported it?
 6. **What is a sizing judgment, in the record?** A yes or no with a reason, or a number? Who may make it, and can an agent?

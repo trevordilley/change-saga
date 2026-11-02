@@ -44,7 +44,7 @@ Kept:
 
 ```text
 change.saga/___plans/<plan-id>.plan/
-  plan.json              id, title, phases, prototypes, reviews
+  plan.json              id, title, phases, prototypes, reviews, delivered
   deck/                  a flat deck bundle, role plan, as a review's deck is
   tasks/<task-id>.task/
     task.json            title, phase, story, depends_on, code, sizing, state, summary
@@ -67,9 +67,15 @@ Each design choice serves one rule:
 
 - **One file per Task,** so agents on parallel branches marking different Tasks done touch different files. The same Task marked done on two branches conflicts only if the two records differ.
 - **`depends_on` is stored; `unblocks` is derived.** Adding a Task then edits only that Task. `task add --unblocks OTHER` writes to the other Task, which is the rare case.
-- **A Task leads to a story.** It has `story`, or it unblocks a Task that leads to one. Validation refuses a Task that reaches none, and a dependency cycle. `story` holds a URN, which `feature deliver` preserves.
+- **A Task leads to a story.** It has `story`, or it unblocks a Task that leads to one. `story` holds a URN, which `feature deliver` preserves. Dependencies stay inside one Plan.
 - **The deck is a review's deck in a new role.** `internal/saga/review.go` already loads a flat bundle under a caller's targets, so Plans can reuse the loader with their own URNs (`urn:change-saga:SAGA:plan:ID`). A slide Item names a Task through `record`, which needs work: `validateDeckRole` refuses `record` for a new role (`internal/saga/slides.go:624`), and `task` must join the allowed kinds.
 - **Done state is read at render time,** never written into a slide.
+
+### Checking that a Task leads to a story {#checking-the-chain}
+
+One walk over the Plan's graph, in time linear in its Tasks and dependencies. Start from every Task that names a story and walk backwards through `depends_on`: if a Task leads to a story and depends on another, that other Task unblocks it and so leads there too. Any Task the walk does not reach is refused. Cycle detection shares the pass.
+
+Commands that write a Task check only that Plan, and refuse a change that would strand a Task, naming the Tasks. `validate` runs the same check over every Plan, so a hand-merged conflict is caught and CI's health gate holds. Tasks are added top-down: the Task with the story first, then `task add --unblocks` for its prerequisites. `story remove` lists the Tasks that lose their story, and health reports them until they are fixed.
 
 ## Reader {#reader}
 
@@ -77,7 +83,11 @@ A third section beside Documentation and Reviews (`internal/server/appnav.go`), 
 
 ## Reviews {#reviews}
 
-A Plan's `reviews` and a Review's `plan` reference each other, and share one Git history. A Plan is done when its Reviews have merged and its Tasks are done, subject to the open question in the essay. The comparison reads both at the Review's head.
+A Plan's `reviews` and a Review's `plan` reference each other, and share one Git history. The comparison reads both at the Review's head.
+
+## Delivered {#delivered}
+
+`plan deliver` is explicit. It is refused unless every Task is done and every linked Review has merged, and `status` can suggest it once that is true. A delivered Plan behaves as a merged Review does: it is set aside behind a filter on the Plans page, `plan list` leaves it out without `--all`, and it still opens but refuses edits.
 
 ## Readiness {#readiness}
 
@@ -110,12 +120,15 @@ Once `___workplan` is no longer reserved, the existing rule applies: other names
 
 ## Order of work {#order-of-work}
 
-1. **Remove the work plan.** This frees the `plan` noun and is useful alone. Look at readiness's delivery rule separately.
-2. **Plan record and Plans section:** record, deck, `plan create`, read-only pages.
-3. **Tasks:** records, validation, Task page, graph, `task` commands.
+The old code stays until the end, as a reference while the new code is built. Its removal is the first real Plan's last Task, on this same branch, so the branch ends with no dead code from it.
+
+1. **Plan record and Plans section:** record, deck, `plan create` and `plan list`, read-only pages. The new verbs sit beside the old ones, because their names do not clash.
+2. **Tasks:** records, validation, Task page, graph, `task` commands.
+3. **Draft the first real Plan,** with this feature as its content. This draft moves into it, and the remaining work becomes its Tasks.
 4. **Slides and done state:** Items naming Tasks, and `task done`.
-5. **Reviews:** cross-references, comparison, hiding done Plans.
+5. **Reviews and delivery:** cross-references, comparison, `plan deliver`, hiding delivered Plans.
 6. **Guide:** the wizard, and the skill's route. `SKILL.md` tells agents to author Saga content near completion, so a Plan needs its own exception.
+7. **Remove the old work plan:** everything in the table above, including whatever readiness turns out to need.
 
 ## Risks {#risks}
 

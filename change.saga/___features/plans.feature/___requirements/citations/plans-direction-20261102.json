@@ -5,5 +5,5 @@
   "kind": "decision",
   "title": "Plans as top-level documents with Tasks linked to stories",
   "reference": "Trevor's product direction, 2026-11-02: a Plan is its own kind of document, in a section beside Documentation and Reviews, not part of a feature. It has a phase-organized deck, prototypes, and Tasks with mapped dependencies, and every Task leads to a user story, directly or through the Tasks it unblocks. Comparing a Plan with its Reviews is the key value.",
-  "created_at": "2026-11-02T04:00:57.052374Z"
+  "created_at": "2026-11-02T04:33:44.579093Z"
 }

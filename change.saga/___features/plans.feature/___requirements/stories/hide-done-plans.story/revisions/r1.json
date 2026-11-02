@@ -4,8 +4,8 @@
   "id": "r1",
   "story": "urn:change-saga:change-saga:story:hide-done-plans",
   "parents": [],
-  "title": "Keep finished Plans out of the way",
-  "statement": "As a developer, I can rely on implemented and merged Plans being hidden by default, so what I see is the work still ahead of us.",
+  "title": "Keep delivered Plans out of the way",
+  "statement": "As a developer, I can rely on delivered Plans being hidden by default, the way merged Reviews are, so what I see is the work still ahead of us.",
   "personas": [
     "urn:change-saga:change-saga:persona:developer"
   ],
@@ -14,17 +14,21 @@
   ],
   "acceptance_criteria": [
     {
-      "id": "done-hidden-in-reader",
-      "statement": "A Plan that is implemented and merged is not listed in the Plans section by default, and a visible filter reveals it."
+      "id": "deliver-is-explicit",
+      "statement": "An author marks a Plan delivered with an explicit command, which is refused unless every Task is done and every Review linked to the Plan has merged."
     },
     {
-      "id": "done-filtered-in-cli",
-      "statement": "The CLI's list of Plans leaves out done Plans by default, and a flag includes them."
+      "id": "delivered-hidden-in-reader",
+      "statement": "A delivered Plan is not listed in the Plans section by default, and a visible filter reveals it."
     },
     {
-      "id": "done-stays-readable",
-      "statement": "A done Plan can still be opened and compared with its Reviews."
+      "id": "delivered-filtered-in-cli",
+      "statement": "The CLI's list of Plans leaves out delivered Plans by default, and a flag includes them."
+    },
+    {
+      "id": "delivered-stays-readable",
+      "statement": "A delivered Plan can still be opened and compared with its Reviews, and it refuses further edits."
     }
   ],
-  "created_at": "2026-11-02T04:00:59.064786Z"
+  "created_at": "2026-11-02T04:33:47.669195Z"
 }
