@@ -7,7 +7,7 @@
       "start": 37,
       "end": 84,
       "digest": "sha256:1357b06ca6af7312e03710579b22055ceddb3dd4ff6c092ae1563754614f995e",
-      "note": "Opens one safe, validated snapshot and composes Saga, quality, requirements, and work-plan state."
+      "note": "Opens one safe, validated snapshot and composes Saga, quality, and requirements state."
     }
   ]
 }

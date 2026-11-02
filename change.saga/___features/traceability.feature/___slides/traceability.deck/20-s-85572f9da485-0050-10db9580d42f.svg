@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Traceability delivery readiness boundary</title>
-  <desc id="desc">A pipeline showing that accepted criteria, design, implementation slides, and commit-pinned code exist, while work items and immutable delivery evidence are absent, so delivered remains false.</desc>
+  <desc id="desc">A pipeline showing that accepted criteria, design, implementation slides, and commit-pinned code exist, while Tasks and immutable delivery evidence are absent, so delivered remains false.</desc>
   <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#334155"/></marker></defs>
   <rect width="1280" height="720" fill="#f8fafc"/>
   <text x="58" y="62" font-family="system-ui" font-size="36" font-weight="750" fill="#0f172a">Source exists; the delivery chain is still open</text>
-  <text x="58" y="96" font-family="system-ui" font-size="18" fill="#475569">Current Saga observation: all six traceability criteria lack work items and immutable delivery evidence.</text>
+  <text x="58" y="96" font-family="system-ui" font-size="18" fill="#475569">Current Saga observation: all six traceability criteria lack Tasks and immutable delivery evidence.</text>
 
   <g id="accepted-criteria">
     <circle cx="130" cy="300" r="82" fill="#dbeafe" stroke="#2563eb" stroke-width="4"/>
@@ -32,7 +32,7 @@
 
   <g id="work-item-gap">
     <rect x="835" y="180" width="190" height="150" rx="22" fill="#fff7ed" stroke="#ea580c" stroke-width="4" stroke-dasharray="10 7"/>
-    <text x="930" y="225" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="800" fill="#9a3412">WORK ITEM</text>
+    <text x="930" y="225" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="800" fill="#9a3412">TASK</text>
     <text x="930" y="259" text-anchor="middle" font-family="system-ui" font-size="18" fill="#c2410c">MISSING</text>
     <text x="930" y="294" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="#c2410c">planned = false</text>
     <path d="M765 275H822" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
@@ -57,5 +57,5 @@
 
   <rect x="92" y="575" width="1096" height="78" rx="18" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
   <text x="640" y="607" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="750" fill="#164e63">This is not a claim that runtime code is absent.</text>
-  <text x="640" y="636" text-anchor="middle" font-family="system-ui" font-size="16" fill="#155e75">It is an explicit gap in planning and immutable delivery proof; this task does not create those records.</text>
+  <text x="640" y="636" text-anchor="middle" font-family="system-ui" font-size="16" fill="#155e75">It is an explicit gap in planning and immutable delivery proof; this slide does not create those records.</text>
 </svg>

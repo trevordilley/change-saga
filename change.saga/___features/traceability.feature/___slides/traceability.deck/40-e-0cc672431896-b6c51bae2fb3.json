@@ -7,7 +7,7 @@
       "start": 59,
       "end": 119,
       "digest": "sha256:26c6f4856d34052cf0777dbe61bddb039474f6e6a8557a86b54d16d48b980764",
-      "note": "Verifies authored progress is not proof and an integrated immutable merge completes the delivery path."
+      "note": "Verifies a done Task is not proof, and a verified verification completes the delivery path."
     }
   ]
 }

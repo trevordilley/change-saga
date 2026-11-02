@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac8430896b83d2e42d8b28412ef308b03c754d7d",
+      "path": "internal/livingapp/compose.go",
+      "start": 268,
+      "end": 283,
+      "digest": "sha256:398836569a6a48b9b86e95cb992cadbf6ff4a8c6be1584c525f7846b1bd2662e",
+      "note": "Accepts claim evidence or a verified verification, and emits immutable_evidence_missing when a criterion has no delivery proof."
+    },
+    {
+      "commit": "ac8430896b83d2e42d8b28412ef308b03c754d7d",
+      "path": "internal/livingapp/compose.go",
+      "start": 295,
+      "end": 297,
+      "digest": "sha256:f7b48642f5befef68f697f0ab38da4ea4552954bca9b57595db59b36639757b3",
+      "note": "Accepts claim evidence or a verified verification, and emits immutable_evidence_missing when a criterion has no delivery proof."
+    }
+  ]
+}

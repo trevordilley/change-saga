@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac8430896b83d2e42d8b28412ef308b03c754d7d",
+      "path": "internal/livingapp/compose.go",
+      "start": 170,
+      "end": 179,
+      "digest": "sha256:0154af6bc2675eca2901631fb28aaf6a666a977a39b95ed9aefeab0854661a3f",
+      "note": "A criterion is planned when a Task names its story, and task_missing is emitted when none does."
+    },
+    {
+      "commit": "ac8430896b83d2e42d8b28412ef308b03c754d7d",
+      "path": "internal/livingapp/compose.go",
+      "start": 288,
+      "end": 294,
+      "digest": "sha256:ccee04d606646030e3f6115c8dbcbbfc27a31dc9ac7ece3306ae75c7edf265f0",
+      "note": "A criterion is planned when a Task names its story, and task_missing is emitted when none does."
+    }
+  ]
+}

@@ -8,7 +8,7 @@
   "layout": "risk",
   "media_type": "image/svg+xml",
   "entrypoint": "20-s-85572f9da485-0050-10db9580d42f.svg",
-  "takeaway": "The runtime path is implemented, but all six traceability criteria remain undelivered because the Saga has no work items or immutable delivery evidence.",
+  "takeaway": "The runtime path is implemented, but all six traceability criteria remain undelivered because the Saga has no Task naming their stories and no immutable delivery evidence.",
   "reading_order": [
     "accepted-criteria",
     "design-present",
