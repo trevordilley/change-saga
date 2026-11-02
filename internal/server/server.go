@@ -559,6 +559,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("POST /reviews/{id}/decision", application.reviewDecision)
 	handle("POST /reviews/{id}/comment", application.reviewComment)
 	handle("GET /assets/{hash}/{name}", application.shellAssetFile)
+	handle("GET /records/{urn}", application.followRecordLink)
 	handle("GET /decks", application.decksPage)
 	handle("GET /app.js", application.javascript)
 	handle("GET "+diagram.FontPath, application.diagramFont)

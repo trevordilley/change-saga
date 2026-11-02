@@ -114,3 +114,17 @@ test("a Plan opens on its essay, and a slide's Tasks appear in a slide-out", asy
   await waitForSettledSaga(page);
   await expect(page.locator("[data-plan-drawer^=\"plan-tasks-\"]")).toContainText("1 of 1 tasks done");
 });
+
+test("a record link in an essay opens that record's page", async ({ page, saga }) => {
+  const story = "urn:change-saga:wave-one:story:read-the-tide";
+  run(saga, "feature", "add", "--id", "essay-links", "--title", "Essay links");
+  run(saga, "feature", "set-overview", "--feature", "essay-links", "--text", `# Essay links\n\nSee [the tide story](${story}) and [nothing](urn:change-saga:wave-one:story:absent).\n`);
+
+  await page.goto(`${saga.baseURL}/features/essay-links`);
+  await waitForSettledSaga(page);
+  await page.getByRole("link", { name: "the tide story" }).click();
+  await expect(page).toHaveURL(/\/requirements\/read-the-tide$/);
+
+  const missing = await page.request.get(`${saga.baseURL}/records/${encodeURIComponent("urn:change-saga:wave-one:story:absent")}`);
+  expect(missing.status()).toBe(404);
+});
