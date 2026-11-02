@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
       "path": "internal/livingapp/compose.go",
-      "start": 524,
-      "end": 588,
-      "digest": "sha256:d9264c31251e0d2ada4a87574dae655648c0dfbb6b4b5c2993d3538bd25c8752",
+      "start": 510,
+      "end": 578,
+      "digest": "sha256:18251a1efdad3a30e4bc1d98b7e59be36c88b829a075e19a2696c9b566c5eb49",
       "note": "Indexes every implementation Item reference and matches exact or safely remapped source locations while rejecting changed content."
     },
     {

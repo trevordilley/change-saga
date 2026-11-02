@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-event.schema.json",
+  "version": 5,
+  "id": "active-20261102",
+  "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",
+  "parents": [
+    "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries:event:proposed"
+  ],
+  "state": "active",
+  "reason": "The defined scenarios are implemented by the linked CLI, server and browser tests; this activates the definition without recording an execution verdict.",
+  "created_at": "2026-11-02T22:11:08Z"
+}

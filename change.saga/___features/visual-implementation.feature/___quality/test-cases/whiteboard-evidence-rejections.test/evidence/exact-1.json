@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "exact-1",
+  "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections",
+  "test_revision": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "exact"
+  ],
+  "code": [
+    {
+      "commit": "e6ea4f1f27942751c3afef227c3201e2b7acedc3",
+      "path": "internal/server/whiteboard_elements_test.go",
+      "start": 78,
+      "end": 84,
+      "digest": "sha256:9550f5a563ea994fdf22c1853104137f1114bba02602071912882977c2624c74"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:11:38Z"
+}

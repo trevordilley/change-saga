@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections",
+  "parents": [],
+  "title": "Reject missing saved context and invalid whiteboard evidence publication",
+  "coverage_kinds": [
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "Start with an existing board revision and valid saved evidence."
+  ],
+  "steps": [
+    {
+      "id": "exact",
+      "action": "Request element actions without a revision and with a nonexistent saved revision.",
+      "expected_result": "The requests return 400 and 404 respectively; missing saved context never substitutes the current revision.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect"
+      ]
+    },
+    {
+      "id": "parent",
+      "action": "Attempt to publish using an outdated parent or a revision from a sibling board.",
+      "expected_result": "Publication is rejected; an author must reread the current board rather than overwrite its history.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+      ]
+    },
+    {
+      "id": "selection",
+      "action": "Attempt to publish a selection whose evidence ID is absent from its saved definition.",
+      "expected_result": "Publication fails instead of accepting an undeclared evidence selector for coverage.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
+      ]
+    }
+  ],
+  "expected_result": "All defined steps retain exact context, report currency honestly and respect native element ownership.",
+  "created_at": "2026-11-02T22:11:04Z"
+}
