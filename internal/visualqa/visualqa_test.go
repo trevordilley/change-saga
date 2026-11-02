@@ -240,6 +240,15 @@ func TestRealRenderReachesADeckUnderACollapsedHeading(t *testing.T) {
 	deckName, _ := saga.FlatDeckFilename(saga.DeckTarget("visual", "workflow"), 0)
 	writeFixtureFile(t, filepath.Join(root, "___features", "rendering.feature", saga.EmbeddedSlidesDir, "workflow"+saga.EmbeddedDeckSuffix, deckName),
 		`{"version":4,"id":"workflow","title":"Workflow","role":"ux","rank":0,"objective":"Walk the render workflow."}`)
+	// With the implementation deck beside it, the UX section no longer opens itself.
+	implementation := filepath.Join(root, "___features", "rendering.feature", saga.EmbeddedSlidesDir, "impl"+saga.EmbeddedDeckSuffix)
+	implementationDeck, slide := saga.DeckTarget("visual", "impl"), saga.SlideTarget("visual", "impl-slide")
+	implementationName, _ := saga.FlatDeckFilename(implementationDeck, 0)
+	writeFixtureFile(t, filepath.Join(implementation, implementationName), `{"version":4,"id":"impl","title":"Impl","role":"change","rank":0,"objective":"Explain it."}`)
+	slideName, _ := saga.FlatSlideFilename(implementationDeck, slide, 0)
+	assetName, _ := saga.FlatSlideAssetFilename(slideName, ".html")
+	writeFixtureFile(t, filepath.Join(implementation, slideName), fmt.Sprintf(`{"version":4,"id":"impl-slide","deck":"impl","title":"Impl","rank":0,"intent":"explain","layout":"sequence","media_type":"text/html","entrypoint":%q,"takeaway":"It works.","reading_order":[]}`, assetName))
+	writeFixtureFile(t, filepath.Join(implementation, assetName), `<!doctype html><p>Impl</p>`)
 	report, err := Run(context.Background(), Options{SagaRoot: root, OutputDir: filepath.Join(t.TempDir(), "visual-output"), PlaywrightDir: playwright, Deck: "workflow"})
 	if err != nil {
 		t.Fatal(err)
