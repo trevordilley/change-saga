@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:write-plan-before-code",
+  "parents": [],
+  "title": "Write down how we will build it, before building it",
+  "statement": "As an architect, I can publish how we will build a feature as a slide deck and an essay before any code exists, so the team can weigh the approach before anyone builds it.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-kind-of-review-20261101"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "no-code-needed",
+      "statement": "A Plan can be created and published, with slides and an essay, in a repository where none of the code it describes exists yet, and nothing asks any of its slides to cite code."
+    },
+    {
+      "id": "reads-as-a-plan",
+      "statement": "A reader who opens a Plan can tell from that page alone that it describes intended work, not work that has been built."
+    },
+    {
+      "id": "claims-no-coverage",
+      "statement": "Publishing a Plan does not change documentation coverage, review coverage, or the implementation or UX coverage of any story."
+    },
+    {
+      "id": "plans-are-optional",
+      "statement": "A Saga with no Plans, and a review with no Plan, validate and report exactly as they did before Plans existed."
+    }
+  ],
+  "created_at": "2026-11-02T01:50:30.325899Z"
+}

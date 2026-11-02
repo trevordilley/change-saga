@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-a-plans-stories",
+  "parents": [],
+  "title": "See which stories a Plan intends to deliver",
+  "statement": "As a product manager, I can see which user stories a Plan intends to deliver, and reach the Plan from those stories and their Roadmap feature, so I can check that the proposed approach serves the intent I wrote down.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-kind-of-review-20261101"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "plan-lists-stories",
+      "statement": "A Plan's page lists the stories it intends to deliver, each with its current title and lifecycle state."
+    },
+    {
+      "id": "stories-reach-plan",
+      "statement": "A reader on one of those stories, or on its Roadmap feature's page, can follow a link to the Plan."
+    },
+    {
+      "id": "links-survive-delivery",
+      "statement": "After feature deliver moves the stories into the feature they extend, the Plan still lists them and they still link back to it."
+    },
+    {
+      "id": "reworded-story-shows",
+      "statement": "When a story's wording changes after a Plan linked it, the Plan shows that link as stale until its author repins it."
+    }
+  ],
+  "created_at": "2026-11-02T01:50:30.672321Z"
+}

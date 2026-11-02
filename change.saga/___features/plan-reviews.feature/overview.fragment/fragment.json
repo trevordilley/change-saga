@@ -1,0 +1,10 @@
+{
+  "subtext": "Review how a feature will be built, while it is still only a proposal, and compare that with what ships.",
+  "abstract": "A Plan is what you will do; a Review is what you did. A Plan is a slide deck plus an essay, written before the code exists, that the team discusses slide by slide. Nothing here is built yet: this is a proposed extension of Rich visual review.",
+  "version": 2,
+  "id": "plan-reviews--overview",
+  "title": "Overview",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": -100
+}
