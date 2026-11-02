@@ -190,6 +190,9 @@ type planTaskRow struct {
 	Chain    []planTaskLink
 	Depends  []planTaskLink
 	Unblocks []planTaskLink
+	Code     []taskCodeRow
+	// Essay is only filled for a Task's own slide-out; see planTaskBoardFor.
+	Essay template.HTML
 }
 
 type planReviewSlide struct {
@@ -227,7 +230,33 @@ type planDeckSlide struct {
 	Stories      []planStoryInfo
 	Callouts     []*saga.Item
 	ElementNotes []elementNoteView
+	// Items are what a reader can select on the slide.
+	Items []planItemView
 }
+
+// planItemView is an Item that selects a place on a slide and names a Task or a
+// story. It takes the landmark markup a review's Item does, so it highlights and
+// opens over the sandboxed frame the same way; what opens is the node's slide-out.
+type planItemView struct {
+	Item   *saga.Item
+	DOMID  string
+	Region *saga.LandmarkRegion
+	Note   template.HTML
+	// Drawer and DrawerTitle name the slide-out the Item opens.
+	Drawer, DrawerTitle, Icon, Action string
+	// TaskState is the named Task's state class; a story has none.
+	TaskState string
+	// Story is the URN of a named story, which needs a slide-out on this page.
+	Story string
+}
+
+func (v planItemView) Popover() notePopoverView {
+	return notePopoverView{Label: v.Item.Label, Note: v.Note}
+}
+
+func planTaskDrawer(taskID string) string { return "plan-node-task-" + taskID }
+
+func planStoryDrawer(urn string) string { return "plan-node-story-" + domID(urn) }
 
 type planPageView struct {
 	Plan       *saga.Plan
@@ -299,6 +328,20 @@ func (a *app) planPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	view.Slides = planSlides(view.Plan, stories, ready)
+	view.TaskBoard = planTaskBoardFor(view.Plan, stories, ready, nil)
+	// A slide can name a story no Task reaches; it still opens the board's way.
+	reached := map[string]bool{}
+	for _, node := range view.TaskBoard.Stories {
+		reached[node.Story.Target] = true
+	}
+	for _, slide := range view.Slides {
+		for _, item := range slide.Items {
+			if item.Story != "" && !reached[item.Story] {
+				reached[item.Story] = true
+				view.TaskBoard.Stories = append(view.TaskBoard.Stories, planStoryNode{Story: stories.info(item.Story), DrawerID: item.Drawer})
+			}
+		}
+	}
 	for _, prototype := range view.Plan.Prototypes {
 		id := prototype[strings.LastIndex(prototype, ":")+1:]
 		view.Prototypes = append(view.Prototypes, planLink{Title: id, Href: "/prototypes/" + url.PathEscape(id)})
@@ -351,7 +394,8 @@ func planSlides(plan *saga.Plan, stories planStories, ready map[string]bool) []p
 				}
 			}
 		}
-		row.ElementNotes = loadSlideNotes(slide.Directory, slide.Diagram, row.DOMID).unbound(map[string]bool{})
+		notes := loadSlideNotes(slide.Directory, slide.Diagram, row.DOMID)
+		bound := map[string]bool{}
 		for _, item := range slide.Items {
 			if item.Kind == "callout" {
 				row.Callouts = append(row.Callouts, item)
@@ -359,15 +403,35 @@ func planSlides(plan *saga.Plan, stories planStories, ready map[string]bool) []p
 			if item.Record == "" {
 				continue
 			}
+			selectable := planItemView{Item: item, DOMID: domID(item.Target), Region: item.Hotspot}
+			if selectable.Region == nil && item.Selector.Type == "region" {
+				selectable.Region = &saga.LandmarkRegion{X: item.Selector.X, Y: item.Selector.Y, Width: item.Selector.Width, Height: item.Selector.Height}
+			}
 			if task := plan.FindTask(item.Record); task != nil {
 				row.Tasks = append(row.Tasks, rows[task.ID])
 				if task.State == saga.TaskDone {
 					row.Done++
 				}
+				status := statusOf(task, ready)
+				selectable.Drawer, selectable.DrawerTitle, selectable.Icon = planTaskDrawer(task.ID), "Task", "list"
+				selectable.Action, selectable.TaskState = "Open task: "+task.Title+". "+status.Word, status.Class
 			} else if saga.PlanIDOf(item.Record) == "" {
-				row.Stories = append(row.Stories, stories.info(item.Record))
+				info := stories.info(item.Record)
+				row.Stories = append(row.Stories, info)
+				selectable.Drawer, selectable.DrawerTitle, selectable.Icon = planStoryDrawer(item.Record), "User story", "story"
+				selectable.Action, selectable.Story = "Open user story: "+info.Title, item.Record
 			}
+			// A callout keeps its place in the slide's list, and an Item that selects
+			// nothing has no place to highlight.
+			if selectable.Drawer == "" || item.Kind == "callout" || (selectable.Region == nil && item.Selector.Type != "element") {
+				continue
+			}
+			if item.Selector.Type == "element" {
+				selectable.Note, bound[item.Selector.ElementID] = notes.html[item.Selector.ElementID], true
+			}
+			row.Items = append(row.Items, selectable)
 		}
+		row.ElementNotes = notes.unbound(bound)
 		slides = append(slides, row)
 	}
 	return slides
@@ -383,7 +447,7 @@ func planTaskRows(plan *saga.Plan, stories planStories, ready map[string]bool) m
 	}
 	rows := make(map[string]planTaskRow, len(plan.Tasks))
 	for _, task := range plan.Tasks {
-		value := planTaskRow{planTaskLink: taskLink(plan, task, ready), Summary: task.Summary, Phase: titles[task.Phase]}
+		value := planTaskRow{planTaskLink: taskLink(plan, task, ready), Summary: task.Summary, Phase: titles[task.Phase], Code: taskCodeRows(plan, task)}
 		chain := taskStoryChain(plan, task)
 		if last := chain[len(chain)-1]; last.Story != "" {
 			value.Story, value.HasStory = stories.info(last.Story), true
@@ -548,7 +612,11 @@ func planTaskBoardFor(plan *saga.Plan, stories planStories, ready map[string]boo
 		view.Href = taskHref(plan.ID, selected.ID)
 	}
 	for _, task := range plan.Tasks {
-		view.Tasks = append(view.Tasks, rows[task.ID])
+		row := rows[task.ID]
+		if task.Essay != "" {
+			row.Essay = markdown(task.Essay)
+		}
+		view.Tasks = append(view.Tasks, row)
 	}
 	// The Tasks a story takes are those naming it, and all they depend on.
 	needs := map[string]map[string]bool{}
@@ -574,7 +642,7 @@ func planTaskBoardFor(plan *saga.Plan, stories planStories, ready map[string]boo
 	}
 	for _, urn := range plan.PlanStories() {
 		info := stories.info(urn)
-		node := planStoryNode{Story: info, DrawerID: "plan-node-story-" + domID(urn)}
+		node := planStoryNode{Story: info, DrawerID: planStoryDrawer(urn)}
 		required := map[string]planTaskRow{}
 		for id := range needs[urn] {
 			required[id] = rows[id]
@@ -819,7 +887,7 @@ func planBoard(plan *saga.Plan, stories []planStoryNode, ready map[string]bool, 
 	}
 	for _, task := range tasks {
 		status := statusOf(task, ready)
-		node("task:"+task.ID, "plan-node-task-"+task.ID, "Task", "task "+status.Class, task.Title+": "+status.Word, task.Title, status.Word, positions[task.ID])
+		node("task:"+task.ID, planTaskDrawer(task.ID), "Task", "task "+status.Class, task.Title+": "+status.Word, task.Title, status.Word, positions[task.ID])
 	}
 	for _, story := range ordered {
 		detail := strconv.Itoa(story.Done) + " of " + strconv.Itoa(story.All) + " tasks done"
@@ -855,7 +923,66 @@ type taskPageView struct {
 }
 
 type taskCodeRow struct {
-	Location, Note, Href string
+	Location, Note, Href, DOMID string
+}
+
+// taskCodeRows are a Task's references as a reader opens them, one at a time, in
+// the shared code drawer.
+func taskCodeRows(plan *saga.Plan, task *saga.Task) []taskCodeRow {
+	rows := make([]taskCodeRow, 0, len(task.Code))
+	for index, reference := range task.Code {
+		query := url.Values{"plan": {plan.ID}, "task": {task.ID}, "reference": {strconv.Itoa(index)}}
+		rows = append(rows, taskCodeRow{
+			Location: reference.Path + ":" + strconv.Itoa(reference.Start) + "-" + strconv.Itoa(reference.End),
+			Note:     reference.Note,
+			Href:     "/api/task-code?" + query.Encode(),
+			DOMID:    domID(task.Target + ":code:" + strconv.Itoa(index)),
+		})
+	}
+	return rows
+}
+
+// taskCodeView is one reference of a Task, ready for the code drawer.
+type taskCodeView struct {
+	taskCodeRow
+	Title    string
+	Target   string
+	Commit   string
+	Observed []*termCodeView
+}
+
+// taskCode renders one of a Task's references at the commit it was pinned to, in
+// the drawer slide Items and whiteboard elements use. Plans stay out of Coverage,
+// so a Task's code is not among the records /api/reference-code serves. A reference
+// that cannot be read still answers, with the reason in place of its lines.
+func (a *app) taskCode(w http.ResponseWriter, r *http.Request) {
+	document := a.loadReviewDocument(w)
+	if document == nil {
+		return
+	}
+	query := r.URL.Query()
+	plan := document.FindPlan(query.Get("plan"))
+	if plan == nil {
+		http.Error(w, "This Plan no longer exists.", http.StatusNotFound)
+		return
+	}
+	task := plan.FindTask(query.Get("task"))
+	if task == nil {
+		http.Error(w, "This Task no longer exists.", http.StatusNotFound)
+		return
+	}
+	index, err := strconv.Atoi(query.Get("reference"))
+	if err != nil || index < 0 || index >= len(task.Code) {
+		http.Error(w, "This Task no longer has that code reference.", http.StatusNotFound)
+		return
+	}
+	reference := task.Code[index]
+	view := taskCodeView{
+		taskCodeRow: taskCodeRows(plan, task)[index], Title: task.Title, Target: task.Target, Commit: reference.Commit,
+		Observed: a.pinnedDocumentationCode(r.Context(), []requirements.Evidence{{Reference: reference}}, "task"),
+	}
+	writeIncrementalHeaders(w, "text/html; charset=utf-8")
+	renderHTML(w, reviewTemplates, "task-code", view, "The code could not be rendered.")
 }
 
 // taskStoryChain is the shortest way a Task reaches a story: itself if it names
@@ -940,9 +1067,7 @@ func (a *app) taskPage(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	for _, reference := range task.Code {
-		view.Code = append(view.Code, taskCodeRow{Location: reference.Path + ":" + strconv.Itoa(reference.Start) + "-" + strconv.Itoa(reference.End), Note: reference.Note})
-	}
+	view.Code = taskCodeRows(plan, task)
 	switch {
 	case task.Sizing == nil:
 		view.Sizing, view.Unsized = "Not sized yet", true
@@ -1035,11 +1160,15 @@ const planTemplateSource = `{{define "plan-index"}}<div class="review-surface pl
 {{define "plan-head"}}<header class="plan-head"><p class="plan-eyebrow">Plan, not a review. Describes intended work</p><h1>{{.Plan.Title}}</h1><p class="plan-summary">{{if .Plan.Delivered}}<span class="plan-state done" data-plan-delivered>Delivered</span> {{end}}{{.Done}} of {{.All}} tasks done. Touches {{.Touches}}.</p></header>{{end}}
 {{define "plan-task-state"}}<span class="plan-state {{.Class}}">{{.Word}}</span>{{end}}
 {{define "plan-task-names"}}{{range $i,$t := .}}{{if $i}}, {{end}}<a href="{{.Href}}">{{.Title}}</a>{{end}}{{end}}
-{{define "plan-task-card"}}<article class="plan-task-card" data-plan-task-row="{{.ID}}"><header><a class="plan-task-title" href="{{.Href}}">{{.Title}}</a>{{template "plan-task-state" .Status}}{{if .Unsized}}<span class="plan-state warn">{{.Sizing}}</span>{{end}}</header>{{if .Summary}}<p class="plan-note">{{.Summary}}</p>{{end}}<dl class="plan-task-chain" data-plan-chain>{{if .Depends}}<div><dt>Needs</dt><dd>{{template "plan-task-names" .Depends}}</dd></div>{{end}}{{if .Unblocks}}<div><dt>Unblocks</dt><dd>{{template "plan-task-names" .Unblocks}}</dd></div>{{end}}{{if .HasStory}}<div><dt>{{if .Chain}}Leads to{{else}}Story{{end}}</dt><dd><a href="{{.Story.Href}}">{{.Story.Title}}</a>{{if .Chain}} <span class="plan-note">through {{range $i,$t := .Chain}}{{if $i}} → {{end}}<a href="{{.Href}}">{{.Title}}</a>{{end}}</span>{{end}}</dd></div>{{end}}{{if .Phase}}<div data-plan-task-phase><dt>Phase</dt><dd>{{.Phase}}</dd></div>{{end}}</dl></article>{{end}}
-{{define "plan-page"}}{{$page := .}}{{if not .Slides}}<div class="review-surface plan-surface" data-plan="{{.Plan.ID}}">{{template "plan-head" .}}<p class="app-empty">This Plan has no slides yet. Publish the first with <code>change-saga apply-slide --plan {{.Plan.ID}} --from SLIDE.json</code>.</p><section class="deck-viewer review-empty-viewer" data-deck-viewer aria-label="{{.Plan.Title}}"><div class="deck-viewer-canvas"><div class="deck-viewer-stage">{{template "deck-overview" .Overview}}</div></div><footer class="deck-viewer-header">{{template "deck-face-controls" .}}</footer></section></div>{{else}}<div class="review-deck-page" data-plan="{{.Plan.ID}}" data-plan-deck><nav class="review-deck-rail slide-side" aria-label="Plan slides"><div class="review-sidebar-header"><a class="sidebar-title" href="/">{{.Saga.Manifest.Title}}</a>{{template "side-links" "plans"}}</div><a class="review-deck-title" href="/plans">{{.Plan.Title}}</a><p class="review-deck-pr plan-rail-note">Plan, not a review. {{if .Plan.Delivered}}<span data-plan-delivered>Delivered.</span> {{end}}{{.Done}} of {{.All}} tasks done. Touches {{.Touches}}.</p>{{range .Reviews}}<p class="review-deck-pr" data-plan-review>Implemented by {{if .Href}}<a href="{{.Href}}">{{.Title}}</a>{{else}}{{.Title}}{{end}}</p>{{end}}{{range .Prototypes}}<p class="review-deck-pr" data-plan-prototype>Prototype: <a href="{{.Href}}">{{.Title}}</a></p>{{end}}<section class="slide-rail-deck"><h2><a class="review-overview-link" href="#{{.Overview.DOMID}}">Plan deck</a></h2><ol class="review-thumbnail-list slide-thumbnail-list">{{range $index,$slide := .Slides}}<li>{{template "slide-section-divider" .Section}}<div class="slide-thumbnail-card{{if eq $index 0}} active{{end}}" data-slide-thumbnail-card><span class="slide-thumbnail-caption"><span class="slide-thumbnail-title">{{.Slide.Title}}</span></span><button type="button" class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="{{.Slide.Target}}" aria-current="{{if eq $index 0}}true{{else}}false{{end}}" aria-label="Show slide: {{.Slide.Title}}"></button></div></li>{{end}}</ol></section></nav><section class="deck-viewer review-deck-viewer" data-deck-viewer aria-label="{{.Plan.Title}}"><div class="deck-viewer-canvas"><div class="deck-viewer-stage">{{template "deck-overview" .Overview}}{{range $index,$slide := .Slides}}<section class="deck-viewer-slide review-deck-slide{{if eq $index 0}} active{{end}}" data-deck-slide data-deck-target="{{$page.Plan.Deck.Target}}" data-deck-role="plan" data-deck-title="{{$page.Plan.Title}}" data-slide-title="{{.Slide.Title}}" data-slide-target="{{.Slide.Target}}"{{if ne $index 0}} hidden{{end}}>{{template "slide-front" .Front}}<article class="fragment review-fragment" id="{{.DOMID}}" data-target="{{.Slide.Target}}" data-fragment-title="{{.Slide.Title}}" tabindex="0"><div class="fragment-head"><div class="fragment-actions">{{if .Tasks}}<button type="button" class="plan-slide-tasks-open" data-plan-drawer="plan-tasks-{{.DOMID}}" data-plan-drawer-title="Tasks on this slide" aria-label="Show this slide's {{len .Tasks}} tasks: {{.Done}} done" title="Tasks on this slide"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg>{{.Done}} of {{len .Tasks}} tasks done</button>{{end}}<a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Slide.Title}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a></div></div>{{if .Tasks}}<template id="plan-tasks-{{.DOMID}}"><section class="plan-drawer" data-plan-slide-tasks><h2>{{.Slide.Title}}</h2>{{range .Tasks}}{{template "plan-task-card" .}}{{end}}{{if .Stories}}<h3>Stories</h3><ul>{{range .Stories}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{end}}</ul>{{end}}</section></template>{{end}}{{template "element-note-targets" .ElementNotes}}<div class="fragment-stage">{{if .Interactive}}<iframe class="fragment-frame" data-fragment-frame sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}" data-slide-visual{{if .Paper}} data-slide-paper{{end}}></iframe>{{else}}<img class="fragment-image" src="{{.VisualURL}}" alt="{{.Slide.Title}}" data-slide-visual{{if .Paper}} data-slide-paper{{end}}>{{end}}</div>{{if .Callouts}}<ul class="plan-callouts">{{range .Callouts}}<li><strong>{{.Label}}</strong> {{.Body}}</li>{{end}}</ul>{{end}}</article></section>{{end}}<nav class="deck-viewer-controls" aria-label="Slide navigation"><button type="button" class="slide-step" data-slide-previous aria-label="Previous slide" title="Previous slide">‹</button><button type="button" class="slide-step" data-slide-next aria-label="Next slide" title="Next slide">›</button></nav><button type="button" class="slide-exit-presentation" data-slide-exit-presentation hidden>Exit presentation</button></div></div><footer class="deck-viewer-header" aria-live="polite"><div><strong data-current-slide-title>{{(index .Slides 0).Slide.Title}}</strong></div><span data-slide-position></span>{{template "deck-face-controls" .}}</footer></section></div>{{end}}{{end}}
-{{define "plan-board"}}<section class="whiteboard plan-whiteboard" data-whiteboard-view data-plan-board data-whiteboard-id="plan-{{.Plan.ID}}" data-whiteboard-url="{{.TaskBoard.Href}}" data-whiteboard-revision="" aria-label="{{.Plan.Title}} tasks"><div hidden data-whiteboard-metadata="[]" data-whiteboard-opening=""></div><div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.TaskBoard.Board}}</div><header class="whiteboard-heading whiteboard-overlay plan-board-help"><details class="whiteboard-description"><summary>How to read this</summary><div class="whiteboard-description-body"><p>Each column is a phase: its tasks can run in parallel. Arrows point at what a task unblocks, and every path ends at a user story.</p><p>Select a node for its detail. The path to it is marked, and a dashed line shows where it leads.</p><p class="whiteboard-help">Scroll or drag to pan · Ctrl/Cmd + scroll or + / − to zoom · 0 to fit</p></div></details></header><div class="whiteboard-toolbar whiteboard-overlay" role="toolbar" aria-label="Whiteboard navigation" hidden data-whiteboard-toolbar><button type="button" data-whiteboard-zoom="-1" aria-label="Zoom out whiteboard" title="Zoom out (-)">−</button><output data-whiteboard-level aria-live="polite"></output><button type="button" data-whiteboard-zoom="1" aria-label="Zoom in whiteboard" title="Zoom in (+)">+</button><button type="button" data-whiteboard-replay hidden>Replay</button><button type="button" data-whiteboard-fields hidden aria-pressed="false">Details</button><button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button><label hidden><select data-whiteboard-focus><option value="">Whole board</option></select></label><button type="button" data-whiteboard-evidence hidden>Evidence</button><span data-whiteboard-mode hidden aria-live="polite">Full board</span></div></section>{{range .TaskBoard.Tasks}}<template id="plan-node-task-{{.ID}}"><section class="plan-drawer" data-plan-node-detail="{{.ID}}">{{template "plan-task-card" .}}<p><a href="{{.Href}}">Open this task</a></p></section></template>{{end}}{{range .TaskBoard.Stories}}<template id="{{.DrawerID}}"><section class="plan-drawer" data-plan-story-detail="{{.Story.Target}}"><h2><a href="{{.Story.Href}}">{{.Story.Title}}</a></h2><p class="plan-note">{{if .Story.FeatureTitle}}In <a href="{{.Story.FeatureHref}}">{{.Story.FeatureTitle}}</a>. {{end}}It takes these {{.All}} {{if eq .All 1}}task{{else}}tasks{{end}}, {{.Done}} done.</p>{{range .Phases}}<h3>{{.Title}}</h3>{{range .Tasks}}{{template "plan-task-card" .}}{{end}}{{end}}</section></template>{{end}}{{end}}
+{{define "plan-task-code"}}<ul class="plan-code" data-task-code-list>{{range .}}<li data-task-code-row><button type="button" class="plan-code-open" data-target-code-href="{{.Href}}" data-target-code-template="diffs-{{.DOMID}}" aria-label="Open the code at {{.Location}}" title="Open this code"><code>{{.Location}}</code></button>{{if .Note}}<span class="plan-note plan-code-note">{{.Note}}</span>{{end}}<span class="gap plan-code-note" data-task-code-error role="alert" hidden>This code could not be loaded. Select it to try again.</span></li>{{end}}</ul>{{end}}
+{{define "task-code"}}<span data-target-code-response data-target-code-target="{{.Target}}" data-target-code-count="1"><button type="button" class="plan-code-open" data-open-diffs="diffs-{{.DOMID}}" aria-label="Open the code at {{.Location}}" title="Open this code"><code>{{.Location}}</code></button><template id="diffs-{{.DOMID}}"><div class="attached-code observed-code" data-attached-title="{{.Title}}" data-task-code-view><header class="attached-code-summary"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-implementation"></use></svg><span>The lines this Task pinned, at commit <code>{{printf "%.12s" .Commit}}</code></span></header>{{template "documentation-code" .Observed}}</div></template></span>{{end}}
+{{define "plan-task-card"}}<article class="plan-task-card" data-plan-task-row="{{.ID}}"><header><a class="plan-task-title" href="{{.Href}}">{{.Title}}</a>{{template "plan-task-state" .Status}}{{if .Unsized}}<span class="plan-state warn">{{.Sizing}}</span>{{end}}</header>{{if .Summary}}<p class="plan-note">{{.Summary}}</p>{{end}}<dl class="plan-task-chain" data-plan-chain>{{if .Depends}}<div><dt>Needs</dt><dd>{{template "plan-task-names" .Depends}}</dd></div>{{end}}{{if .Unblocks}}<div><dt>Unblocks</dt><dd>{{template "plan-task-names" .Unblocks}}</dd></div>{{end}}{{if .HasStory}}<div><dt>{{if .Chain}}Leads to{{else}}Story{{end}}</dt><dd><a href="{{.Story.Href}}">{{.Story.Title}}</a>{{if .Chain}} <span class="plan-note">through {{range $i,$t := .Chain}}{{if $i}} → {{end}}<a href="{{.Href}}">{{.Title}}</a>{{end}}</span>{{end}}</dd></div>{{end}}{{if .Phase}}<div data-plan-task-phase><dt>Phase</dt><dd>{{.Phase}}</dd></div>{{end}}</dl>{{if .Code}}<section class="plan-task-card-code" data-task-code><h3>Code that matters</h3>{{template "plan-task-code" .Code}}</section>{{end}}</article>{{end}}
+{{define "plan-node-drawers"}}{{range .Tasks}}<template id="plan-node-task-{{.ID}}"><section class="plan-drawer" data-plan-node-detail="{{.ID}}">{{template "plan-task-card" .}}{{if .Essay}}<section data-plan-task-essay><h3>Essay</h3><div class="markdown">{{.Essay}}</div></section>{{end}}<p><a href="{{.Href}}">Open this task</a></p></section></template>{{end}}{{range .Stories}}<template id="{{.DrawerID}}"><section class="plan-drawer" data-plan-story-detail="{{.Story.Target}}"><h2>{{if .Story.Href}}<a href="{{.Story.Href}}">{{.Story.Title}}</a>{{else}}{{.Story.Title}}{{end}}</h2><p class="plan-note">{{if .Story.FeatureTitle}}In <a href="{{.Story.FeatureHref}}">{{.Story.FeatureTitle}}</a>. {{end}}{{if .All}}It takes these {{.All}} {{if eq .All 1}}task{{else}}tasks{{end}}, {{.Done}} done.{{else}}No Task of this Plan leads to it yet.{{end}}</p>{{range .Phases}}<h3>{{.Title}}</h3>{{range .Tasks}}{{template "plan-task-card" .}}{{end}}{{end}}</section></template>{{end}}{{end}}
+{{define "plan-page"}}{{$page := .}}{{if not .Slides}}<div class="review-surface plan-surface" data-plan="{{.Plan.ID}}">{{template "plan-head" .}}<p class="app-empty">This Plan has no slides yet. Publish the first with <code>change-saga apply-slide --plan {{.Plan.ID}} --from SLIDE.json</code>.</p><section class="deck-viewer review-empty-viewer" data-deck-viewer aria-label="{{.Plan.Title}}"><div class="deck-viewer-canvas"><div class="deck-viewer-stage">{{template "deck-overview" .Overview}}</div></div><footer class="deck-viewer-header">{{template "deck-face-controls" .}}</footer></section></div>{{else}}<div class="review-deck-page" data-plan="{{.Plan.ID}}" data-plan-deck><nav class="review-deck-rail slide-side" aria-label="Plan slides"><div class="review-sidebar-header"><a class="sidebar-title" href="/">{{.Saga.Manifest.Title}}</a>{{template "side-links" "plans"}}</div><a class="review-deck-title" href="/plans">{{.Plan.Title}}</a><p class="review-deck-pr plan-rail-note">Plan, not a review. {{if .Plan.Delivered}}<span data-plan-delivered>Delivered.</span> {{end}}{{.Done}} of {{.All}} tasks done. Touches {{.Touches}}.</p>{{range .Reviews}}<p class="review-deck-pr" data-plan-review>Implemented by {{if .Href}}<a href="{{.Href}}">{{.Title}}</a>{{else}}{{.Title}}{{end}}</p>{{end}}{{range .Prototypes}}<p class="review-deck-pr" data-plan-prototype>Prototype: <a href="{{.Href}}">{{.Title}}</a></p>{{end}}<section class="slide-rail-deck"><h2><a class="review-overview-link" href="#{{.Overview.DOMID}}">Plan deck</a></h2><ol class="review-thumbnail-list slide-thumbnail-list">{{range $index,$slide := .Slides}}<li>{{template "slide-section-divider" .Section}}<div class="slide-thumbnail-card{{if eq $index 0}} active{{end}}" data-slide-thumbnail-card><span class="slide-thumbnail-caption"><span class="slide-thumbnail-title">{{.Slide.Title}}</span></span><button type="button" class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="{{.Slide.Target}}" aria-current="{{if eq $index 0}}true{{else}}false{{end}}" aria-label="Show slide: {{.Slide.Title}}"></button></div></li>{{end}}</ol></section></nav><section class="deck-viewer review-deck-viewer" data-deck-viewer aria-label="{{.Plan.Title}}"><div class="deck-viewer-canvas"><div class="deck-viewer-stage">{{template "deck-overview" .Overview}}{{range $index,$slide := .Slides}}<section class="deck-viewer-slide review-deck-slide{{if eq $index 0}} active{{end}}" data-deck-slide data-deck-target="{{$page.Plan.Deck.Target}}" data-deck-role="plan" data-deck-title="{{$page.Plan.Title}}" data-slide-title="{{.Slide.Title}}" data-slide-target="{{.Slide.Target}}"{{if ne $index 0}} hidden{{end}}>{{template "slide-front" .Front}}<article class="fragment review-fragment" id="{{.DOMID}}" data-target="{{.Slide.Target}}" data-fragment-title="{{.Slide.Title}}" tabindex="0"><div class="fragment-head"><div class="fragment-actions">{{if .Tasks}}<button type="button" class="plan-slide-tasks-open" data-plan-drawer="plan-tasks-{{.DOMID}}" data-plan-drawer-title="Tasks on this slide" aria-label="Show this slide's {{len .Tasks}} tasks: {{.Done}} done" title="Tasks on this slide"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg>{{.Done}} of {{len .Tasks}} tasks done</button>{{end}}<a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Slide.Title}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a></div></div>{{if .Tasks}}<template id="plan-tasks-{{.DOMID}}"><section class="plan-drawer" data-plan-slide-tasks><h2>{{.Slide.Title}}</h2>{{range .Tasks}}{{template "plan-task-card" .}}{{end}}{{if .Stories}}<h3>Stories</h3><ul>{{range .Stories}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{end}}</ul>{{end}}</section></template>{{end}}{{range .Items}}<span id="{{.DOMID}}" class="landmark-target" data-plan-item="{{.Item.ID}}" data-landmark-target data-landmark-anchor="{{.DOMID}}" data-landmark-type="{{.Item.Selector.Type}}" data-element-id="{{.Item.Selector.ElementID}}"{{if .TaskState}} data-plan-task-state="{{.TaskState}}"{{end}}><template data-landmark-affordance-template>{{template "plan-item-affordance" .}}</template>{{template "element-note-template" .Popover}}</span>{{end}}{{template "element-note-targets" .ElementNotes}}<div class="fragment-stage">{{if .Interactive}}<iframe class="fragment-frame" data-fragment-frame sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}" data-slide-visual{{if .Paper}} data-slide-paper{{end}}></iframe>{{else}}<img class="fragment-image" src="{{.VisualURL}}" alt="{{.Slide.Title}}" data-slide-visual{{if .Paper}} data-slide-paper{{end}}>{{end}}{{range .Items}}{{if .Region}}<div class="landmark-hotspot" data-landmark-visual="{{.DOMID}}"{{if .TaskState}} data-plan-task-state="{{.TaskState}}"{{end}} data-x="{{.Region.X}}" data-y="{{.Region.Y}}" data-width="{{.Region.Width}}" data-height="{{.Region.Height}}">{{template "plan-item-affordance" .}}</div>{{end}}{{end}}</div>{{if .Callouts}}<ul class="plan-callouts">{{range .Callouts}}<li><strong>{{.Label}}</strong> {{.Body}}</li>{{end}}</ul>{{end}}</article></section>{{end}}<nav class="deck-viewer-controls" aria-label="Slide navigation"><button type="button" class="slide-step" data-slide-previous aria-label="Previous slide" title="Previous slide">‹</button><button type="button" class="slide-step" data-slide-next aria-label="Next slide" title="Next slide">›</button></nav><button type="button" class="slide-exit-presentation" data-slide-exit-presentation hidden>Exit presentation</button></div></div><footer class="deck-viewer-header" aria-live="polite"><div><strong data-current-slide-title>{{(index .Slides 0).Slide.Title}}</strong></div><span data-slide-position></span>{{template "deck-face-controls" .}}</footer></section>{{template "plan-node-drawers" .TaskBoard}}</div>{{end}}{{end}}
+{{define "plan-item-affordance"}}<span class="landmark-affordance review-item-affordance" data-landmark-affordance><button type="button" class="icon-button" data-plan-drawer="{{.Drawer}}" data-plan-drawer-title="{{.DrawerTitle}}" aria-label="{{.Action}}" title="{{.Action}}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-{{.Icon}}"></use></svg></button></span>{{end}}
+{{define "plan-board"}}<section class="whiteboard plan-whiteboard" data-whiteboard-view data-plan-board data-whiteboard-id="plan-{{.Plan.ID}}" data-whiteboard-url="{{.TaskBoard.Href}}" data-whiteboard-revision="" aria-label="{{.Plan.Title}} tasks"><div hidden data-whiteboard-metadata="[]" data-whiteboard-opening=""></div><div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.TaskBoard.Board}}</div><header class="whiteboard-heading whiteboard-overlay plan-board-help"><details class="whiteboard-description"><summary>How to read this</summary><div class="whiteboard-description-body"><p>Each column is a phase: its tasks can run in parallel. Arrows point at what a task unblocks, and every path ends at a user story.</p><p>Select a node for its detail. The path to it is marked, and a dashed line shows where it leads.</p><p class="whiteboard-help">Scroll or drag to pan · Ctrl/Cmd + scroll or + / − to zoom · 0 to fit</p></div></details></header><div class="whiteboard-toolbar whiteboard-overlay" role="toolbar" aria-label="Whiteboard navigation" hidden data-whiteboard-toolbar><button type="button" data-whiteboard-zoom="-1" aria-label="Zoom out whiteboard" title="Zoom out (-)">−</button><output data-whiteboard-level aria-live="polite"></output><button type="button" data-whiteboard-zoom="1" aria-label="Zoom in whiteboard" title="Zoom in (+)">+</button><button type="button" data-whiteboard-replay hidden>Replay</button><button type="button" data-whiteboard-fields hidden aria-pressed="false">Details</button><button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button><label hidden><select data-whiteboard-focus><option value="">Whole board</option></select></label><button type="button" data-whiteboard-evidence hidden>Evidence</button><span data-whiteboard-mode hidden aria-live="polite">Full board</span></div></section>{{template "plan-node-drawers" .TaskBoard}}{{end}}
 {{define "plan-tasks"}}<div class="plan-tasks-view" data-plan="{{.Plan.ID}}" data-plan-tasks><header class="plan-tasks-head"><h1>{{.Plan.Title}}</h1><p class="plan-note">{{len .TaskBoard.Stories}} {{if eq (len .TaskBoard.Stories) 1}}story{{else}}stories{{end}} reached by {{.All}} {{if eq .All 1}}task{{else}}tasks{{end}}, {{.Done}} done.{{range .TaskBoard.Gaps}} <a href="{{.Href}}">{{.Feature}}</a>: {{.Covered}} of {{.All}} stories have tasks{{if .Missing}} <span class="gap" data-plan-uncovered>(none yet for {{range $i,$s := .Missing}}{{if $i}}, {{end}}<a href="{{.Href}}">{{.Title}}</a>{{end}})</span>{{end}}.{{end}} Select a task or story to see the path to it.</p>{{if .Ready}}<p class="plan-note" data-plan-ready><strong>{{len .Ready}} {{if eq (len .Ready) 1}}task{{else}}tasks{{end}} can start now:</strong> {{template "plan-task-names" .Ready}}.</p>{{end}}{{if .Unsized}}<p class="plan-note" data-plan-unsized><strong>{{len .Unsized}} of {{.All}} tasks are not confidently two days or less:</strong> {{template "plan-task-names" .Unsized}}.</p>{{end}}<div class="plan-tasks-sections"><details class="plan-tasks-section" data-plan-stories><summary>Stories by feature</summary>{{range .TaskBoard.Gaps}}<h2><a href="{{.Href}}">{{.Feature}}</a></h2><ul>{{range .Stories}}<li><a href="{{.Story.Href}}">{{.Story.Title}}</a> <span class="plan-note">{{.Done}} of {{.All}} tasks done</span></li>{{end}}</ul>{{end}}</details><details class="plan-tasks-section" data-plan-comparison><summary>Plan vs Reviews</summary>{{if .Reviews}}<p class="plan-note">Implemented by {{range $i,$r := .Reviews}}{{if $i}}, {{end}}{{if .Href}}<a href="{{.Href}}">{{.Title}}</a>{{else}}{{.Title}}{{end}}{{if .Merged}} (merged){{end}}{{if .Missing}} (missing){{end}}{{end}}. This reports differences. It never blocks a merge, and a person still judges whether the work matches.</p><table class="plan-table"><thead><tr><th>What we said</th><th>What we did</th></tr></thead><tbody>{{range .Comparison}}<tr data-plan-comparison-row="{{.Task.ID}}"><td><a href="{{.Task.Href}}">{{.Task.Title}}</a></td><td>{{range .Delivered}}<div><a href="{{.Href}}">{{.Slide}}</a> <span class="plan-note">{{.Review}}</span></div>{{end}}{{range .Departures}}<div class="plan-departure"><span class="plan-state working">Departed</span> <a href="{{.Href}}">{{.Label}}</a> <span class="plan-note">{{.Body}}</span></div>{{end}}{{if and (not .Delivered) (not .Departures)}}<span class="plan-state waiting">Not delivered</span>{{end}}</td></tr>{{end}}</tbody></table>{{if .Unplanned}}<h3>Not in the Plan</h3><ul class="plan-unplanned" data-plan-unplanned>{{range .Unplanned}}<li><a href="{{.Href}}">{{.Slide}}</a> <span class="plan-note">{{.Review}}</span></li>{{end}}</ul>{{end}}{{else}}<p class="plan-note">No Review implements this Plan yet. Link one with <code>change-saga plan link-review --plan {{.Plan.ID}} --review ID</code>.</p>{{end}}</details></div></header>{{if .TaskBoard.Board}}{{template "plan-board" .}}{{else}}<p class="app-empty">This Plan has no tasks yet. Add the first with <code>change-saga task add --plan {{.Plan.ID}}</code>.</p>{{end}}</div>{{end}}
-{{define "task-page"}}<div class="review-surface plan-surface" data-task="{{.Task.ID}}"><header class="plan-head"><p class="plan-eyebrow">Task in <a href="{{planHref .Plan.ID}}">{{.Plan.Title}}</a>{{if .Phase}}, {{.Phase}}{{end}}</p><h1>{{.Task.Title}}</h1><p>{{template "plan-task-state" .Status}} <span class="plan-state {{if .Unsized}}warn{{else}}done{{end}}">{{.Sizing}}</span></p>{{if .Reason}}<p class="plan-note">{{.Reason}}</p>{{end}}</header><section class="plan-task-chain-view"><div class="plan-task-board" data-plan-task-board>{{template "plan-board" .}}</div><p class="plan-note">This task's chain. <a href="{{planHref .Plan.ID}}/tasks">See the whole Plan</a>.</p></section><div class="plan-columns"><div>{{if .Essay}}<section data-task-essay><h2>Essay</h2><div class="markdown">{{.Essay}}</div></section>{{end}}{{if .Task.Summary}}<section><h2>What was done</h2><p>{{.Task.Summary}}</p></section>{{end}}{{if .Code}}<section data-task-code><h2>Code that matters</h2><ul class="plan-code">{{range .Code}}<li><code>{{.Location}}</code>{{if .Note}}<br><span class="plan-note">{{.Note}}</span>{{end}}</li>{{end}}</ul></section>{{end}}{{if not .Delivered}}{{if ne .Task.State "done"}}<section><h2>Mark it done</h2><code class="plan-command">{{.DoneCmd}}</code></section>{{end}}{{end}}</div><aside class="plan-side"><h3>User story</h3>{{if .HasStory}}<p data-task-story><a href="{{.Story.Href}}">{{.Story.Title}}</a>{{if .Story.FeatureTitle}} <span class="plan-note">in <a href="{{.Story.FeatureHref}}">{{.Story.FeatureTitle}}</a></span>{{end}}</p>{{if .Chain}}<p class="plan-note">No story of its own. It leads there by unblocking:</p><ul data-task-chain>{{range .Chain}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{end}}</ul>{{end}}{{else}}<p class="plan-note">None.</p>{{end}}<h3>Depends on</h3>{{if .Depends}}<ul data-task-depends>{{range .Depends}}<li><a href="{{.Href}}">{{.Title}}</a> {{template "plan-task-state" .Status}}</li>{{end}}</ul>{{else}}<p class="plan-note">Nothing: it could start any time.</p>{{end}}<h3>Unblocks</h3>{{if .Unblocks}}<ul data-task-unblocks>{{range .Unblocks}}<li><a href="{{.Href}}">{{.Title}}</a> {{template "plan-task-state" .Status}}</li>{{end}}</ul>{{else}}<p class="plan-note">Nothing is waiting on it.</p>{{end}}{{if .Slides}}<h3>Slides that show it</h3><ul>{{range .Slides}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{end}}</ul>{{end}}</aside></div></div>{{end}}
+{{define "task-page"}}<div class="review-surface plan-surface" data-task="{{.Task.ID}}"><header class="plan-head"><p class="plan-eyebrow">Task in <a href="{{planHref .Plan.ID}}">{{.Plan.Title}}</a>{{if .Phase}}, {{.Phase}}{{end}}</p><h1>{{.Task.Title}}</h1><p>{{template "plan-task-state" .Status}} <span class="plan-state {{if .Unsized}}warn{{else}}done{{end}}">{{.Sizing}}</span></p>{{if .Reason}}<p class="plan-note">{{.Reason}}</p>{{end}}</header><section class="plan-task-chain-view"><div class="plan-task-board" data-plan-task-board>{{template "plan-board" .}}</div><p class="plan-note">This task's chain. <a href="{{planHref .Plan.ID}}/tasks">See the whole Plan</a>.</p></section><div class="plan-columns"><div>{{if .Essay}}<section data-task-essay><h2>Essay</h2><div class="markdown">{{.Essay}}</div></section>{{end}}{{if .Task.Summary}}<section><h2>What was done</h2><p>{{.Task.Summary}}</p></section>{{end}}{{if .Code}}<section data-task-code><h2>Code that matters</h2>{{template "plan-task-code" .Code}}</section>{{end}}{{if not .Delivered}}{{if ne .Task.State "done"}}<section><h2>Mark it done</h2><code class="plan-command">{{.DoneCmd}}</code></section>{{end}}{{end}}</div><aside class="plan-side"><h3>User story</h3>{{if .HasStory}}<p data-task-story><a href="{{.Story.Href}}">{{.Story.Title}}</a>{{if .Story.FeatureTitle}} <span class="plan-note">in <a href="{{.Story.FeatureHref}}">{{.Story.FeatureTitle}}</a></span>{{end}}</p>{{if .Chain}}<p class="plan-note">No story of its own. It leads there by unblocking:</p><ul data-task-chain>{{range .Chain}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{end}}</ul>{{end}}{{else}}<p class="plan-note">None.</p>{{end}}<h3>Depends on</h3>{{if .Depends}}<ul data-task-depends>{{range .Depends}}<li><a href="{{.Href}}">{{.Title}}</a> {{template "plan-task-state" .Status}}</li>{{end}}</ul>{{else}}<p class="plan-note">Nothing: it could start any time.</p>{{end}}<h3>Unblocks</h3>{{if .Unblocks}}<ul data-task-unblocks>{{range .Unblocks}}<li><a href="{{.Href}}">{{.Title}}</a> {{template "plan-task-state" .Status}}</li>{{end}}</ul>{{else}}<p class="plan-note">Nothing is waiting on it.</p>{{end}}{{if .Slides}}<h3>Slides that show it</h3><ul>{{range .Slides}}<li><a href="{{.Href}}">{{.Title}}</a></li>{{end}}</ul>{{end}}</aside></div></div>{{end}}
 `
 
 const planStyles = `
@@ -1132,6 +1261,19 @@ body:has(.diff-drawer.open.plan-node-drawer) .plan-tasks-view,body:has(.diff-dra
 .plan-side li{padding:3px 0}
 .plan-code{list-style:none;padding:0}
 .plan-code li{padding:6px 0;border-bottom:1px solid var(--line)}
+.plan-code-open{display:block;max-width:100%;padding:0;border:0;background:none;color:var(--accent);font:inherit;text-align:left;overflow-wrap:anywhere;cursor:pointer}
+.plan-code-open:hover{text-decoration:underline}
+.plan-code-open code{color:inherit;overflow-wrap:anywhere}
+.plan-code-note:not([hidden]){display:block}
+.plan-task-card-code h3{margin:10px 0 2px}
+.plan-task-card-code .plan-code{margin:0}
+.plan-task-card-code .plan-code li:last-child{border-bottom:0;padding-bottom:0}
+.plan-drawer-back{display:block;margin:12px 16px 0;padding:0;border:0;background:none;color:var(--accent);font:600 13px var(--ui);cursor:pointer}
+.plan-drawer-back:hover{text-decoration:underline}
+/* A review deck plays its hotspots down; on a Plan slide a node invites a click. */
+[data-deck-role="plan"] .landmark-hotspot:hover,[data-deck-role="plan"] .landmark-hotspot:focus-within,[data-deck-role="plan"] .landmark-hotspot.active{border-color:#d39418}
+/* Over the sandboxed frame, so a done Task reads as done on its node. */
+.landmark-hotspot[data-plan-task-state="done"]::before{content:'✓';position:absolute;left:-7px;top:-7px;width:16px;height:16px;box-sizing:border-box;border:1px solid var(--review-approved-ink);border-radius:50%;background:var(--review-approved-bg);color:var(--review-approved-ink);font:700 10px/14px var(--ui);text-align:center;pointer-events:none}
 .plan-command{display:block;background:var(--bg-inset);border-radius:6px;padding:8px 11px;overflow:auto;white-space:pre}
 @media(max-width:820px){.plan-columns{grid-template-columns:1fr}.plan-side{border-left:0;padding-left:0}}
 `
@@ -1140,16 +1282,35 @@ body:has(.diff-drawer.open.plan-node-drawer) .plan-tasks-view,body:has(.diff-dra
 // shared drawer, and marks a node's path on the Tasks whiteboard: everything
 // that must come before it, and more faintly where it leads.
 const planJavaScript = `
+  let planDrawerShown = null;
   function openPlanDrawer(opener) {
     const template = document.getElementById(opener.dataset.planDrawer);
     if (!template) return;
+    // Focus returns to what first opened the drawer, not to a control inside it.
+    const returnOpener = opener.closest('.diff-drawer') ? drawerOpener : notePopover?.contains(opener) ? noteOwner : opener;
     restoreDrawerContent();
-    q('.drawer-body')?.append(template.content.cloneNode(true));
+    const body = q('.drawer-body');
+    body?.append(template.content.cloneNode(true));
+    highlightCode(body);
     configureDrawer('reference', opener.dataset.planDrawerTitle || 'Plan');
     // A node's detail sits beside the board, so its path stays in view and the
     // next node can be selected without closing it first.
-    q('.diff-drawer')?.classList.toggle('plan-node-drawer', opener.matches('[data-plan-node]'));
-    showDrawer(opener);
+    const beside = opener.matches('[data-plan-node],[data-plan-drawer-beside]');
+    q('.diff-drawer')?.classList.toggle('plan-node-drawer', beside);
+    planDrawerShown = {id: opener.dataset.planDrawer, title: opener.dataset.planDrawerTitle || 'Plan', beside};
+    showDrawer(returnOpener);
+  }
+  // Code opened from a Task's slide-out takes its place, so it offers the way back.
+  function planDrawerBack() {
+    if (!planDrawerShown || !q('.diff-drawer.open .drawer-body > .plan-drawer')) return null;
+    const back = document.createElement('button');
+    back.type = 'button';
+    back.className = 'plan-drawer-back';
+    back.dataset.planDrawer = planDrawerShown.id;
+    back.dataset.planDrawerTitle = planDrawerShown.title;
+    if (planDrawerShown.beside) back.dataset.planDrawerBeside = 'true';
+    back.textContent = '← Back to ' + planDrawerShown.title.toLowerCase();
+    return back;
   }
   function openPlanEssay(root) {
     const viewer = q('[data-plan-deck] [data-deck-viewer]', root);

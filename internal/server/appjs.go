@@ -60,7 +60,7 @@ const appJavaScript = `(() => {
 
   function landmarkOwnsDiffs(target) {
     const template = q('[data-landmark-affordance-template]', target);
-    return Boolean(template?.content.querySelector('[data-open-diffs],[data-target-code-href]'));
+    return Boolean(template?.content.querySelector('[data-open-diffs],[data-target-code-href],[data-plan-drawer]'));
   }
 
   function markLandmarkDiffOwnership(target, visual) {
@@ -72,7 +72,7 @@ const appJavaScript = `(() => {
   }
 
   function activateLandmarkCode(visual) {
-    const control = q('[data-documentation-target]', visual) || q('[data-open-diffs],[data-target-code-href]', visual);
+    const control = q('[data-documentation-target]', visual) || q('[data-open-diffs],[data-target-code-href],[data-plan-drawer]', visual);
     if (!control) return false;
     control.click();
     return true;
@@ -302,6 +302,7 @@ const appJavaScript = `(() => {
     visual.dataset.landmarkVisual = target.dataset.landmarkAnchor;
     visual.dataset.autoLandmarkHotspot = 'true';
     visual.dataset.elementId = target.dataset.elementId;
+    if (target.dataset.planTaskState) visual.dataset.planTaskState = target.dataset.planTaskState;
     visual.dataset.x = String(region.x);
     visual.dataset.y = String(region.y);
     visual.dataset.width = String(region.width);
@@ -1717,9 +1718,12 @@ const appJavaScript = `(() => {
     // before dispatching its click event. Preserve the event's explicit opener
     // so Escape always restores focus to the control the reviewer activated.
     const returnOpener = drawerRestore ? drawerOpener : notePopover?.contains(opener) ? noteOwner : opener;
+    const planBack = planDrawerBack();
     restoreDrawerContent();
     const body = q('.drawer-body');
     body.innerHTML = source.innerHTML;
+    if (planBack) body.prepend(planBack);
+    q('.diff-drawer').classList.remove('plan-node-drawer');
     // An implementation Item's note heads its code, so a reader who cannot
     // hover, such as on a touch screen, still reads it.
     // Lazily loaded code replaces the control that was clicked, so the hotspot
@@ -2220,6 +2224,9 @@ const appJavaScript = `(() => {
     const href = button?.dataset.targetCodeHref;
     if (!href || button.dataset.targetCodeLoading === 'true') return;
     const isCurrent = diagramAffordanceActionIsCurrent(button);
+    // A Task's reference says so in its row: a tooltip alone is easily missed.
+    const rowError = button.closest('[data-task-code-row]')?.querySelector('[data-task-code-error]');
+    if (rowError) rowError.hidden = true;
     button.dataset.targetCodeLoading = 'true';
     button.setAttribute('aria-busy', 'true');
     try {
@@ -2233,6 +2240,7 @@ const appJavaScript = `(() => {
       delete button.dataset.targetCodeLoading;
       button.removeAttribute('aria-busy');
       button.title = 'Linked code could not be loaded — try again';
+      if (rowError) rowError.hidden = false;
     }
   }
 
@@ -2756,12 +2764,14 @@ const appJavaScript = `(() => {
     const targetCodeButton = event.target.closest('[data-target-code-href]');
     const storiesButton = event.target.closest('[data-open-stories]');
     if (storiesButton) { event.preventDefault(); openStoriesDrawer(storiesButton); return; }
-    if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
+    if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton, targetCodeButton.closest('.diff-drawer.open') ? drawerOpener : null); return; }
     const documentationButton = event.target.closest('[data-documentation-target]');
     if (documentationButton) {event.preventDefault(); void openDocumentation(documentationButton); return;}
     if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item,sourceRelationship:pin.relationship}},true); return;}
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
+    // A Plan Item's control opens its slide-out from the Plan script's listener.
+    if (event.target.closest('.landmark-hotspot [data-plan-drawer]')) return;
     // An unbound note needs pointer events to reveal its info control. Its
     // body still opens the enclosing Item, just as clicking through it did.
     const noteVisual = event.target.closest?.('.element-note-hotspot');

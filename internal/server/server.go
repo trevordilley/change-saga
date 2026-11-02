@@ -575,6 +575,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /api/coverage", application.coveragePage)
 	handle("GET /api/totals", application.coverageTotalsPage)
 	handle("GET /api/reference-code", application.referenceCodePage)
+	handle("GET /api/task-code", application.taskCode)
 	handle("GET /api/layers", application.layersAPI)
 	handle("GET /api/change", application.changePage)
 	handle("GET /api/history", application.historyPage)
