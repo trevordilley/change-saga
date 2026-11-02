@@ -1410,7 +1410,7 @@ func Spec(args []string, out io.Writer) error {
 			"target_scheme":        "urn:change-saga",
 			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
 			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir},
+			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir},
 			"app_layout": map[string]any{
 				"app_roots":       applayout.AppRootDirs,
 				"feature_storage": applayout.FeaturesDir + "/<id>" + applayout.FeatureSuffix + "/" + applayout.FeatureManifestName,
@@ -1472,6 +1472,14 @@ func Spec(args []string, out io.Writer) error {
 				"schema":     querySchema,
 				"operations": querySpecOperations(),
 				"discovery":  queryUsage["schema"],
+			},
+			"plans": map[string]any{
+				"storage":     saga.PlansDir + "/<id>" + saga.PlanSuffix + "/{" + saga.PlanManifestName + "," + saga.PlanDeckDir + "/," + saga.PlanTasksDir + "/<task>" + saga.TaskSuffix + "/{" + saga.TaskManifestName + "," + saga.TaskEssayName + "}}",
+				"deck_role":   saga.DeckRolePlan,
+				"urns":        "urn:change-saga:<saga>:plan:<plan>[:deck:<deck>|:slide:<slide>[:item:<item>]|:task:<task>]",
+				"task_states": []string{saga.TaskPlanned, saga.TaskInProgress, saga.TaskDone},
+				"story_rule":  "every Task names a user story or unblocks a Task that leads to one; a write that would leave a Task with no path to a story is refused",
+				"delivered":   "plan deliver is explicit and refused until every Task is done and every linked Review has merged; a delivered Plan is hidden by default and refuses edits",
 			},
 			"reviews": map[string]any{
 				"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",

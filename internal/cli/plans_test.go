@@ -289,3 +289,21 @@ func TestPlanListWorksOutStoriesAndFeaturesFromTasks(t *testing.T) {
 		t.Fatalf("list --story = %q", listed)
 	}
 }
+
+func TestRemovingAStoryReportsTheTasksThatNamedIt(t *testing.T) {
+	t.Parallel()
+	fixture := newPlanFixture(t)
+	root := fixture.root
+	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	run(t, Task, "add", "--plan", "first", "--id", "feature-work", "--title", "Feature work", "--story", planStoryURN, root)
+	preview := run(t, Story, "remove", "--story", planStoryURN, "--dry-run", root)
+	if !strings.Contains(preview, "urn:change-saga:app:plan:first:task:feature-work") {
+		t.Fatalf("the removal preview does not name the task:\n%s", preview)
+	}
+	run(t, Story, "remove", "--story", planStoryURN, root)
+	var output bytes.Buffer
+	err := Check(context.Background(), []string{"--covers", "health", root}, &output)
+	if err == nil || !strings.Contains(output.String(), "feature-work") {
+		t.Fatalf("health did not report the task: err=%v\n%s", err, output.String())
+	}
+}

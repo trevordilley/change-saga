@@ -74,6 +74,7 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 	inputs := StatusInputs{
 		SagaID: doc.Manifest.ID, SagaVersion: doc.Manifest.Version, Decks: doc.Decks,
 		RecordDecks: append(append([]*saga.Deck{}, doc.Onboarding...), doc.ThemeDecks()...),
+		Plans:       doc.Plans,
 		Stories:     []requirements.Story{}, Citations: []requirements.Citation{}, Links: []Link{},
 		Prototypes: prototypes.Document{SagaID: doc.Manifest.ID, Prototypes: []prototypes.Prototype{}, Annotations: []prototypes.Annotation{}},
 		Exceptions: []coverage.Exception{}, Report: options.Report, Changes: options.Changes, Diagnostics: []Diagnostic{},

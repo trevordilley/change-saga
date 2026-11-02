@@ -111,6 +111,8 @@ type StatusInputs struct {
 	// RecordDecks are the onboarding and theme decks, whose Items explain
 	// records rather than code.
 	RecordDecks []*saga.Deck
+	// Plans are the Plans whose Tasks name user stories.
+	Plans []*saga.Plan
 	// DesignDigests is the current canonical content digest of every design and
 	// visual target, used to report the current side of a stale digest pin.
 	DesignDigests map[string]string
