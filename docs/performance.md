@@ -484,3 +484,25 @@ and the benchmark above retains the pathological shape as a regression case.
 - A single pathological file can still require many cursor pages. Endpoint
   budgets must constrain both `limit` and retained generation state so advancing
   through that file does not recreate a root-scale problem elsewhere.
+
+## What a documentation page costs on this repository
+
+Measured on this repository's Saga (17 features, 79 stories, 182 test cases, 25
+reviews, 1,306 code references) on an 11-core Mac, without the race detector:
+
+| Page | Warm | Note |
+| --- | --- | --- |
+| Feature, story, criterion, persona | 36 to 44 ms | 530 KB and about 39 MB allocated each |
+| Test case | 127 ms | Resolves its evidence code |
+| Any Plan page | 370 ms | Each request runs a full `saga.Load` from disk |
+| Observed Coverage | 2.6 s | Both modes, every time |
+| First page after start, or after the Saga or `HEAD` changes | about 7 s | Builds the related-reviews index, one Git tree diff per review |
+
+The race detector costs about 8 times that locally, and a shared runner adds more,
+which is where roughly a second per page in CI came from. It is test overhead for
+a warm page, but the first page and Plan pages are real costs a reviewer pays.
+Most of each page's 530 KB is the sidebar, which carries every deck's thumbnails.
+
+`go test ./internal/server -run '^$' -bench RelatedReviewsOnThisRepository
+-benchtime 1x -v` measures the related-reviews index, and
+`BenchmarkFeaturePageWarm` a warm page.

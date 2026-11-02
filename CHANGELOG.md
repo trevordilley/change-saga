@@ -48,6 +48,17 @@ tool, and what they have to do about it.
 - **Format:** `plan.json` gains optional `augments` and
   `overview_revision_pending`; older Sagas load unchanged.
 
+### Fixed
+
+- `apply-slide` publishes a slide to a `--role ux` deck with no code evidence,
+  as the format says it may. Code a UX Item does cite is still checked, and it
+  still links a criterion.
+- A `urn:change-saga:` link in an essay now opens that record's page in the
+  reader, through a new `/records/<urn>` route. A record with no page here, or
+  one in another Saga, answers not found rather than opening a wrong page.
+- `visual-qa --deck` no longer crashes with a Playwright timeout on a UX deck. It
+  opens the collapsed navigation heading a reader would open to reach the slide.
+
 ### Removed
 
 - **Format:** the old work plan is gone: `plan add-wave`, `revise-wave`,
