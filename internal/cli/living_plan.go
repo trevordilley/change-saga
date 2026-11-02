@@ -11,7 +11,7 @@ import (
 )
 
 var planOperations = []string{
-	"create", "list", "add-phase", "add-prototype", "link-review", "deliver",
+	"create", "list", "guide", "add-phase", "add-prototype", "link-review", "deliver",
 	"add-wave", "revise-wave", "add-item", "revise-item", "add-dependency",
 	"add-contract", "assign", "progress", "record-merge",
 }
@@ -29,6 +29,8 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planCreate(ctx, args[1:], out)
 	case "list":
 		err = planList(ctx, args[1:], out)
+	case "guide":
+		err = planGuide(ctx, args[1:], out)
 	case "add-phase":
 		err = planAddPhase(ctx, args[1:], out)
 	case "add-prototype":

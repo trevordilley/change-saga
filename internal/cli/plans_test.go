@@ -277,6 +277,34 @@ func TestPlanDeliverIsRefusedUntilTheWorkIsDone(t *testing.T) {
 	}
 }
 
+func TestPlanGuideNamesWhatIsNotReady(t *testing.T) {
+	t.Parallel()
+	fixture := newPlanFixture(t)
+	root := fixture.root
+	if workflow := run(t, Plan, "guide", root); !strings.Contains(workflow, "Research.") || strings.Contains(workflow, "Plan first:") {
+		t.Fatalf("workflow = %q", workflow)
+	}
+	run(t, Task, "add", "--plan", "first", "--id", "feature-work", "--title", "Feature work", "--story", planStoryURN, root)
+	report := run(t, Plan, "guide", "--plan", "first", root)
+	if !strings.Contains(report, "Not sized yet: feature-work") || !strings.Contains(report, "no slides yet") || strings.Contains(report, "Every task is judged") {
+		t.Fatalf("report = %q", report)
+	}
+	run(t, Task, "set", "--plan", "first", "--task", "feature-work", "--sizing", "over-2-days", root)
+	if report := run(t, Plan, "guide", "--plan", "first", root); !strings.Contains(report, "split it: feature-work") {
+		t.Fatalf("report = %q", report)
+	}
+	run(t, Task, "set", "--plan", "first", "--task", "feature-work", "--sizing", "within-2-days", root)
+	if _, err := ApplySlideTransaction(context.Background(), root, t.TempDir(), fixture.repo, planSlideRequest(""), false); err != nil {
+		t.Fatal(err)
+	}
+	overview := t.TempDir() + "/overview.json"
+	writeFile(t, overview, `{"body":"How we build it: [the work](annotation:work).","annotations":[{"id":"work","label":"The work","slide":"the-work"}]}`)
+	run(t, Deck, "overview", "--plan", "first", "--file", overview, root)
+	if report := run(t, Plan, "guide", "--plan", "first", root); !strings.Contains(report, "Every task is judged two days or less") {
+		t.Fatalf("report = %q", report)
+	}
+}
+
 func TestPlanListWorksOutStoriesAndFeaturesFromTasks(t *testing.T) {
 	t.Parallel()
 	root := newPlanFixture(t).root

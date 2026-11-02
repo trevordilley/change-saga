@@ -189,6 +189,79 @@ func plansFeatureList(features []string) string {
 	return strings.Join(features, ", ")
 }
 
+// planGuideWorkflow is the guided way to a Plan someone can be confident in. An
+// agent follows it with the person, researching and prototyping until each Task
+// is well understood. The command reports; the judgment stays with them.
+const planGuideWorkflow = `Guide to a Plan you can be confident in
+
+Work through this with the person who asked. A Plan is well understood when you are
+confident each Task would have taken two days or less before AI.
+
+1. Research. Find the stories this work serves with change-saga query requirements,
+   and read the code they touch. Present what you found, including what does not exist
+   yet and what surprised you, before proposing anything.
+2. Ask. Settle what you cannot answer from the code. Do not invent intent. If the work
+   has no story to serve, write the story first: every Task must lead to one.
+3. Draft. Create the Plan with plan create, its phases with plan add-phase, and its
+   Tasks top-down with task add: the Task naming the story, then the prerequisites it
+   needs with --unblocks. Dependencies decide what can run in parallel.
+4. Prototype. Where an experience or an approach is unclear, build a prototype and
+   attach it with plan add-prototype. Research and prototypes are how confidence is
+   earned, so go back to step 1 whenever a Task is still vague.
+5. Size. Record each Task's judgment with task set --sizing. Split a Task that is too
+   big or not understood. Never record within-2-days to get past this step.
+6. Explain. Write the technical design as the deck with apply-slide --plan and its
+   essay with deck overview --plan, organized by phase, with slides naming their Tasks.
+7. Check. Run plan guide --plan ID until it has nothing left to name.
+`
+
+func planGuide(_ context.Context, args []string, out io.Writer) error {
+	name := "plan guide"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "report what this Plan still needs, instead of only the workflow")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags); err != nil {
+		return err
+	}
+	fmt.Fprint(out, planGuideWorkflow)
+	if *plan == "" {
+		return nil
+	}
+	_, found, err := planOf(flags.Arg(0), *plan)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(out, "\nPlan %s:\n", found.ID)
+	notReady := 0
+	if len(found.Tasks) == 0 {
+		notReady++
+		fmt.Fprintln(out, "  It has no tasks yet.")
+	}
+	for _, task := range found.Tasks {
+		switch {
+		case task.Sizing == nil:
+			notReady++
+			fmt.Fprintf(out, "  Not sized yet: %s (%s)\n", task.ID, task.Title)
+		case !task.Sizing.WithinTwoDays:
+			notReady++
+			fmt.Fprintf(out, "  Judged larger than two days, so split it: %s (%s)\n", task.ID, task.Title)
+		}
+	}
+	if found.Deck == nil || len(found.Deck.Slides) == 0 {
+		notReady++
+		fmt.Fprintln(out, "  Its deck has no slides yet.")
+	} else if found.Deck.Overview == nil {
+		notReady++
+		fmt.Fprintln(out, "  Its deck has no essay yet.")
+	}
+	if notReady == 0 {
+		fmt.Fprintln(out, "  Every task is judged two days or less, and the deck has slides and an essay. Whether it is right is still for people to judge.")
+	}
+	return nil
+}
+
 func planAddPhase(_ context.Context, args []string, out io.Writer) error {
 	name := "plan add-phase"
 	flags := commandFlags(name, commandUsage[name], out)

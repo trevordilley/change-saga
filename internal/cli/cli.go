@@ -185,7 +185,7 @@ var commandUsage = map[string]string{
 	"design-add-fragment":           "change-saga design add-fragment (--feature ID | --section TARGET) [flags] <saga>",
 	"design-set-fragment-content":   "change-saga design set-fragment-content --target TARGET --source FILE|- [--feature ID] [--json|--quiet] <saga>",
 	"task":                          "change-saga task <add|depend|set|done|remove|list> [flags] <saga>",
-	"plan":                          "change-saga plan <create|list|add-phase|add-prototype|link-review|deliver|add-wave|revise-wave|add-item|revise-item|add-dependency|add-contract|assign|progress|record-merge> [flags] <saga>",
+	"plan":                          "change-saga plan <create|list|guide|add-phase|add-prototype|link-review|deliver|add-wave|revise-wave|add-item|revise-item|add-dependency|add-contract|assign|progress|record-merge> [flags] <saga>",
 	"plan add-wave":                 "change-saga plan add-wave --feature ID --id ID --revision ID --title TEXT --objective TEXT --request-id ID [flags] <saga>",
 	"plan revise-wave":              "change-saga plan revise-wave --wave URN --revision ID --parent URN... --title TEXT --objective TEXT --request-id ID [flags] <saga>",
 	"plan add-item":                 "change-saga plan add-item --feature ID --id ID --revision ID --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",

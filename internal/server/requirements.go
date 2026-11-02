@@ -73,6 +73,8 @@ type requirementStoryView struct {
 	// RelatedReviews are the reviews that touched the code this story
 	// reaches. They are derived, never authored.
 	RelatedReviews []relatedReviewView
+	// Plans are the Plans with a Task naming this story.
+	Plans []featureLinkView
 	// Historical is present only when this story has been explicitly retired.
 	// Its replacement links are populated from active supersedes relations,
 	// never inferred from the lifecycle reason.

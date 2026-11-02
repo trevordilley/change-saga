@@ -1384,8 +1384,10 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		graph.decorateRequirements(requirementsView)
 	}
 	storyTitles := map[string]string{}
-	for _, story := range requirementsView.Stories {
+	for index := range requirementsView.Stories {
+		story := requirementsView.Stories[index]
 		storyTitles[story.Target] = story.Title
+		requirementsView.Stories[index].Plans = plansTouching(document, map[string]bool{story.Target: true})
 	}
 	data.Terms, err = a.makeTermsPage(r.Context(), requirementsDocument, storyTitles, r.URL.Path, r.PathValue("term"), directoryQuery(r))
 	if err != nil {
