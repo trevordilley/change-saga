@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "plans-technical-design-draft",
+  "title": "How we would build Plans",
+  "media_type": "text/markdown",
+  "entrypoint": "design.md"
+}
