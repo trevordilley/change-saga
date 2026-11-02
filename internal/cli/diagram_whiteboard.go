@@ -121,11 +121,17 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 		return err
 	}
 	if op == "check" {
+		warnings := whiteboardNoteWarnings(value.Revision.Document, manifest.Source.Repository)
 		if *jsonOutput || *format == "json" {
-			return writeJSON(out, map[string]any{"whiteboard": *boardID, "revision": value.Revision.ID, "valid": true})
+			return writeJSON(out, map[string]any{"whiteboard": *boardID, "revision": value.Revision.ID, "valid": true, "warnings": warnings})
 		}
-		_, err = fmt.Fprintf(out, "Whiteboard %s revision %s: valid\n", *boardID, value.Revision.ID)
-		return err
+		if _, err := fmt.Fprintf(out, "Whiteboard %s revision %s: valid\n", *boardID, value.Revision.ID); err != nil {
+			return err
+		}
+		for _, warning := range warnings {
+			fmt.Fprintf(out, "Warning %s [%s]: %s\n", warning.Element, warning.Code, warning.Message)
+		}
+		return nil
 	}
 	if op == "get" || *jsonOutput || *format == "json" {
 		return writeJSON(out, map[string]any{"whiteboard": *boardID, "revision": value.Revision.ID, "name": displayName, "diagram": description})
@@ -173,6 +179,18 @@ func writeWhiteboardInstance(out io.Writer, instance diagram.Instance) {
 		if text != "" {
 			fmt.Fprintf(out, "    %s\n", text)
 		}
+	}
+	for _, ref := range element.Evidence {
+		fmt.Fprintf(out, "    evidence: %s — %s\n", ref.Location().String(), ref.Note)
+	}
+	for _, link := range element.CriterionLinks {
+		fmt.Fprintf(out, "    criterion: %s @ %s — %s\n", link.Criterion, link.StoryRevision, link.Rationale)
+	}
+	if element.Record != "" {
+		fmt.Fprintf(out, "    record: %s\n", element.Record)
+	}
+	if element.Documentation != nil {
+		fmt.Fprintf(out, "    documentation: %s @ %s\n", element.Documentation.Target, element.Documentation.Revision)
 	}
 	if source := instance.Source; source != nil {
 		fmt.Fprintf(out, "    source: %s @ %s", source.Target, source.Revision)

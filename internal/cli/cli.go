@@ -212,7 +212,7 @@ var commandUsage = map[string]string{
 	"add-slide":                     "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"apply-slide":                   "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
 	"whiteboard":                    "change-saga whiteboard <publish|get|describe|check|list|rename|assign-role|unassign-role|archive|restore> [flags] <saga>",
-	"whiteboard publish":            "change-saga whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
+	"whiteboard publish":            "change-saga whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] [--repo PATH] --from FILE|- <saga>",
 	"whiteboard get":                "change-saga whiteboard get --id ID [--revision ID] [--focus PATH] <saga>",
 	"whiteboard describe":           "change-saga whiteboard describe --id ID [--revision ID] [--focus PATH] [--format text|json] <saga>",
 	"whiteboard check":              "change-saga whiteboard check --id ID [--revision ID] [--focus PATH] [--json] <saga>",
