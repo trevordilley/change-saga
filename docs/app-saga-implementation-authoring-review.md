@@ -4,6 +4,8 @@ Status: canonical implementation/code-evidence authoring audit for
 `agent-loop`, `reviewer-app`, and `reviews`, performed against source commit
 `58541107888381e0d7f0332bee4f1ad353b0399e` on 2026-09-20.
 
+> **Since this audit:** the old work plan (`internal/workplan`, `plan add-wave`, `plan add-item`, and so on) has been removed. Plans and Tasks replace it: see [`SPEC.md`](../SPEC.md) section 9 and [`references/plans.md`](../skills/change-saga/references/plans.md). Its pins and test command below no longer apply as written.
+
 ## Scope and result
 
 This wave changed only the three owned feature directories and this audit. It
