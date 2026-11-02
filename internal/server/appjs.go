@@ -2224,6 +2224,8 @@ const appJavaScript = `(() => {
     const href = button?.dataset.targetCodeHref;
     if (!href || button.dataset.targetCodeLoading === 'true') return;
     const isCurrent = diagramAffordanceActionIsCurrent(button);
+    // A control inside the drawer goes with its content, so focus returns past it.
+    returnOpener ||= button.closest('.diff-drawer.open') ? drawerOpener : null;
     // A Task's reference says so in its row: a tooltip alone is easily missed.
     const rowError = button.closest('[data-task-code-row]')?.querySelector('[data-task-code-error]');
     if (rowError) rowError.hidden = true;
@@ -2764,7 +2766,7 @@ const appJavaScript = `(() => {
     const targetCodeButton = event.target.closest('[data-target-code-href]');
     const storiesButton = event.target.closest('[data-open-stories]');
     if (storiesButton) { event.preventDefault(); openStoriesDrawer(storiesButton); return; }
-    if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton, targetCodeButton.closest('.diff-drawer.open') ? drawerOpener : null); return; }
+    if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const documentationButton = event.target.closest('[data-documentation-target]');
     if (documentationButton) {event.preventDefault(); void openDocumentation(documentationButton); return;}
     if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item,sourceRelationship:pin.relationship}},true); return;}
