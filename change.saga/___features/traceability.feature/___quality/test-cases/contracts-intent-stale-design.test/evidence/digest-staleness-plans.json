@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "digest-staleness-plans",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-stale-design",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-intent-stale-design:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "stale"
+  ],
+  "code": [
+    {
+      "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+      "path": "internal/livingapp/session_test.go",
+      "start": 201,
+      "end": 217,
+      "digest": "sha256:5ca15a4e7203b3581d966aa03b9ae7dc57f7e02f0b043247a5ec3c18c49527d9"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-intent-stale-design:evidence:digest-staleness"
+  ],
+  "created_at": "2026-11-02T05:45:27Z"
+}
