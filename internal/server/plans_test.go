@@ -86,13 +86,13 @@ func TestAPlanPageReadsAsAPlanAndShowsItsTasks(t *testing.T) {
 			t.Errorf("the deck view has no %q", want)
 		}
 	}
-	graph := getPage(t, handler, "/plans/first?view=dependencies").Body.String()
+	graph := getPage(t, handler, "/plans/first?tab=dependencies").Body.String()
 	for _, want := range []string{`1 task can start now.`, `data-plan-graph-task="refactor"`, `No dependencies`, `1 step in`} {
 		if !strings.Contains(graph, want) {
 			t.Errorf("the dependency view has no %q", want)
 		}
 	}
-	tasks := getPage(t, handler, "/plans/first?view=tasks").Body.String()
+	tasks := getPage(t, handler, "/plans/first?tab=tasks").Body.String()
 	if !strings.Contains(tasks, `data-plan-unsized`) || !strings.Contains(tasks, "Not sized yet") {
 		t.Errorf("the tasks view does not single out the unsized task")
 	}
@@ -140,7 +140,7 @@ func TestPlanComparisonReadsWhatTheReviewsNamed(t *testing.T) {
 	}
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 
-	page := getPage(t, handler, "/plans/first?view=reviews").Body.String()
+	page := getPage(t, handler, "/plans/first?tab=reviews").Body.String()
 	for _, want := range []string{`data-plan-comparison-row="feature-work"`, "Not delivered", `data-plan-unplanned`} {
 		if !strings.Contains(page, want) {
 			t.Errorf("the comparison has no %q", want)

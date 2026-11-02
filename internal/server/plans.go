@@ -260,7 +260,7 @@ func (view planPageView) Tabs() []planLink {
 	for _, tab := range planTabs {
 		href := planHref(view.Plan.ID)
 		if tab.ID != "deck" {
-			href += "?view=" + tab.ID
+			href += "?tab=" + tab.ID
 		}
 		tabs = append(tabs, planLink{Title: tab.Title, Href: href})
 	}
@@ -290,7 +290,7 @@ func (a *app) planPage(w http.ResponseWriter, r *http.Request) {
 	stories := loadPlanStories(a.root, document)
 	ready := planReady(plan)
 	view := planPageView{Plan: plan, Tab: "deck", All: len(plan.Tasks), Touches: stories.touches(plan), Overview: planOverview(plan)}
-	if requested := r.URL.Query().Get("view"); requested != "" {
+	if requested := r.URL.Query().Get("tab"); requested != "" {
 		for _, tab := range planTabs {
 			if tab.ID == requested {
 				view.Tab = requested
