@@ -3,7 +3,7 @@
   "version": 5,
   "id": "coverage-whiteboard",
   "title": "Draw Tasks ending at their stories on a whiteboard",
-  "phase": "views",
+  "phase": "slide-outs-and-board",
   "story": "urn:change-saga:change-saga:story:map-task-dependencies",
   "depends_on": [
     "plan-header-views"
@@ -13,6 +13,6 @@
     "reason": "A contained change to known code, built and checked in a session."
   },
   "state": "done",
-  "summary": "Columns are phases and the last is stories, on the whiteboard's pan and zoom.",
+  "summary": "The Tasks view: columns are phases and the last is stories, on the whiteboard's pan and zoom.",
   "created_at": "2026-11-02T20:41:12.01979Z"
 }

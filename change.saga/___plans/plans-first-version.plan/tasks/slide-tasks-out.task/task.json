@@ -3,7 +3,7 @@
   "version": 5,
   "id": "slide-tasks-out",
   "title": "List a slide's Tasks in a slide-out",
-  "phase": "views",
+  "phase": "slide-outs-and-board",
   "story": "urn:change-saga:change-saga:story:see-done-on-slides",
   "depends_on": [
     "plan-deck-viewer"

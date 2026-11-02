@@ -10,7 +10,7 @@ A Plan is where the technical design for a change is drafted, and its Tasks are 
 
 A **Task** is one well-understood piece of work. It has dependencies on other Tasks, and a phase is a set of Tasks that can run in parallel, so a Task can only depend on an earlier phase. It can have a small essay and references to the code that matters. The Plan's slides reference Tasks, and a slide's Tasks and their done state open in a slide-out.
 
-A Plan has three views in its header, as a review does. **Deck** is the essay and slides. **Tasks** lists them by phase, with what each needs, unblocks, and leads to. **Coverage** is a whiteboard of the Tasks ending at the stories they lead to: selecting a node marks the path to it, a Task shows its detail, and a story shows every Task it takes.
+A Plan has two views in its header. **Deck** is the essay and slides. **Tasks** is a whiteboard of the Tasks, by phase, ending at the stories they lead to: selecting a node marks the path to it, a Task shows its detail, and a story shows every Task it takes. A Task's own page shows it selected within its chain.
 
 ## Everything links to a story {#everything-links-to-a-story}
 

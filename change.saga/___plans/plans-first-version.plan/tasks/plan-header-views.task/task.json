@@ -2,7 +2,7 @@
   "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
   "version": 5,
   "id": "plan-header-views",
-  "title": "Put Deck, Tasks, and Coverage in the header",
+  "title": "Put Deck and Tasks in the header",
   "phase": "guide-and-rebuild",
   "story": "urn:change-saga:change-saga:story:find-plans-in-their-section",
   "depends_on": [

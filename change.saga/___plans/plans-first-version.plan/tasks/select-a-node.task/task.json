@@ -3,7 +3,7 @@
   "version": 5,
   "id": "select-a-node",
   "title": "Select a node to see its path and detail",
-  "phase": "select-a-node",
+  "phase": "select-on-the-board",
   "story": "urn:change-saga:change-saga:story:see-plans-from-stories",
   "depends_on": [
     "coverage-whiteboard"
