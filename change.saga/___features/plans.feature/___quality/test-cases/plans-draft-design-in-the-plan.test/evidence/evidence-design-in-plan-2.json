@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-design-in-plan-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "design-in-plan"
+  ],
+  "code": [
+    {
+      "commit": "a610919b3921c501cfb6a3c63f4f75521b67f9d0",
+      "path": "internal/server/plans_test.go",
+      "start": 57,
+      "end": 77,
+      "digest": "sha256:2fcd0775ccb5f89e9099b93142f4fb5758dc759710b1c27179cd601c1b5498d7"
+    },
+    {
+      "commit": "a610919b3921c501cfb6a3c63f4f75521b67f9d0",
+      "path": "internal/cli/plans_test.go",
+      "start": 256,
+      "end": 270,
+      "digest": "sha256:18b05b213b7231ca2c8e45fcb99414f1ebd28f2aaf4a13aa7e0f3ce2619b4813"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan:evidence:evidence-design-in-plan"
+  ],
+  "created_at": "2026-11-02T23:02:12Z"
+}

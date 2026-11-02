@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-guide-names-unready-tasks-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-plan-with-a-guide",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-plan-with-a-guide:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "guide-names-unready-tasks"
+  ],
+  "code": [
+    {
+      "commit": "a610919b3921c501cfb6a3c63f4f75521b67f9d0",
+      "path": "internal/cli/plans_test.go",
+      "start": 311,
+      "end": 337,
+      "digest": "sha256:a9788bd3ff418a7d2602c1428554e1a77825bd8936d9276401a1c1d844d1dc87"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-plan-with-a-guide:evidence:evidence-guide-names-unready-tasks"
+  ],
+  "created_at": "2026-11-02T23:02:12Z"
+}
