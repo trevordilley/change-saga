@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-tasks-belong-to-plan",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-map-task-dependencies",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-map-task-dependencies:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "tasks-belong-to-plan"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/cli/plans_test.go",
+      "start": 80,
+      "end": 95,
+      "digest": "sha256:96217fed593bd186d6e8ef0f336c65691ea539468e8623db88bfa322be8a50ad"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:18:51Z"
+}

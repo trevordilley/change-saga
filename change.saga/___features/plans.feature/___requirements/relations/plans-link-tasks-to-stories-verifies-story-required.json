@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-link-tasks-to-stories-verifies-story-required",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
+  "to": "urn:change-saga:change-saga:story:link-tasks-to-stories:criterion:story-required",
+  "scope": "self",
+  "rationale": "Step story-required checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:link-tasks-to-stories:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:18:44.396259Z"
+}

@@ -32,7 +32,14 @@ The sizing goal is that a team is confident each Task would have taken two days 
 
 ## What is true today {#what-is-true-today}
 
-Plans and Tasks are built. These stories are proposed, because the people who asked for them have not yet accepted them. [Plans and Tasks: first version](/plans/plans-first-version) is the first real Plan: it holds the technical design for this feature and the Tasks that built it. The [prototype](/prototypes/plans) shows the direction explored beforehand, and its content and done states are illustrative.
+Plans and Tasks are built, and eleven of these stories are accepted because the code and tests do what they say. Four stay proposed because part of each is not built:
+
+- [Show which Plans touch a story](/requirements/see-plans-from-stories): a story's page lists its Plans but not the Tasks that link to it or lead to those.
+- [Find everything needed to start a Task](/requirements/understand-a-task): a Task's page shows its code references but does not open them.
+- [See what a Plan will build](/requirements/show-plan-prototypes): a Plan with no slides yet does not list its prototypes.
+- [Get guided to a Plan you can be confident in](/requirements/plan-with-a-guide): `plan guide` names what is not ready and tells an agent to research and prototype, but does neither itself.
+
+[Plans and Tasks: first version](/plans/plans-first-version) is the first real Plan: it holds the technical design for this feature and the Tasks that built it. The [prototype](/prototypes/plans) shows the direction explored beforehand, and its content and done states are illustrative.
 
 ## One way to plan work {#one-way-to-plan-work}
 

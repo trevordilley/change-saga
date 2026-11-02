@@ -64,7 +64,7 @@ never creates or repairs them.
 
 ## Scope and integration
 
-The audit reads existing feature ownership from loaded Saga, requirements, work-plan, and quality models. It deliberately introduces no competing persisted schema. Current cited `implementation` coverage exceptions are the only records that distinguish an intentional implementation gap from missing authoring.
+The audit reads existing feature ownership from loaded Saga, requirements, and quality models. It deliberately introduces no competing persisted schema. Current cited `implementation` coverage exceptions are the only records that distinguish an intentional implementation gap from missing authoring.
 
 The generic canonical feature traversal remains owned by the feature-context
 query. Audit keeps a local ownership index only to select the audited feature;

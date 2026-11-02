@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-no-old-records",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-one-way-to-plan",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-one-way-to-plan:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "no-old-records"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/saga/load_test.go",
+      "start": 181,
+      "end": 190,
+      "digest": "sha256:600ad4add58fd9b429494266a31831c63c0474bfcb360f87cb5b8f9f804b5506"
+    },
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/livingapp/session_test.go",
+      "start": 121,
+      "end": 169,
+      "digest": "sha256:d48a8923b18398c26eb207a8d1f1887dedf12000439486d8fe8e3f177794d726"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:18:56Z"
+}

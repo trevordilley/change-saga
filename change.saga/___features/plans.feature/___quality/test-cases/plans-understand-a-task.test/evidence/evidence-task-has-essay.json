@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-task-has-essay",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-understand-a-task",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-understand-a-task:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "task-has-essay"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/server/plans_test.go",
+      "start": 293,
+      "end": 304,
+      "digest": "sha256:b9bfbbe1d70310265cc2475ac0fa4c401ac24e8f478fafc1ec751850f683957c"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:19:18Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-see-plans-from-stories-verifies-worked-out-from-links",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-see-plans-from-stories",
+  "to": "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:worked-out-from-links",
+  "scope": "self",
+  "rationale": "Step worked-out-from-links checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-see-plans-from-stories:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:see-plans-from-stories:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:19:08.556724Z"
+}

@@ -30,6 +30,7 @@ func markdownEngine(namespace string) goldmark.Markdown {
 		goldmark.WithParserOptions(
 			parser.WithAttribute(),
 			parser.WithAutoHeadingID(),
+			recordLinkTransformerOption(),
 		),
 		goldmark.WithRendererOptions(renderer.WithNodeRenderers(
 			util.Prioritized(&headingRenderer{namespace: namespace}, 100),

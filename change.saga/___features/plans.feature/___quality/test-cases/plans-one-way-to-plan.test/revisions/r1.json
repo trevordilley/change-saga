@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-one-way-to-plan",
+  "parents": [],
+  "title": "One way to plan work",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "one-grammar",
+      "action": "Run each removed work plan command.",
+      "expected_result": "Each is refused.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:one-way-to-plan:criterion:one-grammar"
+      ]
+    },
+    {
+      "id": "no-old-records",
+      "action": "Load a Saga holding a ___workplan directory, and read plan coverage from Tasks.",
+      "expected_result": "The directory is refused, and readiness counts what Tasks name.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:one-way-to-plan:criterion:no-old-records"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-02T22:18:53Z"
+}

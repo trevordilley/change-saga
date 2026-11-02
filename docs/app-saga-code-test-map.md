@@ -9,6 +9,8 @@ Audit snapshot: source commit `8059a17f19c6e4462d9a23429de0f65da6883770`
 on 2026-09-20. `change-saga validate --json app.saga` reported a valid Saga.
 `go test ./...` passed at this snapshot.
 
+> **Since this audit:** the old work plan (`internal/workplan`, `plan add-wave`, `plan add-item`, and so on) has been removed. Plans and Tasks replace it: see [`SPEC.md`](../SPEC.md) section 9 and [`references/plans.md`](../skills/change-saga/references/plans.md). Rows and paths below that name it describe the snapshot; do not look for them in the code.
+
 ## How to use this map
 
 The requirements pass should decide which existing stories and acceptance

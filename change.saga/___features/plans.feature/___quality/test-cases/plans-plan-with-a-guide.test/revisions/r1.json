@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-plan-with-a-guide",
+  "parents": [],
+  "title": "The guide names what is not ready",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "guide-names-unready-tasks",
+      "action": "Run plan guide --plan on unsized, oversized and sized Tasks.",
+      "expected_result": "It names the first two, and says people still judge the last.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-names-unready-tasks"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-02T22:18:57Z"
+}

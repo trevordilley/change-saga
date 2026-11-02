@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan",
+  "parents": [],
+  "title": "A Plan holds its design before the code exists",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "design-in-plan",
+      "action": "Author a Plan essay and slide that name no code, and open the Plan.",
+      "expected_result": "The essay reads in the deck viewer and the slide owes no code evidence.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:draft-design-in-the-plan:criterion:design-in-plan"
+      ]
+    },
+    {
+      "id": "tasks-carry-out-design",
+      "action": "Publish a Plan slide whose Item names a Task, and one naming a missing Task.",
+      "expected_result": "The slide records the Task, and the missing Task is refused.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:draft-design-in-the-plan:criterion:tasks-carry-out-design"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-02T22:18:28Z"
+}

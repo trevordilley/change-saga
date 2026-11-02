@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:compare-plan-with-reviews",
+  "parents": [
+    "urn:change-saga:change-saga:story:compare-plan-with-reviews:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Verified against the code and tests on 2026-11-02. A Plan and its Reviews link both ways, and the comparison names what no Review delivered and what the Plan did not include.",
+  "created_at": "2026-11-02T22:19:19.000416Z"
+}

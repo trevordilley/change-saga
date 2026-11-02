@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:size-tasks-small",
+  "parents": [
+    "urn:change-saga:change-saga:story:size-tasks-small:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Verified against the code and tests on 2026-11-02. A Task records its sizing, and the Tasks view names those unsized or judged larger.",
+  "created_at": "2026-11-02T22:19:21.152118Z"
+}

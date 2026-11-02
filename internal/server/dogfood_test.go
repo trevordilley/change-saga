@@ -82,6 +82,51 @@ func dogfoodPage(t *testing.T, path string) (int, string) {
 	return recorder.Code, recorder.Body.String()
 }
 
+// dogfoodLinks is the Saga's records joined the way its pages read them. A check
+// of every record is made against this, because rendering every page tests the
+// same templates hundreds of times; each kind's page is rendered once.
+var dogfoodLinks struct {
+	once  sync.Once
+	graph *appGraph
+	code  []documentedCode
+	err   error
+}
+
+func dogfoodGraph(t *testing.T) (*appGraph, []documentedCode) {
+	t.Helper()
+	requireDogfoodSaga(t)
+	dogfoodLinks.once.Do(func() {
+		dogfoodLinks.graph, dogfoodLinks.code, dogfoodLinks.err = loadObserveGraph(dogfoodSaga)
+	})
+	if dogfoodLinks.err != nil {
+		t.Fatal(dogfoodLinks.err)
+	}
+	return dogfoodLinks.graph, dogfoodLinks.code
+}
+
+// richestStory is the story whose page has the most to show.
+func richestStory(graph *appGraph) *requirements.Story {
+	var richest *requirements.Story
+	best := -1
+	for index := range graph.requirements.Stories {
+		story := &graph.requirements.Stories[index]
+		if story.CurrentRevision == nil {
+			continue
+		}
+		urn := "urn:change-saga:" + graph.requirements.SagaID + ":story:" + story.Identity.ID
+		trace := graph.traceTo(urn)
+		score := len(story.CurrentRevision.Personas) + len(story.CurrentRevision.Citations) + len(story.CurrentRevision.AcceptanceCriteria) + len(trace.Design) + len(trace.Slides) + len(trace.Tests)
+		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+			crit := graph.traceTo(urn + ":criterion:" + criterion.ID)
+			score += len(crit.Design) + len(crit.Slides) + len(crit.Tests)
+		}
+		if score > best {
+			richest, best = story, score
+		}
+	}
+	return richest
+}
+
 var sidebarNavTags = regexp.MustCompile(`<nav\b[^>]*>|</nav\s*>`)
 
 // pageSidebar is the Contents navigation of page, already rendered at path.
@@ -256,39 +301,11 @@ func TestEveryPersonaHasAPage(t *testing.T) {
 // chapters of the app overview.
 func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 	t.Parallel()
-	document, records, tests := dogfoodRecords(t)
+	graph, _ := dogfoodGraph(t)
 	root := dogfoodOK(t, "/")
-	for _, feature := range document.Features {
-		href := featureHref(feature.ID)
-		if !strings.Contains(root, `href="`+href+`"`) {
-			t.Fatalf("the sidebar does not link %s", href)
-		}
-		page := dogfoodOK(t, href)
-		for _, want := range []string{"data-feature-page", "data-feature-summary"} {
-			if !strings.Contains(page, want) {
-				t.Fatalf("%s lacks %s", href, want)
-			}
-		}
-		hasStories, hasTests := false, false
-		for _, story := range records.Stories {
-			hasStories = hasStories || story.Feature == feature.ID
-		}
-		for _, testCase := range tests.TestCases {
-			hasTests = hasTests || testCase.Feature == feature.ID
-		}
-		hasDesign := feature.Design != nil && len(feature.Design.Children)+len(feature.Design.Fragments) > 0
-		for marker, want := range map[string]bool{
-			"data-feature-stories":        hasStories,
-			"data-feature-design":         hasDesign,
-			"data-feature-quality":        hasTests,
-			"data-feature-implementation": len(feature.Decks) > 0,
-		} {
-			if got := strings.Contains(page, marker); got != want {
-				t.Fatalf("%s renders %s = %v, want %v", href, marker, got, want)
-			}
-		}
+	abstractOf := func(feature *saga.Feature) string {
 		abstract := ""
-		for _, manifest := range records.Features {
+		for _, manifest := range graph.requirements.Features {
 			if manifest.ID == feature.ID {
 				abstract = manifest.Description
 			}
@@ -298,19 +315,97 @@ func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 		if overview := feature.Overview(); overview != nil && overview.Abstract != "" {
 			abstract = overview.Abstract
 		}
-		if abstract != "" && !strings.Contains(page, string(essayAbstract(abstract, feature.Target))) {
+		return abstract
+	}
+	expected := func(feature *saga.Feature) map[string]bool {
+		hasStories, hasTests := false, false
+		for _, story := range graph.requirements.Stories {
+			hasStories = hasStories || story.Feature == feature.ID
+		}
+		for _, testCase := range graph.quality.TestCases {
+			hasTests = hasTests || testCase.Feature == feature.ID
+		}
+		return map[string]bool{
+			"data-feature-stories":        hasStories,
+			"data-feature-design":         feature.Design != nil && len(feature.Design.Children)+len(feature.Design.Fragments) > 0,
+			"data-feature-quality":        hasTests,
+			"data-feature-implementation": len(feature.Decks) > 0,
+		}
+	}
+	chapterFetch := func(chapter *saga.Section) string {
+		return `data-section-href="/api/section?target=` + template.HTMLEscapeString(url.QueryEscape(chapter.Target)) + `"`
+	}
+	var fullest, sparsest *saga.Feature
+	shown := func(feature *saga.Feature) int {
+		count := 0
+		for _, present := range expected(feature) {
+			if present {
+				count++
+			}
+		}
+		return count
+	}
+	for _, feature := range graph.document.Features {
+		href := featureHref(feature.ID)
+		if !strings.Contains(root, `href="`+href+`"`) {
+			t.Fatalf("the sidebar does not link %s", href)
+		}
+		view, err := graph.featurePage(feature.ID)
+		if err != nil {
+			t.Fatalf("%s: %v", href, err)
+		}
+		want := expected(feature)
+		for marker, got := range map[string]bool{
+			"data-feature-stories":        len(view.Stories) > 0,
+			"data-feature-design":         view.Design != nil,
+			"data-feature-quality":        len(view.Tests) > 0,
+			"data-feature-implementation": len(view.Decks) > 0,
+		} {
+			if got != want[marker] {
+				t.Fatalf("%s holds %s = %v, want %v", href, marker, got, want[marker])
+			}
+		}
+		if view.Abstract != abstractOf(feature) {
+			t.Fatalf("%s reads the abstract %q, want %q", href, view.Abstract, abstractOf(feature))
+		}
+		if feature.Design != nil {
+			for _, chapter := range feature.Design.Children {
+				if strings.Contains(root, chapterFetch(chapter)) {
+					t.Fatalf("the overview still lists the feature chapter %s", chapter.ID)
+				}
+			}
+		}
+		if fullest == nil || shown(feature) > shown(fullest) || shown(feature) == shown(fullest) && feature.Design != nil && len(feature.Design.Children) > 0 && (fullest.Design == nil || len(fullest.Design.Children) == 0) {
+			fullest = feature
+		}
+		if sparsest == nil || shown(feature) < shown(sparsest) {
+			sparsest = feature
+		}
+	}
+	// The template follows those fields: one page with the most to show, and one
+	// with the least, so a section appears only when it has something.
+	for _, feature := range []*saga.Feature{fullest, sparsest} {
+		href := featureHref(feature.ID)
+		page := dogfoodOK(t, href)
+		for _, want := range []string{"data-feature-page", "data-feature-summary"} {
+			if !strings.Contains(page, want) {
+				t.Fatalf("%s lacks %s", href, want)
+			}
+		}
+		for marker, want := range expected(feature) {
+			if got := strings.Contains(page, marker); got != want {
+				t.Fatalf("%s renders %s = %v, want %v", href, marker, got, want)
+			}
+		}
+		if abstract := abstractOf(feature); abstract != "" && !strings.Contains(page, string(essayAbstract(abstract, feature.Target))) {
 			t.Fatalf("%s lacks its abstract", href)
 		}
 		if feature.Design == nil {
 			continue
 		}
 		for _, chapter := range feature.Design.Children {
-			fetch := `data-section-href="/api/section?target=` + template.HTMLEscapeString(url.QueryEscape(chapter.Target)) + `"`
-			if !strings.Contains(page, fetch) {
+			if !strings.Contains(page, chapterFetch(chapter)) {
 				t.Fatalf("%s does not hold its chapter %s", href, chapter.ID)
-			}
-			if strings.Contains(root, fetch) {
-				t.Fatalf("the overview still lists the feature chapter %s", chapter.ID)
 			}
 			// The feature's own page is where its chapters are in the sidebar:
 			// that page's feature is the one the sidebar shows.
@@ -326,52 +421,95 @@ func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 // code, and its runs.
 func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 	t.Parallel()
-	_, records, tests := dogfoodRecords(t)
+	graph, _ := dogfoodGraph(t)
+	tests := graph.quality
 	if len(tests.TestCases) == 0 {
 		t.Skip("the Saga has no test cases")
 	}
-	for _, testCase := range tests.TestCases {
-		href := testCaseHref(testCase.Identity.ID)
-		// Quality lists the test cases of the feature the sidebar shows, so the
-		// row is asserted on the test case's own page.
-		page := dogfoodOK(t, href)
-		sidebar := pageSidebar(t, href, page)
-		if strings.Contains(sidebar, "no test cases yet") {
-			t.Fatalf("the feature of %s still says it has no test cases", href)
+	listed := func(nodes []*navNodeView, href string) bool {
+		for _, node := range nodes {
+			if node.Href == href {
+				return true
+			}
 		}
-		if !strings.Contains(sidebar, `href="`+href+`"`) {
+		return false
+	}
+	var richest *quality.TestCase
+	links := func(testCase *quality.TestCase) []requirements.Relation {
+		return graph.outbound["urn:change-saga:"+tests.SagaID+":test-case:"+testCase.Identity.ID]
+	}
+	for index := range tests.TestCases {
+		testCase := &tests.TestCases[index]
+		href := testCaseHref(testCase.Identity.ID)
+		if testCase.CurrentRevision == nil || testCase.CurrentRevision.Title == "" {
+			t.Fatalf("%s has no definition to show", href)
+		}
+		// Quality lists the test cases of the feature the sidebar shows, and the
+		// feature's own page lists them too.
+		if !listed(testCaseNav(tests, testCase.Feature), href) {
 			t.Fatalf("the sidebar does not list %s", href)
 		}
-		for _, want := range []string{"data-test-definition", "data-test-verifies", "data-test-evidence", "data-test-definition-stage", template.HTMLEscapeString(testCase.CurrentRevision.Title)} {
-			if !strings.Contains(page, want) {
-				t.Fatalf("%s lacks %q", href, want)
-			}
+		view, err := graph.featurePage(testCase.Feature)
+		if err != nil {
+			t.Fatalf("%s: %v", href, err)
 		}
-		for _, step := range testCase.CurrentRevision.Steps {
-			if !strings.Contains(page, template.HTMLEscapeString(step.Action)) {
-				t.Fatalf("%s lacks step %q", href, step.Action)
-			}
+		onFeature := false
+		for _, link := range view.Tests {
+			onFeature = onFeature || link.Href == href
 		}
-		urn := "urn:change-saga:" + tests.SagaID + ":test-case:" + testCase.Identity.ID
-		for _, relation := range records.Relations {
-			if relation.From == urn && relation.State == requirements.RelationActive {
-				parts := strings.Split(relation.To, ":")
-				if len(parts) == 7 && !strings.Contains(page, `href="`+requirementCriterionHref(parts[4], parts[6])+`"`) {
-					t.Fatalf("%s does not link the criterion it verifies: %s", href, relation.To)
-				}
-			}
-		}
-		if len(testCase.Evidence) > 0 && !strings.Contains(page, "data-test-code") {
-			t.Fatalf("%s renders none of its evidence code", href)
-		}
-		for _, run := range testCase.Runs {
-			if !strings.Contains(page, `data-test-run="`+run.ID+`"`) {
-				t.Fatalf("%s lacks run %s", href, run.ID)
-			}
-		}
-		if featurePage := dogfoodOK(t, featureHref(testCase.Feature)); !strings.Contains(featurePage, `href="`+href+`"`) {
+		if !onFeature {
 			t.Fatalf("the feature page does not list %s", href)
 		}
+		for _, relation := range links(testCase) {
+			if relation.State != requirements.RelationActive {
+				continue
+			}
+			parts := strings.Split(relation.To, ":")
+			if len(parts) == 7 && graph.link(relation.To).Href != requirementCriterionHref(parts[4], parts[6]) {
+				t.Fatalf("%s does not link the criterion it verifies: %s", href, relation.To)
+			}
+		}
+		if richest == nil || len(links(testCase))+len(testCase.Evidence)+len(testCase.Runs) > len(links(richest))+len(richest.Evidence)+len(richest.Runs) {
+			richest = testCase
+		}
+	}
+	// One page shows all of that: its definition, the criteria it verifies, its
+	// evidence code, and its runs.
+	testCase := richest
+	href := testCaseHref(testCase.Identity.ID)
+	page := dogfoodOK(t, href)
+	sidebar := pageSidebar(t, href, page)
+	if strings.Contains(sidebar, "no test cases yet") {
+		t.Fatalf("the feature of %s still says it has no test cases", href)
+	}
+	if !strings.Contains(sidebar, `href="`+href+`"`) {
+		t.Fatalf("the sidebar does not list %s", href)
+	}
+	for _, want := range []string{"data-test-definition", "data-test-verifies", "data-test-evidence", "data-test-definition-stage", template.HTMLEscapeString(testCase.CurrentRevision.Title)} {
+		if !strings.Contains(page, want) {
+			t.Fatalf("%s lacks %q", href, want)
+		}
+	}
+	for _, step := range testCase.CurrentRevision.Steps {
+		if !strings.Contains(page, template.HTMLEscapeString(step.Action)) {
+			t.Fatalf("%s lacks step %q", href, step.Action)
+		}
+	}
+	for _, relation := range links(testCase) {
+		if parts := strings.Split(relation.To, ":"); relation.State == requirements.RelationActive && len(parts) == 7 && !strings.Contains(page, `href="`+requirementCriterionHref(parts[4], parts[6])+`"`) {
+			t.Fatalf("%s does not link the criterion it verifies: %s", href, relation.To)
+		}
+	}
+	if len(testCase.Evidence) > 0 && !strings.Contains(page, "data-test-code") {
+		t.Fatalf("%s renders none of its evidence code", href)
+	}
+	for _, run := range testCase.Runs {
+		if !strings.Contains(page, `data-test-run="`+run.ID+`"`) {
+			t.Fatalf("%s lacks run %s", href, run.ID)
+		}
+	}
+	if featurePage := dogfoodOK(t, featureHref(testCase.Feature)); !strings.Contains(featurePage, `href="`+href+`"`) {
+		t.Fatalf("the feature page does not list %s", href)
 	}
 }
 
@@ -380,55 +518,88 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 // criterion has its own traceability view; the sidebar names stories by
 // title, not by ordinal.
 func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
-	// It only reads the shared dogfood server, which serves concurrent
-	// requests as a reviewer's server does, so it runs beside the others.
 	t.Parallel()
-	document, records, _ := dogfoodRecords(t)
-	graph := newAppGraph(document, records, quality.Document{})
+	graph, _ := dogfoodGraph(t)
+	records := graph.requirements
+	surface, nav, err := makeRequirementsSurface(records, requirementRoute{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	rows := map[string]string{}
+	for _, node := range nav.Children {
+		if strings.HasPrefix(node.Title, "Story 0") {
+			t.Fatal("the sidebar still names stories by ordinal")
+		}
+		rows[node.Href] = node.Title
+	}
+	graph.decorateRequirements(surface)
+	viewOf := map[string]*requirementStoryView{}
+	for _, view := range surface.Stories {
+		viewOf[view.ID] = view
+	}
 	for _, story := range records.Stories {
 		if story.CurrentRevision == nil {
 			continue
 		}
 		href := requirementStoryHref(story.Identity.ID)
-		page := dogfoodOK(t, href)
-		// A story's page shows that story's feature, so its Requirements row is
-		// in that page's own sidebar.
-		sidebar := pageSidebar(t, href, page)
-		if strings.Contains(sidebar, ">Story 0") || strings.Contains(sidebar, "Story 01 ·") {
-			t.Fatal("the sidebar still names stories by ordinal")
+		if rows[href] != story.CurrentRevision.Title {
+			t.Fatalf("the sidebar names %s %q, not by its title", href, rows[href])
 		}
-		if !strings.Contains(sidebar, `title="`+template.HTMLEscapeString(story.CurrentRevision.Title)+`"`) {
-			t.Fatalf("the sidebar does not name %s by its title", href)
-		}
-		for _, want := range []string{"data-story-context", "data-story-trace", `href="` + featureHref(story.Feature) + `"`} {
-			if !strings.Contains(page, want) {
-				t.Fatalf("%s lacks %s", href, want)
-			}
-		}
-		for _, persona := range story.CurrentRevision.Personas {
-			if !strings.Contains(page, `data-story-persona="`+persona+`"`) {
-				t.Fatalf("%s does not name persona %s", href, persona)
-			}
-		}
-		if got := strings.Count(page, "data-story-citation"); got != len(story.CurrentRevision.Citations) {
-			t.Fatalf("%s shows %d citations, want %d", href, got, len(story.CurrentRevision.Citations))
+		if viewOf[story.Identity.ID].FeatureLink.Href != featureHref(story.Feature) {
+			t.Fatalf("%s does not link its feature", href)
 		}
 		storyURN := "urn:change-saga:" + records.SagaID + ":story:" + story.Identity.ID
-		for _, link := range append(append(graph.traceTo(storyURN).Design, graph.traceTo(storyURN).Slides...), graph.traceTo(storyURN).Tests...) {
-			if !strings.Contains(page, `href="`+template.HTMLEscapeString(link.Href)+`"`) {
-				t.Fatalf("%s does not link %s", href, link.Target)
+		targets := []string{storyURN}
+		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+			targets = append(targets, storyURN+":criterion:"+criterion.ID)
+		}
+		for _, target := range targets {
+			trace := graph.traceTo(target)
+			for _, link := range append(append(trace.Design, trace.Slides...), trace.Tests...) {
+				if link.Href == "" {
+					t.Fatalf("%s traces to %s, which goes nowhere", target, link.Target)
+				}
 			}
 		}
-		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
-			criterionPage := dogfoodOK(t, requirementCriterionHref(story.Identity.ID, criterion.ID))
-			if !strings.Contains(criterionPage, "data-criterion-page") || !strings.Contains(criterionPage, template.HTMLEscapeString(criterion.Statement)) {
-				t.Fatalf("criterion %s/%s has no traceability view", story.Identity.ID, criterion.ID)
-			}
-			trace := graph.traceTo(storyURN + ":criterion:" + criterion.ID)
-			for _, link := range append(append(trace.Design, trace.Slides...), trace.Tests...) {
-				if !strings.Contains(criterionPage, `href="`+template.HTMLEscapeString(link.Href)+`"`) || !strings.Contains(page, `href="`+template.HTMLEscapeString(link.Href)+`"`) {
-					t.Fatalf("criterion %s/%s does not link %s on both pages", story.Identity.ID, criterion.ID, link.Target)
-				}
+	}
+	// The pages of the story with the most links show what those records hold.
+	story := richestStory(graph)
+	href := requirementStoryHref(story.Identity.ID)
+	page := dogfoodOK(t, href)
+	// A story's page shows that story's feature, so its Requirements row is
+	// in that page's own sidebar.
+	if sidebar := pageSidebar(t, href, page); !strings.Contains(sidebar, `title="`+template.HTMLEscapeString(story.CurrentRevision.Title)+`"`) {
+		t.Fatalf("the sidebar does not name %s by its title", href)
+	}
+	for _, want := range []string{"data-story-context", "data-story-trace", `href="` + featureHref(story.Feature) + `"`} {
+		if !strings.Contains(page, want) {
+			t.Fatalf("%s lacks %s", href, want)
+		}
+	}
+	for _, persona := range story.CurrentRevision.Personas {
+		if !strings.Contains(page, `data-story-persona="`+persona+`"`) {
+			t.Fatalf("%s does not name persona %s", href, persona)
+		}
+	}
+	if got := strings.Count(page, "data-story-citation"); got != len(story.CurrentRevision.Citations) {
+		t.Fatalf("%s shows %d citations, want %d", href, got, len(story.CurrentRevision.Citations))
+	}
+	storyURN := "urn:change-saga:" + records.SagaID + ":story:" + story.Identity.ID
+	trace := graph.traceTo(storyURN)
+	for _, link := range append(append(trace.Design, trace.Slides...), trace.Tests...) {
+		if !strings.Contains(page, `href="`+template.HTMLEscapeString(link.Href)+`"`) {
+			t.Fatalf("%s does not link %s", href, link.Target)
+		}
+	}
+	for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+		criterionPage := dogfoodOK(t, requirementCriterionHref(story.Identity.ID, criterion.ID))
+		if !strings.Contains(criterionPage, "data-criterion-page") || !strings.Contains(criterionPage, template.HTMLEscapeString(criterion.Statement)) {
+			t.Fatalf("criterion %s/%s has no traceability view", story.Identity.ID, criterion.ID)
+		}
+		trace := graph.traceTo(storyURN + ":criterion:" + criterion.ID)
+		for _, link := range append(append(trace.Design, trace.Slides...), trace.Tests...) {
+			if !strings.Contains(criterionPage, `href="`+template.HTMLEscapeString(link.Href)+`"`) || !strings.Contains(page, `href="`+template.HTMLEscapeString(link.Href)+`"`) {
+				t.Fatalf("criterion %s/%s does not link %s on both pages", story.Identity.ID, criterion.ID, link.Target)
 			}
 		}
 	}
@@ -495,16 +666,20 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 		if !strings.Contains(sagaToCode, `data-observe-target="`+item.Target+`"`) {
 			t.Fatalf("Saga → Code lacks the Item %s", item.Target)
 		}
-		code := dogfoodOK(t, "/api/reference-code?target="+url.QueryEscape(item.Target))
-		if !strings.Contains(code, "data-reference-code") || !strings.Contains(code, "<code data-code>") {
-			t.Fatalf("the Item %s rendered no code:\n%s", item.Target, code)
-		}
 		for _, file := range item.Code {
 			for _, reference := range file.References {
 				if !strings.Contains(codeToSaga, `data-observe-file="`+reference.Path+`"`) && !strings.Contains(sagaToCode, "stale") {
 					t.Fatalf("Code → Saga lacks %s", reference.Path)
 				}
 			}
+		}
+	}
+	// Whether each reference still resolves is what health checks of every record
+	// on every pull request. Here the first and last Item show their code renders.
+	for _, item := range []*saga.Item{items[0], items[len(items)-1]} {
+		code := dogfoodOK(t, "/api/reference-code?target="+url.QueryEscape(item.Target))
+		if !strings.Contains(code, "data-reference-code") || !strings.Contains(code, "<code data-code>") {
+			t.Fatalf("the Item %s rendered no code:\n%s", item.Target, code)
 		}
 	}
 	if strings.Contains(sagaToCode, "0 files · 0 changes") {
@@ -544,27 +719,27 @@ func TestComparedCoverageLineRetriesWhileTheComparisonBuilds(t *testing.T) {
 // The documentation carries no approval or comment control on any page,
 // including the new ones; only a review's slides do.
 func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
-	// It only reads the shared dogfood server, which serves concurrent
-	// requests as a reviewer's server does, so it runs beside the others.
 	t.Parallel()
-	document, records, tests := dogfoodRecords(t)
-	paths := []string{"/", "/requirements", "/terms"}
-	for _, story := range records.Stories {
+	graph, _ := dogfoodGraph(t)
+	// A review control can only come from a template: authored Markdown is
+	// escaped, which TestEssayMarkdownDialectMatchesDeckBodies holds. So one page
+	// of each kind answers for every record of that kind.
+	paths := []string{"/", "/requirements", "/terms", "/personas", "/flags", "/features", designSystemPath}
+	if story := richestStory(graph); story != nil {
 		paths = append(paths, requirementStoryHref(story.Identity.ID))
-		if story.CurrentRevision != nil && len(story.CurrentRevision.AcceptanceCriteria) > 0 {
-			paths = append(paths, requirementCriterionHref(story.Identity.ID, story.CurrentRevision.AcceptanceCriteria[0].ID))
+		if criteria := story.CurrentRevision.AcceptanceCriteria; len(criteria) > 0 {
+			paths = append(paths, requirementCriterionHref(story.Identity.ID, criteria[0].ID))
 		}
 	}
-	for _, persona := range records.Personas {
-		paths = append(paths, personaHref(persona.Identity.ID))
+	if personas := graph.requirements.Personas; len(personas) > 0 {
+		paths = append(paths, personaHref(personas[0].Identity.ID))
 	}
-	for _, feature := range document.Features {
-		paths = append(paths, featureHref(feature.ID))
+	if features := graph.document.Features; len(features) > 0 {
+		paths = append(paths, featureHref(features[0].ID))
 	}
-	for _, testCase := range tests.TestCases {
-		paths = append(paths, testCaseHref(testCase.Identity.ID))
+	if cases := graph.quality.TestCases; len(cases) > 0 {
+		paths = append(paths, testCaseHref(cases[0].Identity.ID))
 	}
-	paths = append(paths, "/personas", "/flags", "/features", designSystemPath)
 	for _, path := range paths {
 		page := dogfoodOK(t, path)
 		if control := documentationReviewControl(page); control != "" {

@@ -119,12 +119,26 @@ async function inspectRaw(page, items) {
   }, items);
 }
 
+// A deck can sit under a heading the navigation starts collapsed, as a UX deck
+// does, so open what a reader would open to reach its thumbnail. Outermost first.
+async function openNavigationTo(page, thumbnail) {
+  const collapsed = await thumbnail.evaluate(element => {
+    const ids = [];
+    for (let node = element.parentElement; node; node = node.parentElement) {
+      if (node.hidden && node.id) ids.unshift(node.id);
+    }
+    return ids;
+  });
+  for (const id of collapsed) await page.locator(`[aria-controls="${id}"]`).first().click();
+}
+
 async function selectReviewerSlide(page, target) {
   const thumbnails = page.locator("[data-slide-thumbnail]");
   const count = await thumbnails.count();
   for (let i = 0; i < count; i++) {
     const candidate = thumbnails.nth(i);
     if (await candidate.getAttribute("data-slide-target") === target) {
+      await openNavigationTo(page, candidate);
       await candidate.click();
       return true;
     }

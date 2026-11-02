@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-comparison-shows-differences",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "comparison-shows-differences"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/server/plans_test.go",
+      "start": 229,
+      "end": 257,
+      "digest": "sha256:c0c01549d5f2b99a5eed3dbcdc6a1e23f3ea64ad03a714af769ec42e13111d7f"
+    },
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/server/plans_test.go",
+      "start": 207,
+      "end": 226,
+      "digest": "sha256:bda419b21c84d6faf3425f8e45b40bd68a1a055d423516f3648728a032d0fb0e"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:18:28Z"
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-hide-done-plans",
+  "parents": [],
+  "title": "Delivered Plans are set aside and frozen",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "deliver-is-explicit",
+      "action": "Deliver with a Task open and no Review, then with an unmerged Review, then with all done and merged.",
+      "expected_result": "The first two are refused with their reasons, and only the last delivers.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:hide-done-plans:criterion:deliver-is-explicit"
+      ]
+    },
+    {
+      "id": "delivered-hidden-in-reader",
+      "action": "Open the Plans section with a delivered Plan, with and without the filter.",
+      "expected_result": "It is hidden by default and shown by the filter.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-hidden-in-reader"
+      ]
+    },
+    {
+      "id": "delivered-filtered-in-cli",
+      "action": "Run plan list, and plan list --all.",
+      "expected_result": "It is left out and counted, then included.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-filtered-in-cli"
+      ]
+    },
+    {
+      "id": "delivered-stays-readable",
+      "action": "Open a delivered Plan, then try each kind of edit.",
+      "expected_result": "The page opens and says so, and every edit is refused.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-stays-readable"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-02T22:18:36Z"
+}

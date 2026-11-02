@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-see-done-on-slides-verifies-slide-lists-tasks",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides",
+  "to": "urn:change-saga:change-saga:story:see-done-on-slides:criterion:slide-lists-tasks",
+  "scope": "self",
+  "rationale": "Step slide-lists-tasks checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:see-done-on-slides:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-02T22:19:02.526139Z"
+}

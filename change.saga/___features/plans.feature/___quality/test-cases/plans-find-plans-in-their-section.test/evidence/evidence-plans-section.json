@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-plans-section",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-find-plans-in-their-section",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-find-plans-in-their-section:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "plans-section"
+  ],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "path": "internal/server/plans_test.go",
+      "start": 32,
+      "end": 50,
+      "digest": "sha256:30ddbc6e0981cc0bf58ef13eb3b4507aae7e6fb9b1e738edbfb0abbd7d45fcae"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-02T22:18:31Z"
+}

@@ -3,6 +3,8 @@
 Status: research for a canonical living `app.saga`, based on repository commit
 `8059a17`. This audit does not change the Saga or product code.
 
+> **Since this audit:** the old work plan (`internal/workplan`, `plan add-wave`, `plan add-item`, and so on) has been removed. Plans and Tasks replace it: see [`SPEC.md`](../SPEC.md) section 9 and [`references/plans.md`](../skills/change-saga/references/plans.md). Mentions of it below describe the repository at the audited commit.
+
 ## Executive finding
 
 The current Saga captures the product thesis well, but it is not yet a canonical
