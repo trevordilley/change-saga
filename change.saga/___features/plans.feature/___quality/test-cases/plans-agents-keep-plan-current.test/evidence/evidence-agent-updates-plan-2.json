@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-agent-updates-plan-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-agents-keep-plan-current",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-agents-keep-plan-current:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "agent-updates-plan"
+  ],
+  "code": [
+    {
+      "commit": "349ba7526701bea378838b68f54e2c04c276cb98",
+      "path": "internal/cli/plans_test.go",
+      "start": 203,
+      "end": 261,
+      "digest": "sha256:6ccd05e5fc639b29497caebcb9d959dc84a0a5c086b9895c889e22e5a263b378"
+    },
+    {
+      "commit": "349ba7526701bea378838b68f54e2c04c276cb98",
+      "path": "internal/cli/plans_test.go",
+      "start": 263,
+      "end": 277,
+      "digest": "sha256:18b05b213b7231ca2c8e45fcb99414f1ebd28f2aaf4a13aa7e0f3ce2619b4813"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-agents-keep-plan-current:evidence:evidence-agent-updates-plan"
+  ],
+  "created_at": "2026-11-03T03:37:41Z"
+}
