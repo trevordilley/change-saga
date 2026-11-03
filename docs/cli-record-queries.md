@@ -19,7 +19,7 @@ change-saga query term-references --saga PATH --term ID|URN [--limit N] [--curso
 ```
 
 Use `change-saga query schema OPERATION` for the machine-readable data paths,
-usage, and pagination fields. `change-saga spec --json` publishes the same
+usage, and pagination fields. `change-saga spec --json --section query` publishes the same
 query schema and operation registry under `query`.
 
 `personas` returns stable identity, immutable creation time, complete current

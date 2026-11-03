@@ -69,9 +69,9 @@ IDs `data-model`, `infrastructure`, `data-flows`, and `architecture`.
 Named technical-design whiteboards use the shared diagram schema and independent
 immutable histories. Their directory placement determines the format; there is
 no kind discriminator. Publish and inspect them with the public `whiteboard`
-commands described in [diagrams.md](diagrams.md#named-whiteboards).
+commands described in [whiteboards.md](whiteboards.md).
 
-For technical definitions, use the [inventory authoring guidance](diagrams.md#reusable-components-and-systems).
+For technical definitions, use the [inventory authoring guidance](inventory.md).
 
 ## Stable targets
 
@@ -101,11 +101,13 @@ URN to infer a resource's current feature or lifecycle head; query it.
 
 - `change-saga --help` lists top-level commands.
 - `change-saga <command> -h` and family help list exact flags and subcommands.
-- `change-saga spec --json` lists resources, relations, and command shapes.
+- `change-saga spec --json` is a compact index of sections, resources, and
+  commands; add `--command NAME`, `--resource KIND`, or `--section NAME` to read
+  one, or `--all` for the whole contract, which is hundreds of kilobytes.
 - `change-saga query schema <operation>` describes response paths and
   pagination without opening a Saga.
-- `change-saga status --json <saga>` supplies the ordered work queue but no
-  verdict.
+- `change-saga status --json <saga>` supplies a compact report and the head of
+  the ordered work queue but no verdict; its `expand` field says how to get more.
 - `change-saga validate --json <saga>` checks the authored result.
 
 Use `--json` where a mutation offers a machine-readable result. When the Saga

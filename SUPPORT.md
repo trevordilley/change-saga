@@ -17,7 +17,7 @@ commercial support, no hosted service, and no paid tier — just this repository
 ## Common questions
 
 **`status` exits 3 and I think it's wrong.** Exit 3 means "coverage incomplete",
-not "error". Run `change-saga status --json` to see every unaccounted diff atom
+not "error". Run `change-saga status --json --detail` to see every unaccounted diff atom
 by path, side, and line. If an atom you have already covered still shows up,
 check that `--side` matches (deleted lines are `old`, added lines are `new`) and
 that the `--path` is the repository-relative path Git reports.

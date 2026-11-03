@@ -200,7 +200,7 @@ func getPage(t *testing.T, address string) string {
 // valid request whose diagram renders and demonstrates a note.
 func TestSkillReviewSlideExampleRendersWithANote(t *testing.T) {
 	t.Parallel()
-	data, err := os.ReadFile(filepath.Join("..", "..", "skills", "change-saga", "references", "diagrams.md"))
+	data, err := os.ReadFile(filepath.Join("..", "..", "skills", "change-saga", "references", "slides.md"))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,7 +1,8 @@
 # Visual storytelling for slides and whiteboards
 
 Read before storyboarding a deck or whiteboard, or improving an existing one.
-Use [diagrams.md](diagrams.md) for the public authoring API and evidence rules.
+Use [slides.md](slides.md) or [whiteboards.md](whiteboards.md) for the public
+authoring API, and [evidence.md](evidence.md) for evidence rules.
 This reference sets the editorial standard; it is not a slide template.
 
 The reader should understand **where things fit, what happens, why it happens

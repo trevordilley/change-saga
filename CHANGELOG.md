@@ -10,6 +10,51 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking for scripts: `status --json` is now compact.** It was 4.1 MB on this
+  repository's Saga and is now about 25 KB, so one ordinary call no longer costs an
+  agent's session its context. `status --json --detail` restores the old output
+  exactly (`status_schema` `change-saga.status/v3`); the default is
+  `change-saga.status/v4`. **If your CI has a rule over `status --json`, check it:**
+  - Still the same: `.coverage.areas.<area>.total`, `.covered`, `.uncovered`,
+    `.complete`, `.note`, `.unit`, and `.coverage.scope`, `.complete`, `.summary`,
+    `.opening`, `.documentation`, `.overview`, `.change_reviews`, `.diagnostics`,
+    `.repository`, `.base_oid`, `.head_oid`, `.schema_valid`, `.authoring_loop`.
+  - Now at most 10 rows, with a `_total` beside each: `.coverage.areas.<area>.uncovered_entries`,
+    `.next_actions`, `.schema_issues` (never hiding an error), `.stale_references`,
+    `.stale`, `.dangling`, `.overview_revisions`, `.features`, `.reviews`.
+    A rule on `| length` must read the `_total` instead. `--max N` changes the bound
+    and `--max 0` removes it.
+  - Rows carry fewer fields: `.next_actions[]` has no `.practice`, its `.command` keeps
+    `command`, `inputs`, and `argv`, and its `.question` has `answers` instead of
+    `options` (`status --json --action ID` reads one whole); `.stale_references[]`
+    has `.location` instead of `.reference`; `.stale[]` has no `.pins`, and `.affects`
+    is a count; `.features[]` counts its `.stories`, `.test_cases`, and `.decks`.
+    `.reviews[]` has `.slides_total` instead of `.slides`, so a rule over each slide's
+    `.decisions` needs `--detail`.
+  - Removed, with `--detail` to get them back: `.coverage.areas.<area>.covered_entries`,
+    `.uncovered`, `.overlaps`, `.targets`, `.saga_changes`, `.personas`, `.persona_orphans`,
+    `.persona_coverage`, `.flags`, `.terms`, `.new_terminology`, `.stories`, `.prototypes`,
+    `.axes`, `.quality`, `.carried_forward`, and the lists in `.changed_source` and
+    `.comparison`. `.counts` sizes most of them. A rule that walks one fails loudly, but
+    `| length` on an absent list reads 0 and passes.
+  - `check` is unchanged, and no exit code changed.
+- **Breaking for scripts: `spec --json` is now an index** of sections, resources, and
+  commands. `spec --json --all` restores the whole contract, unchanged apart from a new
+  `living.compact_status_schema`. `--command NAME`, `--resource KIND`, and `--section NAME`
+  read one part.
+- **Breaking for scripts: `query requirements` returns rows** of `requirement`, `id`,
+  `title`, `state`, `feature`, and `criteria` (a count), and the flags and heads of a
+  conflict. `--requirement ID` or the new `--detail` returns full records as before.
+- Text `status` lists at most 20 schema warnings, uncovered items, and next actions by
+  default, down from 100 and, for warnings, no limit, and says how to see the rest:
+  `--max 0`. No schema error is ever left out.
+- The authoring skill's `SKILL.md` is a short router of 8 KB instead of 29 KB, with the
+  review workflow and other detail in references, and `references/diagrams.md` is split by
+  task into `slides.md`, `diagram-source.md`, `whiteboards.md`, `decks.md`, `evidence.md`,
+  and `inventory.md`. Re-run `change-saga install-skill`.
+
 ### Added
 
 - `query plans`, `query plan`, and `query task` read Plans and Tasks like other

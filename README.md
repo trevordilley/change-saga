@@ -119,7 +119,7 @@ change-saga open --against main change.saga          # the reviewer
 Each slide is one JSON request: a diagram source (explicitly positioned nodes,
 edges, and groups the CLI renders to SVG) and the Items a reviewer can open,
 each selecting one element. The skill's
-[diagrams reference](skills/change-saga/references/diagrams.md) has a complete
+[diagram source reference](skills/change-saga/references/diagram-source.md) has a complete
 example.
 
 Sagafying a pull request is the best way to learn the tool. Nothing else is
@@ -211,7 +211,8 @@ jobs:
 `check` exits 0 when the named areas are covered, 3 when one has a gap (it
 prints only those gaps), and 1 when its report cannot be trusted, such as a
 malformed Saga. The [CI rules](skills/change-saga/references/ci.md) describe
-every area and how to write rules over `status --json`.
+every area and how to write rules over `status --json`, whose default is compact;
+`status --json --detail` is the complete report.
 
 ## Grow into living documentation
 
@@ -463,7 +464,7 @@ change-saga query layers --saga change.saga \
 
 Every command takes the Saga directory (usually `change.saga`) as its last
 argument; `query` takes it as `--saga PATH`. Run `change-saga <command> -h` for
-a command's flags, and `change-saga spec --json` for the machine-readable
+a command's flags, and `change-saga spec --json` for an index of the machine-readable
 grammar. Many commands that write accept `--dry-run`, and most accept `--json`.
 Every `remove` deletes the record and the links that only pointed at it, and
 lists what else lost coverage; run it with `--dry-run` first to see the whole

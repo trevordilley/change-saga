@@ -2,8 +2,8 @@
 
 Read only the needed reference.
 
-- For whiteboards, diagrams, decks, narrative, Items, evidence, or visual QA,
-  read [diagrams.md](diagrams.md).
+- For slides, Items, or visual QA: [slides.md](slides.md).
+- For narrative: [decks.md](decks.md); for evidence and claims: [evidence.md](evidence.md).
 - For requirements and lifecycle authoring, read [stories.md](stories.md).
 - For overview and vocabulary, read [terms.md](terms.md).
 - For comparison, pull-request integration, repinning, or recovery, read
@@ -15,4 +15,4 @@ Read only the needed reference.
 Use `SKILL.md` for tasks crossing boundaries.
 
 For technical design, write the approach essay and its supporting pages, then the
-ERD, Infrastructure, Data flows and Architecture whiteboards using [diagrams.md](diagrams.md).
+ERD, Infrastructure, Data flows and Architecture whiteboards using [whiteboards.md](whiteboards.md).

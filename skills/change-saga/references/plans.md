@@ -47,7 +47,7 @@ change-saga task list --plan ID --ready change.saga
 
 The deck is authored as a review's is, with `apply-slide --plan ID --from
 SLIDE.json` and `deck overview --plan ID --file OVERVIEW.json`; see
-[diagrams and evidence](diagrams.md). Group its slides under `slide.section`,
+[slides](slides.md). Group its slides under `slide.section`,
 usually by phase.
 A Plan Item carries no evidence and no criterion links: its `record` names a Task
 of the Plan (`urn:change-saga:SAGA:plan:ID:task:TASK`) or a story, and the slide

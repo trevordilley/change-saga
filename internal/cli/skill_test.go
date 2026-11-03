@@ -116,18 +116,18 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 	}{
 		{
 			name: "create a review for a PR", fixture: "Create a review for this PR.",
-			rowHint: "Create a review for a PR or branch", want: []string{"references/diagrams.md"},
-			unwanted: []string{"references/query.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+			rowHint: "Create a review for a PR or branch", want: []string{"references/review.md", "references/slides.md", "references/diagram-source.md"},
+			unwanted: []string{"references/query.md", "references/whiteboards.md", "references/inventory.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "compact feature context", fixture: "Load bounded context for the checkout feature without reading the whole Saga.",
 			rowHint: "load compact feature context", want: []string{"references/query.md"},
-			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+			unwanted: []string{"references/slides.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "feature handoff audit", fixture: "Audit whether checkout has a current exact implementation handoff.",
-			rowHint: "Audit whether one feature", want: []string{"references/query.md"},
-			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+			rowHint: "audit whether one feature", want: []string{"references/query.md"},
+			unwanted: []string{"references/slides.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "reorganize existing content", fixture: "Assign the existing data-model board to ERD and move a chapter without changing identity.",
@@ -136,53 +136,53 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 		},
 		{
 			name: "diagram for a changed request flow", fixture: "Draw a request-flow diagram and attach each Item to the exact changed code.",
-			rowHint: "Author diagrams", want: []string{"references/query.md", "references/diagrams.md"},
+			rowHint: "Author diagrams", want: []string{"references/query.md", "references/slides.md", "references/diagram-source.md", "references/evidence.md"},
 			unwanted: []string{"references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "mechanical visual QA", fixture: "Render the checkout slides and inspect the visual QA contact sheet.",
-			rowHint: "Render slides", want: []string{"references/diagrams.md"},
+			rowHint: "Render slides", want: []string{"references/slides.md"},
 			unwanted: []string{"references/query.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "describe implemented features", fixture: "Describe the features we have implemented in Saga Product records.",
 			rowHint: "Describe implemented features", want: []string{"references/query.md", "references/stories.md"},
-			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+			unwanted: []string{"references/slides.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "accepted story with provenance", fixture: "Add an accepted customer story with one confirmed criterion and its source citation.",
 			rowHint: "author or revise personas", want: []string{"references/query.md", "references/stories.md"},
-			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+			unwanted: []string{"references/slides.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "feature interview before a candidate story", fixture: "Interview me about reusable architecture, using the personas already in change.saga before drafting stories.",
 			rowHint: "Interview for a feature", want: []string{"references/query.md", "references/stories.md"},
-			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+			unwanted: []string{"references/slides.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "term rename", fixture: "Revise the Retention Window term after its defining constant was renamed.",
 			rowHint: "Author or revise the overview", want: []string{"references/query.md", "references/terms.md"},
-			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/integration.md", "references/ci.md"},
+			unwanted: []string{"references/slides.md", "references/stories.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "comparison recovery handoff", fixture: "Reconcile stale evidence after a branch update and hand off the remaining conflicting heads.",
 			rowHint: "Reconcile a comparison", want: []string{"references/query.md", "references/integration.md"},
-			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/ci.md"},
+			unwanted: []string{"references/slides.md", "references/stories.md", "references/terms.md", "references/ci.md"},
 		},
 		{
 			name: "parallel proposal consolidation", fixture: "Compare two proposal branches, then consolidate a confirmed duplicate.",
 			rowHint: "Compare parallel proposal branches", want: []string{"references/query.md", "references/integration.md", "references/stories.md"},
-			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/ci.md"},
+			unwanted: []string{"references/slides.md", "references/terms.md", "references/ci.md"},
 		},
 		{
 			name: "pull request review visual", fixture: "Prepare this pull request's review deck and explain its retry path with exact evidence.",
-			rowHint: "Prepare or update a pull-request review artifact", want: []string{"references/query.md", "references/integration.md", "references/diagrams.md"},
+			rowHint: "Prepare or update a pull-request review artifact", want: []string{"references/query.md", "references/integration.md", "references/slides.md"},
 			unwanted: []string{"references/stories.md", "references/terms.md", "references/ci.md"},
 		},
 		{
 			name: "CI policy only", fixture: "Make CI require implementation and health coverage for this repository.",
 			rowHint: "Define a CI acceptance rule", want: []string{"references/ci.md", "references/query.md"},
-			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md"},
+			unwanted: []string{"references/slides.md", "references/stories.md", "references/terms.md", "references/integration.md"},
 		},
 	}
 
@@ -225,7 +225,7 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 	if err != nil {
 		t.Fatalf("authoring compatibility router was not installed: %v", err)
 	}
-	for _, reference := range []string{"diagrams.md", "stories.md", "terms.md", "integration.md", "query.md"} {
+	for _, reference := range []string{"slides.md", "decks.md", "evidence.md", "whiteboards.md", "stories.md", "terms.md", "integration.md", "query.md"} {
 		if !strings.Contains(string(compatibility), "]("+reference+")") {
 			t.Errorf("authoring compatibility router omitted %s", reference)
 		}
@@ -502,24 +502,43 @@ func containsString(values []string, value string) bool {
 	return false
 }
 
-// The review is the headline: the skill's description and first section lead
-// with creating one, and growing the Saga is left to the user to ask for.
-func TestSkillLeadsWithCreatingAReview(t *testing.T) {
+// The always-loaded entrypoint is a router: what every task needs and where to
+// go. Whatever else it carries is paid for on every turn of every session.
+func TestSkillEntrypointStaysARouter(t *testing.T) {
 	t.Parallel()
-	var entry string
+	const budget = 8 << 10
 	for _, file := range skills.ChangeSaga() {
-		if file.Path == "SKILL.md" {
-			entry = normalizeSkillNewlines(file.Content)
+		if file.Path == "SKILL.md" && len(file.Content) > budget {
+			t.Fatalf("SKILL.md is %d bytes; its budget is %d. Move detail into a reference.", len(file.Content), budget)
+		}
+		if file.Path == "SKILL.md" && !strings.Contains(file.Content, "## Mandatory contract") {
+			t.Fatal("SKILL.md lost its mandatory contract")
 		}
 	}
+}
+
+// The review is the headline: the skill's description and first route lead with
+// creating one, and growing the Saga is left to the user to ask for.
+func TestSkillLeadsWithCreatingAReview(t *testing.T) {
+	t.Parallel()
+	files := map[string]string{}
+	for _, file := range skills.ChangeSaga() {
+		files[file.Path] = normalizeSkillNewlines(file.Content)
+	}
+	entry := files["SKILL.md"]
 	if !strings.Contains(entry, "description: 'Create a review for a pull request or branch") {
 		t.Fatalf("the skill's description does not lead with creating a review:\n%s", entry[:300])
 	}
-	fastPath := strings.Index(entry, "## Create a review for this PR")
-	if fastPath < 0 || fastPath > strings.Index(entry, "## Mandatory contract") {
-		t.Fatal("the review fast path is not the skill's first section")
+	table := entry[strings.Index(entry, "| --- | --- |"):]
+	if firstRow := table[strings.Index(table, "\n")+1:]; !strings.HasPrefix(firstRow, "| Create a review for a PR or branch") {
+		t.Fatalf("the review is not the first route:\n%s", firstRow[:120])
 	}
-	section := entry[fastPath:strings.Index(entry, "## Mandatory contract")]
+	review := files["references/review.md"]
+	fastPath := strings.Index(review, "## Create a review for this PR")
+	if fastPath < 0 {
+		t.Fatal("the review reference has no fast path")
+	}
+	section := review[fastPath:strings.Index(review, "## Update living documentation")]
 	for _, want := range []string{"review create", "apply-slide --review", "diagram source", "--changed-lines", "review list --uncovered", "check --covers review", "setup-initial-saga"} {
 		if !strings.Contains(strings.Join(strings.Fields(section), " "), want) {
 			t.Fatalf("the fast path omits %q", want)
@@ -543,8 +562,8 @@ func TestSkillChecksEverySentenceBeforeHandoff(t *testing.T) {
 	for _, file := range skills.ChangeSaga() {
 		files[file.Path] = strings.Join(strings.Fields(normalizeSkillNewlines(file.Content)), " ")
 	}
-	entry := files["SKILL.md"]
-	section := entry[strings.Index(entry, "## Create a review for this PR"):strings.Index(entry, "## Mandatory contract")]
+	review := files["references/review.md"]
+	section := review[strings.Index(review, "## Create a review for this PR"):strings.Index(review, "## Update living documentation")]
 	check := strings.Index(section, "Check every sentence")
 	if check < 0 || check < strings.Index(section, "diagram check --review") || check > strings.Index(section, "Commit the Saga") {
 		t.Fatal("the fast path does not check every sentence between confirming coverage and committing")
@@ -554,10 +573,10 @@ func TestSkillChecksEverySentenceBeforeHandoff(t *testing.T) {
 			t.Errorf("the fast path omits %q", want)
 		}
 	}
-	diagrams := files["references/diagrams.md"]
+	slides := files["references/slides.md"]
 	for _, want := range []string{"Check every sentence before handing off a deck", "the code that decides the behavior it states", "Edge descriptions and notes make claims too", "marks a surprise with no code evidence"} {
-		if !strings.Contains(diagrams, want) {
-			t.Errorf("references/diagrams.md omits %q", want)
+		if !strings.Contains(slides, want) {
+			t.Errorf("references/slides.md omits %q", want)
 		}
 	}
 }

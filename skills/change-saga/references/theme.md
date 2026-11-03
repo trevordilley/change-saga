@@ -17,7 +17,7 @@ and nothing else.
 - Only two blocks: `:root { }` for light mode and `:root[data-theme="dark"] { }`
   for dark mode. A token that is the same in both modes (fonts, sizes,
   radius) takes its `:root` value in dark mode too.
-- Only tokens from the contract: `change-saga spec --json` lists each under
+- Only tokens from the contract: `change-saga spec --json --section theme` lists each under
   `theme` with its group, kind, and light and dark defaults.
 - Values by kind: colours as hex, `rgb()`, `rgba()`, `hsl()`, `hsla()`, or a
   named colour; lengths as `0` or px, rem, or em; fonts as a family list;

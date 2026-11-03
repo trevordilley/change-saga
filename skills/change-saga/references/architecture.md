@@ -5,7 +5,7 @@ what, and how the important mechanisms fit together**. A reader should locate a
 feature in that structure before opening its implementation deck. Use the shared
 whiteboard format, not a new visualization type or a Systems/Components inventory.
 Read [visual storytelling](visual-storytelling.md) for visual language and
-[diagrams](diagrams.md) for the publication contract and current CLI limitations.
+[whiteboards](whiteboards.md) for the publication contract and current CLI limitations.
 
 ## Gather evidence before drawing
 

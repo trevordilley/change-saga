@@ -329,11 +329,26 @@ never as `attribution.committer`.
 
 Every atom carries `content`, including when the changed line is empty. `kind`
 discriminates atom shape: a `line` atom always has `path`, `side`, `line`, and
-`content`; an `event` atom always has `event`. `change-saga status --json`
+`content`; an `event` atom always has `event`. `change-saga status --json --detail`
 follows the same rule for its collections — `uncovered`, `overlaps`, `orphans`,
 `targets`, `saga_changes`, and `schema_issues` are always present and encode as
 `[]` when empty, so a fully mapped saga reports `"uncovered": []` rather than
 `null` or a missing key.
+
+Anything an agent prints it pays for again on every later turn, so one ordinary call
+must not be able to spend a session's context. Defaults are compact and expansion is
+explicit, and `internal/cli/compact_output_test.go` holds each default to a size budget:
+
+| Read | Default | Expansion |
+| --- | --- | --- |
+| `status --json` (`change-saga.status/v4`) | areas and counts, the first 10 of each list with a `_total`, no `covered_entries` or record lists | `--max N`; `--action ID` for one next action; `--detail` for the complete `change-saga.status/v3` document |
+| `spec --json` | names of sections, resources, and commands | `--command NAME`, `--resource KIND`, `--section NAME`, `--all` |
+| `query requirements` | rows of `requirement`, `id`, `title`, `state`, `feature`, `criteria`; a conflict keeps its flags and heads | `--requirement ID` or `--detail` for full records |
+| `query context` | bounded feature context | `--expand STORY` |
+| `reconcile --against REV` | the text report, or `--json --summary` | bare `--json` is the whole queue, for scripts |
+
+The compact status keeps a field's path and meaning, so a rule over counts reads either
+form. A list it drops is absent rather than empty, so a rule that walks one fails loudly.
 
 `gaps` exposes uncovered atoms, stale selectors (the current `Orphans`), and
 overlaps as separate typed records. `stale` is the public term; `orphan` remains
@@ -732,7 +747,7 @@ make `coverage.Report.Ownership` appear to be a stable API before its target
 metadata and evidence notes are normalized. That would validate JSON encoding,
 not the important boundary.
 
-The existing `status --json` command is sufficient evidence that
+The existing `status --json --detail` command is sufficient evidence that
 request-response evaluation works without a daemon: it loads the saga, reads
 the Git comparison, evaluates coverage, emits structured results, and exits.
 The next useful implementation slice is therefore delivery step 1, tested at

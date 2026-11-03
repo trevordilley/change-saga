@@ -24,7 +24,7 @@ authoring workflow. The generated query-operation block in the authoring
 skill's `references/query.md` remains owned by the CLI query registry and its
 existing regeneration test.
 
-Visual authoring routes through `references/diagrams.md` to the bundled
+Visual authoring routes through `references/slides.md` to the bundled
 `references/visual-storytelling.md`. The review fast path also links it directly
 before publication. It supplies storyboards, semantic section/color conventions,
 worked composition examples, and a representative-visual calibration pass so a
@@ -52,10 +52,14 @@ Conditional detail has one routed home:
 | Compact feature context or feature handoff audit | `references/query.md` |
 | Stories, criteria, personas, citations, relations, lifecycle | `references/query.md`, `references/stories.md` |
 | Overview and terms | `references/query.md`, `references/terms.md` |
-| Diagrams, decks, narrative, exact evidence, claims | `references/query.md`, `references/diagrams.md` |
-| Mechanical visual QA without other Saga inspection | `references/diagrams.md` |
+| The review fast path | `references/review.md`, `references/slides.md`, `references/diagram-source.md` |
+| Slides and diagrams with exact evidence | `references/query.md`, `references/slides.md`, `references/diagram-source.md`, `references/evidence.md` |
+| Deck Essays, narrative, evidence repair, claims | `references/query.md`, `references/decks.md`, `references/evidence.md` |
+| Technical design and whiteboards | `references/query.md`, `references/whiteboards.md`, `references/diagram-source.md` |
+| Inventory definitions | `references/query.md`, `references/inventory.md` |
+| Mechanical visual QA without other Saga inspection | `references/slides.md` |
 | Comparison reconciliation, PR integration, companion repositories, recovery | `references/query.md`, `references/integration.md` |
-| The preceding integration task when visuals also change | add `references/diagrams.md` |
+| The preceding integration task when visuals also change | add `references/slides.md` |
 | CI policy without a real Saga read | `references/ci.md` |
 | Resource/URN lookup not answered by CLI help/spec/schema | `references/format.md` |
 | Parallel proposal comparison plus authorized withdrawal/consolidation | `references/query.md`, `references/integration.md`, `references/stories.md` |

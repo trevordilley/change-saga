@@ -1,7 +1,11 @@
 # Quality definitions
 
-Quality explains how an outcome is verified, not whether an execution passed.
-Use the feature's existing planned/built metadata; Roadmap and Features share
+Quality defines HOW each criterion is verified and where that verification is
+implemented. It never reports pass/fail, and CI failures never change Saga Quality
+status. On a Roadmap feature, author the same canonical case used after
+implementation: requirement links, preconditions, ordered steps and expected
+outcomes suffice without code. Keep delivery intent on the feature's existing
+planning metadata. Use the feature's existing planned/built metadata; Roadmap and Features share
 one canonical case and one reader. Do not invent a second planning state.
 
 For every criterion, explicitly consider all three verification purposes:
@@ -25,7 +29,7 @@ policies; changing one requires superseding all current heads. Use planned cases
 for applicable scenarios that lack code. Do not waive them because implementation
 is missing, or invent requirements or evidence merely to close a gap.
 
-Before handoff, use `status --json` and `check --covers quality` to find missing
+Before handoff, use `check --covers quality --max 0` to find missing
 required kinds, mappings, or stale policies. Report unresolved gaps explicitly;
 a set of happy-path cases alone is not sufficient under the default policy.
 
@@ -49,8 +53,9 @@ a set of happy-path cases alone is not sufficient under the default policy.
    their pins. Evidence can only name steps present in its pinned revision.
 5. Read `query quality --saga PATH --feature ID` (or `--test ID|URN`) for current
    definitions, criterion/step/evidence navigation and mapping issues. It uses
-   bounded case pagination. `status --json PATH` also resolves code currency in
-   the viewed source. A planned definition without implementation links is valid.
+   bounded case pagination. `status --json --detail PATH` also resolves code currency
+   in the viewed source, but can be megabytes: narrow it with `query quality`
+   first. A planned definition without implementation links is valid.
 
 Neither a run nor a code link is needed to plan verification. Lifecycle proposed
 or active can document coverage; retired/deprecated definitions do not. Missing

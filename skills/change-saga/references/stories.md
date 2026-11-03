@@ -66,6 +66,13 @@ cleanup. A guidance update alone does not authorize rewriting existing features.
 
 ## Document implemented features as Product stories
 
+Name and define a feature as a durable capability a product owner could pitch to a
+CEO or board member who has never used the app; implementation mechanisms belong in
+design and technical decks, under the capability they enable. Put user outcomes and
+observable acceptance criteria in Product. Preserve the distinction between confirmed
+intent and code-derived proposals; do not mark inferred requirements accepted. A
+prose feature list or a slide titled "Stories" is not a substitute for these records.
+
 A request to describe implemented features authorizes creating or updating the
 actual feature story records at the requested scope. Query the existing
 features, personas, and stories first; reuse their stable identities and revise
@@ -77,6 +84,7 @@ replace Product records with a feature catalog or story list in a deck.
 ## Themes are an optional follow-up
 
 Create or revise the requested stories by default, using their feature context.
+Do not ask again if themes are already authorized.
 Offer to create [Product Themes](feature-themes.md) when grouping related
 features would help explain their shared purpose. Continue story authoring
 without waiting for a theme decision. Create themes and their rationale decks
@@ -170,7 +178,8 @@ A persona is a person who gets value from the app: the "As a ..." in a user
 story. A tool, agent, or system operating the app is not a persona. Write the
 human or organizational beneficiary, not the mechanism performing work.
 
-A story captures an outcome for that persona and why it matters. Criteria are
+For a new story, capture a persona-focused outcome and independent, observable
+pass/fail criteria. A story captures an outcome for that persona and why it matters. Criteria are
 independent, observable pass/fail obligations. A proposed story may remain
 criterion-free while its intent is uncertain. Before moving it to `accepted`,
 every current revision head needs at least one criterion. When only one
@@ -181,6 +190,27 @@ Features are durable product capabilities with a coherent user outcome, not
 pull requests or implementation artifacts. Revise a story in
 place as understanding improves; use the supported move operation when its
 domain changes so stable identities and links survive.
+
+Features are durable product domains defined by user capabilities and value,
+not changes or implementation artifacts. A story may move between
+features without changing its identity. Declare adjacent semantic links and
+let queries infer longer paths: story to persona, design or test case to story
+or criterion, and visual Item or supported evidence target to exact code.
+Relations retain their rationale and the revision they were read against; a
+stale relation is repinned only after reading the new wording.
+
+The chain is persona -> story -> design or test -> exact code. The Saga is
+documentation, so requirements, designs, tests, and decks describe current
+intent rather than carrying review verdicts. This is not a waterfall:
+discovery may revise earlier records, but it does so with new immutable
+history rather than rewriting what was previously known.
+
+For new work whose whole lifecycle is requested, begin with personas and stories,
+develop relevant design and quality, and connect exact implementation evidence as it
+is built. Never manufacture product intent to make coverage complete.
+
+An Essay's parts, for a story and its criteria too, are in [terms](terms.md); planned
+features are in [roadmap](roadmap.md).
 
 ## Prototypes
 
@@ -315,8 +345,8 @@ author changes it. Prior snapshots remain immutable. Overview changes require
 whole-story relation reassessment; unchanged criterion statements retain their
 existing carry-forward semantics. Author only confirmed intent, not filler.
 
-Read `query requirements` or `query requirement-history` for story overview
-snapshots. `query context --feature ID` exposes `feature.overview` when present;
+Read `query requirements --requirement ID` or `query requirement-history` for
+story overview snapshots. `query context --feature ID` exposes `feature.overview` when present;
 read its prose with `query fragment --target URN` and its Git history with
 `query history --node URN`. The page renders safe Markdown, keeps full criterion
 statements visible as bullets, and expands supporting traceability through

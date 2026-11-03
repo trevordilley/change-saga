@@ -79,7 +79,7 @@ change-saga check --against origin/main --covers implementation change.saga
 change-saga check --covers health change.saga
 
 # Explain baseline debt, regressions and affected records with repair paths.
-change-saga reconcile --against origin/main --json change.saga
+change-saga reconcile --against origin/main change.saga
 
 # A stricter rule for one mature feature only.
 change-saga check --against origin/main --feature checkout --covers implementation,stories,design,quality change.saga
@@ -92,7 +92,13 @@ fresh pins and complete coverage do not prove semantic correctness.
 
 ## Write a rule over the JSON
 
-`status --json` carries `.coverage`, the contract rules are written against:
+`status --json` carries `.coverage`, the contract rules are written against. By
+default it is compact: every area has its counts and the first
+`uncovered_entries`, with `uncovered_entries_total`, and no `covered_entries`. A rule
+over the counts and `complete` reads it as is. A rule over a whole list needs
+`status --json --detail`, the complete `change-saga.status/v3` document, which can be
+megabytes; a list the compact document drops is absent, so a rule that walks one
+fails loudly, but `| length` on an absent list reads 0.
 
 ```json
 {
@@ -103,8 +109,7 @@ fresh pins and complete coverage do not prove semantic correctness.
       "implementation": {
         "area": "implementation", "unit": "changed_line",
         "total": 412, "covered": 412, "uncovered": 0, "complete": true,
-        "covered_entries": [ { "resource": "src/pay.go", "side": "new", "lines": "4-9,12", "count": 7, "feature": "checkout", "via": ["urn:..."] } ],
-        "uncovered_entries": []
+        "uncovered_entries": [], "uncovered_entries_total": 0
       },
       "stories": { "...": "the same shape" },
       "personas": {}, "design": {}, "quality": {}, "health": {}
@@ -113,11 +118,12 @@ fresh pins and complete coverage do not prove semantic correctness.
 }
 ```
 
-Every area has `total`, `covered`, `uncovered`, `complete`, and the lists
-`covered_entries` and `uncovered_entries`. The counts are the sums of the
-entries' `count`. `unit` says what is counted: `changed_line`, `code_target`
+Every area has `total`, `covered`, `uncovered`, `complete`, and `uncovered_entries`,
+which holds at most 10 rows unless `--max N` says otherwise (`--max 0` for all). With
+`--detail` it also has `covered_entries`, and the counts are the sums of the entries'
+`count`. `unit` says what is counted: `changed_line`, `code_target`
 (the line areas when observing, which has no change), `story`, `criterion`,
-or `record`. An uncovered entry has a `reason`; a covered entry names what
+or `record`. An uncovered entry has a `reason`; with `--detail`, a covered entry names what
 covers it in `via`. There is never one blended score: a rule names the areas
 and thresholds it cares about.
 
@@ -137,7 +143,7 @@ echo "$status" | jq -e '.coverage.areas.design.complete'
 # No more than 20 changed lines may reach no story.
 echo "$status" | jq -e '.coverage.areas.stories.uncovered <= 20'
 
-# Name the gaps in the build log.
+# Name the first gaps in the build log, or pass --max 0 for all of them.
 echo "$status" | jq -r '.coverage.areas.stories.uncovered_entries[] | "\(.resource):\(.lines // .event) \(.reason)"'
 ```
 
@@ -156,12 +162,14 @@ or the full report; it never affects the exit status.
 echo "$status" | jq -e '.coverage.areas.review.complete'
 ```
 
-Pull request reviews are also reported slide by slide in `.reviews`, never in
-the exit status: each slide lists every reviewer's latest decision with its
+Pull request reviews are also reported in `.reviews`, never in the exit status. The
+default names each review with its counts; `status --json --detail` reports it slide
+by slide: each slide lists every reviewer's latest decision with its
 `state` and `currency` (`current` or `out_of_date`). A team that requires
-every slide to carry a current approval writes that rule too:
+every slide to carry a current approval writes that rule over `--detail`:
 
 ```sh
+status=$(change-saga status --json --detail --against origin/main change.saga) || exit 1
 echo "$status" | jq -e '[.reviews[] | select(.merged == null) | .slides[]
   | select([.decisions[] | select(.state == "approved" and .currency == "current")] | length == 0)] | length == 0'
 ```

@@ -157,7 +157,7 @@ with a floating title and expandable description.
 ## Shared composition grammar
 
 Reuse the existing
-[diagram source](../skills/change-saga/references/diagrams.md#author-diagrams-as-source)
+[diagram source](../skills/change-saga/references/diagram-source.md#author-diagrams-as-source)
 and renderer: styles, icons, entities, text, groups, annotations, callouts, notes,
 code blocks and connectors. The AI authors the layout, typography and reading
 order. The viewer starts read-only.

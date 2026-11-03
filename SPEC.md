@@ -2063,7 +2063,13 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga add-chapter` creates a top-level independently reviewable chapter and
   its overview fragment.
 - `change-saga cover --target ...` attaches code references to a target.
-- `change-saga status --json` (`status_schema` `change-saga.status/v3`) reports
+- `change-saga status --json` (`status_schema` `change-saga.status/v4`) reports a
+  compact report for an agent to decide on: each area's counts and first
+  `uncovered_entries`, counts of the record lists, and at most 10 rows of every other
+  list, each with a `_total`; `--max N` changes the bound and 0 removes it, and
+  `--action ID` reads one next action whole. A dropped list is absent rather than
+  empty. `change-saga status --json --detail` (`status_schema`
+  `change-saga.status/v3`) is the complete document, with
   a **coverage report** under `coverage`: a scope (the change with `--against`,
   otherwise the whole application; `--feature` narrows either) and six areas.
   `implementation` counts changed lines referenced by the Saga's documentation
@@ -2080,6 +2086,12 @@ hide authored content behind a valid-looking saga. Other names beginning with
   (a story, persona, design, test, or term that would help) explain the practice
   they teach and are never demanded. Nothing is reduced to a score or
   percentage, and the JSON shape is a contract teams may script against.
+- `change-saga spec --json` is a compact index of the contract's sections, resources,
+  and commands. `--command NAME`, `--resource KIND`, and `--section NAME` read one, at
+  the path it has in the whole contract, and `--all` reads the whole contract.
+- `change-saga query requirements` returns one row per requirement: `requirement`,
+  `id`, `title`, `state`, `feature`, and `criteria` (a count), with conflict flags and
+  heads when conflicted. `--requirement ID` or `--detail` returns full records.
 - `change-saga check --covers AREA[,AREA...]` answers whether the named areas are
   fully covered in scope, printing only their gaps; it takes the same
   `--against`, `--head`, and `--feature` as `status`.

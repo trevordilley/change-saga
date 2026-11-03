@@ -27,6 +27,12 @@ Saga that changed underneath a multi-step read.
 
 ## Navigating
 
+Prefer the compact default of each read and expand one record at a time:
+`query requirements` returns rows of id, title, state, feature and criterion
+count, with `--requirement ID` for one record's full text and `--detail` for
+every record's; `query context --feature ID` is bounded, with `--expand STORY`;
+`query overview` omits deck reports, with `--deck URN`.
+
 Start at `query overview` for the compact directory of names, targets and
 counts, then walk one level at a time with `query children`. Full deck reports
 are omitted by default. Use `query overview --deck URN` to include the report
@@ -248,6 +254,6 @@ covered lines are not proof of a correct explanation.
 Feature `query context` includes an optional `feature.overview` descriptor
 (target, path, media_type). Read it with `query fragment --target URN`; use
 `query history --node URN` for Git history. Story `current_revision.overview`
-in `query requirements`, expanded context, and `revision.overview` in
+in `query requirements --requirement ID`, expanded context, and `revision.overview` in
 `query requirement-history` is optional authored Markdown, not a generated
 summary. Missing prose remains missing; never derive personas from old titles.

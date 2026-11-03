@@ -296,7 +296,7 @@ func TestSchemaAcceptsBoard(t *testing.T) {
 // The skill's board example is what an agent copies, so its elements must
 // validate and render beside the nodes they annotate.
 func TestSkillBoardExampleRenders(t *testing.T) {
-	data, err := os.ReadFile(filepath.Join("..", "..", "skills", "change-saga", "references", "diagrams.md"))
+	data, err := os.ReadFile(filepath.Join("..", "..", "skills", "change-saga", "references", "diagram-source.md"))
 	if err != nil {
 		t.Fatal(err)
 	}

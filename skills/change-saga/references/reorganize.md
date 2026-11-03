@@ -1,7 +1,7 @@
 # Reorganize existing content
 
 Read [query.md](query.md) and inspect the existing entities before changing
-them. Use the installed CLI's help and `change-saga spec --json` to discover
+them. Use the installed CLI's help and `change-saga spec --json --command NAME` to discover
 operations; do not create a duplicate to simulate a rename or move.
 
 ## Choose the owning operation

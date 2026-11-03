@@ -3,8 +3,8 @@
 Read this reference when reconciling a code comparison, preparing or updating
 a pull-request review artifact, working with a companion Saga repository,
 repinning landed evidence, or handing work to another author. Read
-[query.md](query.md) first; add [diagrams.md](diagrams.md) only when the task
-also creates or changes visual or narrative content.
+[query.md](query.md) first; add [slides.md](slides.md) or [decks.md](decks.md) only when
+the task also creates or changes visual or narrative content.
 
 ## Resolve the comparison without guessing
 
@@ -26,12 +26,14 @@ the result in the Saga rather than replacing that workflow.
 ## Reconcile from structured evidence
 
 When the Saga holds living documentation (or the user asks), run
-`change-saga reconcile --against <base> --json <saga>` after implementing,
+`change-saga reconcile --against <base> <saga>` after implementing,
 verifying, and authoring the PR review deck. A Saga that holds only reviews
 has nothing to reconcile; its review's coverage is the whole answer.
 
-Start from the signal. The text report (and `summary` in `--json`, alone with
-`--json --summary`) leads with "Your change made N references stale": one line
+Start from the signal, and read the small form: the text report, or `--json
+--summary`. Bare `--json` is the whole queue and every reference, megabytes on a
+large Saga, for a script rather than an agent's context. The text report (and
+`summary` in `--json`) leads with "Your change made N references stale": one line
 per reference with owner, old range, and proposed range. `status --against`,
 `review list`, and `review create` say the same. Stale means stale at HEAD
 and either current at the merge-base or pinned during the change (deleted-side

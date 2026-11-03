@@ -129,7 +129,7 @@ Once confirmed, create or update the repository's Saga through the installed
 `change.saga`. Recommend extending one Saga rather than adding another, and
 never create a second Saga because the first is incomplete.
 Use `change-saga --help`, command-specific `-h`, and
-`change-saga spec --json` rather than guessing commands or editing metadata
+`change-saga spec --json --command NAME` rather than guessing commands or editing metadata
 directly.
 
 Validate the initial records. If later authoring will use parallel workspaces
