@@ -325,9 +325,13 @@ button.plan-activity-task:hover{text-decoration:underline}
 .plan-live .plan-activity{margin-top:4px}
 .review-deck-rail .plan-live{margin:8px 0;padding:0 2px}
 .review-deck-rail .plan-live .plan-activity{max-height:220px;overflow:auto}
-.plan-tasks-view{position:relative}
-.plan-tasks-view>.plan-live{position:absolute;left:12px;bottom:12px;z-index:3;width:min(340px,calc(100% - 24px));padding:8px 11px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
-.plan-tasks-view>.plan-live .plan-activity{max-height:30vh;overflow:auto}
+/* The feed sits beside the board at a fixed width, so new rows never cover a node
+   and never move the board under a reader. */
+.plan-tasks-body{display:flex;flex:1;min-height:0;border-top:1px solid var(--line)}
+.plan-tasks-body>.plan-whiteboard{flex:1;min-width:0;border-top:0}
+.plan-tasks-body>.plan-live{flex:0 0 280px;box-sizing:border-box;overflow:auto;padding:8px 12px;border-left:1px solid var(--line)}
+.plan-tasks-body>.plan-live:not([open]){flex-basis:auto;writing-mode:vertical-rl}
+@media(max-width:820px){.plan-tasks-body{flex-direction:column}.plan-tasks-body>.plan-live{flex:0 0 auto;max-height:30vh;border-left:0;border-top:1px solid var(--line)}.plan-tasks-body>.plan-live:not([open]){writing-mode:horizontal-tb}}
 .plan-surface>.plan-live{margin:0 0 14px}
 `
 

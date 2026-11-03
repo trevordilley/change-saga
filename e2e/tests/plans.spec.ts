@@ -1,5 +1,7 @@
+import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
+import type { Page } from "@playwright/test";
 import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 
@@ -237,4 +239,161 @@ test("a Task's references open from its page and the board, and an unreadable on
     await taskCode.click();
     await expect(drawer.locator("[data-task-code-view]")).toContainText("could not be read from this checkout", { timeout: 2000 });
   }).toPass();
+});
+
+/** A Plan committed to the Saga's repository, and that Saga in a second worktree on a branch. */
+function planWithSecondWorktree(saga: SagaFixture, branch = "agent-branch"): string {
+  planWithoutDoneTasks(saga);
+  execFileSync("git", ["add", "-A"], { cwd: saga.sagaRepo });
+  execFileSync("git", ["-c", "user.name=t", "-c", "user.email=t@example.test", "-c", "commit.gpgsign=false", "commit", "-qm", "the plan"], { cwd: saga.sagaRepo });
+  const worktree = join(saga.tempDir, "second-worktree");
+  execFileSync("git", ["worktree", "add", "-q", "-b", branch, worktree], { cwd: saga.sagaRepo });
+  return join(worktree, relative(saga.sagaRepo, saga.sagaRoot));
+}
+
+function planWithoutDoneTasks(saga: SagaFixture): void {
+  run(saga, "plan", "create", "--id", "tides", "--title", "Plan the tides");
+  run(saga, "task", "add", "--plan", "tides", "--id", "read-tides", "--title", "Read the tide table",
+    "--story", "urn:change-saga:wave-one:story:read-the-tide");
+  run(saga, "task", "add", "--plan", "tides", "--id", "tide-source", "--title", "Find a tide source", "--unblocks", "read-tides");
+  const slide = {
+    version: 1, operation: "create", request_id: "tide-live", plan: "tides", expected_snapshot: "absent",
+    slide: { id: "the-work", title: "The work", rank: 10, intent: "explain", layout: "diagram", takeaway: "One task reads the tides.", front: ["Read the tide table."], reading_order: ["read-tides"] },
+    diagram: {
+      version: 1, width: 1280, height: 720,
+      styles: { primary: { fill: "@diagram-blue-tint", stroke: "@diagram-blue-accent", ink: "@diagram-blue-ink", font_size: 18, stroke_width: 2 } },
+      elements: [{ id: "read-tides", kind: "node", shape: "service", style: "primary", label: "Read the tide table", x: 100, y: 100, width: 400, height: 120 }],
+    },
+    items: [{ id: "read-tides", rank: 10, kind: "node", label: "Read the tide table", description: "The work.", selector: { type: "element", element_id: "read-tides" }, record: "urn:change-saga:wave-one:plan:tides:task:read-tides" }],
+  };
+  const request = join(saga.tempDir, "tide-live.json");
+  writeFileSync(request, JSON.stringify(slide));
+  run(saga, "apply-slide", "--from", request);
+}
+
+function report(saga: SagaFixture, root: string, ...args: string[]): void {
+  const result = runCLI(saga, ["task", ...args, "--plan", "tides", "--agent", "ada", root], saga.sagaRepo);
+  expect(result.status, `task ${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
+}
+
+/** The page's own objects are gone after any reload, so this catches one. */
+async function markThePage(page: Page): Promise<() => Promise<void>> {
+  await page.evaluate(() => { (globalThis as unknown as { leftOpen: boolean }).leftOpen = true; });
+  return async () => {
+    expect(await page.evaluate(() => (globalThis as unknown as { leftOpen?: boolean }).leftOpen)).toBe(true);
+  };
+}
+
+test("a Tasks board left open follows an agent in another worktree, keeping the camera and an open drawer", async ({ page, saga }) => {
+  const other = planWithSecondWorktree(saga);
+  await page.goto(`${saga.baseURL}/plans/tides/tasks`);
+  await waitForSettledSaga(page);
+  const stillOpen = await markThePage(page);
+  const feed = page.locator("[data-plan-feed]");
+  await expect(feed).toBeEmpty();
+  expect(await feed.evaluate(list => getComputedStyle(list, "::before").content)).toContain("No updates yet");
+
+  // The reader looks around: zoom in, select a node, and read its slide-out.
+  await page.locator("[data-whiteboard-zoom='1']").click();
+  const node = page.locator('[data-plan-node="task:read-tides"]');
+  const source = page.locator('[data-plan-node="task:tide-source"]');
+  await node.click();
+  const drawer = page.locator(".diff-drawer.open");
+  const detail = drawer.locator('[data-plan-node-detail="read-tides"]');
+  await expect(detail).toBeVisible();
+  await expect(node).toHaveClass(/plan-selected/);
+  const camera = await page.locator("[data-plan-board-drawing]").getAttribute("viewBox");
+
+  await expect(source).toHaveClass(/\bready\b/);
+  report(saga, other, "start", "--task", "tide-source");
+  await expect(source).toHaveClass(/\bworking\b/);
+  await expect(source.locator(".plan-board-state")).toHaveText("In progress · ada");
+  await expect(feed).toContainText("ada started");
+
+  report(saga, other, "start", "--task", "read-tides");
+  await expect(node).toHaveClass(/\bworking\b/);
+  await expect(detail.locator('[data-plan-task-status="read-tides"]')).toHaveText("In progress");
+  await expect(detail.locator('[data-plan-task-on-it="read-tides"]')).toContainText("On it: ada");
+
+  report(saga, other, "note", "--task", "read-tides", "The tide table moved");
+  const history = detail.locator('[data-plan-task-history="read-tides"]');
+  await expect(history).toContainText("The tide table moved");
+  await expect(feed).toContainText("The tide table moved");
+
+  report(saga, other, "note", "--task", "read-tides", "--blocked", "No data before 1990");
+  await expect(node).toHaveClass(/\bblocked\b/);
+  await expect(node.locator(".plan-board-flag")).toBeVisible();
+  await expect(detail.locator('[data-plan-task-status="read-tides"]')).toHaveText("Blocked");
+  await expect(history.locator("li").first()).toContainText("No data before 1990");
+  await expect(history.locator("li")).toHaveCount(3);
+
+  // The Task is done on the branch, which is not the same as done here.
+  report(saga, other, "done", "--task", "tide-source", "--summary", "Found a source");
+  await expect(source).toHaveClass(/\bdone-branch\b/);
+  await expect(source).not.toHaveClass(/(^|\s)done(\s|$)/);
+  await expect(source.locator(".plan-board-check")).toBeVisible();
+  await expect(source.locator(".plan-board-state")).toHaveText("Done on agent-branch");
+  await expect(page.locator("[data-plan-done]").first()).toHaveText("0");
+
+  // Done in this checkout is the durable fact.
+  run(saga, "task", "done", "--plan", "tides", "--task", "tide-source");
+  await expect(source).toHaveClass(/(^|\s)done(\s|$)/);
+  await expect(source.locator(".plan-board-state")).toHaveText("Done");
+  await expect(page.locator("[data-plan-done]").first()).toHaveText("1");
+
+  // Nothing the reader set up moved.
+  await expect(detail).toBeVisible();
+  await expect(node).toHaveClass(/plan-selected/);
+  expect(await page.locator("[data-plan-board-drawing]").getAttribute("viewBox")).toBe(camera);
+  await stillOpen();
+
+  // A Task opened later shows what arrived while it was closed.
+  await source.click();
+  await expect(drawer.locator('[data-plan-node-detail="tide-source"] [data-plan-task-status="tide-source"]')).toHaveText("Done");
+  await expect(drawer.locator('[data-plan-task-history="tide-source"]')).toContainText("Found a source");
+});
+
+test("a Plan slide's node and feed follow an agent, and the feed opens the Task", async ({ page, saga }) => {
+  const other = planWithSecondWorktree(saga);
+  await page.goto(`${saga.baseURL}/plans/tides`);
+  await waitForSettledSaga(page);
+  const stillOpen = await markThePage(page);
+  await page.locator("[data-plan-deck] [data-slide-thumbnail]").click();
+  const hotspot = page.locator('.review-deck-slide.active .landmark-hotspot[data-element-id="read-tides"]');
+  await expect(hotspot).toHaveAttribute("data-plan-task-state", "waiting");
+
+  report(saga, other, "start", "--task", "read-tides");
+  await expect(hotspot).toHaveAttribute("data-plan-task-state", "working");
+  await expect(hotspot).toHaveAttribute("data-plan-task-holder", "ada");
+  report(saga, other, "note", "--task", "read-tides", "--blocked", "Waiting on the tide data");
+  await expect(hotspot).toHaveAttribute("data-plan-task-state", "blocked");
+  report(saga, other, "done", "--task", "read-tides");
+  await expect(hotspot).toHaveAttribute("data-plan-task-state", "done-branch");
+  await expect(hotspot).toHaveAttribute("data-plan-task-holder", "");
+  await expect(page.locator(".review-deck-slide.active")).toBeVisible();
+  await stillOpen();
+
+  const feed = page.locator("[data-plan-feed]");
+  await expect(feed).toContainText("Waiting on the tide data");
+  await feed.getByRole("button", { name: "Read the tide table" }).first().click();
+  await expect(page.locator('.diff-drawer.open [data-plan-node-detail="read-tides"]')).toContainText("Done on agent-branch");
+});
+
+test("a quiet Task reads quiet, never failed, and comes back with an update", async ({ page, saga }) => {
+  const other = planWithSecondWorktree(saga);
+  report(saga, other, "start", "--task", "tide-source");
+  const log = join(saga.sagaRepo, ".git/change-saga/activity/wave-one/tides/ada.jsonl");
+  const longAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+  writeFileSync(log, readFileSync(log, "utf8").replace(/"at":"[^"]+"/, `"at":"${longAgo}"`));
+
+  await page.goto(`${saga.baseURL}/plans/tides/tasks`);
+  await waitForSettledSaga(page);
+  const node = page.locator('[data-plan-node="task:tide-source"]');
+  await expect(node).toHaveClass(/\bquiet\b/);
+  await expect(node.locator(".plan-board-state")).toContainText("In progress, quiet");
+  await expect(node).not.toContainText(/fail/i);
+
+  // An update brings it back, with no reload.
+  report(saga, other, "note", "--task", "tide-source", "Still reading");
+  await expect(node).not.toHaveClass(/\bquiet\b/);
 });
