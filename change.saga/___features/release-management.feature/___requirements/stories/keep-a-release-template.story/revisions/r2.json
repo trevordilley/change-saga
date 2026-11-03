@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:keep-a-release-template",
+  "parents": [
+    "urn:change-saga:change-saga:story:keep-a-release-template:revision:r1"
+  ],
+  "title": "Keep a release template",
+  "statement": "As a developer, I can keep one checklist template for the repository, so each release starts from everything we have learned to do and nobody has to remember it.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102",
+    "urn:change-saga:change-saga:citation:releases-followup-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "read",
+      "statement": "The Release Template entry shows the template's steps in order, each with its excerpts."
+    },
+    {
+      "id": "copy-not-link",
+      "statement": "Changing the template changes no existing release's checklist."
+    },
+    {
+      "id": "one",
+      "statement": "A Saga has at most one template."
+    }
+  ],
+  "created_at": "2026-11-03T00:38:48.634791Z"
+}

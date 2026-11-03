@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:steps-are-actions",
+  "parents": [
+    "urn:change-saga:change-saga:story:steps-are-actions:revision:r1"
+  ],
+  "title": "Write every step as one thing to do",
+  "statement": "As a developer, I can write a step as one plain thing to do, as simple as \"tell Mike you're starting the release\", so a checked box means a specific thing happened and nothing gets forgotten.",
+  "overview": "These are the steps taken every release so the train does not derail. Trevor's examples: \"tell Mike you're starting the release\" and \"use the bathroom before next step\". A step either proves something (\"The Release workflow for this tag succeeded\") or changes something (\"Turn on enforcement in repository settings\"), but that is how to think about writing one, not a field to fill in. The tool cannot judge whether a step is truly actionable, so that remains with the author and whoever reviews the change.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102",
+    "urn:change-saga:change-saga:citation:releases-followup-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "plain",
+      "statement": "A step needs only a sentence. It asks for no story, Plan, phase, size, code reference or category."
+    },
+    {
+      "id": "not-a-task",
+      "statement": "A step is not a Task: it appears on no Plan's Task board, and Plans, readiness and coverage do not count it."
+    },
+    {
+      "id": "guided",
+      "statement": "`release guide` tells the author to write each step as one specific action that proves something is true or changes something, with an example of each."
+    }
+  ],
+  "created_at": "2026-11-03T00:38:48.423737Z"
+}
