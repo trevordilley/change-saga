@@ -208,7 +208,7 @@ test("@critical compares a change: the code it touched lights up the records tha
   git(sourceRepo, "add", ".");
   git(sourceRepo, "commit", "-m", "change greeting and add capability");
 
-  const compared = runCLI(sagaRepositories, ["status", "--json", "--repo", sourceRepo, "--against", incomingBase, sagaRoot]);
+  const compared = runCLI(sagaRepositories, ["status", "--json", "--detail", "--repo", sourceRepo, "--against", incomingBase, sagaRoot]);
   const result = JSON.parse(compared.stdout) as {
     opening: { mode: string; base_oid: string };
     comparison: {

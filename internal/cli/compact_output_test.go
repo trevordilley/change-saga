@@ -334,4 +334,3 @@ func TestStatusTextBoundsSchemaWarningsAndSaysSo(t *testing.T) {
 		t.Fatalf("text status:\n%s", output.String())
 	}
 }
-
