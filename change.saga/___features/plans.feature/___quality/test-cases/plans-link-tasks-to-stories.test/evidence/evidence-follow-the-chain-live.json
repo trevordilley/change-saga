@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-follow-the-chain-live",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "follow-the-chain"
+  ],
+  "code": [
+    {
+      "commit": "1007d47a3fa0bf332e521a74e7040f06711ce665",
+      "path": "internal/server/plans_test.go",
+      "start": 143,
+      "end": 185,
+      "digest": "sha256:fb36d729012ef5cbda23311a8a22096a28fb623c858ad39fb0ba4474f565dcd2"
+    },
+    {
+      "commit": "1007d47a3fa0bf332e521a74e7040f06711ce665",
+      "path": "internal/server/plans_test.go",
+      "start": 97,
+      "end": 122,
+      "digest": "sha256:9ad8976640ab13216a17436c285170c3e235c39511217e5d790af4361135f0a0"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories:evidence:evidence-follow-the-chain"
+  ],
+  "created_at": "2026-11-03T05:30:48Z"
+}
