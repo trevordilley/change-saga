@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:run-a-release-on-a-branch",
+  "parents": [],
+  "title": "Keep a release's progress on its own branch",
+  "statement": "As a developer, I can run a release on a short-lived branch and merge it when the checklist is done, so ticking steps never needs a write to a protected main branch.",
+  "overview": "Trevor's direction, on a question this feature raised: every tick is a write to the Saga, while a release usually tags a commit on a protected default branch. So the release records the tagged commit and does not contain it, and its ticks land in a pull request after the tag. Steps that happen after the release go on the same branch, and it merges once they are done.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-settled-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "guide",
+      "statement": "`release guide` says to run a release on a short-lived branch, commit progress there, and merge it through a pull request when the checklist is done."
+    },
+    {
+      "id": "earlier-commit",
+      "statement": "A release can record a released commit that is earlier than the commit holding that record, and `validate` accepts it."
+    },
+    {
+      "id": "no-branch-needed",
+      "statement": "The tool creates, checks and requires no branch, and a team can work some other way."
+    },
+    {
+      "id": "browser",
+      "statement": "A tick in the reader writes to the checkout the reader is serving, so it lands on whichever branch that checkout is on."
+    }
+  ],
+  "created_at": "2026-11-03T02:59:19.163872Z"
+}

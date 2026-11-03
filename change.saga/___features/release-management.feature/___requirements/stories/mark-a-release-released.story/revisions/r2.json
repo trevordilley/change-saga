@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:mark-a-release-released",
+  "parents": [
+    "urn:change-saga:change-saga:story:mark-a-release-released:revision:r1"
+  ],
+  "title": "Record that a release went out",
+  "statement": "As a developer, I can record that a release went out, and at which commit, so \"what shipped\" has an answer that a person stated.",
+  "overview": "Trevor's direction: nothing can block a release. A person decides, and the mark records that they did. It differs from `plan deliver`, which refuses until all is done, partly because a release checklist has steps that only happen afterwards, such as turning something back on.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102",
+    "urn:change-saga:change-saga:citation:releases-settled-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "explicit",
+      "statement": "Only an explicit command marks a release released, and it records when and the commit."
+    },
+    {
+      "id": "nothing-blocks",
+      "statement": "Nothing refuses it: the command lists unchecked steps and stories with no path to code, and proceeds."
+    },
+    {
+      "id": "afterwards",
+      "statement": "Steps can still be checked, and notes corrected, after it is marked."
+    },
+    {
+      "id": "at-commit",
+      "statement": "Reading a released version's stories as they stood uses Git at that commit, and the release stores no copy of them."
+    }
+  ],
+  "created_at": "2026-11-03T02:59:18.989028Z"
+}
