@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-cheap-to-leave-open-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "cheap-to-leave-open"
+  ],
+  "code": [
+    {
+      "commit": "fc4f5059c1b1b7f535d8c7e8d2f5321b6a64cfbd",
+      "path": "internal/server/planlive_test.go",
+      "start": 140,
+      "end": 170,
+      "digest": "sha256:635e98efb01d81a5ec69eaf405566aa108d24bf58dcdc186d8130d0f4387ba17"
+    },
+    {
+      "commit": "fc4f5059c1b1b7f535d8c7e8d2f5321b6a64cfbd",
+      "path": "internal/server/planlive_test.go",
+      "start": 241,
+      "end": 271,
+      "digest": "sha256:6bfd13af13c33b474f4f5afbef22eaf630f643e35e425101b31d426bf65cd22f"
+    },
+    {
+      "commit": "fc4f5059c1b1b7f535d8c7e8d2f5321b6a64cfbd",
+      "path": "internal/server/planlive_test.go",
+      "start": 274,
+      "end": 286,
+      "digest": "sha256:de6f1760226625f435697aab360be33261697c8c3ae4dceb6c2a479abd14370a"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work:evidence:evidence-cheap-to-leave-open"
+  ],
+  "created_at": "2026-11-03T22:24:05Z"
+}

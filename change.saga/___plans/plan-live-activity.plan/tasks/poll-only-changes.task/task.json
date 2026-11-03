@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "poll-only-changes",
+  "title": "Send a poll only what changed",
+  "phase": "reader",
+  "story": "urn:change-saga:change-saga:story:watch-a-plan-work",
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A stamp check, per-Task generations, and moving the clock to the browser."
+  },
+  "state": "done",
+  "summary": "Unchanged polls took under 4ms on a 171-Task Plan with 4000 events; one note sent 26 KB.",
+  "created_at": "2026-11-03T22:19:21.079947Z"
+}

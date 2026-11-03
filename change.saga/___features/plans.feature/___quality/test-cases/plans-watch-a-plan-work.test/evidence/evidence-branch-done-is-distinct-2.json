@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-branch-done-is-distinct-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "branch-done-is-distinct"
+  ],
+  "code": [
+    {
+      "commit": "fc4f5059c1b1b7f535d8c7e8d2f5321b6a64cfbd",
+      "path": "e2e/tests/plans.spec.ts",
+      "start": 287,
+      "end": 357,
+      "digest": "sha256:9edc7bc1f41a56076d978e414117b9c086d9e888c91dce887eb358d1f4ea038b"
+    },
+    {
+      "commit": "fc4f5059c1b1b7f535d8c7e8d2f5321b6a64cfbd",
+      "path": "internal/server/planlive_test.go",
+      "start": 172,
+      "end": 204,
+      "digest": "sha256:9f1623bd66b0b59e1952b107704225cdbc00f94f3c553c48cf452c1b60b2e320"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work:evidence:evidence-branch-done-is-distinct"
+  ],
+  "created_at": "2026-11-03T22:23:56Z"
+}
