@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:every-released-story-has-code",
+  "parents": [
+    "urn:change-saga:change-saga:story:every-released-story-has-code:revision:r1"
+  ],
+  "title": "Know every story in a release reaches code",
+  "statement": "As a developer, I can see that every story in a release has code references, so a release claims only work we can point to in the code.",
+  "overview": "Trevor's direction: it is fine to have fixes with no story, as long as every story in a release has code references. What counts decides how strict that is. Of this Saga's 24 accepted stories, `query traceability` reaches slide Item code for 13. The other 11 are the shipped Plans stories: 4 name code on their own Task, and all 11 have test-case evidence, so only counting tests lets all 24 pass. That query also covers only accepted stories, while a release can link a proposed one, so this check needs its own walk.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-followup-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "reported",
+      "statement": "`release status` and the release's page name each of its stories that no current code reference reaches."
+    },
+    {
+      "id": "while-preparing",
+      "statement": "A story with no code references can be linked while a release is being prepared, since planned work has no code yet."
+    },
+    {
+      "id": "at-release",
+      "statement": "Marking a release released is refused while any of its stories has no code reference, and the refusal names them."
+    },
+    {
+      "id": "fixes-exempt",
+      "statement": "An internal note marked as a fix, with no story, is not asked for code references."
+    },
+    {
+      "id": "counted",
+      "statement": "A code reference counts when it is current and reaches the story through a slide Item, a Task, or a test case's evidence."
+    }
+  ],
+  "created_at": "2026-11-03T00:39:55.744059Z"
+}
