@@ -18,7 +18,7 @@ The tool answers and people decide. [It says what it could not reach](/requireme
 
 The QA section of the Overview holds [a catalog of every end-to-end test used to prove the app works](/requirements/see-the-e2e-catalog). The [recommended unit is one runnable test](/requirements/one-catalog-entry-per-test): a `test()` is what runs, what costs money, what flakes, and what is positive or negative.
 
-Each entry has [code references to the test that runs it](/requirements/open-e2e-test-code), and [each acceptance criterion on a built feature links to the entries that verify it](/requirements/see-criteria-e2e-covers). Not every criterion needs an end-to-end test, so a missing one is shown as a gap and fails nothing.
+Each entry has [code references to the test that runs it](/requirements/open-e2e-test-code), and [each acceptance criterion on a built feature links to the entries that verify it](/requirements/see-criteria-e2e-covers). Not every criterion needs an end-to-end test, so a missing one is simply shown.
 
 ## Past the happy path {#past-the-happy-path}
 
@@ -26,9 +26,15 @@ Covering every criterion with happy paths only proves the app works in ideal cir
 
 These are facts to read and not a grade. They are also claims: a kind is what the author stated, and the tool does not check it.
 
+## A measure, not a rule {#a-measure-not-a-rule}
+
+All of this is informative and not prescriptive. Nothing here fails a check, adds a health gap or asks a team to write a test. Some apps have no end-to-end tests at all and are fine.
+
+It covers end-to-end tests only. Integration and unit tests are just part of the code, so they have no catalog entries and no counts here, though the code they exercise is still part of how a change reaches a story.
+
 ## QA tools {#qa-tools}
 
-With those links in place, the rest is asking questions. People can [slice the tests by feature, story, persona, kind or code path](/requirements/slice-test-coverage), and run that slice. They can also [list the weak spots](/requirements/find-weak-spots-in-testing): criteria with only positive coverage, criteria with no test, tests that verify nothing, and tests gone stale. More tools can follow, because each is a view over the same records.
+With those links in place, the rest is asking questions. People can [slice the end-to-end tests by feature, story, persona, kind or code path](/requirements/slice-test-coverage), and run that slice. They can also [see where those tests are thin](/requirements/find-weak-spots-in-testing): criteria with only positive coverage, criteria with no end-to-end test, tests that verify nothing, and tests gone stale. More tools can follow, because each is a view over the same records.
 
 ## It uses what Quality already has {#it-uses-what-quality-already-has}
 
@@ -50,18 +56,12 @@ Measured on this Saga:
 
 - This repository has 139 `test()` calls in 43 spec files under `e2e/tests`, and test cases point at 11 of those files.
 - 27 of its 182 test cases have code in `e2e/`, reaching 16 distinct `test()` blocks by a rough parse.
-- Of the 243 current criteria on built features, 162 have only positive tests and 8 have no test at all.
-- 51 of those criteria have an end-to-end test. 46 of the 51 are positive only, and none has a negative end-to-end test.
+- 51 of the 243 current criteria on built features have an end-to-end test. 46 of the 51 are positive only, and none has a negative end-to-end test.
 - Of the 58 references into `e2e/tests`, 4 start on a `test()` line and 54 sit inside a test body or helper. They read well, but Playwright finds no test at a line inside a body, so most would need a [reference to the declaring line](/requirements/open-e2e-test-code) before a command could run them.
 - On v0.6.0 to v0.7.0, 1,378 of 17,802 changed lines reach a story.
 
-These are counts from the records, and kinds are as their authors stated them. Backfilling is real work, which an agent can do but which this feature does not do by itself.
+These are counts from the records, and kinds are as their authors stated them. A team that wants to fill any of this in can have an agent do it, and nothing asks them to.
 
 ## Limits {#limits}
 
 The Saga records how something is verified, never whether it passed. The catalog holds no results and no flakiness history; those stay in the team's test runner and CI. It also cannot tell whether a test proves what it claims, and a person still has to judge that.
-
-## Open questions {#open-questions}
-
-1. **Should positive-only criteria be flagged as a gap, or only shown?** The format's default policy already expects positive, negative and edge cases for every accepted criterion, and `check --covers quality` reports the missing ones. Recommendation: reuse that for all tests, and show the end-to-end view as information, since an end-to-end negative test is often not the right place for one.
-2. **What should other kinds of test get?** The tools work over every test case, with end-to-end as a filter. Recommendation: declare only end-to-end locations at first, and add other named levels, such as integration, if people ask to slice by them.

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:see-positive-and-negative-coverage",
+  "parents": [
+    "urn:change-saga:change-saga:story:see-positive-and-negative-coverage:revision:r1"
+  ],
+  "title": "See whether a criterion is proven past the happy path",
+  "statement": "As a product manager, I can see whether each criterion's end-to-end tests cover things going wrong as well as going right, so covering every criterion with happy paths does not read as proof the app is sound.",
+  "overview": "Trevor's direction: an acceptance criterion with only positive coverage is weaker than one with negative coverage, and showing that is enough, because this is informative and not prescriptive. Test cases already record this as `coverage_kinds`, including `edge` for limits and concurrency, so this surfaces an existing field and adds none. It looks only at end-to-end tests: integration and unit tests are just part of the code. Today, of the 51 criteria with an end-to-end test, 46 are positive only, and none has a negative end-to-end test.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-informative-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "per-test",
+      "statement": "Each catalog entry shows its kinds: positive, negative or edge."
+    },
+    {
+      "id": "per-criterion",
+      "statement": "Each criterion on a built feature shows which kinds its end-to-end tests cover."
+    },
+    {
+      "id": "positive-only",
+      "statement": "A criterion whose end-to-end tests are all positive is marked as positive only."
+    },
+    {
+      "id": "counts",
+      "statement": "The QA section shows, per built feature, how many criteria have each combination of kinds."
+    },
+    {
+      "id": "no-score",
+      "statement": "No single score or grade is computed from them, and no result fails because of them."
+    },
+    {
+      "id": "a-claim",
+      "statement": "The reader says a kind is what the author stated, and the tool does not verify it."
+    }
+  ],
+  "created_at": "2026-11-03T01:54:48.504211Z"
+}

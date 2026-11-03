@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:find-weak-spots-in-testing",
+  "parents": [
+    "urn:change-saga:change-saga:story:find-weak-spots-in-testing:revision:r1"
+  ],
+  "title": "See where end-to-end tests are thin",
+  "statement": "As a product manager, I can list where our end-to-end tests are thin, so we can see it when deciding what to test next.",
+  "overview": "Proposed addition, as the first of the QA tools. These are measures to read, not work to clear: an app may be fine with few end-to-end tests, or none.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-informative-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "positive-only",
+      "statement": "It lists criteria whose end-to-end tests are all positive."
+    },
+    {
+      "id": "no-test",
+      "statement": "It lists stories and criteria with no end-to-end test."
+    },
+    {
+      "id": "proves-nothing",
+      "statement": "It lists catalog entries that verify no criterion."
+    },
+    {
+      "id": "stale",
+      "statement": "It lists entries whose code or criterion link is stale."
+    },
+    {
+      "id": "report-only",
+      "statement": "Each list is grouped by feature, comes with `--json`, fails nothing, and says nothing about which item matters most."
+    }
+  ],
+  "created_at": "2026-11-03T01:54:49.375216Z"
+}

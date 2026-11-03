@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:change-saga:story:see-criteria-e2e-covers",
+  "parents": [
+    "urn:change-saga:change-saga:story:see-criteria-e2e-covers:revision:r2"
+  ],
+  "title": "See which criteria end-to-end tests cover",
+  "statement": "As a product manager, I can see which acceptance criteria of each built feature an end-to-end test covers, so I know which promises are proven in a real run and which are not.",
+  "overview": "Trevor's direction: not every criterion is expected to have an end-to-end test, and this is informative, not prescriptive. The link is the existing pinned `verifies` relation from a test case to a criterion. Today, 51 of the 243 current criteria on this Saga's built features have a test case with code in `e2e/`.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-informative-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "on-the-criterion",
+      "statement": "On a story of a built feature, each criterion links to the catalog entries that verify it, or shows that it has none."
+    },
+    {
+      "id": "both-ways",
+      "statement": "A catalog entry links back to each criterion it verifies."
+    },
+    {
+      "id": "by-feature",
+      "statement": "The QA section shows, per built feature, how many current criteria have a catalog entry, and lists those that do not."
+    },
+    {
+      "id": "features-only",
+      "statement": "Roadmap features are left out of those counts and lists."
+    },
+    {
+      "id": "informative",
+      "statement": "A criterion with no end-to-end test fails no validation, `status`, `check` or health result."
+    },
+    {
+      "id": "stale-link",
+      "statement": "A link to a criterion revised since it was pinned shows as stale, and does not count as coverage."
+    }
+  ],
+  "created_at": "2026-11-03T01:54:48.209272Z"
+}

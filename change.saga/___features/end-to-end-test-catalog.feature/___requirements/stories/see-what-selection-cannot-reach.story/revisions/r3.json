@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:change-saga:story:see-what-selection-cannot-reach",
+  "parents": [
+    "urn:change-saga:change-saga:story:see-what-selection-cannot-reach:revision:r2"
+  ],
+  "title": "Know what the answer could not reach",
+  "statement": "As a developer, I can see every change the answer could not connect to a story, so a short list of tests never reads as proof that the rest is safe.",
+  "overview": "Proposed addition, and what makes the answer usable: people can only figure out what to run if they can see what it missed. On v0.6.0 to v0.7.0, 1,378 of 17,802 changed lines reach a story. Trevor's direction is that the tool answers and teams judge, so it never calls the answer trustworthy or not.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-informative-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "unmapped",
+      "statement": "When asked about a range, the answer lists changed lines that reach no story, with a count, every time."
+    },
+    {
+      "id": "one-line",
+      "statement": "Asked about a line that reaches no story, the answer says so, and does not read as no tests needed."
+    },
+    {
+      "id": "gaps",
+      "statement": "It also lists affected stories and criteria with no catalog entry."
+    },
+    {
+      "id": "informative",
+      "statement": "It exits 0 whenever it could answer, whatever it lists, and `--json` carries the same lists for a rule a team writes itself."
+    },
+    {
+      "id": "not-a-verdict",
+      "statement": "The output says the list reflects only recorded links, and never says it is safe to skip the full suite."
+    },
+    {
+      "id": "fixes",
+      "statement": "A fix with no story appears here as unmapped change, and a release containing it can still go out."
+    }
+  ],
+  "created_at": "2026-11-03T01:54:49.926129Z"
+}
