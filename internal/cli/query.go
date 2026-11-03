@@ -232,6 +232,9 @@ var queryOperations = []string{
 	"inventory-selections",
 	"terms",
 	"term-references",
+	"plans",
+	"plan",
+	"task",
 }
 
 // queryPurpose says what each operation answers. It is keyed by the same
@@ -239,6 +242,9 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
+	"plans":                "the current Plans with their progress and links; delivered Plans only with --all",
+	"plan":                 "one Plan in full: its essay, phases, compact Tasks with their dependencies and what can start, and its slides",
+	"task":                 "one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it",
 	"whiteboards":          "Whiteboard identities, titles, revisions, lifecycle and technical design role assignments without rendering source",
 	"deprecations":         "authored deprecation assertions, exact content and code scope, target health, optional story relations and immutable history; absence is no recorded deprecation, never proof of non-deprecation",
 	"inventory":            "Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
@@ -281,6 +287,9 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
+	"plans":                "change-saga query plans --saga PATH [--all] [--cursor TOKEN] [--limit N]",
+	"plan":                 "change-saga query plan --saga PATH --plan ID|URN",
+	"task":                 "change-saga query task --saga PATH --task ID|URN [--plan ID|URN]",
 	"whiteboards":          "change-saga query whiteboards --saga PATH [--cursor TOKEN] [--limit N]",
 	"deprecations":         "change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--history] [--cursor CURSOR] [--limit N]",
 	"labels":               "change-saga query labels --saga PATH [--cursor TOKEN] [--limit N]",
@@ -357,6 +366,15 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	}
 	if operation == "feature-themes" {
 		return queryFeatureThemes(args[1:], out)
+	}
+	if operation == "plans" {
+		return queryPlans(args[1:], out)
+	}
+	if operation == "plan" {
+		return queryPlan(args[1:], out)
+	}
+	if operation == "task" {
+		return queryTask(args[1:], out)
 	}
 	if operation == "schema" {
 		return writeQuerySchema(args[1:], out)
@@ -576,6 +594,9 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"inventory-uses":       {"data.subject", "data.uses", "data.uses[].path", "data.completeness"},
 		"terms":                {"data.head_oid", "data.ref", "data.terms"},
 		"term-references":      {"data.subject", "data.references", "data.counts", "data.completeness"},
+		"plans":                {"data.plans", "data.plans[].tasks_done", "data.plans[].reviews"},
+		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.tasks", "data.plan.slides"},
+		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides"},
 		"layers":               {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{
@@ -610,11 +631,12 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"inventory-selections": "data.selections",
 		"terms":                "data.terms",
 		"term-references":      "data.references",
+		"plans":                "data.plans",
 	}
 	pagination := queryPaginationDescription{Kind: "none"}
 	if operation == "fragment" || operation == "slide" {
 		pagination = queryPaginationDescription{Kind: "byte-offset", NextOffsetPath: "data.content.next_offset"}
-	} else if operation != "overview" && operation != "audit" && operation != "layers" && operation != "history" && operation != "review-threads" {
+	} else if operation != "overview" && operation != "audit" && operation != "layers" && operation != "history" && operation != "review-threads" && operation != "plan" && operation != "task" {
 		pagination = queryPaginationDescription{
 			Kind: "cursor", CountedPath: countedPaths[operation], TotalPath: "page.total", ReturnedPath: "page.returned",
 			HasMorePath: "page.has_more", NextCursorPath: "page.next_cursor",

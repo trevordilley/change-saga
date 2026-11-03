@@ -10,6 +10,11 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- `query plans`, `query plan`, and `query task` read Plans and Tasks like other
+  records, including their full essays, which were only readable in the reader.
+
 ## [0.7.0] - 2026-11-02
 
 ### Added

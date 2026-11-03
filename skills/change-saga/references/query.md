@@ -237,6 +237,12 @@ covered lines are not proof of a correct explanation.
   `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.
   `change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
+- `plans`: the current Plans with their progress and links; delivered Plans only with --all.
+  `change-saga query plans --saga PATH [--all] [--cursor TOKEN] [--limit N]`
+- `plan`: one Plan in full: its essay, phases, compact Tasks with their dependencies and what can start, and its slides.
+  `change-saga query plan --saga PATH --plan ID|URN`
+- `task`: one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it.
+  `change-saga query task --saga PATH --task ID|URN [--plan ID|URN]`
 <!-- query-operations:end -->
 
 Feature `query context` includes an optional `feature.overview` descriptor

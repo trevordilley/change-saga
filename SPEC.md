@@ -1964,6 +1964,10 @@ Tasks, and a deck without slides or an essay. None of these is invalid.
   is later removed is reported as a dangling reference by `status` and
   `check --covers health`.
 
+`query plans`, `query plan`, and `query task` read Plans and Tasks as JSON, including
+a Plan's deck essay and a Task's essay. `query plans` omits delivered Plans unless
+`--all` is given.
+
 ### Plan decks
 
 A Plan's deck is authored with `apply-slide --plan ID` and `deck overview --plan
