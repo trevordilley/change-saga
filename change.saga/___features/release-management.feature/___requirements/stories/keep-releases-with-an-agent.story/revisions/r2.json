@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:keep-releases-with-an-agent",
+  "parents": [
+    "urn:change-saga:change-saga:story:keep-releases-with-an-agent:revision:r1"
+  ],
+  "title": "Have an agent keep the release current",
+  "statement": "As a developer, I can have the agents doing the work keep notes, story links and checklist steps up to date, so these records stay complete without someone maintaining them by hand.",
+  "overview": "Thorough linking is realistic because an agent does it, which is why the links can be required.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102",
+    "urn:change-saga:change-saga:citation:releases-followup-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "query",
+      "statement": "`query releases` returns releases, their stories, notes and steps through the standard snapshot and pagination envelope."
+    },
+    {
+      "id": "guide",
+      "statement": "`release guide` and the skill's references explain the workflow, including that a step the agent discovers goes on the checklist when it is discovered."
+    }
+  ],
+  "created_at": "2026-11-03T00:38:51.443044Z"
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:have-an-agent-run-the-release",
+  "parents": [],
+  "title": "Have an agent run the release",
+  "statement": "As a developer, I can tell an agent to run the release through the CLI and steer it as it goes, so the release follows our process without me driving each step.",
+  "overview": "Trevor's direction: Change Saga is a tool for AI, so the release commands are how an agent conducts a release and how a person guides it. A step's excerpts are where that guidance lives, so a command to run or a warning goes there. The first version does not mark steps as for a person or for an agent; \"use the bathroom before next step\" and \"tell Mike\" reach a person because the agent cannot do them.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-followup-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "next",
+      "statement": "`release next --release ID` returns the first unchecked step in order, with its excerpts and code references, and `--json` returns it as data."
+    },
+    {
+      "id": "whole-process",
+      "statement": "Everything needed to run a release is a CLI command with `--json`, with no browser needed: reading the process overview and template, creating the release, adding steps and notes, linking stories, and checking steps."
+    },
+    {
+      "id": "learn",
+      "statement": "`release guide` tells an agent how to run a release: read the process and the versioning scheme, work the steps in order, add any step it discovers, and record its progress as it goes."
+    },
+    {
+      "id": "ask-a-person",
+      "statement": "`release guide` tells the agent to ask the person for any step it cannot do itself, to check it only once they confirm, and never to check a step nobody did."
+    },
+    {
+      "id": "resume",
+      "statement": "A new agent session given only the Saga and the release ID continues from the first unchecked step."
+    },
+    {
+      "id": "steer",
+      "statement": "A step or excerpt a person adds or changes during a run is what the next `release next` returns."
+    },
+    {
+      "id": "no-execution",
+      "statement": "The CLI runs nothing a step says. The agent carries out each step with its own tools, and the CLI records it."
+    }
+  ],
+  "created_at": "2026-11-03T00:38:51.196489Z"
+}
