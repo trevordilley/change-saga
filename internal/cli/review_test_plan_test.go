@@ -90,3 +90,51 @@ func TestReviewTestPlanCommandGapsAndErrorsAreSingleJSONDocuments(t *testing.T) 
 		}
 	}
 }
+
+func TestRangeTestPlanNeedsNoReviewAndWritesNothing(t *testing.T) {
+	f := newReviewFixture(t)
+	git(t, f.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	ctx := context.Background()
+	story := "urn:change-saga:app:story:queue"
+	test := "urn:change-saga:app:test-case:queue"
+	run(t, Story, "add", "--feature", testFeature, "--id", "queue", "--revision", "r1", "--event", "proposed", "--persona", personaURNFor("app"),
+		"--title", "Durable jobs", "--statement", "As a user I can submit durable jobs", "--priority", "must", "--criterion", "durable=Jobs survive a restart", f.root)
+	writeFile(t, filepath.Join(f.repo, "queue_test.go"), "package queue\n// automated durability test\n")
+	git(t, f.repo, "add", "queue_test.go")
+	git(t, f.repo, "commit", "-m", "Add test")
+	base := strings.TrimSpace(git(t, f.repo, "rev-parse", "HEAD~1"))
+	head := strings.TrimSpace(git(t, f.repo, "rev-parse", "HEAD"))
+	runQuality(t, "", "test-case", "add", f.root, "--feature", testFeature, "--id", "queue", "--title", "Queue durability", "--kind", "positive", "--automation", "automated",
+		"--step", `{"id":"run","action":"Restart worker","expected_result":"Job remains"}`, "--expected-result", "Job remains")
+	run(t, Relation, "add", f.root, "--feature", testFeature, "--id", "queue-verifies", "--type", "verifies", "--from", test, "--to", story+":criterion:durable", "--rationale", "Exercises durability")
+	runQuality(t, "", "evidence", "add", f.root, "--test", test, "--role", "test_implementation", "--repo", f.repo, "--code", head+":queue_test.go#L1-L2")
+	before := git(t, f.repo, "status", "--porcelain")
+
+	plan, err := livingapp.PlanRangeTests(ctx, f.root, f.repo, base, head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Review != "" || plan.Range.BaseOID != base || plan.Range.HeadOID != head {
+		t.Fatalf("range: %+v", plan)
+	}
+	if len(plan.Tests) != 1 || plan.Tests[0].TestCase != test || len(plan.Stories) != 1 || plan.Stories[0].Story != story {
+		t.Fatalf("selection: %+v", plan)
+	}
+	if !strings.Contains(strings.Join(plan.Tests[0].Reasons, ";"), "the range") {
+		t.Fatalf("reasons: %v", plan.Tests[0].Reasons)
+	}
+	data, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(data), `"review"`) {
+		t.Fatalf("a plan over a bare range names no review: %s", data)
+	}
+	if after := git(t, f.repo, "status", "--porcelain"); after != before {
+		t.Fatalf("planning changed files: before %s after %s", before, after)
+	}
+	// An end that names no commit is an error, not an empty answer.
+	if _, err := livingapp.PlanRangeTests(ctx, f.root, f.repo, base, "v9.9.9"); err == nil || !strings.Contains(err.Error(), "v9.9.9") {
+		t.Fatalf("unresolved end: %v", err)
+	}
+}

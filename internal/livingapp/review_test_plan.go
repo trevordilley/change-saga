@@ -10,6 +10,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -23,9 +24,10 @@ import (
 // Complete means the recorded mapping has no reported gaps, not that these
 // tests prove the change correct or cover undeclared dependencies.
 type ReviewTestPlan struct {
-	Schema   string            `json:"schema"`
-	Snapshot string            `json:"snapshot"`
-	Review   string            `json:"review"`
+	Schema   string `json:"schema"`
+	Snapshot string `json:"snapshot"`
+	// Review is the review the plan is for; a plan over a bare range has none.
+	Review   string            `json:"review,omitempty"`
 	Range    reviewstate.Range `json:"range"`
 	Strategy string            `json:"strategy"`
 	Complete bool              `json:"complete"`
@@ -83,6 +85,43 @@ func PlanReviewTests(ctx context.Context, root, checkout, reviewID string) (Revi
 	if err != nil {
 		return ReviewTestPlan{}, err
 	}
+	return s.planForRange(ctx, checkout, rng, func(changes gitdiff.ChangeSet, resolver coverage.Resolver, inherited []coverage.InheritedReference) ReviewTestPlan {
+		return s.reviewTestPlan(ctx, review, rng, changes, resolver, inherited)
+	})
+}
+
+// PlanRangeTests answers which tests a code range affects, with no review: the
+// lines changed in head since its merge-base with against, as a comparison reads
+// them. Reviews and releases both work on code ranges, so this is the same walk.
+func PlanRangeTests(ctx context.Context, root, checkout, against, head string) (ReviewTestPlan, error) {
+	opened, err := Open(ctx, OpenOptions{SagaRoot: root})
+	if err != nil {
+		return ReviewTestPlan{}, err
+	}
+	s := opened.(*session)
+	if checkout == "" {
+		checkout = s.saga.Root
+	}
+	if head == "" {
+		head = "HEAD"
+	}
+	headOID, err := gitexec.Output(ctx, "-C", checkout, "rev-parse", "--verify", head+"^{commit}")
+	if err != nil {
+		return ReviewTestPlan{}, fmt.Errorf("%s does not name a commit: %w", head, err)
+	}
+	base, err := gitexec.Output(ctx, "-C", checkout, "merge-base", against, strings.TrimSpace(string(headOID)))
+	if err != nil {
+		return ReviewTestPlan{}, fmt.Errorf("no merge-base between %s and %s: %w", against, head, err)
+	}
+	rng := reviewstate.Range{BaseOID: strings.TrimSpace(string(base)), HeadOID: strings.TrimSpace(string(headOID))}
+	return s.planForRange(ctx, checkout, rng, func(changes gitdiff.ChangeSet, resolver coverage.Resolver, inherited []coverage.InheritedReference) ReviewTestPlan {
+		return s.planTests(ctx, testPlanScope{changeName: "the range", headName: "the end of the range"}, rng, changes, resolver, inherited)
+	})
+}
+
+// planForRange reads the change and what can own its lines, then runs plan, and
+// refuses an answer if the Saga moved underneath it.
+func (s *session) planForRange(ctx context.Context, checkout string, rng reviewstate.Range, plan func(gitdiff.ChangeSet, coverage.Resolver, []coverage.InheritedReference) ReviewTestPlan) (ReviewTestPlan, error) {
 	changes, err := gitdiff.ReadWithOptions(ctx, checkout, s.saga.Manifest.Source.Repository, rng.BaseOID, rng.HeadOID, gitdiff.ReadOptions{AllowRepositoryMismatch: true})
 	if err != nil {
 		return ReviewTestPlan{}, err
@@ -100,7 +139,7 @@ func PlanReviewTests(ctx context.Context, root, checkout, reviewID string) (Revi
 	inherited, _ := inventoryview.InheritedReferences(ctx, s.saga, &inv, rng.HeadOID, resolver)
 	baseSelections, _ := inventoryview.InheritedReferences(ctx, s.saga, &inv, rng.BaseOID, resolver)
 	inherited = append(inherited, baseSelections...)
-	result := s.reviewTestPlan(ctx, review, rng, changes, resolver, inherited)
+	result := plan(changes, resolver, inherited)
 	after, err := snapshotTree(s.saga.Root)
 	if err != nil {
 		return ReviewTestPlan{}, err
@@ -111,16 +150,29 @@ func PlanReviewTests(ctx context.Context, root, checkout, reviewID string) (Revi
 	return result, ctx.Err()
 }
 
+// testPlanScope is what the walk needs to know about what it was asked for: a
+// review adds its own deck, and a bare range adds nothing.
+type testPlanScope struct {
+	target     string
+	deck       *saga.Deck
+	changeName string
+	headName   string
+}
+
 func (s *session) reviewTestPlan(ctx context.Context, review *saga.Review, rng reviewstate.Range, changes gitdiff.ChangeSet, resolver coverage.Resolver, inherited []coverage.InheritedReference) ReviewTestPlan {
-	result := ReviewTestPlan{Schema: "change-saga.test-plan/v1", Snapshot: s.snapshot, Review: review.Target, Range: rng,
+	return s.planTests(ctx, testPlanScope{target: review.Target, deck: review.Deck, changeName: "the review", headName: "the review head"}, rng, changes, resolver, inherited)
+}
+
+func (s *session) planTests(ctx context.Context, scope testPlanScope, rng reviewstate.Range, changes gitdiff.ChangeSet, resolver coverage.Resolver, inherited []coverage.InheritedReference) ReviewTestPlan {
+	result := ReviewTestPlan{Schema: "change-saga.test-plan/v1", Snapshot: s.snapshot, Review: scope.target, Range: rng,
 		Strategy: "all automated and hybrid tests linked to affected stories, plus tests whose own code changed; recorded dependencies only",
 		Stories:  []TestPlanStory{}, Tests: []PlannedTest{}, Commands: []string{}, Gaps: []TestPlanGap{}}
 	gaps := map[TestPlanGap]bool{}
 	gap := func(code, target, message string) { gaps[TestPlanGap{code, target, message}] = true }
 	links := LinksFromCurrency(s.requirements, s.currency)
 	decks := append([]*saga.Deck{}, s.saga.Decks...)
-	if review.Deck != nil {
-		decks = append(decks, review.Deck)
+	if scope.deck != nil {
+		decks = append(decks, scope.deck)
 	}
 	graph := ImpactGraph(StatusInputs{SagaID: s.requirements.SagaID, Decks: decks, Stories: s.requirements.Stories, Links: links, Quality: s.quality})
 	linkByURN := map[string]Link{}
@@ -195,12 +247,12 @@ func (s *session) reviewTestPlan(ctx context.Context, review *saga.Review, rng r
 		urn, _ := qualityid.TestCase(s.requirements.SagaID, test.Identity.ID)
 		tests[urn] = test
 	}
-	// Resolve evidence on both sides of the comparison. Only this review is walked;
+	// Resolve evidence on both sides of the comparison. Only the review asked about is walked;
 	// unrelated review decks cannot introduce stories into its plan.
 	ownership := testPlanOwnership(ctx, func(visit func(string, []saga.CodeFile)) {
 		coverage.WalkDocumentCode(s.saga, visit)
-		if review.Deck != nil {
-			for _, slide := range review.Deck.Slides {
+		if scope.deck != nil {
+			for _, slide := range scope.deck.Slides {
 				for _, item := range slide.Items {
 					visit(item.Target, item.Code)
 				}
@@ -244,8 +296,8 @@ func (s *session) reviewTestPlan(ctx context.Context, review *saga.Review, rng r
 			}
 		}
 	}
-	if review.Deck != nil {
-		for _, slide := range review.Deck.Slides {
+	if scope.deck != nil {
+		for _, slide := range scope.deck.Slides {
 			for _, item := range slide.Items {
 				if !owners[item.Target] {
 					continue
@@ -310,7 +362,7 @@ func (s *session) reviewTestPlan(ctx context.Context, review *saga.Review, rng r
 			row.Reasons = append(row.Reasons, "verifies an affected story")
 		}
 		if directTests[urn] {
-			row.Reasons = append(row.Reasons, "test evidence intersects the review's changed code")
+			row.Reasons = append(row.Reasons, "test evidence intersects the code changed in "+scope.changeName)
 		}
 		if len(verifies[urn]) == 0 {
 			gap("unlinked_test", urn, "The changed automated test has no user-story link.")
@@ -338,7 +390,7 @@ func (s *session) reviewTestPlan(ctx context.Context, review *saga.Review, rng r
 			for _, ref := range evidence.Code {
 				resolved := resolver.Resolve(ctx, ref, rng.HeadOID)
 				if !resolved.Current() {
-					gap("stale_test_code", urn, "Test implementation code cannot be resolved at the review head: "+ref.Location().String())
+					gap("stale_test_code", urn, "Test implementation code cannot be resolved at "+scope.headName+": "+ref.Location().String())
 					continue
 				}
 				key := resolved.Location.String()
