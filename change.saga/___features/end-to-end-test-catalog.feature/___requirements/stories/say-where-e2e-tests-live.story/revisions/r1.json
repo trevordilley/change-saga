@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:say-where-e2e-tests-live",
+  "parents": [],
+  "title": "Say where end-to-end tests live and how to run them",
+  "statement": "As a developer, I can write down where our end-to-end tests live and how to run a chosen few, so the catalog and the commands it gives match our real suite.",
+  "overview": "Proposed addition: this is what lets the catalog and commands work. Deriving membership from the code's location, rather than marking each case, means a case cannot claim to be end to end while its code is elsewhere, and needs no new revision of 182 test cases, which would make their pinned relations stale.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "locations",
+      "statement": "A Saga records one or more repository paths that hold end-to-end tests."
+    },
+    {
+      "id": "derived",
+      "statement": "A test case is in the catalog when its current test-implementation code is inside those paths, with no field to set on the test case."
+    },
+    {
+      "id": "recipe",
+      "statement": "A Saga records a command template for running named tests, and the tool never runs it."
+    },
+    {
+      "id": "editable",
+      "statement": "Both can be read, changed and removed from the CLI, and a Saga with neither is unaffected."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:21.06731Z"
+}

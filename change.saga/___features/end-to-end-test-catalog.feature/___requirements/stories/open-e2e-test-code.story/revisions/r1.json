@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:open-e2e-test-code",
+  "parents": [],
+  "title": "Open the code behind a catalog entry",
+  "statement": "As a developer, I can go from a catalog entry to the exact end-to-end test code that runs it, so I can read what is really being proven.",
+  "overview": "This uses existing `test_implementation` evidence, which already pins exact code and goes stale.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "pinned",
+      "statement": "An entry's code references name exact lines and open at their pinned commit in the code drawer."
+    },
+    {
+      "id": "stale",
+      "statement": "When that code changes, the entry shows as stale in the catalog, and `status` reports it as it does other test evidence."
+    },
+    {
+      "id": "no-code",
+      "statement": "An entry whose code cannot be read says so, and no other lines are shown in its place."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:20.4455Z"
+}

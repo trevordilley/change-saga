@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "e2e-selection-direction-20261102",
+  "kind": "decision",
+  "title": "An end-to-end catalog and choosing tests from a release's range",
+  "reference": "Trevor's product direction, 2026-11-02: end-to-end tests are the ones that allow you to actually sleep at night if they pass, but they are the flakiest and most expensive to run. The QA section of the overview should maintain a catalog of all end-to-end tests in the codebase that are used to prove the app works as expected. Each acceptance criterion of stories in Features (not Roadmap) should reference a catalog entry, and that entry should have code references to the actual e2e code that runs it. When a release is created, we can specify the Git tags being released, and from those deltas calculate the stories affected, thus the acceptance criteria in play, thus the e2e tests to run to prove the affected stories work without running the full suite. A change-saga CLI command then gets that list of tests in formats that allow you to run specific tests.",
+  "created_at": "2026-11-03T01:13:19.874281Z"
+}

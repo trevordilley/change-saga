@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:find-uncatalogued-e2e",
+  "parents": [],
+  "title": "Find end-to-end tests the catalog is missing",
+  "statement": "As a developer, I can see end-to-end test code that no catalog entry points at, so the catalog can really be all of our tests.",
+  "overview": "Proposed addition. Trevor asked for a catalog of all end-to-end tests, and nothing else would show when it stops being all of them. Today this repository has 139 `test()` calls in 43 spec files, and test cases point at 11 of those files.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "lines",
+      "statement": "The QA section and `query e2e-catalog` list files in the declared paths with lines that no entry's code reference covers."
+    },
+    {
+      "id": "report-only",
+      "statement": "This list fails nothing unless a team writes its own rule over it."
+    },
+    {
+      "id": "no-parsing",
+      "statement": "The list works for any test framework, because it compares lines and does not parse tests."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:21.346434Z"
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "end-to-end-test-catalog",
+  "title": "Know what proves the app works",
+  "description": "Teams can see every end-to-end test in one catalog, what each one proves, and the code that runs it.",
+  "created_at": "2026-11-03T01:13:19.652466Z"
+}

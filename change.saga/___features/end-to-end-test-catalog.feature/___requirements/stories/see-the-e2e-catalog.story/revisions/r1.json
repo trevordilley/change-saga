@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-the-e2e-catalog",
+  "parents": [],
+  "title": "See every end-to-end test in one catalog",
+  "statement": "As a developer, I can open one catalog of the end-to-end tests that prove the app works, so I know what we can rely on without reading the test suite.",
+  "overview": "Today Quality appears only inside each feature; the Overview has no QA entry. A catalog entry is an existing test case, not a new record, so this is a new view of what Quality holds.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "qa-entry",
+      "statement": "The Overview has a QA entry that opens the catalog, and it lists test cases from every feature on one page."
+    },
+    {
+      "id": "entry",
+      "statement": "Each entry shows its title, the feature that holds it, the criteria it verifies, and a link to its code."
+    },
+    {
+      "id": "cli",
+      "statement": "`query e2e-catalog` returns the same entries through the standard snapshot and pagination envelope."
+    },
+    {
+      "id": "empty",
+      "statement": "A Saga with no end-to-end tests shows how to start one, and reports no health failure."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:20.169932Z"
+}
