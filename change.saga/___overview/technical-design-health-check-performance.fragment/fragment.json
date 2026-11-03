@@ -1,0 +1,10 @@
+{
+  "subtext": "Reuse source comparisons while reassessing every health finding.",
+  "abstract": "Health checks reuse successful Git comparison geometry across CLI invocations, generate cold patches for referenced files, and retain the existing health findings and JSON contract. Measurements on the supplied large Saga improve from 19.90 to 6.54 seconds cold and from 15.57 to 4.21 seconds repeated; other Sagas and host load still require measurement.",
+  "version": 2,
+  "id": "change-saga-technical-design-health-check-performance",
+  "title": "Health check performance and cache validity",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 40
+}

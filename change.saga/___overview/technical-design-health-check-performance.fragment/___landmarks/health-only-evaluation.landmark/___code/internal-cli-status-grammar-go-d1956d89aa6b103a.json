@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/status_grammar.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:738b5a3be3be1c8b34207c393b865f99bc1fd07b287dcabcf3ff74f92fcb6cfe",
+      "note": "Committed implementation or regression evidence for health only evaluation."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/status_grammar.go",
+      "start": 133,
+      "end": 139,
+      "digest": "sha256:1fefc9ddfdbbc5515a94d86a8584542d96012f026bf29b468f0aaf1582e1ffb1",
+      "note": "Committed implementation or regression evidence for health only evaluation."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/status_grammar.go",
+      "start": 178,
+      "end": 188,
+      "digest": "sha256:cfbbe8b65ffc59e711357d94ea5a6210d87e4484480254522c1a686a80cb2e96",
+      "note": "Committed implementation or regression evidence for health only evaluation."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/status_grammar.go",
+      "start": 204,
+      "end": 206,
+      "digest": "sha256:97ffae1aad284afe9d2ceff0e80416bf923e46cff5cc4bdf6962a99a78dd8d16",
+      "note": "Committed implementation or regression evidence for health only evaluation."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/status_grammar.go",
+      "start": 224,
+      "end": 226,
+      "digest": "sha256:1d98fbf4d3ed7657e4d5c30d71ae8cdc68964865223e57b18911446316731a7e",
+      "note": "Committed implementation or regression evidence for health only evaluation."
+    }
+  ]
+}

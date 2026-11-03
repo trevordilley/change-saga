@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "README.md",
+      "start": 382,
+      "end": 385,
+      "digest": "sha256:a2a3e7731ff6d6a65771b69bd8030085ffc54f99e0f3dd624e863de7b3a5bc9d",
+      "note": "Committed implementation or regression evidence for source and verification provenance."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Committed implementation or regression evidence for regression verification."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 365,
+      "end": 416,
+      "digest": "sha256:304632d3a350e41f6eb3ff4974f553436f14199027bb2080d87f51eebc622286",
+      "note": "Committed implementation or regression evidence for regression verification."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 63,
+      "end": 65,
+      "digest": "sha256:a9d3fb4cddfe03c08d2d498e1780cd147cb2edc87816316dd2fd7c053a56cf52",
+      "note": "Committed implementation or regression evidence for reference scoped cold comparisons."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 79,
+      "end": 83,
+      "digest": "sha256:3d39b127d49550b472df6dfd1b31546d392e068dd65f2a0dc35f61c6cf96ed31",
+      "note": "Committed implementation or regression evidence for reference scoped cold comparisons."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 93,
+      "end": 94,
+      "digest": "sha256:84afcda91d3bf419f64cb5d4bd30d0ce9cd861d5b96036802f9fa910dd384464",
+      "note": "Committed implementation or regression evidence for reference scoped cold comparisons."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:fdbaf5273eb63a089694381a6fe7728ca918b70c66a7ed8d2ed9156185141ae0",
+      "note": "Committed implementation or regression evidence for reference scoped cold comparisons."
+    }
+  ]
+}

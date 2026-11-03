@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/check_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:7ed115f74756c19008f46d89ffd95712ce6b3cb14450e1644358ef661421898a",
+      "note": "Committed implementation or regression evidence for regression verification."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/check_test.go",
+      "start": 13,
+      "end": 17,
+      "digest": "sha256:59befbb820bd38be28cedc74b22420d946a88b82743b02e2f9215be694bfb1e4",
+      "note": "Committed implementation or regression evidence for regression verification."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/check_test.go",
+      "start": 20,
+      "end": 90,
+      "digest": "sha256:3676abb2e041f5181371b2695cdae128712dc6c5035ec3e73bc90cdbf3367362",
+      "note": "Committed implementation or regression evidence for regression verification."
+    }
+  ]
+}

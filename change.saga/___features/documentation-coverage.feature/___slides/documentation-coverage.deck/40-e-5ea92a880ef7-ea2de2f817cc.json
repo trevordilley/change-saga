@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
       "path": "internal/cli/check.go",
       "start": 57,
       "end": 80,
-      "digest": "sha256:afd408b6b9d46cb49dd97bd1c61b876ab263ff811ac7833c7e399bd58b14ceb9",
+      "digest": "sha256:c141a2ee5978579e8e3dd64c2537efbd0431c7f783b800da13b069907eec58af",
       "note": "Reuses the status document, selects only requested areas, and returns the scoped gate result."
     }
   ]
