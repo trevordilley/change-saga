@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -256,6 +257,13 @@ without AI help, would finish in two days or less.
    represents work an Item that selects the node and whose record names its Task: that
    Item is what lets a reader select the node and open the Task.
 7. Check. Run plan guide --plan ID until it has nothing left to name.
+
+While the work happens, say what you are doing so others can see it live:
+task start when you pick a Task up, task note when you find something that matters,
+task note --blocked when you cannot go on, and task done when you finish. Do not
+narrate: every note is a tool call you pay for. task start and task note are live
+activity, shared by every worktree of this repository and never committed. Only
+task done is durable, and it is the one that counts.
 `
 
 func planGuide(_ context.Context, args []string, out io.Writer) error {
@@ -443,7 +451,7 @@ func Task(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("task", []string{"add", "depend", "set", "done", "remove", "list"}, out)
+		return livingFamilyHelp("task", []string{"add", "depend", "set", "start", "note", "done", "remove", "list"}, out)
 	}
 	operation := "task " + args[0]
 	var err error
@@ -454,6 +462,10 @@ func Task(ctx context.Context, args []string, out io.Writer) error {
 		err = taskDepend(ctx, args[1:], out)
 	case "set":
 		err = taskSet(ctx, args[1:], out)
+	case "start":
+		err = taskStart(ctx, args[1:], out)
+	case "note":
+		err = taskNote(ctx, args[1:], out)
 	case "done":
 		err = taskDone(ctx, args[1:], out)
 	case "remove":
@@ -675,6 +687,7 @@ func taskSet(ctx context.Context, args []string, out io.Writer) error {
 	sizing := flags.String("sizing", "", "within-2-days or over-2-days: whether one human developer, coding without AI help, would finish this in two days or less")
 	sizingReason := flags.String("sizing-reason", "", "why")
 	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
+	agent := flags.String("agent", "", "who is reporting a --state change; defaults to the DevSwarm workspace, else the Git branch")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var code stringList
 	flags.Var(&code, "code", "PATH:START-END[=NOTE] to pin at HEAD; repeatable; replaces the task's code references")
@@ -736,15 +749,19 @@ func taskSet(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if given["state"] {
+		recordTaskStateActivity(ctx, root, *repo, *agent, planID, taskID, *state, "")
+	}
 	return writeTaskChange(out, name, root, planID, taskID, *jsonOutput)
 }
 
-func taskDone(_ context.Context, args []string, out io.Writer) error {
+func taskDone(ctx context.Context, args []string, out io.Writer) error {
 	name := "task done"
 	flags := commandFlags(name, commandUsage[name], out)
 	plan := flags.String("plan", "", "plan id or URN")
 	task := flags.String("task", "", "task id or URN")
 	summary := flags.String("summary", "", "what was done")
+	activity := addActivityFlags(flags)
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -766,6 +783,7 @@ func taskDone(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	recordTaskStateActivity(ctx, flags.Arg(0), *activity.repo, *activity.agent, planID, taskID, saga.TaskDone, *summary)
 	return writeTaskChange(out, name, flags.Arg(0), planID, taskID, *jsonOutput)
 }
 
@@ -810,13 +828,16 @@ type taskRow struct {
 	Target   string   `json:"target"`
 	Unblocks []string `json:"unblocks"`
 	CanStart bool     `json:"can_start"`
+	// Activity is the latest live activity, when there is any.
+	Activity *taskActivityView `json:"activity,omitempty"`
 }
 
-func taskList(_ context.Context, args []string, out io.Writer) error {
+func taskList(ctx context.Context, args []string, out io.Writer) error {
 	name := "task list"
 	flags := commandFlags(name, commandUsage[name], out)
 	plan := flags.String("plan", "", "plan id or URN")
-	ready := flags.Bool("ready", false, "only Tasks that can start now: not started, with every dependency done")
+	ready := flags.Bool("ready", false, "only Tasks that can start now: not started, with every dependency done; one someone has started says so")
+	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -834,12 +855,14 @@ func taskList(_ context.Context, args []string, out io.Writer) error {
 	for _, task := range saga.TasksReady(manifests) {
 		canStart[task.ID] = true
 	}
+	live := liveTaskActivity(ctx, flags.Arg(0), *repo, found.ID)
+	now := time.Now()
 	rows := []taskRow{}
 	for _, task := range found.Tasks {
 		if *ready && !canStart[task.ID] {
 			continue
 		}
-		rows = append(rows, taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID]})
+		rows = append(rows, taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID], Activity: activityView(live[task.ID], task.State, now)})
 	}
 	if *jsonOutput {
 		return writeJSON(out, struct {
@@ -851,6 +874,9 @@ func taskList(_ context.Context, args []string, out io.Writer) error {
 		state := row.State
 		if row.CanStart {
 			state = "can start"
+		}
+		if row.Activity != nil {
+			state = activityWords(row.Activity, now)
 		}
 		fmt.Fprintf(out, "%s: %s (%s)\n", row.ID, row.Title, state)
 	}

@@ -184,7 +184,7 @@ var commandUsage = map[string]string{
 	"design-add-section":            "change-saga design add-section [flags] <saga> <section/path>",
 	"design-add-fragment":           "change-saga design add-fragment (--feature ID | --section TARGET) [flags] <saga>",
 	"design-set-fragment-content":   "change-saga design set-fragment-content --target TARGET --source FILE|- [--feature ID] [--json|--quiet] <saga>",
-	"task":                          "change-saga task <add|depend|set|done|remove|list> [flags] <saga>",
+	"task":                          "change-saga task <add|depend|set|start|note|done|remove|list> [flags] <saga>",
 	"plan":                          "change-saga plan <create|list|guide|add-phase|remove-phase|add-prototype|link-review|deliver> [flags] <saga>",
 	"quality":                       "change-saga quality <test-case|policy|evidence|run> <operation> [flags] <saga>",
 	"quality test-case":             "change-saga quality test-case <add|revise|set-state|remove> [flags] <saga>",
@@ -1462,6 +1462,7 @@ func Spec(args []string, out io.Writer) error {
 				"task_states": []string{saga.TaskPlanned, saga.TaskInProgress, saga.TaskDone},
 				"story_rule":  "every Task names a user story or unblocks a Task that leads to one; a write that would leave a Task with no path to a story is refused",
 				"delivered":   "plan deliver is explicit and refused until every Task is done and every linked Review has merged; a delivered Plan is hidden by default and refuses edits",
+				"activity":    "task start, task note, and task done report live activity to <git-common-dir>/change-saga/activity/<saga>/<plan>/<agent>.jsonl; it is shared by a repository's worktrees, never committed, and never changes what validate, status, check, or plan deliver report",
 			},
 			"reviews": map[string]any{
 				"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",

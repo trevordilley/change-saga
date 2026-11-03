@@ -245,8 +245,8 @@ var queryOperations = []string{
 var queryPurpose = map[string]string{
 	"prototype":            "one prototype's HTML as it was recorded, by byte range, with its revisions, files, and annotations; a prototype hosted elsewhere returns its URLs",
 	"plans":                "the current Plans with their progress and links; delivered Plans only with --all",
-	"plan":                 "one Plan in full: its essay, phases, compact Tasks with their dependencies and what can start, and its slides",
-	"task":                 "one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it",
+	"plan":                 "one Plan in full: its essay, phases, compact Tasks with their dependencies, what can start, and who is on them now, and its slides",
+	"task":                 "one Task in full: its essay, story, code references, what it depends on and unblocks, the slides that name it, and its latest live activity; --history adds its messages",
 	"whiteboards":          "Whiteboard identities, titles, revisions, lifecycle and technical design role assignments without rendering source",
 	"deprecations":         "authored deprecation assertions, exact content and code scope, target health, optional story relations and immutable history; absence is no recorded deprecation, never proof of non-deprecation",
 	"inventory":            "Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
@@ -291,8 +291,8 @@ var queryPurpose = map[string]string{
 var queryUsage = map[string]string{
 	"prototype":            "change-saga query prototype --saga PATH --prototype ID|URN [--revision ID] [--file PATH] [--offset N] [--limit N] [--repo PATH]",
 	"plans":                "change-saga query plans --saga PATH [--all] [--cursor TOKEN] [--limit N]",
-	"plan":                 "change-saga query plan --saga PATH --plan ID|URN",
-	"task":                 "change-saga query task --saga PATH --task ID|URN [--plan ID|URN]",
+	"plan":                 "change-saga query plan --saga PATH --plan ID|URN [--repo PATH]",
+	"task":                 "change-saga query task --saga PATH --task ID|URN [--plan ID|URN] [--history] [--repo PATH]",
 	"whiteboards":          "change-saga query whiteboards --saga PATH [--cursor TOKEN] [--limit N]",
 	"deprecations":         "change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--history] [--cursor CURSOR] [--limit N]",
 	"labels":               "change-saga query labels --saga PATH [--cursor TOKEN] [--limit N]",
@@ -602,8 +602,8 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"term-references":      {"data.subject", "data.references", "data.counts", "data.completeness"},
 		"prototype":            {"data.prototype", "data.prototype.content.data", "data.prototype.content.next_offset", "data.prototype.files", "data.prototype.annotations"},
 		"plans":                {"data.plans", "data.plans[].tasks_done", "data.plans[].reviews"},
-		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.tasks", "data.plan.slides"},
-		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides"},
+		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.tasks", "data.plan.tasks[].activity", "data.plan.slides"},
+		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides", "data.task.activity", "data.task.activity_history"},
 		"layers":               {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{

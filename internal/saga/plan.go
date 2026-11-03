@@ -1,6 +1,7 @@
 package saga
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -123,6 +124,42 @@ type Plan struct {
 
 // PlanTarget is the URN of a Plan; its deck, slides, Items, and Tasks are named
 // beneath it so their IDs never collide with another Plan's.
+// ReadPlanRecords reads only a Plan's record and its Tasks' records, for a caller
+// asking too often to load the Saga. It does not validate them.
+func ReadPlanRecords(root, planID string) (PlanManifest, []TaskManifest, error) {
+	var plan PlanManifest
+	dir := filepath.Join(root, PlansDir, planID+PlanSuffix)
+	data, err := os.ReadFile(filepath.Join(dir, PlanManifestName))
+	if err != nil {
+		return plan, nil, err
+	}
+	if err := json.Unmarshal(data, &plan); err != nil {
+		return plan, nil, err
+	}
+	entries, err := os.ReadDir(filepath.Join(dir, PlanTasksDir))
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return plan, nil, nil
+		}
+		return plan, nil, err
+	}
+	tasks := make([]TaskManifest, 0, len(entries))
+	for _, entry := range entries {
+		if !entry.IsDir() || !strings.HasSuffix(entry.Name(), TaskSuffix) {
+			continue
+		}
+		data, err := os.ReadFile(filepath.Join(dir, PlanTasksDir, entry.Name(), TaskManifestName))
+		if err != nil {
+			continue
+		}
+		var task TaskManifest
+		if json.Unmarshal(data, &task) == nil {
+			tasks = append(tasks, task)
+		}
+	}
+	return plan, tasks, nil
+}
+
 func PlanTarget(sagaID, planID string) string {
 	return "urn:change-saga:" + sagaID + ":plan:" + planID
 }

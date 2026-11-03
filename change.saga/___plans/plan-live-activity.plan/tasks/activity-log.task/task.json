@@ -9,6 +9,7 @@
     "within_two_days": true,
     "reason": "A small package that appends, reads, rotates, and finds the common directory."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "internal/planactivity: one append-only file per agent in the common Git directory, rotated and pruned.",
   "created_at": "2026-11-03T04:52:33.279132Z"
 }

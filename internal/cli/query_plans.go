@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/json"
 	"flag"
@@ -9,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/planactivity"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -34,6 +36,8 @@ type planQuerySummary struct {
 // planQueryRecord is one Plan with its essay, phases, and compact Tasks.
 type planQueryRecord struct {
 	planQuerySummary
+	// ActivityNote says why there is no live activity, when there cannot be any.
+	ActivityNote string `json:"activity_note,omitempty"`
 	Essay     *saga.DeckOverview  `json:"essay,omitempty"`
 	PhaseRows []planQueryPhase    `json:"phases"`
 	TaskRows  []planQueryTaskRow  `json:"tasks"`
@@ -65,7 +69,15 @@ type taskQueryRecord struct {
 	Plan   string              `json:"plan"`
 	Essay  string              `json:"essay,omitempty"`
 	Slides []planQuerySlideRow `json:"slides"`
+	// ActivityNote says why there is no live activity, when there cannot be any.
+	ActivityNote string `json:"activity_note,omitempty"`
+	// ActivityHistory is the Task's newest messages, only with --history.
+	ActivityHistory []planactivity.Event `json:"activity_history,omitempty"`
 }
+
+// activityHistoryLimit bounds what query task --history returns, however long a
+// log has grown.
+const activityHistoryLimit = 200
 
 func queryPlanSummary(plan *saga.Plan) planQuerySummary {
 	summary := planQuerySummary{
@@ -174,9 +186,10 @@ func queryPlans(args []string, out io.Writer) error {
 }
 
 func queryPlan(args []string, out io.Writer) error {
-	var selector string
+	var selector, repo string
 	document, snapshot, _, done, err := loadPlansForQuery("plan", args, out, func(flags *flag.FlagSet) {
 		flags.StringVar(&selector, "plan", "", "plan ID or URN")
+		flags.StringVar(&repo, "repo", "", "code checkout when the Saga lives outside Git")
 	})
 	if done {
 		return err
@@ -200,8 +213,13 @@ func queryPlan(args []string, out io.Writer) error {
 		}
 		record.PhaseRows = append(record.PhaseRows, row)
 	}
+	live, _, note := readTaskActivity(context.Background(), document.Root, repo, plan.ID)
+	record.ActivityNote = note
+	now := time.Now()
 	for _, task := range plan.Tasks {
-		record.TaskRows = append(record.TaskRows, planQueryTaskRow{taskRow: rows[task.ID], HasEssay: task.Essay != ""})
+		row := rows[task.ID]
+		row.Activity = activityView(live[task.ID], task.State, now)
+		record.TaskRows = append(record.TaskRows, planQueryTaskRow{taskRow: row, HasEssay: task.Essay != ""})
 	}
 	if plan.Deck != nil {
 		record.Essay = plan.Deck.Overview
@@ -213,10 +231,13 @@ func queryPlan(args []string, out io.Writer) error {
 }
 
 func queryTask(args []string, out io.Writer) error {
-	var selector, planSelector string
+	var selector, planSelector, repo string
+	var history bool
 	document, snapshot, _, done, err := loadPlansForQuery("task", args, out, func(flags *flag.FlagSet) {
 		flags.StringVar(&selector, "task", "", "task ID or URN")
 		flags.StringVar(&planSelector, "plan", "", "plan ID or URN, when a task ID is used in several Plans")
+		flags.BoolVar(&history, "history", false, "also return the Task's messages, up to the newest 200")
+		flags.StringVar(&repo, "repo", "", "code checkout when the Saga lives outside Git")
 	})
 	if done {
 		return err
@@ -275,6 +296,13 @@ func queryTask(args []string, out io.Writer) error {
 				}
 			}
 		}
+	}
+	live, _, note := readTaskActivity(context.Background(), document.Root, repo, owner.ID)
+	record.ActivityNote = note
+	record.Activity = activityView(live[task.ID], task.State, time.Now())
+	if history && live[task.ID] != nil {
+		events := live[task.ID].Events
+		record.ActivityHistory = events[max(0, len(events)-activityHistoryLimit):]
 	}
 	return writeQuerySuccess(out, snapshot, map[string]any{"task": record}, nil)
 }
