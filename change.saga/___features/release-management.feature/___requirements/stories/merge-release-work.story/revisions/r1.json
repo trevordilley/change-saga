@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:merge-release-work",
+  "parents": [],
+  "title": "Merge release work from several branches",
+  "statement": "As a developer, I can have several branches and agents add to the same release, so preparing a release fits how we already work in parallel.",
+  "overview": "Recommendation for the design: one small file per note, per step and per story link, with a sortable rank for order, the way Tasks and slide Items already work. A list inside `release.json` would conflict on nearly every merge.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "no-conflict",
+      "statement": "Two branches that each add a different note, step or story link to one release merge with no Git conflict, and the result is valid."
+    },
+    {
+      "id": "same-place",
+      "statement": "Two branches that insert different steps at the same position both keep their steps, in an order that does not depend on which merged first."
+    },
+    {
+      "id": "same-version",
+      "statement": "Two branches that each create a release of the same version cannot silently merge into two releases of one version: Git conflicts or `validate` names the version."
+    },
+    {
+      "id": "same-step",
+      "statement": "Two branches that change the same step conflict in Git rather than one silently winning."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:23.204512Z"
+}

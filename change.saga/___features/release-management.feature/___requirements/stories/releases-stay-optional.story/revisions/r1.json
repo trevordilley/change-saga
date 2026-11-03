@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:releases-stay-optional",
+  "parents": [],
+  "title": "Keep releases optional",
+  "statement": "As a developer, I can ignore releases entirely, so a team that only wants Reviews or Plans has nothing new to do.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "no-new-gaps",
+      "statement": "A Saga with no release records gets the same `status` and `check --covers health` results as it did before this feature."
+    },
+    {
+      "id": "existing-load",
+      "statement": "Existing Sagas load without migration, and the first release is the only thing that adds release records."
+    },
+    {
+      "id": "format-marked",
+      "statement": "The release that ships this records its new directory as a **Format** change and says readers must upgrade before adopting it."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:23.669981Z"
+}

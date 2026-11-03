@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:mark-a-release-released",
+  "parents": [],
+  "title": "Record that a release went out",
+  "statement": "As a developer, I can record that a release went out, and at which commit, so \"what shipped\" has an answer that a person stated.",
+  "overview": "Proposed addition: Trevor's direction does not name a lifecycle, and the rest of this feature can be built without one. It differs from `plan deliver`, which refuses until all is done, because a release checklist has steps that only happen afterwards, such as turning something back on.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "explicit",
+      "statement": "Only an explicit command marks a release released, and it records when and the commit."
+    },
+    {
+      "id": "not-refused",
+      "statement": "Unchecked steps do not refuse it; the command lists them, and they can still be checked afterwards."
+    },
+    {
+      "id": "at-commit",
+      "statement": "Reading a released version's stories as they stood uses Git at that commit, and the release stores no copy of them."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:24.102801Z"
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-whats-still-open",
+  "parents": [],
+  "title": "See what is still open on a release",
+  "statement": "As a developer, I can see the facts about a release that is not out yet, so whoever decides to ship can decide with everything in front of them.",
+  "overview": "Proposed addition. The format records and the team decides, the same stance as `status` and review decisions.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "facts",
+      "statement": "`release status` lists unchecked steps, delivered stories with no note, and stories with no merged review found through their Tasks or Items."
+    },
+    {
+      "id": "no-verdict",
+      "statement": "It gives no score or ready/not-ready answer and exits 0 whenever it can read the Saga; `--json` carries the same facts for a rule a team writes in its own CI."
+    },
+    {
+      "id": "no-blocking",
+      "statement": "Nothing in validation, `status` or `check --covers health` fails because of what `release status` lists."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:24.53971Z"
+}

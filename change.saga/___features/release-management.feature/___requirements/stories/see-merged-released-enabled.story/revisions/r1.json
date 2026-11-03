@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-merged-released-enabled",
+  "parents": [],
+  "title": "Tell merged, released and enabled apart",
+  "statement": "As a product manager, I can see whether a story in a release is merged, released and turned on, so I do not announce something users cannot use yet.",
+  "overview": "Proposed addition. Existing flags already report `implemented_not_enabled`; a checklist step can tell someone to flip one, but the tool does not flip it.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "three-facts",
+      "statement": "A release's page shows, for each story, whether a merged review was found, whether the release is marked released, and the current state of any flag gating the story."
+    },
+    {
+      "id": "dark",
+      "statement": "A story in a released release whose flag is off is shown as released but not enabled."
+    },
+    {
+      "id": "no-flag",
+      "statement": "A story with no flag shows no flag state rather than reading as enabled by a flag."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:25.110774Z"
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:review-release-changes",
+  "parents": [],
+  "title": "Review a change to a release",
+  "statement": "As a product manager, I can read a pull request's changes to releases as readable records, so preparing a release gets the same scrutiny as any other change.",
+  "overview": "Changes under a `.saga` path are already classified as Saga-only, so this should need no new policy.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "diff",
+      "statement": "A pull request's diff shows each changed note or step as a small file a person can read without the tool."
+    },
+    {
+      "id": "comparison",
+      "statement": "`query layers` lists changed releases, notes and steps as changed records."
+    },
+    {
+      "id": "no-deck",
+      "statement": "A pull request that only changes release records is classified as a Saga-only change and is not asked for a review deck."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:23.456721Z"
+}
