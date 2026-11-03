@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "proposed",
+  "story": "urn:change-saga:change-saga:story:see-positive-and-negative-coverage",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-11-03T01:29:59.281036Z"
+}

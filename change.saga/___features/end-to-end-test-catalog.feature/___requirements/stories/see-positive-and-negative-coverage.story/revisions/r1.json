@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-positive-and-negative-coverage",
+  "parents": [],
+  "title": "See whether a criterion is proven past the happy path",
+  "statement": "As a product manager, I can see whether each criterion is tested when things go wrong as well as when they go right, so covering every criterion with happy paths does not read as proof the app is sound.",
+  "overview": "Trevor's direction: an acceptance criterion with only positive coverage is weaker than one with negative coverage. Test cases already record this as `coverage_kinds`, including `edge` for limits and concurrency, so this surfaces an existing field and adds none. Today, of 243 current criteria on built features, 162 have only positive tests, and 8 have no test at all. Of the 51 with an end-to-end test, 46 are positive only, and none has a negative end-to-end test.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "per-test",
+      "statement": "Each catalog entry shows its kinds: positive, negative or edge."
+    },
+    {
+      "id": "per-criterion",
+      "statement": "Each criterion on a built feature shows which kinds its tests cover, with end-to-end tests shown apart from all tests."
+    },
+    {
+      "id": "positive-only",
+      "statement": "A criterion whose tests are all positive is marked as positive only."
+    },
+    {
+      "id": "counts",
+      "statement": "The QA section shows, per built feature, how many criteria have each combination of kinds."
+    },
+    {
+      "id": "no-score",
+      "statement": "No single score or grade is computed from them."
+    },
+    {
+      "id": "a-claim",
+      "statement": "The reader says a kind is what the author stated, and the tool does not verify it."
+    }
+  ],
+  "created_at": "2026-11-03T01:29:59.281036Z"
+}
