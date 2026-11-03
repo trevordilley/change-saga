@@ -55,6 +55,8 @@ tool, and what they have to do about it.
   task into `slides.md`, `diagram-source.md`, `whiteboards.md`, `decks.md`, `evidence.md`,
   and `inventory.md`. Re-run `change-saga install-skill`.
 
+## [0.8.0] - 2026-11-03
+
 ### Added
 
 - `query plans`, `query plan`, and `query task` read Plans and Tasks like other
@@ -1393,7 +1395,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/trevordilley/change-saga/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/trevordilley/change-saga/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/trevordilley/change-saga/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/trevordilley/change-saga/compare/v0.4.0...v0.5.0
