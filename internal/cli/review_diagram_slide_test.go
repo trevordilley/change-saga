@@ -128,7 +128,7 @@ func TestApplySlidePublishesDiagramSourcedReviewSlide(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		for _, want := range []string{`Slide: ` + slideURN + ` "Queue to Postgres"`, "Snapshot: " + edited.Snapshot, `1. queue [node] "Enqueue" element=queue code_files=1`, `table "Jobs table" shape=datastore`, "insert: queue -> table"} {
+		for _, want := range []string{`Slide: ` + slideURN + ` "Queue to Postgres"`, "Snapshot: " + edited.Snapshot, `1. queue [node] "Enqueue" element=queue record=urn:change-saga:app:feature:core code_files=1`, `table "Jobs table" shape=datastore`, "insert: queue -> table"} {
 			if !strings.Contains(text, want) {
 				t.Errorf("describe %v lacks %q:\n%s", args, want, text)
 			}

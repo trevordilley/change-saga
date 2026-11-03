@@ -249,6 +249,8 @@ covered lines are not proof of a correct explanation.
   `change-saga query plan --saga PATH --plan ID|URN`
 - `task`: one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it.
   `change-saga query task --saga PATH --task ID|URN [--plan ID|URN]`
+- `prototype`: one prototype's HTML as it was recorded, by byte range, with its revisions, files, and annotations; a prototype hosted elsewhere returns its URLs.
+  `change-saga query prototype --saga PATH --prototype ID|URN [--revision ID] [--file PATH] [--offset N] [--limit N] [--repo PATH]`
 <!-- query-operations:end -->
 
 Feature `query context` includes an optional `feature.overview` descriptor

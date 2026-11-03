@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-tasks-carry-out-design-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "tasks-carry-out-design"
+  ],
+  "code": [
+    {
+      "commit": "349ba7526701bea378838b68f54e2c04c276cb98",
+      "path": "internal/cli/plans_test.go",
+      "start": 203,
+      "end": 261,
+      "digest": "sha256:6ccd05e5fc639b29497caebcb9d959dc84a0a5c086b9895c889e22e5a263b378"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan:evidence:evidence-tasks-carry-out-design"
+  ],
+  "created_at": "2026-11-03T03:37:42Z"
+}
