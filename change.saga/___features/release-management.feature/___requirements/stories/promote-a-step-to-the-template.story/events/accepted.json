@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:promote-a-step-to-the-template",
+  "parents": [
+    "urn:change-saga:change-saga:story:promote-a-step-to-the-template:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Trevor reviewed the full story list on 2026-11-02 and said it all looks good. This records intent; none of it is built.",
+  "created_at": "2026-11-03T03:26:00.147418Z"
+}

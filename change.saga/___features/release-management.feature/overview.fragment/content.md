@@ -1,4 +1,4 @@
-**Planned: none of this is built.** Every story here is proposed, and the commands they name are working names. A story marked `must` is what Trevor asked for; `should` and `could` are additions proposed for him to accept or strike.
+**Planned: none of this is built.** Trevor has accepted every story here as the intent, which does not mean it exists. The commands they name are working names. A story marked `must` is what he asked for; `should` and `could` are additions he kept, which can wait if time runs short.
 
 ## The problem {#the-problem}
 

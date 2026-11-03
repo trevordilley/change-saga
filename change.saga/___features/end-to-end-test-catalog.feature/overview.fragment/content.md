@@ -1,4 +1,4 @@
-**Planned: none of this is built.** Every story here is proposed, and the commands they name are working names. A story marked `must` is what Trevor asked for; `should` is an addition proposed for him to accept or strike. When built, these stories move into [Quality verification](/features/quality-verification).
+**Planned: none of this is built.** Trevor has accepted every story here as the intent, which does not mean it exists. The commands they name are working names. A story marked `must` is what he asked for; `should` and `could` are additions he kept, which can wait if time runs short. When built, these stories move into [Quality verification](/features/quality-verification).
 
 ## The problem {#the-problem}
 
