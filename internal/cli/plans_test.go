@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -449,5 +450,51 @@ func TestPlanAndTaskAreTheOnlyWayToPlanWork(t *testing.T) {
 		if err := Plan(context.Background(), []string{old, root}, &bytes.Buffer{}); err == nil {
 			t.Errorf("plan %s still runs", old)
 		}
+	}
+}
+
+// Plans and Tasks read through query like other records, with their essays, so
+// an agent does not need the rendered reader.
+func TestPlansAndTasksReadThroughQuery(t *testing.T) {
+	t.Parallel()
+	root := newAuthoredSaga(t)
+	story := addStory(t, root, testFeature, "pay").Resource
+	run(t, Plan, "create", "--id", "first", "--title", "First plan", root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "build", "--title", "Build", root)
+	essay := filepath.Join(t.TempDir(), "essay.md")
+	writeFile(t, essay, "Why this Task exists.\n")
+	run(t, Task, "add", "--plan", "first", "--id", "gate", "--title", "Gate", "--story", story, "--phase", "build", "--essay-source", essay, root)
+	run(t, Task, "add", "--plan", "first", "--id", "base", "--title", "Base", "--unblocks", "gate", root)
+	query := func(args ...string) map[string]any {
+		t.Helper()
+		var output bytes.Buffer
+		if err := Query(context.Background(), args, &output); err != nil {
+			t.Fatalf("query %v: %v\n%s", args, err, output.String())
+		}
+		var envelope struct {
+			Data map[string]any `json:"data"`
+		}
+		decodeOneJSONValue(t, output.Bytes(), &envelope)
+		return envelope.Data
+	}
+	if plans := query("plans", "--saga", root)["plans"].([]any); len(plans) != 1 || plans[0].(map[string]any)["task_count"] != float64(2) {
+		t.Fatalf("plans = %#v", plans)
+	}
+	plan := query("plan", "--saga", root, "--plan", "first")["plan"].(map[string]any)
+	if phases := plan["phases"].([]any); len(phases) != 1 || phases[0].(map[string]any)["tasks"].([]any)[0] != "gate" {
+		t.Fatalf("plan phases = %#v", plan["phases"])
+	}
+	if tasks := plan["tasks"].([]any); len(tasks) != 2 {
+		t.Fatalf("plan tasks = %#v", tasks)
+	}
+	for _, args := range [][]string{{"--task", "gate"}, {"--task", "gate", "--plan", "first"}, {"--task", saga.PlanTarget("atomic", "first") + ":task:gate"}} {
+		task := query(append([]string{"task", "--saga", root}, args...)...)["task"].(map[string]any)
+		if task["essay"] != "Why this Task exists.\n" || task["story"] != story || task["depends_on"].([]any)[0] != "base" {
+			t.Fatalf("task %v = %#v", args, task)
+		}
+	}
+	var missing bytes.Buffer
+	if err := Query(context.Background(), []string{"task", "--saga", root, "--task", "nope"}, &missing); err == nil && !strings.Contains(missing.String(), "not_found") {
+		t.Fatalf("a missing task = %s", missing.String())
 	}
 }

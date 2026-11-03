@@ -1,8 +1,8 @@
 
 # Change Saga
 
-[![CI](https://github.com/twentyideas/changesaga/actions/workflows/ci.yml/badge.svg)](https://github.com/twentyideas/changesaga/actions/workflows/ci.yml)
-[![Browser E2E](https://github.com/twentyideas/changesaga/actions/workflows/e2e.yml/badge.svg)](https://github.com/twentyideas/changesaga/actions/workflows/e2e.yml)
+[![CI](https://github.com/trevordilley/change-saga/actions/workflows/ci.yml/badge.svg)](https://github.com/trevordilley/change-saga/actions/workflows/ci.yml)
+[![Browser E2E](https://github.com/trevordilley/change-saga/actions/workflows/e2e.yml/badge.svg)](https://github.com/trevordilley/change-saga/actions/workflows/e2e.yml)
 ![status: experimental](https://img.shields.io/badge/status-experimental-orange)
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue)
 [![Made with ❤️ using DevSwarm](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20using-DevSwarm-5F2AFF?labelColor=0A022E&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAEAAAAAiCAQAAABFXBcEAAACEElEQVR42s1Y63mDMAw8ugErsAIdwR2BjsAKrMAKWSEdgRXICGQEMsL1RwhIIIFpXhX%2F7E%2F2WY%2BTBKCEAFhxko7TemDPGOmZXzUAQumUt3VHCIKpUimGVRA8MlaONx2ApYKWcg0CAfAgFJrhEAAsuEeKQQsEG7F%2BWLEBQTBXx4Tx%2FSnbXQDa61sJzM%2FMXRss0QpDVtwrlXCeYdWbJNP1CVjgOO5c8JmcCSABM7RIx50TTo4RMwRHv0E27nwnP5wuVuHXyRfQfgFZiB39aUfVYkdn1jIUCYC19iFsH%2BoAUx%2FAoP09njGDNgvF4Zo%2BIopJsnQtAOhklVlUKhvkAoIXKPTSz6UTAmC2tBbdAJcsp5iM0%2Fu7eACDRq3OmgDoO8JwCl2ycNNvC4AO5lqcZlh5aeae2Yg5M9l%2FldFXz9M0Xw4A5uknENvsvwFgYdGjY9GO6VVhVv1oxQXja5qhG2DHVMVF1AYRte1fASxqZ%2BMyRaaviWP%2Frap%2BS8fOqQwK2gcuQjPFK0TfuOKC5mEuaNdc8O4gxDPSMI1NQw4KRt%2F2FCLKjIK3QcX13VRcbVCx2XLLUOz3AYATU5wX%2FICpGr65HI8NSbe85IENSWGPLv%2BjJdtsSuvoprSziH2tKfXb8jO%2BHtaW52iEvtWWv28wecVoFiJHs7cPp%2BZ4Xt49nhc7xnNYE703uqz9oAjiB4VBy1J%2BAQwDuoYAr7YrAAAAAElFTkSuQmCC)](https://devswarm.ai)
@@ -54,17 +54,17 @@ correct.
 macOS and Linux:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/trevordilley/change-saga/main/scripts/install.sh | sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-irm https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.ps1 | iex
+irm https://raw.githubusercontent.com/trevordilley/change-saga/main/scripts/install.ps1 | iex
 ```
 
 Or download an archive for your platform from the
-[latest release](https://github.com/twentyideas/changesaga/releases/latest),
+[latest release](https://github.com/trevordilley/change-saga/releases/latest),
 or [build from source](#building-from-source). Then check the installation:
 
 ```sh
@@ -198,7 +198,7 @@ jobs:
           # Replace with the release tag to pin (v0.2.0-rc.6 or later).
           CHANGE_SAGA_VERSION: vX.Y.Z
         run: |
-          curl -fsSL "https://raw.githubusercontent.com/twentyideas/changesaga/$CHANGE_SAGA_VERSION/scripts/install.sh" | sh -s -- --version "$CHANGE_SAGA_VERSION" --dir "$HOME/.local/bin"
+          curl -fsSL "https://raw.githubusercontent.com/trevordilley/change-saga/$CHANGE_SAGA_VERSION/scripts/install.sh" | sh -s -- --version "$CHANGE_SAGA_VERSION" --dir "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: The documentation stays current
         run: change-saga check --covers health change.saga
@@ -321,11 +321,11 @@ exact code references. Open it from a source checkout:
 change-saga open change.saga
 ```
 
-Or [download it](https://github.com/twentyideas/changesaga/releases/latest/download/change-saga-example.saga.zip)
+Or [download it](https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip)
 from the latest release without cloning:
 
 ```sh
-curl -fL https://github.com/twentyideas/changesaga/releases/latest/download/change-saga-example.saga.zip \
+curl -fL https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip \
   -o change-saga-example.saga.zip
 unzip change-saga-example.saga.zip
 change-saga open change.saga
@@ -664,7 +664,7 @@ untrusted author with the same care as code from an untrusted branch. See
 Change Saga requires Go 1.26.6:
 
 ```sh
-git clone https://github.com/twentyideas/changesaga
+git clone https://github.com/trevordilley/change-saga
 cd change-saga
 go build -o ./bin/change-saga ./cmd/change-saga
 ./bin/change-saga help
