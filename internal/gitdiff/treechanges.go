@@ -38,7 +38,16 @@ func TreeChanges(ctx context.Context, repo, from, to string) ([]FileChange, erro
 	if from == to {
 		return nil, nil
 	}
-	output, err := diffCommits(ctx, repo, []string{"-p", "--unified=0"}, from, to, ".", ":(exclude,glob)**/*.saga/**")
+	return cachedTreeChanges(ctx, repo, from, to, func() ([]FileChange, error) {
+		return treeChangesOnce(ctx, repo, from, to)
+	})
+}
+
+func treeChangesOnce(ctx context.Context, repo, from, to string) ([]FileChange, error) {
+	// The disk cache fingerprints every effective attribute. Bypass the
+	// process-wide patch cache, whose attribute identity is intentionally
+	// narrower, when populating this stronger key.
+	output, err := diffCommitsOnce(ctx, repo, []string{"-p", "--unified=0"}, from, to, ".", ":(exclude,glob)**/*.saga/**")
 	if err != nil {
 		var exitErr *exec.ExitError
 		if errorAs(err, &exitErr) {

@@ -379,6 +379,10 @@ coverage, documentation diff coverage, and HEAD currency, with reasons and
 typed repair paths. Reassess before editing; current pins cannot prove the
 explanation is correct.
 
+Repeated checks reuse disposable source-comparison data while reassessing
+Saga records on every run. See [health check performance and cache
+validity](docs/health-check-performance.md) for measurements and invalidation.
+
 ## Structured access for AI
 
 Agents do not need to crawl the Saga's files. `query` is a bounded, read-only

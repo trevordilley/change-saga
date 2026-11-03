@@ -115,6 +115,7 @@ func EvaluateTargets(ctx context.Context, walk func(visit func(string, []saga.Co
 }
 
 func evaluateTargets(ctx context.Context, walk func(visit func(string, []saga.CodeFile)), inherited []InheritedReference, validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
+	walk = preparedWalk(ctx, walk, inherited, changes, resolver)
 	report := newReport(validation, changes)
 	assignments := make([][]Assignment, len(changes.Atoms))
 	index := buildIndex(changes)
@@ -188,7 +189,8 @@ func EvaluateSummaryInherited(ctx context.Context, document *saga.Saga, inherite
 	assignments := make([]summaryAssignment, len(changes.Atoms))
 	otherTargets := map[int][]string{}
 	index := buildIndex(changes)
-	WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
+	walk := preparedWalk(ctx, func(visit func(string, []saga.CodeFile)) { WalkDocumentCode(document, visit) }, inherited, changes, resolver)
+	walk(func(target string, files []saga.CodeFile) {
 		visitReferences(ctx, target, files, index, changes, resolver, &report, func(atom int, _ Assignment) {
 			addSummaryAssignment(assignments, otherTargets, atom, target)
 		})

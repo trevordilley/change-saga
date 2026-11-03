@@ -7,9 +7,86 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/areas"
+	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
+
+func TestCheckHealthMatchesFullStatusWithoutBuildingReviewReports(t *testing.T) {
+	fixture := newReviewOnlyFixture(t, true)
+	for _, rng := range []gitdiff.Range{{}, {Against: "main"}} {
+		full, err := buildStatus(context.Background(), fixture.root, fixture.repo, rng, false, "")
+		if err != nil {
+			t.Fatal(err)
+		}
+		focused, err := buildStatusForAreas(context.Background(), fixture.root, fixture.repo, rng, false, "", []areas.Name{areas.Health})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(focused.Coverage.Areas.Health, full.Coverage.Areas.Health) || focused.Coverage.Scope != full.Coverage.Scope {
+			t.Fatalf("focused health differs from full status: %+v / %+v", focused.Coverage.Areas.Health, full.Coverage.Areas.Health)
+		}
+		if len(full.Reviews) == 0 || len(focused.Reviews) != 0 || len(focused.NextActions) != 0 {
+			t.Fatal("health must retain its findings without building unrelated review reports or suggestions")
+		}
+	}
+}
+
+func TestCheckHealthReassessesSourceAndSagaEditsWithAWarmCache(t *testing.T) {
+	root, repo := coveredSaga(t)
+	if output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", root); err != nil {
+		t.Fatalf("cover: %v\n%s", err, output)
+	}
+	check := func(wantHealthy bool) {
+		t.Helper()
+		var output bytes.Buffer
+		err := Check(context.Background(), []string{"--repo", repo, "--covers", "health", "--json", root}, &output)
+		var result checkDocument
+		if decodeErr := json.Unmarshal(output.Bytes(), &result); decodeErr != nil {
+			t.Fatalf("check: %v; decode: %v\n%s", err, decodeErr, output.String())
+		}
+		if result.Covered != wantHealthy {
+			t.Fatalf("healthy=%v, want %v: %s", result.Covered, wantHealthy, output.String())
+		}
+		var exit *StatusError
+		if wantHealthy && err != nil || !wantHealthy && (!errors.As(err, &exit) || exit.Code != checkExitUncovered) {
+			t.Fatalf("wrong exit status: %v", err)
+		}
+	}
+	check(true)
+	check(true)
+	writeFile(t, filepath.Join(repo, "internal", "service", "handler.go"), "package service\n\nconst A = 10\nconst B = 2\nconst C = 3\n")
+	git(t, repo, "commit", "-am", "change the documented source")
+	check(false)
+	check(false)
+	// Removing the reference changes the health question even though the
+	// source comparison is identical and can still be served from the cache.
+	document, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	coverageFiles := []string{}
+	// Collect first: the document remains a stable snapshot while removing.
+	coverage.WalkDocumentCode(document, func(_ string, files []saga.CodeFile) {
+		for _, file := range files {
+			coverageFiles = append(coverageFiles, file.Path)
+		}
+	})
+	for _, path := range coverageFiles {
+		if err := os.Remove(filepath.Join(root, filepath.FromSlash(path))); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if len(coverageFiles) == 0 {
+		t.Fatal("fixture must have a reference to remove")
+	}
+	check(true)
+}
 
 // A first change with only its implementation covered: status reports every
 // other area as a gap and exits zero; check answers each question it is asked

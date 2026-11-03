@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"slices"
 
 	"fmt"
 	"github.com/twentyideas/changesaga/internal/applayout"
@@ -129,6 +130,13 @@ func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range
 // failure never hides changed-source accounting: it becomes a diagnostic and
 // the first next action.
 func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool, feature string) (statusDocument, error) {
+	return buildStatusForAreas(ctx, root, repoDir, rng, allowMismatch, feature, nil)
+}
+
+// A nil selection builds full status. A check skips unrequested review
+// reports and next-action suggestions: these can be costly and cannot change
+// the other areas' findings.
+func buildStatusForAreas(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool, feature string, selected []areas.Name) (statusDocument, error) {
 	value, err := readComparison(ctx, root, repoDir, rng, allowMismatch)
 	if err != nil {
 		return statusDocument{}, err
@@ -167,15 +175,18 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 	}
 	// A review whose change has landed is history, recorded or detected.
 	var open []*saga.Review
-	landings := reviewLandings(ctx, value.checkout, value.document.Reviews)
-	for _, review := range value.document.Reviews {
-		if !landings.Detect(ctx, review).Merged() {
-			open = append(open, review)
+	wantReview := selected == nil || slices.Contains(selected, areas.Review)
+	if wantReview {
+		landings := reviewLandings(ctx, value.checkout, value.document.Reviews)
+		for _, review := range value.document.Reviews {
+			if !landings.Detect(ctx, review).Merged() {
+				open = append(open, review)
+			}
 		}
-	}
-	landings.save()
-	if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
-		return statusDocument{}, err
+		landings.save()
+		if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
+			return statusDocument{}, err
+		}
 	}
 	// A Saga whose records cannot be composed has no layers to open; status
 	// reports what it can and then says the report cannot be trusted.
@@ -190,6 +201,9 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		document.Comparison = &layers
 	}
 	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, feature))
+	if selected != nil && !wantReview {
+		return document, nil
+	}
 	document.ChangeReviews = []string{}
 	var matched []reviewOfChange
 	var rewritten []*saga.Review
@@ -207,6 +221,9 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		document.branch = currentBranch(ctx, value.checkout)
 	}
 	document.Coverage.Areas.Review = reviewArea(ctx, matched, rewritten, document.branch, root, document.Reviews, value.changes, resolver)
+	if selected != nil {
+		return document, nil
+	}
 	if value.changes.Mode == gitdiff.ModeCompare {
 		document.StaleByChange = livingStaleness(ctx, value.document, resolver, value.changes.BaseOID, value.changes.HeadOID, root, repoDir)
 	}

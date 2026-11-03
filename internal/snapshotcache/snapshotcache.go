@@ -53,6 +53,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -383,6 +384,18 @@ func (s *Store) dir(key Key) string {
 // every generation is what Discard is for, and a caller that computed keep from
 // a configuration value should hear about a zero.
 func (s *Store) Prune(key Key, keep int) error {
+	return s.prune(key, keep, 0)
+}
+
+// PrunePublished bounds generations shared by independent CLI processes.
+// Recent staging directories may belong to another live builder, so leave
+// them alone; only staging debris older than a day is removed. Prune is for
+// callers that already know no other process is building in their bucket.
+func (s *Store) PrunePublished(key Key, keep int) error {
+	return s.prune(key, keep, 24*time.Hour)
+}
+
+func (s *Store) prune(key Key, keep int, stageRetention time.Duration) error {
 	if keep < 1 {
 		return fmt.Errorf("keep must be at least 1, got %d", keep)
 	}
@@ -404,8 +417,9 @@ func (s *Store) Prune(key Key, keep int) error {
 			continue
 		}
 		if strings.HasPrefix(entry.Name(), ".change-saga-") {
-			// Debris from a build that was interrupted before its rename.
-			_ = os.RemoveAll(filepath.Join(bucket, entry.Name()))
+			if info, err := entry.Info(); err == nil && time.Since(info.ModTime()) >= stageRetention {
+				_ = os.RemoveAll(filepath.Join(bucket, entry.Name()))
+			}
 			continue
 		}
 		info, err := entry.Info()

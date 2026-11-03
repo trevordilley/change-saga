@@ -673,9 +673,8 @@ func TestCachedCommitDiffFollowsCheckoutAttributes(t *testing.T) {
 	}
 }
 
-// Remembered diffs key on the top-level attribute files only. A process
-// that outlives an uncommitted edit to a nested .gitattributes, as the
-// review server does, runs isolated sessions and must see the new patch.
+// Every tree comparison cache key covers nested checkout attributes, for
+// ordinary commands as well as isolated review-server requests.
 func TestIsolatedSessionsFollowNestedAttributes(t *testing.T) {
 	repo := newGitTestRepo(t)
 	writeGitTestFile(t, filepath.Join(repo, "sub", "data.txt"), "one\n")
@@ -699,8 +698,8 @@ func TestIsolatedSessionsFollowNestedAttributes(t *testing.T) {
 		t.Fatal("a text edit was reported binary")
 	}
 	writeGitTestFile(t, filepath.Join(repo, "sub", ".gitattributes"), "*.txt -diff\n")
-	if changes(gitexec.Begin)[0].Binary {
-		t.Fatal("nested attributes became part of the diff key; tighten this test")
+	if !changes(gitexec.Begin)[0].Binary {
+		t.Fatal("a command served a diff remembered before the nested attribute edit")
 	}
 	if !changes(gitexec.BeginIsolated)[0].Binary {
 		t.Fatal("an isolated session served a diff remembered before the nested attribute edit")

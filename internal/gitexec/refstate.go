@@ -407,6 +407,10 @@ func looksAbbreviated(revision string) bool {
 // digest summarizes everything a configuration answer depends on and, with
 // withRefs, everything a ref answer depends on too.
 func (location *repoLocation) digest(withRefs bool) (string, bool) {
+	return location.inputDigest(withRefs, false)
+}
+
+func (location *repoLocation) inputDigest(withRefs, comparison bool) (string, bool) {
 	// Missing directories would hash as absent files and hide every change.
 	if !sameDirectory(location.gitDir, location.gitDir) || !sameDirectory(location.commonDir, location.commonDir) {
 		return "", false
@@ -489,7 +493,7 @@ func (location *repoLocation) digest(withRefs bool) (string, bool) {
 	// HEAD counts for configuration too: [includeIf "onbranch:..."] follows
 	// the branch it names.
 	files := []string{filepath.Join(location.gitDir, "HEAD")}
-	if withRefs {
+	if withRefs || comparison {
 		files = append(files,
 			filepath.Join(location.commonDir, "packed-refs"),
 			// Grafts and a shallow boundary change what main~3 names.
@@ -497,9 +501,22 @@ func (location *repoLocation) digest(withRefs bool) (string, bool) {
 			filepath.Join(location.commonDir, "shallow"),
 			filepath.Join(location.commonDir, "reftable", "tables.list"),
 		)
-		roots = append(roots, filepath.Join(location.commonDir, "refs"))
+		refRoot := "refs"
+		if comparison && !withRefs {
+			// Full commit IDs do not depend on ordinary branches. Replace
+			// refs can change the history and trees those IDs describe.
+			replaceBase, custom := os.LookupEnv("GIT_REPLACE_REF_BASE")
+			refRoot = strings.TrimSuffix(replaceBase, "/")
+			if !custom {
+				refRoot = "refs/replace"
+			}
+			if !strings.HasPrefix(refRoot, "refs/") || filepath.ToSlash(filepath.Clean(refRoot)) != refRoot {
+				return "", false
+			}
+		}
+		roots = append(roots, filepath.Join(location.commonDir, filepath.FromSlash(refRoot)))
 		if location.gitDir != location.commonDir {
-			roots = append(roots, filepath.Join(location.gitDir, "refs"))
+			roots = append(roots, filepath.Join(location.gitDir, filepath.FromSlash(refRoot)))
 		}
 	}
 	for _, path := range files {
@@ -627,4 +644,17 @@ func RefsDigest(ctx context.Context, repo string) (string, bool) {
 		return "", false
 	}
 	return location.stateDigest(ctx, true)
+}
+
+// FreshComparisonDigest reads configuration and history overrides now,
+// bypassing the session's digest. Full commit comparisons do not depend on
+// ordinary branch refs; scanning all of them for each pair would make cache
+// validation itself expensive in repositories with many agent branches.
+// Persistent results check this digest before and after building.
+func FreshComparisonDigest(ctx context.Context, repo string) (string, bool) {
+	location, err := locate(ctx, repo)
+	if err != nil {
+		return "", false
+	}
+	return location.inputDigest(false, true)
 }
