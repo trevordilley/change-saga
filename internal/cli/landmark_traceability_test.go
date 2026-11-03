@@ -90,7 +90,7 @@ func twoSidesSaga(t *testing.T) (root, repo string, landmarks []string) {
 func statusCoverage(t *testing.T, root string, args ...string) areas.Report {
 	t.Helper()
 	var output bytes.Buffer
-	_ = Status(context.Background(), append(append([]string{"--json"}, args...), root), &output)
+	_ = Status(context.Background(), append(append([]string{"--json", "--detail"}, args...), root), &output)
 	var document statusDocument
 	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
 		t.Fatalf("status --json: %v\n%s", err, output.String())
@@ -128,7 +128,7 @@ func TestNoStoryIsSuggestedForCodeItsFragmentAlreadyExplains(t *testing.T) {
 	t.Parallel()
 	root, repo, _ := twoSidesSaga(t)
 	var output bytes.Buffer
-	_ = Status(context.Background(), []string{"--json", "--repo", repo, root}, &output)
+	_ = Status(context.Background(), []string{"--json", "--detail", "--repo", repo, root}, &output)
 	var document statusDocument
 	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
 		t.Fatalf("status --json: %v\n%s", err, output.String())

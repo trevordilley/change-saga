@@ -85,7 +85,7 @@ function runSaga(args: string[], cwd: string): string {
 }
 
 function statusReport(sourceRepo: string, sagaRoot: string): StatusReport {
-  const result = spawnSync(binaryPath, ["status", "--json", "--repo", sourceRepo, "--against", "main", sagaRoot], {
+  const result = spawnSync(binaryPath, ["status", "--json", "--detail", "--repo", sourceRepo, "--against", "main", sagaRoot], {
     cwd: dirname(sagaRoot),
     encoding: "utf8",
     // A large fixture's complete report exceeds Node's 1 MiB default, which

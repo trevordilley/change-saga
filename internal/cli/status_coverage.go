@@ -409,7 +409,7 @@ func printGaps(out io.Writer, area areas.Area, maxItems int) {
 		fmt.Fprintf(out, "    %s\n", describeEntry(entry))
 	}
 	if limit < len(area.UncoveredEntries) {
-		fmt.Fprintf(out, "    … and %d more (use --max 0 or --json)\n", len(area.UncoveredEntries)-limit)
+		fmt.Fprintf(out, "    … and %d more (use --max 0)\n", len(area.UncoveredEntries)-limit)
 	}
 }
 

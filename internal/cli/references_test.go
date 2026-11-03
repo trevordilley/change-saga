@@ -81,7 +81,7 @@ func runRepin(t *testing.T, args ...string) repinOutput {
 func statusComplete(t *testing.T, root string) (bool, map[string]json.RawMessage) {
 	t.Helper()
 	var output bytes.Buffer
-	err := Status(context.Background(), []string{"--against", "main", "--json", root}, &output)
+	err := Status(context.Background(), []string{"--against", "main", "--json", "--detail", root}, &output)
 	var exit *StatusError
 	if err != nil && !errors.As(err, &exit) {
 		t.Fatalf("status: %v\n%s", err, output.String())

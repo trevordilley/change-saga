@@ -21,12 +21,13 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// StatusSchema names the machine-readable status contract. Version 3
-// replaces the readiness gate table with the coverage report: status has no
-// verdict, and "coverage" is the part teams write their own rules over.
+// StatusSchema names the complete status contract, `status --json --detail`.
+// Version 3 replaces the readiness gate table with the coverage report: status
+// has no verdict, and "coverage" is the part teams write their own rules over.
 const StatusSchema = "change-saga.status/v3"
 
-// statusDocument is the `status --json` contract. Coverage is the report
+// statusDocument is the `status --json --detail` contract, and what the default
+// compact document is reduced from. Coverage is the report
 // teams script against: every area's counts and lists, in scope. The embedded
 // report is the changed-line accounting behind it; the embedded living status
 // adds axis cells, stale pins, and the quality domain; the next actions are
@@ -334,7 +335,7 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 // coverage of the change is the answer, then what the review asks. The
 // documentation areas stay in --json and --full.
 func printReviewFirst(out io.Writer, status statusDocument, maxItems int) {
-	printReportHeader(out, status)
+	printReportHeader(out, status, maxItems)
 	printReviewHeadline(out, status, maxItems)
 	printStaleReferences(out, status.Report)
 	printReviewsAndActions(out, status, maxItems)
@@ -649,7 +650,7 @@ func livingSpec() map[string]any {
 			},
 			"units":             []string{string(areas.UnitChangedLine), string(areas.UnitCodeTarget), string(areas.UnitStory), string(areas.UnitCriterion), string(areas.UnitRecord)},
 			"scope":             "with --against, the change: what it changed and what it affected; without, the whole app, where the line areas count documented code targets instead of changed lines; --feature narrows either, keeping changed lines no record owns",
-			"shape":             "status --json .coverage.areas.<area> has total, covered, uncovered, complete, covered_entries, and uncovered_entries; counts are the sums of the entries' counts; never a blended score",
+			"shape":             "status --json .coverage.areas.<area> has total, covered, uncovered, complete, the first uncovered_entries, and uncovered_entries_total; status --json --detail also has covered_entries and every uncovered entry, and its counts are the sums of the entries' counts; never a blended score",
 			"documentation":     "status .documentation says whether the Saga holds living documentation (any record beyond its reviews) and which report status gave: review_first for a Saga of reviews alone, which leaves out the documentation areas, changed-source actions, and growth suggestions; full once living documentation exists or with --full",
 			"verdict":           "none: status reports every gap as a finding; a team that wants a gap to fail its build asks check --covers or writes its own rule over the JSON",
 			"status_exit_codes": map[string]string{"0": "the report was produced; every gap is a finding", "1": "the report cannot be trusted: a malformed Saga (such as a duplicate ID), unreadable records, or a checkout that does not match the declared repository"},
@@ -664,6 +665,7 @@ func livingSpec() map[string]any {
 			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to; area names the coverage area it advances, or overview or terms for growth no coverage area counts; a growth action is optional and carries the practice it teaches",
 			"loop":       "inspect status --json, ask or mutate, validate, re-evaluate; a list of growth suggestions only is the fixed point and never a claim of correctness",
 		},
-		"status_schema": StatusSchema,
+		"status_schema":         StatusSchema,
+		"compact_status_schema": CompactStatusSchema,
 	}
 }

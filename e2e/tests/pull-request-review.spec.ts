@@ -164,7 +164,7 @@ test("@critical approves slide by slide and marks a decision out of date when it
     // The review index and status report the same state with no verdict.
     await page.goto(new URL("/reviews", running.baseURL).toString());
     await expect(page.locator('[data-review-summary="pr-1"] [data-review-slide-state="greeting"] [data-currency="out_of_date"]')).toBeVisible();
-    const status = runCLI(sagaRepositories, ["status", "--json", "--repo", sagaRepositories.sourceRepo, sagaRepositories.sagaRoot]);
+    const status = runCLI(sagaRepositories, ["status", "--json", "--detail", "--repo", sagaRepositories.sourceRepo, sagaRepositories.sagaRoot]);
     const report = JSON.parse(status.stdout) as { reviews: Array<{ id: string; slides: Array<{ id: string; decisions: Array<{ state: string; currency: string }> }> }> };
     const slides = Object.fromEntries(report.reviews[0].slides.map((slide) => [slide.id, slide.decisions.map((decision) => `${decision.state}:${decision.currency}`)]));
     expect(slides).toEqual({ greeting: ["approved:out_of_date"], theme: ["changes_requested:current"] });

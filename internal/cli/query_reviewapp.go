@@ -129,6 +129,13 @@ func (s *reviewAppQuerySession) Living(ctx context.Context, query livingQuery) (
 		Operation: query.Operation, Filters: query.Filters, Cursor: query.Cursor, Limit: query.Limit,
 		ConflictCursor: query.ConflictCursor, ConflictLimit: query.ConflictLimit,
 	})
+	if err == nil && query.CompactRequirements {
+		page, ok := value.Data.(livingapp.RequirementPage)
+		if !ok {
+			return queryPage{}, &queryError{Code: "internal", Message: "requirements returned an unexpected page"}
+		}
+		value.Data = livingapp.CompactRequirements(page)
+	}
 	if err == nil && query.Operation == "audit" {
 		report, ok := value.Data.(livingapp.AuditReport)
 		if !ok {

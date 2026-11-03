@@ -162,7 +162,7 @@ func TestInstallSkillPrintsPortableRoutedAuthoringContract(t *testing.T) {
 func TestSpecJSONExposesPurposeFitVisualFormsAndAudits(t *testing.T) {
 	t.Parallel()
 	var output bytes.Buffer
-	if err := Spec([]string{"--json"}, &output); err != nil {
+	if err := Spec([]string{"--json", "--all"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	var contract map[string]any

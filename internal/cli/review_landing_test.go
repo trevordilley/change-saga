@@ -56,7 +56,7 @@ func TestReviewListDetectsAMergedReviewWithoutWritingIt(t *testing.T) {
 
 	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	var status bytes.Buffer
-	err := Status(context.Background(), []string{"--json", fixture.root}, &status)
+	err := Status(context.Background(), []string{"--json", "--detail", fixture.root}, &status)
 	var document struct {
 		Reviews []reviewstate.Report `json:"reviews"`
 	}

@@ -88,7 +88,7 @@ func changeReviews(t *testing.T, repo, root, against string) ([]string, []string
 			ID string `json:"id"`
 		} `json:"next_actions"`
 	}
-	if err := json.Unmarshal([]byte(run(t, Status, "--json", "--repo", repo, "--against", against, root)), &document); err != nil {
+	if err := json.Unmarshal([]byte(run(t, Status, "--json", "--detail", "--repo", repo, "--against", against, root)), &document); err != nil {
 		t.Fatal(err)
 	}
 	actions := []string{}
@@ -262,7 +262,7 @@ func TestALivingSagaAsksForAReviewOfAnUnreviewedChange(t *testing.T) {
 			ID string `json:"id"`
 		} `json:"next_actions"`
 	}
-	if err := json.Unmarshal([]byte(run(t, Status, "--json", "--repo", repo, root)), &observed); err != nil {
+	if err := json.Unmarshal([]byte(run(t, Status, "--json", "--detail", "--repo", repo, root)), &observed); err != nil {
 		t.Fatal(err)
 	}
 	for _, action := range observed.NextActions {

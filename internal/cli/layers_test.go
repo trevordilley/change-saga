@@ -63,7 +63,7 @@ var shopSagaTemplate fixtureTemplate
 func statusLayers(t *testing.T, root string, args ...string) (statusDocument, map[string]json.RawMessage) {
 	t.Helper()
 	var output bytes.Buffer
-	_ = Status(context.Background(), append(append([]string{"--json"}, args...), root), &output)
+	_ = Status(context.Background(), append(append([]string{"--json", "--detail"}, args...), root), &output)
 	var document statusDocument
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(output.Bytes(), &document); err != nil {

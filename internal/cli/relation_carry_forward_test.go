@@ -52,7 +52,7 @@ func TestAddingAPersonaToAStoryStalesNothingAndSaysWhatItCarried(t *testing.T) {
 		"--criterion", "fast=Checkout finishes promptly", "--json"}, &output))
 
 	output.Reset()
-	_ = Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &output)
+	_ = Status(ctx, []string{"--against", "main", "--json", "--detail", "--repo", repo, root}, &output)
 	var status struct {
 		Stale          []struct{} `json:"stale"`
 		CarriedForward []struct {

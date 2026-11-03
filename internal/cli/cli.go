@@ -253,7 +253,7 @@ var commandUsage = map[string]string{
 	"review comment":                "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID | --path PATH --line N [--end-line M] [--side new|old] [--target SLIDE[/ITEM]]) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                      "change-saga validate [--json] [--fix] <saga>",
 	"reconcile":                     "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json [--summary]] [--all] <saga>",
-	"status":                        "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+	"status":                        "change-saga status [--json [--detail | --action ID]] [--full] [--max N] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                         "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"preintegrate":                  "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
 	"query":                         "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
@@ -261,7 +261,7 @@ var commandUsage = map[string]string{
 	"serve":                         "change-saga serve [--addr ADDR] [--repo PATH] [--open] [--detach] [--against REV [--head REV]] <saga>",
 	"open":                          "change-saga open [--addr ADDR] [--repo PATH] [--against REV [--head REV]] <saga>",
 	"install-skill":                 "change-saga install-skill",
-	"spec":                          "change-saga spec [--json]",
+	"spec":                          "change-saga spec [--json [--command NAME | --resource KIND | --section NAME | --all]]",
 }
 
 func PrintHelp(out io.Writer) {
@@ -1149,7 +1149,9 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	defer endGit()
 	flags := commandFlags("status", commandUsage["status"], out)
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
-	maxItems := flags.Int("max", 100, "maximum uncovered items and next actions in text mode; 0 means all")
+	detail := flags.Bool("detail", false, "with --json, emit the complete report, every list whole; it can be megabytes")
+	action := flags.String("action", "", "with --json, emit one next action whole, by its id")
+	maxItems := flags.Int("max", statusTextLimit, "maximum rows of each list: schema warnings, uncovered items, and next actions; 20 in text, 10 with --json; 0 means all")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
@@ -1160,6 +1162,12 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	}
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", commandUsage["status"])
+	}
+	if !*jsonOutput && (*detail || *action != "") {
+		return errors.New("--detail and --action need --json")
+	}
+	if *detail && *action != "" {
+		return errors.New("--detail and --action are mutually exclusive")
 	}
 	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *feature)
 	if err != nil {
@@ -1172,8 +1180,24 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	}
 	status.NextActions = reviewFirstActions(status.NextActions, status.Documentation)
 	switch {
-	case *jsonOutput:
+	case *action != "":
+		found, err := findNextAction(status.NextActions, *action)
+		if err != nil {
+			return err
+		}
+		if err := writeJSON(out, found); err != nil {
+			return err
+		}
+	case *detail:
 		if err := writeJSON(out, status); err != nil {
+			return err
+		}
+	case *jsonOutput:
+		limit := compactListLimit
+		if flagWasSet(flags, "max") {
+			limit = *maxItems
+		}
+		if err := writeJSON(out, compactStatusDocument(status, limit)); err != nil {
 			return err
 		}
 	case status.Documentation.Report == reportFull:
@@ -1221,7 +1245,7 @@ func printCursor(out io.Writer, view opening) {
 // range), and stale references. It passes no verdict; the coverage report
 // that follows counts every area.
 func printReport(out io.Writer, status statusDocument, maxItems int) {
-	printReportHeader(out, status)
+	printReportHeader(out, status, maxItems)
 	printReviewHeadline(out, status, maxItems)
 	if implementation := status.Coverage.Areas.Implementation; len(implementation.UncoveredEntries) > 0 {
 		fmt.Fprintf(out, "\nChanged lines nothing references (%d lines in %d file ranges):\n", implementation.Uncovered, len(implementation.UncoveredEntries))
@@ -1233,14 +1257,14 @@ func printReport(out io.Writer, status statusDocument, maxItems int) {
 			fmt.Fprintf(out, "  %s\n", describeLines(entry))
 		}
 		if limit < len(implementation.UncoveredEntries) {
-			fmt.Fprintf(out, "  … and %d more file ranges (use --max 0 or --json)\n", len(implementation.UncoveredEntries)-limit)
+			fmt.Fprintf(out, "  … and %d more file ranges (use --max 0)\n", len(implementation.UncoveredEntries)-limit)
 		}
 	}
 	printStaleReferences(out, status.Report)
 }
 
 // printReportHeader prints how the Saga was opened and its schema issues.
-func printReportHeader(out io.Writer, status statusDocument) {
+func printReportHeader(out io.Writer, status statusDocument, maxItems int) {
 	report, view := status.Report, status.Opening
 	if view.Mode == gitdiff.ModeObserve {
 		fmt.Fprintf(out, "OBSERVING %s (%s) — no change to account for; pass --against REV to compare\n", view.Head, shortOID(view.HeadOID))
@@ -1256,8 +1280,12 @@ func printReportHeader(out io.Writer, status statusDocument) {
 	}
 	if len(report.SchemaIssues) > 0 {
 		fmt.Fprintln(out, "\nSchema issues:")
-		for _, issue := range report.SchemaIssues {
+		shown := boundedSchemaIssues(report.SchemaIssues, maxItems)
+		for _, issue := range shown {
 			fmt.Fprintf(out, "  %s: %s: %s\n", issue.Severity, issue.Path, issue.Message)
+		}
+		if len(shown) < len(report.SchemaIssues) {
+			fmt.Fprintf(out, "  … and %d more warnings (use --max 0)\n", len(report.SchemaIssues)-len(shown))
 		}
 	}
 }
@@ -1374,147 +1402,164 @@ func normalizeLegacyOpenDetach(args []string) ([]string, bool, error) {
 
 func Spec(args []string, out io.Writer) error {
 	flags := commandFlags("spec", commandUsage["spec"], out)
-	jsonOutput := flags.Bool("json", false, "emit the contract vocabulary as JSON")
+	jsonOutput := flags.Bool("json", false, "emit a compact index of the contract as JSON")
+	selection := specSelection{}
+	flags.StringVar(&selection.command, "command", "", "with --json, emit one command's full grammar, such as \"review create\"")
+	flags.StringVar(&selection.resource, "resource", "", "with --json, emit one resource's full definition, by its kind")
+	flags.StringVar(&selection.section, "section", "", "with --json, emit one named section of the contract at its full path")
+	flags.BoolVar(&selection.all, "all", false, "with --json, emit the whole contract; it is hundreds of kilobytes")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 0 {
 		return fmt.Errorf("usage: %s", commandUsage["spec"])
 	}
-	if *jsonOutput {
-		whiteboardDiagram := diagram.Contract()
-		whiteboardDiagram["request_field"] = "complete diagram.Document supplied via whiteboard publish --id ID --from FILE|-"
-		whiteboardDiagram["storage"] = "document inside an immutable " + requirements.WhiteboardDir + "/<board-id>/revisions/<revision-id>.json revision"
-		return writeJSON(out, map[string]any{
-			"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
-			"hierarchy":            []string{"overview", "chapter", "section", "fragment"},
-			"media_types":          []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
-			"target_scheme":        "urn:change-saga",
-			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
-			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir},
-			"app_layout": map[string]any{
-				"app_roots":       applayout.AppRootDirs,
-				"feature_storage": applayout.FeaturesDir + "/<id>" + applayout.FeatureSuffix + "/" + applayout.FeatureManifestName,
-				"feature_roots":   applayout.FeatureRootDirs,
-				"feature_content": "report content (chapters and fragments) plus the feature roots; no URN names its feature, so IDs are unique across the app",
-				"onboarding":      applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, feature, or story record instead of code evidence",
-			},
-			"technical_inventory": map[string]any{"root": requirements.InventoryDir, "kinds": TechnicalKinds, "format_kinds": map[string]int{"component": 1, "system": 1, requirements.KindDataEntity: 2, requirements.KindERD: 2, requirements.KindERDOverlay: 2},
-				"format":       map[string]any{"marker": requirements.InventoryDir + "/" + requirements.InventoryFormatName, "current": requirements.CurrentInventoryFormat, "absent": 1, "adopt": "inventory adopt-format --format 2 PATH (explicit; no automatic migration)", "older_readers": "refuse the marker, new directories and Item fields rather than drop content"},
-				"authoring":    "component|system|data-entity|erd|erd-overlay add|revise --id ID --from FILE --revision ID [--parent URN] [--delivery REV | --visual SVG] PATH; set-state --event ID --state active|retired --reason TEXT --parent URN",
-				"intent":       map[string]any{"values": []string{requirements.IntentProposed, requirements.IntentImplemented}, "legacy": requirements.IntentUnspecified, "proposed": "requires baseline: an implemented ancestor revision URN or \"none\"; code optional", "implemented": "requires delivery {repository, commit} and 1-64 references valid at their commit and current at delivery", "edges": "each interaction/relationship has its own intent; an implemented edge needs implemented endpoints; nothing cascades"},
-				"evidence_ids": "format-2 references carry an id unique across the revision; selections name (revision pin, evidence id)",
-				"bounds":       map[string]int{"references_per_owner": requirements.MaxEvidencePerOwner, "relationships": requirements.MaxRelationships, "fields": requirements.MaxEntityFields, "holders": requirements.MaxEntityHolders, "erd_directory": requirements.MaxERDDirectory, "erd_bindings": requirements.MaxERDBindings, "overlay_pins": requirements.MaxOverlayPins, "visual_bytes": requirements.MaxVisualBytes, "item_selections": saga.MaxItemSelections, "selection_path": saga.MaxSelectionPath},
-				"item_link":    "documentation: {target: Component-System-or-data-entity-URN, revision: Revision-URN}; optional documentation_view: full commit of a saved Saga view admitting a non-current pin; optional selections: [{id, path: [pins from documentation], evidence: id, code: subset reference}]",
-				"coverage":     "only direct Item code; documentation never transfers coverage; selections are explicit inputs to inventory-aware coverage consumers", "history": "immutable identity, complete revisions and lifecycle events; all heads explicit"},
-			"whiteboards": map[string]any{
-				"purpose":          "spatial technical-design documents using the shared diagram grammar",
-				"identity":         "--id selects a named document, not a diagram type; --focus selects an appearance within it",
-				"root":             requirements.WhiteboardDir,
-				"storage":          requirements.WhiteboardDir + "/<board-id>/revisions/<revision-id>.json",
-				"schema":           requirements.WhiteboardSchemaURL,
-				"revision_version": 1,
-				"diagram_source":   whiteboardDiagram,
-				"diagram_scope":    "shared grammar; operations describe slide editing, not whiteboard transactions; whiteboards use renderer reveal steps for focused Replay and support only the commands listed here",
-				"history": map[string]string{
-					"revisions": "immutable complete diagram snapshots; identical retries are idempotent",
-					"parent":    "first publication has no parent; updates require the observed unique current board revision ID as --parent",
-					"reads":     "default reads require the unique current head and reject conflicting heads; --revision selects exact history, never a fallback",
-				},
-				"source_pins": "depicted ERDs and data entities pin exact target and revision URNs; optional element or owned relationship selector; sources never follow newer revisions",
-				"commands": map[string]string{
-					"publish":       commandUsage["whiteboard publish"],
-					"get":           commandUsage["whiteboard get"],
-					"describe":      commandUsage["whiteboard describe"],
-					"check":         commandUsage["whiteboard check"],
-					"list":          commandUsage["whiteboard list"],
-					"rename":        commandUsage["whiteboard rename"],
-					"assign-role":   commandUsage["whiteboard assign-role"],
-					"unassign-role": commandUsage["whiteboard unassign-role"],
-					"archive":       commandUsage["whiteboard archive"],
-					"restore":       commandUsage["whiteboard restore"],
-				},
-				"presentation": map[string]any{
-					"storage":     requirements.WhiteboardDir + "/.metadata.json",
-					"roles":       []string{"erd", "infrastructure", "data-flows", "architecture"},
-					"identity":    "role, display name, and archival are independent of immutable source revisions and stable board identity",
-					"concurrency": "assign-role checks --expect; --move additionally requires --expected-snapshot from whiteboard list; all metadata writes accept an optional expected snapshot",
-					"removal":     "archive removes ordinary discovery only; assigned boards must first be unassigned or replaced; restore preserves all historical links",
-				},
-				"focus": "--focus selects a frame or element instance path for reads; publish always appends a complete board snapshot",
-				"compatibility": map[string]string{
-					"absent":        "the subtree is optional; v5 Sagas without it remain valid",
-					"older_readers": "reject an adopted ___whiteboards subtree rather than silently ignore it",
-				},
-				"unsupported": []string{"whiteboard edit transactions"},
-			},
-			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
-			"query": map[string]any{
-				"schema":     querySchema,
-				"operations": querySpecOperations(),
-				"discovery":  queryUsage["schema"],
-			},
-			"plans": map[string]any{
-				"storage":     saga.PlansDir + "/<id>" + saga.PlanSuffix + "/{" + saga.PlanManifestName + "," + saga.PlanDeckDir + "/," + saga.PlanTasksDir + "/<task>" + saga.TaskSuffix + "/{" + saga.TaskManifestName + "," + saga.TaskEssayName + "}}",
-				"deck_role":   saga.DeckRolePlan,
-				"urns":        "urn:change-saga:<saga>:plan:<plan>[:deck:<deck>|:slide:<slide>[:item:<item>]|:task:<task>]",
-				"task_states": []string{saga.TaskPlanned, saga.TaskInProgress, saga.TaskDone},
-				"story_rule":  "every Task names a user story or unblocks a Task that leads to one; a write that would leave a Task with no path to a story is refused",
-				"delivered":   "plan deliver is explicit and refused until every Task is done and every linked Review has merged; a delivered Plan is hidden by default and refuses edits",
-			},
-			"reviews": map[string]any{
-				"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",
-				"deck_role":       saga.DeckRoleReview,
-				"urns":            "urn:change-saga:<saga>:review:<review>[:deck:<deck>|:slide:<slide>[:item:<item>]]",
-				"decision_states": []string{saga.ApprovalApproved, saga.ApprovalChangesRequested, saga.ApprovalNone},
-				"comment_states":  []string{saga.CommentOpen, saga.CommentResolved},
-				"code_lines":      "a root comment may carry code_line {commit, path, side new|old, start, end, digest}: a code reference to lines of the review's diff at the head (new) or merge-base (old); its thread is current while those lines are unchanged in the review's range, follows them with a note when they only moved, and is outdated at its original line once they change; without a slide or Item it targets the review",
-				"line_currency":   []string{reviewstate.Current, reviewstate.Outdated, reviewstate.Unknown},
-				"currency":        []string{"current", "out_of_date", "unknown"},
-				"item_records":    saga.ReviewRecordReferenceKinds,
-				"documentation":   "stories, designs, test cases, and decks carry no approvals and no comments",
-				"coverage":        "computed per review over its own range (frozen after merge), never stored: every changed line covered by a review Item reference current at its side, file events by whole-file references; review decks never count toward the documentation's coverage",
-				"verdict":         "none; status and review list report each slide's decisions and currency and each review's coverage, and the team decides",
-				"slides":          "apply-slide --review publishes a complete review slide (a diagram source or a visual) with the implementation deck's transaction; its Items carry no evidence or criterion links, and cover --changed-lines covers them after publishing",
-			},
-			"theme": theme.Contract(),
-			"deck_overview": map[string]any{
-				"authoring":     "deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
-				"fields":        "overview: {body: Markdown, annotations?: [{id, label, slide, item?}]}; slide front?: [summary bullets]",
-				"visual":        "![alt](slide:SLIDE_ID) or ![alt](slide:FULL_SLIDE_URN); reuse same-deck SVG/PNG/JPEG/WebP asset",
-				"citation":      "[label](annotation:ID); slide is a same-deck ID or full URN, item is an optional local ID or same-slide full URN",
-				"coverage":      "every slide should have an actually cited annotation; missing overview and uncovered slides warn; invalid references error; no code coverage credit",
-				"fallback":      "explicitly generated slide directory; front falls back to takeaway then Item labels; entrypoint remains Back",
-				"compatibility": "optional fields need no migration; tolerant older readers ignore them, strict older readers reject them",
-			},
-			"implementation_deck": map[string]any{
-				"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
-				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
-				"content":        "one self-contained visual file sharing its slide manifest stem",
-				"diagram_source": diagram.Contract(),
-				"removal":        "remove-slide appends a deleted revision with one current parent; remove-deck retains transaction bundles with deleted: true. Historical revisions and assets remain; active projections exclude removed content. Upgrade older readers before use.",
-				"visual_forms": map[string]string{
-					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
-					"data-flow": "directed inputs, transformations, storage, and outputs", "sequence": "participants, time, calls, responses, and exceptional returns",
-					"state-machine": "states, events, guards, and terminal states", "entity-relationship": "entities, keys, ownership, and cardinality",
-					"logic-flow": "predicates, branches, joins, loops, and outcomes", "before-after": "matched axes and the meaningful delta",
-					"failure-path": "trigger, propagation, containment, cleanup, recovery, and outcome", "evidence": "claims or risks connected to tests, measurements, or observations",
-				},
-				"product_intent": "describe implemented features with real Product feature story add/revise records; technical decks reference those stories and explain mechanisms, not substitute story catalogs",
-				"editorial_goal": "establish the system model, then maximize reviewer information gain by surfacing consequential surprises",
-				"surprise_contract": map[string]any{
-					"sequence":             []string{"reasonable expectation", "actual behavior", "rationale", "consequence"},
-					"preferred_expression": "an evidence-bearing callout Item attached to the responsible node, edge, state, or transition",
-					"grounding":            "documented behavior, established repository patterns, historical design, or a plausible reviewer mental model; never manufactured novelty",
-				},
-				"composition_audits": []string{"silhouette", "relationship", "surprise", "contact-sheet"},
-			},
-			"living": livingSpec(),
-		})
+	if !*jsonOutput {
+		if selection.count() > 0 {
+			return errors.New("--command, --resource, --section, and --all need --json")
+		}
+		fmt.Fprint(out, specText)
+		return nil
 	}
-	fmt.Fprint(out, specText)
-	return nil
+	if selection.count() > 1 {
+		return errors.New("--command, --resource, --section, and --all are mutually exclusive")
+	}
+	return writeSpec(out, specContract(), selection)
+}
+
+// specContract is the whole `spec --json --all` contract, the source of every
+// narrower spec read.
+func specContract() map[string]any {
+	whiteboardDiagram := diagram.Contract()
+	whiteboardDiagram["request_field"] = "complete diagram.Document supplied via whiteboard publish --id ID --from FILE|-"
+	whiteboardDiagram["storage"] = "document inside an immutable " + requirements.WhiteboardDir + "/<board-id>/revisions/<revision-id>.json revision"
+	return map[string]any{
+		"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
+		"hierarchy":            []string{"overview", "chapter", "section", "fragment"},
+		"media_types":          []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
+		"target_scheme":        "urn:change-saga",
+		"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
+		"reviewer_bootstrap":   "README.md",
+		"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir},
+		"app_layout": map[string]any{
+			"app_roots":       applayout.AppRootDirs,
+			"feature_storage": applayout.FeaturesDir + "/<id>" + applayout.FeatureSuffix + "/" + applayout.FeatureManifestName,
+			"feature_roots":   applayout.FeatureRootDirs,
+			"feature_content": "report content (chapters and fragments) plus the feature roots; no URN names its feature, so IDs are unique across the app",
+			"onboarding":      applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, feature, or story record instead of code evidence",
+		},
+		"technical_inventory": map[string]any{"root": requirements.InventoryDir, "kinds": TechnicalKinds, "format_kinds": map[string]int{"component": 1, "system": 1, requirements.KindDataEntity: 2, requirements.KindERD: 2, requirements.KindERDOverlay: 2},
+			"format":       map[string]any{"marker": requirements.InventoryDir + "/" + requirements.InventoryFormatName, "current": requirements.CurrentInventoryFormat, "absent": 1, "adopt": "inventory adopt-format --format 2 PATH (explicit; no automatic migration)", "older_readers": "refuse the marker, new directories and Item fields rather than drop content"},
+			"authoring":    "component|system|data-entity|erd|erd-overlay add|revise --id ID --from FILE --revision ID [--parent URN] [--delivery REV | --visual SVG] PATH; set-state --event ID --state active|retired --reason TEXT --parent URN",
+			"intent":       map[string]any{"values": []string{requirements.IntentProposed, requirements.IntentImplemented}, "legacy": requirements.IntentUnspecified, "proposed": "requires baseline: an implemented ancestor revision URN or \"none\"; code optional", "implemented": "requires delivery {repository, commit} and 1-64 references valid at their commit and current at delivery", "edges": "each interaction/relationship has its own intent; an implemented edge needs implemented endpoints; nothing cascades"},
+			"evidence_ids": "format-2 references carry an id unique across the revision; selections name (revision pin, evidence id)",
+			"bounds":       map[string]int{"references_per_owner": requirements.MaxEvidencePerOwner, "relationships": requirements.MaxRelationships, "fields": requirements.MaxEntityFields, "holders": requirements.MaxEntityHolders, "erd_directory": requirements.MaxERDDirectory, "erd_bindings": requirements.MaxERDBindings, "overlay_pins": requirements.MaxOverlayPins, "visual_bytes": requirements.MaxVisualBytes, "item_selections": saga.MaxItemSelections, "selection_path": saga.MaxSelectionPath},
+			"item_link":    "documentation: {target: Component-System-or-data-entity-URN, revision: Revision-URN}; optional documentation_view: full commit of a saved Saga view admitting a non-current pin; optional selections: [{id, path: [pins from documentation], evidence: id, code: subset reference}]",
+			"coverage":     "only direct Item code; documentation never transfers coverage; selections are explicit inputs to inventory-aware coverage consumers", "history": "immutable identity, complete revisions and lifecycle events; all heads explicit"},
+		"whiteboards": map[string]any{
+			"purpose":          "spatial technical-design documents using the shared diagram grammar",
+			"identity":         "--id selects a named document, not a diagram type; --focus selects an appearance within it",
+			"root":             requirements.WhiteboardDir,
+			"storage":          requirements.WhiteboardDir + "/<board-id>/revisions/<revision-id>.json",
+			"schema":           requirements.WhiteboardSchemaURL,
+			"revision_version": 1,
+			"diagram_source":   whiteboardDiagram,
+			"diagram_scope":    "shared grammar; operations describe slide editing, not whiteboard transactions; whiteboards use renderer reveal steps for focused Replay and support only the commands listed here",
+			"history": map[string]string{
+				"revisions": "immutable complete diagram snapshots; identical retries are idempotent",
+				"parent":    "first publication has no parent; updates require the observed unique current board revision ID as --parent",
+				"reads":     "default reads require the unique current head and reject conflicting heads; --revision selects exact history, never a fallback",
+			},
+			"source_pins": "depicted ERDs and data entities pin exact target and revision URNs; optional element or owned relationship selector; sources never follow newer revisions",
+			"commands": map[string]string{
+				"publish":       commandUsage["whiteboard publish"],
+				"get":           commandUsage["whiteboard get"],
+				"describe":      commandUsage["whiteboard describe"],
+				"check":         commandUsage["whiteboard check"],
+				"list":          commandUsage["whiteboard list"],
+				"rename":        commandUsage["whiteboard rename"],
+				"assign-role":   commandUsage["whiteboard assign-role"],
+				"unassign-role": commandUsage["whiteboard unassign-role"],
+				"archive":       commandUsage["whiteboard archive"],
+				"restore":       commandUsage["whiteboard restore"],
+			},
+			"presentation": map[string]any{
+				"storage":     requirements.WhiteboardDir + "/.metadata.json",
+				"roles":       []string{"erd", "infrastructure", "data-flows", "architecture"},
+				"identity":    "role, display name, and archival are independent of immutable source revisions and stable board identity",
+				"concurrency": "assign-role checks --expect; --move additionally requires --expected-snapshot from whiteboard list; all metadata writes accept an optional expected snapshot",
+				"removal":     "archive removes ordinary discovery only; assigned boards must first be unassigned or replaced; restore preserves all historical links",
+			},
+			"focus": "--focus selects a frame or element instance path for reads; publish always appends a complete board snapshot",
+			"compatibility": map[string]string{
+				"absent":        "the subtree is optional; v5 Sagas without it remain valid",
+				"older_readers": "reject an adopted ___whiteboards subtree rather than silently ignore it",
+			},
+			"unsupported": []string{"whiteboard edit transactions"},
+		},
+		"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
+		"query": map[string]any{
+			"schema":     querySchema,
+			"operations": querySpecOperations(),
+			"discovery":  queryUsage["schema"],
+		},
+		"plans": map[string]any{
+			"storage":     saga.PlansDir + "/<id>" + saga.PlanSuffix + "/{" + saga.PlanManifestName + "," + saga.PlanDeckDir + "/," + saga.PlanTasksDir + "/<task>" + saga.TaskSuffix + "/{" + saga.TaskManifestName + "," + saga.TaskEssayName + "}}",
+			"deck_role":   saga.DeckRolePlan,
+			"urns":        "urn:change-saga:<saga>:plan:<plan>[:deck:<deck>|:slide:<slide>[:item:<item>]|:task:<task>]",
+			"task_states": []string{saga.TaskPlanned, saga.TaskInProgress, saga.TaskDone},
+			"story_rule":  "every Task names a user story or unblocks a Task that leads to one; a write that would leave a Task with no path to a story is refused",
+			"delivered":   "plan deliver is explicit and refused until every Task is done and every linked Review has merged; a delivered Plan is hidden by default and refuses edits",
+		},
+		"reviews": map[string]any{
+			"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",
+			"deck_role":       saga.DeckRoleReview,
+			"urns":            "urn:change-saga:<saga>:review:<review>[:deck:<deck>|:slide:<slide>[:item:<item>]]",
+			"decision_states": []string{saga.ApprovalApproved, saga.ApprovalChangesRequested, saga.ApprovalNone},
+			"comment_states":  []string{saga.CommentOpen, saga.CommentResolved},
+			"code_lines":      "a root comment may carry code_line {commit, path, side new|old, start, end, digest}: a code reference to lines of the review's diff at the head (new) or merge-base (old); its thread is current while those lines are unchanged in the review's range, follows them with a note when they only moved, and is outdated at its original line once they change; without a slide or Item it targets the review",
+			"line_currency":   []string{reviewstate.Current, reviewstate.Outdated, reviewstate.Unknown},
+			"currency":        []string{"current", "out_of_date", "unknown"},
+			"item_records":    saga.ReviewRecordReferenceKinds,
+			"documentation":   "stories, designs, test cases, and decks carry no approvals and no comments",
+			"coverage":        "computed per review over its own range (frozen after merge), never stored: every changed line covered by a review Item reference current at its side, file events by whole-file references; review decks never count toward the documentation's coverage",
+			"verdict":         "none; status and review list report each slide's decisions and currency and each review's coverage, and the team decides",
+			"slides":          "apply-slide --review publishes a complete review slide (a diagram source or a visual) with the implementation deck's transaction; its Items carry no evidence or criterion links, and cover --changed-lines covers them after publishing",
+		},
+		"theme": theme.Contract(),
+		"deck_overview": map[string]any{
+			"authoring":     "deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
+			"fields":        "overview: {body: Markdown, annotations?: [{id, label, slide, item?}]}; slide front?: [summary bullets]",
+			"visual":        "![alt](slide:SLIDE_ID) or ![alt](slide:FULL_SLIDE_URN); reuse same-deck SVG/PNG/JPEG/WebP asset",
+			"citation":      "[label](annotation:ID); slide is a same-deck ID or full URN, item is an optional local ID or same-slide full URN",
+			"coverage":      "every slide should have an actually cited annotation; missing overview and uncovered slides warn; invalid references error; no code coverage credit",
+			"fallback":      "explicitly generated slide directory; front falls back to takeaway then Item labels; entrypoint remains Back",
+			"compatibility": "optional fields need no migration; tolerant older readers ignore them, strict older readers reject them",
+		},
+		"implementation_deck": map[string]any{
+			"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
+			"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
+			"content":        "one self-contained visual file sharing its slide manifest stem",
+			"diagram_source": diagram.Contract(),
+			"removal":        "remove-slide appends a deleted revision with one current parent; remove-deck retains transaction bundles with deleted: true. Historical revisions and assets remain; active projections exclude removed content. Upgrade older readers before use.",
+			"visual_forms": map[string]string{
+				"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
+				"data-flow": "directed inputs, transformations, storage, and outputs", "sequence": "participants, time, calls, responses, and exceptional returns",
+				"state-machine": "states, events, guards, and terminal states", "entity-relationship": "entities, keys, ownership, and cardinality",
+				"logic-flow": "predicates, branches, joins, loops, and outcomes", "before-after": "matched axes and the meaningful delta",
+				"failure-path": "trigger, propagation, containment, cleanup, recovery, and outcome", "evidence": "claims or risks connected to tests, measurements, or observations",
+			},
+			"product_intent": "describe implemented features with real Product feature story add/revise records; technical decks reference those stories and explain mechanisms, not substitute story catalogs",
+			"editorial_goal": "establish the system model, then maximize reviewer information gain by surfacing consequential surprises",
+			"surprise_contract": map[string]any{
+				"sequence":             []string{"reasonable expectation", "actual behavior", "rationale", "consequence"},
+				"preferred_expression": "an evidence-bearing callout Item attached to the responsible node, edge, state, or transition",
+				"grounding":            "documented behavior, established repository patterns, historical design, or a plausible reviewer mental model; never manufactured novelty",
+			},
+			"composition_audits": []string{"silhouette", "relationship", "surprise", "contact-sheet"},
+		},
+		"living": livingSpec(),
+	}
 }
 
 func querySpecOperations() []querySchemaDescription {

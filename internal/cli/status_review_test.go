@@ -61,7 +61,7 @@ func statusText(t *testing.T, root string, args ...string) string {
 func statusJSON(t *testing.T, root string, args ...string) statusDocument {
 	t.Helper()
 	var document statusDocument
-	if err := json.Unmarshal([]byte(run(t, Status, append(append(args, "--json"), root)...)), &document); err != nil {
+	if err := json.Unmarshal([]byte(run(t, Status, append(append(args, "--json", "--detail"), root)...)), &document); err != nil {
 		t.Fatal(err)
 	}
 	return document

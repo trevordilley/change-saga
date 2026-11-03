@@ -215,7 +215,7 @@ func TestQuerySchemaAndSpecDiscoverRecordOperations(t *testing.T) {
 		}
 	}
 	var output bytes.Buffer
-	if err := Spec([]string{"--json"}, &output); err != nil {
+	if err := Spec([]string{"--json", "--all"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	var spec map[string]json.RawMessage
@@ -248,7 +248,7 @@ func TestRecordQueryWorkflowMeasurements(t *testing.T) {
 	}
 
 	var legacy bytes.Buffer
-	if err := Status(context.Background(), []string{"--json", "--repo", repo, root}, &legacy); err != nil {
+	if err := Status(context.Background(), []string{"--json", "--detail", "--repo", repo, root}, &legacy); err != nil {
 		t.Fatal(err)
 	}
 	queryBytes, queryCommands := 0, 0

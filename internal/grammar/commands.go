@@ -792,11 +792,13 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json [--detail | --action ID]] [--full] [--max N] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 		Summary: "report the review deck's coverage of the change first, then coverage by area (review, implementation, stories, personas, design, quality, health) with counts and lists, stale pins, and ordered next actions; a Saga that holds only reviews is reported review first, without the documentation areas; has no verdict: exits 0 whenever the report can be trusted, 1 when the Saga is malformed or the checkout does not match",
 		Flags: []Flag{
-			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
-			optional("max", "N", "maximum uncovered items in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
+			jsonFlag, optional("detail", "", "with --json, emit the complete report, every list whole; it can be megabytes"),
+			optional("action", "ID", "with --json, emit one next action whole"),
+			optional("repo", "PATH", "source checkout when separate"),
+			optional("max", "N", "maximum rows of each list: schema warnings, uncovered items, and next actions; 20 in text, 10 with --json; 0 means all"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 			optional("feature", "ID", "narrow the report to one feature"), againstFlag, headFlag,
 			optional("full", "", "report every documentation area and growth suggestion, even for a Saga that holds only reviews"),
 		},
@@ -821,9 +823,12 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "spec", Status: StatusImplemented, Usage: "change-saga spec [--json]",
-		Summary: "publish resources, relation matrix, command grammar, and invariants",
-		Flags:   []Flag{jsonFlag},
+		Name: "spec", Status: StatusImplemented, Usage: "change-saga spec [--json [--command NAME | --resource KIND | --section NAME | --all]]",
+		Summary: "publish resources, relation matrix, command grammar, and invariants: --json is a compact index, and --command, --resource, --section, or --all reads one part or the whole",
+		Flags: []Flag{
+			jsonFlag, optional("command", "NAME", "with --json, emit one command's full grammar"), optional("resource", "KIND", "with --json, emit one resource's full definition"),
+			optional("section", "NAME", "with --json, emit one named section of the contract at its full path"), optional("all", "", "with --json, emit the whole contract; it is hundreds of kilobytes"),
+		},
 	},
 
 	// v5 quality writers.

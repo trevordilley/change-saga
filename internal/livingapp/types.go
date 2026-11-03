@@ -249,6 +249,51 @@ type Requirement struct {
 	LifecycleConflict bool                         `json:"lifecycle_conflict"`
 }
 
+// RequirementRowPage is the default requirements read: one row per requirement,
+// without its text. A selected requirement or --detail returns RequirementPage.
+type RequirementRowPage struct {
+	Requirements []RequirementRow `json:"requirements"`
+}
+
+// RequirementRow names one requirement. A conflict stays visible: with no single
+// head there is no title to show, so the row carries the competing heads instead
+// of choosing a winner.
+type RequirementRow struct {
+	Requirement       string   `json:"requirement"`
+	ID                string   `json:"id"`
+	Title             string   `json:"title"`
+	State             string   `json:"state"`
+	Feature           string   `json:"feature"`
+	Criteria          int      `json:"criteria"`
+	RevisionConflict  bool     `json:"revision_conflict,omitempty"`
+	LifecycleConflict bool     `json:"lifecycle_conflict,omitempty"`
+	RevisionHeads     []string `json:"revision_heads,omitempty"`
+	LifecycleHeads    []string `json:"lifecycle_heads,omitempty"`
+}
+
+// CompactRequirements reduces a page of requirements to their rows.
+func CompactRequirements(page RequirementPage) RequirementRowPage {
+	rows := make([]RequirementRow, 0, len(page.Requirements))
+	for _, requirement := range page.Requirements {
+		row := RequirementRow{Requirement: requirement.Requirement, ID: requirement.ID, Feature: requirement.Feature, State: "conflicted"}
+		if requirement.CurrentRevision != nil {
+			row.Title = requirement.CurrentRevision.Title
+			row.Criteria = len(requirement.CurrentRevision.AcceptanceCriteria)
+		}
+		if requirement.CurrentLifecycle != nil {
+			row.State = string(requirement.CurrentLifecycle.State)
+		}
+		if requirement.RevisionConflict {
+			row.RevisionConflict, row.RevisionHeads = true, requirement.RevisionHeads
+		}
+		if requirement.LifecycleConflict {
+			row.LifecycleConflict, row.LifecycleHeads = true, requirement.LifecycleHeads
+		}
+		rows = append(rows, row)
+	}
+	return RequirementRowPage{Requirements: rows}
+}
+
 type HistoryPage struct {
 	Events []HistoryEvent `json:"events"`
 }

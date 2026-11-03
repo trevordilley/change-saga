@@ -499,7 +499,7 @@ func TestStatusReportsReviewCoverageAndNamesTheCoverCommand(t *testing.T) {
 	fixture := newReviewFixture(t)
 	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	var output bytes.Buffer
-	_ = Status(context.Background(), []string{"--json", fixture.root}, &output)
+	_ = Status(context.Background(), []string{"--json", "--detail", fixture.root}, &output)
 	var status struct {
 		Reviews     []reviewstate.Report `json:"reviews"`
 		NextActions []struct {

@@ -104,6 +104,9 @@ type livingQuery struct {
 	Limit          int
 	ConflictCursor string
 	ConflictLimit  int
+	// CompactRequirements reduces each requirement to its row: a requirements
+	// query with neither --requirement nor --detail.
+	CompactRequirements bool
 }
 
 type queryPage struct {
@@ -167,6 +170,7 @@ type queryHelp struct {
 	Operations           []string                     `json:"operations,omitempty"`
 	Operation            string                       `json:"operation,omitempty"`
 	Purpose              string                       `json:"purpose,omitempty"`
+	Detail               string                       `json:"detail,omitempty"`
 	DataPaths            []string                     `json:"data_paths,omitempty"`
 	Pagination           *queryPaginationDescription  `json:"pagination,omitempty"`
 	AdditionalPagination []queryPaginationDescription `json:"additional_pagination,omitempty"`
@@ -188,6 +192,7 @@ type querySchemaDescription struct {
 	Operation            string                       `json:"operation"`
 	Purpose              string                       `json:"purpose"`
 	Usage                string                       `json:"usage"`
+	Detail               string                       `json:"detail,omitempty"`
 	DataPaths            []string                     `json:"data_paths"`
 	Pagination           queryPaginationDescription   `json:"pagination"`
 	AdditionalPagination []queryPaginationDescription `json:"additional_pagination,omitempty"`
@@ -270,7 +275,7 @@ var queryPurpose = map[string]string{
 	"feature-themes":       "optional product themes with authored Markdown overview, feature membership, and rationale decks in the current Saga",
 	"personas":             "current persona definitions and lifecycle heads, selected exactly by stable ID or canonical URN",
 	"persona-references":   "direct explicit incoming and outgoing persona references with provenance and declared coverage",
-	"requirements":         "current requirement definitions and lifecycle heads without fabricating winners for conflicts",
+	"requirements":         "compact requirement rows, or with --requirement or --detail the current definitions and lifecycle heads, without fabricating winners for conflicts",
 	"requirement-history":  "append-only revision and lifecycle history in deterministic graph order",
 	"citations":            "immutable requirement provenance records",
 	"relations":            "typed current, stale, and superseded living-Saga relations",
@@ -316,7 +321,7 @@ var queryUsage = map[string]string{
 	"context":              "change-saga query context --saga PATH --feature ID|URN [--expand STORY-ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"personas":             "change-saga query personas --saga PATH [--persona ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"persona-references":   "change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]",
-	"requirements":         "change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"requirements":         "change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--detail] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"requirement-history":  "change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"citations":            "change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"relations":            "change-saga query relations --saga PATH [--relation ID|URN] [--type TYPE] [--from URN] [--to URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
@@ -551,7 +556,7 @@ func queryHelpFor(operation string) queryHelp {
 	description := querySchemaFor(operation)
 	return queryHelp{
 		Usage: queryUsage[operation], Operation: operation, Purpose: description.Purpose,
-		DataPaths: description.DataPaths, Pagination: &description.Pagination, AdditionalPagination: description.AdditionalPagination,
+		Detail: description.Detail, DataPaths: description.DataPaths, Pagination: &description.Pagination, AdditionalPagination: description.AdditionalPagination,
 	}
 }
 
@@ -576,7 +581,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"context":              {"data.feature", "data.feature.overview", "data.projection", "data.completeness", "data.stories", "data.neighbors", "data.terms", "data.visuals", "data.gaps", "data.conflicts", "data.expanded"},
 		"personas":             {"data.personas"},
 		"persona-references":   {"data.subject", "data.references", "data.counts", "data.completeness"},
-		"requirements":         {"data.requirements", "data.requirements[].current_revision.overview"},
+		"requirements":         {"data.requirements", "data.requirements[].id", "data.requirements[].title", "data.requirements[].state", "data.requirements[].feature", "data.requirements[].criteria", "data.requirements[].current_revision.overview", "data.requirements[].current_revision.acceptance_criteria", "data.requirements[].current_lifecycle"},
 		"requirement-history":  {"data.events", "data.events[].revision.overview"},
 		"citations":            {"data.citations"},
 		"relations":            {"data.relations"},
@@ -646,6 +651,9 @@ func querySchemaFor(operation string) querySchemaDescription {
 		Operation: operation, Purpose: queryPurpose[operation], Usage: queryUsage[operation],
 		DataPaths: append([]string(nil), paths[operation]...), Pagination: pagination,
 	}
+	if operation == "requirements" {
+		description.Detail = "Rows by default: requirement, id, title, state, feature, and criteria (a count); a conflicted row also has its conflict flags and heads. --requirement ID or --detail returns the full record instead: current_revision, current_lifecycle, revision_heads, and lifecycle_heads."
+	}
 	if operation == "inventory" {
 		description.AdditionalPagination = []queryPaginationDescription{{
 			Kind: "cursor", CountedPath: "data.unresolved",
@@ -673,6 +681,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	opening := registerOpenFlags(flags)
 
 	var parent, target, ref, cursor, conflictCursor, state, kind, sortOrder, claim string
+	var detail bool
 	var feature, expand, requirement, persona, term, citation, relation, from, to, testCase, criterion, commit string
 	var offset int64
 	var limit optionalInt
@@ -740,7 +749,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.Var(&conflictLimit, "conflict-limit", "unresolved-owner page size; defaults to --limit or 100")
 	case "requirements":
 		flags.StringVar(&feature, "feature", "", "optional feature ID or URN")
-		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
+		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN; returns its full text")
+		flags.BoolVar(&detail, "detail", false, "return every requirement's full text instead of compact rows")
 		flags.StringVar(&state, "state", "", "optional lifecycle state")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
@@ -922,7 +932,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		} else if operation == "readiness" {
 			filters.Status = state
 		}
-		return livingQuery{Operation: operation, Filters: filters, Cursor: cursor, Limit: limit.value, ConflictCursor: conflictCursor, ConflictLimit: conflictLimit.value}, options, false, nil
+		compact := operation == "requirements" && !detail && requirement == ""
+		return livingQuery{Operation: operation, Filters: filters, Cursor: cursor, Limit: limit.value, ConflictCursor: conflictCursor, ConflictLimit: conflictLimit.value, CompactRequirements: compact}, options, false, nil
 	default:
 		return nil, queryOpenOptions{}, false, fmt.Errorf("unknown query operation %q", operation)
 	}

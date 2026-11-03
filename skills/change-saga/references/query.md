@@ -199,8 +199,8 @@ covered lines are not proof of a correct explanation.
   `change-saga query roadmap --saga PATH [--cursor TOKEN] [--limit N]`
 - `persona-references`: direct explicit incoming and outgoing persona references with provenance and declared coverage.
   `change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
-- `requirements`: current requirement definitions and lifecycle heads without fabricating winners for conflicts.
-  `change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
+- `requirements`: compact requirement rows, or with --requirement or --detail the current definitions and lifecycle heads, without fabricating winners for conflicts.
+  `change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--detail] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `requirement-history`: append-only revision and lifecycle history in deterministic graph order.
   `change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `citations`: immutable requirement provenance records.

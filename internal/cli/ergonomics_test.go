@@ -439,7 +439,7 @@ func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	}
 
 	var output bytes.Buffer
-	if err := Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output); err != nil {
+	if err := Status(context.Background(), []string{"--against", "main", "--json", "--detail", "--repo", repo, root}, &output); err != nil {
 		t.Fatalf("status with no story = %v, want exit 0\n%s", err, output.String())
 	}
 	var report map[string]json.RawMessage

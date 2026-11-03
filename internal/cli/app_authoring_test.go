@@ -70,7 +70,7 @@ type appStatus struct {
 // blocked, which these fixtures always are, so only the document matters.
 func runAppStatus(t *testing.T, root string, repo ...string) (appStatus, string) {
 	t.Helper()
-	args := []string{"--json"}
+	args := []string{"--json", "--detail"}
 	if len(repo) > 0 {
 		args = append(args, "--repo", repo[0])
 	}
@@ -817,7 +817,7 @@ func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 	}
 
 	var status bytes.Buffer
-	if err := Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &status); err != nil {
+	if err := Status(ctx, []string{"--against", "main", "--json", "--detail", "--repo", repo, root}, &status); err != nil {
 		t.Fatalf("status reports and exits zero for a first change with no personas: %v\n%s", err, status.String())
 	}
 	var document struct {

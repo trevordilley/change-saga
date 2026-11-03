@@ -84,7 +84,7 @@ func TestGrammarMatchesTheImplementedCLI(t *testing.T) {
 func TestSpecJSONDescribesTheLivingGrammar(t *testing.T) {
 	t.Parallel()
 	var output bytes.Buffer
-	if err := Spec([]string{"--json"}, &output); err != nil {
+	if err := Spec([]string{"--json", "--all"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	var contract struct {
@@ -141,7 +141,7 @@ func TestStatusJSONKeepsV1KeysAndAddsTheAuthoringGrammar(t *testing.T) {
 	t.Parallel()
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	_ = Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output)
+	_ = Status(context.Background(), []string{"--against", "main", "--json", "--detail", "--repo", repo, root}, &output)
 	var document map[string]any
 	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
 		t.Fatalf("status JSON: %v\n%s", err, output.String())
@@ -212,7 +212,7 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 		"--criterion", "fast=Checkout finishes in two seconds", "--json"}, &output), &output)
 
 	output.Reset()
-	_ = Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &output)
+	_ = Status(ctx, []string{"--against", "main", "--json", "--detail", "--repo", repo, root}, &output)
 	var status struct {
 		Quality struct {
 			TestCases []struct {
