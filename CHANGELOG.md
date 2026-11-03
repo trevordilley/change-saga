@@ -20,7 +20,7 @@ tool, and what they have to do about it.
 ### Changed
 
 - **Breaking for scripts: `status --json` is now compact.** It was 4.1 MB on this
-  repository's Saga and is now about 25 KB, so one ordinary call no longer costs an
+  repository's Saga and is now about 31 KB, so one ordinary call no longer costs an
   agent's session its context. `status --json --detail` restores the old output
   (`status_schema` `change-saga.status/v3`), differing only in the `usage` text of
   `.authoring_loop` and of commands, which now names the new flags; the default is
