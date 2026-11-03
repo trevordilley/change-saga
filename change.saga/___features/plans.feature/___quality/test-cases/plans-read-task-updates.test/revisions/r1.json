@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-read-task-updates",
+  "parents": [],
+  "title": "A Task's messages and a Plan's feed are readable",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "task-slide-out-history",
+      "action": "Keep a Task's slide-out open while notes arrive.",
+      "expected_result": "New messages appear newest first in the open slide-out.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:read-task-updates:criterion:task-slide-out-history"
+      ]
+    },
+    {
+      "id": "plan-live-feed",
+      "action": "Leave a Plan open while agents report on its Tasks, then select a row.",
+      "expected_result": "The feed names who, which Task, and what they said, and opens the Task.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:read-task-updates:criterion:plan-live-feed"
+      ]
+    },
+    {
+      "id": "no-activity-says-so",
+      "action": "Open a Plan of a Saga outside Git.",
+      "expected_result": "The page says it has no live activity, and does not poll.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:read-task-updates:criterion:no-activity-says-so"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-03T05:28:03Z"
+}

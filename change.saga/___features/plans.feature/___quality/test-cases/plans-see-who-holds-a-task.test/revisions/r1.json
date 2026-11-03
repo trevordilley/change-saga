@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-see-who-holds-a-task",
+  "parents": [],
+  "title": "An agent can see who holds a Task",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "query-shows-latest-activity",
+      "action": "Query a Plan and a Task someone reported on.",
+      "expected_result": "Each carries the latest activity, with the message cut short.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:see-who-holds-a-task:criterion:query-shows-latest-activity"
+      ]
+    },
+    {
+      "id": "history-is-explicit",
+      "action": "Query a Task with and without --history.",
+      "expected_result": "Messages come back only with --history.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:see-who-holds-a-task:criterion:history-is-explicit"
+      ]
+    },
+    {
+      "id": "ready-shows-started",
+      "action": "List ready Tasks after one is started, and start it again as another agent.",
+      "expected_result": "The list says who started it, and the second start warns.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:see-who-holds-a-task:criterion:ready-shows-started"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-03T05:28:23Z"
+}

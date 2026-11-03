@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
+  "version": 5,
+  "id": "share-activity-across-worktrees.concurrent-appends-survive.r1",
+  "criterion": "urn:change-saga:change-saga:story:share-activity-across-worktrees:criterion:concurrent-appends-survive",
+  "story_revision": "urn:change-saga:change-saga:story:share-activity-across-worktrees:revision:r1",
+  "required_kinds": [
+    "positive"
+  ],
+  "allowed_automation": [
+    "automated",
+    "hybrid",
+    "manual"
+  ],
+  "supersedes": [],
+  "rationale": "The linked test checks the behavior this criterion states, including any refusal it names. No separate edge or negative case is claimed beyond that.",
+  "created_at": "2026-11-03T05:28:21Z"
+}

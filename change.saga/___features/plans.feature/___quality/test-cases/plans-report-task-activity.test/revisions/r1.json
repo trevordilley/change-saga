@@ -1,0 +1,57 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-report-task-activity",
+  "parents": [],
+  "title": "An agent reports activity without touching the Plan",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "start-note-blocked-commands",
+      "action": "Run task start and task note from a second worktree.",
+      "expected_result": "Another worktree reads them, and git status stays clean.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:report-task-activity:criterion:start-note-blocked-commands"
+      ]
+    },
+    {
+      "id": "done-records-activity",
+      "action": "Run task done on a branch.",
+      "expected_result": "The record is done there, and another worktree reads done on that branch.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:report-task-activity:criterion:done-records-activity"
+      ]
+    },
+    {
+      "id": "identity-resolves",
+      "action": "Resolve who is reporting with each combination of override, DevSwarm, and branch.",
+      "expected_result": "The override wins, then the workspace without its repository suffix, then the branch.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:report-task-activity:criterion:identity-resolves"
+      ]
+    },
+    {
+      "id": "activity-never-reports-as-record",
+      "action": "Compare status, validate, check, and plan deliver before and after activity.",
+      "expected_result": "Every report is the same, and delivery still waits on durable state.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:report-task-activity:criterion:activity-never-reports-as-record"
+      ]
+    },
+    {
+      "id": "activity-never-fails-work",
+      "action": "Run the commands with no Git repository and with the log directory blocked.",
+      "expected_result": "They succeed and say nothing was recorded, and task done still writes.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:report-task-activity:criterion:activity-never-fails-work"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-03T05:28:08Z"
+}

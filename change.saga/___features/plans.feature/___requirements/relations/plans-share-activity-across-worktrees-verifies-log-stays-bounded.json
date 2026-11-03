@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "plans-share-activity-across-worktrees-verifies-log-stays-bounded",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:plans-share-activity-across-worktrees",
+  "to": "urn:change-saga:change-saga:story:share-activity-across-worktrees:criterion:log-stays-bounded",
+  "scope": "self",
+  "rationale": "Step log-stays-bounded checks this criterion. This relation makes no execution claim.",
+  "from_revision": "urn:change-saga:change-saga:test-case:plans-share-activity-across-worktrees:revision:r1",
+  "to_revision": "urn:change-saga:change-saga:story:share-activity-across-worktrees:revision:r1",
+  "state": "active",
+  "created_at": "2026-11-03T05:28:22.17157Z"
+}

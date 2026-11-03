@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-share-activity-across-worktrees",
+  "parents": [],
+  "title": "A repository's worktrees share one activity log",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "worktrees-share-activity",
+      "action": "Append from one worktree and read from another, and from a Saga outside Git given --repo.",
+      "expected_result": "The event reads back, and nothing shows in git status.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:share-activity-across-worktrees:criterion:worktrees-share-activity"
+      ]
+    },
+    {
+      "id": "concurrent-appends-survive",
+      "action": "Append from several processes at once, and read a log with a torn last line.",
+      "expected_result": "No event is lost, and the torn line costs only itself.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:share-activity-across-worktrees:criterion:concurrent-appends-survive"
+      ]
+    },
+    {
+      "id": "log-stays-bounded",
+      "action": "Write past the rotation size, and report while an old log sits unwritten for a month.",
+      "expected_result": "At most two files remain per agent, and the old log is removed.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:share-activity-across-worktrees:criterion:log-stays-bounded"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-03T05:28:17Z"
+}

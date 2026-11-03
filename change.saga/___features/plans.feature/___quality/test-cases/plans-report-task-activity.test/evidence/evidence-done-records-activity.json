@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-done-records-activity",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-report-task-activity",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-report-task-activity:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "done-records-activity"
+  ],
+  "code": [
+    {
+      "commit": "78394f1f987857065a3ee2f2b1839f1db0cfdb4b",
+      "path": "internal/cli/task_activity_test.go",
+      "start": 85,
+      "end": 106,
+      "digest": "sha256:6530e1ae5f7a4bcdf05760f6972a15805300550dc0a60ad0ee374acd7dc78193"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-03T05:28:13Z"
+}

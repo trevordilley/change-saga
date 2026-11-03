@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
+  "version": 5,
+  "id": "see-who-holds-a-task.history-is-explicit.r1",
+  "criterion": "urn:change-saga:change-saga:story:see-who-holds-a-task:criterion:history-is-explicit",
+  "story_revision": "urn:change-saga:change-saga:story:see-who-holds-a-task:revision:r1",
+  "required_kinds": [
+    "positive"
+  ],
+  "allowed_automation": [
+    "automated",
+    "hybrid",
+    "manual"
+  ],
+  "supersedes": [],
+  "rationale": "The linked test checks the behavior this criterion states, including any refusal it names. No separate edge or negative case is claimed beyond that.",
+  "created_at": "2026-11-03T05:28:26Z"
+}

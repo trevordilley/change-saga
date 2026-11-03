@@ -1,0 +1,65 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work",
+  "parents": [],
+  "title": "A Plan left open follows its Tasks without a reload",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "board-shows-live-state",
+      "action": "Open the Tasks board, then start, block, and finish Tasks from another worktree.",
+      "expected_result": "Each node shows its state and who is on it, with no reload.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:watch-a-plan-work:criterion:board-shows-live-state"
+      ]
+    },
+    {
+      "id": "slides-show-live-state",
+      "action": "Leave a Plan slide open while an agent starts, blocks, and finishes its Task.",
+      "expected_result": "The node shows the same state, with no reload.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:watch-a-plan-work:criterion:slides-show-live-state"
+      ]
+    },
+    {
+      "id": "view-survives-updates",
+      "action": "Zoom the board, select a node, open its slide-out, and let updates arrive.",
+      "expected_result": "The camera, selection, and slide-out are all unchanged.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:watch-a-plan-work:criterion:view-survives-updates"
+      ]
+    },
+    {
+      "id": "quiet-is-not-failed",
+      "action": "Leave a started Task with no update for two hours, then note on it.",
+      "expected_result": "It reads quiet, never failed, and an update brings it back.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:watch-a-plan-work:criterion:quiet-is-not-failed"
+      ]
+    },
+    {
+      "id": "branch-done-is-distinct",
+      "action": "Finish a Task on a branch, then write it done in this checkout.",
+      "expected_result": "It reads done on that branch, then durably done.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:watch-a-plan-work:criterion:branch-done-is-distinct"
+      ]
+    },
+    {
+      "id": "cheap-to-leave-open",
+      "action": "Poll the endpoint repeatedly with nothing changing.",
+      "expected_result": "It says 304, takes no Saga check, and does not wake the watcher.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:watch-a-plan-work:criterion:cheap-to-leave-open"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-03T05:27:41Z"
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-concurrent-appends-survive",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-share-activity-across-worktrees",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-share-activity-across-worktrees:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "concurrent-appends-survive"
+  ],
+  "code": [
+    {
+      "commit": "78394f1f987857065a3ee2f2b1839f1db0cfdb4b",
+      "path": "internal/planactivity/planactivity_test.go",
+      "start": 106,
+      "end": 140,
+      "digest": "sha256:df31f129dd3ce6ebc78c10b317510388f11c62a3116a77b916f1984002d84c74"
+    },
+    {
+      "commit": "78394f1f987857065a3ee2f2b1839f1db0cfdb4b",
+      "path": "internal/planactivity/planactivity_test.go",
+      "start": 142,
+      "end": 167,
+      "digest": "sha256:b87b99c8d28c0e1a4789641a4547a69325a9076b618214c3abce2cda04c64546"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-03T05:28:21Z"
+}
