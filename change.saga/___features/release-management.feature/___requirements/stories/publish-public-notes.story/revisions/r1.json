@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:publish-public-notes",
+  "parents": [],
+  "title": "Get the public notes ready to publish",
+  "statement": "As a product manager, I can get a release's public notes as Markdown, so I can put them wherever our users read them without copying from private notes by mistake.",
+  "overview": "Proposed addition, not in Trevor's direction. It is what lets notes replace a handwritten changelog, while the team's own step in the checklist puts them there.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "public-only",
+      "statement": "`release notes --audience public` prints every public note of the release and no text from any private note."
+    },
+    {
+      "id": "no-write",
+      "statement": "The command only prints: it changes no file outside its output and publishes nothing."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:16.000723Z"
+}

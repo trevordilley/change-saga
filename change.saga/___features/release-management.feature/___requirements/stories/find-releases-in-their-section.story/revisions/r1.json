@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:find-releases-in-their-section",
+  "parents": [],
+  "title": "Find releases in their own section",
+  "statement": "As a developer or product manager, I can open Releases beside Documentation, Plans and Reviews, so everything about getting work to users is in one place.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "header",
+      "statement": "Every reader page's header shows a Releases link beside Documentation, Plans and Reviews, and it opens the Releases section."
+    },
+    {
+      "id": "sidebar",
+      "statement": "The Releases sidebar has exactly three entries: Release Process Overview, Release Template, and Releases."
+    },
+    {
+      "id": "empty",
+      "statement": "A Saga with no release records opens the section on a page that names the command to start each entry, and shows no error."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:14.926839Z"
+}

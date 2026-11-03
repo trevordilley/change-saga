@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:list-releases",
+  "parents": [],
+  "title": "See the list of releases",
+  "statement": "As a product manager, I can see every release with its version, stories and checklist progress, so I know what is being released and how far along each one is.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "listed",
+      "statement": "The Releases entry lists every release in the Saga, and each row shows its version, its story count and how many checklist steps are checked."
+    },
+    {
+      "id": "same-from-cli",
+      "statement": "`release list` reports the same releases and the same counts as the reader, and `--json` returns them as data."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:15.367323Z"
+}

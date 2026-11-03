@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:link-stories-to-a-release",
+  "parents": [],
+  "title": "Say which stories a release delivers or affects",
+  "statement": "As a product manager, I can link a release to the stories it will deliver or affect, so anyone can see what the release means for users without reading its code.",
+  "overview": "A story's URN survives moving between features and `feature deliver`, so these links survive a Roadmap feature being built.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "two-kinds",
+      "statement": "Each link says whether the release delivers the story or affects it, and the reader shows the two groups separately."
+    },
+    {
+      "id": "must-exist",
+      "statement": "Linking a story that does not exist is refused."
+    },
+    {
+      "id": "both-directions",
+      "statement": "A release's page lists its stories, and a story's page lists the releases that deliver or affect it, each linking to the other."
+    },
+    {
+      "id": "dangling",
+      "statement": "Removing a linked story leaves `status` and `check --covers health` reporting a dangling reference that names the release and the command that fixes it."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:15.570049Z"
+}

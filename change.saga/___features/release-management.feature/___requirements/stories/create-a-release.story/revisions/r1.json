@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:create-a-release",
+  "parents": [],
+  "title": "Create a release from the template",
+  "statement": "As a developer, I can create a release by supplying its version, so it starts from everything our team always does for a release.",
+  "overview": "The version is what a person says it is. A release also needs a stable ID for its URN, because a version such as `1.0.0+build.5` is not a legal record ID; the ID can default to the version where it is legal.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "version-required",
+      "statement": "Creating a release without a version is refused."
+    },
+    {
+      "id": "version-as-given",
+      "statement": "The version is stored exactly as supplied; the tool computes, suggests and bumps nothing."
+    },
+    {
+      "id": "template-copied",
+      "statement": "The new release's checklist holds a copy of every current template step, in the template's order, with its excerpts."
+    },
+    {
+      "id": "unique",
+      "statement": "Creating a release with a version another release already has is refused and names that release."
+    },
+    {
+      "id": "no-template",
+      "statement": "With no template, the release is created with an empty checklist and the output says no template was copied."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:15.140218Z"
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:call-out-breaking-changes",
+  "parents": [],
+  "title": "Call out what a release breaks",
+  "statement": "As a developer, I can mark a note as breaking and say what someone must do about it, so people upgrading learn what will break before it breaks for them.",
+  "overview": "Proposed addition. v0.7.0 removed the old work plan and made a `___workplan` directory invalid; the changelog said what to do, but nothing tied that to a story or asked anyone to check a real Saga. Proving a release does not break a known Saga is a checklist step, not a feature: run the new binary's `validate` against it.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "migration-required",
+      "statement": "Marking a note breaking without saying what the reader must do is refused."
+    },
+    {
+      "id": "first",
+      "statement": "A release's breaking notes appear first in the reader and in `release notes` output, and say what to do."
+    },
+    {
+      "id": "not-a-check",
+      "statement": "The tool makes no claim that an unmarked release is safe: a release with no breaking note reads as having none recorded."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:16.220749Z"
+}

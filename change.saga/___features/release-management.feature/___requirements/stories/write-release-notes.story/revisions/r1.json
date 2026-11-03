@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:write-release-notes",
+  "parents": [],
+  "title": "Write release notes tied to stories",
+  "statement": "As a product manager, I can write public and private release notes, each linked to the stories it describes, so every claim about a release traces back to the intent behind it.",
+  "overview": "This is the same rule as a Task's: if there is no story to point at, write the story first. See the open question in the feature overview about fixes that have no obvious story.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "audience",
+      "statement": "Each note is either public or private, and adding a note without saying which is refused."
+    },
+    {
+      "id": "story-required",
+      "statement": "Adding a note that links no story, or changing a note so it links none, is refused, and the refusal says to write or find the story first."
+    },
+    {
+      "id": "on-the-release",
+      "statement": "A note may only link stories the release delivers or affects; naming another is refused with the command that adds it."
+    },
+    {
+      "id": "read-together",
+      "statement": "A release's page shows its public and private notes separately, each with links to its stories."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:15.798978Z"
+}
