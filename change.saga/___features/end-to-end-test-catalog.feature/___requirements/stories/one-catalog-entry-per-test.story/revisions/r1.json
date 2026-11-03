@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:one-catalog-entry-per-test",
+  "parents": [],
+  "title": "Keep one catalog entry per runnable test",
+  "statement": "As a developer, I can count on each catalog entry being one test I can run, so what the catalog says it has, and how long it takes, matches what really happens.",
+  "overview": "Trevor asked what makes most sense. A `test()` is what runs, what costs money, what flakes and what is positive or negative, so it is the honest unit. Today's 27 end-to-end test cases reach 16 distinct `test()` blocks, by a rough parse, and 8 of those blocks are claimed by more than one case. A test case can already verify several criteria across features, so merging those cases into one needs no new record. Non-end-to-end test cases are not held to this.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "one-declaring-line",
+      "statement": "The catalog reports a test case that declares more than one test, or none."
+    },
+    {
+      "id": "shared",
+      "statement": "The catalog reports two test cases that declare the same test."
+    },
+    {
+      "id": "counts",
+      "statement": "Catalog counts are of distinct tests, not of test cases."
+    },
+    {
+      "id": "reported",
+      "statement": "These reports fail nothing, and existing test cases stay valid."
+    },
+    {
+      "id": "no-new-record",
+      "statement": "An entry is one test case, and that case may verify criteria from any feature."
+    }
+  ],
+  "created_at": "2026-11-03T01:30:02.763086Z"
+}
