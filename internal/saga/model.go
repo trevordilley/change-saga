@@ -390,7 +390,9 @@ type Saga struct {
 	Plans []*Plan `json:"plans,omitempty"`
 	// Releases are the versions the team ships. They are not part of the
 	// documentation's structure either, and a Saga without any is unaffected.
-	Releases      []*Release     `json:"releases,omitempty"`
+	Releases []*Release `json:"releases,omitempty"`
+	// QASuite says where end-to-end tests live, when a repository has said.
+	QASuite       *QASuite       `json:"qa_suite,omitempty"`
 	Claims        []Claim        `json:"claims,omitempty"`
 	Verifications []Verification `json:"verifications,omitempty"`
 	Merges        []Merge        `json:"merges,omitempty"`

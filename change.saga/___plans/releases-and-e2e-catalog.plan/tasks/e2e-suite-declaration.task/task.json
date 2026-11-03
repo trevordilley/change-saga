@@ -27,6 +27,7 @@
     "within_two_days": true,
     "reason": "One small record and three commands; about a day."
   },
-  "state": "in_progress",
+  "state": "done",
+  "summary": "Added ___qa/suite.json with e2e-suite set, show and clear. A Saga without it is unaffected, a missing path is reported and fails nothing, and the tool never runs the command.",
   "created_at": "2026-11-03T03:07:51.499591Z"
 }

@@ -12,6 +12,7 @@ func init() {
 		"whiteboard list", "whiteboard rename", "whiteboard assign-role", "whiteboard unassign-role",
 		"whiteboard archive", "whiteboard restore",
 		"plan create", "plan list", "plan guide", "plan add-phase", "plan remove-phase", "plan add-prototype", "plan link-review", "plan deliver",
+		"e2e-suite set", "e2e-suite show", "e2e-suite clear",
 		"task add", "task depend", "task set", "task done", "task remove", "task list",
 	} {
 		if command, ok := grammar.Lookup(name); ok {

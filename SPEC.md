@@ -70,6 +70,7 @@ one Saga is neither invalid nor reported as a problem.
   ___reviews/<id>.review/      # pull-request reviews: a deck, approvals, comments
   ___plans/<id>.plan/          # Plans: a deck and Tasks (section 9)
   ___releases/<id>.release/    # Releases: a version and what ships in it (section 9A)
+  ___qa/suite.json             # where end-to-end tests live (section 9B)
 ```
 
 Report content and feature roots are invalid at the application root. No URN names
@@ -103,6 +104,7 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
 | Plan | `v5/plan.schema.json` | title, ordered phases, prototypes, reviews, delivery time; Git history | one role `plan` deck; section 9 |
 | Task | `v5/task.schema.json` | title, state, phase, story, same-Plan dependencies, code, sizing; Git history | every Task leads to a story, no dependency cycle; section 9 |
+| QA suite | `v5/qa-suite.schema.json` | repository paths and an optional command template | clean paths inside the repository; a template names `{locations}` |
 | Release | `v5/release.schema.json` | version as supplied, optional range, milestone, released commit; Git history | one release per version; section 9A |
 
 Nothing in a Saga is required up front. A first change is asked only to have
@@ -2037,12 +2039,24 @@ no releases is unaffected.
 Two releases of one version are a validation error, so branches that each create
 it cannot merge quietly.
 
+## 9B. End-to-end test locations
+
+`___qa/suite.json` conforms to
+[`schema/v5/qa-suite.schema.json`](schema/v5/qa-suite.schema.json). It records the
+repository `paths` holding end-to-end tests and an optional `run_command` template
+naming the tests to run with `{locations}`. A test case belongs to the end-to-end
+catalog because its current test code is in one of these paths, so nothing is
+marked on the test case. The tool never runs the command, and a path that does not
+exist yet is reported, not invalid. `e2e-suite set`, `show`, and `clear` are its
+commands. This is informative: a Saga without it is unaffected, and some apps have
+no end-to-end tests and are fine.
+
 ## 10. Reserved names
 
 `___code` is reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
 `___overview`, `___designsystem`, `___personas`, `___featureflags`,
-`___onboarding`, `___features`, `___reviews`, `___plans`, `___releases`, `___claims`,
+`___onboarding`, `___features`, `___reviews`, `___plans`, `___releases`, `___qa`, `___claims`,
 `___verifications`, `___merges` and `___whiteboards` are reserved at the saga root.
 `___requirements`, `___design`,
 `___slides`, and `___quality` are reserved at a feature root;

@@ -78,6 +78,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Plan(ctx, args[1:], stdout)
 	case "task":
 		err = cli.Task(ctx, args[1:], stdout)
+	case "e2e-suite":
+		err = cli.E2ESuite(ctx, args[1:], stdout)
 	case "design":
 		err = cli.Design(ctx, args[1:], stdout)
 	case "quality":

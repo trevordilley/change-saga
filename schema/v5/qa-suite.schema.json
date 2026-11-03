@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/qa-suite.schema.json",
+  "title": "QA suite: where a repository's end-to-end tests live and how to run a chosen few",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "paths"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/qa-suite.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "paths": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "not": {
+          "pattern": "^/|^\\.\\.?(/|$)"
+        }
+      }
+    },
+    "run_command": {
+      "type": "string",
+      "pattern": "\\{locations\\}"
+    }
+  }
+}

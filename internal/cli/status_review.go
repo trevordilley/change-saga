@@ -44,7 +44,7 @@ type documentationState struct {
 // reviews: what init creates, a companion Saga's sync cursor, the reviews,
 // and the review-side records.
 var reviewOnlyEntries = map[string]bool{
-	saga.ManifestName: true, "README.md": true, saga.CursorName: true, saga.ReviewsDir: true, saga.MergesDir: true, saga.ReleasesDir: true,
+	saga.ManifestName: true, "README.md": true, saga.CursorName: true, saga.ReviewsDir: true, saga.MergesDir: true, saga.ReleasesDir: true, saga.QADir: true,
 	"___claims": true, "___verifications": true, theme.FileName: true,
 }
 

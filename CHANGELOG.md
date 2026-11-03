@@ -18,6 +18,9 @@ tool, and what they have to do about it.
 - **Format:** a release can be recorded in `___releases/<id>.release/release.json`, with
   its version, range, milestone and released commit. A Saga with no releases is
   unaffected; upgrade readers before adding one. Commands to write them come next.
+- **Format:** `e2e-suite set`, `show`, and `clear` record where end-to-end tests live
+  and how to run a chosen few, in `___qa/suite.json`. A Saga without it is unaffected;
+  upgrade readers before adding one. The command template is never run by this tool.
 
 ## [0.8.0] - 2026-11-03
 

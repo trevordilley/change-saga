@@ -166,6 +166,9 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 			return nil, validation, err
 		}
 	}
+	if metadataDirectorySafe(abs, abs, QADir, &validation) {
+		document.QASuite = loadQASuite(abs, &validation)
+	}
 	if !options.outline && !options.skipCoverage {
 		if metadataDirectorySafe(abs, abs, "___claims", &validation) {
 			document.Claims, err = loadClaims(abs, &validation)
@@ -774,7 +777,7 @@ func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
 	switch hierarchy {
 	case sagaHierarchy:
 		switch name {
-		case CodeDirName, ReviewsDir, PlansDir, ReleasesDir, "___claims", "___verifications", MergesDir,
+		case CodeDirName, ReviewsDir, PlansDir, ReleasesDir, QADir, "___claims", "___verifications", MergesDir,
 			applayout.OverviewDir, applayout.PersonasDir, applayout.DesignSystemDir,
 			applayout.LabelsDir, applayout.MilestonesDir, applayout.FeatureThemesDir, applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.FeaturesDir, "___inventory", "___deprecations", applayout.WhiteboardsDir:
 			return true

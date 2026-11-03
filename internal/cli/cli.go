@@ -93,7 +93,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"label", "milestone", "deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "task", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"label", "milestone", "deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "task", "quality", "e2e-suite", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"setup-ci",
 	"move-deck", "move-slide", "move-chapter", "move-section", "move-fragment",
@@ -185,6 +185,7 @@ var commandUsage = map[string]string{
 	"design-add-fragment":           "change-saga design add-fragment (--feature ID | --section TARGET) [flags] <saga>",
 	"design-set-fragment-content":   "change-saga design set-fragment-content --target TARGET --source FILE|- [--feature ID] [--json|--quiet] <saga>",
 	"task":                          "change-saga task <add|depend|set|done|remove|list> [flags] <saga>",
+	"e2e-suite":                     "change-saga e2e-suite <set|show|clear> [flags] <saga>",
 	"plan":                          "change-saga plan <create|list|guide|add-phase|remove-phase|add-prototype|link-review|deliver> [flags] <saga>",
 	"quality":                       "change-saga quality <test-case|policy|evidence|run> <operation> [flags] <saga>",
 	"quality test-case":             "change-saga quality test-case <add|revise|set-state|remove> [flags] <saga>",
@@ -479,6 +480,7 @@ var commandDescription = map[string]string{
 	"design-add-section":          "Partition a design chapter around one coherent subsystem, workflow, or decision so\nconcurrent agents can work without contending on a shared fragment.",
 	"design-add-fragment":         "Add an addressable technical-design artifact. Prefer a diagram, prototype walkthrough,\nor concrete example and relate it to the stories and acceptance criteria it develops.",
 	"design-set-fragment-content": "Replace authored design content while preserving its stable target. Refresh\ncontent-digest-pinned relations after intentional changes so downstream work is not stale.",
+	"e2e-suite":                   "Say where a repository's end-to-end tests live and how to run a chosen few. A test case is in the catalog because its code is in one of these paths. An app with no end-to-end tests has nothing to do here.",
 	"task":                        "A Task is one well-understood piece of a Plan's work, which you are confident one human developer, coding without AI help, would finish in two days or less.\nEvery Task must name a user story or unblock a Task that leads to one. Dependencies decide what can run in parallel.",
 	"plan":                        "A Plan is a body of work and how it can be executed in parallel: the technical design for a change,\nas a slide deck organized by phase, and the Tasks that carry it out. It belongs to no feature;\nits stories and features are worked out from its Tasks.",
 	"deck":                        "Author a deck overview report with references to its existing slides and Items.",
@@ -1392,7 +1394,7 @@ func Spec(args []string, out io.Writer) error {
 			"target_scheme":        "urn:change-saga",
 			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
 			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir, saga.ReleasesDir},
+			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir, saga.ReleasesDir, saga.QADir},
 			"app_layout": map[string]any{
 				"app_roots":       applayout.AppRootDirs,
 				"feature_storage": applayout.FeaturesDir + "/<id>" + applayout.FeatureSuffix + "/" + applayout.FeatureManifestName,
