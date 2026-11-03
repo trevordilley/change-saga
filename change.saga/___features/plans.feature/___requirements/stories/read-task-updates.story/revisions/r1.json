@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:read-task-updates",
+  "parents": [],
+  "title": "Read what agents have said about a Task",
+  "statement": "As an architect I can read a Task's running messages and a feed of recent updates across a Plan, so I know what happened without asking",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-live-activity-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "task-slide-out-history",
+      "statement": "A Task's slide-out lists its messages, newest first, and gains new ones while it stays open"
+    },
+    {
+      "id": "plan-live-feed",
+      "statement": "The Plan's pages show a feed of recent updates across its Tasks, naming who, which Task, and what they said, and it updates without a reload"
+    },
+    {
+      "id": "no-activity-says-so",
+      "statement": "A Saga outside a Git repository shows that it has no live activity, rather than an empty or failing feed"
+    }
+  ],
+  "created_at": "2026-11-03T04:49:52.655633Z"
+}

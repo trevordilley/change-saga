@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:share-activity-across-worktrees",
+  "parents": [],
+  "title": "Share Task activity across a repository's worktrees",
+  "statement": "As a developer running agents in separate worktrees of one repository, what one agent reports is visible from every other worktree straight away, with nothing committed",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-live-activity-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "worktrees-share-activity",
+      "statement": "Activity recorded in one worktree of a repository reads back from any other, and from a Saga kept apart from its code with --repo"
+    },
+    {
+      "id": "concurrent-appends-survive",
+      "statement": "Several processes appending at once lose no event, and a torn last line is skipped rather than failing the read"
+    },
+    {
+      "id": "log-stays-bounded",
+      "statement": "Each agent's log rotates at a fixed size, and logs nobody has written to for a month are removed"
+    }
+  ],
+  "created_at": "2026-11-03T04:49:31.849807Z"
+}

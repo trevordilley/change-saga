@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:report-task-activity",
+  "parents": [],
+  "title": "Report what I am doing on a Task",
+  "statement": "As a developer my agent can say it started a Task, leave a note, or say it is blocked with one short command, and that never changes the Plan's record",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-live-activity-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "start-note-blocked-commands",
+      "statement": "task start and task note, with --blocked, record who did what on a Task and leave every file of the Saga untouched"
+    },
+    {
+      "id": "done-records-activity",
+      "statement": "task done still writes the durable state, and also records that it was done, on which branch"
+    },
+    {
+      "id": "identity-resolves",
+      "statement": "Who defaults to the DevSwarm workspace when there is one, else the Git branch, and --agent overrides it"
+    },
+    {
+      "id": "activity-never-reports-as-record",
+      "statement": "validate, status, check, and plan deliver report the same whatever the activity log says"
+    },
+    {
+      "id": "activity-never-fails-work",
+      "statement": "A missing or unwritable activity directory never fails a command; it says nothing was recorded"
+    }
+  ],
+  "created_at": "2026-11-03T04:49:29.023497Z"
+}

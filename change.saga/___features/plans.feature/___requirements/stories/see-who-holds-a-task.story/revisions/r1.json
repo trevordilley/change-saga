@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-who-holds-a-task",
+  "parents": [],
+  "title": "See who is on a Task before picking it up",
+  "statement": "As a developer my agent can see who is on which Task, so it does not pick up one another agent has started",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-live-activity-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "query-shows-latest-activity",
+      "statement": "query plan and query task include each Task's latest activity in compact form"
+    },
+    {
+      "id": "history-is-explicit",
+      "statement": "A Task's full message history is returned only when explicitly requested"
+    },
+    {
+      "id": "ready-shows-started",
+      "statement": "task list --ready marks a Task someone has started, and task start warns when another agent already holds it"
+    }
+  ],
+  "created_at": "2026-11-03T04:49:33.718942Z"
+}
