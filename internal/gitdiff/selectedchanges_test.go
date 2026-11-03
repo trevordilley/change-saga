@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -21,7 +22,13 @@ func TestSelectedChangesPreserveGlobalRenamesAndFileGeometry(t *testing.T) {
 	for line := range 40 {
 		fmt.Fprintf(&original, "unique original line %d\n", line)
 	}
-	paths := []string{"src/rename.go", "src/edit.go", "gone.go", "mode.sh", "binary.dat", "a \" quoted.go"}
+	unusualPaths := []string{"a spaced path.go"}
+	// Windows forbids double quotes in filenames. Keep space handling covered
+	// everywhere and exercise Git's quoted-path escaping where it is supported.
+	if runtime.GOOS != "windows" {
+		unusualPaths = append(unusualPaths, "a \" quoted.go")
+	}
+	paths := append([]string{"src/rename.go", "src/edit.go", "gone.go", "mode.sh", "binary.dat"}, unusualPaths...)
 	for _, path := range paths {
 		writeGitTestFile(t, filepath.Join(repo, path), original.String())
 	}
@@ -35,7 +42,9 @@ func TestSelectedChangesPreserveGlobalRenamesAndFileGeometry(t *testing.T) {
 	// Reoccupying the old name must not steal the original file's reference.
 	writeGitTestFile(t, filepath.Join(repo, "src", "rename.go"), "entirely new file at the old path\n")
 	writeGitTestFile(t, filepath.Join(repo, "src", "edit.go"), "inserted\n"+original.String())
-	writeGitTestFile(t, filepath.Join(repo, "a \" quoted.go"), original.String()+"appended\n")
+	for _, path := range unusualPaths {
+		writeGitTestFile(t, filepath.Join(repo, path), original.String()+"appended\n")
+	}
 	writeGitTestFile(t, filepath.Join(repo, "binary.dat"), "\x00two\n")
 	writeGitTestFile(t, filepath.Join(repo, "unrelated.go"), "different unrelated code\n")
 	if err := os.Remove(filepath.Join(repo, "gone.go")); err != nil {
