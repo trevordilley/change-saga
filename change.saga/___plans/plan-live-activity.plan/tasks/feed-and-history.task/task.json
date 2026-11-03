@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "One row template, used by the slide-out and the feed."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "One row template for a Task's slide-out and the Plan's feed, in its own column.",
   "created_at": "2026-11-03T04:52:07.038771Z"
 }

@@ -215,6 +215,8 @@ type planLiveResponse struct {
 	All       int                     `json:"all"`
 	Tasks     map[string]planLiveTask `json:"tasks"`
 	Feed      string                  `json:"feed"`
+	// Ready is the line naming what can start now, which is empty when nothing can.
+	Ready string `json:"ready"`
 }
 
 // planActivityAPI answers a page left open. It reads the activity log and the
@@ -244,11 +246,15 @@ func (a *app) planActivityAPI(w http.ResponseWriter, r *http.Request) {
 		titles[task.ID] = task.Title
 	}
 	response := planLiveResponse{Available: reason == "", Reason: reason, All: len(tasks), Tasks: make(map[string]planLiveTask, len(tasks))}
+	free := []planTaskLink{}
 	for _, task := range tasks {
 		if task.State == saga.TaskDone {
 			response.Done++
 		}
 		status := liveStatus(task.ID, task.State, canStart[task.ID], live[task.ID], now)
+		if status.Class == "ready" {
+			free = append(free, planTaskLink{ID: task.ID, Title: task.Title, Href: taskHref(id, task.ID), Status: status})
+		}
 		row := planLiveTask{Class: status.Class, Word: status.Word, Who: status.Who, OnIt: status.OnIt(), Detail: status.Detail(), Label: task.Title + ": " + status.Word, Action: "Open task: " + task.Title + ". " + status.Word}
 		if activity := live[task.ID]; activity != nil {
 			row.History = renderPlanActivity(planActivityRows(activity.Events, now, nil, false, planHistoryRows))
@@ -256,11 +262,16 @@ func (a *app) planActivityAPI(w http.ResponseWriter, r *http.Request) {
 		response.Tasks[task.ID] = row
 	}
 	response.Feed = renderPlanActivity(planActivityRows(events, now, titles, true, planFeedRows))
-	body, err := json.Marshal(response)
-	if err != nil {
+	response.Ready = renderPlanTemplate("plan-ready-line", free)
+	// Rendered rows are mostly markup, which escaping for a script tag would double.
+	var encoded bytes.Buffer
+	encoder := json.NewEncoder(&encoded)
+	encoder.SetEscapeHTML(false)
+	if err := encoder.Encode(response); err != nil {
 		http.Error(w, "The activity could not be read.", http.StatusInternalServerError)
 		return
 	}
+	body := encoded.Bytes()
 	digest := sha256.Sum256(body)
 	etag := `"` + hex.EncodeToString(digest[:12]) + `"`
 	w.Header().Set("ETag", etag)
@@ -274,8 +285,12 @@ func (a *app) planActivityAPI(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderPlanActivity(rows []planActivityRow) string {
+	return renderPlanTemplate("plan-activity-rows", rows)
+}
+
+func renderPlanTemplate(name string, view any) string {
 	var out bytes.Buffer
-	if err := reviewTemplates.ExecuteTemplate(&out, "plan-activity-rows", rows); err != nil {
+	if err := reviewTemplates.ExecuteTemplate(&out, name, view); err != nil {
 		return ""
 	}
 	return out.String()
@@ -284,6 +299,7 @@ func renderPlanActivity(rows []planActivityRow) string {
 const planLiveTemplates = `{{define "plan-activity-rows"}}{{range .}}<li class="plan-activity-row {{.Class}}" data-plan-activity-kind="{{.Class}}"><span class="plan-activity-line"><strong>{{.Agent}}</strong> {{.Verb}}{{if .TaskTitle}} {{if .Drawer}}<button type="button" class="plan-activity-task" data-plan-drawer="{{.Drawer}}" data-plan-drawer-title="Task" data-plan-drawer-beside="true">{{.TaskTitle}}</button>{{else}}<span class="plan-activity-task">{{.TaskTitle}}</span>{{end}}{{end}}{{if .Branch}} on {{.Branch}}{{end}} <time datetime="{{.At}}" title="{{.Stamp}}">{{.Ago}}</time></span>{{if .Message}}<span class="plan-activity-message">{{.Message}}</span>{{end}}</li>{{end}}{{end}}
 {{define "plan-live-feed"}}<details class="plan-live" data-plan-live-feed open><summary>Live updates</summary>{{if .Reason}}<p class="plan-note" data-plan-live-reason>{{.Reason}}</p>{{else}}<p class="plan-note" data-plan-live-status role="status" hidden></p><ol class="plan-activity" data-plan-feed data-plan-empty="No updates yet. Agents report with task start and task note.">{{template "plan-activity-rows" .Feed}}</ol>{{end}}</details>{{end}}
 {{define "plan-task-history"}}<section class="plan-task-updates" data-plan-task-updates><h3>Updates</h3><ol class="plan-activity" data-plan-task-history="{{.ID}}" data-plan-empty="No updates yet.">{{template "plan-activity-rows" .History}}</ol></section>{{end}}
+{{define "plan-ready-line"}}{{if .}}<strong>{{len .}} {{if eq (len .) 1}}task{{else}}tasks{{end}} can start now:</strong> {{template "plan-task-names" .}}.{{end}}{{end}}
 {{define "plan-task-on-it"}}<p class="plan-note plan-task-on-it" data-plan-task-on-it="{{.TaskID}}"{{if not .OnIt}} hidden{{end}}>{{.OnIt}}</p>{{end}}
 `
 
@@ -390,6 +406,7 @@ const planLiveJavaScript = `
       }
       for (const list of qa('[data-plan-feed]', root)) setPlanLiveRows(list, state.feed);
       for (const count of qa('[data-plan-done]', root)) count.textContent = String(state.done);
+      for (const line of qa('[data-plan-ready]', root)) { setPlanLiveRows(line, state.ready); line.hidden = !state.ready; }
     }
   }
   function setPlanLiveStatus(message) {

@@ -305,8 +305,11 @@ test("a Tasks board left open follows an agent in another worktree, keeping the 
   const camera = await page.locator("[data-plan-board-drawing]").getAttribute("viewBox");
 
   await expect(source).toHaveClass(/\bready\b/);
+  const canStart = page.locator("[data-plan-ready]");
+  await expect(canStart).toContainText("Find a tide source");
   report(saga, other, "start", "--task", "tide-source");
   await expect(source).toHaveClass(/\bworking\b/);
+  await expect(canStart).toBeHidden();
   await expect(source.locator(".plan-board-state")).toHaveText("In progress · ada");
   await expect(feed).toContainText("ada started");
 

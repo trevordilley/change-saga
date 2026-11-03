@@ -166,8 +166,19 @@ func TestTheActivityEndpointReadsNoSagaAndSays304WhenNothingChanged(t *testing.T
 func TestTheEndpointSeesARecordChangeAndNewActivity(t *testing.T) {
 	t.Parallel()
 	_, handler, fixture := livePlanFixture(t)
-	if state := liveState(t, handler); state.Done != 0 || state.Tasks["prepare"].Class != "ready" {
+	if state := liveState(t, handler); state.Done != 0 || state.Tasks["prepare"].Class != "ready" || !strings.Contains(state.Ready, "Task prepare") {
 		t.Fatalf("state = %+v", state)
+	}
+	if page := getPage(t, handler, "/plans/first/tasks").Body.String(); !strings.Contains(page, "1 task can start now") {
+		t.Error("the board must name what can start")
+	}
+	// A Task someone is on is not free to pick up, on the first render or after.
+	reportLive(t, fixture, "prepare", "ben", planactivity.KindStart, "", time.Now().UTC())
+	if state := liveState(t, handler); state.Ready != "" {
+		t.Fatalf("a held Task still reads as free: %q", state.Ready)
+	}
+	if page := getPage(t, handler, "/plans/first/tasks").Body.String(); strings.Contains(page, "can start now") {
+		t.Error("a held Task must not read as able to start")
 	}
 	reportLive(t, fixture, "prepare", "ada", planactivity.KindDone, "finished", time.Now().UTC())
 	if state := liveState(t, handler); state.Done != 0 || state.Tasks["prepare"].Class != "done-branch" || state.Tasks["prepare"].Word != "Done on ada-branch" {

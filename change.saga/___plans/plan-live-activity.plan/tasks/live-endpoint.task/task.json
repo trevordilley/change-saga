@@ -11,6 +11,7 @@
     "within_two_days": true,
     "reason": "One handler over the log and task records, with an ETag."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "GET /api/plans/ID/activity reads the log and the Task records, never the Saga, with 304 while nothing changed.",
   "created_at": "2026-11-03T04:52:15.197742Z"
 }
