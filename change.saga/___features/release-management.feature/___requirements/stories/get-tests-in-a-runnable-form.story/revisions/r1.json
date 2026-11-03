@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:get-tests-in-a-runnable-form",
+  "parents": [],
+  "title": "Get the tests in a form you can run",
+  "statement": "As a developer, I can get a release's chosen tests in a form my test runner accepts, so I, or an agent, can run exactly those tests straight away.",
+  "overview": "This fills a real gap: `review test-plan` has a `commands` list, but it only returns commands from deprecated run records. This Saga has none, so every test it selected across three merged reviews reported `missing_command`. A line location suits Playwright and similar runners; a runner that selects by name can start from the JSON.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "json",
+      "statement": "`release tests --format json` gives each test's case, path and lines as data."
+    },
+    {
+      "id": "locations",
+      "statement": "`--format locations` prints one `path:line` per test, with lines resolved at the range's end."
+    },
+    {
+      "id": "command",
+      "statement": "`--format command` fills in the Saga's command template with those locations."
+    },
+    {
+      "id": "real",
+      "statement": "In this repository, running the printed command makes Playwright run the selected tests and no others."
+    },
+    {
+      "id": "no-template",
+      "statement": "Asking for a command with no template is refused and names the command that sets one."
+    },
+    {
+      "id": "not-run",
+      "statement": "The CLI executes nothing."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:27.887109Z"
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:say-which-range-a-release-covers",
+  "parents": [],
+  "title": "Say which Git range a release covers",
+  "statement": "As a developer, I can say which tags or commits a release runs between, so everything that depends on what changed is worked out from Git and not from memory.",
+  "overview": "A tag is usually created late in a release, so the range has to tolerate naming one that does not exist yet. Until then, the end can be a branch.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "refs",
+      "statement": "A release can record a start and an end, each a tag, branch or commit, as given."
+    },
+    {
+      "id": "changeable",
+      "statement": "Either can be changed at any time with an explicit command."
+    },
+    {
+      "id": "unresolved",
+      "statement": "An end that does not resolve yet, such as a tag not yet pushed, is reported as unresolved, and nothing is computed from it."
+    },
+    {
+      "id": "optional",
+      "statement": "A release with no range is valid, and only the commands that need one say so."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:26.489566Z"
+}

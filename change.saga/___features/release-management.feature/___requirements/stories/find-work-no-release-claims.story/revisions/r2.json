@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:find-work-no-release-claims",
+  "parents": [
+    "urn:change-saga:change-saga:story:find-work-no-release-claims:revision:r1"
+  ],
+  "title": "Find merged work no release has claimed",
+  "statement": "As a product manager, I can see merged work that is in no release, so nothing ships without being mentioned or sits forgotten on main.",
+  "overview": "Proposed addition. Reviews, Plans and `___merges` already hold this chain, so nothing new is stored.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102",
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "unclaimed",
+      "statement": "`release status --unclaimed` lists stories reached by reviews merged, or Plans delivered, in the release's range that no release links."
+    },
+    {
+      "id": "explains",
+      "statement": "Each entry names the review or Plan that reached the story."
+    },
+    {
+      "id": "report-only",
+      "statement": "The list blocks nothing, and work that reached no story is reported as a count of merged reviews rather than as an error."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:28.866538Z"
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-what-selection-cannot-reach",
+  "parents": [],
+  "title": "Know what the selection could not reach",
+  "statement": "As a developer, I can see every change the test selection could not connect to a story, so a short list of tests never reads as proof that the rest is safe.",
+  "overview": "Proposed addition, and the one this selection cannot do without. On v0.6.0 to v0.7.0, 1,378 of 17,802 changed lines reach a story, so a list built from the rest would look reassuring and be wrong.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "unmapped",
+      "statement": "`release tests` lists changed lines that reach no story, with a count, every time."
+    },
+    {
+      "id": "gaps",
+      "statement": "It also lists affected stories with no catalog entry, and criteria with none."
+    },
+    {
+      "id": "partial",
+      "statement": "It exits 3 when anything is listed and 0 only when the recorded links reach all of it, as `review test-plan` does."
+    },
+    {
+      "id": "not-a-verdict",
+      "statement": "The output says a complete list reflects only recorded links, and never says it is safe to skip the full suite."
+    },
+    {
+      "id": "fixes",
+      "statement": "A fix with no story appears here as unmapped change, and its release can still go out."
+    }
+  ],
+  "created_at": "2026-11-03T01:13:28.160211Z"
+}
