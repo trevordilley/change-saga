@@ -52,7 +52,8 @@ usually by phase.
 A Plan Item carries no evidence and no criterion links: its `record` names a Task
 of the Plan (`urn:change-saga:SAGA:plan:ID:task:TASK`) or a story, and the slide
 lists those Tasks and their done state in a slide-out. Put code references on Tasks. Read a
-Plan's slides with `diagram describe --slide SLIDE_URN`.
+Plan's slides with `diagram describe --slide SLIDE_URN`; each Item's `record` names
+its Task or story, which `query task` then opens.
 
 Read Plans through `query`, not the rendered reader: `query plans` lists them,
 `query plan --plan ID` returns a Plan's essay, phases, Tasks and slides, and

@@ -10,6 +10,11 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- `diagram describe` shows the record an Item names, so an agent reading a Plan
+  slide can follow a node to its Task or story.
+
 ## [0.8.0] - 2026-11-03
 
 ### Added
