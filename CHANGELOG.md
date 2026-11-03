@@ -15,7 +15,8 @@ tool, and what they have to do about it.
 - **Breaking for scripts: `status --json` is now compact.** It was 4.1 MB on this
   repository's Saga and is now about 25 KB, so one ordinary call no longer costs an
   agent's session its context. `status --json --detail` restores the old output
-  exactly (`status_schema` `change-saga.status/v3`); the default is
+  (`status_schema` `change-saga.status/v3`), differing only in the `usage` text of
+  `.authoring_loop` and of commands, which now names the new flags; the default is
   `change-saga.status/v4`. **If your CI has a rule over `status --json`, check it:**
   - Still the same: `.coverage.areas.<area>.total`, `.covered`, `.uncovered`,
     `.complete`, `.note`, `.unit`, and `.coverage.scope`, `.complete`, `.summary`,
