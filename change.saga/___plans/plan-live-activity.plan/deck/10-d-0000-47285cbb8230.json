@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "plan-live-activity",
+  "title": "Watch a Plan while agents work",
+  "role": "plan",
+  "rank": 0,
+  "objective": "Show live Task activity across a repository's worktrees, and explain the shared log, the commands, and the live reader."
+}

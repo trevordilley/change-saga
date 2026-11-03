@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "guidance",
+  "title": "Teach when to note and what is durable",
+  "phase": "guidance",
+  "story": "urn:change-saga:change-saga:story:report-task-activity",
+  "depends_on": [
+    "task-commands"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Edits to plan guide, references/plans.md, and SPEC section 9."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T04:51:35.953077Z"
+}

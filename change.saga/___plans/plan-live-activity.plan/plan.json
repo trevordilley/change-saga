@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/plan.schema.json",
+  "version": 5,
+  "id": "plan-live-activity",
+  "title": "Watch a Plan while agents work",
+  "phases": [
+    {
+      "id": "the-log",
+      "title": "The shared activity log"
+    },
+    {
+      "id": "agents",
+      "title": "What agents write and read"
+    },
+    {
+      "id": "reader",
+      "title": "The reader left open"
+    },
+    {
+      "id": "guidance",
+      "title": "Guidance"
+    }
+  ],
+  "created_at": "2026-11-03T04:50:33.326666Z"
+}

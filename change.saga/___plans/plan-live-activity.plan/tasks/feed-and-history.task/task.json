@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "feed-and-history",
+  "title": "Show a Task's history and a Plan's feed",
+  "phase": "reader",
+  "story": "urn:change-saga:change-saga:story:read-task-updates",
+  "depends_on": [
+    "live-endpoint"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One row template, used by the slide-out and the feed."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T04:52:07.038771Z"
+}

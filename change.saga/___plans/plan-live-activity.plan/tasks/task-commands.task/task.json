@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "task-commands",
+  "title": "Add task start and task note",
+  "phase": "agents",
+  "story": "urn:change-saga:change-saga:story:report-task-activity",
+  "depends_on": [
+    "activity-log"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Two commands, identity resolution, and grammar entries."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T04:52:21.339468Z"
+}
