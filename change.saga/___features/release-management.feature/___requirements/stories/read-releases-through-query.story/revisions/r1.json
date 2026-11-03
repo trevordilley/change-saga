@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:read-releases-through-query",
+  "parents": [],
+  "title": "Read everything about a release through query",
+  "statement": "As a developer, I can have an agent read everything about a release through change-saga query, the way it reads every other record, so it never has to scrape the reader or learn a one-off command.",
+  "overview": "Trevor's direction, from a real gap: Plans and Tasks have metadata as JSON but no `query` operation, so an agent reading a Task's essay had to extract it from the rendered viewer. The skill tells agents to read Saga records only through `query`, so a release follows that pattern from the start and does not repeat the gap. The same goes for the test catalog's `query e2e-catalog` and `query e2e-tests`.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-query-lesson-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "pattern",
+      "statement": "`query releases` lists releases and `--release ID|URN` selects one, the same shape as `query personas --persona` and `query quality --test`, with no separate show command."
+    },
+    {
+      "id": "full-text",
+      "statement": "It returns public notes, internal notes, step excerpts and code references in full, with nothing truncated or left to a reader page."
+    },
+    {
+      "id": "template",
+      "statement": "`query release-template` returns the template's steps, excerpts and versioning scheme the same way."
+    },
+    {
+      "id": "envelope",
+      "statement": "Each uses the standard envelope, snapshot, pagination and error codes, and `query schema` describes it."
+    },
+    {
+      "id": "computed",
+      "statement": "Facts computed about a release, such as what is still open, are also query operations with those same conventions."
+    }
+  ],
+  "created_at": "2026-11-03T03:07:41.971962Z"
+}

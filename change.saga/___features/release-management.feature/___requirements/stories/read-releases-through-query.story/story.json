@@ -1,0 +1,6 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story.schema.json",
+  "version": 3,
+  "id": "read-releases-through-query",
+  "created_at": "2026-11-03T03:07:41.971962Z"
+}
