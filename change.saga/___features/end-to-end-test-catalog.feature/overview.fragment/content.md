@@ -31,6 +31,7 @@ Measured on this Saga:
 - This repository has 139 `test()` calls in 43 spec files under `e2e/tests`, and test cases point at 11 of those files.
 - 27 of its 182 test cases have code in `e2e/`.
 - 51 of the 243 current criteria on built features have one of those test cases, and 12 of the 62 accepted ones do.
+- Of the 58 references those test cases have into `e2e/tests`, 4 start on a `test()` line and 54 sit inside a test body or helper. They read well, but Playwright finds no test at a line inside a body, so most would need a [reference to the declaring line](/requirements/open-e2e-test-code) before a command could run them.
 
 These are counts from the records, and a criterion with no end-to-end test may be well tested another way. Backfilling is real work, which an agent can do but which this feature does not do by itself.
 

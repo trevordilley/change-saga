@@ -1,0 +1,50 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:get-tests-in-a-runnable-form",
+  "parents": [
+    "urn:change-saga:change-saga:story:get-tests-in-a-runnable-form:revision:r1"
+  ],
+  "title": "Get the tests in a form you can run",
+  "statement": "As a developer, I can get a release's chosen tests in a form my test runner accepts, so I, or an agent, can run exactly those tests straight away.",
+  "overview": "This fills a real gap: `review test-plan` has a `commands` list, but it only returns commands from deprecated run records. This Saga has none, so every test it selected across three merged reviews reported `missing_command`. The declaring line matters: tried on this repository, `playwright test --list` finds 1 test for `pull-request-review.spec.ts:52`, the `test()` line, and 0 for line 55, inside its body. A runner that selects by name can start from the JSON.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "json",
+      "statement": "`release tests --format json` gives each test's case, path and declaring line as data."
+    },
+    {
+      "id": "locations",
+      "statement": "`--format locations` prints one `path:line` per test, using the line that declares it, resolved at the range's end."
+    },
+    {
+      "id": "command",
+      "statement": "`--format command` fills in the Saga's command template with those locations."
+    },
+    {
+      "id": "real",
+      "statement": "In this repository, running the printed command makes Playwright run the selected tests and no others."
+    },
+    {
+      "id": "not-runnable",
+      "statement": "A selected test with no declaring line is named as not runnable in every format, and is never silently left out."
+    },
+    {
+      "id": "no-template",
+      "statement": "Asking for a command with no template is refused and names the command that sets one."
+    },
+    {
+      "id": "not-run",
+      "statement": "The CLI executes nothing."
+    }
+  ],
+  "created_at": "2026-11-03T01:18:13.917861Z"
+}
