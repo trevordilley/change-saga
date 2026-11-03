@@ -64,6 +64,7 @@ written before this repository's Saga was renamed call it by its former name,
 | --- | --- |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, the checks CI runs, and the rules for format changes. |
 | [performance.md](performance.md) | The payload boundary large sagas depend on, its hard budgets and diagnostic metrics, deterministic fixtures, before-and-after measurements, and remaining bottlenecks. |
+| [health-check-performance.md](health-check-performance.md) | Persistent comparison caching, referenced-file patch generation, cold and repeated health-check measurements, invalidation, and remaining costs. |
 | [large-saga-diagnosis.md](large-saga-diagnosis.md) | Why a whole-codebase saga reached 230 MB and 17 minutes, and how canonical range authoring plus direct selector indexing fixed the three diagnosed defects. |
 | [large-saga-index-design.md](large-saga-index-design.md) | Whether the reviewer server needs SQLite to index a large saga on first run, what first run actually costs, and the disposable content-addressed cache design that follows instead. |
 | [../GOVERNANCE.md](../GOVERNANCE.md) | Roles, how decisions are made, and what is out of scope. |

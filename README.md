@@ -1,5 +1,6 @@
-
 # Change Saga
+
+**Review the architecture. Follow the evidence. Keep the context.**
 
 [![CI](https://github.com/trevordilley/change-saga/actions/workflows/ci.yml/badge.svg)](https://github.com/trevordilley/change-saga/actions/workflows/ci.yml)
 [![Browser E2E](https://github.com/trevordilley/change-saga/actions/workflows/e2e.yml/badge.svg)](https://github.com/trevordilley/change-saga/actions/workflows/e2e.yml)
@@ -7,25 +8,40 @@
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue)
 [![Made with ❤️ using DevSwarm](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20using-DevSwarm-5F2AFF?labelColor=0A022E&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAEAAAAAiCAQAAABFXBcEAAACEElEQVR42s1Y63mDMAw8ugErsAIdwR2BjsAKrMAKWSEdgRXICGQEMsL1RwhIIIFpXhX%2F7E%2F2WY%2BTBKCEAFhxko7TemDPGOmZXzUAQumUt3VHCIKpUimGVRA8MlaONx2ApYKWcg0CAfAgFJrhEAAsuEeKQQsEG7F%2BWLEBQTBXx4Tx%2FSnbXQDa61sJzM%2FMXRss0QpDVtwrlXCeYdWbJNP1CVjgOO5c8JmcCSABM7RIx50TTo4RMwRHv0E27nwnP5wuVuHXyRfQfgFZiB39aUfVYkdn1jIUCYC19iFsH%2BoAUx%2FAoP09njGDNgvF4Zo%2BIopJsnQtAOhklVlUKhvkAoIXKPTSz6UTAmC2tBbdAJcsp5iM0%2Fu7eACDRq3OmgDoO8JwCl2ycNNvC4AO5lqcZlh5aeae2Yg5M9l%2FldFXz9M0Xw4A5uknENvsvwFgYdGjY9GO6VVhVv1oxQXja5qhG2DHVMVF1AYRte1fASxqZ%2BMyRaaviWP%2Frap%2BS8fOqQwK2gcuQjPFK0TfuOKC5mEuaNdc8O4gxDPSMI1NQw4KRt%2F2FCLKjIK3QcX13VRcbVCx2XLLUOz3AYATU5wX%2FICpGr65HI8NSbe85IENSWGPLv%2BjJdtsSuvoprSziH2tKfXb8jO%2BHtaW52iEvtWWv28wecVoFiJHs7cPp%2BZ4Xt49nhc7xnNYE703uqz9oAjiB4VBy1J%2BAQwDuoYAr7YrAAAAAElFTkSuQmCC)](https://devswarm.ai)
 
-Change Saga makes large changes, often AI-written, easy to digest. Ask your
-coding agent to **create a review for this PR** and it produces a review deck:
-slides that explain the change's architecture, so you review the design instead
-of every line. Coverage links every changed line to the slide that explains it,
-so you can trust that nothing was left out.
+Change Saga turns a large pull request into a visual explanation of the change.
+Ask your coding agent to **create a review for this PR**: it builds a slide deck
+with diagrams, examples, and exact code links. Coverage shows which changed
+lines have an explanation and which still need one. You judge whether the
+explanation and the code are right.
+
+The Saga lives in your repository, alongside the source. Start with a review;
+grow it into shared product knowledge, technical design, and implementation
+Plans as your team needs them. A local CLI and browser reader work with Git,
+without accounts or a hosted service.
 
 Change Saga is experimental, and its format may change before 1.0.
+
+[Install](#install) · [Start with a review](#start-with-a-review) ·
+[Recent capabilities](#recent-capabilities) · [Documentation](docs/README.md)
+
+<details>
+<summary>Contents</summary>
 
 - [Install](#install)
 - [Start with a review](#start-with-a-review)
 - [Reviewing a Saga](#reviewing-a-saga)
 - [Use it in CI](#use-it-in-ci)
 - [Grow into living documentation](#grow-into-living-documentation)
+- [Recent capabilities](#recent-capabilities)
 - [Working with your coding agent](#working-with-your-coding-agent)
 - [See an example Saga](#see-an-example-saga)
 - [Status, check and reconcile](#status-check-and-reconcile)
+- [Faster health checks](#faster-health-checks-for-large-sagas)
 - [Structured access for AI](#structured-access-for-ai)
 - [Authoring by hand](#authoring-by-hand)
 - [CLI reference](#cli-reference)
+
+</details>
 
 ## Why
 
@@ -48,6 +64,13 @@ prepare the material other people review. AI is useful here because it can
 build the first draft, create diagrams and examples, and iterate until the
 whole change is represented. The reviewer still decides whether the change is
 correct.
+
+| When you need to… | Change Saga gives you… |
+| --- | --- |
+| Understand a large PR | A guided review deck with exact code evidence and visible coverage gaps. |
+| Plan a change | A technical-design deck, Tasks, dependencies, and links back to user stories. |
+| Keep architecture useful | Essays and whiteboards whose code evidence goes stale when its source changes. |
+| Give an agent project context | Structured queries over intent, design, Plans, prototypes, and source links. |
 
 ## Install
 
@@ -269,6 +292,78 @@ its own features. One Saga per repository is a recommendation, not a rule: any
 so separate agents can own stories, prototypes, design, test cases, and work
 items in parallel and merge cleanly.
 
+## Recent capabilities
+
+These capabilities are available on `main`; see the [changelog](CHANGELOG.md)
+for released versions. Prototype HTML queries, Item record details, and the
+health-check improvements below are unreleased.
+
+### Plans and Tasks connected to user stories
+
+Draft a change's technical design before building it. A Plan combines an essay,
+a slide deck, and Tasks arranged in phases. Each Task names a user story or
+unblocks a Task that leads to one; dependencies make the order of work explicit.
+
+In the reader, diagram nodes linked to Tasks are interactive: open a node to
+inspect its story, dependencies, essay, and pinned code. Finished Tasks show a
+check on their nodes. The Tasks board shows how the work connects, and linked
+reviews explain what was delivered or departed from the Plan.
+`diagram describe` names the Task or story behind each linked Item, so an agent
+can follow the same path from the terminal.
+
+Agents can read the same model directly:
+
+```sh
+change-saga query plans --saga change.saga
+change-saga query plan --saga change.saga --plan PLAN_ID
+change-saga query task --saga change.saga --plan PLAN_ID --task TASK_ID
+change-saga task list --plan PLAN_ID --ready change.saga
+```
+
+Replace the example IDs with those in your Saga. See
+[writing a Plan](skills/change-saga/references/plans.md) for authoring,
+Task sizing, dependencies, and delivery.
+
+### Technical whiteboards with evidence on each element
+
+Explore architecture, infrastructure, data flows, and an ERD as connected,
+zoomable diagrams. A whiteboard element can carry exact code evidence and links
+to criteria, records, and technical definitions. Open its controls to inspect
+the saved source and intent without leaving the diagram.
+
+When referenced code changes, the element becomes stale in the reader and in
+health checks. Reassess the explanation and publish a new parented revision;
+the previous revision keeps its original evidence. See the
+[whiteboard guide](docs/whiteboards.md) and
+[ERD authoring guide](docs/erd-whiteboard-guide.md).
+
+### Prototype inspection for coding agents
+
+Agents can inspect a prototype's implementation alongside its recorded intent.
+`query prototype` reads its HTML in byte-range pages, with
+its files, revisions, and annotations. Repository-backed prototypes are read at
+their pinned commit; externally hosted prototypes return their URLs.
+
+```sh
+change-saga query prototype --saga change.saga --prototype PROTOTYPE_ID
+change-saga query schema prototype
+```
+
+Follow the returned byte offsets to read the rest of a large prototype. These
+queries read the model without launching the browser or executing the prototype.
+See the [AI-facing interface](docs/ai-facing-interface.md).
+
+### Roadmap extensions with a delivery path
+
+Plan an addition to an existing feature without mixing unfinished stories into
+its current documentation. A Roadmap feature can name the feature it extends
+with `--augments`; the reader connects the planned work to that feature.
+
+When the addition is ready, `feature deliver` moves its supported content into
+the target feature while preserving record identities. It flags the target's
+overview for revision so the explanation can catch up with the delivered work.
+See [the changelog](CHANGELOG.md#070---2026-11-02) for the delivery rules.
+
 ## Working with your coding agent
 
 | To | Ask your agent |
@@ -379,9 +474,28 @@ coverage, documentation diff coverage, and HEAD currency, with reasons and
 typed repair paths. Reassess before editing; current pins cannot prove the
 explanation is correct.
 
+### Faster health checks for large Sagas
+
 Repeated checks reuse disposable source-comparison data while reassessing
 Saga records on every run. See [health check performance and cache
 validity](docs/health-check-performance.md) for measurements and invalidation.
+
+Cold checks also generate patches for referenced files while retaining global
+rename detection. A health-only check skips unrelated review reports and
+next-action suggestions. Health findings, JSON output, and exit codes keep
+their existing contract.
+
+One controlled comparison on a large Saga with 5,974 examined records measured:
+
+| Health check | Before | After |
+| --- | ---: | ---: |
+| Empty application cache | 19.90 s | **6.54 s** |
+| Repeated invocation | 15.57 s | **4.21 s** |
+
+All four outputs matched byte for byte. These are measurements of one Saga on
+one machine, not a latency guarantee. Repeated checks still load and validate
+the Saga and reassess its findings; the cache stores comparison geometry,
+not a saved healthy status.
 
 ## Structured access for AI
 
@@ -474,6 +588,9 @@ lists what else lost coverage; run it with `--dry-run` first to see the whole
 effect.
 Commands that read a diff accept `--repo PATH` when the Saga lives in a
 separate repository from the code.
+
+<details>
+<summary><strong>Browse the command reference</strong></summary>
 
 ### Setup and help
 
@@ -651,6 +768,8 @@ remain separate from documentation inspection pins.
 | `plan link-review` / `deliver` | Link a pull request review that implements the Plan, and mark the Plan delivered once every Task is done and every linked review has merged. |
 | `task add` / `depend` / `set` / `remove` | Add, connect, edit and remove Tasks. Every Task leads to a user story; a change that breaks that is refused. |
 | `task done` / `list` | Mark a Task finished, and list a Plan's Tasks (`--ready` shows what can start now). |
+
+</details>
 
 ## Security
 
