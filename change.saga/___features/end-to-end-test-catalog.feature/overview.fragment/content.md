@@ -2,38 +2,60 @@
 
 ## The problem {#the-problem}
 
-Unit and integration tests are useful, but the ones that let a team sleep at night are end-to-end tests: they run the real app the way a user does. They are also the flakiest and the most expensive to run, so a team needs to know exactly what it has and what each one proves.
+Unit and integration tests are useful, but the ones that let a team sleep at night are end-to-end tests: they run the real app the way a user does. They are also the flakiest and the most expensive to run, so a team needs to know exactly what it has, what each one proves, and which ones a given change puts in play.
 
-Today, nobody can answer that from a Saga. Quality lives inside each feature, with no place to see every end-to-end test, and nothing distinguishes one from a unit test.
+Today, nobody can answer that from a Saga. Quality lives inside each feature, with no place to see every end-to-end test, and nothing distinguishes one from a unit test. A criterion can look covered while only its happy path is ever tested.
 
-## What this adds {#what-this-adds}
+## The question at the centre {#the-question-at-the-centre}
 
-The QA section of the Overview holds **a catalog of every end-to-end test used to prove the app works**. Each entry has code references to the test that runs it, and each acceptance criterion on a built feature links to the entries that verify it. So anyone can read from a promise to the test that proves it to the code that runs it, in either direction.
+**If I change this line of code, which end-to-end tests do I need to run to prove the stories it touches still work?**
 
-This is also what lets [a release choose which tests to run](/requirements/select-e2e-tests-for-a-release) rather than running them all.
+[One command answers that](/requirements/find-e2e-tests-for-code) for a line or for a range. Reviews and releases both work on code ranges, so they ask the same question and get the same answer. It follows the code to stories, stories to their criteria, and criteria to tests, then [prints the tests in a form a runner accepts](/requirements/get-tests-in-a-runnable-form).
+
+The tool answers and people decide. [It says what it could not reach](/requirements/see-what-selection-cannot-reach), so a short list never reads as proof that the rest is safe, and it never says whether the answer is good enough.
+
+## The catalog {#the-catalog}
+
+The QA section of the Overview holds [a catalog of every end-to-end test used to prove the app works](/requirements/see-the-e2e-catalog). The [recommended unit is one runnable test](/requirements/one-catalog-entry-per-test): a `test()` is what runs, what costs money, what flakes, and what is positive or negative.
+
+Each entry has [code references to the test that runs it](/requirements/open-e2e-test-code), and [each acceptance criterion on a built feature links to the entries that verify it](/requirements/see-criteria-e2e-covers). Not every criterion needs an end-to-end test, so a missing one is shown as a gap and fails nothing.
+
+## Past the happy path {#past-the-happy-path}
+
+Covering every criterion with happy paths only proves the app works in ideal circumstances. So [each entry shows whether it is positive, negative or edge](/requirements/see-positive-and-negative-coverage), and each criterion shows which of those its tests cover. A criterion with only positive coverage is visibly weaker than one with negative coverage too.
+
+These are facts to read and not a grade. They are also claims: a kind is what the author stated, and the tool does not check it.
+
+## QA tools {#qa-tools}
+
+With those links in place, the rest is asking questions. People can [slice the tests by feature, story, persona, kind or code path](/requirements/slice-test-coverage), and run that slice. They can also [list the weak spots](/requirements/find-weak-spots-in-testing): criteria with only positive coverage, criteria with no test, tests that verify nothing, and tests gone stale. More tools can follow, because each is a view over the same records.
 
 ## It uses what Quality already has {#it-uses-what-quality-already-has}
 
 Quality already has most of these parts, so this adds no new record and no second catalog.
 
-| Trevor's idea | What already exists |
+| Idea | What already exists |
 | --- | --- |
 | A catalog entry | A test case |
 | A criterion's reference to an entry | A pinned `verifies` relation |
 | An entry's code references | `test_implementation` evidence, which pins exact lines and goes stale |
+| Positive and negative | `coverage_kinds`, which also has `edge` for limits and concurrency |
+| Walking a range to tests | `review test-plan`, which today can only start from a review |
 
-What is missing is a way to tell which test cases are end to end, and a place to see them together. The recommendation is to [declare where the end-to-end tests live](/requirements/say-where-e2e-tests-live) and derive the rest from where each test case's code is.
+What is missing is a way to tell which test cases are end to end, a way to ask about any line or range, and a place to see it all together. The recommendation is to [declare where the end-to-end tests live](/requirements/say-where-e2e-tests-live) and derive the rest from where each test case's code is.
 
 ## What is true today {#what-is-true-today}
 
 Measured on this Saga:
 
 - This repository has 139 `test()` calls in 43 spec files under `e2e/tests`, and test cases point at 11 of those files.
-- 27 of its 182 test cases have code in `e2e/`.
-- 51 of the 243 current criteria on built features have one of those test cases, and 12 of the 62 accepted ones do.
-- Of the 58 references those test cases have into `e2e/tests`, 4 start on a `test()` line and 54 sit inside a test body or helper. They read well, but Playwright finds no test at a line inside a body, so most would need a [reference to the declaring line](/requirements/open-e2e-test-code) before a command could run them.
+- 27 of its 182 test cases have code in `e2e/`, reaching 16 distinct `test()` blocks by a rough parse.
+- Of the 243 current criteria on built features, 162 have only positive tests and 8 have no test at all.
+- 51 of those criteria have an end-to-end test. 46 of the 51 are positive only, and none has a negative end-to-end test.
+- Of the 58 references into `e2e/tests`, 4 start on a `test()` line and 54 sit inside a test body or helper. They read well, but Playwright finds no test at a line inside a body, so most would need a [reference to the declaring line](/requirements/open-e2e-test-code) before a command could run them.
+- On v0.6.0 to v0.7.0, 1,378 of 17,802 changed lines reach a story.
 
-These are counts from the records, and a criterion with no end-to-end test may be well tested another way. Backfilling is real work, which an agent can do but which this feature does not do by itself.
+These are counts from the records, and kinds are as their authors stated them. Backfilling is real work, which an agent can do but which this feature does not do by itself.
 
 ## Limits {#limits}
 
@@ -41,5 +63,5 @@ The Saga records how something is verified, never whether it passed. The catalog
 
 ## Open questions {#open-questions}
 
-1. **Is every criterion expected to have an end-to-end test?** Some are poor fits: a criterion about a refused flag is cheaper to prove lower down, and at 51 of 243 most criteria here have none. Recommendation: report the gap and let a team opt in with `check --covers e2e`. Do not make it a health failure.
-2. **What is one catalog entry: a test case, or one `test()`?** A test case can point at several `test()` blocks, and one `test()` can prove several criteria. Recommendation: one entry per test case, as this keeps today's records, with the code references naming the `test()` blocks. The alternative is one per `test()`, which would be nearer a true catalog but means splitting many existing cases.
+1. **Should positive-only criteria be flagged as a gap, or only shown?** The format's default policy already expects positive, negative and edge cases for every accepted criterion, and `check --covers quality` reports the missing ones. Recommendation: reuse that for all tests, and show the end-to-end view as information, since an end-to-end negative test is often not the right place for one.
+2. **What should other kinds of test get?** The tools work over every test case, with end-to-end as a filter. Recommendation: declare only end-to-end locations at first, and add other named levels, such as integration, if people ask to slice by them.
