@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -219,22 +220,32 @@ func TestActivityChangesNoReport(t *testing.T) {
 	root, other := activityRepo(t)
 	report := func() string {
 		var out bytes.Buffer
-		_ = Status(context.Background(), []string{"--json", root}, &out)
-		var validated bytes.Buffer
-		_ = Validate(context.Background(), []string{root}, &validated)
+		if err := Status(context.Background(), []string{"--json", "--repo", filepath.Dir(root), "--allow-repository-mismatch", root}, &out); err != nil {
+			t.Fatalf("status: %v\n%s", err, out.String())
+		}
+		if err := Validate(context.Background(), []string{root}, &out); err != nil {
+			t.Fatalf("validate: %v\n%s", err, out.String())
+		}
+		// Check reports gaps as an error, which is part of what must not change.
 		var checked bytes.Buffer
-		_ = Check(context.Background(), []string{"--covers", "health", root}, &checked)
-		return out.String() + validated.String() + checked.String()
+		checkErr := Check(context.Background(), []string{"--covers", "health", "--repo", filepath.Dir(root), "--allow-repository-mismatch", root}, &checked)
+		return fmt.Sprintf("%s%s%v", out.String(), checked.String(), checkErr)
 	}
 	before := report()
-	if !strings.Contains(before, `"`) {
-		t.Fatalf("status must report something to compare: %q", before)
+	if !strings.Contains(before, `"stale_references"`) {
+		t.Fatalf("status must report something to compare: %.300s", before)
 	}
 	taskOutput(t, "start", "--plan", "first", "--task", "source", "--agent", "ada", other)
 	taskOutput(t, "note", "--plan", "first", "--task", "read", "--blocked", "--agent", "ada", "stuck", other)
 	taskOutput(t, "done", "--plan", "first", "--task", "source", "--agent", "ben", other)
 	if after := report(); after != before {
-		t.Fatalf("activity changed a report:\nbefore %s\nafter %s", before, after)
+		beforeLines, afterLines := strings.Split(before, "\n"), strings.Split(after, "\n")
+		for index := range min(len(beforeLines), len(afterLines)) {
+			if beforeLines[index] != afterLines[index] {
+				t.Fatalf("activity changed a report at line %d:\nbefore %s\nafter  %s", index, beforeLines[index], afterLines[index])
+			}
+		}
+		t.Fatalf("activity changed a report's length: %d lines, then %d", len(beforeLines), len(afterLines))
 	}
 	// Done on a branch is not done here, so delivery still waits for it.
 	message := refused(t, planCommand, "deliver", "--plan", "first", root)
