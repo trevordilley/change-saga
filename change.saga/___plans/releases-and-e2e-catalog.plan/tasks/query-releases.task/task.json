@@ -1,0 +1,75 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "query-releases",
+  "title": "Read every release record through query",
+  "phase": "p3",
+  "story": "urn:change-saga:change-saga:story:read-releases-through-query",
+  "depends_on": [
+    "release-child-records"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 205,
+      "end": 222,
+      "digest": "sha256:3da4e7d1480a14d64d18131ead049287fe26729668aa313e021ccdf126526455",
+      "note": "the list of query operations"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:46a484a43c2e279ce789b719b4ce32909e03d7b798f6932c209f68a8471f1466",
+      "note": "its one-line description"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:9e1eca75da352e5b32a2e0d051122e8c91bcf3d4253efdda87fb8f43cc545d4c",
+      "note": "its usage"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 544,
+      "end": 544,
+      "digest": "sha256:f4630118151ba92a4c2bd6e3119de55c4082464492740fe146e3af7d75481319",
+      "note": "its data paths"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 585,
+      "end": 585,
+      "digest": "sha256:a2d53fbdcfc0026c6b82d8267bcacc29dd628d1f8bdf4fa8af8ad021d7b8a804",
+      "note": "its counted path"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 742,
+      "end": 753,
+      "digest": "sha256:19fab5c165818d70de2c6d68da29223a480a00a3d1bc27eedad28ba42fd717f7",
+      "note": "its flags"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/testdata/query/help.golden",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:1b1881fcfb5732105236e504a7a6ebc442fe7418c981e10643827f51f51a2197",
+      "note": "the help golden that must change too"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Two operations in a table-driven boundary, with goldens; a day and a half."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:58.803703Z"
+}

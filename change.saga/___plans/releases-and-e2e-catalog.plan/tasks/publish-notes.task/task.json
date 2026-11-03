@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "publish-notes",
+  "title": "Print public notes as Markdown",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:publish-public-notes",
+  "depends_on": [
+    "public-note-commands"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/plans.go",
+      "start": 412,
+      "end": 424,
+      "digest": "sha256:1aad0906083b08147245b71e1319e8c6b5c3d4ef2069067a90a058c9dee2e1b2",
+      "note": "command output conventions"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One read command; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:01.954672Z"
+}

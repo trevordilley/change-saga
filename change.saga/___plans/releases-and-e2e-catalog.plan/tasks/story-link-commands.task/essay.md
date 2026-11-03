@@ -1,0 +1,1 @@
+`release story add|remove --delivers|--affects`, refusing a missing story, and reporting a link to a removed story as a dangling reference in `status` and health. Done when `story remove` lists the release.

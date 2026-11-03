@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "release-list-page",
+  "title": "Show the list of releases",
+  "phase": "p6",
+  "story": "urn:change-saga:change-saga:story:list-releases",
+  "depends_on": [
+    "releases-side"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/plans.go",
+      "start": 129,
+      "end": 136,
+      "digest": "sha256:ea69ff5fcdcc75f400b05d9293b2f13f495ce0afa60cf6877b39bfffdf3c05f5",
+      "note": "the index page to mirror"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "An index page; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:11.397929Z"
+}

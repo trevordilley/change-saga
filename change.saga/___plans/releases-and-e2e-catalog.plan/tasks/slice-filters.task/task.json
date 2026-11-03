@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "slice-filters",
+  "title": "Filter the catalog and run the slice",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:slice-test-coverage",
+  "depends_on": [
+    "catalog-derivation",
+    "runnable-formats"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 749,
+      "end": 752,
+      "digest": "sha256:036261ad41415ec0922a25e7de30eb2f0fd150db6689155cb1424acea7a0dd87",
+      "note": "query's existing filter flags"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Filter flags over an in-memory list; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:10.484897Z"
+}

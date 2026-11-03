@@ -1,0 +1,1 @@
+One page with version, milestone, stories split by delivered, affected and found from code, public and internal notes apart, and the checklist with excerpts. Released and unreleased versions read apart. Browser tests cover it.

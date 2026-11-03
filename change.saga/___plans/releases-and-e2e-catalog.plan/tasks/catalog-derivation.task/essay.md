@@ -1,0 +1,1 @@
+A test case is a catalog entry when its current `test_implementation` evidence is inside a declared path, and retired or deprecated cases are left out. This adds no record and no field. Done when the catalog can be built in memory with its criteria and code.

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "thin-spots",
+  "title": "List where end-to-end tests are thin",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:find-weak-spots-in-testing",
+  "depends_on": [
+    "kinds-data",
+    "criteria-coverage-data"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 749,
+      "end": 752,
+      "digest": "sha256:036261ad41415ec0922a25e7de30eb2f0fd150db6689155cb1424acea7a0dd87",
+      "note": "the neighbouring operation"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Filters over computed data; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:10.958671Z"
+}

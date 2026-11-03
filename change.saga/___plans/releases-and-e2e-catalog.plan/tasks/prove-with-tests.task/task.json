@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "prove-with-tests",
+  "title": "Record that the chosen tests were run",
+  "phase": "p6",
+  "story": "urn:change-saga:change-saga:story:prove-a-release-with-its-tests",
+  "depends_on": [
+    "template-commands",
+    "tick-from-cli",
+    "release-tests-and-review-e2e"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "docs/releasing.md",
+      "start": 118,
+      "end": 125,
+      "digest": "sha256:d728901fc5bff023bfcf06ff627ab1bc203d5c7cc6a465e573ec81ef925b0658",
+      "note": "the checklist that gains this step"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Mostly tests and guide text; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:12.754516Z"
+}

@@ -1,0 +1,1 @@
+Walk from a story to code by its Items, Tasks, test evidence, then its feature's implementation deck and test cases, and report the path. Nothing refuses because of the result. A test checks a Roadmap story reaches none and a built one reaches some.

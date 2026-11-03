@@ -1,0 +1,1 @@
+Add `query e2e-tests --ref LOCATION` and `--against REV --head REV`, reusing query's existing location and comparison flags, plus `query e2e-catalog [--test ID]`. Each returns tests once, with reasons and counts, and reads and writes nothing else. Done when the answer holds on a fixture for a line, a range, and a file nothing cites.

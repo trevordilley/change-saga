@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "release-page",
+  "title": "Show a release: stories, notes and checklist",
+  "phase": "p6",
+  "story": "urn:change-saga:change-saga:story:see-what-shipped-and-whats-next",
+  "depends_on": [
+    "releases-side",
+    "mark-released",
+    "stories-from-range"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/plans.go",
+      "start": 1160,
+      "end": 1165,
+      "digest": "sha256:befd582be995df167c6d05a8d51370c52dadb0fbd56a8e30fa4bb17b3131223a",
+      "note": "templates for a Plan's pages"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "The largest page here, but built from existing parts; two days."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:11.849925Z"
+}

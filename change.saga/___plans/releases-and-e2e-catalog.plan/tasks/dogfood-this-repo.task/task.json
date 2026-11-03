@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "dogfood-this-repo",
+  "title": "Set this repository up to use releases",
+  "phase": "p7",
+  "story": "urn:change-saga:change-saga:story:have-an-agent-run-the-release",
+  "depends_on": [
+    "release-page",
+    "release-next",
+    "branch-guidance"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": ".github/workflows/release.yml",
+      "start": 20,
+      "end": 21,
+      "digest": "sha256:5024c871889ade7d33be03004058085177d336f362c727be9d99acaa4f4f3251",
+      "note": "the tag trigger the process board pins"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "docs/releasing.md",
+      "start": 118,
+      "end": 125,
+      "digest": "sha256:d728901fc5bff023bfcf06ff627ab1bc203d5c7cc6a465e573ec81ef925b0658",
+      "note": "the checklist that becomes the template"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "e2e/README.md",
+      "start": 1,
+      "end": 20,
+      "digest": "sha256:3635620775bd0e7991f6701ffbe791e57067ada99a2355e7ba5f9dd7eab6c834",
+      "note": "the suite to declare"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Authoring with the new tools; a day and a half."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:15.957958Z"
+}

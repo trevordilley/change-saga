@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "cannot-reach",
+  "title": "Report what the answer could not reach",
+  "phase": "p3",
+  "story": "urn:change-saga:change-saga:story:see-what-selection-cannot-reach",
+  "depends_on": [
+    "walk-through-features-and-files"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 64,
+      "end": 67,
+      "digest": "sha256:b27743d018d25f2298b8e97ba739ad5cf9454f2e5b4d0aa9eaed40dd38e60fea",
+      "note": "the existing gap record"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 114,
+      "end": 120,
+      "digest": "sha256:5311506e25ee819d945a4e8ed594f35e520b0fd1bc2032b4a2c6555f9758c21a",
+      "note": "how gaps are collected"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Mostly existing gap data with a different exit rule; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:59.678229Z"
+}

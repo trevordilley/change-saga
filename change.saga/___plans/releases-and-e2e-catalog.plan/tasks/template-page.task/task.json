@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "template-page",
+  "title": "Show the template and versioning scheme",
+  "phase": "p6",
+  "story": "urn:change-saga:change-saga:story:keep-a-release-template",
+  "depends_on": [
+    "releases-side"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/plans.go",
+      "start": 129,
+      "end": 136,
+      "digest": "sha256:ea69ff5fcdcc75f400b05d9293b2f13f495ce0afa60cf6877b39bfffdf3c05f5",
+      "note": "a simple page in the shell"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A simple page; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:12.300772Z"
+}

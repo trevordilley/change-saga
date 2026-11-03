@@ -1,0 +1,60 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "releases-side",
+  "title": "Add the Releases side with its three entries",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:find-releases-in-their-section",
+  "depends_on": [
+    "release-create-list",
+    "process-board-role"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/server.go",
+      "start": 236,
+      "end": 244,
+      "digest": "sha256:8c852a2a523d3186d746ebde32d6fc3dbaa9aa734911e61d30af2ee427c364a9",
+      "note": "the side a page belongs to"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/template.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:816910cc406aa9ed4609f2dd1e0a3fe4ea432124631d810592bae7c1315e3a4a",
+      "note": "the side tabs"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/server.go",
+      "start": 543,
+      "end": 547,
+      "digest": "sha256:be6e19448cb895ddbdaa62652207123b759e477a2fe57e2fe49cda697ba2fad3",
+      "note": "routes for a side"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/server.go",
+      "start": 1257,
+      "end": 1258,
+      "digest": "sha256:1e0ade650049b49dc0cab24361ce8452cb2ba94f2767946435c48a3efc578717",
+      "note": "route kinds"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/plans.go",
+      "start": 129,
+      "end": 136,
+      "digest": "sha256:ea69ff5fcdcc75f400b05d9293b2f13f495ce0afa60cf6877b39bfffdf3c05f5",
+      "note": "an index page in the shell"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Follows the Plans side closely; two days with browser tests."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:06.528168Z"
+}

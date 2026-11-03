@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "walk-through-features-and-files",
+  "title": "Follow features and files in the walk, and label the path",
+  "phase": "p2",
+  "story": "urn:change-saga:change-saga:story:find-e2e-tests-for-code",
+  "depends_on": [
+    "test-walk-any-range"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 114,
+      "end": 126,
+      "digest": "sha256:27c5834a59cd79783eab3173908643c82a8baa23414d1c31d1c3c4e3287eb16f",
+      "note": "the graph the walk uses"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 198,
+      "end": 262,
+      "digest": "sha256:57ac582200fa462b6404bcc82037447a08abbeff2c7ae4b3d24af619cfd74c60",
+      "note": "the evidence it visits today"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/plan.go",
+      "start": 445,
+      "end": 457,
+      "digest": "sha256:5ab6220e6e1835ca845781b9c194446839b733f025d220a3aa8d24835e8b619d",
+      "note": "how a Plan derives its stories"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Three new edges and a label on an existing walk; two days, because the file step needs care over deleted files."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:53.310417Z"
+}

@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "releases-and-e2e-catalog",
+  "title": "Releases and the end-to-end test catalog",
+  "role": "plan",
+  "rank": 0,
+  "objective": "Explain the work to be done and how it can be executed in parallel."
+}

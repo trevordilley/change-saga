@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "one-entry-reports",
+  "title": "Report entries that are not one runnable test",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:one-catalog-entry-per-test",
+  "depends_on": [
+    "declaring-line"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 313,
+      "end": 341,
+      "digest": "sha256:0f90bf11e831632d33e3871dde71778d1574eb72937441baa4d25424ab539117",
+      "note": "resolving a case's code"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A small report over the declaring lines; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:05.64717Z"
+}

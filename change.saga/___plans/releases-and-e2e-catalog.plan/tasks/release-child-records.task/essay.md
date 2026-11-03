@@ -1,0 +1,1 @@
+Add `notes/<id>.json`, `public.md`, `stories/<id>.json`, `checklist/<id>.json` and `___releases/template/` with schemas, loading and a store. Order comes from a sortable rank, so two branches never edit the same list. This is what makes a release merge cleanly.

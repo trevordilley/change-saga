@@ -1,0 +1,1 @@
+A `tests` command wraps `query e2e-tests` with `--format json|locations|command`, printing declaring lines and filling the template. A test with no declaring line is named as not runnable. A test confirms Playwright lists exactly the printed tests in this repository, and the CLI executes nothing.

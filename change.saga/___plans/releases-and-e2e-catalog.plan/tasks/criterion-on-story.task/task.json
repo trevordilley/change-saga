@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "criterion-on-story",
+  "title": "Show a criterion's end-to-end tests on its story",
+  "phase": "p6",
+  "story": "urn:change-saga:change-saga:story:see-criteria-e2e-covers",
+  "depends_on": [
+    "qa-entry",
+    "criteria-coverage-data"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/server.go",
+      "start": 1396,
+      "end": 1396,
+      "digest": "sha256:9de83e71748eb757b0716b89221f52e0ecd838bd8edd8423d6df82e1cda3072a",
+      "note": "stories already receive derived Plans here"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Adds to an existing page; a day and a half."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:14.147654Z"
+}

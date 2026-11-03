@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "e2e-suite-declaration",
+  "title": "Record where end-to-end tests live and how to run them",
+  "phase": "p1",
+  "story": "urn:change-saga:change-saga:story:say-where-e2e-tests-live",
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/load.go",
+      "start": 177,
+      "end": 182,
+      "digest": "sha256:d19160b1476ed0df53895b7981c77e3c7696b840a7a8dedc91d66a10ff65818e",
+      "note": "where a metadata root joins the load"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/model.go",
+      "start": 30,
+      "end": 32,
+      "digest": "sha256:e6ae66d851e205688e6a38e374ab84b8581356494f8fc18373fd88eb4a753b44",
+      "note": "where reserved directory names live"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One small record and three commands; about a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:51.499591Z"
+}

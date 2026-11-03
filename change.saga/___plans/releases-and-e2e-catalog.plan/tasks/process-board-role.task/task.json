@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "process-board-role",
+  "title": "Add a release-process whiteboard role",
+  "phase": "p1",
+  "story": "urn:change-saga:change-saga:story:see-how-code-reaches-users",
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/requirements/whiteboard_metadata.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:5273e0fd4e4e4c27ced1d272a187ba33a89066e5f7501dab213c3f6dcff93f76",
+      "note": "the default role table"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/requirements/whiteboard_metadata.go",
+      "start": 79,
+      "end": 83,
+      "digest": "sha256:4540d63022386e7bf4627e99b7e5ddc4f7b54aed82e82eab85ab41e880b6c48b",
+      "note": "required roles; the new one stays optional, as architecture does"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "schema/v5/whiteboard-metadata.schema.json",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:1e488075544ff6fcf966ebf3681c42258d074f6b3eae7804fa421d5c776ccc68",
+      "note": "the allowed role keys"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/whiteboard_metadata.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:296aad31b91a17790d134b5fce8066c43d327f53ac9a93bdb40fa70783ced442",
+      "note": "the --role flag"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A small change to an existing table and schema, plus tests; under a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:51.062071Z"
+}

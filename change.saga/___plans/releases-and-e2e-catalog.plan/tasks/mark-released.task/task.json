@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "mark-released",
+  "title": "Record that a release went out",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:mark-a-release-released",
+  "depends_on": [
+    "release-create-list",
+    "tick-from-cli",
+    "release-range"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/planstore/planstore.go",
+      "start": 186,
+      "end": 217,
+      "digest": "sha256:7c3581db8afea6b976c2a7f0b935f6de827eb408d43fac2f2f71d8961e7ad7f7",
+      "note": "plan deliver, as the contrast: this one refuses nothing"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One command; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:01.513891Z"
+}

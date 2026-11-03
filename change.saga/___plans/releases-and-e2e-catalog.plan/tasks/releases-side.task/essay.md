@@ -1,0 +1,1 @@
+Add a Releases tab and sidebar with Release Process Overview, Release Template and Releases, each with an empty state naming its command. The overview opens the assigned board in the existing whiteboard reader. Browser tests cover the tab and empty states.

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "declaring-line",
+  "title": "Let an entry name the line that declares its test",
+  "phase": "p2",
+  "story": "urn:change-saga:change-saga:story:open-e2e-test-code",
+  "depends_on": [
+    "e2e-suite-declaration"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/plans.go",
+      "start": 489,
+      "end": 524,
+      "digest": "sha256:ecbbc3a0411e11fc1b0c3fb9c1efd408026f3549a6147f1d668b4bb8fdfceaf5",
+      "note": "how pinned code is parsed for a Task"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "An optional field with schema, CLI flag and repin coverage; a day and a half."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:53.833058Z"
+}

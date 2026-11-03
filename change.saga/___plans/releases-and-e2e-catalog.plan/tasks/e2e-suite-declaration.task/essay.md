@@ -1,0 +1,1 @@
+Add a small `___qa/suite.json` holding the repository paths of end-to-end tests and a command template, with commands to set, read and clear them. Done when a Saga without it behaves as before, and a missing path is reported without failing.

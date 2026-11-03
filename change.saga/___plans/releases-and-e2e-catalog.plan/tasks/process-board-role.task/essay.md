@@ -1,0 +1,1 @@
+Add an optional `release-process` role, so a board can be assigned with `whiteboard assign-role`. Pinned code and staleness already work on any board, so no new evidence code is needed. Done when older metadata still loads and the role assigns, moves and clears.

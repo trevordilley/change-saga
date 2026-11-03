@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "release-range",
+  "title": "Record a release's Git range",
+  "phase": "p3",
+  "story": "urn:change-saga:change-saga:story:say-which-range-a-release-covers",
+  "depends_on": [
+    "release-child-records"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 82,
+      "end": 90,
+      "digest": "sha256:415f4524a5be0439189de8eb093fef63e714c6287a1c29ce42debb13d78ec656",
+      "note": "resolving a range and reading the diff"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One command and a resolver call; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:58.37256Z"
+}

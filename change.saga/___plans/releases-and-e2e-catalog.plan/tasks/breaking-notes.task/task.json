@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "breaking-notes",
+  "title": "Call out what a release breaks",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:call-out-breaking-changes",
+  "depends_on": [
+    "internal-note-commands",
+    "public-note-commands"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "CHANGELOG.md",
+      "start": 76,
+      "end": 84,
+      "digest": "sha256:a6449ec2bfbf38477853276fa41585b7a1b1a2262105f85c90f3ea3f8b98ebd9",
+      "note": "this repository's own example of a breaking removal"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One field and an ordering rule; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:02.394427Z"
+}

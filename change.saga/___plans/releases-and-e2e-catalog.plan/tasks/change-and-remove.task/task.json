@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "change-and-remove",
+  "title": "Delete a release, and correct its version",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:change-release-records",
+  "depends_on": [
+    "release-create-list",
+    "template-commands",
+    "checklist-step-commands",
+    "internal-note-commands",
+    "story-link-commands"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/content_edit.go",
+      "start": 153,
+      "end": 160,
+      "digest": "sha256:c9d44f1bca57073330485d97b11fdb07649228e6de194fdab9445d7245e87f7a",
+      "note": "the remove and dry-run reporting to reuse"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Two commands and an audit of what phase 3 built; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:00.168468Z"
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "release-record-format",
+  "title": "Add the release record and its reserved root",
+  "phase": "p1",
+  "story": "urn:change-saga:change-saga:story:releases-stay-optional",
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/plan.go",
+      "start": 22,
+      "end": 29,
+      "digest": "sha256:4bfe2e1f22ac5de0e814b0e6873665da9d7e0c6f923686c66f64ba6a50eb8cef",
+      "note": "the shape to follow: a reserved root of small records"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/plan.go",
+      "start": 458,
+      "end": 605,
+      "digest": "sha256:f708e9da39b05c3d205e2124ad6b7e523f5d75ae94525a44a15027a8e51f90b3",
+      "note": "the loader to mirror"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/load.go",
+      "start": 177,
+      "end": 182,
+      "digest": "sha256:d19160b1476ed0df53895b7981c77e3c7696b840a7a8dedc91d66a10ff65818e",
+      "note": "where a metadata root joins the load"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/model.go",
+      "start": 30,
+      "end": 32,
+      "digest": "sha256:e6ae66d851e205688e6a38e374ab84b8581356494f8fc18373fd88eb4a753b44",
+      "note": "where reserved directory names live"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "schema/v5/plan.schema.json",
+      "start": 1,
+      "end": 30,
+      "digest": "sha256:28c070db4d3f9fa468982ef0c1aa0449b14335077a3fb59f2afa08232a57e990",
+      "note": "the schema style to follow"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One schema and one loader, closely following the Plan loader; a day and a half with its tests."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:50.639043Z"
+}

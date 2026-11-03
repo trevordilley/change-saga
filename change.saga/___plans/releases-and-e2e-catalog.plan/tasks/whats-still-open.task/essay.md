@@ -1,0 +1,1 @@
+`query release-status` and `release status` list unchecked steps, stories with no path to code, delivered stories no note mentions, and stories with no merged review found. They exit 0 and give no verdict.

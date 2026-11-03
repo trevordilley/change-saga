@@ -1,0 +1,1 @@
+`release note add|edit|remove`, with outside references such as tickets, and `--story` or `--fix`. A note with neither is refused, as is a story not on the release. Done when the refusals name the command that fixes them.

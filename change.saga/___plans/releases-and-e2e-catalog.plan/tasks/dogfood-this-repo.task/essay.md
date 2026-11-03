@@ -1,0 +1,1 @@
+Author this repository's process board pinned to `release.yml`, its template from `docs/releasing.md` plus the steps past releases taught us, and its end-to-end locations and command. This finds what is awkward before anyone else meets it.

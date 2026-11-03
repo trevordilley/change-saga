@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "e2e-backfill-sample",
+  "title": "Fill in the catalog for one feature",
+  "phase": "p7",
+  "story": "urn:change-saga:change-saga:story:see-the-e2e-catalog",
+  "depends_on": [
+    "qa-entry",
+    "declaring-line"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "e2e/README.md",
+      "start": 1,
+      "end": 20,
+      "digest": "sha256:3635620775bd0e7991f6701ffbe791e57067ada99a2355e7ba5f9dd7eab6c834",
+      "note": "the suite being catalogued"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One feature's records; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:16.42129Z"
+}

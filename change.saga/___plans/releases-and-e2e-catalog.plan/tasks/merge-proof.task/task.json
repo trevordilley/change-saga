@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "merge-proof",
+  "title": "Prove releases merge cleanly",
+  "phase": "p7",
+  "story": "urn:change-saga:change-saga:story:merge-release-work",
+  "depends_on": [
+    "change-and-remove",
+    "tick-from-cli",
+    "internal-note-commands"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/planstore/planstore.go",
+      "start": 23,
+      "end": 36,
+      "digest": "sha256:94f6dc88ae25ce1c0c20e680be180690f7fca00a2ecd99da6f6174ba12fb01b9",
+      "note": "writes under the Saga lock"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Git-fixture tests of behaviour already designed; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:15.059931Z"
+}

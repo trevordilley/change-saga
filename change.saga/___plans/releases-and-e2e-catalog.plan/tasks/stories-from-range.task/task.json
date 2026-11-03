@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "stories-from-range",
+  "title": "Show the stories a release's range reaches",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:see-stories-from-the-range",
+  "depends_on": [
+    "release-range",
+    "query-e2e-tests",
+    "story-link-commands"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 150,
+      "end": 175,
+      "digest": "sha256:d5c997c0a3276e42ad10ab5f3b0ccd8213f388a2a7f1a6856d93a109bbb42974",
+      "note": "collecting affected stories"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Reuses the walk's stories; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:02.844149Z"
+}

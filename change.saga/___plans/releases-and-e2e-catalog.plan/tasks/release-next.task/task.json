@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "release-next",
+  "title": "Give an agent the next step",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:have-an-agent-run-the-release",
+  "depends_on": [
+    "release-create-list",
+    "checklist-step-commands",
+    "tick-from-cli",
+    "query-releases"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/plans.go",
+      "start": 261,
+      "end": 306,
+      "digest": "sha256:77f1aca5c4568cd412dbd57e8fecc6585003328fb23b18fc0eebf0e121cd2204",
+      "note": "guide output to extend"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A small read plus guide text; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:01.074763Z"
+}

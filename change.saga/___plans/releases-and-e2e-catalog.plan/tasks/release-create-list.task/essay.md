@@ -1,0 +1,1 @@
+`release create --version V` copies the template, refuses a missing or duplicate version, and works with no template. `release list` shows version, stories and steps checked, with `--json`. Done when both behave as the story's criteria say.

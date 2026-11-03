@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "promote-step",
+  "title": "Copy a useful step into the template",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:promote-a-step-to-the-template",
+  "depends_on": [
+    "template-commands",
+    "checklist-step-commands",
+    "release-guide"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/plans.go",
+      "start": 308,
+      "end": 326,
+      "digest": "sha256:1522e0bf3f918b2b2bb056f828a1ff006bad07a4bdd4a568a3cf268198935d18",
+      "note": "a small mutation as the model"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One command; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:09.59738Z"
+}

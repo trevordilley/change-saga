@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "query-e2e-tests",
+  "title": "Answer which tests a line or range affects",
+  "phase": "p3",
+  "story": "urn:change-saga:change-saga:story:find-e2e-tests-for-code",
+  "depends_on": [
+    "catalog-derivation",
+    "walk-through-features-and-files"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/query.go",
+      "start": 742,
+      "end": 748,
+      "digest": "sha256:4934a88a8978e7e37eadf96727882395a9b53ae05e073b50a0a8edf4bf39a422",
+      "note": "`--ref LOCATION` already exists on traceability, so the flag is familiar"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/review_test_plan.go",
+      "start": 114,
+      "end": 117,
+      "digest": "sha256:b6fc9484b0251784130eba6fcff2605d930f9796670f159f383d7bb087c67bb2",
+      "note": "the result shape to reuse"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A query operation over work done in phase 2; two days including fixtures."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:59.240111Z"
+}

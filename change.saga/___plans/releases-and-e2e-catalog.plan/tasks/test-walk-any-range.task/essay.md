@@ -1,0 +1,1 @@
+Separate the walk from the review: the walk takes a range and optionally a review deck to include, and `review test-plan` keeps its output and exit codes. Done when the existing `review test-plan` tests pass unchanged and a range with no review gives a plan. A review is used only for its deck and target, so this is a refactor rather than new logic.

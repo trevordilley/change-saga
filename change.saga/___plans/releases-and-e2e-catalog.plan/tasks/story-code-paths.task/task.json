@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "story-code-paths",
+  "title": "Show the path from a story to code",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:every-released-story-has-code",
+  "depends_on": [
+    "story-link-commands",
+    "walk-through-features-and-files"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/plan.go",
+      "start": 445,
+      "end": 457,
+      "digest": "sha256:5ab6220e6e1835ca845781b9c194446839b733f025d220a3aa8d24835e8b619d",
+      "note": "stories on a Plan"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/livingapp/status_app.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:791af0ae6ee61281135664a3c9f4c93b5ed7e1523ccdf48784fa0300a77fd83b",
+      "note": "status already derives per-story facts"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A short reverse walk over existing data; a day and a half."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:03.282546Z"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "branch-guidance",
+  "title": "Support running a release on its own branch",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:run-a-release-on-a-branch",
+  "depends_on": [
+    "mark-released",
+    "release-guide"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "docs/releasing.md",
+      "start": 118,
+      "end": 125,
+      "digest": "sha256:d728901fc5bff023bfcf06ff627ab1bc203d5c7cc6a465e573ec81ef925b0658",
+      "note": "this repository's checklist today"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Guide text and a validation test; half a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:09.166038Z"
+}

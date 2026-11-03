@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "whats-still-open",
+  "title": "Report what is still open on a release",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:see-whats-still-open",
+  "depends_on": [
+    "mark-released",
+    "story-code-paths"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/status_grammar.go",
+      "start": 70,
+      "end": 72,
+      "digest": "sha256:ab93eb236120a7378457e62772543c10066096719fe6c47ea82dd7b1a2c49414",
+      "note": "status's document state"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Assembling earlier facts; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:06.962456Z"
+}

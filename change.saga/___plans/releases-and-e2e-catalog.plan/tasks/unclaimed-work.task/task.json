@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "unclaimed-work",
+  "title": "List merged work no release claims",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:find-work-no-release-claims",
+  "depends_on": [
+    "stories-from-range",
+    "mark-released"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/load.go",
+      "start": 177,
+      "end": 182,
+      "digest": "sha256:d19160b1476ed0df53895b7981c77e3c7696b840a7a8dedc91d66a10ff65818e",
+      "note": "merges are already loaded"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A set difference over known data; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:07.413371Z"
+}

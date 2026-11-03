@@ -1,0 +1,1 @@
+`release step add|edit|move|remove`, with Markdown excerpts and pinned code on a step. A step needs only a sentence. Each step records whether it came from the template. Done when changing steps leaves checked steps checked and other releases untouched.

@@ -1,0 +1,1 @@
+Add `___releases/<id>.release/release.json` with its schema, URNs and load step: ID, version as given, optional range, milestone, released commit and time. Like a Plan, a change rewrites this one small file and Git is its history. Done when an existing Saga loads unchanged, with the same `status` and health, and a hand-made release validates.

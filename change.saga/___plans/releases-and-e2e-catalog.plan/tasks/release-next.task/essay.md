@@ -1,0 +1,1 @@
+`release next --release ID` returns the first unchecked step with excerpts and code, and `--json`. The guide says to ask a person for what the agent cannot do, and never to tick a step nobody did. Done when a fresh session can continue from the record alone.

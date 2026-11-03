@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "release-child-records",
+  "title": "Store notes, steps, story links and the template as small files",
+  "phase": "p2",
+  "story": "urn:change-saga:change-saga:story:merge-release-work",
+  "depends_on": [
+    "release-record-format"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/planstore/planstore.go",
+      "start": 23,
+      "end": 66,
+      "digest": "sha256:d157a5bb3224e482b548e02c6e68d1ea45791d82ad4b09176a37cec963a704e7",
+      "note": "the lock, editable check and writers to follow"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/planstore/planstore.go",
+      "start": 245,
+      "end": 318,
+      "digest": "sha256:fe263f577b0697355bc5e7ae60ac41df4b2440441e2111e6ec0ecf6604f2ba34",
+      "note": "adding a child record under the lock"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/saga/plan.go",
+      "start": 568,
+      "end": 605,
+      "digest": "sha256:f308c30bb384aafa429374c8185f1fcb35686afb9d4f26a8883cc16a65986da6",
+      "note": "loading one child record"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Four small record types using one pattern; two days with loader and store tests."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:52.429045Z"
+}

@@ -1,0 +1,1 @@
+`release guide` explains the workflow, what makes a good step with one example of each kind, that a tick is a report, and that internal notes are not secret. Steps appear on no Task board and count toward no coverage, which a test confirms.

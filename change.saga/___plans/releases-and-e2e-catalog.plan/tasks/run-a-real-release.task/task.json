@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "run-a-real-release",
+  "title": "Have an agent run a real release",
+  "phase": "p8",
+  "story": "urn:change-saga:change-saga:story:have-an-agent-run-the-release",
+  "depends_on": [
+    "dogfood-this-repo",
+    "prove-with-tests",
+    "tick-in-browser",
+    "format-docs"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "docs/releasing.md",
+      "start": 21,
+      "end": 29,
+      "digest": "sha256:baa7b38523fbfe10ba0d575ddd6569e3f6b1996cb724260c884b851290b4961e",
+      "note": "how a release is cut today"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "One release with follow-up fixes; two days, and the release run itself is mostly waiting."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:16.863278Z"
+}

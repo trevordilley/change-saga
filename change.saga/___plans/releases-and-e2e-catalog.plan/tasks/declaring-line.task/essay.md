@@ -1,0 +1,1 @@
+Add an optional `declares` marking on a code reference in test evidence, and have the catalog report entries with none as not runnable. Done when a marked reference survives repinning and an unmarked entry is listed, not dropped.

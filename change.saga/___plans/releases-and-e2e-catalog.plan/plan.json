@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/plan.schema.json",
+  "version": 5,
+  "id": "releases-and-e2e-catalog",
+  "title": "Releases and the end-to-end test catalog",
+  "phases": [
+    {
+      "id": "p1",
+      "title": "Phase 1: Foundations"
+    },
+    {
+      "id": "p2",
+      "title": "Phase 2: Records and the walk"
+    },
+    {
+      "id": "p3",
+      "title": "Phase 3: Commands and queries"
+    },
+    {
+      "id": "p4",
+      "title": "Phase 4: Workflows and derived facts"
+    },
+    {
+      "id": "p5",
+      "title": "Phase 5: Sections and reports"
+    },
+    {
+      "id": "p6",
+      "title": "Phase 6: Reader pages"
+    },
+    {
+      "id": "p7",
+      "title": "Phase 7: Ticking, merging and documenting"
+    },
+    {
+      "id": "p8",
+      "title": "Phase 8: Run a real release"
+    }
+  ],
+  "created_at": "2026-11-03T03:07:47.805276Z"
+}

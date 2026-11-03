@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "uncatalogued",
+  "title": "Find test code no entry cites",
+  "phase": "p4",
+  "story": "urn:change-saga:change-saga:story:find-uncatalogued-e2e",
+  "depends_on": [
+    "catalog-derivation"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/coverage/coverage.go",
+      "start": 106,
+      "end": 131,
+      "digest": "sha256:d889ba647aca7f768464c54cca7925571d41060acaafb95642a78e6307d6ea43",
+      "note": "how coverage is computed over lines"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Line-set arithmetic that coverage already does; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:06.082716Z"
+}

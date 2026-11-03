@@ -1,0 +1,1 @@
+`release mark-released --commit REV` records the commit and time, lists what is open, and proceeds. Steps and notes stay editable afterwards. Done when unticked steps and uncovered stories both fail to stop it.

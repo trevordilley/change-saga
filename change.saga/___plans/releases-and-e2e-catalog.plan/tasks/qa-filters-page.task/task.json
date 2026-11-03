@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "qa-filters-page",
+  "title": "Filter the catalog in the reader",
+  "phase": "p6",
+  "story": "urn:change-saga:change-saga:story:slice-test-coverage",
+  "depends_on": [
+    "qa-entry",
+    "slice-filters"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/server/plans.go",
+      "start": 34,
+      "end": 35,
+      "digest": "sha256:9075fc44d73e49db1e0ff28e498f411d54c3f2f756f698a6204f75e8b91ee154",
+      "note": "the directory filter to reuse"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "An existing filter component; a day."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:13.63291Z"
+}

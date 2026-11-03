@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "agent-json-and-skill",
+  "title": "Let an agent keep the release current",
+  "phase": "p5",
+  "story": "urn:change-saga:change-saga:story:keep-releases-with-an-agent",
+  "depends_on": [
+    "release-next",
+    "release-guide"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "skills/change-saga/references/plans.md",
+      "start": 1,
+      "end": 13,
+      "digest": "sha256:3a22b5537cc03968ffcd4e1d4e18cde3dbca4bfb4e9cb199718aad1f2f0b0e0f",
+      "note": "the reference to mirror"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/cli.go",
+      "start": 482,
+      "end": 483,
+      "digest": "sha256:d971589d8dae8253e819ee3df23a39694a82d5e38f41b83c3f7be094428b6a15",
+      "note": "command descriptions"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "An audit plus documentation; a day and a half."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:08:08.731031Z"
+}

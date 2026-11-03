@@ -1,0 +1,51 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "release-create-list",
+  "title": "Create and list releases",
+  "phase": "p3",
+  "story": "urn:change-saga:change-saga:story:create-a-release",
+  "depends_on": [
+    "release-child-records"
+  ],
+  "code": [
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/plans.go",
+      "start": 68,
+      "end": 119,
+      "digest": "sha256:671c30a7d685cc39989dd996bfa378a860427e869af43fd9d3898001f9a7806a",
+      "note": "plan create as the model"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/plans.go",
+      "start": 152,
+      "end": 220,
+      "digest": "sha256:21314193ec70750cc4d9d21fadd2433eec12f2148979df306c40ddc5df3645b9",
+      "note": "plan list as the model"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/grammar/commands_plans.go",
+      "start": 15,
+      "end": 27,
+      "digest": "sha256:d1ddfe6c9e97e7cee76d1f49c47442b422de0dcc5fca4158460a09db7a1cb79c",
+      "note": "where commands and resources are declared"
+    },
+    {
+      "commit": "8d6cc31e13845b25089c413d1702eac04c0f463e",
+      "path": "internal/cli/cli.go",
+      "start": 187,
+      "end": 188,
+      "digest": "sha256:e06c2e7a80ff3fa3f89c96eab4f56259c9eb185430e873aa9ebf52c3f7970fb2",
+      "note": "the command table"
+    }
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Two commands following Plan's; a day and a half."
+  },
+  "state": "planned",
+  "created_at": "2026-11-03T03:07:54.32195Z"
+}
