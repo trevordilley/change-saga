@@ -1969,6 +1969,44 @@ a Plan's deck essay and a Task's essay. `query plans` omits delivered Plans unle
 `--all` is given. `query prototype` reads a prototype's HTML the same way, in
 byte-range pages.
 
+### Live activity
+
+`task start`, `task note`, `task note --blocked`, and `task done` report what agents
+are doing as **activity**: a live view on top of a Plan, never part of it.
+
+- Activity is kept in `<git-common-dir>/change-saga/activity/<saga>/<plan>/<agent>.jsonl`,
+  one append-only file per agent, so every worktree of one repository shares it and
+  nothing commits it. A Saga outside Git uses the common directory of its `--repo`
+  checkout when given one, and otherwise has no live activity. Commands and the reader
+  MUST say so, and MUST NOT fail.
+- Each line is one JSON object of `at`, `agent`, `task`, `kind` (`start`, `note`,
+  `blocked`, `done`, `released`), and optional `message` and `branch`, written in one
+  append. A reader MUST skip a line it cannot parse. A writer ends a torn last line
+  before appending. A message is at most 2000 characters.
+- A file rotates at 128 KiB, keeping one older file. A file nobody has written to for
+  30 days is removed when an agent first reports on that Plan.
+- `validate`, `status`, `check`, and `plan deliver` MUST NOT read activity. A failure to
+  write it MUST NOT fail the command; `task start` and `task note` report that nothing
+  was recorded. `task start` and `task note` MUST NOT change any file of the Saga.
+- `task set --state` also reports activity: `in_progress` as a start, `done` as done,
+  and `planned` as `released`.
+- Who reports is `--agent`, else the DevSwarm workspace, else the Git branch.
+
+A Task's latest event per agent decides how it reads. The durable state wins: a Task
+done in this checkout reads done. Otherwise a `done` with nothing after it reads "done
+on BRANCH", distinct from durably done; agents whose latest word is not `done` or
+`released` hold the Task, and the most recent holder's `blocked` reads blocked. A held
+Task with no update for 30 minutes reads quiet. It is never read as failed.
+
+`query plan` and `query task` include each Task's latest activity in compact form, with
+the message cut to 140 characters. Only `query task --history` returns messages, up to
+the newest 200. `task list` says who started a Task, including with `--ready`.
+
+A reader's Plan pages poll `GET /api/plans/ID/activity`, which reads the activity log
+and the Plan's own `plan.json` and `task.json` files, never the whole Saga, and answers
+304 while nothing a reader would see has changed. An update MUST NOT change the page's
+camera, selection, or an open drawer. A delivered Plan is not polled.
+
 ### Plan decks
 
 A Plan's deck is authored with `apply-slide --plan ID` and `deck overview --plan

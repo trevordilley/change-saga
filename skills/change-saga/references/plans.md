@@ -80,9 +80,32 @@ Attach prototypes with `plan add-prototype`.
 ## While the work happens
 
 ```sh
-change-saga task set --plan ID --task TASK --state in_progress change.saga
+change-saga task start --plan ID --task TASK change.saga
+change-saga task note --plan ID --task TASK "the tide table moved" change.saga
+change-saga task note --plan ID --task TASK --blocked "no data before 1990" change.saga
 change-saga task done --plan ID --task TASK --summary TEXT change.saga
 ```
+
+Report on start, when blocked, on a finding that changes the work, and on finish.
+Do not narrate: every note is a tool call you pay for, and a reader wants news, not a
+log. A later note clears blocked. Before picking up a Task, `task list --ready` and
+`query plan` say who is already on it, and `task start` warns if someone is.
+
+**What is durable.** `task start` and `task note` are live activity. They write nothing
+to the Saga, so there is nothing to commit and no branch to merge; they are kept in the
+repository's common Git directory, shared by all its worktrees on this machine, and may
+be rotated away. `task done` is the fact: it writes the Task's state on your branch and
+also reports it live, so a reader elsewhere sees "done on your-branch" until it merges.
+`validate`, `status`, `check`, and `plan deliver` only ever read the durable state.
+
+A person leaves the Plan open and watches. The board and slide nodes show who is on
+what, blocked Tasks stand out, a Task with no update for a while reads "quiet" (an agent
+may just be busy, so it is never read as failed), and a Task's slide-out and the Plan's
+feed show the messages. `--agent NAME` overrides who you report as, which otherwise is
+the DevSwarm workspace, else the Git branch. `query task --task ID --history` returns a
+Task's messages; `query plan` and `query task` carry only the latest. A Saga outside Git
+has no live activity, and the commands say so rather than failing. Separate clones and
+other machines share nothing yet.
 
 A change that would leave a Task with no path to a story, or make a dependency
 cycle, is refused and names the Tasks. Adjust the chain rather than working around it.

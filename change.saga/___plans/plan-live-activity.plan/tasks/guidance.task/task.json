@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "Edits to plan guide, references/plans.md, and SPEC section 9."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "plan guide, references/plans.md, and SPEC section 9 say when to note and what is durable.",
   "created_at": "2026-11-03T04:51:35.953077Z"
 }

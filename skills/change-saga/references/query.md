@@ -239,10 +239,10 @@ covered lines are not proof of a correct explanation.
   `change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
 - `plans`: the current Plans with their progress and links; delivered Plans only with --all.
   `change-saga query plans --saga PATH [--all] [--cursor TOKEN] [--limit N]`
-- `plan`: one Plan in full: its essay, phases, compact Tasks with their dependencies and what can start, and its slides.
-  `change-saga query plan --saga PATH --plan ID|URN`
-- `task`: one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it.
-  `change-saga query task --saga PATH --task ID|URN [--plan ID|URN]`
+- `plan`: one Plan in full: its essay, phases, compact Tasks with their dependencies, what can start, and who is on them now, and its slides.
+  `change-saga query plan --saga PATH --plan ID|URN [--repo PATH]`
+- `task`: one Task in full: its essay, story, code references, what it depends on and unblocks, the slides that name it, and its latest live activity; --history adds its messages.
+  `change-saga query task --saga PATH --task ID|URN [--plan ID|URN] [--history] [--repo PATH]`
 - `prototype`: one prototype's HTML as it was recorded, by byte range, with its revisions, files, and annotations; a prototype hosted elsewhere returns its URLs.
   `change-saga query prototype --saga PATH --prototype ID|URN [--revision ID] [--file PATH] [--offset N] [--limit N] [--repo PATH]`
 <!-- query-operations:end -->
