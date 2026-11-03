@@ -39,7 +39,6 @@ Change Saga is experimental, and its format may change before 1.0.
 - [Working with your coding agent](#working-with-your-coding-agent)
 - [See an example Saga](#see-an-example-saga)
 - [Status, check and reconcile](#status-check-and-reconcile)
-- [Faster health checks](#faster-health-checks-for-large-sagas)
 - [Structured access for AI](#structured-access-for-ai)
 - [Authoring by hand](#authoring-by-hand)
 - [CLI reference](#cli-reference)
@@ -489,29 +488,6 @@ The [reconciliation workflow](docs/reconciliation.md) separates review
 coverage, documentation diff coverage, and HEAD currency, with reasons and
 typed repair paths. Reassess before editing; current pins cannot prove the
 explanation is correct.
-
-### Faster health checks for large Sagas
-
-Repeated checks reuse disposable source-comparison data while reassessing
-Saga records on every run. See [health check performance and cache
-validity](docs/health-check-performance.md) for measurements and invalidation.
-
-Cold checks also generate patches for referenced files while retaining global
-rename detection. A health-only check skips unrelated review reports and
-next-action suggestions. Health findings, JSON output, and exit codes keep
-their existing contract.
-
-One controlled comparison on a large Saga with 5,974 examined records measured:
-
-| Health check | Before | After |
-| --- | ---: | ---: |
-| Empty application cache | 19.90 s | **6.54 s** |
-| Repeated invocation | 15.57 s | **4.21 s** |
-
-All four outputs matched byte for byte. These are measurements of one Saga on
-one machine, not a latency guarantee. Repeated checks still load and validate
-the Saga and reassess its findings; the cache stores comparison geometry,
-not a saved healthy status.
 
 ## Structured access for AI
 
