@@ -157,7 +157,7 @@ func TestAPlanPageReadsAsAPlanAndShowsItsTasks(t *testing.T) {
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 
 	deck := getPage(t, handler, "/plans/first").Body.String()
-	for _, want := range []string{"Plan, not a review", "1 of 2 tasks done"} {
+	for _, want := range []string{"Plan, not a review", `<span data-plan-done>1</span> of 2 tasks done`} {
 		if !strings.Contains(deck, want) {
 			t.Errorf("the deck view has no %q", want)
 		}

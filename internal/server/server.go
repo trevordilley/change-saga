@@ -43,6 +43,8 @@ import (
 type app struct {
 	root      string
 	sourceDir string
+	// planActivity is where Plans' live activity is read from.
+	planActivity planActivitySource
 	// rng is how the reviewer was opened: observe one commit, or compare a
 	// change against its merge-base. It never comes from the Saga.
 	rng           gitdiff.Range
@@ -545,6 +547,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /plans/{id}/tasks/{task}", application.taskPage)
 	page("GET /plans/{id}/tasks", application.planTasksPage)
 	handle("GET /plans/{id}/visual/{slide}", application.planVisual)
+	handle("GET /api/plans/{id}/activity", application.planActivityAPI)
 	page("GET /reviews", application.reviewIndex)
 	page("GET /reviews/{id}", application.reviewPage)
 	handle("GET /reviews/{id}/summary", application.reviewSummary)

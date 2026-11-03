@@ -302,7 +302,11 @@ const appJavaScript = `(() => {
     visual.dataset.landmarkVisual = target.dataset.landmarkAnchor;
     visual.dataset.autoLandmarkHotspot = 'true';
     visual.dataset.elementId = target.dataset.elementId;
-    if (target.dataset.planTaskState) visual.dataset.planTaskState = target.dataset.planTaskState;
+    if (target.dataset.planTaskState) {
+      visual.dataset.planTaskState = target.dataset.planTaskState;
+      visual.dataset.planTaskId = target.dataset.planTaskId;
+      visual.dataset.planTaskHolder = target.dataset.planTaskHolder || '';
+    }
     visual.dataset.x = String(region.x);
     visual.dataset.y = String(region.y);
     visual.dataset.width = String(region.width);
@@ -3268,7 +3272,7 @@ const appJavaScript = `(() => {
     }
   }
 
-` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + deprecationJavaScript + planJavaScript + `
+` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + deprecationJavaScript + planJavaScript + planLiveJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the
@@ -3460,6 +3464,7 @@ const appJavaScript = `(() => {
   function arrived(root, how) {
     const settled = preparePage(root);
     openPlanEssay(root);
+    schedulePlanLive(0);
     if (how !== 'first') {
       if (how === 'history' && scrollPositions.has(location.href)) scrollTo(0, scrollPositions.get(location.href));
       else if (!location.hash) scrollTo(0, 0);

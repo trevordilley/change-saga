@@ -306,6 +306,20 @@ func parseEvents(data []byte) []Event {
 	return events
 }
 
+// Ago says how long since at, in the largest whole unit.
+func Ago(now, at time.Time) string {
+	switch elapsed := now.Sub(at); {
+	case elapsed < time.Minute:
+		return "just now"
+	case elapsed < time.Hour:
+		return fmt.Sprintf("%dm ago", int(elapsed.Minutes()))
+	case elapsed < 48*time.Hour:
+		return fmt.Sprintf("%dh ago", int(elapsed.Hours()))
+	default:
+		return fmt.Sprintf("%dd ago", int(elapsed.Hours()/24))
+	}
+}
+
 // State is where a Task's activity leaves it.
 type State string
 

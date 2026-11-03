@@ -37,11 +37,11 @@ type planQuerySummary struct {
 type planQueryRecord struct {
 	planQuerySummary
 	// ActivityNote says why there is no live activity, when there cannot be any.
-	ActivityNote string `json:"activity_note,omitempty"`
-	Essay     *saga.DeckOverview  `json:"essay,omitempty"`
-	PhaseRows []planQueryPhase    `json:"phases"`
-	TaskRows  []planQueryTaskRow  `json:"tasks"`
-	SlideRows []planQuerySlideRow `json:"slides"`
+	ActivityNote string              `json:"activity_note,omitempty"`
+	Essay        *saga.DeckOverview  `json:"essay,omitempty"`
+	PhaseRows    []planQueryPhase    `json:"phases"`
+	TaskRows     []planQueryTaskRow  `json:"tasks"`
+	SlideRows    []planQuerySlideRow `json:"slides"`
 }
 
 type planQueryPhase struct {

@@ -109,7 +109,7 @@ func taskStart(ctx context.Context, args []string, out io.Writer) error {
 		now := time.Now()
 		for _, holder := range holders.Holders {
 			if holder.Agent != agent {
-				also = append(also, holder.Agent+" ("+ago(now, holder.At)+")")
+				also = append(also, holder.Agent+" ("+planactivity.Ago(now, holder.At)+")")
 			}
 		}
 	}
@@ -250,31 +250,17 @@ func cutRunes(text string, limit int) string {
 	return text
 }
 
-// ago says how long since at, in the largest whole unit.
-func ago(now, at time.Time) string {
-	switch elapsed := now.Sub(at); {
-	case elapsed < time.Minute:
-		return "just now"
-	case elapsed < time.Hour:
-		return fmt.Sprintf("%dm ago", int(elapsed.Minutes()))
-	case elapsed < 48*time.Hour:
-		return fmt.Sprintf("%dh ago", int(elapsed.Hours()))
-	default:
-		return fmt.Sprintf("%dd ago", int(elapsed.Hours()/24))
-	}
-}
-
 // activityWords says a Task's live state for task list.
 func activityWords(view *taskActivityView, now time.Time) string {
 	who := strings.Join(view.Agents, ", ")
 	switch view.State {
 	case "working":
 		if view.Quiet {
-			return "started by " + who + ", quiet since " + ago(now, view.At)
+			return "started by " + who + ", quiet since " + planactivity.Ago(now, view.At)
 		}
-		return "started by " + who + " " + ago(now, view.At)
+		return "started by " + who + " " + planactivity.Ago(now, view.At)
 	case "blocked":
-		return "blocked: " + who + ", " + ago(now, view.At)
+		return "blocked: " + who + ", " + planactivity.Ago(now, view.At)
 	case "done_on_branch":
 		return "done on " + firstNonEmpty(view.Branch, "another branch")
 	}
