@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "release-management",
+  "title": "Manage releases",
+  "description": "Teams can plan, run and record each release: its stories, version, notes and checklist, in a section of its own.",
+  "created_at": "2026-11-03T00:23:01.299886Z"
+}

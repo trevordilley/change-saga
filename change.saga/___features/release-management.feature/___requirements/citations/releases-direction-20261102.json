@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "releases-direction-20261102",
+  "kind": "decision",
+  "title": "What managing a release means",
+  "reference": "Trevor's product direction, 2026-11-02: 'the next thing to add is our high-level strategy around releases... defining the stories and features for managing releases in change-saga.' Every release has the stories it delivers or affects, a version number, private and public release notes each linking to one or more stories, and a checklist initialized from the repo's template that can be modified with new steps or helpful excerpts as work progresses. Each checkbox is a specific actionable thing: proving something is true, or changing the state of the universe. A Releases header sits next to docs, plans and reviews. Its sidebar has Release Process Overview (a whiteboard of how code goes from dev machine to users, referencing real code such as GitHub Actions and DevOps), Release Template (the checklist copied first for every release, and where the versioning system is set; not automated, people supply the version), and Releases (the list; the version is set when created). CRUD for all of it, following the standard structure so it is mergeable and reviewable.",
+  "created_at": "2026-11-03T00:23:01.467066Z"
+}
