@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -40,10 +41,16 @@ func reportLive(t *testing.T, fixture serverReviewFixture, task, agent, kind, me
 	}
 }
 
-func liveState(t *testing.T, handler http.Handler) planLiveResponse {
+func liveAsk(t *testing.T, handler http.Handler, since string) *httptest.ResponseRecorder {
 	t.Helper()
 	recorder := httptest.NewRecorder()
-	handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/plans/first/activity", nil))
+	handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/plans/first/activity?since="+url.QueryEscape(since), nil))
+	return recorder
+}
+
+func liveDelta(t *testing.T, handler http.Handler, since string) planLiveResponse {
+	t.Helper()
+	recorder := liveAsk(t, handler, since)
 	if recorder.Code != http.StatusOK {
 		t.Fatalf("status %d: %s", recorder.Code, recorder.Body.String())
 	}
@@ -52,6 +59,12 @@ func liveState(t *testing.T, handler http.Handler) planLiveResponse {
 		t.Fatal(err)
 	}
 	return state
+}
+
+// liveState is everything, as a page with no cursor is told.
+func liveState(t *testing.T, handler http.Handler) planLiveResponse {
+	t.Helper()
+	return liveDelta(t, handler, "")
 }
 
 func TestLiveStatusReadsEachState(t *testing.T) {
@@ -133,22 +146,15 @@ func TestTheActivityEndpointReadsNoSagaAndSays304WhenNothingChanged(t *testing.T
 	application.fresh.mutex.Unlock()
 
 	state := liveState(t, handler)
-	if !state.Available || state.All != 2 || state.Tasks["prepare"].Class != "working" || state.Tasks["prepare"].Who != "ada" || !strings.Contains(state.Feed, "ada") {
+	if !state.Available || state.All != 2 || state.Tasks["prepare"].Class != "working" || state.Tasks["prepare"].Who != "ada" || state.Feed == nil || !strings.Contains(*state.Feed, "ada") {
 		t.Fatalf("state = %+v", state)
 	}
 	if state.Tasks["work"].Class != "waiting" || state.Tasks["work"].History != "" {
 		t.Fatalf("a Task nobody reported on reads as its record: %+v", state.Tasks["work"])
 	}
 
-	first := httptest.NewRecorder()
-	handler.ServeHTTP(first, httptest.NewRequest(http.MethodGet, "/api/plans/first/activity", nil))
-	etag := first.Header().Get("ETag")
-	again := httptest.NewRequest(http.MethodGet, "/api/plans/first/activity", nil)
-	again.Header.Set("If-None-Match", etag)
-	second := httptest.NewRecorder()
-	handler.ServeHTTP(second, again)
-	if etag == "" || second.Code != http.StatusNotModified || second.Body.Len() != 0 {
-		t.Fatalf("etag %q, status %d, %d bytes", etag, second.Code, second.Body.Len())
+	if second := liveAsk(t, handler, state.Cursor); second.Code != http.StatusNotModified || second.Body.Len() != 0 {
+		t.Fatalf("status %d, %d bytes", second.Code, second.Body.Len())
 	}
 	application.fresh.mutex.Lock()
 	defer application.fresh.mutex.Unlock()
@@ -166,7 +172,7 @@ func TestTheActivityEndpointReadsNoSagaAndSays304WhenNothingChanged(t *testing.T
 func TestTheEndpointSeesARecordChangeAndNewActivity(t *testing.T) {
 	t.Parallel()
 	_, handler, fixture := livePlanFixture(t)
-	if state := liveState(t, handler); state.Done != 0 || state.Tasks["prepare"].Class != "ready" || !strings.Contains(state.Ready, "Task prepare") {
+	if state := liveState(t, handler); state.Done != 0 || state.Tasks["prepare"].Class != "ready" || state.Ready == nil || !strings.Contains(*state.Ready, "Task prepare") {
 		t.Fatalf("state = %+v", state)
 	}
 	if page := getPage(t, handler, "/plans/first/tasks").Body.String(); !strings.Contains(page, "1 task can start now") {
@@ -174,8 +180,8 @@ func TestTheEndpointSeesARecordChangeAndNewActivity(t *testing.T) {
 	}
 	// A Task someone is on is not free to pick up, on the first render or after.
 	reportLive(t, fixture, "prepare", "ben", planactivity.KindStart, "", time.Now().UTC())
-	if state := liveState(t, handler); state.Ready != "" {
-		t.Fatalf("a held Task still reads as free: %q", state.Ready)
+	if state := liveState(t, handler); state.Ready == nil || *state.Ready != "" {
+		t.Fatalf("a held Task still reads as free: %v", state.Ready)
 	}
 	if page := getPage(t, handler, "/plans/first/tasks").Body.String(); strings.Contains(page, "can start now") {
 		t.Error("a held Task must not read as able to start")
@@ -228,5 +234,67 @@ func TestADeliveredPlanStopsPolling(t *testing.T) {
 	deliverServerPlan(t, fixture.root, "first")
 	if page := getPage(t, handler, "/plans/first/tasks").Body.String(); strings.Contains(page, "data-plan-live-url") {
 		t.Error("a delivered Plan no longer changes, so nothing polls it")
+	}
+}
+
+// However large the Plan, a poll carries only what changed since the page last asked.
+func TestAPollCarriesOnlyWhatChanged(t *testing.T) {
+	t.Parallel()
+	_, handler, fixture := livePlanFixture(t)
+	first := liveState(t, handler)
+	if len(first.Tasks) != 2 || first.Feed == nil || first.Ready == nil {
+		t.Fatalf("a page with no cursor gets everything: %+v", first)
+	}
+	reportLive(t, fixture, "work", "ada", planactivity.KindNote, "a finding", time.Now().UTC())
+	delta := liveDelta(t, handler, first.Cursor)
+	if len(delta.Tasks) != 1 || !strings.Contains(delta.Tasks["work"].History, "a finding") || delta.Feed == nil {
+		t.Fatalf("delta = %+v", delta)
+	}
+	if delta.Ready != nil {
+		t.Fatal("nothing about what can start changed")
+	}
+	if delta.Done != 0 || delta.All != 2 {
+		t.Fatalf("the count always comes: %+v", delta)
+	}
+	if again := liveAsk(t, handler, delta.Cursor); again.Code != http.StatusNotModified {
+		t.Fatalf("status %d", again.Code)
+	}
+	// An older cursor, as a page restored from history has, catches up on all of it.
+	reportLive(t, fixture, "prepare", "ben", planactivity.KindStart, "", time.Now().UTC())
+	if behind := liveDelta(t, handler, first.Cursor); len(behind.Tasks) != 2 {
+		t.Fatalf("behind = %+v", behind.Tasks)
+	}
+	// A cursor from another run of the server means nothing.
+	if stranger := liveDelta(t, handler, "elsewhere.1"); len(stranger.Tasks) != 2 || stranger.Feed == nil {
+		t.Fatalf("stranger = %+v", stranger)
+	}
+}
+
+// Nothing on disk changes when a Task goes quiet, so the clock has to say so.
+func TestATaskGoingQuietReachesAPageWithNothingElseChanging(t *testing.T) {
+	t.Parallel()
+	_, handler, fixture := livePlanFixture(t)
+	reportLive(t, fixture, "work", "ada", planactivity.KindStart, "", time.Now().UTC().Add(-planactivity.QuietAfter+time.Second))
+	first := liveState(t, handler)
+	if first.Tasks["work"].Class != "working" {
+		t.Fatalf("task = %+v", first.Tasks["work"])
+	}
+	time.Sleep(1100 * time.Millisecond)
+	if delta := liveDelta(t, handler, first.Cursor); delta.Tasks["work"].Class != "working quiet" {
+		t.Fatalf("delta = %+v", delta.Tasks)
+	}
+}
+
+func TestAPagesCursorMeansItsFirstPollIsSmall(t *testing.T) {
+	t.Parallel()
+	_, handler, _ := livePlanFixture(t)
+	page := getPage(t, handler, "/plans/first/tasks").Body.String()
+	_, rest, found := strings.Cut(page, `data-plan-live-cursor="`)
+	if !found {
+		t.Fatal("the page carries no cursor")
+	}
+	cursor, _, _ := strings.Cut(rest, `"`)
+	if asked := liveAsk(t, handler, cursor); asked.Code != http.StatusNotModified {
+		t.Fatalf("a page that is current must hear 304, got %d", asked.Code)
 	}
 }

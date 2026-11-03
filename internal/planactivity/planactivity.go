@@ -78,6 +78,9 @@ type Log interface {
 	// Read returns a Plan's events, oldest first. A Plan nobody has reported on
 	// has none. A line that cannot be read is skipped.
 	Read(planID string) ([]Event, error)
+	// Stamp changes whenever Read's answer might. It reads no event, so a reader
+	// left polling can ask it cheaply however long the log has grown.
+	Stamp(planID string) string
 }
 
 // Open finds the log of the Saga at root: the one in the common Git directory of
@@ -283,6 +286,21 @@ func (log *fileLog) Read(planID string) ([]Event, error) {
 	}
 	sort.SliceStable(events, func(i, j int) bool { return events[i].At.Before(events[j].At) })
 	return events, nil
+}
+
+// Stamp commits to the name, size, and time of every file of the Plan's log.
+func (log *fileLog) Stamp(planID string) string {
+	entries, err := os.ReadDir(log.planDir(planID))
+	if err != nil {
+		return ""
+	}
+	digest := sha256.New()
+	for _, entry := range entries {
+		if info, err := entry.Info(); err == nil {
+			fmt.Fprintf(digest, "%s\x00%d\x00%d\x00", entry.Name(), info.Size(), info.ModTime().UnixNano())
+		}
+	}
+	return fmt.Sprintf("%x", digest.Sum(nil))
 }
 
 // readFile answers from the cache while the file's size and time are unchanged.

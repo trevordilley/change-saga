@@ -1,6 +1,7 @@
 package saga
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -158,6 +159,28 @@ func ReadPlanRecords(root, planID string) (PlanManifest, []TaskManifest, error) 
 		}
 	}
 	return plan, tasks, nil
+}
+
+// PlanRecordsStamp changes whenever ReadPlanRecords' answer might, reading only
+// the size and time of those records.
+func PlanRecordsStamp(root, planID string) (string, error) {
+	dir := filepath.Join(root, PlansDir, planID+PlanSuffix)
+	info, err := os.Stat(filepath.Join(dir, PlanManifestName))
+	if err != nil {
+		return "", err
+	}
+	digest := sha256.New()
+	fmt.Fprintf(digest, "%d\x00%d\x00", info.Size(), info.ModTime().UnixNano())
+	entries, err := os.ReadDir(filepath.Join(dir, PlanTasksDir))
+	if err != nil && !errors.Is(err, fs.ErrNotExist) {
+		return "", err
+	}
+	for _, entry := range entries {
+		if info, err := os.Stat(filepath.Join(dir, PlanTasksDir, entry.Name(), TaskManifestName)); err == nil {
+			fmt.Fprintf(digest, "%s\x00%d\x00%d\x00", entry.Name(), info.Size(), info.ModTime().UnixNano())
+		}
+	}
+	return fmt.Sprintf("%x", digest.Sum(nil)), nil
 }
 
 func PlanTarget(sagaID, planID string) string {

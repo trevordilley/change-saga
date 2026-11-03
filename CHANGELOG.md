@@ -12,7 +12,7 @@ tool, and what they have to do about it.
 
 ### Added
 
-- **Watch a Plan while agents work.** `task start`, `task note`, and `task note --blocked` report live activity to a log in the repository's common Git directory, shared by every worktree and never committed. `task done` still writes the durable state and also reports it. A Plan left open shows who is on each Task, blocked and quiet Tasks, "done on BRANCH" for work not merged yet, a Task's messages in its slide-out, and a feed across the Plan, without a reload or moving the camera, selection, or an open drawer. `query plan` and `query task` carry the latest activity compactly, `query task --history` returns messages, and `task list --ready` says who started a Task. Activity never changes what `validate`, `status`, `check`, or `plan deliver` report.
+- **Watch a Plan while agents work.** `task start`, `task note`, and `task note --blocked` report live activity to a log in the repository's common Git directory, shared by every worktree and never committed. `task done` still writes the durable state and also reports it. A Plan left open shows who is on each Task, blocked and quiet Tasks, "done on BRANCH" for work not merged yet, a Task's messages in its slide-out, and a feed across the Plan, without a reload or moving the camera, selection, or an open drawer. `query plan` and `query task` carry the latest activity compactly, `query task --history` returns messages, and `task list --ready` says who started a Task. Activity never changes what `validate`, `status`, `check`, or `plan deliver` report. A poll with nothing new costs a few file checks however large the Plan is, and an update carries only the Tasks that changed.
 
 ### Added
 

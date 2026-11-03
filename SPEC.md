@@ -2002,10 +2002,14 @@ Task with no update for 30 minutes reads quiet. It is never read as failed.
 the message cut to 140 characters. Only `query task --history` returns messages, up to
 the newest 200. `task list` says who started a Task, including with `--ready`.
 
-A reader's Plan pages poll `GET /api/plans/ID/activity`, which reads the activity log
-and the Plan's own `plan.json` and `task.json` files, never the whole Saga, and answers
-304 while nothing a reader would see has changed. An update MUST NOT change the page's
-camera, selection, or an open drawer. A delivered Plan is not polled.
+A reader's Plan pages poll `GET /api/plans/ID/activity?since=CURSOR`. It never loads
+the Saga. While the size and time of the log's files and the Plan's `plan.json` and
+`task.json` files have not moved, and no held Task has gone quiet, it answers 304 having
+read and rendered nothing. Otherwise it returns only the Tasks, feed, and ready line that
+changed since the cursor. A page starts from the cursor it was rendered with, and a cursor
+from another run of the server is answered in full. How long ago something happened is
+worked out in the browser. An update MUST NOT change the page's camera, selection, or an
+open drawer. A delivered Plan is not polled.
 
 ### Plan decks
 

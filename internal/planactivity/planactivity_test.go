@@ -319,3 +319,24 @@ func TestEventsRoundTripAsCompactLines(t *testing.T) {
 		t.Fatalf("empty fields must be left out: %s", line)
 	}
 }
+
+func TestTheStampMovesWithTheLog(t *testing.T) {
+	t.Parallel()
+	log := tempLog(t)
+	if log.Stamp("plan") != "" {
+		t.Fatal("an absent log has no stamp")
+	}
+	if err := log.Append("plan", Event{Agent: "a", Task: "t", Kind: KindStart}); err != nil {
+		t.Fatal(err)
+	}
+	first := log.Stamp("plan")
+	if first == "" || log.Stamp("plan") != first {
+		t.Fatalf("stamp %q must hold while nothing changes", first)
+	}
+	if err := log.Append("plan", Event{Agent: "b", Task: "t", Kind: KindNote}); err != nil {
+		t.Fatal(err)
+	}
+	if log.Stamp("plan") == first {
+		t.Fatal("a new event must move the stamp")
+	}
+}

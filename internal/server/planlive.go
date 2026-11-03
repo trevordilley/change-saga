@@ -3,8 +3,6 @@ package server
 import (
 	"bytes"
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -40,6 +38,10 @@ type planActivitySource struct {
 	log     planactivity.Log
 	reason  string
 	checked time.Time
+	// plans holds what each Plan's pages were last told, created as pages ask.
+	plans map[string]*planLiveState
+	// instance names this server's run: a cursor from another run means nothing.
+	instance string
 }
 
 func (a *app) planActivityLog(ctx context.Context) (planactivity.Log, string) {
@@ -125,6 +127,10 @@ func liveStatus(id, state string, canStart bool, live *planactivity.TaskActivity
 type planLiveView struct {
 	// URL is where to poll. A delivered Plan no longer changes, so it has none.
 	URL string
+	// Cursor says what this page already shows, so its first poll asks only for
+	// what changed since. It is taken before the page reads anything, so a change
+	// made while the page renders is sent again rather than missed.
+	Cursor string
 	// Reason says why there can be no live activity.
 	Reason string
 	Feed   []planActivityRow
@@ -178,11 +184,11 @@ func planActivityRows(events []planactivity.Event, now time.Time, titles map[str
 func planActivityURL(planID string) string { return "/api" + planHref(planID) + "/activity" }
 
 // planLiveFor reads a Plan's activity for the first render of one of its pages.
-func (a *app) planLiveFor(ctx context.Context, plan *saga.Plan) (taskReadiness, *planLiveView) {
+func (a *app) planLiveFor(ctx context.Context, plan *saga.Plan, cursor string) (taskReadiness, *planLiveView) {
 	ready := planReady(plan)
 	events, reason := a.planActivityEvents(ctx, plan.ID)
 	ready.live = planactivity.Summarize(events)
-	view := &planLiveView{Reason: reason}
+	view := &planLiveView{Reason: reason, Cursor: cursor}
 	if !plan.Delivered() && reason == "" {
 		view.URL = planActivityURL(plan.ID)
 	}
@@ -206,63 +212,215 @@ type planLiveTask struct {
 	History string `json:"history,omitempty"`
 }
 
-// planLiveResponse is everything a page left open needs to catch up. It carries
-// what to show, already decided and rendered, so the script only places it.
+// planLiveResponse is what a page left open needs to catch up: only what changed
+// since its cursor, already decided and rendered, so the script only places it. A
+// feed or ready line left out has not changed.
 type planLiveResponse struct {
+	Cursor    string                  `json:"cursor"`
 	Available bool                    `json:"available"`
 	Reason    string                  `json:"reason,omitempty"`
 	Done      int                     `json:"done"`
 	All       int                     `json:"all"`
 	Tasks     map[string]planLiveTask `json:"tasks"`
-	Feed      string                  `json:"feed"`
-	// Ready is the line naming what can start now, which is empty when nothing can.
-	Ready string `json:"ready"`
+	Feed      *string                 `json:"feed,omitempty"`
+	Ready     *string                 `json:"ready,omitempty"`
 }
 
-// planActivityAPI answers a page left open. It reads the activity log and the
-// Plan's small Task records, never the Saga, and says 304 while nothing a reader
-// would see has changed, so a page can poll it for hours at almost no cost. It
-// does not count as a reader using the server, so the Saga watcher still goes idle.
+// planLiveState is a Plan as its pages were last told, and when each part last
+// changed. Asking costs one stamp of the log and the Task records; only a stamp
+// that moved reads and renders anything, and then only what actually changed, so
+// the cost of a page left open does not grow with the Plan.
+type planLiveState struct {
+	mutex      sync.Mutex
+	stamp      string
+	generation int
+	// quietAt is when the next held Task goes quiet. Nothing on disk changes then,
+	// so the clock has to say so.
+	quietAt              time.Time
+	available            bool
+	reason               string
+	done, all            int
+	tasks                map[string]planLiveTask
+	taskChanged          map[string]int
+	historyKeys          map[string]string
+	feed, feedKey, ready string
+	feedChanged          int
+	readyChanged         int
+}
+
+func planActivityKey(events []planactivity.Event) string {
+	if len(events) == 0 {
+		return ""
+	}
+	return strconv.Itoa(len(events)) + "\x00" + events[len(events)-1].At.Format(time.RFC3339Nano)
+}
+
+// planLiveStateFor is the Plan's state, brought up to date if its stamp moved. It
+// reports false when the Plan is not there.
+func (a *app) planLiveStateFor(ctx context.Context, id string) (*planLiveState, bool) {
+	records, err := saga.PlanRecordsStamp(a.root, id)
+	if err != nil {
+		return nil, false
+	}
+	log, reason := a.planActivityLog(ctx)
+	stamp := records + "\x00" + reason
+	if log != nil {
+		stamp += "\x00" + log.Stamp(id)
+	}
+	source := &a.planActivity
+	source.mutex.Lock()
+	if source.plans == nil {
+		source.plans = map[string]*planLiveState{}
+		source.instance = strconv.FormatInt(time.Now().UnixNano(), 36)
+	}
+	state := source.plans[id]
+	if state == nil {
+		state = &planLiveState{tasks: map[string]planLiveTask{}, taskChanged: map[string]int{}, historyKeys: map[string]string{}}
+		source.plans[id] = state
+	}
+	source.mutex.Unlock()
+	state.mutex.Lock()
+	defer state.mutex.Unlock()
+	now := time.Now()
+	if state.generation > 0 && state.stamp == stamp && (state.quietAt.IsZero() || !now.After(state.quietAt)) {
+		return state, true
+	}
+	_, tasks, err := saga.ReadPlanRecords(a.root, id)
+	if err != nil {
+		return nil, false
+	}
+	events, _ := a.planActivityEvents(ctx, id)
+	state.update(id, tasks, events, stamp, records, reason, now)
+	return state, true
+}
+
+// update works out what changed and marks it with a new generation. Agents' words
+// are rendered only for a Task with new ones.
+func (state *planLiveState) update(id string, tasks []saga.TaskManifest, events []planactivity.Event, stamp, records, reason string, now time.Time) {
+	live := planactivity.Summarize(events)
+	next := state.generation + 1
+	changed := state.generation == 0 || state.reason != reason
+	mark := func(at *int) {
+		*at = next
+		changed = true
+	}
+	canStart := map[string]bool{}
+	for _, task := range saga.TasksReady(tasks) {
+		canStart[task.ID] = true
+	}
+	titles := make(map[string]string, len(tasks))
+	free := []planTaskLink{}
+	done := 0
+	quietAt := time.Time{}
+	seen := make(map[string]bool, len(tasks))
+	for _, task := range tasks {
+		seen[task.ID] = true
+		titles[task.ID] = task.Title
+		if task.State == saga.TaskDone {
+			done++
+		}
+		activity := live[task.ID]
+		status := liveStatus(task.ID, task.State, canStart[task.ID], activity, now)
+		if status.Class == "ready" {
+			free = append(free, planTaskLink{ID: task.ID, Title: task.Title, Href: taskHref(id, task.ID), Status: status})
+		}
+		row := planLiveTask{Class: status.Class, Word: status.Word, Who: status.Who, OnIt: status.OnIt(), Detail: status.Detail(), Label: task.Title + ": " + status.Word, Action: "Open task: " + task.Title + ". " + status.Word}
+		row.History = state.tasks[task.ID].History
+		if activity != nil {
+			if key := planActivityKey(activity.Events); key != state.historyKeys[task.ID] {
+				state.historyKeys[task.ID] = key
+				row.History = renderPlanActivity(planActivityRows(activity.Events, now, nil, false, planHistoryRows))
+			}
+			if len(activity.Holders) > 0 && !activity.Quiet(now) {
+				if at := activity.Holders[0].At.Add(planactivity.QuietAfter); quietAt.IsZero() || at.Before(quietAt) {
+					quietAt = at
+				}
+			}
+		}
+		if previous, known := state.tasks[task.ID]; !known || previous != row {
+			state.tasks[task.ID] = row
+			taskChanged := state.taskChanged[task.ID]
+			mark(&taskChanged)
+			state.taskChanged[task.ID] = taskChanged
+		}
+	}
+	for id := range state.tasks {
+		if !seen[id] {
+			delete(state.tasks, id)
+		}
+	}
+	if key := planActivityKey(events) + "\x00" + records; key != state.feedKey {
+		state.feedKey = key
+		if feed := renderPlanActivity(planActivityRows(events, now, titles, true, planFeedRows)); feed != state.feed || state.generation == 0 {
+			state.feed = feed
+			mark(&state.feedChanged)
+		}
+	}
+	if ready := renderPlanTemplate("plan-ready-line", free); ready != state.ready || state.generation == 0 {
+		state.ready = ready
+		mark(&state.readyChanged)
+	}
+	if done != state.done || len(tasks) != state.all {
+		state.done, state.all = done, len(tasks)
+		changed = true
+	}
+	state.stamp, state.quietAt, state.available, state.reason = stamp, quietAt, reason == "", reason
+	if changed {
+		state.generation = next
+	}
+}
+
+// planLiveCursor says what a page rendered from here on already shows.
+func (a *app) planLiveCursor(ctx context.Context, id string) string {
+	state, found := a.planLiveStateFor(ctx, id)
+	if !found {
+		return ""
+	}
+	state.mutex.Lock()
+	defer state.mutex.Unlock()
+	return a.planActivity.instance + "." + strconv.Itoa(state.generation)
+}
+
+// planActivityAPI answers a page left open. It never loads the Saga, and says 304
+// while nothing a reader would see has changed. It does not count as a reader using
+// the server, so the Saga watcher still goes idle.
 func (a *app) planActivityAPI(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	if !saga.ValidID(id) {
 		http.NotFound(w, r)
 		return
 	}
-	_, tasks, err := saga.ReadPlanRecords(a.root, id)
-	if err != nil {
+	state, found := a.planLiveStateFor(r.Context(), id)
+	if !found {
 		http.NotFound(w, r)
 		return
 	}
-	events, reason := a.planActivityEvents(r.Context(), id)
-	live := planactivity.Summarize(events)
-	now := time.Now()
-	canStart := map[string]bool{}
-	for _, task := range saga.TasksReady(tasks) {
-		canStart[task.ID] = true
-	}
-	titles := make(map[string]string, len(tasks))
-	for _, task := range tasks {
-		titles[task.ID] = task.Title
-	}
-	response := planLiveResponse{Available: reason == "", Reason: reason, All: len(tasks), Tasks: make(map[string]planLiveTask, len(tasks))}
-	free := []planTaskLink{}
-	for _, task := range tasks {
-		if task.State == saga.TaskDone {
-			response.Done++
+	state.mutex.Lock()
+	defer state.mutex.Unlock()
+	// A cursor from another run of the server asks for everything.
+	since := -1
+	if generation, sameRun := strings.CutPrefix(r.URL.Query().Get("since"), a.planActivity.instance+"."); sameRun {
+		if value, err := strconv.Atoi(generation); err == nil {
+			since = value
 		}
-		status := liveStatus(task.ID, task.State, canStart[task.ID], live[task.ID], now)
-		if status.Class == "ready" {
-			free = append(free, planTaskLink{ID: task.ID, Title: task.Title, Href: taskHref(id, task.ID), Status: status})
-		}
-		row := planLiveTask{Class: status.Class, Word: status.Word, Who: status.Who, OnIt: status.OnIt(), Detail: status.Detail(), Label: task.Title + ": " + status.Word, Action: "Open task: " + task.Title + ". " + status.Word}
-		if activity := live[task.ID]; activity != nil {
-			row.History = renderPlanActivity(planActivityRows(activity.Events, now, nil, false, planHistoryRows))
-		}
-		response.Tasks[task.ID] = row
 	}
-	response.Feed = renderPlanActivity(planActivityRows(events, now, titles, true, planFeedRows))
-	response.Ready = renderPlanTemplate("plan-ready-line", free)
+	w.Header().Set("Cache-Control", "no-store")
+	if since == state.generation {
+		w.WriteHeader(http.StatusNotModified)
+		return
+	}
+	response := planLiveResponse{Cursor: a.planActivity.instance + "." + strconv.Itoa(state.generation), Available: state.available, Reason: state.reason, Done: state.done, All: state.all, Tasks: map[string]planLiveTask{}}
+	for task, row := range state.tasks {
+		if state.taskChanged[task] > since {
+			response.Tasks[task] = row
+		}
+	}
+	if state.feedChanged > since {
+		response.Feed = &state.feed
+	}
+	if state.readyChanged > since {
+		response.Ready = &state.ready
+	}
 	// Rendered rows are mostly markup, which escaping for a script tag would double.
 	var encoded bytes.Buffer
 	encoder := json.NewEncoder(&encoded)
@@ -271,17 +429,8 @@ func (a *app) planActivityAPI(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The activity could not be read.", http.StatusInternalServerError)
 		return
 	}
-	body := encoded.Bytes()
-	digest := sha256.Sum256(body)
-	etag := `"` + hex.EncodeToString(digest[:12]) + `"`
-	w.Header().Set("ETag", etag)
-	w.Header().Set("Cache-Control", "no-store")
-	if r.Header.Get("If-None-Match") == etag {
-		w.WriteHeader(http.StatusNotModified)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
-	_, _ = w.Write(body)
+	_, _ = w.Write(encoded.Bytes())
 }
 
 func renderPlanActivity(rows []planActivityRow) string {
@@ -296,10 +445,10 @@ func renderPlanTemplate(name string, view any) string {
 	return out.String()
 }
 
-const planLiveTemplates = `{{define "plan-activity-rows"}}{{range .}}<li class="plan-activity-row {{.Class}}" data-plan-activity-kind="{{.Class}}"><span class="plan-activity-line"><strong>{{.Agent}}</strong> {{.Verb}}{{if .TaskTitle}} {{if .Drawer}}<button type="button" class="plan-activity-task" data-plan-drawer="{{.Drawer}}" data-plan-drawer-title="Task" data-plan-drawer-beside="true">{{.TaskTitle}}</button>{{else}}<span class="plan-activity-task">{{.TaskTitle}}</span>{{end}}{{end}}{{if .Branch}} on {{.Branch}}{{end}} <time datetime="{{.At}}" title="{{.Stamp}}">{{.Ago}}</time></span>{{if .Message}}<span class="plan-activity-message">{{.Message}}</span>{{end}}</li>{{end}}{{end}}
+const planLiveTemplates = `{{define "plan-activity-rows"}}{{range .}}<li class="plan-activity-row {{.Class}}" data-plan-activity-kind="{{.Class}}"><span class="plan-activity-line"><strong>{{.Agent}}</strong> {{.Verb}}{{if .TaskTitle}} {{if .Drawer}}<button type="button" class="plan-activity-task" data-plan-drawer="{{.Drawer}}" data-plan-drawer-title="Task" data-plan-drawer-beside="true">{{.TaskTitle}}</button>{{else}}<span class="plan-activity-task">{{.TaskTitle}}</span>{{end}}{{end}}{{if .Branch}} on {{.Branch}}{{end}} <time datetime="{{.At}}" title="{{.Stamp}}" data-plan-ago>{{.Ago}}</time></span>{{if .Message}}<span class="plan-activity-message">{{.Message}}</span>{{end}}</li>{{end}}{{end}}
 {{define "plan-live-feed"}}<details class="plan-live" data-plan-live-feed open><summary>Live updates</summary>{{if .Reason}}<p class="plan-note" data-plan-live-reason>{{.Reason}}</p>{{else}}<p class="plan-note" data-plan-live-status role="status" hidden></p><ol class="plan-activity" data-plan-feed data-plan-empty="No updates yet. Agents report with task start and task note.">{{template "plan-activity-rows" .Feed}}</ol>{{end}}</details>{{end}}
 {{define "plan-task-history"}}<section class="plan-task-updates" data-plan-task-updates><h3>Updates</h3><ol class="plan-activity" data-plan-task-history="{{.ID}}" data-plan-empty="No updates yet.">{{template "plan-activity-rows" .History}}</ol></section>{{end}}
-{{define "plan-ready-line"}}{{if .}}<strong>{{len .}} {{if eq (len .) 1}}task{{else}}tasks{{end}} can start now:</strong> {{template "plan-task-names" .}}.{{end}}{{end}}
+{{define "plan-ready-line"}}{{if .}}<summary>{{len .}} {{if eq (len .) 1}}task{{else}}tasks{{end}} can start now</summary><p class="plan-note">{{template "plan-task-names" .}}.</p>{{end}}{{end}}
 {{define "plan-task-on-it"}}<p class="plan-note plan-task-on-it" data-plan-task-on-it="{{.TaskID}}"{{if not .OnIt}} hidden{{end}}>{{.OnIt}}</p>{{end}}
 `
 
@@ -356,7 +505,7 @@ button.plan-activity-task:hover{text-decoration:underline}
 // node, a word, a list of rows. It never redraws the board or reopens a drawer, so
 // the camera, the selection, and an open slide-out all stay as the reader left them.
 const planLiveJavaScript = `
-  const planLive = {timer: null, url: null, etag: null, failures: 0, running: false};
+  const planLive = {timer: null, cursor: null, failures: 0, running: false};
   const planLiveClasses = ['done', 'done-branch', 'ready', 'working', 'waiting', 'blocked', 'quiet'];
   // Everything a Plan page shows or will show: the page, an open drawer, and the
   // templates its slide-outs and hotspots are cloned from.
@@ -404,40 +553,48 @@ const planLiveJavaScript = `
         const task = state.tasks[list.dataset.planTaskHistory];
         if (task) setPlanLiveRows(list, task.history || '');
       }
-      for (const list of qa('[data-plan-feed]', root)) setPlanLiveRows(list, state.feed);
+      if (state.feed !== undefined) for (const list of qa('[data-plan-feed]', root)) setPlanLiveRows(list, state.feed);
       for (const count of qa('[data-plan-done]', root)) count.textContent = String(state.done);
-      for (const line of qa('[data-plan-ready]', root)) { setPlanLiveRows(line, state.ready); line.hidden = !state.ready; }
+      if (state.ready !== undefined) for (const line of qa('[data-plan-ready]', root)) { setPlanLiveRows(line, state.ready); line.hidden = !state.ready; }
+    }
+  }
+  // How long ago is worked out here, so the passing of time asks nothing of the server.
+  function refreshPlanTimes() {
+    for (const stamp of qa('time[data-plan-ago]')) {
+      const elapsed = Date.now() - Date.parse(stamp.dateTime);
+      const word = elapsed < 60000 ? 'just now' : elapsed < 3600000 ? Math.floor(elapsed / 60000) + 'm ago' : elapsed < 172800000 ? Math.floor(elapsed / 3600000) + 'h ago' : Math.floor(elapsed / 86400000) + 'd ago';
+      if (stamp.textContent !== word) stamp.textContent = word;
     }
   }
   function setPlanLiveStatus(message) {
     for (const status of qa('[data-plan-live-status]')) { status.textContent = message; status.hidden = !message; }
   }
-  function currentPlanLiveURL() { return q('#page [data-plan-live-url]')?.dataset.planLiveUrl || null; }
+  function currentPlanLiveHost() { return q('#page [data-plan-live-url]'); }
   function schedulePlanLive(delay) {
     clearTimeout(planLive.timer);
     planLive.timer = setTimeout(pollPlanLive, delay);
   }
   async function pollPlanLive() {
     planLive.timer = null;
-    const url = currentPlanLiveURL();
+    const url = currentPlanLiveHost()?.dataset.planLiveUrl;
     // A page with nothing to watch, or one nobody can see, asks for nothing. Arriving
     // on a Plan or coming back to the tab starts this again.
     if (!url || document.hidden || planLive.running) return;
-    if (url !== planLive.url) { planLive.url = url; planLive.etag = null; planLive.failures = 0; }
     planLive.running = true;
     let stop = false;
     try {
-      const response = await fetch(url, {cache: 'no-store', headers: planLive.etag ? {'If-None-Match': planLive.etag} : {}});
+      const response = await fetch(url + '?since=' + encodeURIComponent(planLive.cursor || ''), {cache: 'no-store'});
       if (response.status === 404) stop = true;
       if (response.status !== 304 && !response.ok && !stop) throw new Error(String(response.status));
       planLive.failures = 0;
       setPlanLiveStatus('');
-      if (response.status === 200 && currentPlanLiveURL() === url) {
-        planLive.etag = response.headers.get('ETag');
+      if (response.status === 200 && currentPlanLiveHost()?.dataset.planLiveUrl === url) {
         const state = await response.json();
+        planLive.cursor = state.cursor;
         applyPlanLive(state);
         if (!state.available) { stop = true; setPlanLiveStatus(state.reason || ''); }
       }
+      refreshPlanTimes();
     } catch {
       planLive.failures++;
       setPlanLiveStatus('Live updates paused. Trying again.');
@@ -446,10 +603,10 @@ const planLiveJavaScript = `
     }
     if (!stop) schedulePlanLive(Math.min(30000, 2000 * 2 ** planLive.failures));
   }
-  // A page restored from history is older than what was last read, so it asks for
-  // everything rather than hearing that nothing changed.
+  // A page says what it already shows. One restored from history says what it
+  // showed then, so it is told everything since.
   function watchPlanLive() {
-    planLive.etag = null;
+    planLive.cursor = currentPlanLiveHost()?.dataset.planLiveCursor || null;
     schedulePlanLive(0);
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) schedulePlanLive(0); });
