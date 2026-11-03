@@ -2,17 +2,17 @@
   "version": 2,
   "references": [
     {
-      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "commit": "8f5e754ce39a60a580854ab5629375ebecb9a7fc",
       "path": "internal/gitdiff/selectedchanges_test.go",
-      "digest": "sha256:8b00dbed067a9f7d268d31355c0ee1c47dd425bccdb3b64a748989e12925b51f",
+      "digest": "sha256:18fcf3ce3ef21f5e96e19c59beb56098212c6c88d8018179bf9ff14f53ea145b",
       "note": "Committed implementation or regression evidence for regression verification."
     },
     {
-      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "commit": "8f5e754ce39a60a580854ab5629375ebecb9a7fc",
       "path": "internal/gitdiff/selectedchanges_test.go",
       "start": 1,
-      "end": 210,
-      "digest": "sha256:8b00dbed067a9f7d268d31355c0ee1c47dd425bccdb3b64a748989e12925b51f",
+      "end": 219,
+      "digest": "sha256:18fcf3ce3ef21f5e96e19c59beb56098212c6c88d8018179bf9ff14f53ea145b",
       "note": "Committed implementation or regression evidence for regression verification."
     }
   ]
