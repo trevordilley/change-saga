@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "deck": "plan-live-activity",
+  "slide": "the-work",
+  "current": "sha256:043e1ecd7a5720679837c2fe9cba4819d34af07d9fd734e0ec97f47d4268e68a",
+  "revisions": [
+    {
+      "snapshot": "sha256:043e1ecd7a5720679837c2fe9cba4819d34af07d9fd734e0ec97f47d4268e68a",
+      "request_id": "plan-live-work",
+      "created_at": "2026-11-03T04:54:12.624257Z",
+      "asset": "24-a-bd13c9a570efd109b03376eec8d0115295a3685d75ab77b71e6b.svg",
+      "asset_digest": "sha256:bd13c9a570efd109b03376eec8d0115295a3685d75ab77b71e6bd6ee9a357549",
+      "slide": {
+        "front": [
+          "Agents append to a log in the common Git directory.",
+          "Commands, query, and the reader all read it.",
+          "Select a node to see that Task live."
+        ],
+        "version": 4,
+        "id": "the-work",
+        "deck": "plan-live-activity",
+        "title": "One log, read three ways",
+        "rank": 10,
+        "section": "The work",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-bd13c9a570efd109b03376eec8d0115295a3685d75ab77b71e6b.svg",
+        "takeaway": "Everything reads the shared activity log; only task done touches the record.",
+        "reading_order": [
+          "activity-log",
+          "task-commands",
+          "query-and-ready",
+          "live-endpoint",
+          "board-and-slides",
+          "feed-and-history",
+          "guidance"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "activity-log",
+            "slide": "the-work",
+            "rank": 10,
+            "kind": "node",
+            "label": "Shared activity log",
+            "description": "Build the shared activity log.",
+            "selector": {
+              "type": "element",
+              "element_id": "activity-log"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-live-activity:task:activity-log"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "task-commands",
+            "slide": "the-work",
+            "rank": 20,
+            "kind": "node",
+            "label": "task start and note",
+            "description": "Add task start and task note.",
+            "selector": {
+              "type": "element",
+              "element_id": "task-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-live-activity:task:task-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "query-and-ready",
+            "slide": "the-work",
+            "rank": 30,
+            "kind": "node",
+            "label": "Query and task list",
+            "description": "Include activity in query and task list.",
+            "selector": {
+              "type": "element",
+              "element_id": "query-and-ready"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-live-activity:task:query-and-ready"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "live-endpoint",
+            "slide": "the-work",
+            "rank": 40,
+            "kind": "node",
+            "label": "Light endpoint",
+            "description": "Serve activity from a light endpoint.",
+            "selector": {
+              "type": "element",
+              "element_id": "live-endpoint"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-live-activity:task:live-endpoint"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "board-and-slides",
+            "slide": "the-work",
+            "rank": 50,
+            "kind": "node",
+            "label": "Board and slide state",
+            "description": "Show live state on board and slide nodes.",
+            "selector": {
+              "type": "element",
+              "element_id": "board-and-slides"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-live-activity:task:board-and-slides"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "feed-and-history",
+            "slide": "the-work",
+            "rank": 60,
+            "kind": "node",
+            "label": "History and feed",
+            "description": "Show a Task's history and a Plan's feed.",
+            "selector": {
+              "type": "element",
+              "element_id": "feed-and-history"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-live-activity:task:feed-and-history"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "guidance",
+            "slide": "the-work",
+            "rank": 70,
+            "kind": "node",
+            "label": "Guidance",
+            "description": "Teach when to note and what is durable.",
+            "selector": {
+              "type": "element",
+              "element_id": "guidance"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-live-activity:task:guidance"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-877ff67bc4f4c2d4b65b4cc22405bfae8d7879c7a5504134822a.json",
+        "source_digest": "sha256:877ff67bc4f4c2d4b65b4cc22405bfae8d7879c7a5504134822ac560247e0928",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

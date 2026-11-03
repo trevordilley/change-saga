@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "line": {
+      "fill": "none",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 2,
+      "font_size": 14
+    },
+    "primary": {
+      "fill": "@diagram-blue-tint",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 2,
+      "font_size": 18
+    }
+  },
+  "elements": [
+    {
+      "id": "activity-log",
+      "kind": "node",
+      "shape": "service",
+      "label": "Shared activity log",
+      "x": 40,
+      "y": 270,
+      "width": 270,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "task-commands",
+      "kind": "node",
+      "shape": "service",
+      "label": "task start and note",
+      "x": 350,
+      "y": 90,
+      "width": 270,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "query-and-ready",
+      "kind": "node",
+      "shape": "service",
+      "label": "Query and task list",
+      "x": 350,
+      "y": 270,
+      "width": 270,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "live-endpoint",
+      "kind": "node",
+      "shape": "service",
+      "label": "Light endpoint",
+      "x": 350,
+      "y": 450,
+      "width": 270,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "board-and-slides",
+      "kind": "node",
+      "shape": "service",
+      "label": "Board and slide state",
+      "x": 660,
+      "y": 360,
+      "width": 270,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "feed-and-history",
+      "kind": "node",
+      "shape": "service",
+      "label": "History and feed",
+      "x": 660,
+      "y": 540,
+      "width": 270,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "guidance",
+      "kind": "node",
+      "shape": "service",
+      "label": "Guidance",
+      "x": 970,
+      "y": 90,
+      "width": 270,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "activity-log-to-task-commands",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "activity-log",
+      "to": "task-commands",
+      "points": [
+        {
+          "x": 310,
+          "y": 325
+        },
+        {
+          "x": 350,
+          "y": 145
+        }
+      ]
+    },
+    {
+      "id": "activity-log-to-query-and-ready",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "activity-log",
+      "to": "query-and-ready",
+      "points": [
+        {
+          "x": 310,
+          "y": 325
+        },
+        {
+          "x": 350,
+          "y": 325
+        }
+      ]
+    },
+    {
+      "id": "activity-log-to-live-endpoint",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "activity-log",
+      "to": "live-endpoint",
+      "points": [
+        {
+          "x": 310,
+          "y": 325
+        },
+        {
+          "x": 350,
+          "y": 505
+        }
+      ]
+    },
+    {
+      "id": "live-endpoint-to-board-and-slides",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "live-endpoint",
+      "to": "board-and-slides",
+      "points": [
+        {
+          "x": 620,
+          "y": 505
+        },
+        {
+          "x": 660,
+          "y": 415
+        }
+      ]
+    },
+    {
+      "id": "live-endpoint-to-feed-and-history",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "live-endpoint",
+      "to": "feed-and-history",
+      "points": [
+        {
+          "x": 620,
+          "y": 505
+        },
+        {
+          "x": 660,
+          "y": 595
+        }
+      ]
+    },
+    {
+      "id": "task-commands-to-guidance",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "task-commands",
+      "to": "guidance",
+      "points": [
+        {
+          "x": 620,
+          "y": 145
+        },
+        {
+          "x": 970,
+          "y": 145
+        }
+      ]
+    }
+  ]
+}

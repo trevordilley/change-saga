@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">One log, read three ways</title>
+  <desc id="diagram-desc">Everything reads the shared activity log; only task done touches the record.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-ink:#172554;--diagram-blue-tint:#e8f1ff;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-ink:#cae8ff;--diagram-blue-tint:#121d2f;}}</style>
+  </defs>
+  <g id="activity-log" data-diagram-kind="node" transform="translate(40 270)" role="group" aria-label="Shared activity log">
+    <rect width="270" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="36" font-size="18" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="36">Shared activity log</tspan></text>
+  </g>
+  <g id="task-commands" data-diagram-kind="node" transform="translate(350 90)" role="group" aria-label="task start and note">
+    <rect width="270" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="36" font-size="18" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="36">task start and note</tspan></text>
+  </g>
+  <g id="query-and-ready" data-diagram-kind="node" transform="translate(350 270)" role="group" aria-label="Query and task list">
+    <rect width="270" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="36" font-size="18" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="36">Query and task list</tspan></text>
+  </g>
+  <g id="live-endpoint" data-diagram-kind="node" transform="translate(350 450)" role="group" aria-label="Light endpoint">
+    <rect width="270" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="36" font-size="18" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="36">Light endpoint</tspan></text>
+  </g>
+  <g id="board-and-slides" data-diagram-kind="node" transform="translate(660 360)" role="group" aria-label="Board and slide state">
+    <rect width="270" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="36" font-size="18" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="36">Board and slide state</tspan></text>
+  </g>
+  <g id="feed-and-history" data-diagram-kind="node" transform="translate(660 540)" role="group" aria-label="History and feed">
+    <rect width="270" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="36" font-size="18" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="36">History and feed</tspan></text>
+  </g>
+  <g id="guidance" data-diagram-kind="node" transform="translate(970 90)" role="group" aria-label="Guidance">
+    <rect width="270" height="110" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="36" font-size="18" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="36">Guidance</tspan></text>
+  </g>
+  <g id="activity-log-to-task-commands" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="activity-log to task-commands" data-from="activity-log" data-to="task-commands">
+    <path d="M310 325 L350 145" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="activity-log-to-query-and-ready" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="activity-log to query-and-ready" data-from="activity-log" data-to="query-and-ready">
+    <path d="M310 325 L350 325" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="activity-log-to-live-endpoint" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="activity-log to live-endpoint" data-from="activity-log" data-to="live-endpoint">
+    <path d="M310 325 L350 505" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="live-endpoint-to-board-and-slides" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="live-endpoint to board-and-slides" data-from="live-endpoint" data-to="board-and-slides">
+    <path d="M620 505 L660 415" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="live-endpoint-to-feed-and-history" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="live-endpoint to feed-and-history" data-from="live-endpoint" data-to="feed-and-history">
+    <path d="M620 505 L660 595" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="task-commands-to-guidance" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="task-commands to guidance" data-from="task-commands" data-to="guidance">
+    <path d="M620 145 L970 145" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+</svg>

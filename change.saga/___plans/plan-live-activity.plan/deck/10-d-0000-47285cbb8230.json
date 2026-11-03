@@ -1,4 +1,14 @@
 {
+  "overview": {
+    "body": "# Watch a Plan while agents work\n\nAgents work in separate worktrees, so what one does to a Task in its checkout is invisible to a reader open on another until the branch merges. Agent names and progress messages exist nowhere at all.\n\nThis Plan adds a log beside the Saga rather than inside it. It lives in the repository's common Git directory, so every worktree sees it and nothing commits it. [One log is read three ways](annotation:the-work): by commands, by `query`, and by a reader left open.\n\n## What stays durable\n\nThe Plan stays the record. `task done` is still the committed fact. Activity is a view on top: it never changes what `validate`, `status`, `check`, or delivery report, and losing the log loses nothing but a view.\n\n`task start` writes only the log, so starting a Task leaves the branch clean. A reader tells apart a Task durably done in its own checkout and one done on another branch, which reads \"done on X\" until it merges.\n\n## The reader\n\nA light endpoint reads the log and the Plan's small Task records, never the Saga. It answers 304 when nothing changed, so a page can stay open for hours. Patches only touch a node's state, never the camera, the selection, or an open drawer.\n\n## Open questions\n\n- How long before a Task reads \"quiet\"? Thirty minutes is a judgment.\n- Should a second `task start` be refused? It warns and records, because a stale start from a crashed agent must not block anyone.\n- A story node's count stays durable and updates on the next load; only Tasks and the Plan's count update in place.\n- Separate clones and other machines share nothing. Reaching them is later work, behind the log's small interface.\n",
+    "annotations": [
+      {
+        "id": "the-work",
+        "label": "One log is read three ways",
+        "slide": "the-work"
+      }
+    ]
+  },
   "version": 4,
   "id": "plan-live-activity",
   "title": "Watch a Plan while agents work",
