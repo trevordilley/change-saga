@@ -11,7 +11,7 @@ storyboarding a board, read [visual storytelling](visual-storytelling.md).
 
 Technical Design includes an Architecture whiteboard alongside ERD, Infrastructure
 and Data flows. For codebase structure, patterns, state ownership and technology
-choices, read [architecture guidance](references/architecture.md) before drawing:
+choices, read [architecture guidance](architecture.md) before drawing:
 gather code evidence and boundary rules, build a map with question-led sections,
 generate and visually inspect a scratch board, then independently fact-check its
 claims before publication. Reuse the shared whiteboard format; feature decks

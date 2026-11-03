@@ -37,7 +37,7 @@ review verdict.
   at it, then lists what else lost coverage. Run it with `--dry-run` first and
   show the user its summary; confirm before a removal that reaches beyond what
   they asked for. Then fix, or report, each listed adjustment. See
-  "Deleting records" in [reorganizing existing content](references/reorganize.md).
+  "Deleting records" in [reorganizing existing content](reorganize.md).
 - Preserve history and uncertainty. Revisions and lifecycle events are
   immutable; decisions, comments, claims, verification results, and merge
   evidence are append-only. Preserve competing heads and reported conflicts;

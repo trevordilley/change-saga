@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -57,8 +58,10 @@ func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {
 			t.Fatalf("install-skill must lead %s with SKILL.md: %v", skill.name, paths)
 		}
 		for _, file := range skill.files {
-			for _, link := range regexp.MustCompile(`\]\((references/[^)]+)\)`).FindAllStringSubmatch(file.Content, -1) {
-				if !containsString(paths, link[1]) {
+			for _, link := range regexp.MustCompile(`\]\(([a-z][a-z-]*(?:/[a-z-]+)*\.md)\)`).FindAllStringSubmatch(file.Content, -1) {
+				// A link is relative to the file that holds it.
+				resolved := path.Join(path.Dir(file.Path), link[1])
+				if !containsString(paths, resolved) {
 					t.Errorf("%s/%s links to %s, which install-skill does not print", skill.name, file.Path, link[1])
 				}
 			}
