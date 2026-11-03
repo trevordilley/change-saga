@@ -10,7 +10,9 @@ Today, nobody can answer that from a Saga. Quality lives inside each feature, wi
 
 **If I change this line of code, which end-to-end tests do I need to run to prove the stories it touches still work?**
 
-[One command answers that](/requirements/find-e2e-tests-for-code) for a line or for a range. Reviews and releases both work on code ranges, so they ask the same question and get the same answer. It follows the code to stories, stories to their criteria, and criteria to tests, then [prints the tests in a form a runner accepts](/requirements/get-tests-in-a-runnable-form).
+[One command answers that](/requirements/find-e2e-tests-for-code) for a line or for a range. Reviews and releases both work on code ranges, so they ask the same question and get the same answer. It follows the Saga's links from the code to stories, stories to their criteria, and criteria to tests, then [prints the tests in a form a runner accepts](/requirements/get-tests-in-a-runnable-form).
+
+That flow is transitive, which is the point of Change Saga. A line an Item cites reaches that Item's criteria directly. Failing that, it reaches the feature holding that Item, and so that feature's stories. A line nothing cites, in a file a feature's records do cite, reaches that feature through its file. Each step casts a wider net, so the answer says which path found each test, and `--direct` keeps only the specific ones.
 
 The tool answers and people decide. [It says what it could not reach](/requirements/see-what-selection-cannot-reach), so a short list never reads as proof that the rest is safe, and it never says whether the answer is good enough.
 
@@ -58,7 +60,7 @@ Measured on this Saga:
 - 27 of its 182 test cases have code in `e2e/`, reaching 16 distinct `test()` blocks by a rough parse.
 - 51 of the 243 current criteria on built features have an end-to-end test. 46 of the 51 are positive only, and none has a negative end-to-end test.
 - Of the 58 references into `e2e/tests`, 4 start on a `test()` line and 54 sit inside a test body or helper. They read well, but Playwright finds no test at a line inside a body, so most would need a [reference to the declaring line](/requirements/open-e2e-test-code) before a command could run them.
-- On v0.6.0 to v0.7.0, 1,378 of 17,802 changed lines reach a story.
+- On v0.6.0 to v0.7.0, 1,378 of 17,802 changed lines reach a story by exact line, and following files, features and Tasks raises that to at most 4,617. Most of the rest is product code in features with no implementation deck, such as `internal/server/plans.go`, plus 3,248 lines of the deleted work plan. The walk cannot invent links that were never recorded, so writing the Plans feature's deck would do more here than any change to the walk.
 
 These are counts from the records, and kinds are as their authors stated them. A team that wants to fill any of this in can have an agent do it, and nothing asks them to.
 

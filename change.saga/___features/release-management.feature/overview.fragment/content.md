@@ -10,7 +10,7 @@ This repository shows the cost. Its changelog dated a 0.5.1 that was never tagge
 
 **A release is a named version of the product and everything needed to get it to users.** Every release has:
 
-- **Stories** it will deliver or affect, so it says what changes for people and not only which commits it contains. Every one of them has code references by the time it ships.
+- **Stories** it will deliver or affect, so it says what changes for people and not only which commits it contains. Each one [reaches code through the Saga's links](/requirements/every-released-story-has-code): a story belongs to a feature, which has an implementation, which links to code.
 - **A version**, supplied by a person when the release is created. It is never computed.
 - **Internal notes** for the team: "v0.8.1" and a bunch of Jira tickets. Each links to stories or is marked as a fix.
 - **Public notes** for everyone else: "Unleash the Kraken!", closer to a blog post about why the release is great than a list of changes.
@@ -34,11 +34,13 @@ End-to-end tests are the ones that let a team sleep at night, and the flakiest a
 
 A release adds the [stories and criteria in play](/requirements/see-stories-from-the-range), beside those it set out to deliver. An agent running the release takes the list, runs it, and [ticks a step with a link to the run](/requirements/prove-a-release-with-its-tests). The results stay in the team's CI.
 
-The tool answers and the team decides. On v0.6.0 to v0.7.0, this repository changed 17,802 lines, deleted lines included, and `status` connects 1,378 of them to a story through the Saga as it stands. So [the answer also says what it could not reach](/requirements/see-what-selection-cannot-reach), and what to run beyond the list is the team's call. A fix with no story is allowed, and it shows up there.
+The tool answers and the team decides. On v0.6.0 to v0.7.0, this repository changed 17,802 lines, deleted lines included. 1,378 of them reach a story by exact line, and following files, features and Tasks raises that to at most 4,617. So [the answer also says what it could not reach](/requirements/see-what-selection-cannot-reach), and what to run beyond the list is the team's call. A fix with no story is allowed, and it shows up there.
 
 ## An agent can run it {#an-agent-can-run-it}
 
 **Change Saga is a tool for AI, so the release commands are how an agent conducts a release and how a person guides it.** A developer can [tell an agent to run the release](/requirements/have-an-agent-run-the-release). The agent reads the process and the versioning scheme, asks the CLI for the next step, does it with its own tools, records it, and carries on. A step it cannot do, it asks a person about, and it ticks that step only once they confirm. If the agent stops, a new one continues from the first unticked step.
+
+A release [runs on a short-lived branch](/requirements/run-a-release-on-a-branch) that merges when the checklist is done. Every tick is a write to the Saga, and a release usually tags a commit on a protected main branch, so the release records the tagged commit and its ticks land afterwards.
 
 Steering is ordinary editing: a person adds a step or an excerpt during the run, and the agent reads it next. The reader is for people to see where things stand, and nothing about running a release needs it.
 
@@ -68,7 +70,7 @@ A release is one new record. Everything else extends something that exists, so t
 | Release's stories | Stories, and URNs that survive moves and `feature deliver` | Recommended: plain story URNs, as a Task's `story` is, for hand links. Stories found from the range are computed and not stored. |
 | Checklist | Only the stance of Tasks: `done` is a report, and Git is the history | Decided: a step is not a Task, and release steps stay out of Plans. |
 | Larger goals | Shared milestones | Decided: [a release sits within a milestone](/requirements/place-a-release-in-a-milestone), optionally. They have different scopes and timelines and need not share a screen. Milestones gain no version. |
-| Code behind a story | `query traceability`, Tasks, test-case evidence | Decided: [every story in a release has code references](/requirements/every-released-story-has-code). |
+| Code behind a story | The links stories already have: to a feature and its implementation, to Items, to Tasks, to test evidence | Decided: [walk them, and link nothing by hand](/requirements/every-released-story-has-code). Shown, never enforced. |
 | Which tests to run | `review test-plan`, which already walks changed code to stories to tests, and reports gaps | Decided: one question for any line or range, which reviews and releases share. No selector of a release's own. |
 | The catalog | Test cases, `verifies` relations, test evidence | Recommended: [a view over them](/features/end-to-end-test-catalog), with no new record. |
 | Merged work | Reviews, Plan links, `___merges`, Git detection of merged reviews | Recommended: derive it and store nothing new. |
@@ -81,8 +83,9 @@ A release is one new record. Everything else extends something that exists, so t
 ## The principles it keeps {#the-principles-it-keeps}
 
 - **Git is the history.** A release that should not exist is deleted. A released version's stories are read at its commit, not copied, and what a range reaches is computed from Git.
-- **Links are required, where they mean something.** Every story in a release reaches code, and an internal note links a story or says it is a fix. An agent does the record keeping, so the rule is affordable.
-- **The Saga records and teams decide.** Nothing here says a release is ready, and a ticked step proves nothing.
+- **Links are required, where they mean something.** An internal note links a story or says it is a fix. An agent does the record keeping, so the rule is affordable.
+- **The flow is transitive.** What connects a story to code or to a test is the Saga's existing chain of links, walked when asked and not stored again.
+- **The Saga records and teams decide.** Nothing blocks a release. [Marking one released](/requirements/mark-a-release-released) lists what is open and proceeds, nothing here says a release is ready, and a ticked step proves nothing. Commands still refuse a malformed record, such as a release with no version.
 - **Nothing new blocks a Saga that does not adopt it.** [A Saga with no releases is unaffected](/requirements/releases-stay-optional).
 
 ## Limits {#limits}
@@ -97,11 +100,8 @@ It also does not check whether a release breaks somebody's Saga. That is one too
 
 In priority order. Each has a recommendation; none is decided.
 
-1. **Where do ticks get committed during a run?** Each tick is a write to the Saga, while a release often tags the default branch, which is usually protected; this repository requires a tag to point at a commit on it. Recommendation: run the release on a short-lived branch and merge it through a pull request when the checklist is done, so the ticks land after the tagged commit and the release records that commit rather than containing it. A browser tick is the same kind of write and needs someone to commit it.
-2. **Does a release have a "released" mark?** "What shipped?" and the code reference rule both need a moment to apply to. Recommendation: [one explicit mark](/requirements/mark-a-release-released) with a commit. Unticked steps do not refuse it, because some steps only happen afterwards. A story with no code references does, because that is the one rule the release is held to. Records stay editable afterwards, since a wrong note should be fixed, unlike a delivered Plan.
-3. **Which code references count?** Of this Saga's 24 accepted stories, 13 reach code through slide Items. The other 11 are the shipped Plans stories, and only test-case evidence reaches code for all of them. Recommendation: count Items, Tasks and test evidence, so the rule holds for work this repository has already shipped, and accept that a test reference shows where a story is tested, not where it is built.
-4. **Do release notes replace `CHANGELOG.md`?** Recommendation: internal notes are close to what the changelog is now, and a template step can put them there; the tool never writes it. A team that keeps a handwritten changelog can.
-5. **How do hotfixes and several release lines work?** Recommendation: add no "line" concept yet. A hotfix is a release with its own version and commit. What this leaves open is where its record is written when the fix ships from a branch other than the default, and how it reaches the default branch.
-6. **What does a team that deploys on every merge do?** A daily release is an ordinary release. A release for each deploy would be noise. Recommendation: such a team groups work into releases on whatever rhythm it reports on, or uses only the overview and template. Worth asking a real team before designing further.
+1. **Do release notes replace `CHANGELOG.md`?** Recommendation: internal notes are close to what the changelog is now, and a template step can put them there; the tool never writes it. A team that keeps a handwritten changelog can.
+2. **How do hotfixes and several release lines work?** Recommendation: add no "line" concept yet. A hotfix is a release with its own version and commit. What this leaves open is where its record is written when the fix ships from a branch other than the default, and how it reaches the default branch.
+3. **What does a team that deploys on every merge do?** A daily release is an ordinary release. A release for each deploy would be noise. Recommendation: such a team groups work into releases on whatever rhythm it reports on, or uses only the overview and template. Worth asking a real team before designing further.
 
 This repository runs its whole browser suite on every pull request and push to main, so choosing fewer tests would save it nothing until that changes.
