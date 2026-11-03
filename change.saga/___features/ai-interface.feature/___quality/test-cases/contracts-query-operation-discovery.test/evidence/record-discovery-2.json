@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "record-discovery-2",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "records"
+  ],
+  "code": [
+    {
+      "commit": "85dad2f432a7c5255db8e06a2f60b02ebc22c5f7",
+      "path": "internal/cli/query_records_test.go",
+      "start": 199,
+      "end": 214,
+      "digest": "sha256:ed98daf2e3540ef7f29e09dba5276afa301a2ee05f12ef36f4a901b146797331"
+    },
+    {
+      "commit": "85dad2f432a7c5255db8e06a2f60b02ebc22c5f7",
+      "path": "internal/cli/query_records_test.go",
+      "start": 217,
+      "end": 235,
+      "digest": "sha256:db3d91523404c02fafbd56cc5b0c5c54448ee7925b53468c57c980e97cf321da"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery:evidence:record-discovery"
+  ],
+  "created_at": "2026-11-03T04:51:07Z"
+}

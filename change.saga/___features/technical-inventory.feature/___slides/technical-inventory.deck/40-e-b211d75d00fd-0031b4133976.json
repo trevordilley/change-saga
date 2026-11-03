@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "f246ec2cd1278ac04b451beec94d46434a139191",
+      "commit": "85dad2f432a7c5255db8e06a2f60b02ebc22c5f7",
       "path": "skills/change-saga/SKILL.md",
-      "start": 226,
-      "end": 226,
-      "digest": "sha256:3eefc113ab280b1b1b51a68090cd9a7ab2d13e4fc75ce459bc27c42e6e41235c",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:5dbd76d787c63f0c6cc1d4c691e41ec51e83581c1b8f1e404ac759aa8a5d1582",
       "note": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries."
     }
   ]

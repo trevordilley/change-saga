@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "85dad2f432a7c5255db8e06a2f60b02ebc22c5f7",
       "path": "internal/cli/cli.go",
-      "start": 1074,
-      "end": 1115,
-      "digest": "sha256:32353bda405aedd75a3ca648ffaed85c6db98dc5d81c9a2e81c7bc922a4877ed",
+      "start": 1147,
+      "end": 1212,
+      "digest": "sha256:d9a89159a6eb1dc8259d4895605ab0726cda7d011824b5ad2740134309f95a6f",
       "note": "Parses status inputs, builds one report, and exits successfully when it is trustworthy."
     }
   ]
