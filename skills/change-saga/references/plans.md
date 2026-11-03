@@ -57,7 +57,8 @@ its Task or story, which `query task` then opens.
 
 Read Plans through `query`, not the rendered reader: `query plans` lists them,
 `query plan --plan ID` returns a Plan's essay, phases, Tasks and slides, and
-`query task --task ID` returns a Task's essay, story, code and dependencies.
+`query task --task ID` returns a Task's essay, story, code and dependencies. `query prototype --prototype ID`
+returns a prototype's HTML in byte-range pages, with its files and annotations.
 
 Give each diagram node that represents work an Item that selects the node
 (`selector: {type: element, element_id: NODE}`) and names its Task in `record`:

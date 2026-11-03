@@ -1966,7 +1966,8 @@ Tasks, and a deck without slides or an essay. None of these is invalid.
 
 `query plans`, `query plan`, and `query task` read Plans and Tasks as JSON, including
 a Plan's deck essay and a Task's essay. `query plans` omits delivered Plans unless
-`--all` is given.
+`--all` is given. `query prototype` reads a prototype's HTML the same way, in
+byte-range pages.
 
 ### Plan decks
 

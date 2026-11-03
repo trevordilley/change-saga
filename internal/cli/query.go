@@ -235,6 +235,7 @@ var queryOperations = []string{
 	"plans",
 	"plan",
 	"task",
+	"prototype",
 }
 
 // queryPurpose says what each operation answers. It is keyed by the same
@@ -242,6 +243,7 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
+	"prototype":            "one prototype's HTML as it was recorded, by byte range, with its revisions, files, and annotations; a prototype hosted elsewhere returns its URLs",
 	"plans":                "the current Plans with their progress and links; delivered Plans only with --all",
 	"plan":                 "one Plan in full: its essay, phases, compact Tasks with their dependencies and what can start, and its slides",
 	"task":                 "one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it",
@@ -287,6 +289,7 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
+	"prototype":            "change-saga query prototype --saga PATH --prototype ID|URN [--revision ID] [--file PATH] [--offset N] [--limit N] [--repo PATH]",
 	"plans":                "change-saga query plans --saga PATH [--all] [--cursor TOKEN] [--limit N]",
 	"plan":                 "change-saga query plan --saga PATH --plan ID|URN",
 	"task":                 "change-saga query task --saga PATH --task ID|URN [--plan ID|URN]",
@@ -366,6 +369,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	}
 	if operation == "feature-themes" {
 		return queryFeatureThemes(args[1:], out)
+	}
+	if operation == "prototype" {
+		return queryPrototype(ctx, args[1:], out)
 	}
 	if operation == "plans" {
 		return queryPlans(args[1:], out)
@@ -594,6 +600,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"inventory-uses":       {"data.subject", "data.uses", "data.uses[].path", "data.completeness"},
 		"terms":                {"data.head_oid", "data.ref", "data.terms"},
 		"term-references":      {"data.subject", "data.references", "data.counts", "data.completeness"},
+		"prototype":            {"data.prototype", "data.prototype.content.data", "data.prototype.content.next_offset", "data.prototype.files", "data.prototype.annotations"},
 		"plans":                {"data.plans", "data.plans[].tasks_done", "data.plans[].reviews"},
 		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.tasks", "data.plan.slides"},
 		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides"},
@@ -636,6 +643,8 @@ func querySchemaFor(operation string) querySchemaDescription {
 	pagination := queryPaginationDescription{Kind: "none"}
 	if operation == "fragment" || operation == "slide" {
 		pagination = queryPaginationDescription{Kind: "byte-offset", NextOffsetPath: "data.content.next_offset"}
+	} else if operation == "prototype" {
+		pagination = queryPaginationDescription{Kind: "byte-offset", NextOffsetPath: "data.prototype.content.next_offset"}
 	} else if operation != "overview" && operation != "audit" && operation != "layers" && operation != "history" && operation != "review-threads" && operation != "plan" && operation != "task" {
 		pagination = queryPaginationDescription{
 			Kind: "cursor", CountedPath: countedPaths[operation], TotalPath: "page.total", ReturnedPath: "page.returned",

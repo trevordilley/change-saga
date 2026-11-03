@@ -12,6 +12,8 @@ tool, and what they have to do about it.
 
 ### Added
 
+- `query prototype` returns a prototype's HTML in byte-range pages, as recorded
+  in the Saga or at its pinned commit, with its revisions, files, and annotations.
 - `diagram describe` shows the record an Item names, so an agent reading a Plan
   slide can follow a node to its Task or story.
 
