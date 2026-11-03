@@ -66,6 +66,9 @@ func reportActivity(ctx context.Context, root, repo, agentOverride, planID, task
 // checkLiveTask refuses a Task that is not there, or of a delivered Plan, reading
 // only the two records involved: reporting activity must stay quick.
 func checkLiveTask(root, planID, taskID string) error {
+	if !saga.ValidID(planID) || !saga.ValidID(taskID) {
+		return fmt.Errorf("task %q of plan %q is not a valid id", taskID, planID)
+	}
 	plan, tasks, err := saga.ReadPlanRecords(root, planID)
 	if err != nil {
 		return fmt.Errorf("plan %q does not exist", planID)

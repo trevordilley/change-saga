@@ -305,7 +305,7 @@ const planLiveTemplates = `{{define "plan-activity-rows"}}{{range .}}<li class="
 
 const planLiveStyles = `
 .plan-state.blocked{color:var(--review-changes-ink);background:var(--review-changes-bg)}
-.plan-state.done-branch{color:var(--review-approved-ink);background:transparent;outline:1px dashed var(--review-approved-ink);outline-offset:-1px}
+.plan-state.done-branch{color:var(--review-approved-ink);background:transparent;outline:1px dashed var(--review-approved-ink);outline-offset:-1px;white-space:normal;overflow-wrap:anywhere}
 .plan-state.quiet{color:var(--muted);background:var(--review-none-bg)}
 .plan-board-node.working rect{stroke-width:2.5}
 .plan-board-node.blocked rect{fill:var(--review-changes-bg);stroke:var(--review-changes-ink);stroke-width:3}
@@ -445,6 +445,12 @@ const planLiveJavaScript = `
       planLive.running = false;
     }
     if (!stop) schedulePlanLive(Math.min(30000, 2000 * 2 ** planLive.failures));
+  }
+  // A page restored from history is older than what was last read, so it asks for
+  // everything rather than hearing that nothing changed.
+  function watchPlanLive() {
+    planLive.etag = null;
+    schedulePlanLive(0);
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) schedulePlanLive(0); });
 `

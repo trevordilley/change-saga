@@ -3464,7 +3464,7 @@ const appJavaScript = `(() => {
   function arrived(root, how) {
     const settled = preparePage(root);
     openPlanEssay(root);
-    schedulePlanLive(0);
+    watchPlanLive();
     if (how !== 'first') {
       if (how === 'history' && scrollPositions.has(location.href)) scrollTo(0, scrollPositions.get(location.href));
       else if (!location.hash) scrollTo(0, 0);

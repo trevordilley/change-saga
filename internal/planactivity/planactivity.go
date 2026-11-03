@@ -5,7 +5,6 @@
 package planactivity
 
 import (
-	"bufio"
 	"bytes"
 	"context"
 	"crypto/sha256"
@@ -42,6 +41,8 @@ const (
 	QuietAfter = 30 * time.Minute
 	// MaxMessageRunes bounds one message, so one line stays one atomic append.
 	MaxMessageRunes = 2000
+	// maxAgentRunes bounds an agent's name.
+	maxAgentRunes = 80
 	// rotateAt is the size an agent's log rotates at, keeping one older file, so
 	// a Plan's log holds at most twice this per agent.
 	rotateAt = 128 << 10
@@ -106,6 +107,9 @@ func Branch(ctx context.Context, dir string) string {
 // else the Git branch. getenv reads the environment.
 func Identity(override string, getenv func(string) string, branch string) string {
 	if agent := strings.TrimSpace(override); agent != "" {
+		if runes := []rune(agent); len(runes) > maxAgentRunes {
+			return string(runes[:maxAgentRunes])
+		}
 		return agent
 	}
 	if name := strings.TrimSpace(getenv("DEVSWARM_BUILDER_NAME")); name != "" {
@@ -295,11 +299,9 @@ func parseEvents(data []byte) []Event {
 		return nil
 	}
 	events := []Event{}
-	scanner := bufio.NewScanner(bytes.NewReader(data[:end]))
-	scanner.Buffer(make([]byte, 0, 16<<10), 1<<20)
-	for scanner.Scan() {
+	for _, line := range bytes.Split(data[:end], []byte{'\n'}) {
 		var event Event
-		if json.Unmarshal(scanner.Bytes(), &event) == nil && event.Task != "" && event.Agent != "" {
+		if json.Unmarshal(line, &event) == nil && event.Task != "" && event.Agent != "" {
 			events = append(events, event)
 		}
 	}

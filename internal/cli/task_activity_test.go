@@ -136,6 +136,9 @@ func TestActivityRefusesWhatIsNotThere(t *testing.T) {
 	if err := Task(context.Background(), []string{"note", "--plan", "nope", "--task", "read", "words", root}, &out); err == nil {
 		t.Fatal("a note on a missing Plan must be refused")
 	}
+	if err := Task(context.Background(), []string{"start", "--plan", "../../elsewhere", "--task", "read", root}, &out); err == nil {
+		t.Fatal("a Plan id must not reach outside the log")
+	}
 	if err := Task(context.Background(), []string{"note", "--plan", "first", "--task", "read", root}, &out); err == nil || !strings.Contains(err.Error(), "usage") {
 		t.Fatalf("a note without words must show usage: %v", err)
 	}
@@ -209,4 +212,33 @@ func anyStrings(value any) []string {
 		values = append(values, item.(string))
 	}
 	return values
+}
+
+// Activity is a view: what a Saga reports is the same whatever the log says.
+func TestActivityChangesNoReport(t *testing.T) {
+	root, other := activityRepo(t)
+	report := func() string {
+		var out bytes.Buffer
+		_ = Status(context.Background(), []string{"--json", root}, &out)
+		var validated bytes.Buffer
+		_ = Validate(context.Background(), []string{root}, &validated)
+		var checked bytes.Buffer
+		_ = Check(context.Background(), []string{"--covers", "health", root}, &checked)
+		return out.String() + validated.String() + checked.String()
+	}
+	before := report()
+	if !strings.Contains(before, `"`) {
+		t.Fatalf("status must report something to compare: %q", before)
+	}
+	taskOutput(t, "start", "--plan", "first", "--task", "source", "--agent", "ada", other)
+	taskOutput(t, "note", "--plan", "first", "--task", "read", "--blocked", "--agent", "ada", "stuck", other)
+	taskOutput(t, "done", "--plan", "first", "--task", "source", "--agent", "ben", other)
+	if after := report(); after != before {
+		t.Fatalf("activity changed a report:\nbefore %s\nafter %s", before, after)
+	}
+	// Done on a branch is not done here, so delivery still waits for it.
+	message := refused(t, planCommand, "deliver", "--plan", "first", root)
+	if !strings.Contains(message, "source") && !strings.Contains(message, "done") {
+		t.Fatalf("plan deliver said %q", message)
+	}
 }
