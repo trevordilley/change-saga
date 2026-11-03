@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "sections-and-reports",
-  "current": "sha256:5d244186acd73383471980339ae3398c3a90940896d07603255ede868d7e6e90",
+  "current": "sha256:38d88433af7d933fd455b8573cd5f9137baed8913e3a895105e5c410e9a615fe",
   "revisions": [
     {
       "snapshot": "sha256:14413827f36474133b4b293df1eb36fc6b126b5afddff284e915f97df8143e6e",
@@ -262,6 +262,270 @@
       "diagram": {
         "source": "24-a-8c5ca17f37f0ead036e1676d6b2c896b4416fc42840102b2d81b.json",
         "source_digest": "sha256:8c5ca17f37f0ead036e1676d6b2c896b4416fc42840102b2d81b5c5b484d9f04",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:4d175409e5b3e3dac5576039d891938c33f493710e16afef04ca80c4ce33e1c3",
+      "parent_snapshots": [
+        "sha256:5d244186acd73383471980339ae3398c3a90940896d07603255ede868d7e6e90"
+      ],
+      "request_id": "sections-and-reports-e443d05f-edit",
+      "created_at": "2026-11-03T03:13:06.033308Z",
+      "asset": "24-a-cb05d3b03a90c7553823d0b25867b823d614ade00f8b25f2f245.svg",
+      "asset_digest": "sha256:cb05d3b03a90c7553823d0b25867b823d614ade00f8b25f2f2451f783e8bf3bd",
+      "slide": {
+        "front": [
+          "The Releases side follows the Plans side closely.",
+          "An app with no end-to-end tests is told so, not warned.",
+          "Every report exits 0."
+        ],
+        "version": 4,
+        "id": "sections-and-reports",
+        "deck": "releases-and-e2e-catalog",
+        "title": "People get their sections, and the reports that matter",
+        "rank": 90,
+        "section": "Phase 5: Sections and reports",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-cb05d3b03a90c7553823d0b25867b823d614ade00f8b25f2f245.svg",
+        "takeaway": "The Releases side and the QA section appear, and reports answer what is still open with facts and no verdict.",
+        "reading_order": [
+          "t-releases-side",
+          "t-whats-still-open",
+          "t-unclaimed-work",
+          "t-merged-released-enabled",
+          "t-qa-entry"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-releases-side",
+            "slide": "sections-and-reports",
+            "rank": 10,
+            "kind": "node",
+            "label": "Add the Releases side with its three entries",
+            "description": "Add the Releases side with its three entries.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-releases-side"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:releases-side"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-whats-still-open",
+            "slide": "sections-and-reports",
+            "rank": 20,
+            "kind": "node",
+            "label": "Report what is still open on a release",
+            "description": "Report what is still open on a release.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-whats-still-open"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:whats-still-open"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-unclaimed-work",
+            "slide": "sections-and-reports",
+            "rank": 30,
+            "kind": "node",
+            "label": "List merged work no release claims",
+            "description": "List merged work no release claims.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-unclaimed-work"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:unclaimed-work"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-merged-released-enabled",
+            "slide": "sections-and-reports",
+            "rank": 40,
+            "kind": "node",
+            "label": "Tell merged, released and enabled apart",
+            "description": "Tell merged, released and enabled apart.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-merged-released-enabled"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:merged-released-enabled"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-qa-entry",
+            "slide": "sections-and-reports",
+            "rank": 50,
+            "kind": "node",
+            "label": "Add a QA section to the Overview",
+            "description": "Add a QA section to the Overview.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-qa-entry"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:qa-entry"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e43043059274b52e1979039a880eeadf8bbfdf9554f766e224d9.json",
+        "source_digest": "sha256:e43043059274b52e1979039a880eeadf8bbfdf9554f766e224d92276ffcbb948",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:38d88433af7d933fd455b8573cd5f9137baed8913e3a895105e5c410e9a615fe",
+      "parent_snapshots": [
+        "sha256:4d175409e5b3e3dac5576039d891938c33f493710e16afef04ca80c4ce33e1c3"
+      ],
+      "request_id": "sections-and-reports-34c73956-edit",
+      "created_at": "2026-11-03T03:13:31.670511Z",
+      "asset": "24-a-e57e85023f7bc7d3354c370c39a6de63d398171dce1e2242c1b4.svg",
+      "asset_digest": "sha256:e57e85023f7bc7d3354c370c39a6de63d398171dce1e2242c1b48f5523824c82",
+      "slide": {
+        "front": [
+          "The Releases side follows the Plans side closely.",
+          "An app with no end-to-end tests is told so, not warned.",
+          "Every report exits 0."
+        ],
+        "version": 4,
+        "id": "sections-and-reports",
+        "deck": "releases-and-e2e-catalog",
+        "title": "People get their sections, and the reports that matter",
+        "rank": 90,
+        "section": "Phase 5: Sections and reports",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e57e85023f7bc7d3354c370c39a6de63d398171dce1e2242c1b4.svg",
+        "takeaway": "The Releases side and the QA section appear, and reports answer what is still open with facts and no verdict.",
+        "reading_order": [
+          "t-releases-side",
+          "t-whats-still-open",
+          "t-unclaimed-work",
+          "t-merged-released-enabled",
+          "t-qa-entry"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-releases-side",
+            "slide": "sections-and-reports",
+            "rank": 10,
+            "kind": "node",
+            "label": "Add the Releases side with its three entries",
+            "description": "Add the Releases side with its three entries.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-releases-side"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:releases-side"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-whats-still-open",
+            "slide": "sections-and-reports",
+            "rank": 20,
+            "kind": "node",
+            "label": "Report what is still open on a release",
+            "description": "Report what is still open on a release.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-whats-still-open"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:whats-still-open"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-unclaimed-work",
+            "slide": "sections-and-reports",
+            "rank": 30,
+            "kind": "node",
+            "label": "List merged work no release claims",
+            "description": "List merged work no release claims.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-unclaimed-work"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:unclaimed-work"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-merged-released-enabled",
+            "slide": "sections-and-reports",
+            "rank": 40,
+            "kind": "node",
+            "label": "Tell merged, released and enabled apart",
+            "description": "Tell merged, released and enabled apart.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-merged-released-enabled"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:merged-released-enabled"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-qa-entry",
+            "slide": "sections-and-reports",
+            "rank": 50,
+            "kind": "node",
+            "label": "Add a QA section to the Overview",
+            "description": "Add a QA section to the Overview.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-qa-entry"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:qa-entry"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-fce82e4276f0283533dd84742c1acb343c60a00d21c978923096.json",
+        "source_digest": "sha256:fce82e4276f0283533dd84742c1acb343c60a00d21c978923096bdbcd4ea0fb6",
         "renderer": "change-saga-diagram/2"
       }
     }

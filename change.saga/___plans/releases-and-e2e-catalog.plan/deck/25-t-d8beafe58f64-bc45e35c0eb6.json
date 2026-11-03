@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "records-and-walk",
-  "current": "sha256:5a6062c36c1abef72354b496878b32fae31103fe187073c53e6388c168d909a6",
+  "current": "sha256:eb7f271cb80606cff6cd82926d8ed72f4e3450c371a142ceb6e1086adc60c2c0",
   "revisions": [
     {
       "snapshot": "sha256:b2ed8e61dd9c57bf298970a41d840594a30bd9831d0eae57f11ce60255ff1fbb",
@@ -224,6 +224,232 @@
       "diagram": {
         "source": "24-a-563e0e623befa0187d595a00364c264d4b54715e743929703279.json",
         "source_digest": "sha256:563e0e623befa0187d595a00364c264d4b54715e743929703279ef3668b72c83",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:fa5049bebaaced7d4bd90259f58f0efb4a5189fcc70fc07455dbf2c9a328e48f",
+      "parent_snapshots": [
+        "sha256:5a6062c36c1abef72354b496878b32fae31103fe187073c53e6388c168d909a6"
+      ],
+      "request_id": "records-and-walk-a1e3809f-edit",
+      "created_at": "2026-11-03T03:12:59.861561Z",
+      "asset": "24-a-a1cb4ba9315dedb2e00e7e621e100e915422992dca63b243d701.svg",
+      "asset_digest": "sha256:a1cb4ba9315dedb2e00e7e621e100e915422992dca63b243d701ab2ee4fcb20e",
+      "slide": {
+        "front": [
+          "One file per note, step and story link is what makes merges clean.",
+          "The catalog is derived, so it adds no record.",
+          "Each walk step labels the path it took."
+        ],
+        "version": 4,
+        "id": "records-and-walk",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Small files merge cleanly, and the walk learns the transitive flow",
+        "rank": 20,
+        "section": "Phase 2: Records and the walk",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-a1cb4ba9315dedb2e00e7e621e100e915422992dca63b243d701.svg",
+        "takeaway": "Notes, steps and links are one small file each, and the walk now follows features and files as well as exact lines.",
+        "reading_order": [
+          "t-release-child-records",
+          "t-catalog-derivation",
+          "t-walk-through-features-and-files",
+          "t-declaring-line"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-child-records",
+            "slide": "records-and-walk",
+            "rank": 10,
+            "kind": "node",
+            "label": "Store notes, steps, story links and the template as small files",
+            "description": "Store notes, steps, story links and the template as small files.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-child-records"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-child-records"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-catalog-derivation",
+            "slide": "records-and-walk",
+            "rank": 20,
+            "kind": "node",
+            "label": "Derive catalog entries from test cases and their code location",
+            "description": "Derive catalog entries from test cases and their code location.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-catalog-derivation"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:catalog-derivation"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-walk-through-features-and-files",
+            "slide": "records-and-walk",
+            "rank": 30,
+            "kind": "node",
+            "label": "Follow features and files in the walk, and label the path",
+            "description": "Follow features and files in the walk, and label the path.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-walk-through-features-and-files"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:walk-through-features-and-files"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-declaring-line",
+            "slide": "records-and-walk",
+            "rank": 40,
+            "kind": "node",
+            "label": "Let an entry name the line that declares its test",
+            "description": "Let an entry name the line that declares its test.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-declaring-line"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:declaring-line"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-23e4a272cb7ecae88df4e626eec643cd2e4dc5bdac9395b66280.json",
+        "source_digest": "sha256:23e4a272cb7ecae88df4e626eec643cd2e4dc5bdac9395b66280f35ea294f9ee",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:eb7f271cb80606cff6cd82926d8ed72f4e3450c371a142ceb6e1086adc60c2c0",
+      "parent_snapshots": [
+        "sha256:fa5049bebaaced7d4bd90259f58f0efb4a5189fcc70fc07455dbf2c9a328e48f"
+      ],
+      "request_id": "records-and-walk-96ea074e-edit",
+      "created_at": "2026-11-03T03:13:26.672413Z",
+      "asset": "24-a-2451864d3f1ca871e28a920d2e7cae4292a971f50319d3df5741.svg",
+      "asset_digest": "sha256:2451864d3f1ca871e28a920d2e7cae4292a971f50319d3df574119170b941d0b",
+      "slide": {
+        "front": [
+          "One file per note, step and story link is what makes merges clean.",
+          "The catalog is derived, so it adds no record.",
+          "Each walk step labels the path it took."
+        ],
+        "version": 4,
+        "id": "records-and-walk",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Small files merge cleanly, and the walk learns the transitive flow",
+        "rank": 20,
+        "section": "Phase 2: Records and the walk",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-2451864d3f1ca871e28a920d2e7cae4292a971f50319d3df5741.svg",
+        "takeaway": "Notes, steps and links are one small file each, and the walk now follows features and files as well as exact lines.",
+        "reading_order": [
+          "t-release-child-records",
+          "t-catalog-derivation",
+          "t-walk-through-features-and-files",
+          "t-declaring-line"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-child-records",
+            "slide": "records-and-walk",
+            "rank": 10,
+            "kind": "node",
+            "label": "Store notes, steps, story links and the template as small files",
+            "description": "Store notes, steps, story links and the template as small files.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-child-records"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-child-records"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-catalog-derivation",
+            "slide": "records-and-walk",
+            "rank": 20,
+            "kind": "node",
+            "label": "Derive catalog entries from test cases and their code location",
+            "description": "Derive catalog entries from test cases and their code location.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-catalog-derivation"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:catalog-derivation"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-walk-through-features-and-files",
+            "slide": "records-and-walk",
+            "rank": 30,
+            "kind": "node",
+            "label": "Follow features and files in the walk, and label the path",
+            "description": "Follow features and files in the walk, and label the path.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-walk-through-features-and-files"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:walk-through-features-and-files"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-declaring-line",
+            "slide": "records-and-walk",
+            "rank": 40,
+            "kind": "node",
+            "label": "Let an entry name the line that declares its test",
+            "description": "Let an entry name the line that declares its test.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-declaring-line"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:declaring-line"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e2891d2d243a513f483b4f1bd0c12cf5588b5f8b01de41277c5d.json",
+        "source_digest": "sha256:e2891d2d243a513f483b4f1bd0c12cf5588b5f8b01de41277c5d427ac3261b86",
         "renderer": "change-saga-diagram/2"
       }
     }

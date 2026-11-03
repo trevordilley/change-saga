@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "The first four pieces touch nothing in common, so they can start together",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 100,
+      "width": 1200,
+      "height": 218,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-release-record-format",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Add the release record and its reserved root",
+      "x": 58,
+      "y": 146,
+      "width": 1164,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-process-board-role",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Add a release-process whiteboard role",
+      "x": 58,
+      "y": 228,
+      "width": 1164,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 40,
+      "y": 334,
+      "width": 1200,
+      "height": 218,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-e2e-suite-declaration",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Record where end-to-end tests live and how to run them",
+      "x": 58,
+      "y": 380,
+      "width": 1164,
+      "height": 72,
+      "style": "normal"
+    },
+    {
+      "id": "t-test-walk-any-range",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Let the test walk start from any code range",
+      "x": 58,
+      "y": 462,
+      "width": 1164,
+      "height": 72,
+      "style": "normal"
+    }
+  ]
+}

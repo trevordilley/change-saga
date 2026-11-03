@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "The real test is a release run by an agent",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 88,
+      "width": 1200,
+      "height": 124,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-run-a-real-release",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Have an agent run a real release",
+      "x": 52,
+      "y": 128,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    }
+  ]
+}

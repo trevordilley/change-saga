@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "foundations",
-  "current": "sha256:dd595cde16da66388aaa2c1056b0028c30e837c026c7894b922bda6e93d8b444",
+  "current": "sha256:85400dae78d06940088cf79570b55aa0c29cf98ccc47e95b7e7ee0b2a7256de4",
   "revisions": [
     {
       "snapshot": "sha256:65111dc2492850763b53e2bfa4689e2208d9a88af4769c6a0a60e46a0c7eff6a",
@@ -224,6 +224,232 @@
       "diagram": {
         "source": "24-a-c110c75dc87c3523ab077eb14bd7091ed6e7a0d9847052cc05c0.json",
         "source_digest": "sha256:c110c75dc87c3523ab077eb14bd7091ed6e7a0d9847052cc05c0e5da462d9afb",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:b2a5271a62a95f5fd4bf70a8d09ab9639859688d73a6effe2c5de9ab667520f3",
+      "parent_snapshots": [
+        "sha256:dd595cde16da66388aaa2c1056b0028c30e837c026c7894b922bda6e93d8b444"
+      ],
+      "request_id": "foundations-3a95051a-edit",
+      "created_at": "2026-11-03T03:12:58.880227Z",
+      "asset": "24-a-8585ecde32b243d9226e07ca928d2e96d1d50f9467e92a5f7ef9.svg",
+      "asset_digest": "sha256:8585ecde32b243d9226e07ca928d2e96d1d50f9467e92a5f7ef998cc492ff26c",
+      "slide": {
+        "front": [
+          "Nothing here is visible to a reader yet.",
+          "The test walk stops needing a review.",
+          "Existing Sagas stay valid throughout."
+        ],
+        "version": 4,
+        "id": "foundations",
+        "deck": "releases-and-e2e-catalog",
+        "title": "The first four pieces touch nothing in common, so they can start together",
+        "rank": 10,
+        "section": "Phase 1: Foundations",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-8585ecde32b243d9226e07ca928d2e96d1d50f9467e92a5f7ef9.svg",
+        "takeaway": "Each is independent, and an existing Saga must load exactly as it does today.",
+        "reading_order": [
+          "t-release-record-format",
+          "t-process-board-role",
+          "t-e2e-suite-declaration",
+          "t-test-walk-any-range"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-record-format",
+            "slide": "foundations",
+            "rank": 10,
+            "kind": "node",
+            "label": "Add the release record and its reserved root",
+            "description": "Add the release record and its reserved root.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-record-format"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-record-format"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-process-board-role",
+            "slide": "foundations",
+            "rank": 20,
+            "kind": "node",
+            "label": "Add a release-process whiteboard role",
+            "description": "Add a release-process whiteboard role.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-process-board-role"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:process-board-role"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-e2e-suite-declaration",
+            "slide": "foundations",
+            "rank": 30,
+            "kind": "node",
+            "label": "Record where end-to-end tests live and how to run them",
+            "description": "Record where end-to-end tests live and how to run them.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-e2e-suite-declaration"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:e2e-suite-declaration"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-test-walk-any-range",
+            "slide": "foundations",
+            "rank": 40,
+            "kind": "node",
+            "label": "Let the test walk start from any code range",
+            "description": "Let the test walk start from any code range.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-test-walk-any-range"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:test-walk-any-range"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-73f9a1988561f5658e3675b11cb935f7a110a17c5a7284584522.json",
+        "source_digest": "sha256:73f9a1988561f5658e3675b11cb935f7a110a17c5a728458452290c6d538e438",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:85400dae78d06940088cf79570b55aa0c29cf98ccc47e95b7e7ee0b2a7256de4",
+      "parent_snapshots": [
+        "sha256:b2a5271a62a95f5fd4bf70a8d09ab9639859688d73a6effe2c5de9ab667520f3"
+      ],
+      "request_id": "foundations-cb4262ec-edit",
+      "created_at": "2026-11-03T03:13:25.953477Z",
+      "asset": "24-a-1d48802c938ea85b468a44923d4e68fb2f05136bdb1e39103fa8.svg",
+      "asset_digest": "sha256:1d48802c938ea85b468a44923d4e68fb2f05136bdb1e39103fa85552a9b3dce7",
+      "slide": {
+        "front": [
+          "Nothing here is visible to a reader yet.",
+          "The test walk stops needing a review.",
+          "Existing Sagas stay valid throughout."
+        ],
+        "version": 4,
+        "id": "foundations",
+        "deck": "releases-and-e2e-catalog",
+        "title": "The first four pieces touch nothing in common, so they can start together",
+        "rank": 10,
+        "section": "Phase 1: Foundations",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-1d48802c938ea85b468a44923d4e68fb2f05136bdb1e39103fa8.svg",
+        "takeaway": "Each is independent, and an existing Saga must load exactly as it does today.",
+        "reading_order": [
+          "t-release-record-format",
+          "t-process-board-role",
+          "t-e2e-suite-declaration",
+          "t-test-walk-any-range"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-record-format",
+            "slide": "foundations",
+            "rank": 10,
+            "kind": "node",
+            "label": "Add the release record and its reserved root",
+            "description": "Add the release record and its reserved root.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-record-format"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-record-format"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-process-board-role",
+            "slide": "foundations",
+            "rank": 20,
+            "kind": "node",
+            "label": "Add a release-process whiteboard role",
+            "description": "Add a release-process whiteboard role.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-process-board-role"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:process-board-role"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-e2e-suite-declaration",
+            "slide": "foundations",
+            "rank": 30,
+            "kind": "node",
+            "label": "Record where end-to-end tests live and how to run them",
+            "description": "Record where end-to-end tests live and how to run them.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-e2e-suite-declaration"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:e2e-suite-declaration"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-test-walk-any-range",
+            "slide": "foundations",
+            "rank": 40,
+            "kind": "node",
+            "label": "Let the test walk start from any code range",
+            "description": "Let the test walk start from any code range.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-test-walk-any-range"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:test-walk-any-range"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-3312e5c54318cfb96cd2abfa574ad3824ce600178df64d4bcdfd.json",
+        "source_digest": "sha256:3312e5c54318cfb96cd2abfa574ad3824ce600178df64d4bcdfd24a19684a0b4",
         "renderer": "change-saga-diagram/2"
       }
     }

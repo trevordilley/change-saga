@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "notes-and-links-commands",
-  "current": "sha256:f28b0179d5b5179639e9961b3c86677129308f0f069faf9b76be00aaa61f2821",
+  "current": "sha256:a248f7fcd92a23ca037890d465e40c4dd42e61c6448579ae3c06df3131d0169b",
   "revisions": [
     {
       "snapshot": "sha256:9d77a4f3b5c9265b298a106276579878350ccfdcf6896f4ad057fbbb4efc80c5",
@@ -262,6 +262,270 @@
       "diagram": {
         "source": "24-a-40596c4ee449dcfb220585302b8906e087839f4455702f276bbd.json",
         "source_digest": "sha256:40596c4ee449dcfb220585302b8906e087839f4455702f276bbda155db9fb755",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:00e0a27ba5729cc3446dece2920dffbf0f8d9a4787c38157973a5fbac9a1b8b6",
+      "parent_snapshots": [
+        "sha256:f28b0179d5b5179639e9961b3c86677129308f0f069faf9b76be00aaa61f2821"
+      ],
+      "request_id": "notes-and-links-commands-61bc02cf-edit",
+      "created_at": "2026-11-03T03:13:01.833668Z",
+      "asset": "24-a-a4502f23a2002b64d29e3ad187d715c87b8d55682693b7546bde.svg",
+      "asset_digest": "sha256:a4502f23a2002b64d29e3ad187d715c87b8d55682693b7546bde82be344ca13b",
+      "slide": {
+        "front": [
+          "Internal notes link stories or say they are fixes.",
+          "Public notes are free text with stories kept apart.",
+          "Nothing is computed from a range that does not resolve."
+        ],
+        "version": 4,
+        "id": "notes-and-links-commands",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Notes and links say what a release means",
+        "rank": 40,
+        "section": "Phase 3: Commands and queries",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-a4502f23a2002b64d29e3ad187d715c87b8d55682693b7546bde.svg",
+        "takeaway": "Internal and public notes, story links, a milestone and a range each get a small command.",
+        "reading_order": [
+          "t-internal-note-commands",
+          "t-public-note-commands",
+          "t-story-link-commands",
+          "t-milestone-link",
+          "t-release-range"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-internal-note-commands",
+            "slide": "notes-and-links-commands",
+            "rank": 10,
+            "kind": "node",
+            "label": "Add internal notes linked to stories",
+            "description": "Add internal notes linked to stories.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-internal-note-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:internal-note-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-public-note-commands",
+            "slide": "notes-and-links-commands",
+            "rank": 20,
+            "kind": "node",
+            "label": "Write public notes in any voice",
+            "description": "Write public notes in any voice.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-public-note-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:public-note-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-story-link-commands",
+            "slide": "notes-and-links-commands",
+            "rank": 30,
+            "kind": "node",
+            "label": "Link stories to a release as delivered or affected",
+            "description": "Link stories to a release as delivered or affected.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-story-link-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:story-link-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-milestone-link",
+            "slide": "notes-and-links-commands",
+            "rank": 40,
+            "kind": "node",
+            "label": "Place a release in a milestone",
+            "description": "Place a release in a milestone.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-milestone-link"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:milestone-link"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-range",
+            "slide": "notes-and-links-commands",
+            "rank": 50,
+            "kind": "node",
+            "label": "Record a release's Git range",
+            "description": "Record a release's Git range.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-range"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-range"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-9917048170be207b05790b5df012cffec302b595a736a2f1fff7.json",
+        "source_digest": "sha256:9917048170be207b05790b5df012cffec302b595a736a2f1fff728e8b31d1043",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:a248f7fcd92a23ca037890d465e40c4dd42e61c6448579ae3c06df3131d0169b",
+      "parent_snapshots": [
+        "sha256:00e0a27ba5729cc3446dece2920dffbf0f8d9a4787c38157973a5fbac9a1b8b6"
+      ],
+      "request_id": "notes-and-links-commands-d091848f-edit",
+      "created_at": "2026-11-03T03:13:28.155473Z",
+      "asset": "24-a-11ff23ff300f9f9d30f3babb3e0bf7119926b270933bd1f7e352.svg",
+      "asset_digest": "sha256:11ff23ff300f9f9d30f3babb3e0bf7119926b270933bd1f7e352a7f821c5fc01",
+      "slide": {
+        "front": [
+          "Internal notes link stories or say they are fixes.",
+          "Public notes are free text with stories kept apart.",
+          "Nothing is computed from a range that does not resolve."
+        ],
+        "version": 4,
+        "id": "notes-and-links-commands",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Notes and links say what a release means",
+        "rank": 40,
+        "section": "Phase 3: Commands and queries",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-11ff23ff300f9f9d30f3babb3e0bf7119926b270933bd1f7e352.svg",
+        "takeaway": "Internal and public notes, story links, a milestone and a range each get a small command.",
+        "reading_order": [
+          "t-internal-note-commands",
+          "t-public-note-commands",
+          "t-story-link-commands",
+          "t-milestone-link",
+          "t-release-range"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-internal-note-commands",
+            "slide": "notes-and-links-commands",
+            "rank": 10,
+            "kind": "node",
+            "label": "Add internal notes linked to stories",
+            "description": "Add internal notes linked to stories.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-internal-note-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:internal-note-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-public-note-commands",
+            "slide": "notes-and-links-commands",
+            "rank": 20,
+            "kind": "node",
+            "label": "Write public notes in any voice",
+            "description": "Write public notes in any voice.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-public-note-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:public-note-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-story-link-commands",
+            "slide": "notes-and-links-commands",
+            "rank": 30,
+            "kind": "node",
+            "label": "Link stories to a release as delivered or affected",
+            "description": "Link stories to a release as delivered or affected.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-story-link-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:story-link-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-milestone-link",
+            "slide": "notes-and-links-commands",
+            "rank": 40,
+            "kind": "node",
+            "label": "Place a release in a milestone",
+            "description": "Place a release in a milestone.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-milestone-link"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:milestone-link"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-range",
+            "slide": "notes-and-links-commands",
+            "rank": 50,
+            "kind": "node",
+            "label": "Record a release's Git range",
+            "description": "Record a release's Git range.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-range"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-range"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-20c4ba44a7c0c8f535ab8f34ac773d413415f932eb4bda64b651.json",
+        "source_digest": "sha256:20c4ba44a7c0c8f535ab8f34ac773d413415f932eb4bda64b651f1cba067bd6a",
         "renderer": "change-saga-diagram/2"
       }
     }

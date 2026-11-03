@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Small files merge cleanly, and the walk learns the transitive flow",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 100,
+      "width": 1200,
+      "height": 136,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-release-child-records",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Store notes, steps, story links and the template as small files",
+      "x": 58,
+      "y": 146,
+      "width": 1164,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 40,
+      "y": 252,
+      "width": 1200,
+      "height": 300,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-catalog-derivation",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Derive catalog entries from test cases and their code location",
+      "x": 58,
+      "y": 298,
+      "width": 1164,
+      "height": 72,
+      "style": "normal"
+    },
+    {
+      "id": "t-walk-through-features-and-files",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Follow features and files in the walk, and label the path",
+      "x": 58,
+      "y": 380,
+      "width": 1164,
+      "height": 72,
+      "style": "normal"
+    },
+    {
+      "id": "t-declaring-line",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Let an entry name the line that declares its test",
+      "x": 58,
+      "y": 462,
+      "width": 1164,
+      "height": 72,
+      "style": "normal"
+    }
+  ]
+}

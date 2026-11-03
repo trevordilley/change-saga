@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "What the tests prove, and how to run them",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 40,
+      "y": 88,
+      "width": 1200,
+      "height": 444,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-runnable-formats",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Print tests in a form a runner accepts",
+      "x": 52,
+      "y": 128,
+      "width": 1176,
+      "height": 72,
+      "style": "normal"
+    },
+    {
+      "id": "t-kinds-data",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Work out which kinds each criterion's tests cover",
+      "x": 52,
+      "y": 208,
+      "width": 1176,
+      "height": 72,
+      "style": "normal"
+    },
+    {
+      "id": "t-criteria-coverage-data",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Work out which criteria have an end-to-end test",
+      "x": 52,
+      "y": 288,
+      "width": 1176,
+      "height": 72,
+      "style": "normal"
+    },
+    {
+      "id": "t-one-entry-reports",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Report entries that are not one runnable test",
+      "x": 52,
+      "y": 368,
+      "width": 1176,
+      "height": 72,
+      "style": "normal"
+    },
+    {
+      "id": "t-uncatalogued",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Find test code no entry cites",
+      "x": 52,
+      "y": 448,
+      "width": 1176,
+      "height": 72,
+      "style": "normal"
+    }
+  ]
+}

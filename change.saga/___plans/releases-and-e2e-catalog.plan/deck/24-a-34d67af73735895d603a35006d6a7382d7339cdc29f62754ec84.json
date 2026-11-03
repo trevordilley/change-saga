@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "An agent can now be guided through a release",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 88,
+      "width": 1200,
+      "height": 444,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-change-and-remove",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Delete a release, and correct its version",
+      "x": 52,
+      "y": 128,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-release-guide",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Guide people and agents through a release",
+      "x": 52,
+      "y": 208,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-release-next",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Give an agent the next step",
+      "x": 52,
+      "y": 288,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-mark-released",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Record that a release went out",
+      "x": 52,
+      "y": 368,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-release-diff-records",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Show release changes in a comparison",
+      "x": 52,
+      "y": 448,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    }
+  ]
+}

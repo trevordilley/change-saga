@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "running-a-release",
-  "current": "sha256:185d3257ee5b02ee283738e6ab322f1a063798e028a6d20317facc497a708e3d",
+  "current": "sha256:c06cf488fc96906cac553c9943b83940605930c4bc17f282deb161093a8bc3cd",
   "revisions": [
     {
       "snapshot": "sha256:9cb92881534506423cc9ac1f364985336907bc716b2ad7caba05edf30929a15f",
@@ -262,6 +262,270 @@
       "diagram": {
         "source": "24-a-9edad14e761cfae0de0a7fe7a9f6c1184031bc7948ba0c2988e0.json",
         "source_digest": "sha256:9edad14e761cfae0de0a7fe7a9f6c1184031bc7948ba0c2988e06603571fc94e",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:1328123bb9e0f252afba4e1ed36510e9406875bf18a72d9c5b3e072dd3e29e7b",
+      "parent_snapshots": [
+        "sha256:185d3257ee5b02ee283738e6ab322f1a063798e028a6d20317facc497a708e3d"
+      ],
+      "request_id": "running-a-release-5843f588-edit",
+      "created_at": "2026-11-03T03:13:03.657952Z",
+      "asset": "24-a-20f247e7340e93a6716b7e7086e1369b8ae9efa926d268e48444.svg",
+      "asset_digest": "sha256:20f247e7340e93a6716b7e7086e1369b8ae9efa926d268e484446d503c9bed91",
+      "slide": {
+        "front": [
+          "A fresh session continues from the record alone.",
+          "Only an explicit command marks a release released.",
+          "Release changes show up in a comparison."
+        ],
+        "version": 4,
+        "id": "running-a-release",
+        "deck": "releases-and-e2e-catalog",
+        "title": "An agent can now be guided through a release",
+        "rank": 60,
+        "section": "Phase 4: Workflows and derived facts",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-20f247e7340e93a6716b7e7086e1369b8ae9efa926d268e48444.svg",
+        "takeaway": "release guide and release next are what let an agent run it, and marking it released refuses nothing.",
+        "reading_order": [
+          "t-change-and-remove",
+          "t-release-guide",
+          "t-release-next",
+          "t-mark-released",
+          "t-release-diff-records"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-change-and-remove",
+            "slide": "running-a-release",
+            "rank": 10,
+            "kind": "node",
+            "label": "Delete a release, and correct its version",
+            "description": "Delete a release, and correct its version.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-change-and-remove"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:change-and-remove"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-guide",
+            "slide": "running-a-release",
+            "rank": 20,
+            "kind": "node",
+            "label": "Guide people and agents through a release",
+            "description": "Guide people and agents through a release.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-guide"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-guide"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-next",
+            "slide": "running-a-release",
+            "rank": 30,
+            "kind": "node",
+            "label": "Give an agent the next step",
+            "description": "Give an agent the next step.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-next"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-next"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-mark-released",
+            "slide": "running-a-release",
+            "rank": 40,
+            "kind": "node",
+            "label": "Record that a release went out",
+            "description": "Record that a release went out.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-mark-released"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:mark-released"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-diff-records",
+            "slide": "running-a-release",
+            "rank": 50,
+            "kind": "node",
+            "label": "Show release changes in a comparison",
+            "description": "Show release changes in a comparison.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-diff-records"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-diff-records"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-67f3cd467958da159404c0314442f6d087df6989d7c8f0d5dcb2.json",
+        "source_digest": "sha256:67f3cd467958da159404c0314442f6d087df6989d7c8f0d5dcb2d8da344f33ef",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:c06cf488fc96906cac553c9943b83940605930c4bc17f282deb161093a8bc3cd",
+      "parent_snapshots": [
+        "sha256:1328123bb9e0f252afba4e1ed36510e9406875bf18a72d9c5b3e072dd3e29e7b"
+      ],
+      "request_id": "running-a-release-4940bf24-edit",
+      "created_at": "2026-11-03T03:13:29.60938Z",
+      "asset": "24-a-3316a43ee1453bb0bc5458cc00d112d0312be5a45f0b4cb057f5.svg",
+      "asset_digest": "sha256:3316a43ee1453bb0bc5458cc00d112d0312be5a45f0b4cb057f5e7aa430cb161",
+      "slide": {
+        "front": [
+          "A fresh session continues from the record alone.",
+          "Only an explicit command marks a release released.",
+          "Release changes show up in a comparison."
+        ],
+        "version": 4,
+        "id": "running-a-release",
+        "deck": "releases-and-e2e-catalog",
+        "title": "An agent can now be guided through a release",
+        "rank": 60,
+        "section": "Phase 4: Workflows and derived facts",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-3316a43ee1453bb0bc5458cc00d112d0312be5a45f0b4cb057f5.svg",
+        "takeaway": "release guide and release next are what let an agent run it, and marking it released refuses nothing.",
+        "reading_order": [
+          "t-change-and-remove",
+          "t-release-guide",
+          "t-release-next",
+          "t-mark-released",
+          "t-release-diff-records"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-change-and-remove",
+            "slide": "running-a-release",
+            "rank": 10,
+            "kind": "node",
+            "label": "Delete a release, and correct its version",
+            "description": "Delete a release, and correct its version.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-change-and-remove"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:change-and-remove"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-guide",
+            "slide": "running-a-release",
+            "rank": 20,
+            "kind": "node",
+            "label": "Guide people and agents through a release",
+            "description": "Guide people and agents through a release.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-guide"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-guide"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-next",
+            "slide": "running-a-release",
+            "rank": 30,
+            "kind": "node",
+            "label": "Give an agent the next step",
+            "description": "Give an agent the next step.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-next"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-next"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-mark-released",
+            "slide": "running-a-release",
+            "rank": 40,
+            "kind": "node",
+            "label": "Record that a release went out",
+            "description": "Record that a release went out.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-mark-released"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:mark-released"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-diff-records",
+            "slide": "running-a-release",
+            "rank": 50,
+            "kind": "node",
+            "label": "Show release changes in a comparison",
+            "description": "Show release changes in a comparison.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-diff-records"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-diff-records"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-34d67af73735895d603a35006d6a7382d7339cdc29f62754ec84.json",
+        "source_digest": "sha256:34d67af73735895d603a35006d6a7382d7339cdc29f62754ec84a58984f91479",
         "renderer": "change-saga-diagram/2"
       }
     }

@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "A release and its checklist come first",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 88,
+      "width": 1200,
+      "height": 444,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-release-create-list",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Create and list releases",
+      "x": 52,
+      "y": 128,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-template-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Edit the release template from the CLI",
+      "x": 52,
+      "y": 208,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-versioning-scheme",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Write down the versioning scheme",
+      "x": 52,
+      "y": 288,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-checklist-step-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Add, edit, move and remove a release's steps",
+      "x": 52,
+      "y": 368,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-tick-from-cli",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Check and uncheck a step from the CLI",
+      "x": 52,
+      "y": 448,
+      "width": 1176,
+      "height": 72,
+      "style": "primary"
+    }
+  ]
+}

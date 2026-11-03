@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "sharing-and-slicing",
-  "current": "sha256:31b036799b4c3798c5f1df1b8555cb86fd3360dbab97088eb0efdc00f49bfa0f",
+  "current": "sha256:1d5a97d1b8d0a201ffd08550424ce59f091b3c4533486be7544a9f03e2b96d05",
   "revisions": [
     {
       "snapshot": "sha256:d14876ae4ea17780c98c2803c78b0edbd3f994fe55655230121c149cae52cd92",
@@ -300,6 +300,308 @@
       "diagram": {
         "source": "24-a-4944455374319c4809f5a0dc639373c12e0722c6336f80dd8ce0.json",
         "source_digest": "sha256:4944455374319c4809f5a0dc639373c12e0722c6336f80dd8ce03aef28176c4b",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:a4c8972df07cc62d7ff82ec45cf4b7e3edd08774d8440a3226f9c1470e98e844",
+      "parent_snapshots": [
+        "sha256:31b036799b4c3798c5f1df1b8555cb86fd3360dbab97088eb0efdc00f49bfa0f"
+      ],
+      "request_id": "sharing-and-slicing-d138cddc-edit",
+      "created_at": "2026-11-03T03:13:06.764014Z",
+      "asset": "24-a-18fde3733eea69b2d535e68e2e6bb0c42e6762eec6e9702ab62b.svg",
+      "asset_digest": "sha256:18fde3733eea69b2d535e68e2e6bb0c42e6762eec6e9702ab62b19052e869fc2",
+      "slide": {
+        "front": [
+          "Reviews and releases give the same tests.",
+          "A release runs on its own branch, by recommendation only.",
+          "Slices can be run directly."
+        ],
+        "version": 4,
+        "id": "sharing-and-slicing",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Reviews and releases share one answer, and the rest fills in",
+        "rank": 100,
+        "section": "Phase 5: Sections and reports",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-18fde3733eea69b2d535e68e2e6bb0c42e6762eec6e9702ab62b.svg",
+        "takeaway": "One walk answers for a review and a release, and agents and people get what they need around it.",
+        "reading_order": [
+          "t-release-tests-and-review-e2e",
+          "t-agent-json-and-skill",
+          "t-branch-guidance",
+          "t-promote-step",
+          "t-slice-filters",
+          "t-thin-spots"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-tests-and-review-e2e",
+            "slide": "sharing-and-slicing",
+            "rank": 10,
+            "kind": "node",
+            "label": "Give reviews and releases the same test answer",
+            "description": "Give reviews and releases the same test answer.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-tests-and-review-e2e"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-tests-and-review-e2e"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-agent-json-and-skill",
+            "slide": "sharing-and-slicing",
+            "rank": 20,
+            "kind": "node",
+            "label": "Let an agent keep the release current",
+            "description": "Let an agent keep the release current.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-agent-json-and-skill"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:agent-json-and-skill"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-branch-guidance",
+            "slide": "sharing-and-slicing",
+            "rank": 30,
+            "kind": "node",
+            "label": "Support running a release on its own branch",
+            "description": "Support running a release on its own branch.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-branch-guidance"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:branch-guidance"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-promote-step",
+            "slide": "sharing-and-slicing",
+            "rank": 40,
+            "kind": "node",
+            "label": "Copy a useful step into the template",
+            "description": "Copy a useful step into the template.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-promote-step"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:promote-step"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-slice-filters",
+            "slide": "sharing-and-slicing",
+            "rank": 50,
+            "kind": "node",
+            "label": "Filter the catalog and run the slice",
+            "description": "Filter the catalog and run the slice.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-slice-filters"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:slice-filters"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-thin-spots",
+            "slide": "sharing-and-slicing",
+            "rank": 60,
+            "kind": "node",
+            "label": "List where end-to-end tests are thin",
+            "description": "List where end-to-end tests are thin.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-thin-spots"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:thin-spots"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-11f141c62e0f0cfaa8f99298b527536010974860150c65d0ea8f.json",
+        "source_digest": "sha256:11f141c62e0f0cfaa8f99298b527536010974860150c65d0ea8f99eea5b4fba6",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:1d5a97d1b8d0a201ffd08550424ce59f091b3c4533486be7544a9f03e2b96d05",
+      "parent_snapshots": [
+        "sha256:a4c8972df07cc62d7ff82ec45cf4b7e3edd08774d8440a3226f9c1470e98e844"
+      ],
+      "request_id": "sharing-and-slicing-77f7d180-edit",
+      "created_at": "2026-11-03T03:13:32.354613Z",
+      "asset": "24-a-93447c9dc23bfca46daaa48f4bcb4f69c2fa8f95c40eb95eae1d.svg",
+      "asset_digest": "sha256:93447c9dc23bfca46daaa48f4bcb4f69c2fa8f95c40eb95eae1d1567fa0a3c27",
+      "slide": {
+        "front": [
+          "Reviews and releases give the same tests.",
+          "A release runs on its own branch, by recommendation only.",
+          "Slices can be run directly."
+        ],
+        "version": 4,
+        "id": "sharing-and-slicing",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Reviews and releases share one answer, and the rest fills in",
+        "rank": 100,
+        "section": "Phase 5: Sections and reports",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-93447c9dc23bfca46daaa48f4bcb4f69c2fa8f95c40eb95eae1d.svg",
+        "takeaway": "One walk answers for a review and a release, and agents and people get what they need around it.",
+        "reading_order": [
+          "t-release-tests-and-review-e2e",
+          "t-agent-json-and-skill",
+          "t-branch-guidance",
+          "t-promote-step",
+          "t-slice-filters",
+          "t-thin-spots"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-tests-and-review-e2e",
+            "slide": "sharing-and-slicing",
+            "rank": 10,
+            "kind": "node",
+            "label": "Give reviews and releases the same test answer",
+            "description": "Give reviews and releases the same test answer.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-tests-and-review-e2e"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-tests-and-review-e2e"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-agent-json-and-skill",
+            "slide": "sharing-and-slicing",
+            "rank": 20,
+            "kind": "node",
+            "label": "Let an agent keep the release current",
+            "description": "Let an agent keep the release current.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-agent-json-and-skill"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:agent-json-and-skill"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-branch-guidance",
+            "slide": "sharing-and-slicing",
+            "rank": 30,
+            "kind": "node",
+            "label": "Support running a release on its own branch",
+            "description": "Support running a release on its own branch.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-branch-guidance"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:branch-guidance"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-promote-step",
+            "slide": "sharing-and-slicing",
+            "rank": 40,
+            "kind": "node",
+            "label": "Copy a useful step into the template",
+            "description": "Copy a useful step into the template.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-promote-step"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:promote-step"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-slice-filters",
+            "slide": "sharing-and-slicing",
+            "rank": 50,
+            "kind": "node",
+            "label": "Filter the catalog and run the slice",
+            "description": "Filter the catalog and run the slice.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-slice-filters"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:slice-filters"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-thin-spots",
+            "slide": "sharing-and-slicing",
+            "rank": 60,
+            "kind": "node",
+            "label": "List where end-to-end tests are thin",
+            "description": "List where end-to-end tests are thin.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-thin-spots"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:thin-spots"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-46782e5b1db3e8f7c084aff1a9ccb8586925d1f01f21b43abaae.json",
+        "source_digest": "sha256:46782e5b1db3e8f7c084aff1a9ccb8586925d1f01f21b43abaae29ca9a913057",
         "renderer": "change-saga-diagram/2"
       }
     }

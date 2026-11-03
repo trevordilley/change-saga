@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "People get their sections, and the reports that matter",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 100,
+      "width": 1200,
+      "height": 382,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-releases-side",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Add the Releases side with its three entries",
+      "x": 58,
+      "y": 146,
+      "width": 1164,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-whats-still-open",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Report what is still open on a release",
+      "x": 58,
+      "y": 228,
+      "width": 1164,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-unclaimed-work",
+      "kind": "node",
+      "shape": "rect",
+      "label": "List merged work no release claims",
+      "x": 58,
+      "y": 310,
+      "width": 1164,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "t-merged-released-enabled",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Tell merged, released and enabled apart",
+      "x": 58,
+      "y": 392,
+      "width": 1164,
+      "height": 72,
+      "style": "primary"
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 40,
+      "y": 498,
+      "width": 1200,
+      "height": 136,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-qa-entry",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Add a QA section to the Overview",
+      "x": 58,
+      "y": 544,
+      "width": 1164,
+      "height": 72,
+      "style": "normal"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "what-the-tests-prove",
-  "current": "sha256:c59c04e167921556d202b8cf4fca03910acaeef01e618fc86341ee0e13cf7413",
+  "current": "sha256:3faa2ca3aa471f1624c56a60527485ad1fa9a5c7c236e575f3574c2d262eff5c",
   "revisions": [
     {
       "snapshot": "sha256:30971e220765666d722ce4dc860c866ba67e631e35835aeda7ad5b98f7f5b2c0",
@@ -262,6 +262,270 @@
       "diagram": {
         "source": "24-a-43372ab95dc8718f774b75de8371492a048dda4fc3bc308aba7f.json",
         "source_digest": "sha256:43372ab95dc8718f774b75de8371492a048dda4fc3bc308aba7fc2216afe5c96",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:b69e66e1e2ce0135a46c03c54545d223b976d0e7b1e5f2e9ad1e676d3e361a9a",
+      "parent_snapshots": [
+        "sha256:c59c04e167921556d202b8cf4fca03910acaeef01e618fc86341ee0e13cf7413"
+      ],
+      "request_id": "what-the-tests-prove-d69e9fbf-edit",
+      "created_at": "2026-11-03T03:13:05.260631Z",
+      "asset": "24-a-152ea8b586fbe36f7d675639d459854de2692427c843b404d278.svg",
+      "asset_digest": "sha256:152ea8b586fbe36f7d675639d459854de2692427c843b404d27800df631b05f9",
+      "slide": {
+        "front": [
+          "A test with no declaring line is named, not dropped.",
+          "Kinds come from an existing field.",
+          "These are all informative."
+        ],
+        "version": 4,
+        "id": "what-the-tests-prove",
+        "deck": "releases-and-e2e-catalog",
+        "title": "What the tests prove, and how to run them",
+        "rank": 80,
+        "section": "Phase 4: Workflows and derived facts",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-152ea8b586fbe36f7d675639d459854de2692427c843b404d278.svg",
+        "takeaway": "Tests print in a form a runner accepts, and the measures people asked for are computed from existing records.",
+        "reading_order": [
+          "t-runnable-formats",
+          "t-kinds-data",
+          "t-criteria-coverage-data",
+          "t-one-entry-reports",
+          "t-uncatalogued"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-runnable-formats",
+            "slide": "what-the-tests-prove",
+            "rank": 10,
+            "kind": "node",
+            "label": "Print tests in a form a runner accepts",
+            "description": "Print tests in a form a runner accepts.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-runnable-formats"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:runnable-formats"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-kinds-data",
+            "slide": "what-the-tests-prove",
+            "rank": 20,
+            "kind": "node",
+            "label": "Work out which kinds each criterion's tests cover",
+            "description": "Work out which kinds each criterion's tests cover.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-kinds-data"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:kinds-data"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-criteria-coverage-data",
+            "slide": "what-the-tests-prove",
+            "rank": 30,
+            "kind": "node",
+            "label": "Work out which criteria have an end-to-end test",
+            "description": "Work out which criteria have an end-to-end test.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-criteria-coverage-data"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:criteria-coverage-data"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-one-entry-reports",
+            "slide": "what-the-tests-prove",
+            "rank": 40,
+            "kind": "node",
+            "label": "Report entries that are not one runnable test",
+            "description": "Report entries that are not one runnable test.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-one-entry-reports"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:one-entry-reports"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-uncatalogued",
+            "slide": "what-the-tests-prove",
+            "rank": 50,
+            "kind": "node",
+            "label": "Find test code no entry cites",
+            "description": "Find test code no entry cites.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-uncatalogued"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:uncatalogued"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-006a955fdd9a035924b0c3941417091267605b37a6b42a5f7c8d.json",
+        "source_digest": "sha256:006a955fdd9a035924b0c3941417091267605b37a6b42a5f7c8dc0972e6c7a94",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:3faa2ca3aa471f1624c56a60527485ad1fa9a5c7c236e575f3574c2d262eff5c",
+      "parent_snapshots": [
+        "sha256:b69e66e1e2ce0135a46c03c54545d223b976d0e7b1e5f2e9ad1e676d3e361a9a"
+      ],
+      "request_id": "what-the-tests-prove-540165a6-edit",
+      "created_at": "2026-11-03T03:13:30.990073Z",
+      "asset": "24-a-f9a4cd917d0eef7b11d8174aae5740c3b839ad5f70fe2d26554c.svg",
+      "asset_digest": "sha256:f9a4cd917d0eef7b11d8174aae5740c3b839ad5f70fe2d26554c6db95fcd6550",
+      "slide": {
+        "front": [
+          "A test with no declaring line is named, not dropped.",
+          "Kinds come from an existing field.",
+          "These are all informative."
+        ],
+        "version": 4,
+        "id": "what-the-tests-prove",
+        "deck": "releases-and-e2e-catalog",
+        "title": "What the tests prove, and how to run them",
+        "rank": 80,
+        "section": "Phase 4: Workflows and derived facts",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-f9a4cd917d0eef7b11d8174aae5740c3b839ad5f70fe2d26554c.svg",
+        "takeaway": "Tests print in a form a runner accepts, and the measures people asked for are computed from existing records.",
+        "reading_order": [
+          "t-runnable-formats",
+          "t-kinds-data",
+          "t-criteria-coverage-data",
+          "t-one-entry-reports",
+          "t-uncatalogued"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-runnable-formats",
+            "slide": "what-the-tests-prove",
+            "rank": 10,
+            "kind": "node",
+            "label": "Print tests in a form a runner accepts",
+            "description": "Print tests in a form a runner accepts.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-runnable-formats"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:runnable-formats"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-kinds-data",
+            "slide": "what-the-tests-prove",
+            "rank": 20,
+            "kind": "node",
+            "label": "Work out which kinds each criterion's tests cover",
+            "description": "Work out which kinds each criterion's tests cover.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-kinds-data"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:kinds-data"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-criteria-coverage-data",
+            "slide": "what-the-tests-prove",
+            "rank": 30,
+            "kind": "node",
+            "label": "Work out which criteria have an end-to-end test",
+            "description": "Work out which criteria have an end-to-end test.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-criteria-coverage-data"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:criteria-coverage-data"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-one-entry-reports",
+            "slide": "what-the-tests-prove",
+            "rank": 40,
+            "kind": "node",
+            "label": "Report entries that are not one runnable test",
+            "description": "Report entries that are not one runnable test.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-one-entry-reports"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:one-entry-reports"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-uncatalogued",
+            "slide": "what-the-tests-prove",
+            "rank": 50,
+            "kind": "node",
+            "label": "Find test code no entry cites",
+            "description": "Find test code no entry cites.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-uncatalogued"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:uncatalogued"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-16040d1ee0b9429dc1e3b79decdc650eef3306806a4e3ee7b3c0.json",
+        "source_digest": "sha256:16040d1ee0b9429dc1e3b79decdc650eef3306806a4e3ee7b3c0b4c4fdb88646",
         "renderer": "change-saga-diagram/2"
       }
     }

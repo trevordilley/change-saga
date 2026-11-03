@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Reader pages show what the CLI already knows",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 88,
+      "width": 1200,
+      "height": 332,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-release-list-page",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Show the list of releases",
+      "x": 52,
+      "y": 128,
+      "width": 1176,
+      "height": 64,
+      "style": "primary"
+    },
+    {
+      "id": "t-release-page",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Show a release: stories, notes and checklist",
+      "x": 52,
+      "y": 200,
+      "width": 1176,
+      "height": 64,
+      "style": "primary"
+    },
+    {
+      "id": "t-template-page",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Show the template and versioning scheme",
+      "x": 52,
+      "y": 272,
+      "width": 1176,
+      "height": 64,
+      "style": "primary"
+    },
+    {
+      "id": "t-prove-with-tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Record that the chosen tests were run",
+      "x": 52,
+      "y": 344,
+      "width": 1176,
+      "height": 64,
+      "style": "primary"
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 40,
+      "y": 432,
+      "width": 1200,
+      "height": 260,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-qa-coverage-views",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Show kinds per entry and per criterion",
+      "x": 52,
+      "y": 472,
+      "width": 1176,
+      "height": 64,
+      "style": "normal"
+    },
+    {
+      "id": "t-qa-filters-page",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Filter the catalog in the reader",
+      "x": 52,
+      "y": 544,
+      "width": 1176,
+      "height": 64,
+      "style": "normal"
+    },
+    {
+      "id": "t-criterion-on-story",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Show a criterion's end-to-end tests on its story",
+      "x": 52,
+      "y": 616,
+      "width": 1176,
+      "height": 64,
+      "style": "normal"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "real-release",
-  "current": "sha256:d7a460a5d81b3923af959963c9ef91f266ac07f03879488fe556b4b4695e2553",
+  "current": "sha256:90c9a8377010e9acb2aab1837bc845fbbacfed419982528895cfa27e0c4d5c86",
   "revisions": [
     {
       "snapshot": "sha256:91ad385260977bcbbf621d7ef2a1f7503606632a138ed9e968ca7dc2a2323786",
@@ -110,6 +110,62 @@
       "diagram": {
         "source": "24-a-ec1cd475e05d825e893f69cfcb0248c7c725a3bcded5785d7cc4.json",
         "source_digest": "sha256:ec1cd475e05d825e893f69cfcb0248c7c725a3bcded5785d7cc44db1d6e38463",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:90c9a8377010e9acb2aab1837bc845fbbacfed419982528895cfa27e0c4d5c86",
+      "parent_snapshots": [
+        "sha256:d7a460a5d81b3923af959963c9ef91f266ac07f03879488fe556b4b4695e2553"
+      ],
+      "request_id": "real-release-1021ae0c-edit",
+      "created_at": "2026-11-03T03:13:34.527927Z",
+      "asset": "24-a-4fdfc420f3879c3040b68bb4a4cecf7f38427c85ace54c1dc748.svg",
+      "asset_digest": "sha256:4fdfc420f3879c3040b68bb4a4cecf7f38427c85ace54c1dc7488aac6b1af190",
+      "slide": {
+        "front": [
+          "This is the first true end-to-end test.",
+          "What it trips over goes back into the guide.",
+          "Then the Roadmap features can be delivered."
+        ],
+        "version": 4,
+        "id": "real-release",
+        "deck": "releases-and-e2e-catalog",
+        "title": "The real test is a release run by an agent",
+        "rank": 130,
+        "section": "Phase 8: Run a real release",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-4fdfc420f3879c3040b68bb4a4cecf7f38427c85ace54c1dc748.svg",
+        "takeaway": "An agent runs this repository's next release through the CLI on a branch, with a person steering.",
+        "reading_order": [
+          "t-run-a-real-release"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-run-a-real-release",
+            "slide": "real-release",
+            "rank": 10,
+            "kind": "node",
+            "label": "Have an agent run a real release",
+            "description": "Have an agent run a real release.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-run-a-real-release"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:run-a-real-release"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-c9a7ea95a07e930ddadd1fa89e03107ffbc40e01fccac3873720.json",
+        "source_digest": "sha256:c9a7ea95a07e930ddadd1fa89e03107ffbc40e01fccac38737208c9a0ce359bc",
         "renderer": "change-saga-diagram/2"
       }
     }

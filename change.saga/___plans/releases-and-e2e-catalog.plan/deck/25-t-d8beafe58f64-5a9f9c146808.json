@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "releases-and-e2e-catalog",
   "slide": "reading-through-query",
-  "current": "sha256:d3c4b5b595b4780e32d5fc8eba96c2d50aadb23186e5c5c5ab79d3d4fabf23e5",
+  "current": "sha256:fe894c0c1fbfa09d0813a22334b2a079dd069c3600265284f38b04f4b4fbe7e5",
   "revisions": [
     {
       "snapshot": "sha256:58d5370bfa4aeaab1ff31454180895a545ae586d1a5ae58bef1caaabb34bc497",
@@ -186,6 +186,194 @@
       "diagram": {
         "source": "24-a-dafbbd630a7ee6ad2750d805d392f3d9118a02df576f9631f1ac.json",
         "source_digest": "sha256:dafbbd630a7ee6ad2750d805d392f3d9118a02df576f9631f1acf69be7afbd4a",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:6da09fa02a95d4e9bf903523eaa05f6a92969432ba42d140d23210e98520de57",
+      "parent_snapshots": [
+        "sha256:d3c4b5b595b4780e32d5fc8eba96c2d50aadb23186e5c5c5ab79d3d4fabf23e5"
+      ],
+      "request_id": "reading-through-query-444d7e99-edit",
+      "created_at": "2026-11-03T03:13:02.854735Z",
+      "asset": "24-a-82abd9f6b6cef324c9cf4d3f42d13d4bd44be5dab4b3190097c6.svg",
+      "asset_digest": "sha256:82abd9f6b6cef324c9cf4d3f42d13d4bd44be5dab4b3190097c64943fd7684cc",
+      "slide": {
+        "front": [
+          "One operation with an optional selector, as query personas has.",
+          "Text comes back in full.",
+          "Which tests a line affects is a query too."
+        ],
+        "version": 4,
+        "id": "reading-through-query",
+        "deck": "releases-and-e2e-catalog",
+        "title": "All of it is read through query, the established way",
+        "rank": 50,
+        "section": "Phase 3: Commands and queries",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-82abd9f6b6cef324c9cf4d3f42d13d4bd44be5dab4b3190097c6.svg",
+        "takeaway": "Reads use query's pattern from the start, so an agent gets everything as JSON and never scrapes a page.",
+        "reading_order": [
+          "t-query-releases",
+          "t-query-e2e-tests",
+          "t-cannot-reach"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-query-releases",
+            "slide": "reading-through-query",
+            "rank": 10,
+            "kind": "node",
+            "label": "Read every release record through query",
+            "description": "Read every release record through query.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-query-releases"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:query-releases"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-query-e2e-tests",
+            "slide": "reading-through-query",
+            "rank": 20,
+            "kind": "node",
+            "label": "Answer which tests a line or range affects",
+            "description": "Answer which tests a line or range affects.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-query-e2e-tests"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:query-e2e-tests"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-cannot-reach",
+            "slide": "reading-through-query",
+            "rank": 30,
+            "kind": "node",
+            "label": "Report what the answer could not reach",
+            "description": "Report what the answer could not reach.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-cannot-reach"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:cannot-reach"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-d2d474203eb951222ece75d30ed6e34cdb041ccdb2fbdc42588a.json",
+        "source_digest": "sha256:d2d474203eb951222ece75d30ed6e34cdb041ccdb2fbdc42588a73c97f05ea2d",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:fe894c0c1fbfa09d0813a22334b2a079dd069c3600265284f38b04f4b4fbe7e5",
+      "parent_snapshots": [
+        "sha256:6da09fa02a95d4e9bf903523eaa05f6a92969432ba42d140d23210e98520de57"
+      ],
+      "request_id": "reading-through-query-a22b544c-edit",
+      "created_at": "2026-11-03T03:13:28.878691Z",
+      "asset": "24-a-27beab31b2b5d11de7fcead7a8d77e36d6ed368f27e9140922f4.svg",
+      "asset_digest": "sha256:27beab31b2b5d11de7fcead7a8d77e36d6ed368f27e9140922f473a63a55c5cd",
+      "slide": {
+        "front": [
+          "One operation with an optional selector, as query personas has.",
+          "Text comes back in full.",
+          "Which tests a line affects is a query too."
+        ],
+        "version": 4,
+        "id": "reading-through-query",
+        "deck": "releases-and-e2e-catalog",
+        "title": "All of it is read through query, the established way",
+        "rank": 50,
+        "section": "Phase 3: Commands and queries",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-27beab31b2b5d11de7fcead7a8d77e36d6ed368f27e9140922f4.svg",
+        "takeaway": "Reads use query's pattern from the start, so an agent gets everything as JSON and never scrapes a page.",
+        "reading_order": [
+          "t-query-releases",
+          "t-query-e2e-tests",
+          "t-cannot-reach"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-query-releases",
+            "slide": "reading-through-query",
+            "rank": 10,
+            "kind": "node",
+            "label": "Read every release record through query",
+            "description": "Read every release record through query.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-query-releases"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:query-releases"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-query-e2e-tests",
+            "slide": "reading-through-query",
+            "rank": 20,
+            "kind": "node",
+            "label": "Answer which tests a line or range affects",
+            "description": "Answer which tests a line or range affects.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-query-e2e-tests"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:query-e2e-tests"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-cannot-reach",
+            "slide": "reading-through-query",
+            "rank": 30,
+            "kind": "node",
+            "label": "Report what the answer could not reach",
+            "description": "Report what the answer could not reach.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-cannot-reach"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:cannot-reach"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-35f765e317edd87791872fca04017d0b80896742ddaf89efa153.json",
+        "source_digest": "sha256:35f765e317edd87791872fca04017d0b80896742ddaf89efa1538ba8657c83c6",
         "renderer": "change-saga-diagram/2"
       }
     }
