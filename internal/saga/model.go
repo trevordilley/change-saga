@@ -387,7 +387,10 @@ type Saga struct {
 	Reviews []*Review `json:"reviews,omitempty"`
 	// Plans are the bodies of work the team intends to do. Like reviews, they
 	// are not part of the documentation's structure and never earn it coverage.
-	Plans         []*Plan        `json:"plans,omitempty"`
+	Plans []*Plan `json:"plans,omitempty"`
+	// Releases are the versions the team ships. They are not part of the
+	// documentation's structure either, and a Saga without any is unaffected.
+	Releases      []*Release     `json:"releases,omitempty"`
 	Claims        []Claim        `json:"claims,omitempty"`
 	Verifications []Verification `json:"verifications,omitempty"`
 	Merges        []Merge        `json:"merges,omitempty"`

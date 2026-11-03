@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/release.schema.json",
+  "title": "Release: a named version of the product and everything needed to get it to users",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "release_version",
+    "created_at"
+  ],
+  "dependentRequired": {
+    "released_at": ["released_commit"],
+    "released_commit": ["released_at"]
+  },
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/release.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "release_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+    },
+    "from": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to": {
+      "type": "string",
+      "minLength": 1
+    },
+    "milestone": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:milestone:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "released_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "released_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

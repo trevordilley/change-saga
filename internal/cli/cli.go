@@ -1392,7 +1392,7 @@ func Spec(args []string, out io.Writer) error {
 			"target_scheme":        "urn:change-saga",
 			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
 			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir},
+			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir, saga.ReviewsDir, saga.PlansDir, saga.ReleasesDir},
 			"app_layout": map[string]any{
 				"app_roots":       applayout.AppRootDirs,
 				"feature_storage": applayout.FeaturesDir + "/<id>" + applayout.FeatureSuffix + "/" + applayout.FeatureManifestName,

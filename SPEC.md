@@ -69,6 +69,7 @@ one Saga is neither invalid nor reported as a problem.
   ___merges/                   # landed commits and their branch messages
   ___reviews/<id>.review/      # pull-request reviews: a deck, approvals, comments
   ___plans/<id>.plan/          # Plans: a deck and Tasks (section 9)
+  ___releases/<id>.release/    # Releases: a version and what ships in it (section 9A)
 ```
 
 Report content and feature roots are invalid at the application root. No URN names
@@ -102,6 +103,7 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
 | Plan | `v5/plan.schema.json` | title, ordered phases, prototypes, reviews, delivery time; Git history | one role `plan` deck; section 9 |
 | Task | `v5/task.schema.json` | title, state, phase, story, same-Plan dependencies, code, sizing; Git history | every Task leads to a story, no dependency cycle; section 9 |
+| Release | `v5/release.schema.json` | version as supplied, optional range, milestone, released commit; Git history | one release per version; section 9A |
 
 Nothing in a Saga is required up front. A first change is asked only to have
 its implementation explained; personas, stories, design, quality, and terms
@@ -2014,12 +2016,33 @@ not design or implementation coverage, and a `done` Task is not delivery evidenc
 Readiness's `plan_coverage` axis counts the criteria whose story a Task names. It
 is planning guidance and never gates peer-review readiness.
 
+## 9A. Releases
+
+A **release** is a named version of the product and everything needed to get it
+to users. It belongs to no feature. Git is a release's history: a change rewrites
+the same small record, and a release that should not exist is deleted. A Saga with
+no releases is unaffected.
+
+`___releases/<id>.release/release.json` conforms to
+[`schema/v5/release.schema.json`](schema/v5/release.schema.json):
+
+| Field | Meaning |
+| --- | --- |
+| `id`, `created_at` | Required identity. The URN is `urn:change-saga:<saga>:release:<id>`. |
+| `release_version` | Required, exactly as a person supplied it. Nothing computes it and no scheme is enforced, so it need not be a legal record ID. `version` is the record format, as on every record. |
+| `from`, `to` | The Git revisions the release runs between, as given. Neither has to resolve yet: a tag is often pushed late. |
+| `milestone` | URN of the shared milestone the release sits within. |
+| `released_at`, `released_commit` | Recorded together. That someone said it went out, and at which full commit, which may be earlier than the commit holding this record. |
+
+Two releases of one version are a validation error, so branches that each create
+it cannot merge quietly.
+
 ## 10. Reserved names
 
 `___code` is reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
 `___overview`, `___designsystem`, `___personas`, `___featureflags`,
-`___onboarding`, `___features`, `___reviews`, `___plans`, `___claims`,
+`___onboarding`, `___features`, `___reviews`, `___plans`, `___releases`, `___claims`,
 `___verifications`, `___merges` and `___whiteboards` are reserved at the saga root.
 `___requirements`, `___design`,
 `___slides`, and `___quality` are reserved at a feature root;

@@ -51,6 +51,7 @@
     "within_two_days": true,
     "reason": "One schema and one loader, closely following the Plan loader; a day and a half with its tests."
   },
-  "state": "in_progress",
+  "state": "done",
+  "summary": "Added release.json, its schema and URN, loading, and an error on two releases of one version. A Saga without releases loads as before. Children and commands come in later phases.",
   "created_at": "2026-11-03T03:07:50.639043Z"
 }

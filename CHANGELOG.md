@@ -15,6 +15,9 @@ tool, and what they have to do about it.
 - **Format:** a whiteboard can hold the optional `release-process` role, for the board
   showing how code reaches users: `whiteboard assign-role --role release-process`.
   Older metadata loads unchanged; upgrade readers before assigning it.
+- **Format:** a release can be recorded in `___releases/<id>.release/release.json`, with
+  its version, range, milestone and released commit. A Saga with no releases is
+  unaffected; upgrade readers before adding one. Commands to write them come next.
 
 ## [0.8.0] - 2026-11-03
 
