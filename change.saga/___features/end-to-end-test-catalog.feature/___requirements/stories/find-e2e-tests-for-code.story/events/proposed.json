@@ -2,8 +2,8 @@
   "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
   "version": 3,
   "id": "proposed",
-  "story": "urn:change-saga:change-saga:story:select-e2e-tests-for-a-release",
+  "story": "urn:change-saga:change-saga:story:find-e2e-tests-for-code",
   "parents": [],
   "state": "proposed",
-  "created_at": "2026-11-03T01:13:27.369721Z"
+  "created_at": "2026-11-03T01:29:46.215179Z"
 }

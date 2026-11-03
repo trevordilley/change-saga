@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:prove-a-release-with-its-tests",
+  "parents": [
+    "urn:change-saga:change-saga:story:prove-a-release-with-its-tests:revision:r1"
+  ],
+  "title": "Record that the chosen tests were run",
+  "statement": "As a developer, I can tick a checklist step that says the chosen tests passed, with a link to the run, so the proof sits with the release while the results stay in our CI.",
+  "overview": "Proposed addition. Quality deliberately says how something is verified and never whether it passed, and run records are already deprecated for that reason. A proof step keeps that stance and gives an agent a way to show its work.",
+  "priority": "should",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "step",
+      "statement": "A template can hold a step that names `release tests`, and it is copied like any other."
+    },
+    {
+      "id": "link",
+      "statement": "Ticking that step can record a link to the run."
+    },
+    {
+      "id": "no-results",
+      "statement": "No test result or pass or fail state is stored in the Saga, and nothing reads one to judge a release."
+    }
+  ],
+  "created_at": "2026-11-03T01:29:51.525239Z"
+}

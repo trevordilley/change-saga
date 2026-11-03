@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "qa-tools-direction-20261102",
+  "kind": "decision",
+  "title": "Asking what a line affects, and positive and negative coverage",
+  "reference": "Trevor's product direction, 2026-11-02: it's about 'given this code range, what e2e tests are affected?', and based on that people can figure it out. This applies to both a review and a release, as both operate on code ranges. 'I should be able to use a cli command to essentially determine if I change this line of code, what e2e tests do I need to run to prove the affected stories are still functional.' Not every criterion needs an end-to-end test, but it would be great to be able to indicate that gap. Happy-path-only testing covering all your AC only proves the app works in ideal circumstances: characterize tests as positive or negative, supply that per test in the catalog, and infer the amount of positive and negative coverage; an AC with only positive coverage is weaker than one with negative coverage. 'Feels like there is a suite of QA tools we could expose to slice and dice this info.'",
+  "created_at": "2026-11-03T01:29:24.206647Z"
+}
