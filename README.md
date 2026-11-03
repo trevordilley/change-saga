@@ -22,7 +22,7 @@ without accounts or a hosted service.
 Change Saga is experimental, and its format may change before 1.0.
 
 [Install](#install) · [Start with a review](#start-with-a-review) ·
-[Recent capabilities](#recent-capabilities) · [Documentation](docs/README.md)
+[Plan work](#plan-work-with-tasks) · [Documentation](docs/README.md)
 
 <details>
 <summary>Contents</summary>
@@ -32,7 +32,10 @@ Change Saga is experimental, and its format may change before 1.0.
 - [Reviewing a Saga](#reviewing-a-saga)
 - [Use it in CI](#use-it-in-ci)
 - [Grow into living documentation](#grow-into-living-documentation)
-- [Recent capabilities](#recent-capabilities)
+- [Plan work with Tasks](#plan-work-with-tasks)
+- [Explore technical design on whiteboards](#explore-technical-design-on-whiteboards)
+- [Inspect prototypes from your coding agent](#inspect-prototypes-from-your-coding-agent)
+- [Deliver Roadmap extensions](#deliver-roadmap-extensions)
 - [Working with your coding agent](#working-with-your-coding-agent)
 - [See an example Saga](#see-an-example-saga)
 - [Status, check and reconcile](#status-check-and-reconcile)
@@ -292,13 +295,7 @@ its own features. One Saga per repository is a recommendation, not a rule: any
 so separate agents can own stories, prototypes, design, test cases, and work
 items in parallel and merge cleanly.
 
-## Recent capabilities
-
-These capabilities are available on `main`; see the [changelog](CHANGELOG.md)
-for released versions. Prototype HTML queries, Item record details, and the
-health-check improvements below are unreleased.
-
-### Plans and Tasks connected to user stories
+## Plan work with Tasks
 
 Draft a change's technical design before building it. A Plan combines an essay,
 a slide deck, and Tasks arranged in phases. Each Task names a user story or
@@ -311,9 +308,11 @@ reviews explain what was delivered or departed from the Plan.
 `diagram describe` names the Task or story behind each linked Item, so an agent
 can follow the same path from the terminal.
 
-Agents can read the same model directly:
+Start with `plan guide` for the authoring workflow. Agents can read the Plan
+and inspect which Tasks are ready directly:
 
 ```sh
+change-saga plan guide change.saga
 change-saga query plans --saga change.saga
 change-saga query plan --saga change.saga --plan PLAN_ID
 change-saga query task --saga change.saga --plan PLAN_ID --task TASK_ID
@@ -324,12 +323,20 @@ Replace the example IDs with those in your Saga. See
 [writing a Plan](skills/change-saga/references/plans.md) for authoring,
 Task sizing, dependencies, and delivery.
 
-### Technical whiteboards with evidence on each element
+## Explore technical design on whiteboards
 
 Explore architecture, infrastructure, data flows, and an ERD as connected,
 zoomable diagrams. A whiteboard element can carry exact code evidence and links
 to criteria, records, and technical definitions. Open its controls to inspect
 the saved source and intent without leaving the diagram.
+
+List the boards, then inspect one by its returned ID (here, `architecture`):
+
+```sh
+change-saga whiteboard list --json change.saga
+change-saga whiteboard describe --id architecture change.saga
+change-saga whiteboard check --id architecture change.saga
+```
 
 When referenced code changes, the element becomes stale in the reader and in
 health checks. Reassess the explanation and publish a new parented revision;
@@ -337,7 +344,7 @@ the previous revision keeps its original evidence. See the
 [whiteboard guide](docs/whiteboards.md) and
 [ERD authoring guide](docs/erd-whiteboard-guide.md).
 
-### Prototype inspection for coding agents
+## Inspect prototypes from your coding agent
 
 Agents can inspect a prototype's implementation alongside its recorded intent.
 `query prototype` reads its HTML in byte-range pages, with
@@ -353,7 +360,7 @@ Follow the returned byte offsets to read the rest of a large prototype. These
 queries read the model without launching the browser or executing the prototype.
 See the [AI-facing interface](docs/ai-facing-interface.md).
 
-### Roadmap extensions with a delivery path
+## Deliver Roadmap extensions
 
 Plan an addition to an existing feature without mixing unfinished stories into
 its current documentation. A Roadmap feature can name the feature it extends
@@ -362,7 +369,16 @@ with `--augments`; the reader connects the planned work to that feature.
 When the addition is ready, `feature deliver` moves its supported content into
 the target feature while preserving record identities. It flags the target's
 overview for revision so the explanation can catch up with the delivered work.
-See [the changelog](CHANGELOG.md#070---2026-11-02) for the delivery rules.
+Preview the delivery before applying it, using the Roadmap feature's ID:
+
+```sh
+change-saga feature deliver --feature FEATURE_ID --dry-run change.saga
+change-saga feature deliver --feature FEATURE_ID change.saga
+```
+
+Revise the recipient's overview with `feature set-overview` after reassessing
+what the delivered work changes. Delivery refuses content it cannot place,
+such as design chapters, and lists what needs attention.
 
 ## Working with your coding agent
 
