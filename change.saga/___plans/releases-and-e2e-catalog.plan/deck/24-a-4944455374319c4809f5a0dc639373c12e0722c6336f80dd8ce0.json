@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Reviews and releases share one answer, and the rest fills in",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 112,
+      "width": 588,
+      "height": 564,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-release-tests-and-review-e2e",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Same answer everywhere",
+      "x": 60,
+      "y": 162,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Give reviews and releases the same test answer"
+    },
+    {
+      "id": "t-agent-json-and-skill",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Agent writes and skill",
+      "x": 60,
+      "y": 288,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Let an agent keep the release current"
+    },
+    {
+      "id": "t-branch-guidance",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Run on a branch",
+      "x": 60,
+      "y": 414,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Support running a release on its own branch"
+    },
+    {
+      "id": "t-promote-step",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Keep a step",
+      "x": 60,
+      "y": 540,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Copy a useful step into the template"
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 652,
+      "y": 112,
+      "width": 588,
+      "height": 312,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-slice-filters",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Slice the catalog",
+      "x": 672,
+      "y": 162,
+      "width": 548,
+      "height": 112,
+      "style": "normal",
+      "summary": "Filter the catalog and run the slice"
+    },
+    {
+      "id": "t-thin-spots",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Thin spots",
+      "x": 672,
+      "y": 288,
+      "width": 548,
+      "height": 112,
+      "style": "normal",
+      "summary": "List where end-to-end tests are thin"
+    }
+  ]
+}

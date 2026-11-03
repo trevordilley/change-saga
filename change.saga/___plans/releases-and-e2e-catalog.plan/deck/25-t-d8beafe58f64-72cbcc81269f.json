@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "deck": "releases-and-e2e-catalog",
+  "slide": "release-and-checklist-commands",
+  "current": "sha256:8d4a8f3410dfff6cbc915b84963cf9b99697980b3ee9bebfea9fee176a9ab102",
+  "revisions": [
+    {
+      "snapshot": "sha256:d0481267d7fc15e8afb71b273dc043a5e072d87722e8c713c5362dd47c73eaf0",
+      "request_id": "rel-plan-release-and-checklist-commands",
+      "created_at": "2026-11-03T03:10:18.841252Z",
+      "asset": "24-a-7b0f36f88de67f11ea99a9de586d25ec6102e8f9ebf2afbf3305.svg",
+      "asset_digest": "sha256:7b0f36f88de67f11ea99a9de586d25ec6102e8f9ebf2afbf33053fc76f8dc6b1",
+      "slide": {
+        "front": [
+          "A version is whatever a person supplies.",
+          "Steps need only a sentence.",
+          "A tick writes one small file, so ticks never conflict."
+        ],
+        "version": 4,
+        "id": "release-and-checklist-commands",
+        "deck": "releases-and-e2e-catalog",
+        "title": "A release and its checklist come first",
+        "rank": 30,
+        "section": "Phase 3: Commands and queries",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7b0f36f88de67f11ea99a9de586d25ec6102e8f9ebf2afbf3305.svg",
+        "takeaway": "Creating a release copies the template, and steps can then change freely and be ticked from the CLI.",
+        "reading_order": [
+          "t-release-create-list",
+          "t-template-commands",
+          "t-versioning-scheme",
+          "t-checklist-step-commands",
+          "t-tick-from-cli"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-create-list",
+            "slide": "release-and-checklist-commands",
+            "rank": 10,
+            "kind": "node",
+            "label": "release create and list",
+            "description": "Create and list releases.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-create-list"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-create-list"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-template-commands",
+            "slide": "release-and-checklist-commands",
+            "rank": 20,
+            "kind": "node",
+            "label": "Template commands",
+            "description": "Edit the release template from the CLI.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-template-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:template-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-versioning-scheme",
+            "slide": "release-and-checklist-commands",
+            "rank": 30,
+            "kind": "node",
+            "label": "Versioning scheme",
+            "description": "Write down the versioning scheme.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-versioning-scheme"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:versioning-scheme"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-checklist-step-commands",
+            "slide": "release-and-checklist-commands",
+            "rank": 40,
+            "kind": "node",
+            "label": "Checklist steps",
+            "description": "Add, edit, move and remove a release's steps.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-checklist-step-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:checklist-step-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-tick-from-cli",
+            "slide": "release-and-checklist-commands",
+            "rank": 50,
+            "kind": "node",
+            "label": "Tick from the CLI",
+            "description": "Check and uncheck a step from the CLI.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-tick-from-cli"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:tick-from-cli"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-c21fbe983f1b436b9e81988887a1f40fb56838b04fb6364cfbc6.json",
+        "source_digest": "sha256:c21fbe983f1b436b9e81988887a1f40fb56838b04fb6364cfbc6fe2fe9a64dc3",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:8d4a8f3410dfff6cbc915b84963cf9b99697980b3ee9bebfea9fee176a9ab102",
+      "parent_snapshots": [
+        "sha256:d0481267d7fc15e8afb71b273dc043a5e072d87722e8c713c5362dd47c73eaf0"
+      ],
+      "request_id": "release-and-checklist-commands-a42c6f19-edit",
+      "created_at": "2026-11-03T03:11:26.263203Z",
+      "asset": "24-a-baec69c215073e09e3ef388a98f6985b1d57d2b56802b57fea7b.svg",
+      "asset_digest": "sha256:baec69c215073e09e3ef388a98f6985b1d57d2b56802b57fea7bf25e2dccdf13",
+      "slide": {
+        "front": [
+          "A version is whatever a person supplies.",
+          "Steps need only a sentence.",
+          "A tick writes one small file, so ticks never conflict."
+        ],
+        "version": 4,
+        "id": "release-and-checklist-commands",
+        "deck": "releases-and-e2e-catalog",
+        "title": "A release and its checklist come first",
+        "rank": 30,
+        "section": "Phase 3: Commands and queries",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-baec69c215073e09e3ef388a98f6985b1d57d2b56802b57fea7b.svg",
+        "takeaway": "Creating a release copies the template, and steps can then change freely and be ticked from the CLI.",
+        "reading_order": [
+          "t-release-create-list",
+          "t-template-commands",
+          "t-versioning-scheme",
+          "t-checklist-step-commands",
+          "t-tick-from-cli"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-create-list",
+            "slide": "release-and-checklist-commands",
+            "rank": 10,
+            "kind": "node",
+            "label": "release create and list",
+            "description": "Create and list releases.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-create-list"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-create-list"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-template-commands",
+            "slide": "release-and-checklist-commands",
+            "rank": 20,
+            "kind": "node",
+            "label": "Template commands",
+            "description": "Edit the release template from the CLI.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-template-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:template-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-versioning-scheme",
+            "slide": "release-and-checklist-commands",
+            "rank": 30,
+            "kind": "node",
+            "label": "Versioning scheme",
+            "description": "Write down the versioning scheme.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-versioning-scheme"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:versioning-scheme"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-checklist-step-commands",
+            "slide": "release-and-checklist-commands",
+            "rank": 40,
+            "kind": "node",
+            "label": "Checklist steps",
+            "description": "Add, edit, move and remove a release's steps.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-checklist-step-commands"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:checklist-step-commands"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-tick-from-cli",
+            "slide": "release-and-checklist-commands",
+            "rank": 50,
+            "kind": "node",
+            "label": "Tick from the CLI",
+            "description": "Check and uncheck a step from the CLI.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-tick-from-cli"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:tick-from-cli"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-40109937e30f8ebea59ff5a5b10e51d573beed46573c51cc686e.json",
+        "source_digest": "sha256:40109937e30f8ebea59ff5a5b10e51d573beed46573c51cc686e5e28d777d5bb",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "A release and its checklist come first",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 112,
+      "width": 840,
+      "height": 580,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-release-create-list",
+      "kind": "node",
+      "shape": "rect",
+      "label": "release create and list",
+      "x": 60,
+      "y": 162,
+      "width": 800,
+      "height": 90,
+      "style": "primary",
+      "summary": "Create and list releases"
+    },
+    {
+      "id": "t-template-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Template commands",
+      "x": 60,
+      "y": 266,
+      "width": 800,
+      "height": 90,
+      "style": "primary",
+      "summary": "Edit the release template from the CLI"
+    },
+    {
+      "id": "t-versioning-scheme",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Versioning scheme",
+      "x": 60,
+      "y": 370,
+      "width": 800,
+      "height": 90,
+      "style": "primary",
+      "summary": "Write down the versioning scheme"
+    },
+    {
+      "id": "t-checklist-step-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Checklist steps",
+      "x": 60,
+      "y": 474,
+      "width": 800,
+      "height": 90,
+      "style": "primary",
+      "summary": "Add, edit, move and remove a release's steps"
+    },
+    {
+      "id": "t-tick-from-cli",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Tick from the CLI",
+      "x": 60,
+      "y": 578,
+      "width": 800,
+      "height": 90,
+      "style": "primary",
+      "summary": "Check and uncheck a step from the CLI"
+    }
+  ]
+}

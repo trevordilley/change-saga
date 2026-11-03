@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "All of it is read through query, the established way",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 112,
+      "width": 588,
+      "height": 186,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-query-releases",
+      "kind": "node",
+      "shape": "rect",
+      "label": "query releases",
+      "x": 60,
+      "y": 162,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Read every release record through query"
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 652,
+      "y": 112,
+      "width": 588,
+      "height": 312,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-query-e2e-tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "query e2e-tests",
+      "x": 672,
+      "y": 162,
+      "width": 548,
+      "height": 112,
+      "style": "normal",
+      "summary": "Answer which tests a line or range affects"
+    },
+    {
+      "id": "t-cannot-reach",
+      "kind": "node",
+      "shape": "rect",
+      "label": "What it could not reach",
+      "x": 672,
+      "y": 288,
+      "width": 548,
+      "height": 112,
+      "style": "normal",
+      "summary": "Report what the answer could not reach"
+    }
+  ]
+}

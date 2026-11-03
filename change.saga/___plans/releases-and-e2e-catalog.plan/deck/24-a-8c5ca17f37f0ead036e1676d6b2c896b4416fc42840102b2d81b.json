@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "People get their sections, and the reports that matter",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 112,
+      "width": 588,
+      "height": 564,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-releases-side",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Releases side and sidebar",
+      "x": 60,
+      "y": 162,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Add the Releases side with its three entries"
+    },
+    {
+      "id": "t-whats-still-open",
+      "kind": "node",
+      "shape": "rect",
+      "label": "What is still open",
+      "x": 60,
+      "y": 288,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Report what is still open on a release"
+    },
+    {
+      "id": "t-unclaimed-work",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Unclaimed work",
+      "x": 60,
+      "y": 414,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "List merged work no release claims"
+    },
+    {
+      "id": "t-merged-released-enabled",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Merged, released, enabled",
+      "x": 60,
+      "y": 540,
+      "width": 548,
+      "height": 112,
+      "style": "primary",
+      "summary": "Tell merged, released and enabled apart"
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 652,
+      "y": 112,
+      "width": 588,
+      "height": 186,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-qa-entry",
+      "kind": "node",
+      "shape": "rect",
+      "label": "QA section",
+      "x": 672,
+      "y": 162,
+      "width": 548,
+      "height": 112,
+      "style": "normal",
+      "summary": "Add a QA section to the Overview"
+    }
+  ]
+}

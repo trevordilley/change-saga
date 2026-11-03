@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "deck": "releases-and-e2e-catalog",
+  "slide": "what-a-release-says",
+  "current": "sha256:ee0e0b94cbceac16904f0c9df4ed5cfe18d1bf35352b9a2af37cd5fb617817bd",
+  "revisions": [
+    {
+      "snapshot": "sha256:ccf55d3e6dee1ef2c6bbc3fed34795f9b2865e4da0663157f214f6109a779a5e",
+      "request_id": "rel-plan-what-a-release-says",
+      "created_at": "2026-11-03T03:10:20.440351Z",
+      "asset": "24-a-71d0d13fe43a61ffb66b948daf8ba68b573d577cce32bf9028b1.svg",
+      "asset_digest": "sha256:71d0d13fe43a61ffb66b948daf8ba68b573d577cce32bf9028b17e79e447aad5",
+      "slide": {
+        "front": [
+          "Internal text never reaches public output.",
+          "Stories found from the code are computed, not stored.",
+          "A story's path to code is shown, and blocks nothing."
+        ],
+        "version": 4,
+        "id": "what-a-release-says",
+        "deck": "releases-and-e2e-catalog",
+        "title": "What a release says, and what it reaches",
+        "rank": 70,
+        "section": "Phase 4: Workflows and derived facts",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-71d0d13fe43a61ffb66b948daf8ba68b573d577cce32bf9028b1.svg",
+        "takeaway": "Public notes print cleanly, breaking changes say what to do, and stories and code paths are worked out from the links.",
+        "reading_order": [
+          "t-publish-notes",
+          "t-breaking-notes",
+          "t-stories-from-range",
+          "t-story-code-paths"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-publish-notes",
+            "slide": "what-a-release-says",
+            "rank": 10,
+            "kind": "node",
+            "label": "Print public notes",
+            "description": "Print public notes as Markdown.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-publish-notes"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:publish-notes"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-breaking-notes",
+            "slide": "what-a-release-says",
+            "rank": 20,
+            "kind": "node",
+            "label": "Breaking notes",
+            "description": "Call out what a release breaks.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-breaking-notes"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:breaking-notes"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-stories-from-range",
+            "slide": "what-a-release-says",
+            "rank": 30,
+            "kind": "node",
+            "label": "Stories from the range",
+            "description": "Show the stories a release's range reaches.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-stories-from-range"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:stories-from-range"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-story-code-paths",
+            "slide": "what-a-release-says",
+            "rank": 40,
+            "kind": "node",
+            "label": "Story to code",
+            "description": "Show the path from a story to code.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-story-code-paths"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:story-code-paths"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-9eff481c90de871158862dc3812b16633bcf8d53a5053eeb1522.json",
+        "source_digest": "sha256:9eff481c90de871158862dc3812b16633bcf8d53a5053eeb1522db1fd362108d",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:ee0e0b94cbceac16904f0c9df4ed5cfe18d1bf35352b9a2af37cd5fb617817bd",
+      "parent_snapshots": [
+        "sha256:ccf55d3e6dee1ef2c6bbc3fed34795f9b2865e4da0663157f214f6109a779a5e"
+      ],
+      "request_id": "what-a-release-says-654c8471-edit",
+      "created_at": "2026-11-03T03:11:29.641781Z",
+      "asset": "24-a-fe901fd25c6ccbf8c8d78c32ad86a985104a63574f3493c274fc.svg",
+      "asset_digest": "sha256:fe901fd25c6ccbf8c8d78c32ad86a985104a63574f3493c274fc227cdb85c446",
+      "slide": {
+        "front": [
+          "Internal text never reaches public output.",
+          "Stories found from the code are computed, not stored.",
+          "A story's path to code is shown, and blocks nothing."
+        ],
+        "version": 4,
+        "id": "what-a-release-says",
+        "deck": "releases-and-e2e-catalog",
+        "title": "What a release says, and what it reaches",
+        "rank": 70,
+        "section": "Phase 4: Workflows and derived facts",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-fe901fd25c6ccbf8c8d78c32ad86a985104a63574f3493c274fc.svg",
+        "takeaway": "Public notes print cleanly, breaking changes say what to do, and stories and code paths are worked out from the links.",
+        "reading_order": [
+          "t-publish-notes",
+          "t-breaking-notes",
+          "t-stories-from-range",
+          "t-story-code-paths"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-publish-notes",
+            "slide": "what-a-release-says",
+            "rank": 10,
+            "kind": "node",
+            "label": "Print public notes",
+            "description": "Print public notes as Markdown.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-publish-notes"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:publish-notes"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-breaking-notes",
+            "slide": "what-a-release-says",
+            "rank": 20,
+            "kind": "node",
+            "label": "Breaking notes",
+            "description": "Call out what a release breaks.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-breaking-notes"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:breaking-notes"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-stories-from-range",
+            "slide": "what-a-release-says",
+            "rank": 30,
+            "kind": "node",
+            "label": "Stories from the range",
+            "description": "Show the stories a release's range reaches.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-stories-from-range"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:stories-from-range"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-story-code-paths",
+            "slide": "what-a-release-says",
+            "rank": 40,
+            "kind": "node",
+            "label": "Story to code",
+            "description": "Show the path from a story to code.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-story-code-paths"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:story-code-paths"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e58011fe7aeca207b093b4969eb5ea674ad8e2111a034b824050.json",
+        "source_digest": "sha256:e58011fe7aeca207b093b4969eb5ea674ad8e2111a034b824050ef5d5644be55",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

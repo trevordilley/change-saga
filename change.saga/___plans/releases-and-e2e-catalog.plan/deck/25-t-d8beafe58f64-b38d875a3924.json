@@ -1,0 +1,345 @@
+{
+  "version": 1,
+  "deck": "releases-and-e2e-catalog",
+  "slide": "reader-pages",
+  "current": "sha256:5e4123582449cddcf69f7c40fdd3f805a0bb4f28227abf5a8b965cdb07f8b719",
+  "revisions": [
+    {
+      "snapshot": "sha256:1acfabcf3bb7622619bb34d6cc173e5ff608117f734c9ac30706633da24bfce2",
+      "request_id": "rel-plan-reader-pages",
+      "created_at": "2026-11-03T03:10:22.025297Z",
+      "asset": "24-a-31c22775eb4192513aae063880c006b12e8c0f903525cc52104d.svg",
+      "asset_digest": "sha256:31c22775eb4192513aae063880c006b12e8c0f903525cc52104dd179099486e9",
+      "slide": {
+        "front": [
+          "The release page is the largest.",
+          "Kinds and coverage join the QA section and story pages.",
+          "Filters reuse the existing directory component."
+        ],
+        "version": 4,
+        "id": "reader-pages",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Reader pages show what the CLI already knows",
+        "rank": 110,
+        "section": "Phase 6: Reader pages",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-31c22775eb4192513aae063880c006b12e8c0f903525cc52104d.svg",
+        "takeaway": "Each page renders data that earlier phases compute, so a page never holds logic of its own.",
+        "reading_order": [
+          "t-release-list-page",
+          "t-release-page",
+          "t-template-page",
+          "t-prove-with-tests",
+          "t-qa-coverage-views",
+          "t-qa-filters-page",
+          "t-criterion-on-story"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-list-page",
+            "slide": "reader-pages",
+            "rank": 10,
+            "kind": "node",
+            "label": "Releases list page",
+            "description": "Show the list of releases.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-list-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-list-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-page",
+            "slide": "reader-pages",
+            "rank": 20,
+            "kind": "node",
+            "label": "Release page",
+            "description": "Show a release: stories, notes and checklist.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-template-page",
+            "slide": "reader-pages",
+            "rank": 30,
+            "kind": "node",
+            "label": "Template page",
+            "description": "Show the template and versioning scheme.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-template-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:template-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-prove-with-tests",
+            "slide": "reader-pages",
+            "rank": 40,
+            "kind": "node",
+            "label": "Proof step",
+            "description": "Record that the chosen tests were run.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-prove-with-tests"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:prove-with-tests"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-qa-coverage-views",
+            "slide": "reader-pages",
+            "rank": 50,
+            "kind": "node",
+            "label": "Kinds in the reader",
+            "description": "Show kinds per entry and per criterion.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-qa-coverage-views"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:qa-coverage-views"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-qa-filters-page",
+            "slide": "reader-pages",
+            "rank": 60,
+            "kind": "node",
+            "label": "Filters in the reader",
+            "description": "Filter the catalog in the reader.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-qa-filters-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:qa-filters-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-criterion-on-story",
+            "slide": "reader-pages",
+            "rank": 70,
+            "kind": "node",
+            "label": "Tests on a story",
+            "description": "Show a criterion's end-to-end tests on its story.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-criterion-on-story"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:criterion-on-story"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-697a629015080082d7660e858efd41073ef294101034f77e9e2e.json",
+        "source_digest": "sha256:697a629015080082d7660e858efd41073ef294101034f77e9e2ebb33f659684e",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:5e4123582449cddcf69f7c40fdd3f805a0bb4f28227abf5a8b965cdb07f8b719",
+      "parent_snapshots": [
+        "sha256:1acfabcf3bb7622619bb34d6cc173e5ff608117f734c9ac30706633da24bfce2"
+      ],
+      "request_id": "reader-pages-751dfa95-edit",
+      "created_at": "2026-11-03T03:11:33.673951Z",
+      "asset": "24-a-83ac6b822f9885400d77070619937262787692b02a7bd4a24355.svg",
+      "asset_digest": "sha256:83ac6b822f9885400d77070619937262787692b02a7bd4a2435512b68ab42ee6",
+      "slide": {
+        "front": [
+          "The release page is the largest.",
+          "Kinds and coverage join the QA section and story pages.",
+          "Filters reuse the existing directory component."
+        ],
+        "version": 4,
+        "id": "reader-pages",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Reader pages show what the CLI already knows",
+        "rank": 110,
+        "section": "Phase 6: Reader pages",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-83ac6b822f9885400d77070619937262787692b02a7bd4a24355.svg",
+        "takeaway": "Each page renders data that earlier phases compute, so a page never holds logic of its own.",
+        "reading_order": [
+          "t-release-list-page",
+          "t-release-page",
+          "t-template-page",
+          "t-prove-with-tests",
+          "t-qa-coverage-views",
+          "t-qa-filters-page",
+          "t-criterion-on-story"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-list-page",
+            "slide": "reader-pages",
+            "rank": 10,
+            "kind": "node",
+            "label": "Releases list page",
+            "description": "Show the list of releases.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-list-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-list-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-release-page",
+            "slide": "reader-pages",
+            "rank": 20,
+            "kind": "node",
+            "label": "Release page",
+            "description": "Show a release: stories, notes and checklist.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-release-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:release-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-template-page",
+            "slide": "reader-pages",
+            "rank": 30,
+            "kind": "node",
+            "label": "Template page",
+            "description": "Show the template and versioning scheme.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-template-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:template-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-prove-with-tests",
+            "slide": "reader-pages",
+            "rank": 40,
+            "kind": "node",
+            "label": "Proof step",
+            "description": "Record that the chosen tests were run.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-prove-with-tests"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:prove-with-tests"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-qa-coverage-views",
+            "slide": "reader-pages",
+            "rank": 50,
+            "kind": "node",
+            "label": "Kinds in the reader",
+            "description": "Show kinds per entry and per criterion.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-qa-coverage-views"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:qa-coverage-views"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-qa-filters-page",
+            "slide": "reader-pages",
+            "rank": 60,
+            "kind": "node",
+            "label": "Filters in the reader",
+            "description": "Filter the catalog in the reader.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-qa-filters-page"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:qa-filters-page"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-criterion-on-story",
+            "slide": "reader-pages",
+            "rank": 70,
+            "kind": "node",
+            "label": "Tests on a story",
+            "description": "Show a criterion's end-to-end tests on its story.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-criterion-on-story"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:criterion-on-story"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-4d114beca86ba288d62dbcb1ec59131f8c224edbb66151a6380e.json",
+        "source_digest": "sha256:4d114beca86ba288d62dbcb1ec59131f8c224edbb66151a6380e2462c175f832",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

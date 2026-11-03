@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">A release and its checklist come first</title>
+  <desc id="diagram-desc">Creating a release copies the template, and steps can then change freely and be ticked from the CLI.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-tint:#e8f1ff;--diagram-on-accent:#ffffff;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-tint:#121d2f;--diagram-on-accent:#0d1117;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-title-ink:#e6edf3;}}</style>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(40 24)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">A release and its checklist come first</tspan></text>
+  </g>
+  <g id="g-r" data-diagram-kind="group" transform="translate(40 112)" role="group" aria-label="Releases">
+    <rect width="370" height="580" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H110.428A10 10 0 0 1 120.428 10V39.5Z" fill="#1d4ed8" style="fill:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="28">Releases</tspan></text>
+  </g>
+  <g id="t-release-create-list" data-diagram-kind="node" transform="translate(60 162)" role="group" aria-label="release create and list">
+    <rect width="330" height="90" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">release create and list</tspan></text>
+  </g>
+  <g id="t-template-commands" data-diagram-kind="node" transform="translate(60 266)" role="group" aria-label="Template commands">
+    <rect width="330" height="90" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Template commands</tspan></text>
+  </g>
+  <g id="t-versioning-scheme" data-diagram-kind="node" transform="translate(60 370)" role="group" aria-label="Versioning scheme">
+    <rect width="330" height="90" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Versioning scheme</tspan></text>
+  </g>
+  <g id="t-checklist-step-commands" data-diagram-kind="node" transform="translate(60 474)" role="group" aria-label="Checklist steps">
+    <rect width="330" height="90" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Checklist steps</tspan></text>
+  </g>
+  <g id="t-tick-from-cli" data-diagram-kind="node" transform="translate(60 578)" role="group" aria-label="Tick from the CLI">
+    <rect width="330" height="90" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Tick from the CLI</tspan></text>
+  </g>
+</svg>

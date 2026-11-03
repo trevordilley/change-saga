@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "What the tests prove, and how to run them",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-e",
+      "kind": "group",
+      "shape": "section",
+      "label": "End-to-end tests",
+      "x": 40,
+      "y": 112,
+      "width": 370,
+      "height": 580,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "t-runnable-formats",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Runnable output",
+      "x": 60,
+      "y": 162,
+      "width": 330,
+      "height": 90,
+      "style": "normal"
+    },
+    {
+      "id": "t-kinds-data",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Kinds per criterion",
+      "x": 60,
+      "y": 266,
+      "width": 330,
+      "height": 90,
+      "style": "normal"
+    },
+    {
+      "id": "t-criteria-coverage-data",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Criterion to test",
+      "x": 60,
+      "y": 370,
+      "width": 330,
+      "height": 90,
+      "style": "normal"
+    },
+    {
+      "id": "t-one-entry-reports",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Entry reports",
+      "x": 60,
+      "y": 474,
+      "width": 330,
+      "height": 90,
+      "style": "normal"
+    },
+    {
+      "id": "t-uncatalogued",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Uncatalogued tests",
+      "x": 60,
+      "y": 578,
+      "width": 330,
+      "height": 90,
+      "style": "normal"
+    }
+  ]
+}

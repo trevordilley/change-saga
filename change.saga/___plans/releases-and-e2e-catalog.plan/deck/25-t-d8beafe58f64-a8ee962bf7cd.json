@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "deck": "releases-and-e2e-catalog",
+  "slide": "ticking-and-docs",
+  "current": "sha256:4816193aede379fa118f4fb82fd021816a2833816e605eda0d204cbd3b214e17",
+  "revisions": [
+    {
+      "snapshot": "sha256:876d6e674665355895781bce1d92caa2e8ad61d709181b3604394b775f0b2525",
+      "request_id": "rel-plan-ticking-and-docs",
+      "created_at": "2026-11-03T03:10:22.411945Z",
+      "asset": "24-a-ad6e118b00c2b0bca0cebe4f07cb05127f0ed9c18956f7846605.svg",
+      "asset_digest": "sha256:ad6e118b00c2b0bca0cebe4f07cb05127f0ed9c18956f7846605daf216636d1b",
+      "slide": {
+        "front": [
+          "Browser ticks write to the working tree and do not commit.",
+          "Merge tests use real branches.",
+          "Setting up this repository finds what is awkward."
+        ],
+        "version": 4,
+        "id": "ticking-and-docs",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Browser ticks, merge proof, and this repository starts using it",
+        "rank": 120,
+        "section": "Phase 7: Ticking, merging and documenting",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-ad6e118b00c2b0bca0cebe4f07cb05127f0ed9c18956f7846605.svg",
+        "takeaway": "The last features arrive, merging is proven in real Git, and this repository starts using it all.",
+        "reading_order": [
+          "t-tick-in-browser",
+          "t-merge-proof",
+          "t-format-docs",
+          "t-dogfood-this-repo",
+          "t-e2e-backfill-sample"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-tick-in-browser",
+            "slide": "ticking-and-docs",
+            "rank": 10,
+            "kind": "node",
+            "label": "Tick in the browser",
+            "description": "Tick a checkbox in the reader.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-tick-in-browser"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:tick-in-browser"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-merge-proof",
+            "slide": "ticking-and-docs",
+            "rank": 20,
+            "kind": "node",
+            "label": "Prove merges",
+            "description": "Prove releases merge cleanly.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-merge-proof"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:merge-proof"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-format-docs",
+            "slide": "ticking-and-docs",
+            "rank": 30,
+            "kind": "node",
+            "label": "Spec and changelog",
+            "description": "Document the format and mark the change.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-format-docs"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:format-docs"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-dogfood-this-repo",
+            "slide": "ticking-and-docs",
+            "rank": 40,
+            "kind": "node",
+            "label": "Set up this repository",
+            "description": "Set this repository up to use releases.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-dogfood-this-repo"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:dogfood-this-repo"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-e2e-backfill-sample",
+            "slide": "ticking-and-docs",
+            "rank": 50,
+            "kind": "node",
+            "label": "Catalog one feature",
+            "description": "Fill in the catalog for one feature.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-e2e-backfill-sample"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:e2e-backfill-sample"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-065de60ff6206b88ffdf2e5ea6222efdce1b3f07138ec6c51298.json",
+        "source_digest": "sha256:065de60ff6206b88ffdf2e5ea6222efdce1b3f07138ec6c51298c19724116c1d",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:4816193aede379fa118f4fb82fd021816a2833816e605eda0d204cbd3b214e17",
+      "parent_snapshots": [
+        "sha256:876d6e674665355895781bce1d92caa2e8ad61d709181b3604394b775f0b2525"
+      ],
+      "request_id": "ticking-and-docs-17019545-edit",
+      "created_at": "2026-11-03T03:11:34.680957Z",
+      "asset": "24-a-945c011b077401f5fde4378f7617b43e85c054dbe42edc4ee0a2.svg",
+      "asset_digest": "sha256:945c011b077401f5fde4378f7617b43e85c054dbe42edc4ee0a2682e5f942362",
+      "slide": {
+        "front": [
+          "Browser ticks write to the working tree and do not commit.",
+          "Merge tests use real branches.",
+          "Setting up this repository finds what is awkward."
+        ],
+        "version": 4,
+        "id": "ticking-and-docs",
+        "deck": "releases-and-e2e-catalog",
+        "title": "Browser ticks, merge proof, and this repository starts using it",
+        "rank": 120,
+        "section": "Phase 7: Ticking, merging and documenting",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-945c011b077401f5fde4378f7617b43e85c054dbe42edc4ee0a2.svg",
+        "takeaway": "The last features arrive, merging is proven in real Git, and this repository starts using it all.",
+        "reading_order": [
+          "t-tick-in-browser",
+          "t-merge-proof",
+          "t-format-docs",
+          "t-dogfood-this-repo",
+          "t-e2e-backfill-sample"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "t-tick-in-browser",
+            "slide": "ticking-and-docs",
+            "rank": 10,
+            "kind": "node",
+            "label": "Tick in the browser",
+            "description": "Tick a checkbox in the reader.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-tick-in-browser"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:tick-in-browser"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-merge-proof",
+            "slide": "ticking-and-docs",
+            "rank": 20,
+            "kind": "node",
+            "label": "Prove merges",
+            "description": "Prove releases merge cleanly.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-merge-proof"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:merge-proof"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-format-docs",
+            "slide": "ticking-and-docs",
+            "rank": 30,
+            "kind": "node",
+            "label": "Spec and changelog",
+            "description": "Document the format and mark the change.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-format-docs"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:format-docs"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-dogfood-this-repo",
+            "slide": "ticking-and-docs",
+            "rank": 40,
+            "kind": "node",
+            "label": "Set up this repository",
+            "description": "Set this repository up to use releases.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-dogfood-this-repo"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:dogfood-this-repo"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "t-e2e-backfill-sample",
+            "slide": "ticking-and-docs",
+            "rank": 50,
+            "kind": "node",
+            "label": "Catalog one feature",
+            "description": "Fill in the catalog for one feature.",
+            "selector": {
+              "type": "element",
+              "element_id": "t-e2e-backfill-sample"
+            },
+            "record": "urn:change-saga:change-saga:plan:releases-and-e2e-catalog:task:e2e-backfill-sample"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-b76629bedb3e45164b6afddb5eff6db7e1778b3d9576c41ab65d.json",
+        "source_digest": "sha256:b76629bedb3e45164b6afddb5eff6db7e1778b3d9576c41ab65dc40fb4caab6d",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

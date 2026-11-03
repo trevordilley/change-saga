@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Notes and links say what a release means",
+      "x": 40,
+      "y": 24,
+      "width": 1200,
+      "height": 64,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "g-r",
+      "kind": "group",
+      "shape": "section",
+      "label": "Releases",
+      "x": 40,
+      "y": 112,
+      "width": 370,
+      "height": 580,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "t-internal-note-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Internal notes",
+      "x": 60,
+      "y": 162,
+      "width": 330,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "t-public-note-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Public notes",
+      "x": 60,
+      "y": 266,
+      "width": 330,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "t-story-link-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Story links",
+      "x": 60,
+      "y": 370,
+      "width": 330,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "t-milestone-link",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Milestone link",
+      "x": 60,
+      "y": 474,
+      "width": 330,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "t-release-range",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Release range",
+      "x": 60,
+      "y": 578,
+      "width": 330,
+      "height": 90,
+      "style": "primary"
+    }
+  ]
+}
