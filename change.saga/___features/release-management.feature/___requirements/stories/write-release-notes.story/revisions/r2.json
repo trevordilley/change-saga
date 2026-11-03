@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:write-release-notes",
+  "parents": [
+    "urn:change-saga:change-saga:story:write-release-notes:revision:r1"
+  ],
+  "title": "Keep internal release notes",
+  "statement": "As a developer, I can keep a release's internal notes, with the tickets and details my team needs, each tied to the stories it describes or marked as a fix, so we can see exactly what went into a version.",
+  "overview": "Trevor's example: the internal notes say \"v0.8.1\" and carry a bunch of Jira tickets. A fix can have no story; what holds the record together is that [every story in the release has code references](/requirements/every-released-story-has-code). A ticket is plain text or a URL here, with no Jira integration.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102",
+    "urn:change-saga:change-saga:citation:releases-followup-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "entries",
+      "statement": "A release holds any number of internal notes, added one at a time."
+    },
+    {
+      "id": "references",
+      "statement": "A note can name outside references, such as Jira tickets, and the reader shows them with it."
+    },
+    {
+      "id": "story-or-fix",
+      "statement": "Each internal note links at least one story or is marked as a fix; a note with neither is refused."
+    },
+    {
+      "id": "on-the-release",
+      "statement": "A note may only link stories the release delivers or affects; naming another is refused with the command that adds it."
+    },
+    {
+      "id": "read-together",
+      "statement": "A release's page lists its internal notes with their stories, references and fix markers."
+    }
+  ],
+  "created_at": "2026-11-03T00:38:45.464164Z"
+}

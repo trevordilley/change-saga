@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:write-public-notes",
+  "parents": [],
+  "title": "Write public notes in your own voice",
+  "statement": "As a product manager, I can write a release's public notes as a piece of writing, as playful as we like, so users hear why the release matters and not a list of tickets.",
+  "overview": "Trevor's example: \"Unleash the Kraken!\", more a blog post about why you're cool than a list of changes. The original direction was that every note links a story; prose this free does not break into notes that could each carry one, so the stories are named beside the text, and `release status` lists any delivered story that no note mentions.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-followup-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "free-form",
+      "statement": "A release has at most one set of public notes: Markdown with no required structure, length or tone."
+    },
+    {
+      "id": "separate",
+      "statement": "A release's page shows its public and internal notes apart, each labelled."
+    },
+    {
+      "id": "names-stories",
+      "statement": "Public notes can name the stories they talk about, as links kept apart from the text, so the writing itself need carry none."
+    },
+    {
+      "id": "not-secret",
+      "statement": "The reader and `release guide` say that internal means for the team and not secret: anyone who can read the repository can read internal notes."
+    }
+  ],
+  "created_at": "2026-11-03T00:38:45.619305Z"
+}

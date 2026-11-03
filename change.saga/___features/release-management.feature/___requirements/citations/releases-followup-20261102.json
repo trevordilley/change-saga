@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "releases-followup-20261102",
+  "kind": "decision",
+  "title": "Internal notes, plain steps, milestones and agents running releases",
+  "reference": "Trevor's product direction, 2026-11-02: checklists are not Tasks; they are the steps taken every release so the train does not derail, as simple as 'tell Mike you're starting the release' or 'use the bathroom before next step'. A checkbox can be ticked in the browser. It's okay to have fixes with no story as long as every story in a release has code references. Notes are internal and public: internal notes are like 'v0.8.1' with a bunch of Jira tickets; public notes are like 'Unleash the Kraken!', more a blog post. Releases are within milestones; they relate but need not be on the same screen: a milestone is like 'MVP' and releases can happen every two weeks, every sprint, every Thursday or every day, and can be one to one in some shops. Ideally the AI itself uses the change-saga CLI to conduct its release: this is a tool for AI, so the release command API lets an AI run through the release for you while you guide it on the process.",
+  "created_at": "2026-11-03T00:38:45.24201Z"
+}
