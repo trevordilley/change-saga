@@ -51,6 +51,7 @@ const (
 	// rotationLockStale is how old a rotation lock must be to be some crashed
 	// writer's, not a rotation still running.
 	rotationLockStale = time.Minute
+	openAttempts      = 8
 	logSuffix         = ".jsonl"
 	rotatedSuffix     = ".jsonl.1"
 )
@@ -178,9 +179,6 @@ func (log *fileLog) Append(planID string, event Event) error {
 		return err
 	}
 	dir := log.planDir(planID)
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		return err
-	}
 	path := filepath.Join(dir, agentFile(event.Agent))
 	info, statErr := os.Stat(path)
 	if errors.Is(statErr, fs.ErrNotExist) {
@@ -188,7 +186,7 @@ func (log *fileLog) Append(planID string, event Event) error {
 	} else if statErr == nil && info.Size() >= rotateAt {
 		rotate(path)
 	}
-	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0o644)
+	file, err := openForAppend(dir, path)
 	if err != nil {
 		return err
 	}
@@ -203,6 +201,25 @@ func (log *fileLog) Append(planID string, event Event) error {
 	}
 	_, err = file.Write(append(line, '\n'))
 	return err
+}
+
+// openForAppend tries a few times, because Windows refuses an open for a moment
+// while another writer is rotating the file. A real failure costs only the wait.
+func openForAppend(dir, path string) (*os.File, error) {
+	var err error
+	for attempt := range openAttempts {
+		if attempt > 0 {
+			time.Sleep(time.Duration(attempt) * 10 * time.Millisecond)
+		}
+		if err = os.MkdirAll(dir, 0o755); err != nil {
+			continue
+		}
+		var file *os.File
+		if file, err = os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0o644); err == nil {
+			return file, nil
+		}
+	}
+	return nil, err
 }
 
 func boundMessage(message string) string {

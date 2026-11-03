@@ -1,6 +1,7 @@
 package planactivity
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -108,6 +109,7 @@ func TestConcurrentProcessesLoseNoEvent(t *testing.T) {
 	for _, shared := range []bool{false, true} {
 		root := t.TempDir()
 		processes := []*exec.Cmd{}
+		outputs := []*bytes.Buffer{}
 		for id := range 4 {
 			agent := "agent-" + strconv.Itoa(id)
 			if shared {
@@ -115,14 +117,16 @@ func TestConcurrentProcessesLoseNoEvent(t *testing.T) {
 			}
 			process := exec.Command(os.Args[0], "-test.run=^TestHelperAppendProcess$")
 			process.Env = append(os.Environ(), "PLANACTIVITY_APPEND_ROOT="+root, "PLANACTIVITY_AGENT="+agent, "PLANACTIVITY_ID="+strconv.Itoa(id))
+			output := &bytes.Buffer{}
+			process.Stdout, process.Stderr = output, output
 			if err := process.Start(); err != nil {
 				t.Fatal(err)
 			}
-			processes = append(processes, process)
+			processes, outputs = append(processes, process), append(outputs, output)
 		}
-		for _, process := range processes {
+		for index, process := range processes {
 			if err := process.Wait(); err != nil {
-				t.Fatal(err)
+				t.Fatalf("%v\n%s", err, outputs[index])
 			}
 		}
 		events, err := (&fileLog{root: root, cache: map[string]cachedFile{}}).Read("plan")
