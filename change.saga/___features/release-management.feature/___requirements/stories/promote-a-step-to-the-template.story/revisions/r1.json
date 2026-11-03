@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:promote-a-step-to-the-template",
+  "parents": [],
+  "title": "Keep a useful step for next time",
+  "statement": "As a developer, I can copy a step from a release into the template, so something we learned the hard way is there for every later release.",
+  "overview": "Proposed addition. It closes the loop on an adapted checklist.",
+  "priority": "could",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "copied",
+      "statement": "Promoting a step adds a copy to the template and changes the release's step only by marking it as from the template."
+    },
+    {
+      "id": "prompted",
+      "statement": "`release guide` lists a release's steps that are not in the template, without asking anyone to promote them."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:20.504438Z"
+}

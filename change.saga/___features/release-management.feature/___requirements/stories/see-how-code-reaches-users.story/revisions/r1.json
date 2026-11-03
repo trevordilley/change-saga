@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:see-how-code-reaches-users",
+  "parents": [],
+  "title": "See how code reaches users",
+  "statement": "As an architect, I can draw how code gets from a developer's machine out into the world, linked to the code that does it, so anyone can see the real process and tell when the drawing has fallen behind.",
+  "overview": "This is an ordinary named whiteboard in a new navigation role, not a new document type. Whiteboards already pin code and go stale.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "opens",
+      "statement": "The Release Process Overview entry opens the whiteboard assigned to that role, with the same reader as any other whiteboard."
+    },
+    {
+      "id": "pinned-code",
+      "statement": "An element can pin the exact lines of a workflow, script or infrastructure file and open them in the code drawer."
+    },
+    {
+      "id": "goes-stale",
+      "statement": "When a pinned file changes, the element shows as stale in the reader, and `status` and `check --covers health` report it like any other whiteboard evidence."
+    },
+    {
+      "id": "absent",
+      "statement": "A Saga with no such board shows how to publish one and reports no health failure."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:18.854734Z"
+}

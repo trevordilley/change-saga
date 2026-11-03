@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:change-release-records",
+  "parents": [],
+  "title": "Change or remove anything about a release",
+  "statement": "As a developer, I can change or delete a release, its notes, its story links and the template, so the Saga holds the current truth rather than stale records.",
+  "overview": "Git is the history: a release that should not exist is deleted. Whiteboards have no delete today because their revisions are immutable; archive is what exists, and this story does not change that.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "crud",
+      "statement": "Every release record has CLI commands to create, read, update and delete it: a release, a note, a story link, a checklist step, a template step and the versioning scheme."
+    },
+    {
+      "id": "cleans-up",
+      "statement": "Deleting a release removes its notes, steps and story links and changes no story; `--dry-run` reports the same effect and writes nothing."
+    },
+    {
+      "id": "correct-version",
+      "statement": "A release's version can be corrected by an explicit command, and is refused if another release has that version."
+    },
+    {
+      "id": "board",
+      "statement": "The process overview is changed with the existing `whiteboard publish`, `rename` and `archive` commands."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:20.711545Z"
+}

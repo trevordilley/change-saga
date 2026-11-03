@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:say-how-we-version",
+  "parents": [],
+  "title": "Say how we choose version numbers",
+  "statement": "As a developer, I can write down our versioning scheme in the template, so whoever creates a release knows what number to give it.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "any-scheme",
+      "statement": "The template accepts any written scheme, whether semantic, incremental or anything else, and shows it on the Release Template page."
+    },
+    {
+      "id": "shown-at-creation",
+      "statement": "`release create` prints the scheme when it is asked for help or refuses for a missing version."
+    },
+    {
+      "id": "not-enforced",
+      "statement": "A version that does not fit the written scheme is accepted."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:19.321909Z"
+}

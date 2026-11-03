@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:adapt-a-release-checklist",
+  "parents": [],
+  "title": "Adapt a release's checklist as we learn",
+  "statement": "As a developer, I can add, reword, reorder and remove steps on one release, and add helpful excerpts to them, so one-off button presses and things to toggle before and after the release are not lost.",
+  "overview": "The checklist is expected to keep growing while the work happens, so an agent or a person who notices \"we'll have to flip this off first\" writes it down there and then.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "edit",
+      "statement": "A step of a release can be added, reworded, moved and removed without changing the template or any other release."
+    },
+    {
+      "id": "excerpt",
+      "statement": "A step can carry Markdown excerpts and pinned code references, and the reader shows them with the step."
+    },
+    {
+      "id": "after-start",
+      "statement": "Steps can be added and changed after other steps are checked, without unchecking them."
+    },
+    {
+      "id": "from-template-or-not",
+      "statement": "The reader marks which steps of a release did not come from the template."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:19.834499Z"
+}

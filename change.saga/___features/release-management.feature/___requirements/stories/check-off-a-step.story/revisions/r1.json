@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:check-off-a-step",
+  "parents": [],
+  "title": "Check off a step",
+  "statement": "As a developer, I can check off a step and say what happened, so everyone can see where the release stands.",
+  "overview": "As with `task done`, a check is a report. Git holds who changed it and when, as it does for a Plan's Tasks.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:releases-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "check",
+      "statement": "A step can be checked and unchecked, from `release step` and from its checkbox in the reader, and the change is written to the Saga."
+    },
+    {
+      "id": "note",
+      "statement": "Checking a step can record a note or a link, such as the CI run that proves it."
+    },
+    {
+      "id": "a-report",
+      "statement": "The reader and `release guide` describe a checked step as what someone reported; the tool verifies nothing."
+    }
+  ],
+  "created_at": "2026-11-03T00:23:20.302353Z"
+}
