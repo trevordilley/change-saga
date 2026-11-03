@@ -51,6 +51,6 @@
     "within_two_days": true,
     "reason": "One schema and one loader, closely following the Plan loader; a day and a half with its tests."
   },
-  "state": "planned",
+  "state": "in_progress",
   "created_at": "2026-11-03T03:07:50.639043Z"
 }

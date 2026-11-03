@@ -10,6 +10,12 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- **Format:** a whiteboard can hold the optional `release-process` role, for the board
+  showing how code reaches users: `whiteboard assign-role --role release-process`.
+  Older metadata loads unchanged; upgrade readers before assigning it.
+
 ## [0.8.0] - 2026-11-03
 
 ### Added

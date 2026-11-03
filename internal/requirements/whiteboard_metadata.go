@@ -34,7 +34,16 @@ type WhiteboardProperties struct {
 	Archived bool   `json:"archived,omitempty"`
 }
 
-var whiteboardRoleDefaults = map[string]string{"erd": "data-model", "infrastructure": "infrastructure", "data-flows": "data-flows", "architecture": "architecture"}
+var whiteboardRoleDefaults = map[string]string{"erd": "data-model", "infrastructure": "infrastructure", "data-flows": "data-flows", "architecture": "architecture", ReleaseProcessRole: ReleaseProcessRole}
+
+// ReleaseProcessRole is the board showing how code reaches users.
+const ReleaseProcessRole = "release-process"
+
+// optionalWhiteboardRole reports a role added after the first three, which
+// metadata written before it does not have to mention.
+func optionalWhiteboardRole(role string) bool {
+	return role == "architecture" || role == ReleaseProcessRole
+}
 
 // LoadWhiteboardMetadata preserves the legacy default IDs until a metadata
 // operation explicitly records the role assignments. It never renders a board.
@@ -56,7 +65,7 @@ func LoadWhiteboardMetadata(root, sagaID string) (WhiteboardMetadata, error) {
 		for role, id := range whiteboardRoleDefaults {
 			// Do not opt a three-role Saga into the new metadata vocabulary
 			// merely because an unrelated board was renamed or archived.
-			if role == "architecture" && !known[id] {
+			if optionalWhiteboardRole(role) && !known[id] {
 				continue
 			}
 			metadata.Roles[role] = ""
@@ -75,7 +84,7 @@ func LoadWhiteboardMetadata(root, sagaID string) (WhiteboardMetadata, error) {
 	if metadata.Schema != WhiteboardMetadataSchemaURL || metadata.Version != 1 || metadata.SagaID != sagaID || metadata.Roles == nil || metadata.Boards == nil {
 		return metadata, fmt.Errorf("invalid whiteboard metadata schema, version, ownership or roles")
 	}
-	// Architecture is optional so existing three-role metadata remains readable.
+	// Later roles are optional so existing three-role metadata remains readable.
 	for _, role := range []string{"erd", "infrastructure", "data-flows"} {
 		if _, ok := metadata.Roles[role]; !ok {
 			return metadata, fmt.Errorf("whiteboard metadata is missing required role %q", role)

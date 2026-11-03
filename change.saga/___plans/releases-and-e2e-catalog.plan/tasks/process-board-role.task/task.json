@@ -43,6 +43,7 @@
     "within_two_days": true,
     "reason": "A small change to an existing table and schema, plus tests; under a day."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "Added the optional release-process role; older metadata loads unchanged and an unrelated edit does not adopt it. The reader entry comes with the Releases side in phase 5.",
   "created_at": "2026-11-03T03:07:51.062071Z"
 }

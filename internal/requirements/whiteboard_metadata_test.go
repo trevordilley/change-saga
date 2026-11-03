@@ -283,3 +283,40 @@ func TestWhiteboardRoleExpectedURNDisambiguatesNoneID(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestReleaseProcessRoleIsOptionalAndAssignable(t *testing.T) {
+	ctx := context.Background()
+	root, pin, _ := whiteboardFixture(t)
+	if _, err := PublishWhiteboard(ctx, root, "test", "how-we-ship", "r1", "", "How we ship", boardDocument(pin)); err != nil {
+		t.Fatal(err)
+	}
+	// An unrelated edit must not adopt the new role into older metadata.
+	renamed, err := UpdateWhiteboardMetadata(ctx, root, "test", WhiteboardMetadataWrite{Operation: "rename", ID: "how-we-ship", Name: "Shipping"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, present := renamed.After.Roles[ReleaseProcessRole]; present {
+		t.Fatal("an unrelated edit adopted the release-process role")
+	}
+	loaded, err := LoadWhiteboardMetadata(root, "test")
+	if err != nil {
+		t.Fatalf("metadata without the role must still load: %v", err)
+	}
+	if _, present := loaded.Roles[ReleaseProcessRole]; present {
+		t.Fatal("loading added the release-process role")
+	}
+	assigned, err := UpdateWhiteboardMetadata(ctx, root, "test", WhiteboardMetadataWrite{Operation: "assign-role", ID: "how-we-ship", Role: ReleaseProcessRole, Expected: "none"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if assigned.After.Roles[ReleaseProcessRole] != "how-we-ship" {
+		t.Fatalf("role not assigned: %+v", assigned.After.Roles)
+	}
+	cleared, err := UpdateWhiteboardMetadata(ctx, root, "test", WhiteboardMetadataWrite{Operation: "unassign-role", ID: "how-we-ship", Role: ReleaseProcessRole})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cleared.After.Roles[ReleaseProcessRole] != "" {
+		t.Fatalf("role not cleared: %+v", cleared.After.Roles)
+	}
+}

@@ -532,8 +532,8 @@ Whiteboards do not currently support the slide `diagram edit` transaction.
 `___whiteboards/.metadata.json` is validated by
 [whiteboard-metadata.schema.json](schema/v5/whiteboard-metadata.schema.json).
 It contains `$schema`, `version: 1`, `saga_id`, `roles`, and `boards`. `roles`
-requires `erd`, `infrastructure`, and `data-flows` keys and permits an optional
-`architecture` key; no other keys are allowed. An absent Architecture role in
+requires `erd`, `infrastructure`, and `data-flows` keys and permits optional
+`architecture` and `release-process` keys; no other keys are allowed. An absent Architecture role in
 existing metadata is unassigned. Values are existing
 board IDs or an empty string for explicitly unassigned roles. Each board may
 occupy at most one role. `boards` maps existing IDs to optional display `name`
