@@ -625,7 +625,7 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
   const published = JSON.parse(cli(sagaRepositories, "apply-slide", "--from", requestPath, "--json", sagaRoot));
   expect(published.target).toBe("urn:change-saga:wave-one:review:pr-2:slide:greeting-flow");
   cli(sagaRepositories, "cover", "--repo", sourceRepo, "--target", `${published.target}:item:greeting`, "--path", "src/app.go", "--changed-lines", sagaRoot);
-  expect(cli(sagaRepositories, "diagram", "describe", "--slide", published.target, sagaRoot)).toContain("greeting [node] \"Greeting\" element=greeting code_files=1");
+  expect(cli(sagaRepositories, "diagram", "describe", "--slide", published.target, sagaRoot)).toContain("greeting [node] \"Greeting\" element=greeting record=urn:change-saga:wave-one:feature:wave-one code_files=1");
   git(sagaRepositories.sagaRepo, "add", ".");
   git(sagaRepositories.sagaRepo, "commit", "-m", "Diagram-sourced review slide");
 

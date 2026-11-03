@@ -36,14 +36,17 @@ type SlideDescriptionReference struct {
 // references are listed and the rest counted; criterion links are counted.
 // query slide returns both in full.
 type SlideDescriptionItem struct {
-	ID             string `json:"id"`
-	Kind           string `json:"kind"`
-	Label          string `json:"label"`
-	Description    string `json:"description,omitempty"`
-	Element        string `json:"element,omitempty"`
-	Region         bool   `json:"region,omitempty"`
-	About          string `json:"about,omitempty"`
-	Body           string `json:"body,omitempty"`
+	ID          string `json:"id"`
+	Kind        string `json:"kind"`
+	Label       string `json:"label"`
+	Description string `json:"description,omitempty"`
+	Element     string `json:"element,omitempty"`
+	Region      bool   `json:"region,omitempty"`
+	About       string `json:"about,omitempty"`
+	Body        string `json:"body,omitempty"`
+	// Record is the record this Item names: a Plan Item's Task or story, or the
+	// record a review, onboarding, or theme Item explains.
+	Record         string `json:"record,omitempty"`
 	CodeFiles      int    `json:"code_files"`
 	CriterionLinks int    `json:"criterion_links"`
 	// Code lists the Item's first code references; CodeReferences counts all
@@ -100,7 +103,7 @@ func describeSlide(slide *saga.Slide, base, sagaPath string, offset, limit int) 
 		}
 	}
 	for _, item := range ordered {
-		entry := SlideDescriptionItem{ID: item.ID, Kind: item.Kind, Label: item.Label, Description: item.Description, About: item.About, Body: item.Body, CodeFiles: len(item.Code), CriterionLinks: len(item.CriterionLinks), Code: []SlideDescriptionReference{}}
+		entry := SlideDescriptionItem{ID: item.ID, Kind: item.Kind, Label: item.Label, Description: item.Description, About: item.About, Body: item.Body, Record: item.Record, CodeFiles: len(item.Code), CriterionLinks: len(item.CriterionLinks), Code: []SlideDescriptionReference{}}
 		for _, file := range item.Code {
 			for _, reference := range file.References {
 				if entry.CodeReferences++; len(entry.Code) < describeCodeLimit {
@@ -209,6 +212,9 @@ func (v SlideDescription) writeText(out io.Writer) error {
 		}
 		if item.About != "" {
 			fmt.Fprintf(&b, " about=%s", item.About)
+		}
+		if item.Record != "" {
+			fmt.Fprintf(&b, " record=%s", item.Record)
 		}
 		fmt.Fprintf(&b, " code_files=%d criterion_links=%d\n", item.CodeFiles, item.CriterionLinks)
 		for _, field := range [][2]string{{"description", item.Description}, {"body", item.Body}} {

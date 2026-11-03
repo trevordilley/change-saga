@@ -8,6 +8,7 @@ import (
 	"flag"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -428,3 +429,72 @@ func TestRepoPrototypeAtTheRootPinsTheFileAlone(t *testing.T) {
 		t.Fatal("a single-file prototype must serve nothing but its entrypoint")
 	}
 }
+
+// A prototype's HTML reads through query in bounded pages, from the Saga for a
+// copied revision and from its pinned commit for one living in the project.
+func TestQueryPrototypeReturnsItsHTML(t *testing.T) {
+	t.Parallel()
+	root, repo := coveredSaga(t)
+	source := newPrototypeSource(t, "<h1>Copied \u00e9</h1>")
+	writeFile(t, filepath.Join(source, "app.css"), "h1{color:red}")
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "copied", "--revision", "r1", "--title", "Copied", "--source", source)
+	writeFile(t, filepath.Join(repo, "prototypes", "live", "index.html"), "<h1>Pinned</h1>")
+	writeFile(t, filepath.Join(repo, "prototypes", "live", "app.css"), "h1{color:blue}")
+	commitAll(t, repo, "add a prototype")
+	runPrototype(t, "add", root, "--feature", testFeature, "--id", "live", "--title", "Live", "--path", "prototypes/live/index.html", "--repo", repo)
+	runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "hosted", "--revision", "r1", "--title", "Hosted", "--url", "https://example.test/app")
+	query := func(args ...string) (map[string]any, string) {
+		t.Helper()
+		var output bytes.Buffer
+		err := Query(context.Background(), append([]string{"prototype", "--saga", root}, args...), &output)
+		var envelope struct {
+			Data struct {
+				Prototype map[string]any `json:"prototype"`
+			} `json:"data"`
+		}
+		_ = json.Unmarshal(output.Bytes(), &envelope)
+		if err != nil {
+			return nil, output.String()
+		}
+		return envelope.Data.Prototype, output.String()
+	}
+	content := func(record map[string]any) map[string]any { return record["content"].(map[string]any) }
+
+	copied, _ := query("--prototype", "copied")
+	if content(copied)["data"] != "<h1>Copied \u00e9</h1>" || record(copied, "file") != "index.html" || len(copied["files"].([]any)) != 2 {
+		t.Fatalf("copied prototype = %#v", copied)
+	}
+	if asset, _ := query("--prototype", "copied", "--file", "app.css"); content(asset)["data"] != "h1{color:red}" {
+		t.Fatalf("copied asset = %#v", asset)
+	}
+	// Pages never split a character, and they join back into the file.
+	first, _ := query("--prototype", "copied", "--limit", "12")
+	next := content(first)["next_offset"].(float64)
+	rest, _ := query("--prototype", "copied", "--offset", strconv.Itoa(int(next)))
+	if joined := content(first)["data"].(string) + content(rest)["data"].(string); joined != "<h1>Copied \u00e9</h1>" || content(rest)["next_offset"] != nil {
+		t.Fatalf("pages joined to %q", joined)
+	}
+
+	live, _ := query("--prototype", "urn:change-saga:batch:prototype:live", "--repo", repo)
+	if content(live)["data"] != "<h1>Pinned</h1>" || len(live["files"].([]any)) != 2 {
+		t.Fatalf("repo prototype = %#v", live)
+	}
+	// It reads what was pinned, even after the file changes.
+	writeFile(t, filepath.Join(repo, "prototypes", "live", "index.html"), "<h1>Moved on</h1>")
+	commitAll(t, repo, "change the prototype")
+	if pinned, _ := query("--prototype", "live", "--repo", repo); content(pinned)["data"] != "<h1>Pinned</h1>" {
+		t.Fatalf("a revision must keep reading what it pinned: %#v", pinned)
+	}
+
+	hosted, _ := query("--prototype", "hosted")
+	if hosted["content"] != nil || hosted["source"].(map[string]any)["url"] != "https://example.test/app" {
+		t.Fatalf("hosted prototype = %#v", hosted)
+	}
+	for _, args := range [][]string{{"--prototype", "missing"}, {"--prototype", "copied", "--revision", "r9"}, {"--prototype", "copied", "--file", "../revision.json"}} {
+		if _, output := query(args...); !strings.Contains(output, "not_found") {
+			t.Fatalf("%v = %s", args, output)
+		}
+	}
+}
+
+func record(values map[string]any, key string) any { return values[key] }

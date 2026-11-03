@@ -222,7 +222,13 @@ func TestPlanSlidesOweNoCodeAndNameTasks(t *testing.T) {
 	}
 
 	// It can be read and edited through its URN, as a review slide can.
-	run(t, Diagram, "describe", "--slide", slide.Target, root)
+	// It names the Task its node stands for, so a reader can follow it.
+	if output := run(t, Diagram, "describe", "--slide", slide.Target, root); !strings.Contains(output, "record="+taskURN) {
+		t.Fatalf("describe did not name the Item's Task:\n%s", output)
+	}
+	if output := run(t, Diagram, "describe", "--slide", slide.Target, "--format", "json", root); !strings.Contains(output, `"record":"`+taskURN) && !strings.Contains(output, `"record": "`+taskURN) {
+		t.Fatalf("describe JSON did not name the Item's Task:\n%s", output)
+	}
 	if output := run(t, Diagram, "check", root); !strings.Contains(output, slide.Target) {
 		t.Fatalf("diagram check did not report the Plan's slide:\n%s", output)
 	}
