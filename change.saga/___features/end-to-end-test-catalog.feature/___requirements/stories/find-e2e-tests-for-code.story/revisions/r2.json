@@ -1,0 +1,76 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:find-e2e-tests-for-code",
+  "parents": [
+    "urn:change-saga:change-saga:story:find-e2e-tests-for-code:revision:r1"
+  ],
+  "title": "Ask which end-to-end tests a change affects",
+  "statement": "As a developer, I can ask which end-to-end tests a line of code or a range of code affects, so I know what to run to prove the stories it touches still work.",
+  "overview": "Trevor's direction: \"If I change this line of code, what e2e tests do I need to run to prove the affected stories are still functional?\" Reviews and releases both work on code ranges, so they share one answer, and it comes from the transitive flow the Saga exists to record. `review test-plan` already walks a range, with a review as its only way in. `query traceability --ref` answers for a location, but only through accepted stories and slide Items, so it returned nothing for the lines tried here. The same-file step is a deliberate departure from the rule that `review test-plan` infers nothing from file proximity: it casts a wider net, so it is labelled and can be turned off, which is acceptable because the answer informs and blocks nothing. The tool answers the question, and people decide what to do with the answer.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:e2e-selection-direction-20261102",
+    "urn:change-saga:change-saga:citation:qa-tools-direction-20261102",
+    "urn:change-saga:change-saga:citation:releases-settled-direction-20261102"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "line",
+      "statement": "Given one line of a file, the command lists the catalog entries to run if that line changes, without the line having been changed."
+    },
+    {
+      "id": "range",
+      "statement": "Given two revisions, the command gives the same answer for all the lines changed between them."
+    },
+    {
+      "id": "same-answer",
+      "statement": "A review's range and a release's range, asked for by `review test-plan --e2e` and `release tests`, give the same tests as asking for that range directly."
+    },
+    {
+      "id": "selected",
+      "statement": "An entry is listed when it verifies a criterion of a story the code reaches, once each, even if its own code did not change."
+    },
+    {
+      "id": "transitive",
+      "statement": "The walk follows every recorded path to a story, in any lifecycle state: slide Items and their criterion links, Tasks, test evidence, and from a deck or test case to the feature that holds it and that feature's stories."
+    },
+    {
+      "id": "same-file",
+      "statement": "A line no record cites, in a file that a feature's records do cite, reaches that feature, and is marked as reached through its file."
+    },
+    {
+      "id": "own-code",
+      "statement": "An entry whose own code is in the line or range is listed too."
+    },
+    {
+      "id": "reasons",
+      "statement": "Each listed test names the stories and criteria that selected it and the path that led there."
+    },
+    {
+      "id": "direct-first",
+      "statement": "Tests reached by a specific link are told apart from those reached only through a feature or a file, and `--direct` lists only the first."
+    },
+    {
+      "id": "excluded",
+      "statement": "Retired and deprecated test cases are not listed."
+    },
+    {
+      "id": "scale",
+      "statement": "The output says how many tests are listed and how many are in the catalog."
+    },
+    {
+      "id": "no-minimizing",
+      "statement": "It does not drop a test because another seems to cover the same thing."
+    },
+    {
+      "id": "read-only",
+      "statement": "The command writes nothing and runs nothing."
+    }
+  ],
+  "created_at": "2026-11-03T02:59:09.843404Z"
+}
