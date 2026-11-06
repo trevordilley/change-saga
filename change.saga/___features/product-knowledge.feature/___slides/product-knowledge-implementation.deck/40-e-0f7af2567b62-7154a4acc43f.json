@@ -10,11 +10,11 @@
       "note": "Separates prototype creation from annotation creation while keeping each mutation validated and replay-safe."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "0731b9e9a8ce9aae879f050e99743aed10285916",
       "path": "internal/prototypes/mutation.go",
-      "start": 255,
-      "end": 300,
-      "digest": "sha256:8815d2bdce1a6719a82afd724b6f173c1d195a7729bbb10e49092ead92c89488",
+      "start": 279,
+      "end": 331,
+      "digest": "sha256:9898a6b21291f9da666c20d2fe6223f9514facbc4aa5334f5ec8d81a1bdbff70",
       "note": "Separates prototype creation from annotation creation while keeping each mutation validated and replay-safe."
     }
   ]
