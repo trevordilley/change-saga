@@ -1969,6 +1969,14 @@ a Plan's deck essay and a Task's essay. `query plans` omits delivered Plans unle
 `--all` is given. `query prototype` reads a prototype's HTML the same way, in
 byte-range pages.
 
+### Who keeps a Plan
+
+The recommended way to execute a Plan is one **operator** agent that owns it: it
+delegates ready Tasks to implementing agents, runs `task done` once a Task's work is merged
+into its branch, passes and merges checkpoints, and keeps the Saga current. Implementing
+agents deliver code and tests on their own branches and report live activity, which
+writes no file of the Saga. This is guidance; no command refuses another agent.
+
 ### Checkpoints
 
 A phase MAY be a **checkpoint**, written as a `checkpoint` object on the phase. A

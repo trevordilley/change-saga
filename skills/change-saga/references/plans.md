@@ -79,6 +79,16 @@ Attach prototypes with `plan add-prototype`.
 
 ## While the work happens
 
+**One agent owns the Plan.** The operator, a manager agent, owns the task list and the
+record. It picks the Tasks `task list --ready` offers and delegates each to an
+implementing agent, for example a workspace of its own, giving it the Task's URN. Once a
+Task's work is merged into the operator's branch, the operator runs `task done`. It also
+passes and merges checkpoints and keeps the Saga current. Implementors focus on delivery:
+code and tests on their own branch, reading their Task with `query task --task URN`. They
+report live activity, which touches no file, and leave `task done`, `task set`, and every
+other Saga record to the operator. One writer keeps the record consistent, and nobody's
+branch carries Saga edits to conflict over.
+
 ```sh
 change-saga task start --plan ID --task TASK change.saga
 change-saga task note --plan ID --task TASK "the tide table moved" change.saga
@@ -94,8 +104,9 @@ log. A later note clears blocked. Before picking up a Task, `task list --ready` 
 **What is durable.** `task start` and `task note` are live activity. They write nothing
 to the Saga, so there is nothing to commit and no branch to merge; they are kept in the
 repository's common Git directory, shared by all its worktrees on this machine, and may
-be rotated away. `task done` is the fact: it writes the Task's state on your branch and
-also reports it live, so a reader elsewhere sees "done on your-branch" until it merges.
+be rotated away. `task done` is the fact: it writes the Task's state on the operator's
+branch and also reports it live, so a reader elsewhere sees "done on that branch" until it
+merges.
 `validate`, `status`, `check`, and `plan deliver` only ever read the durable state.
 
 A person leaves the Plan open and watches. The board and slide nodes show who is on
@@ -128,7 +139,7 @@ change-saga plan pass --plan ID --checkpoint CHECKPOINT --reason TEXT (--by NAME
   addresses. `plan guide` names a checkpoint that looks to need more; split it.
 - **The gate.** Until a checkpoint passes, `task list --ready` leaves out the Tasks after
   it and says which checkpoint holds them. `task start` on one warns.
-- **At a checkpoint, prove the work works.** Run the tests. Review the checkpoint's branch
+- **At a checkpoint, the operator proves the work works.** Run the tests. Review the checkpoint's branch
   as a change into the Plan's feature branch, with the usual review deck. `plan checkpoint`
   says what it covers and what to do next.
 - **Who passes.** Whoever invokes the Plan decides, and the Plan records it with
@@ -136,8 +147,8 @@ change-saga plan pass --plan ID --checkpoint CHECKPOINT --reason TEXT (--by NAME
   stops for a person when anything is surprising: the work departed from the Plan, Tasks
   were added during the stretch, an agent reported a Task blocked, a test is failing, or
   the review needs more slides than estimated.
-- **After it passes,** merge the checkpoint's branch into the feature branch and start the
-  next stretch from there in a new workspace. Whether a checkpoint also gets a pull
+- **After it passes,** the operator merges the checkpoint's branch into the feature branch
+  and delegates the next stretch from there, in new workspaces. Whether a checkpoint also gets a pull
   request with colleagues is up to whoever invoked the Plan.
 
 A pass is durable: it is written to `plan.json` with who passed it, when, and why, and

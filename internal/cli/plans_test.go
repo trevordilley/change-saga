@@ -640,3 +640,14 @@ func TestTheNextCheckpointSaysHowThePlanChangedSinceAPass(t *testing.T) {
 		}
 	}
 }
+
+// The guide recommends one operator who keeps the record while implementors deliver.
+func TestPlanGuideRecommendsOneOperator(t *testing.T) {
+	fixture := newPlanFixture(t)
+	out := run(t, Plan, "guide", fixture.root)
+	for _, want := range []string{"one agent owns the Plan: the operator", "operator runs task done", "Implementors focus on delivery", "leave the\nSaga's records to the operator", "the operator merges it there"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("plan guide has no %q", want)
+		}
+	}
+}

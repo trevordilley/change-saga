@@ -271,18 +271,22 @@ without AI help, would finish in two days or less.
    it with plan set --checkpoint-passer person|agent.
 8. Check. Run plan guide --plan ID until it has nothing left to name.
 
-While the work happens, say what you are doing so others can see it live:
-task start when you pick a Task up, task note when you find something that matters,
-task note --blocked when you cannot go on, and task done when you finish. Do not
-narrate: every note is a tool call you pay for. task start and task note are live
-activity, shared by every worktree of this repository and never committed. Only
-task done is durable, and it is the one that counts.
+While the work happens, one agent owns the Plan: the operator. It picks the Tasks
+task list --ready offers, delegates each to an implementing agent with the Task's URN,
+and keeps the record. Once a Task's work is merged into the operator's branch, the
+operator runs task done; it also passes checkpoints, merges them, and updates the Saga.
+Implementors focus on delivery: code and tests on their own branch. They read their
+Task with query task, report with task start when they begin, task note on a finding
+that changes the work, and task note --blocked when they cannot go on, and leave the
+Saga's records to the operator. Do not narrate: every note is a tool call. task start
+and task note are live activity, shared by every worktree of this repository and never
+committed. task done is durable, and it is the one that counts.
 
-At a checkpoint, stop and prove the stretch works: run the tests, then plan checkpoint
---plan ID --checkpoint PHASE says what it covers and what to do next. Review the
-checkpoint's branch as a change into the Plan's feature branch. Once it passes, by its
-invoker or by you when they allowed it and nothing is surprising, merge it there and start
-the next stretch from it in a new workspace.
+At a checkpoint, the operator stops and proves the stretch works: run the tests, then
+plan checkpoint --plan ID --checkpoint PHASE says what it covers and what to do next.
+Review the checkpoint's branch as a change into the Plan's feature branch. Once it
+passes, by its invoker or by the operator when they allowed it and nothing is
+surprising, the operator merges it there and delegates the next stretch from it.
 `
 
 func planGuide(ctx context.Context, args []string, out io.Writer) error {
