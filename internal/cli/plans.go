@@ -22,7 +22,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "pass", "deliver"}
+var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "pass", "deliver"}
 
 // Plan dispatches the Plan commands.
 func Plan(ctx context.Context, args []string, out io.Writer) error {
@@ -54,6 +54,8 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planSet(ctx, args[1:], out)
 	case "pass":
 		err = planPass(ctx, args[1:], out)
+	case "checkpoint":
+		err = planCheckpoint(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["plan"])
 	}
@@ -271,7 +273,7 @@ activity, shared by every worktree of this repository and never committed. Only
 task done is durable, and it is the one that counts.
 `
 
-func planGuide(_ context.Context, args []string, out io.Writer) error {
+func planGuide(ctx context.Context, args []string, out io.Writer) error {
 	name := "plan guide"
 	flags := commandFlags(name, commandUsage[name], out)
 	plan := flags.String("plan", "", "report what this Plan still needs, instead of only the workflow")
@@ -285,7 +287,7 @@ func planGuide(_ context.Context, args []string, out io.Writer) error {
 	if *plan == "" {
 		return nil
 	}
-	_, found, err := planOf(flags.Arg(0), *plan)
+	document, found, err := planOf(flags.Arg(0), *plan)
 	if err != nil {
 		return err
 	}
@@ -303,6 +305,23 @@ func planGuide(_ context.Context, args []string, out io.Writer) error {
 		case !task.Sizing.WithinTwoDays:
 			notReady++
 			fmt.Fprintf(out, "  Judged larger than two days, so split it: %s (%s)\n", task.ID, task.Title)
+		}
+	}
+	titles := map[string]checkpointStory{}
+	for _, phase := range found.Phases {
+		if !phase.IsCheckpoint() || phase.CheckpointPassed() {
+			continue
+		}
+		if len(titles) == 0 {
+			titles = storyTitles(document.Root, document.Manifest.ID)
+		}
+		report, err := reportCheckpoint(ctx, document, found, phase.ID, titles)
+		if err != nil {
+			return err
+		}
+		if report.Estimate > checkpointSlideBudget {
+			notReady++
+			fmt.Fprintf(out, "  Checkpoint %s addresses %d stories in %d tasks: about %d slides to explain, more than %d. Split it with another checkpoint.\n", phase.ID, len(report.Stories), report.Tasks, report.Estimate, checkpointSlideBudget)
 		}
 	}
 	if found.Deck == nil || len(found.Deck.Slides) == 0 {

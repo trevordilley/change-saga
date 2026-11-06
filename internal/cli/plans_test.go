@@ -574,3 +574,40 @@ func TestDeliveryWaitsForEveryCheckpoint(t *testing.T) {
 		t.Fatalf("plan deliver said %q", message)
 	}
 }
+
+// plan checkpoint says what a checkpoint covers, how big it is, and what to do,
+// and stops an agent when something is surprising.
+func TestACheckpointReportSaysWhatToDoNext(t *testing.T) {
+	fixture := newPlanFixture(t)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "build", "--title", "Build", fixture.root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "proven", "--title", "Proven", "--checkpoint", fixture.root)
+	plan := loadedPlan(t, fixture.root, "first")
+	story := "urn:change-saga:" + plan.Target[len("urn:change-saga:"):strings.Index(plan.Target, ":plan:")] + ":story:first-story"
+	run(t, Task, "add", "--plan", "first", "--id", "work", "--title", "Work", "--phase", "build", "--story", story, fixture.root)
+	run(t, Task, "add", "--plan", "first", "--id", "prep", "--title", "Prep", "--phase", "build", "--unblocks", "work", fixture.root)
+	out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "proven", fixture.root)
+	for _, want := range []string{"Checkpoint proven: Proven (in progress)", "Covers 0 of its 2 tasks done, in build.", "First story", "About 1 slide to explain", "Whoever invoked the Plan passes it.", "Finish its Tasks"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("report has no %q:\n%s", want, out)
+		}
+	}
+	run(t, Task, "done", "--plan", "first", "--task", "prep", fixture.root)
+	run(t, Task, "done", "--plan", "first", "--task", "work", fixture.root)
+	if out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "proven", fixture.root); !strings.Contains(out, "(reached)") || !strings.Contains(out, "review create --base FEATURE --head BRANCH") {
+		t.Fatalf("a reached checkpoint said:\n%s", out)
+	}
+	run(t, Plan, "set", "--plan", "first", "--checkpoint-passer", "agent", fixture.root)
+	run(t, Review, "create", "--id", "cp-review", "--base", "main", "--head", "feature/pg", fixture.root)
+	run(t, Plan, "link-review", "--plan", "first", "--review", "cp-review", "--checkpoint", "proven", fixture.root)
+	if out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "proven", fixture.root); !strings.Contains(out, "the agent may pass it") {
+		t.Fatalf("an unsurprising checkpoint said:\n%s", out)
+	}
+	run(t, Task, "note", "--plan", "first", "--task", "work", "--blocked", "--agent", "ada", "the tests hang", fixture.root)
+	out = run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "proven", fixture.root)
+	if !strings.Contains(out, "Surprising: an agent reported blocked on: work") || !strings.Contains(out, "Stop for a person") {
+		t.Fatalf("a surprising checkpoint said:\n%s", out)
+	}
+	if message := refused(t, planCommand, "checkpoint", "--plan", "first", "--checkpoint", "build", fixture.root); !strings.Contains(message, "not a checkpoint") {
+		t.Fatalf("a phase that is not a checkpoint said %q", message)
+	}
+}
