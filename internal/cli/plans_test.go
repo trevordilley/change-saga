@@ -579,14 +579,15 @@ func TestDeliveryWaitsForEveryCheckpoint(t *testing.T) {
 // and stops an agent when something is surprising.
 func TestACheckpointReportSaysWhatToDoNext(t *testing.T) {
 	fixture := newPlanFixture(t)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "prepare", "--title", "Prepare", fixture.root)
 	run(t, Plan, "add-phase", "--plan", "first", "--id", "build", "--title", "Build", fixture.root)
 	run(t, Plan, "add-phase", "--plan", "first", "--id", "proven", "--title", "Proven", "--checkpoint", fixture.root)
 	plan := loadedPlan(t, fixture.root, "first")
 	story := "urn:change-saga:" + plan.Target[len("urn:change-saga:"):strings.Index(plan.Target, ":plan:")] + ":story:first-story"
 	run(t, Task, "add", "--plan", "first", "--id", "work", "--title", "Work", "--phase", "build", "--story", story, fixture.root)
-	run(t, Task, "add", "--plan", "first", "--id", "prep", "--title", "Prep", "--phase", "build", "--unblocks", "work", fixture.root)
+	run(t, Task, "add", "--plan", "first", "--id", "prep", "--title", "Prep", "--phase", "prepare", "--unblocks", "work", fixture.root)
 	out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "proven", fixture.root)
-	for _, want := range []string{"Checkpoint proven: Proven (in progress)", "Covers 0 of its 2 tasks done, in build.", "First story", "About 1 slide to explain", "Whoever invoked the Plan passes it.", "Finish its Tasks"} {
+	for _, want := range []string{"Checkpoint proven: Proven (in progress)", "Covers 0 of its 2 tasks done, in prepare, build.", "First story", "About 1 slide to explain", "Whoever invoked the Plan passes it.", "Finish its Tasks"} {
 		if !strings.Contains(out, want) {
 			t.Errorf("report has no %q:\n%s", want, out)
 		}
