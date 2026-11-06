@@ -16,6 +16,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/planactivity"
+	"github.com/twentyideas/changesaga/internal/plancheckpoint"
 	"github.com/twentyideas/changesaga/internal/planstore"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
@@ -318,13 +319,13 @@ func planGuide(ctx context.Context, args []string, out io.Writer) error {
 			fmt.Fprintf(out, "  Judged larger than two days, so split it: %s (%s)\n", task.ID, task.Title)
 		}
 	}
-	titles := map[string]checkpointStory{}
+	var titles map[string]plancheckpoint.Story
 	for _, phase := range found.Phases {
 		if !phase.IsCheckpoint() || phase.CheckpointPassed() {
 			continue
 		}
-		if len(titles) == 0 {
-			titles = storyTitles(document.Root, document.Manifest.ID)
+		if titles == nil {
+			titles = plancheckpoint.Stories(document.Root, document.Manifest.ID)
 		}
 		report, err := reportCheckpoint(ctx, document, found, phase.ID, titles)
 		if err != nil {

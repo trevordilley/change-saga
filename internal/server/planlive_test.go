@@ -369,3 +369,48 @@ func TestTheBoardFoldsTheStretchesOtherThanTheCurrentOne(t *testing.T) {
 		}
 	}
 }
+
+// A review that covers a checkpoint shows the checkpoint: the Plan before, in, and
+// after it, its stories and their proof, its size, and its pass.
+func TestACheckpointsReviewShowsTheCheckpoint(t *testing.T) {
+	t.Parallel()
+	_, handler, fixture := livePlanFixture(t)
+	for _, phase := range []saga.PlanPhase{{ID: "early", Title: "Early"}, {ID: "proven", Title: "Proven", Checkpoint: &saga.PlanCheckpoint{}}, {ID: "late", Title: "Late"}} {
+		if err := planstore.AddPhase(fixture.root, "first", phase, ""); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for task, phase := range map[string]string{"prepare": "early", "work": "late"} {
+		if err := planstore.UpdateTask(fixture.root, "first", task, func(value *saga.TaskManifest) error {
+			value.Phase = phase
+			return nil
+		}, nil); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := planstore.LinkCheckpointReview(fixture.root, "first", "pr-7", "proven"); err != nil {
+		t.Fatal(err)
+	}
+	page := getPage(t, handler, "/reviews/pr-7").Body.String()
+	for _, want := range []string{
+		`data-review-checkpoint`, `Checkpoint <strong>Proven</strong>`, `in progress`,
+		`<template id="review-checkpoint">`, `class="checkpoint-cell now"`, `class="checkpoint-cell later"`,
+		`Finish its Tasks: prepare.`, `About 1 slide estimated`, `data-checkpoint-story`,
+	} {
+		if !strings.Contains(page, want) {
+			t.Errorf("the checkpoint's review has no %q", want)
+		}
+	}
+	if err := planstore.UpdateTask(fixture.root, "first", "prepare", func(value *saga.TaskManifest) error {
+		value.State = saga.TaskDone
+		return nil
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
+	if err := planstore.PassCheckpoint(fixture.root, "first", "proven", saga.CheckpointPass{At: time.Now(), By: "trevor", Reason: "the tests pass"}); err != nil {
+		t.Fatal(err)
+	}
+	if page := getPage(t, handler, "/reviews/pr-7").Body.String(); !strings.Contains(page, "Passed by trevor on") || !strings.Contains(page, "the tests pass") {
+		t.Error("a passed checkpoint's review must say who passed it and why")
+	}
+}
