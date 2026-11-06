@@ -111,13 +111,22 @@ func Create(root string, manifest saga.PlanManifest, deck saga.DeckManifest) err
 }
 
 // AddPhase appends a phase to the Plan's order.
-func AddPhase(root, planID string, phase saga.PlanPhase) error {
+// AddPhase adds a phase at the end, or right after the phase named by after.
+func AddPhase(root, planID string, phase saga.PlanPhase, after string) error {
 	return mutate(root, func(document *saga.Saga) error {
 		plan, err := editable(document, planID)
 		if err != nil {
 			return err
 		}
-		plan.Phases = append(plan.Phases, phase)
+		at := len(plan.Phases)
+		if after != "" {
+			index := slices.IndexFunc(plan.Phases, func(existing saga.PlanPhase) bool { return existing.ID == after })
+			if index < 0 {
+				return fmt.Errorf("phase %q is not a phase of plan %q", after, planID)
+			}
+			at = index + 1
+		}
+		plan.Phases = slices.Insert(plan.Phases, at, phase)
 		if err := saga.ValidatePlanManifest(plan.PlanManifest); err != nil {
 			return err
 		}
@@ -197,6 +206,11 @@ func Deliver(root, planID string, merged func(*saga.Review) bool) error {
 		}
 		if len(plan.Reviews) == 0 {
 			reasons = append(reasons, "no Review is linked; add one with plan link-review")
+		}
+		for _, phase := range plan.Phases {
+			if phase.IsCheckpoint() && !phase.CheckpointPassed() {
+				reasons = append(reasons, fmt.Sprintf("checkpoint %s has not passed", phase.ID))
+			}
 		}
 		for _, id := range plan.Reviews {
 			review := document.FindReview(id)

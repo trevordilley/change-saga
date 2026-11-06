@@ -41,6 +41,42 @@
           "title": {
             "type": "string",
             "minLength": 1
+          },
+          "checkpoint": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Makes the phase a checkpoint: it holds no Tasks and covers every Task since the previous checkpoint, reviewed together before the work after it starts.",
+            "properties": {
+              "review": {
+                "$ref": "#/$defs/id"
+              },
+              "passed": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "at",
+                  "by",
+                  "reason"
+                ],
+                "properties": {
+                  "at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "by": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "agent": {
+                    "type": "boolean"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -57,6 +93,13 @@
       "items": {
         "$ref": "#/$defs/id"
       }
+    },
+    "checkpoint_passer": {
+      "enum": [
+        "person",
+        "agent"
+      ],
+      "description": "Who passes the Plan's checkpoints: a person, or an agent unless what it found is surprising or urgent. Absent means a person."
     },
     "delivered_at": {
       "type": "string",

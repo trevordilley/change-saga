@@ -504,3 +504,27 @@ func TestPlansAndTasksReadThroughQuery(t *testing.T) {
 		t.Fatalf("a missing task = %s", missing.String())
 	}
 }
+
+// A checkpoint is a phase put where it belongs; a Task cannot sit in it, and the
+// Plan is not delivered until it passes.
+func TestACheckpointIsAPhaseThatHoldsNoTasks(t *testing.T) {
+	fixture := newPlanFixture(t)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "build", "--title", "Build", fixture.root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "ship", "--title", "Ship", fixture.root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "proven", "--title", "Proven", "--checkpoint", "--after", "build", fixture.root)
+	plan := loadedPlan(t, fixture.root, "first")
+	order := []string{}
+	for _, phase := range plan.Phases {
+		order = append(order, phase.ID)
+	}
+	if strings.Join(order, ",") != "build,proven,ship" || !plan.Phases[1].IsCheckpoint() || plan.Phases[0].IsCheckpoint() {
+		t.Fatalf("phases = %+v", plan.Phases)
+	}
+	story := "urn:change-saga:" + plan.Target[len("urn:change-saga:"):strings.Index(plan.Target, ":plan:")] + ":story:first-story"
+	if message := refused(t, taskCommand, "add", "--plan", "first", "--id", "inside", "--title", "Inside", "--phase", "proven", "--story", story, fixture.root); !strings.Contains(message, "checkpoint") {
+		t.Fatalf("a Task in a checkpoint said %q", message)
+	}
+	if message := refused(t, planCommand, "add-phase", "--plan", "first", "--id", "lost", "--title", "Lost", "--after", "nowhere", fixture.root); !strings.Contains(message, "nowhere") {
+		t.Fatalf("an unknown --after said %q", message)
+	}
+}

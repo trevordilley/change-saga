@@ -319,6 +319,8 @@ func planAddPhase(_ context.Context, args []string, out io.Writer) error {
 	plan := flags.String("plan", "", "plan id or URN")
 	id := flags.String("id", "", "stable phase id")
 	title := flags.String("title", "", "phase title")
+	after := flags.String("after", "", "put the phase right after this one instead of at the end")
+	checkpoint := flags.Bool("checkpoint", false, "make it a checkpoint: it holds no Tasks, covers every Task since the previous checkpoint, and holds the work after it until it passes")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -326,7 +328,11 @@ func planAddPhase(_ context.Context, args []string, out io.Writer) error {
 	if err := requireLivingArgs(flags, *plan, *id, *title); err != nil {
 		return err
 	}
-	if err := planstore.AddPhase(flags.Arg(0), planIDOf(*plan), saga.PlanPhase{ID: *id, Title: strings.TrimSpace(*title)}); err != nil {
+	phase := saga.PlanPhase{ID: *id, Title: strings.TrimSpace(*title)}
+	if *checkpoint {
+		phase.Checkpoint = &saga.PlanCheckpoint{}
+	}
+	if err := planstore.AddPhase(flags.Arg(0), planIDOf(*plan), phase, *after); err != nil {
 		return err
 	}
 	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
