@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "plan checkpoint reads the scope, counts stories and Tasks, and lists the surprise signals."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "plan checkpoint: scope, stories, slide estimate, surprise signals, next step; plan guide warns past six slides.",
   "created_at": "2026-11-06T01:24:06.331287Z"
 }
