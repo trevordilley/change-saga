@@ -528,3 +528,49 @@ func TestACheckpointIsAPhaseThatHoldsNoTasks(t *testing.T) {
 		t.Fatalf("an unknown --after said %q", message)
 	}
 }
+
+// A checkpoint passes only once its Tasks are done, in order, and an agent passes
+// it only when the Plan allows it; delivery waits until it has.
+func TestACheckpointPassesByTheInvokersRule(t *testing.T) {
+	fixture := newPlanFixture(t)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "build", "--title", "Build", fixture.root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "proven", "--title", "Proven", "--checkpoint", fixture.root)
+	plan := loadedPlan(t, fixture.root, "first")
+	story := "urn:change-saga:" + plan.Target[len("urn:change-saga:"):strings.Index(plan.Target, ":plan:")] + ":story:first-story"
+	run(t, Task, "add", "--plan", "first", "--id", "work", "--title", "Work", "--phase", "build", "--story", story, fixture.root)
+	if message := refused(t, planCommand, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "tests pass", "--by", "trevor", fixture.root); !strings.Contains(message, "task work is planned") {
+		t.Fatalf("an unfinished checkpoint said %q", message)
+	}
+	run(t, Task, "done", "--plan", "first", "--task", "work", fixture.root)
+	if message := refused(t, planCommand, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "tests pass", "--agent", fixture.root); !strings.Contains(message, "not an agent") {
+		t.Fatalf("an agent passing without leave said %q", message)
+	}
+	if message := refused(t, planCommand, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "tests pass", fixture.root); !strings.Contains(message, "--by") {
+		t.Fatalf("a pass by nobody said %q", message)
+	}
+	run(t, Plan, "set", "--plan", "first", "--checkpoint-passer", "agent", fixture.root)
+	run(t, Review, "create", "--id", "cp-review", "--base", "main", "--head", "feature/pg", fixture.root)
+	run(t, Plan, "link-review", "--plan", "first", "--review", "cp-review", "--checkpoint", "proven", fixture.root)
+	out := run(t, Plan, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "tests pass", "--agent", fixture.root)
+	if !strings.Contains(out, "merge the checkpoint's branch into main") {
+		t.Fatalf("plan pass said %q", out)
+	}
+	phase := loadedPlan(t, fixture.root, "first").Phases[1]
+	if pass := phase.Checkpoint.Passed; pass == nil || !pass.Agent || pass.Reason != "tests pass" || pass.By == "" || phase.Checkpoint.Review != "cp-review" {
+		t.Fatalf("checkpoint = %+v %+v", phase.Checkpoint, phase.Checkpoint.Passed)
+	}
+	if message := refused(t, planCommand, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "again", "--by", "trevor", fixture.root); !strings.Contains(message, "already passed") {
+		t.Fatalf("a second pass said %q", message)
+	}
+	if message := refused(t, planCommand, "set", "--plan", "first", "--checkpoint-passer", "anyone", fixture.root); !strings.Contains(message, "person or agent") {
+		t.Fatalf("an unknown passer said %q", message)
+	}
+}
+
+func TestDeliveryWaitsForEveryCheckpoint(t *testing.T) {
+	fixture := newPlanFixture(t)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "proven", "--title", "Proven", "--checkpoint", fixture.root)
+	if message := refused(t, planCommand, "deliver", "--plan", "first", fixture.root); !strings.Contains(message, "checkpoint proven has not passed") {
+		t.Fatalf("plan deliver said %q", message)
+	}
+}

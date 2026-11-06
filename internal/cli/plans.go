@@ -15,13 +15,14 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitexec"
+	"github.com/twentyideas/changesaga/internal/planactivity"
 	"github.com/twentyideas/changesaga/internal/planstore"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var planOperations = []string{"create", "list", "guide", "add-phase", "remove-phase", "add-prototype", "link-review", "deliver"}
+var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "pass", "deliver"}
 
 // Plan dispatches the Plan commands.
 func Plan(ctx context.Context, args []string, out io.Writer) error {
@@ -49,6 +50,10 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planLinkReview(ctx, args[1:], out)
 	case "deliver":
 		err = planDeliver(ctx, args[1:], out)
+	case "set":
+		err = planSet(ctx, args[1:], out)
+	case "pass":
+		err = planPass(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["plan"])
 	}
@@ -361,6 +366,7 @@ func planLinkReview(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags(name, commandUsage[name], out)
 	plan := flags.String("plan", "", "plan id or URN")
 	review := flags.String("review", "", "id of a review that implements the plan")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint this review covers")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -368,7 +374,7 @@ func planLinkReview(_ context.Context, args []string, out io.Writer) error {
 	if err := requireLivingArgs(flags, *plan, *review); err != nil {
 		return err
 	}
-	if err := planstore.LinkReview(flags.Arg(0), planIDOf(*plan), *review); err != nil {
+	if err := planstore.LinkCheckpointReview(flags.Arg(0), planIDOf(*plan), *review, *checkpoint); err != nil {
 		return err
 	}
 	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
@@ -421,6 +427,69 @@ func planDeliver(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	return writePlanChange(out, name, root, planIDOf(*plan), *jsonOutput)
+}
+
+func planSet(_ context.Context, args []string, out io.Writer) error {
+	name := "plan set"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	passer := flags.String("checkpoint-passer", "", "who passes the Plan's checkpoints: person, or agent, which passes them unless what it found is surprising or urgent")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *passer); err != nil {
+		return err
+	}
+	if err := planstore.SetCheckpointPasser(flags.Arg(0), planIDOf(*plan), *passer); err != nil {
+		return err
+	}
+	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
+}
+
+func planPass(ctx context.Context, args []string, out io.Writer) error {
+	name := "plan pass"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint phase to pass")
+	reason := flags.String("reason", "", "why it passes: what proves the work works")
+	by := flags.String("by", "", "who passes it; required unless --agent, which defaults to the reporting agent's name")
+	agent := flags.Bool("agent", false, "an agent passes it, under the rule of whoever invoked the Plan")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *checkpoint, *reason); err != nil {
+		return err
+	}
+	root := flags.Arg(0)
+	who := strings.TrimSpace(*by)
+	if who == "" && *agent {
+		who = planactivity.Identity("", os.Getenv, planactivity.Branch(ctx, root))
+	}
+	if who == "" {
+		return fmt.Errorf("--by names who passes the checkpoint; an agent passes with --agent")
+	}
+	planID := planIDOf(*plan)
+	if err := planstore.PassCheckpoint(root, planID, *checkpoint, saga.CheckpointPass{At: time.Now().UTC(), By: who, Agent: *agent, Reason: strings.TrimSpace(*reason)}); err != nil {
+		return err
+	}
+	if *jsonOutput {
+		return writePlanChange(out, name, root, planID, true)
+	}
+	fmt.Fprintf(out, "Passed checkpoint %s as %s.\n", *checkpoint, who)
+	into := "the branch the Plan's work comes from"
+	if document, found, err := planOf(root, planID); err == nil {
+		for _, phase := range found.Phases {
+			if phase.ID == *checkpoint && phase.Checkpoint.Review != "" {
+				if review := document.FindReview(phase.Checkpoint.Review); review != nil && review.Base != "" {
+					into = review.Base
+				}
+			}
+		}
+	}
+	fmt.Fprintf(out, "Next: merge the checkpoint's branch into %s, then start the next stretch from there in a new workspace.\n", into)
+	return nil
 }
 
 func writePlanChange(out io.Writer, operation, root, planID string, jsonOutput bool) error {
