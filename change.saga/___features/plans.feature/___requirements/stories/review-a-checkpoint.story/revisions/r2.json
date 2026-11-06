@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:review-a-checkpoint",
+  "parents": [
+    "urn:change-saga:change-saga:story:review-a-checkpoint:revision:r1"
+  ],
+  "title": "Review a big Plan one checkpoint at a time",
+  "statement": "As an architect I can review a large Plan's work one checkpoint at a time, seeing what was done before, what this checkpoint did, and what is to come, so no review is one huge shot",
+  "overview": "A Plan of 200 Tasks across 6 phases cannot be reviewed well at the end, in one go. A\ncheckpoint marks a stretch of the Plan that one review can explain. Its work happens on a\nbranch of its own, made from the branch the Plan's work comes from, usually a feature\nbranch. Its review is that branch as a change into the feature branch. Passing it says the\nwork is safe to merge there, so every later checkpoint builds on it.\n\n## What is decided\n\n- **Scope.** A checkpoint's review covers what changed since the previous checkpoint merged.\n  A reviewer may reach further back when they choose.\n- **Passing means safe to merge into the feature branch.** The checkpoint's branch merges into\n  the branch the Plan's work comes from, and the next checkpoint starts from there in a new\n  workspace. Reaching the main branch is the feature branch's own review, as it is today.\n- **Who passes.** Whoever invokes the Plan decides. They may pass every checkpoint\n  themselves, or let the agent pass them unless what it found is surprising or urgent.\n- **The gate.** Tasks beyond a checkpoint that has not passed are not offered as ready, and\n  starting one warns instead of refusing.\n- **Size.** A checkpoint is the right size when Change Saga can explain it in five or six\n  slides. One that would need ten to twenty should be split.\n\n## Open questions\n\n- **Where a checkpoint lives.** It could be a record on the Plan naming the Tasks that close\n  it, with everything they depend on included, or a mark on a phase. Phases say what runs in\n  parallel and checkpoints say what is reviewed together, so they may not line up.\n- **Judging size before the work exists.** Slides are counted once the review is written. The\n  Plan needs an estimate first, perhaps from the stories and Tasks a checkpoint holds.\n- **What \"surprising\" means for an agent.** A departure from the Plan, a Task added or dropped,\n  or a blocked note all seem to qualify. The record of a pass should say who passed it and why.\n- **Who merges.** Passing could merge the checkpoint's branch itself, or leave the merge to the\n  person or agent who invoked the Plan.\n",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-checkpoints-direction-20261105",
+    "urn:change-saga:change-saga:citation:plan-checkpoints-pass-merges-20261105"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "checkpoint-creates-review",
+      "statement": "Reaching a checkpoint creates a review of its branch as a change into the branch the Plan's work comes from, covering what changed since the previous checkpoint merged"
+    },
+    {
+      "id": "reach-further-back",
+      "statement": "A reviewer can widen a checkpoint's review to an earlier checkpoint when they choose"
+    },
+    {
+      "id": "board-in-three-states",
+      "statement": "The checkpoint's review shows the Plan's board with work done before, work in this checkpoint, and work to come told apart"
+    },
+    {
+      "id": "stories-addressed",
+      "statement": "The checkpoint's review lists the stories and acceptance criteria its Tasks address"
+    }
+  ],
+  "created_at": "2026-11-06T01:19:10.128017Z"
+}

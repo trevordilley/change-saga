@@ -4,17 +4,17 @@
   "id": "cp-pass",
   "prototype": "urn:change-saga:change-saga:prototype:plan-checkpoints",
   "target": "urn:change-saga:change-saga:story:pass-a-checkpoint",
-  "rationale": "The invoker's choice of who passes, an agent stopping when surprised, the recorded pass, and the next workspace.",
-  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r1",
-  "story_revision": "urn:change-saga:change-saga:story:pass-a-checkpoint:revision:r1",
+  "rationale": "The invoker's choice of who passes, an agent stopping when surprised, the recorded pass, and the merge into the feature branch.",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r2",
+  "story_revision": "urn:change-saga:change-saga:story:pass-a-checkpoint:revision:r2",
   "selector": {
     "kind": "region",
     "region": {
       "x": 0.5982,
-      "y": 0.3377,
+      "y": 0.3492,
       "width": 0.306,
-      "height": 0.263
+      "height": 0.2583
     }
   },
-  "created_at": "2026-11-06T00:18:40.812779Z"
+  "created_at": "2026-11-06T01:19:33.900711Z"
 }

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "plan-checkpoints-pass-merges-20261105",
+  "kind": "decision",
+  "title": "A passed checkpoint merges into the Plan's feature branch",
+  "reference": "Trevor, 2026-11-05: \"it's a signal it's safe to merge into the branch from which the work is emerging I suppose. So if all of this is being managed on a feature branch then a pass there should mean we can merge into the feature branch so the rest of the work can benefit.\"",
+  "created_at": "2026-11-06T01:19:09.881325Z"
+}

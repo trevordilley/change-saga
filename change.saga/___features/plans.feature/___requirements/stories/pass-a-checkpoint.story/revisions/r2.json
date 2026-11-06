@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:pass-a-checkpoint",
+  "parents": [
+    "urn:change-saga:change-saga:story:pass-a-checkpoint:revision:r1"
+  ],
+  "title": "Pass a checkpoint and merge it into the feature branch",
+  "statement": "As a developer invoking a Plan I decide who passes its checkpoints, myself or the agent unless something is surprising or urgent, and a passed checkpoint is safe to merge into the branch the Plan's work comes from, so the rest of the work builds on it",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-checkpoints-direction-20261105",
+    "urn:change-saga:change-saga:citation:plan-checkpoints-pass-merges-20261105"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "invoker-decides-who-passes",
+      "statement": "Whoever invokes the Plan chooses whether they pass checkpoints themselves or let the agent pass them"
+    },
+    {
+      "id": "agent-stops-when-surprised",
+      "statement": "An agent allowed to pass a checkpoint stops for a person when the checkpoint's work is surprising or urgent"
+    },
+    {
+      "id": "pass-is-recorded",
+      "statement": "A pass records who passed the checkpoint and why"
+    },
+    {
+      "id": "pass-merges-into-feature-branch",
+      "statement": "A passed checkpoint's branch can merge into the branch the Plan's work comes from, and the next checkpoint starts from that branch in a new workspace"
+    }
+  ],
+  "created_at": "2026-11-06T01:19:10.343405Z"
+}

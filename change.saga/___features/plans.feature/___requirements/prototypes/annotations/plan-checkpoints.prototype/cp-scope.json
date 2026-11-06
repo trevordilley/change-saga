@@ -4,17 +4,17 @@
   "id": "cp-scope",
   "prototype": "urn:change-saga:change-saga:prototype:plan-checkpoints",
   "target": "urn:change-saga:change-saga:story:review-a-checkpoint:criterion:reach-further-back",
-  "rationale": "The review covers changes since the previous checkpoint by default, and the reviewer can reach back further.",
-  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r1",
-  "story_revision": "urn:change-saga:change-saga:story:review-a-checkpoint:revision:r1",
+  "rationale": "The review covers changes since the previous checkpoint merged by default, and the reviewer can reach back further.",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r2",
+  "story_revision": "urn:change-saga:change-saga:story:review-a-checkpoint:revision:r2",
   "selector": {
     "kind": "region",
     "region": {
       "x": 0.1079,
-      "y": 0.3208,
+      "y": 0.3326,
       "width": 0.4654,
-      "height": 0.0372
+      "height": 0.0365
     }
   },
-  "created_at": "2026-11-06T00:18:39.798429Z"
+  "created_at": "2026-11-06T01:19:33.736872Z"
 }

@@ -5,16 +5,16 @@
   "prototype": "urn:change-saga:change-saga:prototype:plan-checkpoints",
   "target": "urn:change-saga:change-saga:story:size-checkpoints-by-explanation",
   "rationale": "Reviewable is judged by how many slides Change Saga needs to explain the checkpoint.",
-  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r1",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r2",
   "story_revision": "urn:change-saga:change-saga:story:size-checkpoints-by-explanation:revision:r1",
   "selector": {
     "kind": "region",
     "region": {
       "x": 0.5982,
-      "y": 0.1715,
+      "y": 0.186,
       "width": 0.306,
-      "height": 0.1536
+      "height": 0.1508
     }
   },
-  "created_at": "2026-11-06T00:18:40.642541Z"
+  "created_at": "2026-11-06T01:19:33.83659Z"
 }

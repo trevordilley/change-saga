@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/prototype-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "prototype": "urn:change-saga:change-saga:prototype:plan-checkpoints",
+  "parents": [
+    "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r1"
+  ],
+  "title": "Review a big Plan one checkpoint at a time",
+  "state": "draft",
+  "source": {
+    "kind": "repo",
+    "entrypoint": "docs/prototypes/plan-checkpoints/index.html",
+    "root": "docs/prototypes/plan-checkpoints",
+    "commit": "6b7e557e3be6ccdf1b83fdc2a9348536e9e0252a",
+    "object": "f89f05825eda23d803abd36294133d2bed48e0e4"
+  },
+  "styles": [],
+  "created_at": "2026-11-06T01:19:33.600835Z"
+}
