@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "Ready lists, task start, and the live status read the gate."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "Ready lists, query held_by, task start warning, and the board and poll read the gate.",
   "created_at": "2026-11-06T01:24:07.188937Z"
 }
