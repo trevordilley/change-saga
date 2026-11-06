@@ -263,7 +263,12 @@ without AI help, would finish in two days or less.
    essay with deck overview --plan, organized by phase. Give each diagram node that
    represents work an Item that selects the node and whose record names its Task: that
    Item is what lets a reader select the node and open the Task.
-7. Check. Run plan guide --plan ID until it has nothing left to name.
+7. Checkpoint. A large Plan is reviewed in stretches. After a few phases, add a
+   checkpoint with plan add-phase --checkpoint [--after PHASE]: it holds no Tasks and
+   covers every Task since the previous one. Size each stretch so its review takes five
+   or six slides, about one per story, not ten to twenty. Ask who passes them, and record
+   it with plan set --checkpoint-passer person|agent.
+8. Check. Run plan guide --plan ID until it has nothing left to name.
 
 While the work happens, say what you are doing so others can see it live:
 task start when you pick a Task up, task note when you find something that matters,
@@ -271,6 +276,12 @@ task note --blocked when you cannot go on, and task done when you finish. Do not
 narrate: every note is a tool call you pay for. task start and task note are live
 activity, shared by every worktree of this repository and never committed. Only
 task done is durable, and it is the one that counts.
+
+At a checkpoint, stop and prove the stretch works: run the tests, then plan checkpoint
+--plan ID --checkpoint PHASE says what it covers and what to do next. Review the
+checkpoint's branch as a change into the Plan's feature branch. Once it passes, by its
+invoker or by you when they allowed it and nothing is surprising, merge it there and start
+the next stretch from it in a new workspace.
 `
 
 func planGuide(ctx context.Context, args []string, out io.Writer) error {

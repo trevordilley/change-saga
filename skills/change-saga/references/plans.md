@@ -110,6 +110,39 @@ other machines share nothing yet.
 A change that would leave a Task with no path to a story, or make a dependency
 cycle, is refused and names the Tasks. Adjust the chain rather than working around it.
 
+## Checkpoints
+
+A Plan of hundreds of Tasks is reviewed in stretches, not in one go at the end. A
+checkpoint is a kind of phase: a few phases of work, then a checkpoint. It holds no Tasks
+and covers every Task since the previous checkpoint.
+
+```sh
+change-saga plan add-phase --plan ID --id CHECKPOINT --title TEXT --checkpoint --after PHASE change.saga
+change-saga plan set --plan ID --checkpoint-passer agent change.saga
+change-saga plan checkpoint --plan ID --checkpoint CHECKPOINT change.saga
+change-saga plan link-review --plan ID --review REVIEW --checkpoint CHECKPOINT change.saga
+change-saga plan pass --plan ID --checkpoint CHECKPOINT --reason TEXT (--by NAME | --agent) change.saga
+```
+
+- **Size.** A stretch should take five or six slides to explain, about one per story it
+  addresses. `plan guide` names a checkpoint that looks to need more; split it.
+- **The gate.** Until a checkpoint passes, `task list --ready` leaves out the Tasks after
+  it and says which checkpoint holds them. `task start` on one warns.
+- **At a checkpoint, prove the work works.** Run the tests. Review the checkpoint's branch
+  as a change into the Plan's feature branch, with the usual review deck. `plan checkpoint`
+  says what it covers and what to do next.
+- **Who passes.** Whoever invokes the Plan decides, and the Plan records it with
+  `plan set --checkpoint-passer`. A person is the default. An agent allowed to pass still
+  stops for a person when anything is surprising: the work departed from the Plan, Tasks
+  were added during the stretch, an agent reported a Task blocked, a test is failing, or
+  the review needs more slides than estimated.
+- **After it passes,** merge the checkpoint's branch into the feature branch and start the
+  next stretch from there in a new workspace. Whether a checkpoint also gets a pull
+  request with colleagues is up to whoever invoked the Plan.
+
+A pass is durable: it is written to `plan.json` with who passed it, when, and why, and
+`plan deliver` waits until every checkpoint has passed.
+
 ## Reviews and delivery
 
 Link each pull request review that implements the Plan with `plan link-review`.

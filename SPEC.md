@@ -1969,6 +1969,36 @@ a Plan's deck essay and a Task's essay. `query plans` omits delivered Plans unle
 `--all` is given. `query prototype` reads a prototype's HTML the same way, in
 byte-range pages.
 
+### Checkpoints
+
+A phase MAY be a **checkpoint**, written as a `checkpoint` object on the phase. A
+checkpoint holds no Tasks: a Task whose `phase` is a checkpoint is invalid. It covers every
+Task in the phases after the previous checkpoint and before it; a Task with no phase is in
+no checkpoint.
+
+| Field | Meaning |
+|---|---|
+| `checkpoint.review` | The id of the review of the checkpoint's work. |
+| `checkpoint.passed` | `{at, by, agent?, reason}`: the checkpoint passed, when, by whom, whether an agent passed it, and why. |
+| `checkpoint_passer` (on the Plan) | `person` or `agent`: who passes the Plan's checkpoints. Absent means `person`. |
+
+- The first checkpoint that has not passed **holds** every Task in a phase after it.
+  `task list --ready` MUST NOT list a held Task and says which checkpoint holds it;
+  `query plan` and `query task` report `held_by`. `task start` on a held Task warns and
+  still records. A reader shows it as held.
+- `plan pass` MUST be refused until every Task the checkpoint covers is done and every
+  earlier checkpoint has passed, and MUST be refused to an agent (`--agent`) unless
+  `checkpoint_passer` is `agent`. A pass records `by` and `reason`.
+- `plan deliver` MUST be refused while any checkpoint has not passed.
+- `plan checkpoint` reports a checkpoint's Tasks, the stories they lead to, an estimate of
+  one slide per story, and what would make passing it surprising. `plan guide` names a
+  checkpoint estimated at more than six slides. Neither refuses anything.
+
+A checkpoint's review is the checkpoint's branch as a change into the branch the Plan's
+work comes from, linked with `plan link-review --checkpoint`. Once it passes, that branch
+is merged there and the next stretch starts from it. A Plan with no checkpoints behaves as
+before.
+
 ### Live activity
 
 `task start`, `task note`, `task note --blocked`, and `task done` report what agents

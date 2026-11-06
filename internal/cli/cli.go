@@ -1462,6 +1462,7 @@ func Spec(args []string, out io.Writer) error {
 				"task_states": []string{saga.TaskPlanned, saga.TaskInProgress, saga.TaskDone},
 				"story_rule":  "every Task names a user story or unblocks a Task that leads to one; a write that would leave a Task with no path to a story is refused",
 				"delivered":   "plan deliver is explicit and refused until every Task is done and every linked Review has merged; a delivered Plan is hidden by default and refuses edits",
+				"checkpoints": "a phase with checkpoint holds no Tasks and covers every Task since the previous checkpoint; the first unpassed checkpoint holds the work after it from task list --ready; plan pass records who passed it and why, refused until its Tasks are done and refused to an agent unless checkpoint_passer is agent; plan deliver waits for every checkpoint",
 				"activity":    "task start, task note, and task done report live activity to <git-common-dir>/change-saga/activity/<saga>/<plan>/<agent>.jsonl; it is shared by a repository's worktrees, never committed, and never changes what validate, status, check, or plan deliver report",
 			},
 			"reviews": map[string]any{
