@@ -143,6 +143,15 @@ func selectorCompatible(selector SelectorKind, source SourceKind) bool {
 	}
 	return selector == SelectorProvider || selector == SelectorRegion
 }
+
+// compatibleSelectors names the selectors a prototype's source accepts.
+func compatibleSelectors(source SourceKind) string {
+	if source == SourceHTML {
+		return "--element-id, --text, or --region"
+	}
+	return "--region, or --provider-id with --deep-link"
+}
+
 func annotationURNUnchecked(sagaID string, a Annotation) string {
 	prototypeID, _ := parsePrototypeURN(a.Prototype, sagaID)
 	value, _ := AnnotationURN(sagaID, prototypeID, a.ID)

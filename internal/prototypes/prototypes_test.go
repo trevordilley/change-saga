@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/store"
 )
 
 var testTime = time.Date(2026, 8, 31, 12, 0, 0, 0, time.UTC)
@@ -246,7 +247,17 @@ func TestSelectorValidationAndSourceCompatibility(t *testing.T) {
 	if err == nil || !strings.Contains(err.Error(), "normalized") {
 		t.Fatalf("region error = %v", err)
 	}
-	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "html-selector", Prototype: prototype, Target: story, Rationale: "Incompatible after composition.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorText, ExactText: "Hello"}, CreatedAt: testTime}); err != nil {
+	// Writing it is refused; a prototype revised to another source can still leave
+	// one behind, so coverage must call it stale.
+	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "html-selector", Prototype: prototype, Target: story, Rationale: "Incompatible after composition.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorText, ExactText: "Hello"}, CreatedAt: testTime}); err == nil || !strings.Contains(err.Error(), "cannot point into") {
+		t.Fatalf("incompatible selector error = %v", err)
+	}
+	incompatible := Annotation{Schema: AnnotationSchemaURL, Version: Version, ID: "html-selector", Prototype: prototype, Target: story, Rationale: "Incompatible after composition.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorText, ExactText: "Buy"}, CreatedAt: testTime}
+	dir := filepath.Join(root, filepath.FromSlash(annotationDir("core", "external")))
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := store.WriteJSON(filepath.Join(dir, "html-selector.json"), incompatible, true); err != nil {
 		t.Fatal(err)
 	}
 	doc, err := Load(root, "test")
@@ -371,5 +382,19 @@ func mustWrite(t *testing.T, path, value string) {
 	t.Helper()
 	if err := os.WriteFile(path, []byte(value), 0o644); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// An annotation coverage could only call stale is refused when it is written.
+func TestAnAnnotationTheSourceCannotResolveIsRefused(t *testing.T) {
+	root := newSaga(t)
+	prototype := "urn:change-saga:test:prototype:flow"
+	if _, err := AddExternal(root, "test", AddExternalInput{Feature: "core", ID: "flow", RevisionID: "r1", Title: "Flow", State: StateReady, URL: "https://example.com/flow", CreatedAt: testTime}); err != nil {
+		t.Fatal(err)
+	}
+	story := "urn:change-saga:test:story:buyer"
+	_, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "flow-button", Prototype: prototype, Target: story, Rationale: "Shows flow.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorElement, ElementID: "buy"}, CreatedAt: testTime})
+	if err == nil || !strings.Contains(err.Error(), "--region") {
+		t.Fatalf("err = %v", err)
 	}
 }

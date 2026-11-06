@@ -301,6 +301,13 @@ func AddAnnotation(root, sagaID string, input AddAnnotationInput) (MutationResul
 			}
 			return fmt.Errorf("annotation id %q already exists", input.ID)
 		}
+		// Refuse what coverage would only call stale: a selector the prototype's
+		// source cannot resolve.
+		for _, prototype := range doc.Prototypes {
+			if prototype.Identity.ID == prototypeID && prototype.CurrentRevision != nil && !selectorCompatible(value.Selector.Kind, prototype.CurrentRevision.Source.Kind) {
+				return fmt.Errorf("a %s selector cannot point into a %s prototype; use %s", value.Selector.Kind, prototype.CurrentRevision.Source.Kind, compatibleSelectors(prototype.CurrentRevision.Source.Kind))
+			}
+		}
 		featureID, err := annotationFeature(doc, prototypeID, input.Feature)
 		if err != nil {
 			return err
