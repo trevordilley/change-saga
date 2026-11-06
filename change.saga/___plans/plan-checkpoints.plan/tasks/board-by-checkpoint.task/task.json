@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "A gate column per checkpoint and a fold toggle on the existing board."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "Checkpoint columns, folded stretches with their edges, and a fold link; opens folded.",
   "created_at": "2026-11-06T01:24:05.927971Z"
 }
