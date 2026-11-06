@@ -10,11 +10,11 @@
       "note": "Independent coverage states and evaluation"
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
       "path": "internal/coverage/coverage.go",
-      "start": 104,
-      "end": 154,
-      "digest": "sha256:bcdac42bd9558211254a434e8ebade03321a3bc84231cac8d6aa6eeebafee7ee",
+      "start": 106,
+      "end": 157,
+      "digest": "sha256:542c551dcd311e1f072ce44cdf1f2a9106a4ddfa4f5f0c965b522154e626e76e",
       "note": "Independent coverage states and evaluation"
     }
   ]

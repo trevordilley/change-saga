@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "reference-scoped-cold-comparisons",
+  "label": "Reference-scoped cold comparisons",
+  "selector": {
+    "type": "heading",
+    "heading_id": "reference-scoped-cold-comparisons"
+  },
+  "target": ""
+}

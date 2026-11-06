@@ -54,7 +54,7 @@ func Check(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *feature)
+	status, err := buildStatusForAreas(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *feature, names)
 	if err != nil {
 		return err
 	}

@@ -60,6 +60,9 @@ type Resolver struct {
 	commits  map[string]bool
 	verified map[string]verification
 	changes  map[[2]string]changeSet
+	planned  map[[2]string]map[string]bool
+	selected map[[2]string]preparedChanges
+	samples  map[[2]string]coderef.Reference
 }
 
 type blobResult struct {
@@ -73,6 +76,11 @@ type changeSet struct {
 	err       error
 }
 
+type preparedChanges struct {
+	paths int
+	changeSet
+}
+
 // New opens a resolver for the repository containing dir.
 func New(ctx context.Context, dir string) (*Resolver, error) {
 	repo, err := gitexec.TopLevel(ctx, dir)
@@ -82,6 +90,8 @@ func New(ctx context.Context, dir string) (*Resolver, error) {
 	return &Resolver{
 		repo: repo, blobs: map[string]blobResult{},
 		commits: map[string]bool{}, changes: map[[2]string]changeSet{}, verified: map[string]verification{},
+		planned: map[[2]string]map[string]bool{}, selected: map[[2]string]preparedChanges{},
+		samples: map[[2]string]coderef.Reference{},
 	}, nil
 }
 
@@ -147,7 +157,7 @@ func (resolver *Resolver) Resolve(ctx context.Context, reference coderef.Referen
 	if view == reference.Commit {
 		return Resolution{State: Current, Location: pinned}
 	}
-	changes, err := resolver.treeChanges(ctx, reference.Commit, view)
+	changes, err := resolver.resolutionChanges(ctx, reference.Commit, view, reference.Path)
 	if err != nil {
 		return provisional(stale("%v", err))
 	}

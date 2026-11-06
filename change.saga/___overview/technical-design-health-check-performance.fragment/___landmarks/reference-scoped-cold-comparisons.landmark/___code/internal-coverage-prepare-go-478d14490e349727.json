@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coverage/prepare.go",
+      "digest": "sha256:d5443b152a190ae85cddc0998be0072e2e74904b73a33e438d169a08cd40328b",
+      "note": "Committed implementation or regression evidence for reference scoped cold comparisons."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coverage/prepare.go",
+      "start": 1,
+      "end": 47,
+      "digest": "sha256:d5443b152a190ae85cddc0998be0072e2e74904b73a33e438d169a08cd40328b",
+      "note": "Committed implementation or regression evidence for reference scoped cold comparisons."
+    }
+  ]
+}

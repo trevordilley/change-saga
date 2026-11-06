@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/snapshotcache/snapshotcache.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/snapshotcache/snapshotcache.go",
+      "start": 387,
+      "end": 398,
+      "digest": "sha256:43d85d25f23d5d5870e4c05961ec3313213540b6f70e2c7708484f735fa07362",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/snapshotcache/snapshotcache.go",
+      "start": 420,
+      "end": 422,
+      "digest": "sha256:7aa7e0d27089c2a932b171dd77cac9b733f0f6b73d0cb6cb11fca75630421974",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    }
+  ]
+}

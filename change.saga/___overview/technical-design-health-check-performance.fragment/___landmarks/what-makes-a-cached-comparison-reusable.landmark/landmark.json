@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "what-makes-a-cached-comparison-reusable",
+  "label": "Comparison cache validity",
+  "selector": {
+    "type": "heading",
+    "heading_id": "what-makes-a-cached-comparison-reusable"
+  },
+  "target": ""
+}

@@ -8,6 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+	"time"
 )
 
 func testStore(t *testing.T) *Store {
@@ -358,6 +359,58 @@ func TestPruneBoundsGenerationsPerSaga(t *testing.T) {
 
 	if err := store.Prune(keys[0], 0); err == nil {
 		t.Fatal("prune accepted keep=0; that silently empties the bucket where Discard is meant to be explicit")
+	}
+}
+
+func TestPrunePublishedPreservesAnotherStoresActiveBuild(t *testing.T) {
+	store := testStore(t)
+	key := testKey("/sagas/shared")
+	dir, _, err := store.Build(key, writeDerived("ready"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	other, err := Open(store.Root())
+	if err != nil {
+		t.Fatal(err)
+	}
+	building := key
+	building.Tree = "another tree"
+	started := make(chan string, 1)
+	release := make(chan struct{})
+	defer close(release)
+	done := make(chan error, 1)
+	go func() {
+		_, _, err := other.Build(building, func(stage string) error {
+			started <- stage
+			<-release
+			return writeDerived("built concurrently")(stage)
+		})
+		done <- err
+	}()
+	stage := <-started
+	abandoned := filepath.Join(filepath.Dir(dir), ".change-saga-stage-abandoned")
+	if err := os.Mkdir(abandoned, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	old := time.Now().Add(-48 * time.Hour)
+	if err := os.Chtimes(abandoned, old, old); err != nil {
+		t.Fatal(err)
+	}
+	if err := store.PrunePublished(key, 1); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(stage); err != nil {
+		t.Fatalf("pruning interrupted another store's live build: %v", err)
+	}
+	if _, err := os.Stat(abandoned); !os.IsNotExist(err) {
+		t.Fatalf("old staging debris survived: %v", err)
+	}
+	release <- struct{}{}
+	if err := <-done; err != nil {
+		t.Fatalf("concurrent build could not finish: %v", err)
+	}
+	if _, ok := store.Lookup(building); !ok {
+		t.Fatal("concurrent generation was not published")
 	}
 }
 

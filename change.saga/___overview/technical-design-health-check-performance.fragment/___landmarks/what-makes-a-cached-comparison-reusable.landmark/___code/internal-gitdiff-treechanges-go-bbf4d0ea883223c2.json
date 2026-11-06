@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitdiff/treechanges.go",
+      "start": 41,
+      "end": 50,
+      "digest": "sha256:863bcc2b890cde65c3ed08c08720637db4accefdc1d09afcf6f2119d773b998c",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    }
+  ]
+}

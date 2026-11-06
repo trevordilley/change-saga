@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "exit-contract-health-cache",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-result-codes",
+  "test_revision": "urn:change-saga:change-saga:test-case:contracts-coverage-result-codes:revision:r1",
+  "role": "implementation_under_test",
+  "steps": [
+    "gap",
+    "untrusted"
+  ],
+  "code": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/check.go",
+      "start": 15,
+      "end": 17,
+      "digest": "sha256:2ad71146277ea0c04178a8bd374fde263dbae20ee29d12ad1f01d24278198fe6"
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/check.go",
+      "start": 57,
+      "end": 63,
+      "digest": "sha256:342e036057f099d78478f2c1f0da94decc3548828ec2218222524d66d319db0e"
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/check.go",
+      "start": 77,
+      "end": 80,
+      "digest": "sha256:49ef050c01c273d1b8e700ea8d57b16dce31ed137595820c8f0c2914f9305e81"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-coverage-result-codes:evidence:exit-contract"
+  ],
+  "created_at": "2026-11-03T21:51:41Z"
+}

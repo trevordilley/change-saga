@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitdiff/treecache.go",
+      "digest": "sha256:040c0901a46c0c6f97a9f81cd43de40830385791ec5fa8c29e2798889c1209d2",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitdiff/treecache.go",
+      "start": 1,
+      "end": 186,
+      "digest": "sha256:040c0901a46c0c6f97a9f81cd43de40830385791ec5fa8c29e2798889c1209d2",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    }
+  ]
+}

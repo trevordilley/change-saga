@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coderesolve/prepare_test.go",
+      "digest": "sha256:de7a973fadaaa6424e94946e14f229bbc6804a94bf3b934e580940fc2c68b2f2",
+      "note": "Committed implementation or regression evidence for regression verification."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coderesolve/prepare_test.go",
+      "start": 1,
+      "end": 131,
+      "digest": "sha256:de7a973fadaaa6424e94946e14f229bbc6804a94bf3b934e580940fc2c68b2f2",
+      "note": "Committed implementation or regression evidence for regression verification."
+    }
+  ]
+}

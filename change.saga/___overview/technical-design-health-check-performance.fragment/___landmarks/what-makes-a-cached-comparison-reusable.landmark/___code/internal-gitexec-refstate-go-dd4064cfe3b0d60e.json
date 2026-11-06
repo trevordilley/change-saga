@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitexec/refstate.go",
+      "start": 410,
+      "end": 413,
+      "digest": "sha256:46584d5c6274d80fe592684fc8dbe6a7304696f491e01fa1e15fa3e8060a4e7d",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitexec/refstate.go",
+      "start": 496,
+      "end": 496,
+      "digest": "sha256:acabedf43b028dfa565dfe032619a5d4afd773fc072061a822f86b31eeada517",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitexec/refstate.go",
+      "start": 504,
+      "end": 517,
+      "digest": "sha256:3dc7fa2f0d6bd53f9d1d9ea8dd550fd508f043361a663ac2fe16343ae5166f03",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitexec/refstate.go",
+      "start": 519,
+      "end": 519,
+      "digest": "sha256:ab9fd2e51fdda0a2e58d419be556e70f1de8493aad6707183cbb4b1116ff1746",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitexec/refstate.go",
+      "start": 648,
+      "end": 660,
+      "digest": "sha256:8ee3c246c55dd5216f124485f1099515c76409ba18016e002943dc3776f78a46",
+      "note": "Committed implementation or regression evidence for what makes a cached comparison reusable."
+    }
+  ]
+}

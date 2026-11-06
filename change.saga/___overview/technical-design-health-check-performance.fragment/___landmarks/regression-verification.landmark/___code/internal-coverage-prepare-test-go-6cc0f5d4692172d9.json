@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coverage/prepare_test.go",
+      "digest": "sha256:3e8aa0961ad7ed372be11dd2cafca3841c222346b82e5f42ad06191ed523225c",
+      "note": "Committed implementation or regression evidence for regression verification."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/coverage/prepare_test.go",
+      "start": 1,
+      "end": 52,
+      "digest": "sha256:3e8aa0961ad7ed372be11dd2cafca3841c222346b82e5f42ad06191ed523225c",
+      "note": "Committed implementation or regression evidence for regression verification."
+    }
+  ]
+}

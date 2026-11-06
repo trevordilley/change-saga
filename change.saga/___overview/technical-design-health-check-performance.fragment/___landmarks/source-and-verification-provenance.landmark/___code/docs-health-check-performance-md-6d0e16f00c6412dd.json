@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "docs/health-check-performance.md",
+      "digest": "sha256:13f512328d3b5a618bb0ab655494e3982738f10b7e390725f131e0da0b344d12",
+      "note": "Committed implementation or regression evidence for source and verification provenance."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "docs/health-check-performance.md",
+      "start": 1,
+      "end": 151,
+      "digest": "sha256:13f512328d3b5a618bb0ab655494e3982738f10b7e390725f131e0da0b344d12",
+      "note": "Committed implementation or regression evidence for source and verification provenance."
+    }
+  ]
+}

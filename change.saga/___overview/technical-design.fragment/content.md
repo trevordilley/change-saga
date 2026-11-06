@@ -29,7 +29,7 @@ Public CLI commands parse a typed request, resolve the current record and explic
 
 A read combines the Saga with a chosen source revision or comparison. The query application projects a bounded answer with a snapshot and cursor. The browser renders HTML from related application services and loads expensive evidence on demand. Git supplies commits and diff atoms; reference resolution supplies current, moved, missing or stale evidence. Coverage and readiness are derived facts about those inputs, not a declaration that the software is correct.
 
-The server keeps reusable generations outside the Saga. Cache keys bind the source context and Saga fingerprint; unpinnable worktree inputs do not become trusted persistent cache hits. Cache deletion changes latency, not the authored record. The [Data flows board](/technical/whiteboards/data-flows) shows where projections branch toward JSON, HTML and source inspection.
+The server keeps reusable generations outside the Saga. Cache keys bind the source context and Saga fingerprint; unpinnable worktree inputs do not become trusted persistent cache hits. Cache deletion changes latency, not the authored record. The [Data flows board](/technical/whiteboards/data-flows) shows where projections branch toward JSON, HTML and source inspection. Health checks now reuse source-comparison geometry across CLI processes and limit cold patch generation to referenced files, while reassessing the Saga on every call. See [Health check performance and cache validity](/technical/pages/health-check-performance) for the algorithm, measurements and exact implementation evidence.
 
 ## Trust the boundary, keep uncertainty visible {#trust-the-boundary-keep-uncertainty-visible}
 

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "regression-verification",
+  "label": "Regression verification",
+  "selector": {
+    "type": "heading",
+    "heading_id": "regression-verification"
+  },
+  "target": ""
+}

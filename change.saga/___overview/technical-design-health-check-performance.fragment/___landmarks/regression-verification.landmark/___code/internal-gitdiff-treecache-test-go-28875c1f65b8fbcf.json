@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitdiff/treecache_test.go",
+      "digest": "sha256:e3c28dcf699feecd7204678062b50a43af6dce2d95261af109b129d4b7113d94",
+      "note": "Committed implementation or regression evidence for regression verification."
+    },
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/gitdiff/treecache_test.go",
+      "start": 1,
+      "end": 220,
+      "digest": "sha256:e3c28dcf699feecd7204678062b50a43af6dce2d95261af109b129d4b7113d94",
+      "note": "Committed implementation or regression evidence for regression verification."
+    }
+  ]
+}

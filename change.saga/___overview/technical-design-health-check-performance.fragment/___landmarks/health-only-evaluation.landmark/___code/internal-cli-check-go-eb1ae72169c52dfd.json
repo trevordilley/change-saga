@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5799fdee43a2184202891f68568ffe51886c1650",
+      "path": "internal/cli/check.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:7720791dc68ee2758a34deacee56a7276b78f83e582acd91a8c1438775e84808",
+      "note": "Committed implementation or regression evidence for health only evaluation."
+    }
+  ]
+}

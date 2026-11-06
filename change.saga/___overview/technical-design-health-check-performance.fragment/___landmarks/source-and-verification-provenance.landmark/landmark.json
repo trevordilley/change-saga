@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "source-and-verification-provenance",
+  "label": "Source and verification provenance",
+  "selector": {
+    "type": "heading",
+    "heading_id": "source-and-verification-provenance"
+  },
+  "target": ""
+}
