@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/prototype-annotation.schema.json",
+  "version": 3,
+  "id": "cp-layout",
+  "prototype": "urn:change-saga:change-saga:prototype:plan-checkpoints",
+  "target": "urn:change-saga:change-saga:story:review-a-checkpoint:criterion:board-in-three-states",
+  "rationale": "The checkpoint's review on the Plan's own layout, with done before, in this checkpoint, and to come told apart.",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-checkpoints:revision:r1",
+  "story_revision": "urn:change-saga:change-saga:story:review-a-checkpoint:revision:r1",
+  "selector": {
+    "kind": "element",
+    "element_id": "layout"
+  },
+  "created_at": "2026-11-06T00:12:11.010411Z"
+}
