@@ -328,3 +328,44 @@ func TestTheBoardAndAPollSayWhatACheckpointHolds(t *testing.T) {
 		t.Error("the board must say the checkpoint holds the Task, and offer nothing to start")
 	}
 }
+
+// A Plan with checkpoints opens folded to its current stretch: a passed stretch
+// is one node, the current one is drawn in full, and ?fold=0 shows every Task.
+func TestTheBoardFoldsTheStretchesOtherThanTheCurrentOne(t *testing.T) {
+	t.Parallel()
+	_, handler, fixture := livePlanFixture(t)
+	for _, phase := range []saga.PlanPhase{{ID: "early", Title: "Early"}, {ID: "proven", Title: "Proven", Checkpoint: &saga.PlanCheckpoint{}}, {ID: "late", Title: "Late"}, {ID: "shipped", Title: "Shipped", Checkpoint: &saga.PlanCheckpoint{}}} {
+		if err := planstore.AddPhase(fixture.root, "first", phase, ""); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for task, phase := range map[string]string{"prepare": "early", "work": "late"} {
+		if err := planstore.UpdateTask(fixture.root, "first", task, func(value *saga.TaskManifest) error {
+			value.Phase = phase
+			if task == "prepare" {
+				value.State = saga.TaskDone
+			}
+			return nil
+		}, nil); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := planstore.PassCheckpoint(fixture.root, "first", "proven", saga.CheckpointPass{At: time.Now(), By: "trevor", Reason: "works"}); err != nil {
+		t.Fatal(err)
+	}
+	folded := getPage(t, handler, "/plans/first/tasks").Body.String()
+	for _, want := range []string{`data-plan-node="stretch:proven"`, `1 tasks, 1 done`, `data-plan-node="task:work"`, `data-plan-node="checkpoint:shipped"`, `data-plan-edge-from="stretch:proven" data-plan-edge-to="task:work"`, `href="?fold=0"`} {
+		if !strings.Contains(folded, want) {
+			t.Errorf("the folded board has no %q", want)
+		}
+	}
+	if strings.Contains(folded, `data-plan-node="task:prepare"`) {
+		t.Error("a passed stretch must fold into one node")
+	}
+	every := getPage(t, handler, "/plans/first/tasks?fold=0").Body.String()
+	for _, want := range []string{`data-plan-node="task:prepare"`, `class="plan-board-node checkpoint passed" data-plan-node="checkpoint:proven"`, `href="?fold=1"`} {
+		if !strings.Contains(every, want) {
+			t.Errorf("the whole board has no %q", want)
+		}
+	}
+}

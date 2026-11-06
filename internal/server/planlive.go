@@ -478,6 +478,13 @@ const planLiveStyles = `
 .landmark-hotspot[data-plan-task-state~="done-branch"]::before{content:'✓';position:absolute;left:-7px;top:-7px;width:16px;height:16px;box-sizing:border-box;border:1px dashed var(--review-approved-ink);border-radius:50%;background:var(--bg);color:var(--review-approved-ink);font:700 10px/14px var(--ui);text-align:center;pointer-events:none}
 .landmark-hotspot[data-plan-task-state~="blocked"]::before{content:'!';position:absolute;left:-7px;top:-7px;width:16px;height:16px;box-sizing:border-box;border:1px solid var(--review-changes-ink);border-radius:50%;background:var(--review-changes-bg);color:var(--review-changes-ink);font:700 10px/14px var(--ui);text-align:center;pointer-events:none}
 .landmark-hotspot[data-plan-task-holder]:not([data-plan-task-holder=""])::after{content:attr(data-plan-task-holder);position:absolute;left:4px;bottom:-9px;max-width:calc(100% - 8px);overflow:hidden;padding:0 6px;border-radius:8px;background:var(--bg);color:var(--ink);box-shadow:0 0 0 1px var(--line);font:600 11px/16px var(--ui);text-overflow:ellipsis;white-space:nowrap;pointer-events:none}
+.plan-board-node.checkpoint rect{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2;stroke-dasharray:6 3}
+.plan-board-node.checkpoint.current rect{stroke-width:3}
+.plan-board-node.checkpoint.passed rect{fill:var(--review-approved-bg);stroke:var(--review-approved-ink);stroke-dasharray:none}
+.plan-board-node.checkpoint.passed .plan-board-check{display:block;fill:var(--review-approved-ink)}
+.plan-board-node.stretch rect{fill:var(--bg-subtle);stroke:var(--line);stroke-width:2}
+.plan-board-node.stretch.done .plan-board-check{display:block;fill:var(--review-approved-ink)}
+.plan-fold-link{font-size:13px}
 .plan-task-on-it{margin:5px 0 0}
 .plan-task-updates h3{margin:14px 0 6px}
 .plan-activity{list-style:none;margin:0;padding:0;font-size:13px}
