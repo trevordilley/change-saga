@@ -1,4 +1,14 @@
 {
+  "overview": {
+    "body": "# Review a big Plan one checkpoint at a time\n\nReal Plans reach 200 Tasks across 6 phases, and one review at the end is a big one-shot nobody can do well. A checkpoint is a kind of phase: a few phases of work, then a checkpoint that holds no Tasks and covers every Task since the previous one. [The work is one new kind of phase and what follows from it](annotation:the-work).\n\n## Where it lives\n\nA checkpoint is a phase with a `checkpoint` field, so it takes its place in the Plan's existing order and needs no new record. Its pass is written there too: who passed it, when, and why. Git keeps the history of the Plan as it was when each checkpoint passed, which is how a later reader sees what changed since.\n\n## What happens at one\n\nThe agent stops and proves the stretch works. `plan checkpoint` reports the scope, an estimate of its size from the stories and Tasks it holds, and anything that should stop a pass. The checkpoint's branch is reviewed as a change into the Plan's feature branch. Once it passes, by the invoker or by the agent if the invoker allowed it and nothing is surprising, the agent merges it into the feature branch and the next stretch starts there.\n\n## What stays as it is\n\nA Plan with no checkpoints behaves exactly as before. Phases still say what runs in parallel; checkpoints say what is reviewed together. Delivery waits for every checkpoint to pass.\n",
+    "annotations": [
+      {
+        "id": "the-work",
+        "label": "The work is one new kind of phase and what follows from it",
+        "slide": "the-work"
+      }
+    ]
+  },
   "version": 4,
   "id": "plan-checkpoints",
   "title": "Review a big Plan one checkpoint at a time",

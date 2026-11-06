@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "line": {
+      "fill": "none",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 2,
+      "font_size": 14
+    },
+    "primary": {
+      "fill": "@diagram-blue-tint",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 2,
+      "font_size": 18
+    }
+  },
+  "elements": [
+    {
+      "id": "checkpoint-phase",
+      "kind": "node",
+      "shape": "service",
+      "label": "A checkpoint phase",
+      "x": 40,
+      "y": 300,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "checkpoint-report",
+      "kind": "node",
+      "shape": "service",
+      "label": "Checkpoint report",
+      "x": 350,
+      "y": 80,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "pass-a-checkpoint",
+      "kind": "node",
+      "shape": "service",
+      "label": "Pass and merge",
+      "x": 350,
+      "y": 230,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "hold-past-checkpoint",
+      "kind": "node",
+      "shape": "service",
+      "label": "Hold past it",
+      "x": 350,
+      "y": 380,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "board-by-checkpoint",
+      "kind": "node",
+      "shape": "service",
+      "label": "Board by checkpoint",
+      "x": 660,
+      "y": 530,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "checkpoint-review-view",
+      "kind": "node",
+      "shape": "service",
+      "label": "Checkpoint review",
+      "x": 660,
+      "y": 80,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "plan-changes-since-pass",
+      "kind": "node",
+      "shape": "service",
+      "label": "Plan changes since",
+      "x": 660,
+      "y": 230,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "checkpoint-guidance",
+      "kind": "node",
+      "shape": "service",
+      "label": "Guidance",
+      "x": 970,
+      "y": 230,
+      "width": 250,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "checkpoint-phase-to-checkpoint-report",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "checkpoint-phase",
+      "to": "checkpoint-report",
+      "points": [
+        {
+          "x": 290,
+          "y": 350
+        },
+        {
+          "x": 350,
+          "y": 130
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-phase-to-pass-a-checkpoint",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "checkpoint-phase",
+      "to": "pass-a-checkpoint",
+      "points": [
+        {
+          "x": 290,
+          "y": 350
+        },
+        {
+          "x": 350,
+          "y": 280
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-phase-to-hold-past-checkpoint",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "checkpoint-phase",
+      "to": "hold-past-checkpoint",
+      "points": [
+        {
+          "x": 290,
+          "y": 350
+        },
+        {
+          "x": 350,
+          "y": 430
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-phase-to-board-by-checkpoint",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "checkpoint-phase",
+      "to": "board-by-checkpoint",
+      "points": [
+        {
+          "x": 290,
+          "y": 350
+        },
+        {
+          "x": 660,
+          "y": 580
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-report-to-checkpoint-review-view",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "checkpoint-report",
+      "to": "checkpoint-review-view",
+      "points": [
+        {
+          "x": 600,
+          "y": 130
+        },
+        {
+          "x": 660,
+          "y": 130
+        }
+      ]
+    },
+    {
+      "id": "pass-a-checkpoint-to-plan-changes-since-pass",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "pass-a-checkpoint",
+      "to": "plan-changes-since-pass",
+      "points": [
+        {
+          "x": 600,
+          "y": 280
+        },
+        {
+          "x": 660,
+          "y": 280
+        }
+      ]
+    },
+    {
+      "id": "pass-a-checkpoint-to-checkpoint-guidance",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "pass-a-checkpoint",
+      "to": "checkpoint-guidance",
+      "points": [
+        {
+          "x": 600,
+          "y": 280
+        },
+        {
+          "x": 970,
+          "y": 280
+        }
+      ]
+    }
+  ]
+}

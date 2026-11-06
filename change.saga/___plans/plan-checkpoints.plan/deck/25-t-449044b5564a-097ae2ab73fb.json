@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "deck": "plan-checkpoints",
+  "slide": "the-work",
+  "current": "sha256:95c2eaa2f685b3d4d89e0d74e121272e2fe7d8ec3fc02c76298ce2d06d8c55be",
+  "revisions": [
+    {
+      "snapshot": "sha256:95c2eaa2f685b3d4d89e0d74e121272e2fe7d8ec3fc02c76298ce2d06d8c55be",
+      "request_id": "plan-checkpoints-work",
+      "created_at": "2026-11-06T01:24:50.428253Z",
+      "asset": "24-a-52c241e41981468a7629b62a21531ec02e3c6dfc6304cb520688.svg",
+      "asset_digest": "sha256:52c241e41981468a7629b62a21531ec02e3c6dfc6304cb520688f4b2930456c2",
+      "slide": {
+        "front": [
+          "A checkpoint is a phase that holds no Tasks.",
+          "It is reported, passed, and holds what follows.",
+          "Its review proves the stretch works."
+        ],
+        "version": 4,
+        "id": "the-work",
+        "deck": "plan-checkpoints",
+        "title": "A checkpoint is a phase",
+        "rank": 10,
+        "section": "The work",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-52c241e41981468a7629b62a21531ec02e3c6dfc6304cb520688.svg",
+        "takeaway": "One new kind of phase, then commands that report, pass, and hold it, then what a reader sees.",
+        "reading_order": [
+          "checkpoint-phase",
+          "checkpoint-report",
+          "pass-a-checkpoint",
+          "hold-past-checkpoint",
+          "board-by-checkpoint",
+          "checkpoint-review-view",
+          "plan-changes-since-pass"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "checkpoint-phase",
+            "slide": "the-work",
+            "rank": 10,
+            "kind": "node",
+            "label": "A checkpoint phase",
+            "description": "A checkpoint phase.",
+            "selector": {
+              "type": "element",
+              "element_id": "checkpoint-phase"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-checkpoints:task:checkpoint-phase"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "checkpoint-report",
+            "slide": "the-work",
+            "rank": 20,
+            "kind": "node",
+            "label": "Checkpoint report",
+            "description": "Checkpoint report.",
+            "selector": {
+              "type": "element",
+              "element_id": "checkpoint-report"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-checkpoints:task:checkpoint-report"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "pass-a-checkpoint",
+            "slide": "the-work",
+            "rank": 30,
+            "kind": "node",
+            "label": "Pass and merge",
+            "description": "Pass and merge.",
+            "selector": {
+              "type": "element",
+              "element_id": "pass-a-checkpoint"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-checkpoints:task:pass-a-checkpoint"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "hold-past-checkpoint",
+            "slide": "the-work",
+            "rank": 40,
+            "kind": "node",
+            "label": "Hold past it",
+            "description": "Hold past it.",
+            "selector": {
+              "type": "element",
+              "element_id": "hold-past-checkpoint"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-checkpoints:task:hold-past-checkpoint"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "board-by-checkpoint",
+            "slide": "the-work",
+            "rank": 50,
+            "kind": "node",
+            "label": "Board by checkpoint",
+            "description": "Board by checkpoint.",
+            "selector": {
+              "type": "element",
+              "element_id": "board-by-checkpoint"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-checkpoints:task:board-by-checkpoint"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "checkpoint-review-view",
+            "slide": "the-work",
+            "rank": 60,
+            "kind": "node",
+            "label": "Checkpoint review",
+            "description": "Checkpoint review.",
+            "selector": {
+              "type": "element",
+              "element_id": "checkpoint-review-view"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-checkpoints:task:checkpoint-review-view"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "plan-changes-since-pass",
+            "slide": "the-work",
+            "rank": 70,
+            "kind": "node",
+            "label": "Plan changes since",
+            "description": "Plan changes since.",
+            "selector": {
+              "type": "element",
+              "element_id": "plan-changes-since-pass"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-checkpoints:task:plan-changes-since-pass"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e539f545c179f0b2707a58678ba8fae9b49ac4f768063982a429.json",
+        "source_digest": "sha256:e539f545c179f0b2707a58678ba8fae9b49ac4f768063982a4296987556a00ae",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}
