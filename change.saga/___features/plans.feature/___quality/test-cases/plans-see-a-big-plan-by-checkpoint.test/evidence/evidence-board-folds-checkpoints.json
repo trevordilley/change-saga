@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-board-folds-checkpoints",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-see-a-big-plan-by-checkpoint",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-see-a-big-plan-by-checkpoint:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "board-folds-checkpoints"
+  ],
+  "code": [
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/server/planlive_test.go",
+      "start": 334,
+      "end": 371,
+      "digest": "sha256:1ab6fc77714b2c87b21ea061e1684470cf1dd997a592d952b7e39a69d39e8770"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-06T02:13:38Z"
+}

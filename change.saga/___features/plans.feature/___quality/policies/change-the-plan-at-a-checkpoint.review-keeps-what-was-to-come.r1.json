@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
+  "version": 5,
+  "id": "change-the-plan-at-a-checkpoint.review-keeps-what-was-to-come.r1",
+  "criterion": "urn:change-saga:change-saga:story:change-the-plan-at-a-checkpoint:criterion:review-keeps-what-was-to-come",
+  "story_revision": "urn:change-saga:change-saga:story:change-the-plan-at-a-checkpoint:revision:r1",
+  "required_kinds": [
+    "positive"
+  ],
+  "allowed_automation": [
+    "automated",
+    "hybrid",
+    "manual"
+  ],
+  "supersedes": [],
+  "rationale": "The linked test checks the behavior this criterion states, including any refusal it names. No separate edge or negative case is claimed beyond that.",
+  "created_at": "2026-11-06T02:13:42Z"
+}

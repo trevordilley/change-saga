@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-review-adds-tasks",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-change-the-plan-at-a-checkpoint",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-change-the-plan-at-a-checkpoint:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "review-adds-tasks"
+  ],
+  "code": [
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/cli/plans_test.go",
+      "start": 617,
+      "end": 642,
+      "digest": "sha256:a7aada4d934d3d38923ea6dd4d61089edb2fac1dc2699d750d28caaaa65849ed"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-06T02:13:41Z"
+}

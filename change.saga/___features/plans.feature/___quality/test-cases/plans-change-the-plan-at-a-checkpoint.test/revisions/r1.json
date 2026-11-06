@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-change-the-plan-at-a-checkpoint",
+  "parents": [],
+  "title": "The Plan changes after a pass, and the next checkpoint shows how",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "review-adds-tasks",
+      "action": "Add a Task and move another after a checkpoint passes.",
+      "expected_result": "The Plan takes the change as an ordinary Task edit.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:change-the-plan-at-a-checkpoint:criterion:review-adds-tasks"
+      ]
+    },
+    {
+      "id": "review-keeps-what-was-to-come",
+      "action": "Report the next checkpoint after the Plan changed.",
+      "expected_result": "It lists what was added and moved since the pass, against what was to come then.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:change-the-plan-at-a-checkpoint:criterion:review-keeps-what-was-to-come"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-06T02:13:39Z"
+}

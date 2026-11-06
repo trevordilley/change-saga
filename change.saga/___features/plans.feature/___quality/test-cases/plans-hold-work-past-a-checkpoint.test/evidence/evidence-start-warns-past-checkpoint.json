@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-start-warns-past-checkpoint",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-hold-work-past-a-checkpoint",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-hold-work-past-a-checkpoint:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "start-warns-past-checkpoint"
+  ],
+  "code": [
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/cli/task_activity_test.go",
+      "start": 258,
+      "end": 277,
+      "digest": "sha256:ce3204bacd7d3192f92b04148f9921a95ecbe1618631d193e4fb624f2afd1cf6"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-06T02:13:35Z"
+}

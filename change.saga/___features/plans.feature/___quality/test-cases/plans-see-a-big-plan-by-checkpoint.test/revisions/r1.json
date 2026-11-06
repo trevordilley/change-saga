@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-see-a-big-plan-by-checkpoint",
+  "parents": [],
+  "title": "A checkpoint is a phase, and the board folds by checkpoint",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "checkpoints-are-phases",
+      "action": "Add a checkpoint after a phase, put a Task in it, and read what it covers.",
+      "expected_result": "It takes its place in the order, refuses a Task, and covers the Tasks since the previous checkpoint.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:see-a-big-plan-by-checkpoint:criterion:checkpoints-are-phases"
+      ]
+    },
+    {
+      "id": "board-folds-checkpoints",
+      "action": "Open the Tasks board of a Plan with a passed checkpoint, then ask for every Task.",
+      "expected_result": "The passed stretch is one node with its progress and edges, and every Task returns on request.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:see-a-big-plan-by-checkpoint:criterion:board-folds-checkpoints"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-06T02:13:35Z"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-event.schema.json",
+  "version": 5,
+  "id": "proposed",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-hold-work-past-a-checkpoint",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-11-06T02:13:32Z"
+}

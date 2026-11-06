@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-ready-holds-gated-tasks",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-hold-work-past-a-checkpoint",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-hold-work-past-a-checkpoint:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "ready-holds-gated-tasks"
+  ],
+  "code": [
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/cli/task_activity_test.go",
+      "start": 258,
+      "end": 277,
+      "digest": "sha256:ce3204bacd7d3192f92b04148f9921a95ecbe1618631d193e4fb624f2afd1cf6"
+    },
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/saga/checkpoint_test.go",
+      "start": 41,
+      "end": 55,
+      "digest": "sha256:4d7b558c732536cd92134ea86c0d59f76a8412410d86f2073bed8ca24f36bf4b"
+    },
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/server/planlive_test.go",
+      "start": 305,
+      "end": 330,
+      "digest": "sha256:47adc1d9a66150294cdea82dc0d6a3d0cfdd1d06d0bba1c1013568db9c5342b1"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-06T02:13:34Z"
+}

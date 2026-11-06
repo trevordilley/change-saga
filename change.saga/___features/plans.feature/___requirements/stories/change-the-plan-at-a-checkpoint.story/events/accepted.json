@@ -1,0 +1,11 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:change-the-plan-at-a-checkpoint",
+  "parents": [
+    "urn:change-saga:change-saga:story:change-the-plan-at-a-checkpoint:event:proposed"
+  ],
+  "state": "accepted",
+  "created_at": "2026-11-06T02:13:42.944317Z"
+}

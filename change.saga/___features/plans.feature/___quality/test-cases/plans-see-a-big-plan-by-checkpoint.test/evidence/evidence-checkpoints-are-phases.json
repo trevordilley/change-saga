@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-checkpoints-are-phases",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-see-a-big-plan-by-checkpoint",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-see-a-big-plan-by-checkpoint:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "checkpoints-are-phases"
+  ],
+  "code": [
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/cli/plans_test.go",
+      "start": 510,
+      "end": 530,
+      "digest": "sha256:37a18fd9966628f63fa6dd94f230e0704c5911d661d095f2cb6c5b0833fd0ed7"
+    },
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/saga/checkpoint_test.go",
+      "start": 31,
+      "end": 39,
+      "digest": "sha256:096a31fa2fca77887b0a5b4cf539ce98c354e363dec1832703e08f36f58a4595"
+    },
+    {
+      "commit": "86cbffff96f46d8fea92e0921189841b6475ae4c",
+      "path": "internal/saga/checkpoint_test.go",
+      "start": 57,
+      "end": 63,
+      "digest": "sha256:ce2917e76a1e7406ee231f15bfc31788afd52c3114c822afd13972c1d0a46e4f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-11-06T02:13:36Z"
+}

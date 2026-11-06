@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-hold-work-past-a-checkpoint",
+  "parents": [],
+  "title": "Work past an unpassed checkpoint is held, with a warning",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "ready-holds-gated-tasks",
+      "action": "List ready Tasks while a checkpoint before them has not passed.",
+      "expected_result": "They are left out, and the list says which checkpoint holds them.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:hold-work-past-a-checkpoint:criterion:ready-holds-gated-tasks"
+      ]
+    },
+    {
+      "id": "start-warns-past-checkpoint",
+      "action": "Start a held Task anyway.",
+      "expected_result": "It warns and still records the start.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:hold-work-past-a-checkpoint:criterion:start-warns-past-checkpoint"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-06T02:13:32Z"
+}
