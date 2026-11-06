@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:see-a-big-plan-by-checkpoint",
+  "parents": [
+    "urn:change-saga:change-saga:story:see-a-big-plan-by-checkpoint:revision:r1"
+  ],
+  "title": "See a big Plan by checkpoint",
+  "statement": "As an architect I can read a Plan of hundreds of Tasks by checkpoint, with passed and later checkpoints folded and the current one open",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-checkpoints-direction-20261105",
+    "urn:change-saga:change-saga:citation:plan-checkpoints-shape-20261105"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "checkpoints-are-phases",
+      "statement": "A checkpoint is a phase in the Plan's order that holds no Tasks and covers every Task since the previous checkpoint"
+    },
+    {
+      "id": "board-folds-checkpoints",
+      "statement": "The Tasks board can show each checkpoint other than the current one as one node with its progress"
+    }
+  ],
+  "created_at": "2026-11-06T01:23:44.500563Z"
+}

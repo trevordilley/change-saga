@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "plan-changes-since-pass",
+  "title": "Show how the Plan changed since a checkpoint passed",
+  "phase": "reader",
+  "story": "urn:change-saga:change-saga:story:change-the-plan-at-a-checkpoint",
+  "depends_on": [
+    "pass-a-checkpoint"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Read plan and task records at the pass commit and list what was added, dropped, or moved."
+  },
+  "state": "planned",
+  "created_at": "2026-11-06T01:24:05.530889Z"
+}

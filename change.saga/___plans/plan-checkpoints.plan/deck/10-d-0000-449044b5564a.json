@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "plan-checkpoints",
+  "title": "Review a big Plan one checkpoint at a time",
+  "role": "plan",
+  "rank": 0,
+  "objective": "Make a checkpoint a kind of phase, held, reported, passed, and reviewed, so a Plan of hundreds of Tasks is reviewed in sane stretches."
+}

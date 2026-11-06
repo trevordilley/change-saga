@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "hold-past-checkpoint",
+  "title": "Hold Tasks past an unpassed checkpoint",
+  "phase": "commands",
+  "story": "urn:change-saga:change-saga:story:hold-work-past-a-checkpoint",
+  "depends_on": [
+    "checkpoint-phase"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Ready lists, task start, and the live status read the gate."
+  },
+  "state": "planned",
+  "created_at": "2026-11-06T01:24:07.188937Z"
+}

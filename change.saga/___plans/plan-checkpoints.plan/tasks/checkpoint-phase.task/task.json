@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "checkpoint-phase",
+  "title": "Make a checkpoint a kind of phase",
+  "phase": "model",
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A phase field, pass record, schema, validation, scope and hold functions, and add-phase --checkpoint --after."
+  },
+  "state": "planned",
+  "created_at": "2026-11-06T01:24:07.702871Z"
+}

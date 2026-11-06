@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/plan.schema.json",
+  "version": 5,
+  "id": "plan-checkpoints",
+  "title": "Review a big Plan one checkpoint at a time",
+  "phases": [
+    {
+      "id": "model",
+      "title": "Checkpoints in the Plan"
+    },
+    {
+      "id": "commands",
+      "title": "Report, pass, and hold"
+    },
+    {
+      "id": "reader",
+      "title": "What a reader sees"
+    },
+    {
+      "id": "guidance",
+      "title": "Guidance"
+    }
+  ],
+  "created_at": "2026-11-06T01:24:02.727197Z"
+}

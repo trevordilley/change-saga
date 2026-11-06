@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "board-by-checkpoint",
+  "title": "Draw checkpoints on the board and fold the others",
+  "phase": "reader",
+  "story": "urn:change-saga:change-saga:story:see-a-big-plan-by-checkpoint",
+  "depends_on": [
+    "checkpoint-phase"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A gate column per checkpoint and a fold toggle on the existing board."
+  },
+  "state": "planned",
+  "created_at": "2026-11-06T01:24:05.927971Z"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "pass-a-checkpoint",
+  "title": "Pass a checkpoint, by its invoker's rule, and say what to merge",
+  "phase": "commands",
+  "story": "urn:change-saga:change-saga:story:pass-a-checkpoint",
+  "depends_on": [
+    "checkpoint-phase"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "plan pass, plan set --checkpoint-passer, and link-review --checkpoint."
+  },
+  "state": "planned",
+  "created_at": "2026-11-06T01:24:06.758165Z"
+}

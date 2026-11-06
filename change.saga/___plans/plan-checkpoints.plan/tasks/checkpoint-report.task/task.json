@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "checkpoint-report",
+  "title": "Report a checkpoint: scope, estimate, and what would stop a pass",
+  "phase": "commands",
+  "story": "urn:change-saga:change-saga:story:size-checkpoints-by-explanation",
+  "depends_on": [
+    "checkpoint-phase"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "plan checkpoint reads the scope, counts stories and Tasks, and lists the surprise signals."
+  },
+  "state": "planned",
+  "created_at": "2026-11-06T01:24:06.331287Z"
+}

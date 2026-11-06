@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "plan-checkpoints-shape-20261105",
+  "kind": "decision",
+  "title": "A checkpoint is a kind of phase where the agent proves its work",
+  "reference": "Trevor, 2026-11-05: \"I think it's a kind of phase maybe? Like you can have a few phases in between followed by a checkpoint?\" On estimating size: \"Number of things I guess? I mean how do we do estimation in software engineering before we know anything?\" On what is surprising: \"Use your judgement.\" On merging: \"Once approved the AI should merge. It really is just a place where the AI can take a breath and prove the work it did works. It's at the discretion of the user if each checkpoint necessitates a PR with their colleagues.\"",
+  "created_at": "2026-11-06T01:23:43.527842Z"
+}

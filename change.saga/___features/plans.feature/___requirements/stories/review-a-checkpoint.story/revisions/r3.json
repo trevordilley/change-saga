@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:change-saga:story:review-a-checkpoint",
+  "parents": [
+    "urn:change-saga:change-saga:story:review-a-checkpoint:revision:r2"
+  ],
+  "title": "Review a big Plan one checkpoint at a time",
+  "statement": "As an architect I can review a large Plan's work one checkpoint at a time, seeing what was done before, what this checkpoint did, and what is to come, so no review is one huge shot",
+  "overview": "A Plan of 200 Tasks across 6 phases cannot be reviewed well at the end, in one go. A\ncheckpoint is a kind of phase: a few phases of work, then a checkpoint. It holds no Tasks\nof its own and covers every Task since the previous checkpoint. It is where the agent takes\na breath and proves the work it did works.\n\n## What is decided\n\n- **Shape.** A checkpoint is a phase in the Plan's ordered phases, after the phases it covers.\n- **Scope.** Its review covers what changed since the previous checkpoint merged. A reviewer\n  may reach further back when they choose.\n- **Proof.** Its review shows the work works: the tests and evidence behind the criteria it\n  addresses.\n- **Passing.** Once approved, the agent merges the checkpoint's branch into the branch the\n  Plan's work comes from, usually a feature branch, and the next checkpoint starts there in a\n  new workspace. Whether a checkpoint also gets a pull request with colleagues is up to the\n  user. Reaching the main branch stays the feature branch's own review.\n- **Who passes.** Whoever invokes the Plan decides: themselves, or the agent unless what it\n  found is surprising or urgent.\n- **The gate.** Tasks beyond a checkpoint that has not passed are not offered as ready, and\n  starting one warns instead of refusing.\n- **Size.** Explaining a checkpoint should take five or six slides, not ten to twenty. Before\n  the work exists that is estimated by counting things: roughly a slide per story addressed,\n  with the Tasks it holds beside it. Once the review exists, its slides are the measure.\n\n## Surprising enough to stop\n\nAn agent allowed to pass a checkpoint still stops for a person when any of these holds:\n\n- the work departed from the Plan: a review callout names a Task, or Tasks were added,\n  dropped, or moved since the checkpoint began;\n- an agent reported a Task blocked during the checkpoint;\n- a test or check is failing, or a criterion the checkpoint addresses has no evidence;\n- the review needs more slides than the estimate, or more than six.\n",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-checkpoints-direction-20261105",
+    "urn:change-saga:change-saga:citation:plan-checkpoints-pass-merges-20261105",
+    "urn:change-saga:change-saga:citation:plan-checkpoints-shape-20261105"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "checkpoint-creates-review",
+      "statement": "Reaching a checkpoint creates a review of its branch as a change into the branch the Plan's work comes from, covering what changed since the previous checkpoint merged"
+    },
+    {
+      "id": "reach-further-back",
+      "statement": "A reviewer can widen a checkpoint's review to an earlier checkpoint when they choose"
+    },
+    {
+      "id": "board-in-three-states",
+      "statement": "The checkpoint's review shows the Plan's board with work done before, work in this checkpoint, and work to come told apart"
+    },
+    {
+      "id": "stories-addressed",
+      "statement": "The checkpoint's review lists the stories and acceptance criteria its Tasks address"
+    },
+    {
+      "id": "proof-the-work-works",
+      "statement": "The checkpoint's review shows the tests and evidence behind each criterion it addresses, and names any criterion with none"
+    }
+  ],
+  "created_at": "2026-11-06T01:23:43.83747Z"
+}
