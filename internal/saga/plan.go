@@ -390,6 +390,27 @@ func CheckpointScope(phases []PlanPhase, tasks []TaskManifest, checkpointID stri
 	return scope
 }
 
+// TasksReadyNow is TasksReady less what a checkpoint holds, with what each held
+// Task is waiting for, by the checkpoint's title.
+func TasksReadyNow(phases []PlanPhase, tasks []TaskManifest) ([]TaskManifest, map[string]string) {
+	holds := CheckpointHolds(phases, tasks)
+	titles := map[string]string{}
+	for _, phase := range phases {
+		titles[phase.ID] = phase.Title
+	}
+	held := make(map[string]string, len(holds))
+	for task, checkpoint := range holds {
+		held[task] = titles[checkpoint]
+	}
+	ready := []TaskManifest{}
+	for _, task := range TasksReady(tasks) {
+		if held[task.ID] == "" {
+			ready = append(ready, task)
+		}
+	}
+	return ready, held
+}
+
 // CheckpointHolds names, for each Task waiting behind a checkpoint that has not
 // passed, the first such checkpoint. Work after it should not start until it does.
 func CheckpointHolds(phases []PlanPhase, tasks []TaskManifest) map[string]string {

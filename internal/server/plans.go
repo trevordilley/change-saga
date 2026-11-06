@@ -172,7 +172,7 @@ func (status taskStatus) Detail() string {
 }
 
 func statusOf(task *saga.Task, ready taskReadiness) taskStatus {
-	return liveStatus(task.ID, task.State, ready.can[task.ID], ready.live[task.ID], ready.now)
+	return liveStatus(task.ID, task.State, ready.can[task.ID], ready.held[task.ID], ready.live[task.ID], ready.now)
 }
 
 type planTaskLink struct {
@@ -182,9 +182,11 @@ type planTaskLink struct {
 
 func planReady(plan *saga.Plan) taskReadiness {
 	ready := taskReadiness{can: map[string]bool{}, now: time.Now()}
-	for _, task := range saga.TasksReady(plan.Manifests()) {
+	can, held := saga.TasksReadyNow(plan.Phases, plan.Manifests())
+	for _, task := range can {
 		ready.can[task.ID] = true
 	}
+	ready.held = held
 	return ready
 }
 

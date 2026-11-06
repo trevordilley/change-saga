@@ -253,3 +253,25 @@ func TestActivityChangesNoReport(t *testing.T) {
 		t.Fatalf("plan deliver said %q", message)
 	}
 }
+
+// Work after an unpassed checkpoint is not offered, and starting it anyway warns.
+func TestACheckpointHoldsTheWorkAfterIt(t *testing.T) {
+	root, _ := activityRepo(t)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "early", "--title", "Early", root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "proven", "--title", "Proven", "--checkpoint", root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "late", "--title", "Late", root)
+	run(t, Task, "set", "--plan", "first", "--task", "source", "--phase", "early", root)
+	run(t, Task, "set", "--plan", "first", "--task", "read", "--phase", "late", root)
+	run(t, Task, "done", "--plan", "first", "--task", "source", root)
+	out := taskOutput(t, "list", "--plan", "first", "--ready", root)
+	if strings.Contains(out, "read:") || !strings.Contains(out, "1 more task is held by checkpoint proven (Proven)") {
+		t.Fatalf("task list --ready said %q", out)
+	}
+	rows := queryData(t, "plan", "--saga", root, "--plan", "first")["plan"].(map[string]any)["tasks"].([]any)
+	if row := findRow(t, rows, "read"); row["held_by"] != "Proven" || row["can_start"] != false {
+		t.Fatalf("row = %+v", row)
+	}
+	if out := taskOutput(t, "start", "--plan", "first", "--task", "read", "--agent", "ada", root); !strings.Contains(out, "Warning: checkpoint Proven holds this Task") || !strings.Contains(out, "Started read") {
+		t.Fatalf("task start said %q", out)
+	}
+}

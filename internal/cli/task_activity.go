@@ -25,6 +25,8 @@ type taskActivityResult struct {
 	Recorded  bool     `json:"recorded"`
 	Reason    string   `json:"reason,omitempty"`
 	AlsoOnIt  []string `json:"also_on_it,omitempty"`
+	// HeldBy is the checkpoint that holds the Task, which has not passed.
+	HeldBy string `json:"held_by,omitempty"`
 }
 
 // activityFlags are the flags every command reporting activity takes.
@@ -65,23 +67,25 @@ func reportActivity(ctx context.Context, root, repo, agentOverride, planID, task
 
 // checkLiveTask refuses a Task that is not there, or of a delivered Plan, reading
 // only the two records involved: reporting activity must stay quick.
-func checkLiveTask(root, planID, taskID string) error {
+// It also says which checkpoint holds the Task, if one does.
+func checkLiveTask(root, planID, taskID string) (string, error) {
 	if !saga.ValidID(planID) || !saga.ValidID(taskID) {
-		return fmt.Errorf("task %q of plan %q is not a valid id", taskID, planID)
+		return "", fmt.Errorf("task %q of plan %q is not a valid id", taskID, planID)
 	}
 	plan, tasks, err := saga.ReadPlanRecords(root, planID)
 	if err != nil {
-		return fmt.Errorf("plan %q does not exist", planID)
+		return "", fmt.Errorf("plan %q does not exist", planID)
 	}
 	if plan.DeliveredAt != nil {
-		return fmt.Errorf("plan %q was delivered on %s and no longer changes; write a new Plan for further work", planID, plan.DeliveredAt.Format("2006-01-02"))
+		return "", fmt.Errorf("plan %q was delivered on %s and no longer changes; write a new Plan for further work", planID, plan.DeliveredAt.Format("2006-01-02"))
 	}
 	for _, task := range tasks {
 		if task.ID == taskID {
-			return nil
+			_, held := saga.TasksReadyNow(plan.Phases, tasks)
+			return held[taskID], nil
 		}
 	}
-	return fmt.Errorf("task %q is not in plan %q", taskID, planID)
+	return "", fmt.Errorf("task %q is not in plan %q", taskID, planID)
 }
 
 func taskStart(ctx context.Context, args []string, out io.Writer) error {
@@ -102,7 +106,8 @@ func taskStart(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	root := flags.Arg(0)
-	if err := checkLiveTask(root, planID, taskID); err != nil {
+	heldBy, err := checkLiveTask(root, planID, taskID)
+	if err != nil {
 		return err
 	}
 	holders := liveTaskActivity(ctx, root, *activity.repo, planID)[taskID]
@@ -116,7 +121,7 @@ func taskStart(ctx context.Context, args []string, out io.Writer) error {
 			}
 		}
 	}
-	return writeActivityResult(out, name, root, planID, taskID, agent, reason, also, *jsonOutput, "Started")
+	return writeActivityResult(out, name, root, planID, taskID, agent, reason, also, heldBy, *jsonOutput, "Started")
 }
 
 func taskNote(ctx context.Context, args []string, out io.Writer) error {
@@ -148,7 +153,7 @@ func taskNote(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	root := positional[1]
-	if err := checkLiveTask(root, planID, taskID); err != nil {
+	if _, err := checkLiveTask(root, planID, taskID); err != nil {
 		return err
 	}
 	kind, verb := planactivity.KindNote, "Noted"
@@ -156,16 +161,19 @@ func taskNote(ctx context.Context, args []string, out io.Writer) error {
 		kind, verb = planactivity.KindBlocked, "Marked blocked"
 	}
 	agent, reason := reportActivity(ctx, root, *activity.repo, *activity.agent, planID, taskID, kind, positional[0])
-	return writeActivityResult(out, name, root, planID, taskID, agent, reason, nil, *jsonOutput, verb)
+	return writeActivityResult(out, name, root, planID, taskID, agent, reason, nil, "", *jsonOutput, verb)
 }
 
-func writeActivityResult(out io.Writer, operation, root, planID, taskID, agent, reason string, also []string, jsonOutput bool, verb string) error {
+func writeActivityResult(out io.Writer, operation, root, planID, taskID, agent, reason string, also []string, heldBy string, jsonOutput bool, verb string) error {
 	if jsonOutput {
 		urn := taskID
 		if manifest, err := saga.ReadManifest(root); err == nil {
 			urn = saga.TaskTarget(manifest.ID, planID, taskID)
 		}
-		return writeJSON(out, taskActivityResult{OK: true, Operation: operation, Task: urn, Agent: agent, Recorded: reason == "", Reason: reason, AlsoOnIt: also})
+		return writeJSON(out, taskActivityResult{OK: true, Operation: operation, Task: urn, Agent: agent, Recorded: reason == "", Reason: reason, AlsoOnIt: also, HeldBy: heldBy})
+	}
+	if heldBy != "" {
+		fmt.Fprintf(out, "Warning: checkpoint %s holds this Task and has not passed. Work after a checkpoint waits until it does.\n", heldBy)
 	}
 	if reason != "" {
 		fmt.Fprintf(out, "%s Nothing was recorded, and the Plan is unchanged.\n", reason)

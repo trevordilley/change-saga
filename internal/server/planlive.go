@@ -77,7 +77,9 @@ func (a *app) planActivityEvents(ctx context.Context, planID string) ([]planacti
 // taskReadiness is what a Task's status reads beside its own record: whether it
 // could start, and what agents have said about it.
 type taskReadiness struct {
-	can  map[string]bool
+	can map[string]bool
+	// held names the checkpoint each held Task waits for.
+	held map[string]string
 	live map[string]*planactivity.TaskActivity
 	now  time.Time
 }
@@ -85,7 +87,7 @@ type taskReadiness struct {
 // liveStatus says how a Task reads. The durable record wins: a Task done in this
 // checkout is done, whatever the log says. Otherwise what agents last said decides,
 // and a Task nobody reported on reads as its record does.
-func liveStatus(id, state string, canStart bool, live *planactivity.TaskActivity, now time.Time) taskStatus {
+func liveStatus(id, state string, canStart bool, held string, live *planactivity.TaskActivity, now time.Time) taskStatus {
 	status := taskStatus{TaskID: id}
 	switch {
 	case state == saga.TaskDone:
@@ -101,6 +103,8 @@ func liveStatus(id, state string, canStart bool, live *planactivity.TaskActivity
 		status.Class, status.Word = "working", "In progress"
 	case state == saga.TaskInProgress:
 		status.Class, status.Word = "working", "In progress"
+	case held != "":
+		status.Class, status.Word = "waiting", "Held by checkpoint "+held
 	case canStart:
 		status.Class, status.Word = "ready", "Can start now"
 	default:
@@ -285,18 +289,18 @@ func (a *app) planLiveStateFor(ctx context.Context, id string) (*planLiveState, 
 	if state.generation > 0 && state.stamp == stamp && (state.quietAt.IsZero() || !now.After(state.quietAt)) {
 		return state, true
 	}
-	_, tasks, err := saga.ReadPlanRecords(a.root, id)
+	plan, tasks, err := saga.ReadPlanRecords(a.root, id)
 	if err != nil {
 		return nil, false
 	}
 	events, _ := a.planActivityEvents(ctx, id)
-	state.update(id, tasks, events, stamp, records, reason, now)
+	state.update(id, plan.Phases, tasks, events, stamp, records, reason, now)
 	return state, true
 }
 
 // update works out what changed and marks it with a new generation. Agents' words
 // are rendered only for a Task with new ones.
-func (state *planLiveState) update(id string, tasks []saga.TaskManifest, events []planactivity.Event, stamp, records, reason string, now time.Time) {
+func (state *planLiveState) update(id string, phases []saga.PlanPhase, tasks []saga.TaskManifest, events []planactivity.Event, stamp, records, reason string, now time.Time) {
 	live := planactivity.Summarize(events)
 	next := state.generation + 1
 	changed := state.generation == 0 || state.reason != reason
@@ -305,7 +309,8 @@ func (state *planLiveState) update(id string, tasks []saga.TaskManifest, events 
 		changed = true
 	}
 	canStart := map[string]bool{}
-	for _, task := range saga.TasksReady(tasks) {
+	ready, held := saga.TasksReadyNow(phases, tasks)
+	for _, task := range ready {
 		canStart[task.ID] = true
 	}
 	titles := make(map[string]string, len(tasks))
@@ -320,7 +325,7 @@ func (state *planLiveState) update(id string, tasks []saga.TaskManifest, events 
 			done++
 		}
 		activity := live[task.ID]
-		status := liveStatus(task.ID, task.State, canStart[task.ID], activity, now)
+		status := liveStatus(task.ID, task.State, canStart[task.ID], held[task.ID], activity, now)
 		if status.Class == "ready" {
 			free = append(free, planTaskLink{ID: task.ID, Title: task.Title, Href: taskHref(id, task.ID), Status: status})
 		}

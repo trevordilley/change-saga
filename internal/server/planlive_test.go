@@ -76,21 +76,24 @@ func TestLiveStatusReadsEachState(t *testing.T) {
 	for _, test := range []struct {
 		name, state string
 		canStart    bool
+		held        string
 		events      []planactivity.Event
 		class, word string
 		who         string
 	}{
-		{"nobody reported", saga.TaskPlanned, false, nil, "waiting", "Waiting", ""},
-		{"could start", saga.TaskPlanned, true, nil, "ready", "Can start now", ""},
-		{"durable in progress", saga.TaskInProgress, false, nil, "working", "In progress", ""},
-		{"started", saga.TaskPlanned, true, []planactivity.Event{event(time.Minute, "ada", planactivity.KindStart)}, "working", "In progress", "ada"},
-		{"blocked", saga.TaskPlanned, true, []planactivity.Event{event(time.Minute, "ada", planactivity.KindBlocked)}, "blocked", "Blocked", "ada"},
-		{"quiet is not failed", saga.TaskPlanned, true, []planactivity.Event{event(2*time.Hour, "ada", planactivity.KindStart)}, "working quiet", "In progress, quiet", "ada"},
-		{"done on a branch", saga.TaskPlanned, true, []planactivity.Event{event(time.Minute, "ada", planactivity.KindDone)}, "done-branch", "Done on feat/x", ""},
-		{"durably done wins", saga.TaskDone, false, []planactivity.Event{event(time.Minute, "ada", planactivity.KindBlocked)}, "done", "Done", ""},
-		{"many agents", saga.TaskPlanned, false, []planactivity.Event{event(3*time.Minute, "a", planactivity.KindStart), event(2*time.Minute, "b", planactivity.KindStart), event(time.Minute, "c", planactivity.KindStart)}, "working", "In progress", "c, b, +1"},
+		{"nobody reported", saga.TaskPlanned, false, "", nil, "waiting", "Waiting", ""},
+		{"could start", saga.TaskPlanned, true, "", nil, "ready", "Can start now", ""},
+		{"held by a checkpoint", saga.TaskPlanned, false, "Proven", nil, "waiting", "Held by checkpoint Proven", ""},
+		{"held but started anyway", saga.TaskPlanned, false, "Proven", []planactivity.Event{event(time.Minute, "ada", planactivity.KindStart)}, "working", "In progress", "ada"},
+		{"durable in progress", saga.TaskInProgress, false, "", nil, "working", "In progress", ""},
+		{"started", saga.TaskPlanned, true, "", []planactivity.Event{event(time.Minute, "ada", planactivity.KindStart)}, "working", "In progress", "ada"},
+		{"blocked", saga.TaskPlanned, true, "", []planactivity.Event{event(time.Minute, "ada", planactivity.KindBlocked)}, "blocked", "Blocked", "ada"},
+		{"quiet is not failed", saga.TaskPlanned, true, "", []planactivity.Event{event(2*time.Hour, "ada", planactivity.KindStart)}, "working quiet", "In progress, quiet", "ada"},
+		{"done on a branch", saga.TaskPlanned, true, "", []planactivity.Event{event(time.Minute, "ada", planactivity.KindDone)}, "done-branch", "Done on feat/x", ""},
+		{"durably done wins", saga.TaskDone, false, "", []planactivity.Event{event(time.Minute, "ada", planactivity.KindBlocked)}, "done", "Done", ""},
+		{"many agents", saga.TaskPlanned, false, "", []planactivity.Event{event(3*time.Minute, "a", planactivity.KindStart), event(2*time.Minute, "b", planactivity.KindStart), event(time.Minute, "c", planactivity.KindStart)}, "working", "In progress", "c, b, +1"},
 	} {
-		status := liveStatus("t", test.state, test.canStart, planactivity.Summarize(test.events)["t"], now)
+		status := liveStatus("t", test.state, test.canStart, test.held, planactivity.Summarize(test.events)["t"], now)
 		if status.Class != test.class || status.Word != test.word || status.Who != test.who {
 			t.Errorf("%s: %+v", test.name, status)
 		}
@@ -296,5 +299,32 @@ func TestAPagesCursorMeansItsFirstPollIsSmall(t *testing.T) {
 	cursor, _, _ := strings.Cut(rest, `"`)
 	if asked := liveAsk(t, handler, cursor); asked.Code != http.StatusNotModified {
 		t.Fatalf("a page that is current must hear 304, got %d", asked.Code)
+	}
+}
+
+func TestTheBoardAndAPollSayWhatACheckpointHolds(t *testing.T) {
+	t.Parallel()
+	_, handler, fixture := livePlanFixture(t)
+	for _, phase := range []saga.PlanPhase{{ID: "early", Title: "Early"}, {ID: "proven", Title: "Proven", Checkpoint: &saga.PlanCheckpoint{}}, {ID: "late", Title: "Late"}} {
+		if err := planstore.AddPhase(fixture.root, "first", phase, ""); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for task, phase := range map[string]string{"prepare": "early", "work": "late"} {
+		if err := planstore.UpdateTask(fixture.root, "first", task, func(value *saga.TaskManifest) error {
+			value.Phase = phase
+			if task == "prepare" {
+				value.State = saga.TaskDone
+			}
+			return nil
+		}, nil); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if state := liveState(t, handler); state.Tasks["work"].Word != "Held by checkpoint Proven" || state.Ready == nil || *state.Ready != "" {
+		t.Fatalf("work = %+v, ready = %v", state.Tasks["work"], state.Ready)
+	}
+	if page := getPage(t, handler, "/plans/first/tasks").Body.String(); !strings.Contains(page, "Held by checkpoint Proven") || strings.Contains(page, "can start now") {
+		t.Error("the board must say the checkpoint holds the Task, and offer nothing to start")
 	}
 }

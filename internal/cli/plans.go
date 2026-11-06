@@ -834,6 +834,8 @@ type taskRow struct {
 	Target   string   `json:"target"`
 	Unblocks []string `json:"unblocks"`
 	CanStart bool     `json:"can_start"`
+	// HeldBy is the title of the checkpoint the Task waits for, when one holds it.
+	HeldBy string `json:"held_by,omitempty"`
 	// Activity is the latest live activity, when there is any.
 	Activity *taskActivityView `json:"activity,omitempty"`
 }
@@ -858,8 +860,15 @@ func taskList(ctx context.Context, args []string, out io.Writer) error {
 	manifests := found.Manifests()
 	unblocks := saga.TaskUnblocks(manifests)
 	canStart := map[string]bool{}
-	for _, task := range saga.TasksReady(manifests) {
+	readyNow, held := saga.TasksReadyNow(found.Phases, manifests)
+	for _, task := range readyNow {
 		canStart[task.ID] = true
+	}
+	heldReady := map[string]int{}
+	for _, task := range saga.TasksReady(manifests) {
+		if checkpoint := held[task.ID]; checkpoint != "" {
+			heldReady[checkpoint]++
+		}
 	}
 	live := liveTaskActivity(ctx, flags.Arg(0), *repo, found.ID)
 	now := time.Now()
@@ -868,7 +877,7 @@ func taskList(ctx context.Context, args []string, out io.Writer) error {
 		if *ready && !canStart[task.ID] {
 			continue
 		}
-		rows = append(rows, taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID], Activity: activityView(live[task.ID], task.State, now)})
+		rows = append(rows, taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID], HeldBy: held[task.ID], Activity: activityView(live[task.ID], task.State, now)})
 	}
 	if *jsonOutput {
 		return writeJSON(out, struct {
@@ -881,6 +890,9 @@ func taskList(ctx context.Context, args []string, out io.Writer) error {
 		if row.CanStart {
 			state = "can start"
 		}
+		if row.HeldBy != "" && row.State == saga.TaskPlanned {
+			state = "held by checkpoint " + row.HeldBy
+		}
 		if row.Activity != nil {
 			state = activityWords(row.Activity, now)
 		}
@@ -888,6 +900,13 @@ func taskList(ctx context.Context, args []string, out io.Writer) error {
 	}
 	if len(rows) == 0 {
 		fmt.Fprintln(out, "No tasks.")
+	}
+	if *ready {
+		for _, phase := range found.Phases {
+			if count := heldReady[phase.Title]; count > 0 && phase.IsCheckpoint() {
+				fmt.Fprintf(out, "%d more %s held by checkpoint %s (%s), which has not passed.\n", count, plural(count, "task is", "tasks are"), phase.ID, phase.Title)
+			}
+		}
 	}
 	return nil
 }

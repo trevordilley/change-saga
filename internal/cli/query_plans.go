@@ -101,12 +101,13 @@ func taskRows(plan *saga.Plan) map[string]taskRow {
 	manifests := plan.Manifests()
 	unblocks := saga.TaskUnblocks(manifests)
 	canStart := map[string]bool{}
-	for _, task := range saga.TasksReady(manifests) {
+	ready, held := saga.TasksReadyNow(plan.Phases, manifests)
+	for _, task := range ready {
 		canStart[task.ID] = true
 	}
 	rows := make(map[string]taskRow, len(plan.Tasks))
 	for _, task := range plan.Tasks {
-		rows[task.ID] = taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID]}
+		rows[task.ID] = taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID], HeldBy: held[task.ID]}
 	}
 	return rows
 }
