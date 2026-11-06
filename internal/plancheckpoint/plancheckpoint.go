@@ -41,6 +41,62 @@ type Test struct {
 	Evidence int    `json:"evidence"`
 }
 
+// Change is how one Task moved in the Plan since a checkpoint passed: added,
+// dropped, or moved to another phase.
+type Change struct {
+	Kind  string `json:"kind"`
+	Task  string `json:"task"`
+	Title string `json:"title,omitempty"`
+	From  string `json:"from,omitempty"`
+	To    string `json:"to,omitempty"`
+}
+
+// changesSince compares the work after a passed checkpoint with what it said was
+// to come when it passed.
+func changesSince(plan *saga.Plan, checkpoint saga.PlanPhase) []Change {
+	recorded := map[string]string{}
+	for _, planned := range checkpoint.Checkpoint.Passed.ToCome {
+		recorded[planned.Task] = planned.Phase
+	}
+	titles := map[string]string{}
+	for _, phase := range plan.Phases {
+		titles[phase.ID] = phase.Title
+	}
+	after := map[string]bool{}
+	seen := false
+	for _, phase := range plan.Phases {
+		if phase.ID == checkpoint.ID {
+			seen = true
+			continue
+		}
+		after[phase.ID] = seen
+	}
+	changes := []Change{}
+	present := map[string]bool{}
+	for _, task := range plan.Tasks {
+		was, known := recorded[task.ID]
+		if !after[task.Phase] {
+			if known {
+				changes = append(changes, Change{Kind: "moved", Task: task.ID, Title: task.Title, From: titles[was], To: titles[task.Phase]})
+			}
+			continue
+		}
+		present[task.ID] = true
+		switch {
+		case !known:
+			changes = append(changes, Change{Kind: "added", Task: task.ID, Title: task.Title, To: titles[task.Phase]})
+		case was != task.Phase:
+			changes = append(changes, Change{Kind: "moved", Task: task.ID, Title: task.Title, From: titles[was], To: titles[task.Phase]})
+		}
+	}
+	for _, planned := range checkpoint.Checkpoint.Passed.ToCome {
+		if !present[planned.Task] && plan.FindTask(planned.Task) == nil {
+			changes = append(changes, Change{Kind: "dropped", Task: planned.Task, From: titles[planned.Phase]})
+		}
+	}
+	return changes
+}
+
 // Proven says some test with evidence checks the criterion.
 func (criterion Criterion) Proven() bool {
 	for _, test := range criterion.Tests {
@@ -68,7 +124,11 @@ type Report struct {
 	Review     string               `json:"review,omitempty"`
 	Slides     int                  `json:"slides,omitempty"`
 	Surprises  []string             `json:"surprises"`
-	Next       string               `json:"next"`
+	// ChangedSince is the title of the previous passed checkpoint, and Changes how
+	// the work after it changed since it passed.
+	ChangedSince string   `json:"changed_since,omitempty"`
+	Changes      []Change `json:"changes,omitempty"`
+	Next         string   `json:"next"`
 	// Scope is the Tasks the checkpoint covers.
 	Scope []saga.TaskManifest `json:"-"`
 }
@@ -188,11 +248,15 @@ func Build(document *saga.Saga, plan *saga.Plan, checkpointID string, stories ma
 	report.Stories = storiesOf(plan, report.Scope, stories)
 	report.Estimate = max(1, len(report.Stories))
 
-	// The stretch began when the previous checkpoint passed.
+	// The stretch began when the previous checkpoint passed, which recorded what
+	// was to come; the Plan may have changed since, at that review or after it.
 	var began time.Time
 	for earlier := index - 1; earlier >= 0; earlier-- {
-		if plan.Phases[earlier].CheckpointPassed() {
-			began = plan.Phases[earlier].Checkpoint.Passed.At
+		if previous := plan.Phases[earlier]; previous.CheckpointPassed() {
+			began = previous.Checkpoint.Passed.At
+			if previous.Checkpoint.Passed.ToCome != nil {
+				report.ChangedSince, report.Changes = previous.Title, changesSince(plan, previous)
+			}
 			break
 		}
 	}
@@ -217,7 +281,9 @@ func Build(document *saga.Saga, plan *saga.Plan, checkpointID string, stories ma
 			}
 		}
 	}
-	if len(added) > 0 {
+	if len(report.Changes) > 0 {
+		report.Surprises = append(report.Surprises, fmt.Sprintf("the Plan changed since checkpoint %s passed: %d %s added, dropped, or moved", report.ChangedSince, len(report.Changes), plural(len(report.Changes), "Task", "Tasks")))
+	} else if len(added) > 0 && report.ChangedSince == "" {
 		report.Surprises = append(report.Surprises, "Tasks added since the stretch began: "+strings.Join(added, ", "))
 	}
 	if len(blocked) > 0 {
@@ -268,4 +334,11 @@ func Build(document *saga.Saga, plan *saga.Plan, checkpointID string, stories ma
 		report.Next = fmt.Sprintf("Ask whoever invoked the Plan to pass it: change-saga plan pass --plan %s --checkpoint %s --by NAME --reason TEXT.", plan.ID, phase.ID)
 	}
 	return report, nil
+}
+
+func plural(count int, one, many string) string {
+	if count == 1 {
+		return one
+	}
+	return many
 }

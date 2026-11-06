@@ -76,6 +76,15 @@ type CheckpointPass struct {
 	// Agent says an agent passed it, under the rule of whoever invoked the Plan.
 	Agent  bool   `json:"agent,omitempty"`
 	Reason string `json:"reason"`
+	// ToCome is the work after the checkpoint when it passed, so a later reader
+	// sees how the Plan changed since.
+	ToCome []PlannedTask `json:"to_come,omitempty"`
+}
+
+// PlannedTask is where a Task stood in the Plan at a moment.
+type PlannedTask struct {
+	Task  string `json:"task"`
+	Phase string `json:"phase"`
 }
 
 // Who may pass a Plan's checkpoints. A person is the default.

@@ -249,6 +249,22 @@ func PassCheckpoint(root, planID, checkpointID string, pass saga.CheckpointPass)
 		if len(reasons) > 0 {
 			return fmt.Errorf("checkpoint %q cannot pass yet: %s", checkpointID, strings.Join(reasons, "; "))
 		}
+		after := false
+		pass.ToCome = nil
+		for _, later := range plan.Phases {
+			if later.ID == checkpointID {
+				after = true
+				continue
+			}
+			if !after {
+				continue
+			}
+			for _, task := range plan.Tasks {
+				if task.Phase == later.ID {
+					pass.ToCome = append(pass.ToCome, saga.PlannedTask{Task: task.ID, Phase: later.ID})
+				}
+			}
+		}
 		phase.Checkpoint.Passed = &pass
 		if err := saga.ValidatePlanManifest(plan.PlanManifest); err != nil {
 			return err

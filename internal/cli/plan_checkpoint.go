@@ -68,6 +68,19 @@ func planCheckpoint(ctx context.Context, args []string, out io.Writer) error {
 	if report.Estimate > checkpointSlideBudget {
 		fmt.Fprintf(out, "  That is more than %d: consider splitting it with another checkpoint.\n", checkpointSlideBudget)
 	}
+	if len(report.Changes) > 0 {
+		fmt.Fprintf(out, "  Since checkpoint %s passed, the Plan changed:\n", report.ChangedSince)
+		for _, change := range report.Changes {
+			switch change.Kind {
+			case "added":
+				fmt.Fprintf(out, "    added %s (%s) in %s\n", change.Task, change.Title, change.To)
+			case "dropped":
+				fmt.Fprintf(out, "    dropped %s from %s\n", change.Task, change.From)
+			default:
+				fmt.Fprintf(out, "    moved %s (%s) from %s to %s\n", change.Task, change.Title, change.From, change.To)
+			}
+		}
+	}
 	if report.Passed == nil {
 		if report.Passer == saga.CheckpointPasserAgent {
 			fmt.Fprintln(out, "  An agent may pass it unless something here is surprising or urgent.")

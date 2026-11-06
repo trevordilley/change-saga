@@ -611,3 +611,31 @@ func TestACheckpointReportSaysWhatToDoNext(t *testing.T) {
 		t.Fatalf("a phase that is not a checkpoint said %q", message)
 	}
 }
+
+// A pass records what was to come, so the next checkpoint says how the Plan changed.
+func TestTheNextCheckpointSaysHowThePlanChangedSinceAPass(t *testing.T) {
+	fixture := newPlanFixture(t)
+	for _, args := range [][]string{
+		{"--id", "build", "--title", "Build"}, {"--id", "proven", "--title", "Proven", "--checkpoint"},
+		{"--id", "late", "--title", "Late"}, {"--id", "later", "--title", "Later"}, {"--id", "shipped", "--title", "Shipped", "--checkpoint"},
+	} {
+		run(t, Plan, append(append([]string{"add-phase", "--plan", "first"}, args...), fixture.root)...)
+	}
+	plan := loadedPlan(t, fixture.root, "first")
+	story := "urn:change-saga:" + plan.Target[len("urn:change-saga:"):strings.Index(plan.Target, ":plan:")] + ":story:first-story"
+	run(t, Task, "add", "--plan", "first", "--id", "base", "--title", "Base", "--phase", "build", "--story", story, fixture.root)
+	run(t, Task, "add", "--plan", "first", "--id", "next", "--title", "Next", "--phase", "late", "--story", story, fixture.root)
+	run(t, Task, "done", "--plan", "first", "--task", "base", fixture.root)
+	run(t, Plan, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "works", "--by", "trevor", fixture.root)
+	if toCome := loadedPlan(t, fixture.root, "first").Phases[1].Checkpoint.Passed.ToCome; len(toCome) != 1 || toCome[0].Task != "next" || toCome[0].Phase != "late" {
+		t.Fatalf("to_come = %+v", toCome)
+	}
+	run(t, Task, "add", "--plan", "first", "--id", "lock", "--title", "Lock the row", "--phase", "late", "--story", story, fixture.root)
+	run(t, Task, "set", "--plan", "first", "--task", "next", "--phase", "later", fixture.root)
+	out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "shipped", fixture.root)
+	for _, want := range []string{"Since checkpoint Proven passed, the Plan changed:", "added lock (Lock the row) in Late", "moved next (Next) from Late to Later"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("report has no %q:\n%s", want, out)
+		}
+	}
+}

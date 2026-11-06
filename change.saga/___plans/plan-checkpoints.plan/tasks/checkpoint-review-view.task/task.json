@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "One panel on the review page built from the Plan, its board, and quality evidence."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "A rail line and drawer on the checkpoint's review: three-state grid, stories with test evidence, size, surprises, pass.",
   "created_at": "2026-11-06T01:24:05.136081Z"
 }

@@ -73,6 +73,26 @@
                   "reason": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "to_come": {
+                    "type": "array",
+                    "description": "The work after the checkpoint when it passed.",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "task",
+                        "phase"
+                      ],
+                      "properties": {
+                        "task": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "phase": {
+                          "$ref": "#/$defs/id"
+                        }
+                      }
+                    }
                   }
                 }
               }
