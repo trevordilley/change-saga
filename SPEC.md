@@ -1979,7 +1979,7 @@ no checkpoint.
 | Field | Meaning |
 |---|---|
 | `checkpoint.review` | The id of the review of the checkpoint's work. |
-| `checkpoint.passed` | `{at, by, agent?, reason}`: the checkpoint passed, when, by whom, whether an agent passed it, and why. |
+| `checkpoint.passed` | `{at, by, agent?, reason, to_come?}`: the checkpoint passed, when, by whom, whether an agent passed it, and why. `to_come` lists `{task, phase}` for the work after it at that moment, so a later checkpoint reports what was added, dropped, or moved since. |
 | `checkpoint_passer` (on the Plan) | `person` or `agent`: who passes the Plan's checkpoints. Absent means `person`. |
 
 - The first checkpoint that has not passed **holds** every Task in a phase after it.
