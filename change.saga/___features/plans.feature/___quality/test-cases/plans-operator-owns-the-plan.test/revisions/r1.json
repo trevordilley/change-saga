@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-operator-owns-the-plan",
+  "parents": [],
+  "title": "plan guide recommends one operator",
+  "coverage_kinds": [
+    "positive"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "guide-recommends-one-operator",
+      "action": "Read plan guide.",
+      "expected_result": "plan guide and the skill recommend one operator agent that owns a Plan and delegates the Tasks that can start to implementing agents.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:operator-owns-the-plan:criterion:guide-recommends-one-operator"
+      ]
+    },
+    {
+      "id": "implementors-report-and-deliver",
+      "action": "Read plan guide.",
+      "expected_result": "The guidance tells implementing agents to deliver on their own branch, report live activity, and leave task done and the other Saga records to the operator.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:operator-owns-the-plan:criterion:implementors-report-and-deliver"
+      ]
+    },
+    {
+      "id": "operator-keeps-the-record",
+      "action": "Read plan guide.",
+      "expected_result": "The guidance says the operator marks a Task done once its work is merged into its branch, and passes and merges checkpoints.",
+      "criteria": [
+        "urn:change-saga:change-saga:story:operator-owns-the-plan:criterion:operator-keeps-the-record"
+      ]
+    }
+  ],
+  "expected_result": "Each step behaves as its acceptance criterion says.",
+  "created_at": "2026-11-06T08:53:09Z"
+}

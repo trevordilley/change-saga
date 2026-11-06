@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
+  "version": 5,
+  "id": "operator-owns-the-plan.operator-keeps-the-record.r1",
+  "criterion": "urn:change-saga:change-saga:story:operator-owns-the-plan:criterion:operator-keeps-the-record",
+  "story_revision": "urn:change-saga:change-saga:story:operator-owns-the-plan:revision:r1",
+  "required_kinds": [
+    "positive"
+  ],
+  "allowed_automation": [
+    "automated",
+    "hybrid",
+    "manual"
+  ],
+  "supersedes": [],
+  "rationale": "The linked test checks the guidance this criterion states. No separate edge or negative case is claimed: it is guidance, and nothing refuses.",
+  "created_at": "2026-11-06T08:53:13Z"
+}

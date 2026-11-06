@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:operator-owns-the-plan",
+  "parents": [],
+  "title": "One operator owns a Plan while implementors deliver",
+  "statement": "As a developer I run one operator agent that owns a Plan and its record and delegates the work, so implementing agents focus on delivery and the record stays consistent",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:one-operator-owns-the-plan-20261106"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "guide-recommends-one-operator",
+      "statement": "plan guide and the skill recommend one operator agent that owns a Plan and delegates the Tasks that can start to implementing agents"
+    },
+    {
+      "id": "implementors-report-and-deliver",
+      "statement": "The guidance tells implementing agents to deliver on their own branch, report live activity, and leave task done and the other Saga records to the operator"
+    },
+    {
+      "id": "operator-keeps-the-record",
+      "statement": "The guidance says the operator marks a Task done once its work is merged into its branch, and passes and merges checkpoints"
+    }
+  ],
+  "created_at": "2026-11-06T08:53:08.83775Z"
+}
