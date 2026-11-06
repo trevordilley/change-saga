@@ -61,12 +61,12 @@ textarea { width:100%; min-height:54px; font:inherit; background:var(--subtle); 
 </style>
 </head>
 <body>
-<div class="banner">Prototype. Proposed: a large Plan reviewed one checkpoint at a time. Nothing here is built yet.</div>
+<div class="banner">Prototype. Proposed: a large Plan reviewed one checkpoint at a time, each passed checkpoint merging into the Plan’s feature branch. Nothing here is built yet.</div>
 <div class="top"><strong>change-saga</strong><span class="note">Reviews ▸ Checkpoint review</span><span class="spacer"></span><button class="ghost" id="theme">Dark</button></div>
 <main>
-  <p class="eyebrow">Checkpoint review · Plan “Payments rebuild” · 203 Tasks in 6 phases</p>
+  <p class="eyebrow">Checkpoint review · Plan “Payments rebuild” · 203 Tasks in 6 phases · into <code>payments-rebuild</code></p>
   <h1>Checkpoint 2 of 5: the write path</h1>
-  <p class="sub">What changed since checkpoint 1 passed, on the Plan’s own layout. Passing it lets the next stretch start in a new workspace; nothing merges to main because it passed.</p>
+  <p class="sub">What changed since checkpoint 1 passed, on the Plan’s own layout. This review is the checkpoint’s branch, <code>payments/cp-2</code>, as a change into the Plan’s feature branch. Passing it says the work is safe to merge there, so every later checkpoint builds on it.</p>
 
   <div class="grid">
     <div>
@@ -77,7 +77,7 @@ textarea { width:100%; min-height:54px; font:inherit; background:var(--subtle); 
         <div class="scope" id="scope">Review covers changes since
           <button class="ghost on" data-since="1">checkpoint 1</button>
           <button class="ghost" data-since="0">the start of the Plan</button>
-          <span class="note" id="scope-note">· 38 Tasks, 4 stories, diff base <code>cp-1 a41f9c2</code></span>
+          <span class="note" id="scope-note">· 38 Tasks, 4 stories, since checkpoint 1 merged into payments-rebuild</span>
         </div>
       </section>
 
@@ -126,10 +126,11 @@ textarea { width:100%; min-height:54px; font:inherit; background:var(--subtle); 
           <textarea id="reason" placeholder="Why it passes, or what must change">Refunds moving is fine; the lock is the right call.</textarea>
           <div class="actions"><button class="primary" id="do-pass">Pass checkpoint 2</button><button class="ghost" id="do-change">Ask for changes</button></div>
         </div>
-        <div class="record hide" id="passed">Passed by trevor, now: “<span id="why"></span>”. Checkpoint 3 is released.
+        <div class="record hide" id="passed">Passed by trevor, now: “<span id="why"></span>”. <code>payments/cp-2</code> merges into <code>payments-rebuild</code>, and checkpoint 3 is released to start from there.
           <code class="cmd">change-saga checkpoint pass --plan payments --checkpoint write-path --reason "…"
-hivecontrol agent workspace create --worktree --name payments/cp-3  # starts from cp-2’s head</code></div>
-        <div class="record hide" id="changes" style="background:var(--work-bg);color:var(--work)">Each request becomes a Task in checkpoint 2, which stays open until they are done.</div>
+# merges payments/cp-2 into payments-rebuild
+hivecontrol agent workspace create --worktree --name payments/cp-3  # from payments-rebuild</code></div>
+        <div class="record hide" id="changes" style="background:var(--work-bg);color:var(--work)">Each request becomes a Task in checkpoint 2, which stays open, and unmerged, until they are done.</div>
       </section>
 
       <section class="panel" id="held">
@@ -178,7 +179,7 @@ function drawBoard(since) {
     });
     board.append(phase);
   });
-  document.getElementById('scope-note').textContent = since === 0 ? '· 79 Tasks, 7 stories, diff base main' : '· 38 Tasks, 4 stories, diff base cp-1 a41f9c2';
+  document.getElementById('scope-note').textContent = since === 0 ? '· 79 Tasks, 7 stories, since payments-rebuild left main' : '· 38 Tasks, 4 stories, since checkpoint 1 merged into payments-rebuild';
 }
 document.getElementById('scope').addEventListener('click', event => {
   const button = event.target.closest('[data-since]');
