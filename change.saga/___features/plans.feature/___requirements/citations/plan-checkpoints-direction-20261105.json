@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "plan-checkpoints-direction-20261105",
+  "kind": "decision",
+  "title": "Review big Plans one checkpoint at a time",
+  "reference": "Trevor's product direction, 2026-11-03 to 2026-11-05: \"we have plans that have over 200 tasks spread over 6 phases. I feel like we might need some kind of way to indicate critical milestones so it's not a big fat one shot for stuff that's huge.\" \"What's important there is that we define what is reviewable sanely. And once we pass review we continue on. I think that will mean the plan needs to be flexible somewhat that we might change on review.\" \"Each of these checkpoints will create a review of the work thus far. The review should show the tasks completed on this layout and what's to come. What stories are being addressed in the checkpoint.\" On questions: the review covers what changed since the last checkpoint, going further back is discretionary; passing means the work can continue in a new workspace; passing is at the discretion of whoever invokes the Plan, who can say pass the checkpoints unless something is particularly surprising or urgent; Tasks past an unpassed checkpoint are held back with a warning; size is measured by Change Saga itself: does it need 10 to 20 slides to explain, or are 5 to 6 sufficient.",
+  "created_at": "2026-11-06T00:10:04.87837Z"
+}

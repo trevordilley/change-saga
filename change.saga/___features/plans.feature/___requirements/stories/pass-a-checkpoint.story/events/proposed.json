@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "proposed",
+  "story": "urn:change-saga:change-saga:story:pass-a-checkpoint",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-11-06T00:10:05.865135Z"
+}

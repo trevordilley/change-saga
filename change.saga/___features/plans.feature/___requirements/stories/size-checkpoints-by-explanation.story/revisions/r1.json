@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:size-checkpoints-by-explanation",
+  "parents": [],
+  "title": "Size a checkpoint by what it takes to explain",
+  "statement": "As an architect I can see whether a checkpoint is reviewable, judged by whether Change Saga could explain it in five or six slides rather than ten to twenty",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-checkpoints-direction-20261105"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "guide-flags-large-checkpoint",
+      "statement": "plan guide names a checkpoint that looks to need more slides than a review can sanely hold, and never refuses it"
+    },
+    {
+      "id": "slides-measure-the-review",
+      "statement": "A checkpoint's review reports how many slides it took, beside what the Plan expected"
+    }
+  ],
+  "created_at": "2026-11-06T00:10:05.571056Z"
+}

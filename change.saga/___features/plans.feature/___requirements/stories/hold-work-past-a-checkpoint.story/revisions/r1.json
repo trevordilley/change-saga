@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:hold-work-past-a-checkpoint",
+  "parents": [],
+  "title": "Hold work past a checkpoint until it passes",
+  "statement": "As a developer my agents are not offered Tasks beyond a checkpoint that has not passed, and are warned if they start one anyway",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:plan-checkpoints-direction-20261105"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "ready-holds-gated-tasks",
+      "statement": "task list --ready leaves out a Task beyond a checkpoint that has not passed, and says which checkpoint holds it"
+    },
+    {
+      "id": "start-warns-past-checkpoint",
+      "statement": "task start on such a Task warns and still records it"
+    }
+  ],
+  "created_at": "2026-11-06T00:10:06.124662Z"
+}
