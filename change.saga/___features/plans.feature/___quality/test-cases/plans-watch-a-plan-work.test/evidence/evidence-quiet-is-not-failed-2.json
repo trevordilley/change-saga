@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-quiet-is-not-failed-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work:revision:r1",
+  "role": "test_implementation",
+  "steps": [
+    "quiet-is-not-failed"
+  ],
+  "code": [
+    {
+      "commit": "4e98918ed62ccb62a70b3da88d64815c400bf11e",
+      "path": "e2e/tests/plans.spec.ts",
+      "start": 385,
+      "end": 402,
+      "digest": "sha256:4cd44b763721148b0cc0a29f3edf7fcce568bb8be488d60b9e63e9105b0f3799"
+    },
+    {
+      "commit": "4e98918ed62ccb62a70b3da88d64815c400bf11e",
+      "path": "internal/server/planlive_test.go",
+      "start": 70,
+      "end": 104,
+      "digest": "sha256:114a9802b5807ebe4b67addef5d4ff9d1521f494c405e62abc23d855a1ebfc85"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-watch-a-plan-work:evidence:evidence-quiet-is-not-failed"
+  ],
+  "created_at": "2026-11-06T01:35:47Z"
+}

@@ -12,6 +12,7 @@
     "within_two_days": true,
     "reason": "Guide text, the surprise list, SPEC section 9, references/plans.md."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "plan guide step and checkpoint advice, references/plans.md Checkpoints, SPEC section 9, CHANGELOG.",
   "created_at": "2026-11-06T01:24:04.737239Z"
 }
