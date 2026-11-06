@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan checkpoints prototype</title>
+<style>
+:root { color-scheme: light; --bg:#fff; --subtle:#f6f7f9; --inset:#eef0f4; --ink:#1b2130; --muted:#5b6475; --line:#d9dde5; --accent:#0b63ce; --accent-soft:#e7f0fc;
+  --done:#14713c; --done-bg:#e3f4e9; --work:#8a5a00; --work-bg:#fdf1d6; --wait:#5b6475; --wait-bg:#eef0f4; --warn:#a4262c; --warn-bg:#fbe7e8; }
+.dark { color-scheme: dark; --bg:#14161b; --subtle:#1b1e25; --inset:#23272f; --ink:#e8eaf0; --muted:#a2a9b7; --line:#343a45; --accent:#7db4ff; --accent-soft:#1c2c44;
+  --done:#6fdc9a; --done-bg:#15331f; --work:#f1c663; --work-bg:#3a2d0f; --wait:#a2a9b7; --wait-bg:#272b34; --warn:#ff9c9c; --warn-bg:#3b1c1e; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+button { font:inherit; color:inherit; cursor:pointer; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+.banner { background:var(--work-bg); color:var(--work); padding:6px 20px; font-size:13px; border-bottom:1px solid var(--line); }
+.top { display:flex; align-items:center; gap:14px; padding:10px 20px; border-bottom:1px solid var(--line); }
+.top .spacer { flex:1; }
+.ghost { background:none; border:1px solid var(--line); border-radius:6px; padding:3px 10px; font-size:13px; }
+.ghost.on { border-color:var(--accent); color:var(--accent); }
+main { max-width:1180px; margin:0 auto; padding:22px 24px 60px; }
+h1 { font-size:24px; margin:2px 0 4px; } h2 { font-size:17px; margin:0 0 8px; }
+.eyebrow { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.sub { color:var(--muted); margin:0 0 18px; max-width:780px; }
+.grid { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:18px; }
+.panel { border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:18px; background:var(--bg); }
+.note { color:var(--muted); font-size:13px; }
+.legend { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin:6px 0 10px; }
+.swatch { display:inline-block; width:11px; height:11px; border-radius:3px; vertical-align:-1px; margin-right:5px; }
+.board { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+.phase { background:var(--subtle); border-radius:8px; padding:6px; }
+.phase h3 { margin:0 0 5px; font-size:11px; color:var(--muted); font-weight:600; }
+.cells { display:grid; grid-template-columns:repeat(6,1fr); gap:3px; }
+.cell { height:13px; border-radius:3px; }
+.before { background:var(--inset); outline:1px solid var(--line); }
+.now { background:var(--accent); }
+.later { background:transparent; outline:1px dashed var(--line); }
+.added { background:var(--work); }
+.scope { display:flex; gap:6px; align-items:center; flex-wrap:wrap; font-size:13px; margin-top:10px; }
+.stories li { margin:0 0 8px; } .stories ul { margin:2px 0 0 18px; padding:0; color:var(--muted); font-size:13px; }
+.tag { display:inline-block; padding:0 7px; border-radius:9px; font-size:12px; font-weight:600; }
+.tag.done { color:var(--done); background:var(--done-bg); } .tag.work { color:var(--work); background:var(--work-bg); } .tag.warn { color:var(--warn); background:var(--warn-bg); }
+.gauge { position:relative; height:14px; border-radius:7px; background:linear-gradient(90deg,var(--done-bg) 0 30%,var(--work-bg) 30% 50%,var(--warn-bg) 50% 100%); margin:14px 0 4px; }
+.gauge i { position:absolute; top:-5px; width:3px; height:24px; background:var(--ink); border-radius:2px; }
+.gauge b { position:absolute; top:-5px; height:24px; border:2px dashed var(--muted); border-radius:4px; }
+.scale { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
+.surprise li { margin-bottom:6px; }
+.actions { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+.primary { background:var(--accent); color:#fff; border:0; border-radius:6px; padding:6px 13px; }
+.dark .primary { color:#0c1320; }
+textarea { width:100%; min-height:54px; font:inherit; background:var(--subtle); color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:6px 8px; }
+.record { background:var(--done-bg); color:var(--done); border-radius:8px; padding:9px 12px; font-size:14px; margin-top:12px; }
+.cmd { display:block; background:var(--inset); border-radius:6px; padding:7px 10px; margin-top:6px; white-space:pre-wrap; }
+.folded { display:flex; gap:10px; align-items:stretch; flex-wrap:wrap; }
+.cp { border:1px solid var(--line); border-radius:9px; padding:8px 11px; min-width:150px; background:var(--subtle); }
+.cp.current { border:2px solid var(--accent); background:var(--accent-soft); flex:1; }
+.cp .bar { height:6px; border-radius:3px; background:var(--inset); margin-top:6px; overflow:hidden; } .cp .bar span { display:block; height:100%; background:var(--done); }
+.diff td, .diff th { padding:5px 8px; border-bottom:1px solid var(--line); font-size:13px; text-align:left; vertical-align:top; } .diff { border-collapse:collapse; width:100%; }
+.hide { display:none; }
+@media (max-width:860px) { .grid { grid-template-columns:1fr; } .board { grid-template-columns:repeat(3,1fr); } }
+</style>
+</head>
+<body>
+<div class="banner">Prototype. Proposed: a large Plan reviewed one checkpoint at a time. Nothing here is built yet.</div>
+<div class="top"><strong>change-saga</strong><span class="note">Reviews ▸ Checkpoint review</span><span class="spacer"></span><button class="ghost" id="theme">Dark</button></div>
+<main>
+  <p class="eyebrow">Checkpoint review · Plan “Payments rebuild” · 203 Tasks in 6 phases</p>
+  <h1>Checkpoint 2 of 5: the write path</h1>
+  <p class="sub">What changed since checkpoint 1 passed, on the Plan’s own layout. Passing it lets the next stretch start in a new workspace; nothing merges to main because it passed.</p>
+
+  <div class="grid">
+    <div>
+      <section class="panel" id="layout">
+        <h2>The Plan, at this checkpoint</h2>
+        <div class="legend"><span><i class="swatch before"></i>Done before</span><span><i class="swatch now"></i>In this checkpoint</span><span><i class="swatch later"></i>To come</span><span><i class="swatch added"></i>Added by an earlier review</span></div>
+        <div class="board" id="board"></div>
+        <div class="scope" id="scope">Review covers changes since
+          <button class="ghost on" data-since="1">checkpoint 1</button>
+          <button class="ghost" data-since="0">the start of the Plan</button>
+          <span class="note" id="scope-note">· 38 Tasks, 4 stories, diff base <code>cp-1 a41f9c2</code></span>
+        </div>
+      </section>
+
+      <section class="panel" id="stories">
+        <h2>Stories this checkpoint addresses</h2>
+        <ol class="stories">
+          <li><strong>Record a payment once, even when retried</strong> <span class="tag done">3 of 3 criteria</span>
+            <ul><li>A retried request writes one payment · 6 Tasks</li><li>A duplicate says which payment it matched · 2 Tasks</li><li>Retries are logged with their key · 1 Task</li></ul></li>
+          <li><strong>See a payment’s state as it changes</strong> <span class="tag work">2 of 3 criteria</span>
+            <ul><li>States change in one transaction · 7 Tasks</li><li>A reader sees the latest state · 4 Tasks</li><li>Refunds show their parent payment · <em>to come, checkpoint 3</em></li></ul></li>
+          <li><strong>Reconcile the ledger nightly</strong> <span class="tag done">2 of 2 criteria</span></li>
+          <li><strong>Move old payments without downtime</strong> <span class="tag done">1 of 1 criterion</span></li>
+        </ol>
+      </section>
+
+      <section class="panel" id="changed-plan">
+        <h2>How the Plan changed since it was reviewed</h2>
+        <p class="note">Checkpoint 1’s review asked for two changes. What it saw as “to come” is kept, so these read as changes, not as the Plan.</p>
+        <table class="diff">
+          <tr><th>When checkpoint 1 was reviewed</th><th>Now</th></tr>
+          <tr><td>—</td><td><span class="tag work">Added</span> Lock a payment row while its state changes</td></tr>
+          <tr><td>Backfill states in one migration</td><td><span class="tag work">Split</span> Backfill in batches · Verify the backfill</td></tr>
+          <tr><td>Refunds in checkpoint 2</td><td><span class="tag warn">Moved</span> Refunds in checkpoint 3</td></tr>
+        </table>
+      </section>
+    </div>
+
+    <div>
+      <section class="panel" id="size">
+        <h2>Is it reviewable?</h2>
+        <p style="margin:0">Explained in <strong>6 slides</strong>. The Plan expected 5–6.</p>
+        <div class="gauge"><b style="left:20%;width:10%"></b><i style="left:29%"></i></div>
+        <div class="scale"><span>1</span><span>6 · sane</span><span>10</span><span>20 slides · split it</span></div>
+        <p class="note">Change Saga is the measure: a checkpoint that needs ten to twenty slides should have been two. <code>plan guide</code> warns while planning, from the stories and Tasks it holds; it never refuses.</p>
+      </section>
+
+      <section class="panel" id="pass">
+        <h2>Pass this checkpoint</h2>
+        <p class="note" style="margin-top:0">Invoked by <strong>trevor</strong>, who chose: <em>the agent passes checkpoints unless something is surprising or urgent.</em></p>
+        <p style="margin:8px 0 4px"><span class="tag warn">Agent stopped for a person</span> because:</p>
+        <ul class="surprise">
+          <li>The review moved Refunds to checkpoint 3: a departure from the Plan.</li>
+          <li><em>agent-7</em> noted blocked on “Lock a payment row” for 40 minutes before going on.</li>
+        </ul>
+        <div id="pass-form">
+          <textarea id="reason" placeholder="Why it passes, or what must change">Refunds moving is fine; the lock is the right call.</textarea>
+          <div class="actions"><button class="primary" id="do-pass">Pass checkpoint 2</button><button class="ghost" id="do-change">Ask for changes</button></div>
+        </div>
+        <div class="record hide" id="passed">Passed by trevor, now: “<span id="why"></span>”. Checkpoint 3 is released.
+          <code class="cmd">change-saga checkpoint pass --plan payments --checkpoint write-path --reason "…"
+hivecontrol agent workspace create --worktree --name payments/cp-3  # starts from cp-2’s head</code></div>
+        <div class="record hide" id="changes" style="background:var(--work-bg);color:var(--work)">Each request becomes a Task in checkpoint 2, which stays open until they are done.</div>
+      </section>
+
+      <section class="panel" id="held">
+        <h2>Held until it passes</h2>
+        <p class="note" style="margin-top:0">Agents asking what can start do not see checkpoint 3’s Tasks yet.</p>
+        <code class="cmd">$ change-saga task list --plan payments --ready
+(nothing ready: 41 Tasks are held by checkpoint “write-path”)
+
+$ change-saga task start --task refund-parent
+Warning: held by checkpoint “write-path”, which has not passed.
+Started refund-parent as agent-3.</code>
+      </section>
+    </div>
+  </div>
+
+  <section class="panel" id="folded">
+    <h2>The whole Plan, by checkpoint</h2>
+    <p class="note" style="margin-top:0">On the Tasks board, checkpoints other than the current one fold into one node each, so 203 Tasks stay readable.</p>
+    <div class="folded" id="folds"></div>
+  </section>
+</main>
+<script>
+const checkpoints = [
+  {id:'foundations', title:'1 · Foundations', tasks:41, done:41, state:'Passed by trevor'},
+  {id:'write-path', title:'2 · The write path', tasks:38, done:38, state:'In review'},
+  {id:'read-path', title:'3 · The read path and refunds', tasks:41, done:0, state:'Held'},
+  {id:'migration', title:'4 · Migration', tasks:44, done:0, state:'Held'},
+  {id:'cutover', title:'5 · Cutover', tasks:39, done:0, state:'Held'},
+];
+// Tasks by phase, each in one checkpoint: phases run in parallel, checkpoints are reviewed together.
+const phases = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2],[1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3],[1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4],[2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],[5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]];
+const added = new Set(['1-15', '2-9']);
+function drawBoard(since) {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  phases.forEach((cells, index) => {
+    const phase = document.createElement('div');
+    phase.className = 'phase';
+    phase.innerHTML = '<h3>Phase ' + (index + 1) + '</h3><div class="cells"></div>';
+    cells.forEach((cp, cell) => {
+      const box = document.createElement('div');
+      const inReview = cp === 2 || (since === 0 && cp < 2);
+      box.className = 'cell ' + (added.has(index + '-' + cell) && inReview ? 'added' : inReview ? 'now' : cp < 2 ? 'before' : 'later');
+      box.title = 'Checkpoint ' + cp;
+      phase.lastChild.append(box);
+    });
+    board.append(phase);
+  });
+  document.getElementById('scope-note').textContent = since === 0 ? '· 79 Tasks, 7 stories, diff base main' : '· 38 Tasks, 4 stories, diff base cp-1 a41f9c2';
+}
+document.getElementById('scope').addEventListener('click', event => {
+  const button = event.target.closest('[data-since]');
+  if (!button) return;
+  document.querySelectorAll('[data-since]').forEach(other => other.classList.toggle('on', other === button));
+  drawBoard(Number(button.dataset.since));
+});
+drawBoard(1);
+document.getElementById('folds').innerHTML = checkpoints.map((cp, index) =>
+  '<div class="cp' + (index === 1 ? ' current' : '') + '"><strong>' + cp.title + '</strong><div class="note">' + cp.tasks + ' Tasks · ' + cp.state + '</div><div class="bar"><span style="width:' + Math.round(100 * cp.done / cp.tasks) + '%"></span></div></div>').join('');
+document.getElementById('do-pass').addEventListener('click', () => {
+  document.getElementById('why').textContent = document.getElementById('reason').value;
+  document.getElementById('pass-form').classList.add('hide');
+  document.getElementById('passed').classList.remove('hide');
+});
+document.getElementById('do-change').addEventListener('click', () => document.getElementById('changes').classList.remove('hide'));
+document.getElementById('theme').addEventListener('click', event => {
+  const dark = document.documentElement.classList.toggle('dark');
+  event.target.textContent = dark ? 'Light' : 'Dark';
+});
+</script>
+</body>
+</html>
