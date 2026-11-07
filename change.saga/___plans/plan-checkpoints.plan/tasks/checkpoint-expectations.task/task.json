@@ -9,6 +9,7 @@
     "within_two_days": true,
     "reason": "A list on the checkpoint, a command to edit it, and pass, report, review, and guide reading it."
   },
-  "state": "planned",
+  "state": "done",
+  "summary": "plan expect, pass --met, and the report, review, and guide reading them.",
   "created_at": "2026-11-07T18:37:07.359143Z"
 }
