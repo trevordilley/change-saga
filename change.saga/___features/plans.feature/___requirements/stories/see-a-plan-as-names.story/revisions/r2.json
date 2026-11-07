@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:see-a-plan-as-names",
+  "parents": [
+    "urn:change-saga:change-saga:story:see-a-plan-as-names:revision:r1"
+  ],
+  "title": "See a Plan as a hierarchy of names",
+  "statement": "As an architect I can see a Plan as a few top-level names that zoom into more detailed names down to the code, with the Tasks on each checked off as they finish, so unexpected or unneeded work stands out",
+  "overview": "A pile of Tasks hides the shape of the work. A name labels an abstraction, and an\nabstraction hides details: zoom in on a name and more names appear, more detailed, until\nthe leaves are the parts expected to be worked on, related to the code. Names link to one\nanother, so the same hierarchy reads as a diagram to zoom into or as a tree that branches\nfurther the lower it goes.\n\nA Plan's top-level names say what is being worked on. Its Tasks attach to names, and as\nTasks finish, their names are checked off. Work attached to no name is unexpected; a name\nno Task reaches may be unneeded. Both are what a reader most needs to see.\n\n## Decisions\n\n- **A name is a record of its own, kept in the Plan.** It lives at\n  `___plans/\u003cplan\u003e.plan/names/\u003cid\u003e.name/name.json` beside the Tasks: a title, an optional\n  summary, at most one parent name, labeled links to other names, and an optional pointer\n  to the project's vocabulary. Git is its history, as for a Task. Terms and inventory\n  Components and Systems are app-wide and durable; a Plan's breakdown is about one body of\n  work and is frozen with the Plan when it is delivered. Folding names into either would\n  either force a C4 hierarchy onto the inventory, which SPEC rejects, or fill the\n  vocabulary with names of work in flight.\n- **The Plan's names are its own, and may point at the project's.** A name's optional\n  `record` points at a Term, Component, or System, so a name that already means something\n  durable says so. Nothing copies the project's records into the Plan.\n- **The diagram is laid out from the hierarchy, not authored.** Agents add and move names\n  as a Plan changes; an authored drawing would drift from the record. The reader shows the\n  children of a focused name as boxes holding their own children's names in miniature, and\n  zooming in focuses a child. A link is drawn between the visible boxes that hold its ends,\n  as the whiteboard's ERD zoom already collapses edges onto a visible ancestor.\n- **Code relations come from Tasks.** A Task already names exact code, so a name's code is\n  the code of the Tasks under it, and a name pointing at a Component reaches its code too.\n  A name carries no code of its own, so nothing new goes stale.\n- **Gaps are reported, never refused.** A Plan that has no names reports nothing new. Once\n  it has names, a Task naming none is unexpected work and a name no Task reaches may be\n  unneeded; `plan guide` and the reader list both, and neither makes the Saga invalid.\n",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:checkpoint-expectations-and-names-20261107"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "names-zoom-to-detail",
+      "statement": "plan name add records a name in a Plan with at most one parent name of the same Plan; a missing parent or a cycle is refused, and query plan returns each name with its parent and children"
+    },
+    {
+      "id": "names-link",
+      "statement": "A name links to other names of the same Plan with a label; a link to a missing name is refused, and removing a name is refused while a child, a link, or a Task still names it"
+    },
+    {
+      "id": "names-point-at-vocabulary",
+      "statement": "A name may point at one Term, Component, or System of the Saga; a pointer to a missing record is refused when written and reported as dangling if the record is later removed"
+    },
+    {
+      "id": "tasks-check-off-names",
+      "statement": "task add --name and task set --name attach a Task to names of its Plan, refusing a missing name; a name reads done when Tasks reach it and all of them are done, under way when any has started, and planned otherwise"
+    },
+    {
+      "id": "unexpected-and-unneeded-work",
+      "statement": "In a Plan with names, plan guide and the Names page list each Task that names no name and each name no Task reaches; neither makes the Saga invalid, and a Plan without names reports neither"
+    },
+    {
+      "id": "names-tree",
+      "statement": "The Plan's Names page shows its names as a tree that expands level by level, each with its state and its count of done Tasks of all Tasks under it"
+    },
+    {
+      "id": "names-diagram",
+      "statement": "The Names page draws the children of a focused name as boxes holding their own children's names; selecting a box zooms into it at ?focus=ID, a breadcrumb zooms back out, and each link is drawn between the visible boxes that hold its ends and omitted inside one box"
+    }
+  ],
+  "created_at": "2026-11-07T18:41:57.574459Z"
+}

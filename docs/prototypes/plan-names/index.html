@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan names prototype</title>
+<style>
+:root { color-scheme: light; --bg:#fff; --subtle:#f6f7f9; --inset:#eef0f4; --ink:#1b2130; --muted:#5b6475; --line:#d9dde5; --accent:#0b63ce; --accent-soft:#e7f0fc;
+  --done:#14713c; --done-bg:#e3f4e9; --work:#8a5a00; --work-bg:#fdf1d6; --wait:#5b6475; --wait-bg:#eef0f4; --warn:#a4262c; --warn-bg:#fbe7e8; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+button { font:inherit; color:inherit; cursor:pointer; }
+.banner { background:var(--work-bg); color:var(--work); padding:6px 20px; font-size:13px; border-bottom:1px solid var(--line); }
+.top { display:flex; align-items:center; gap:10px; padding:10px 20px; border-bottom:1px solid var(--line); }
+.tab { border:1px solid var(--line); border-radius:6px; padding:3px 10px; font-size:13px; color:var(--muted); background:none; }
+.tab.on { border-color:var(--accent); color:var(--accent); }
+main { max-width:1220px; margin:0 auto; padding:18px 24px 60px; }
+h1 { font-size:22px; margin:2px 0 2px; } h2 { font-size:15px; margin:0 0 8px; }
+.sub { color:var(--muted); margin:0 0 14px; max-width:820px; font-size:14px; }
+.layout { display:grid; grid-template-columns:300px minmax(0,1fr); gap:18px; }
+.panel { border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:14px; }
+.note { color:var(--muted); font-size:12px; }
+.legend { display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin:0 0 10px; }
+.dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; vertical-align:-1px; }
+.s-done { background:var(--done); } .s-work { background:var(--work); } .s-planned { background:var(--wait); } .s-unreached { background:transparent; border:1.5px dashed var(--warn); }
+/* tree */
+.tree, .tree ul { list-style:none; margin:0; padding-left:14px; }
+.tree { padding-left:0; }
+.tree li { margin:1px 0; }
+.tree .row { display:flex; align-items:center; gap:4px; font-size:13px; border-radius:5px; padding:1px 4px; cursor:pointer; }
+.tree .row:hover { background:var(--subtle); }
+.tree .row.focus { background:var(--accent-soft); color:var(--accent); }
+.tree .twist { width:14px; color:var(--muted); font-size:10px; text-align:center; }
+.tree .count { margin-left:auto; color:var(--muted); font-size:11px; }
+.tree li.done > .row .label { text-decoration:line-through; text-decoration-color:var(--done); }
+/* diagram */
+.crumbs { font-size:13px; margin-bottom:8px; }
+.crumbs a { color:var(--accent); cursor:pointer; text-decoration:none; }
+.stage { position:relative; border:1px solid var(--line); border-radius:10px; background:var(--subtle); min-height:430px; padding:16px; }
+.boxes { display:grid; gap:56px 64px; position:relative; z-index:1; }
+.box { background:var(--bg); border:1.5px solid var(--line); border-radius:9px; padding:9px 11px; cursor:zoom-in; min-height:116px; }
+.box:hover { border-color:var(--accent); }
+.box.done { border-color:var(--done); background:var(--done-bg); }
+.box.work { border-color:var(--work); }
+.box.unreached { border-style:dashed; border-color:var(--warn); background:var(--warn-bg); cursor:default; }
+.box.leaf { cursor:default; }
+.box h3 { margin:0; font-size:14px; display:flex; gap:6px; align-items:center; }
+.box .meta { font-size:12px; color:var(--muted); margin:2px 0 6px; }
+.box .bar { height:5px; background:var(--inset); border-radius:3px; overflow:hidden; margin-bottom:7px; }
+.box .bar span { display:block; height:100%; background:var(--done); }
+.chips { display:flex; flex-wrap:wrap; gap:4px; }
+.chip { font-size:11px; border:1px solid var(--line); border-radius:10px; padding:0 7px; background:var(--subtle); }
+.chip.done { border-color:var(--done); color:var(--done); }
+.chip.unreached { border-style:dashed; border-color:var(--warn); color:var(--warn); }
+.tasks { margin:6px 0 0; padding:0; list-style:none; font-size:12px; }
+.tasks li::before { content:"○ "; color:var(--wait); } .tasks li.done::before { content:"✓ "; color:var(--done); } .tasks li.work::before { content:"◐ "; color:var(--work); }
+.term { font-size:11px; color:var(--accent); }
+svg.links { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; overflow:visible; }
+svg.links path { fill:none; stroke:var(--muted); stroke-width:1.4; }
+svg.links text { font-size:11px; fill:var(--muted); paint-order:stroke; stroke:var(--subtle); stroke-width:4px; text-anchor:middle; }
+.gaps { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+.gap h2 { display:flex; gap:8px; align-items:center; }
+.gap ul { margin:0; padding-left:18px; font-size:13px; }
+.badge { font-size:11px; border-radius:9px; padding:0 7px; background:var(--warn-bg); color:var(--warn); }
+</style>
+</head>
+<body>
+<div class="banner">Prototype · a Plan seen as a hierarchy of names (story see-a-plan-as-names). The data is this build's own Plan.</div>
+<div class="top"><strong>Plan</strong> <button class="tab">Deck</button><button class="tab">Tasks</button><button class="tab on">Names</button></div>
+<main>
+<h1>See a Plan as a hierarchy of names</h1>
+<p class="sub">A few top-level names say what this Plan works on. Select a name to zoom in; its children appear with their own names in miniature. A name is checked off when every Task under it is done. Tasks on no name, and names no Task reaches, are listed below the diagram.</p>
+<div class="layout">
+  <section id="tree-panel" class="panel">
+    <h2>Names</h2>
+    <div class="legend"><span><i class="dot s-done"></i>done</span><span><i class="dot s-work"></i>under way</span><span><i class="dot s-planned"></i>planned</span><span><i class="dot s-unreached"></i>no Task</span></div>
+    <ul class="tree" id="tree"></ul>
+    <p class="note">The tree branches further the lower it goes. The count is done of all Tasks under the name.</p>
+  </section>
+  <section>
+    <div class="crumbs" id="crumbs"></div>
+    <div class="stage" id="diagram-panel"><svg class="links" id="links"></svg><div class="boxes" id="boxes"></div></div>
+    <p class="note">Links between names are drawn between the boxes you can see: a link from a hidden name is drawn from its visible ancestor, and a link inside one box is not drawn.</p>
+    <div class="gaps">
+      <div class="panel gap" id="unexpected-panel"><h2>Unexpected work <span class="badge" id="unexpected-count"></span></h2><ul id="unexpected"></ul><p class="note">Tasks that name no name. Either the work is not needed, or the hierarchy is missing a name.</p></div>
+      <div class="panel gap" id="unneeded-panel"><h2>Possibly unneeded <span class="badge" id="unneeded-count"></span></h2><ul id="unneeded"></ul><p class="note">Names no Task reaches. Either a Task is missing, or the name is not part of this Plan.</p></div>
+    </div>
+  </section>
+</div>
+</main>
+<script>
+const names = {
+  records:    { title: "Name records", parent: null, summary: "What a name is", links: [] },
+  record:     { title: "name.json", parent: "records" },
+  hierarchy:  { title: "One parent each", parent: "records" },
+  links:      { title: "Links between names", parent: "records" },
+  vocabulary: { title: "Points at a term or component", parent: "records", term: "term: name" },
+  checkoff:   { title: "Tasks on names", parent: null, summary: "How work checks names off", links: [{ to: "records", label: "attaches to" }] },
+  field:      { title: "A Task's names", parent: "checkoff" },
+  rollup:     { title: "Rolls up to parents", parent: "checkoff", links: [{ to: "hierarchy", label: "walks" }] },
+  gaps:       { title: "Gap report", parent: null, summary: "Unexpected and unneeded work", links: [{ to: "checkoff", label: "reads" }] },
+  unnamed:    { title: "Tasks on no name", parent: "gaps" },
+  unreached:  { title: "Names no Task reaches", parent: "gaps" },
+  view:       { title: "Names view", parent: null, summary: "Tree and zoomable diagram", links: [{ to: "checkoff", label: "shows" }, { to: "gaps", label: "lists" }] },
+  tree:       { title: "Expanding tree", parent: "view" },
+  diagram:    { title: "Zoomable diagram", parent: "view", links: [{ to: "links", label: "draws" }] },
+  layout:     { title: "Nested layout", parent: "diagram" },
+  collapse:   { title: "Links onto visible ancestors", parent: "diagram" },
+};
+const tasks = [
+  { id: "name-record", title: "Add the name record and its commands", state: "done", names: ["record", "hierarchy", "links"] },
+  { id: "task-names", title: "Let a Task name names", state: "done", names: ["field"] },
+  { id: "rollup", title: "Derive each name's progress", state: "in_progress", names: ["rollup"] },
+  { id: "guide-gaps", title: "Report unnamed Tasks and unreached names", state: "planned", names: ["unnamed", "unreached"] },
+  { id: "names-tree", title: "Draw the names tree", state: "planned", names: ["tree"] },
+  { id: "names-diagram", title: "Draw the zoomable diagram", state: "planned", names: ["layout", "collapse"] },
+  { id: "board-legend", title: "Restyle the Task board legend", state: "planned", names: [] },
+];
+const children = id => Object.keys(names).filter(k => names[k].parent === id);
+const under = id => [id, ...children(id).flatMap(under)];
+const tasksUnder = id => { const set = new Set(under(id)); return tasks.filter(t => t.names.some(n => set.has(n))); };
+const statusOf = id => { const t = tasksUnder(id); if (!t.length) return "unreached"; if (t.every(x => x.state === "done")) return "done"; if (t.some(x => x.state !== "planned")) return "work"; return "planned"; };
+const ancestry = id => id ? [...ancestry(names[id].parent), id] : [];
+let focus = null;
+const expanded = new Set(["records", "checkoff", "gaps", "view"]);
+
+function tree() {
+  const render = id => { const kids = children(id); const st = statusOf(id); const t = tasksUnder(id);
+    const dot = { done: "s-done", work: "s-work", planned: "s-planned", unreached: "s-unreached" }[st];
+    const open = expanded.has(id);
+    return `<li class="${st}"><div class="row ${focus === id ? "focus" : ""}" data-id="${id}"><span class="twist" data-twist="${id}">${kids.length ? (open ? "▾" : "▸") : ""}</span><i class="dot ${dot}"></i><span class="label">${names[id].title}</span><span class="count">${t.filter(x => x.state === "done").length}/${t.length}</span></div>${kids.length && open ? `<ul>${kids.map(render).join("")}</ul>` : ""}</li>`; };
+  document.getElementById("tree").innerHTML = children(null).map(render).join("");
+}
+function diagram() {
+  const crumbs = [`<a data-focus="">Plan</a>`, ...ancestry(focus).map(id => id === focus ? `<strong>${names[id].title}</strong>` : `<a data-focus="${id}">${names[id].title}</a>`)];
+  document.getElementById("crumbs").innerHTML = crumbs.join(" › ");
+  const shown = children(focus);
+  const cols = Math.min(shown.length, shown.length > 4 ? 3 : 2) || 1;
+  const boxes = document.getElementById("boxes");
+  boxes.style.gridTemplateColumns = `repeat(${cols}, minmax(0,1fr))`;
+  boxes.innerHTML = shown.map(id => { const st = statusOf(id); const t = tasksUnder(id); const done = t.filter(x => x.state === "done").length; const kids = children(id);
+    const inner = kids.length ? `<div class="chips">${kids.map(k => `<span class="chip ${statusOf(k)}">${names[k].title}</span>`).join("")}</div>`
+      : `<ul class="tasks">${t.map(x => `<li class="${x.state === "done" ? "done" : x.state === "in_progress" ? "work" : ""}">${x.title}</li>`).join("") || "<li>No Task reaches this name</li>"}</ul>`;
+    return `<div class="box ${st} ${kids.length ? "" : "leaf"}" data-box="${id}" ${kids.length ? `data-focus="${id}"` : ""}><h3>${st === "done" ? "✓ " : ""}${names[id].title}</h3><div class="meta">${names[id].summary || ""}${t.length ? ` ${done}/${t.length} Tasks done` : ""}${names[id].term ? ` · <span class="term">${names[id].term}</span>` : ""}</div>${t.length ? `<div class="bar"><span style="width:${100 * done / t.length}%"></span></div>` : ""}${inner}</div>`; }).join("");
+  requestAnimationFrame(drawLinks);
+}
+function drawLinks() {
+  const svg = document.getElementById("links"); const stage = svg.getBoundingClientRect();
+  const visible = new Set(children(focus));
+  const onto = id => { while (id && !visible.has(id)) id = names[id].parent; return id; };
+  const seen = new Map();
+  Object.entries(names).forEach(([from, n]) => (n.links || []).forEach(l => { const a = onto(from), b = onto(l.to); if (a && b && a !== b) seen.set(a + ">" + b, { a, b, label: l.label }); }));
+  svg.innerHTML = `<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#5b6475"/></marker></defs>` +
+    [...seen.values()].map(({ a, b, label }) => { const ra = document.querySelector(`[data-box="${a}"]`).getBoundingClientRect(), rb = document.querySelector(`[data-box="${b}"]`).getBoundingClientRect();
+      const ca = [ra.left + ra.width / 2 - stage.left, ra.top + ra.height / 2 - stage.top], cb = [rb.left + rb.width / 2 - stage.left, rb.top + rb.height / 2 - stage.top];
+      const edge = (c, r, toward) => { const dx = toward[0] - c[0], dy = toward[1] - c[1]; const t = Math.min(Math.abs((r.width / 2 + 4) / (dx || 1e-9)), Math.abs((r.height / 2 + 4) / (dy || 1e-9))); return [c[0] + dx * t, c[1] + dy * t]; };
+      const [x1, y1] = edge(ca, ra, cb), [x2, y2] = edge(cb, rb, ca);
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - 4;
+      return `<path d="M${x1},${y1} Q${mx},${my} ${x2},${y2}" marker-end="url(#arrow)"/><text x="${mx}" y="${my}">${label}</text>`; }).join("");
+}
+function gaps() {
+  const unnamed = tasks.filter(t => !t.names.length);
+  const unreached = Object.keys(names).filter(id => !children(id).length && statusOf(id) === "unreached");
+  document.getElementById("unexpected").innerHTML = unnamed.map(t => `<li>${t.title}</li>`).join("") || "<li>None</li>";
+  document.getElementById("unneeded").innerHTML = unreached.map(id => `<li>${ancestry(id).map(a => names[a].title).join(" › ")}</li>`).join("") || "<li>None</li>";
+  document.getElementById("unexpected-count").textContent = unnamed.length;
+  document.getElementById("unneeded-count").textContent = unreached.length;
+}
+document.addEventListener("click", e => {
+  const twist = e.target.closest("[data-twist]"); if (twist) { const id = twist.dataset.twist; expanded.has(id) ? expanded.delete(id) : expanded.add(id); tree(); return; }
+  const row = e.target.closest(".row"); if (row) { const id = row.dataset.id; focus = children(id).length ? id : names[id].parent; expanded.add(id); render(); return; }
+  const f = e.target.closest("[data-focus]"); if (f) { focus = f.dataset.focus || null; render(); }
+});
+window.addEventListener("resize", drawLinks);
+function render() { tree(); diagram(); gaps(); }
+render();
+</script>
+</body>
+</html>
