@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:operator-owns-the-plan",
+  "parents": [
+    "urn:change-saga:change-saga:story:operator-owns-the-plan:revision:r1"
+  ],
+  "title": "One operator owns a Plan while implementors deliver",
+  "statement": "As a developer I run one operator agent that owns a Plan and its record and delegates the work, so implementing agents focus on delivery and the record stays consistent",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer",
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:one-operator-owns-the-plan-20261106",
+    "urn:change-saga:change-saga:citation:checkpoint-expectations-and-names-20261107"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "guide-recommends-one-operator",
+      "statement": "plan guide and the skill recommend one operator agent that owns a Plan and delegates the Tasks that can start to implementing agents"
+    },
+    {
+      "id": "implementors-report-and-deliver",
+      "statement": "The guidance tells implementing agents to deliver on their own branch and report what they did to the operator, running no change-saga command and keeping no Saga"
+    },
+    {
+      "id": "operator-keeps-the-record",
+      "statement": "The guidance says the operator records implementors' progress, marks a Task done once its work is merged into its branch, and passes and merges checkpoints"
+    },
+    {
+      "id": "operator-runs-the-live-plan",
+      "statement": "The guidance tells the operator to keep the live Plan open with change-saga serve, to see where things stand"
+    }
+  ],
+  "created_at": "2026-11-07T18:39:14.581017Z"
+}

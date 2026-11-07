@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-implementors-report-and-deliver-2",
+  "test_case": "urn:change-saga:change-saga:test-case:plans-operator-owns-the-plan",
+  "test_revision": "urn:change-saga:change-saga:test-case:plans-operator-owns-the-plan:revision:r2",
+  "role": "test_implementation",
+  "steps": [
+    "implementors-report-and-deliver"
+  ],
+  "code": [
+    {
+      "commit": "7df4a596bcd9b4689957588f4b8e16c0a59f85ec",
+      "path": "internal/cli/plans_test.go",
+      "start": 646,
+      "end": 654,
+      "digest": "sha256:5dd64ca400352855bff095711287a2ea22250bfb9d7e7272402a2a96d90b44b2"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:plans-operator-owns-the-plan:evidence:evidence-implementors-report-and-deliver"
+  ],
+  "created_at": "2026-11-07T18:39:49Z"
+}
