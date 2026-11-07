@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/name.schema.json",
+  "version": 5,
+  "id": "checkoff",
+  "title": "Tasks on names",
+  "summary": "How work checks names off",
+  "links": [
+    {
+      "to": "records",
+      "label": "attaches to"
+    }
+  ],
+  "created_at": "2026-11-07T18:50:13.009248Z"
+}

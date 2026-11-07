@@ -8,6 +8,9 @@
   "depends_on": [
     "name-record"
   ],
+  "names": [
+    "task-field"
+  ],
   "sizing": {
     "within_two_days": true,
     "reason": "A names field on task.json, --name on task add and set, and name removal refused while a Task names it."

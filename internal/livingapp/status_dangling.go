@@ -137,10 +137,18 @@ func danglingReferences(in StatusInputs) []DanglingReference {
 			}
 		}
 	}
+	termPrefix := "urn:change-saga:" + in.SagaID + ":term:"
 	for _, plan := range in.Plans {
 		for _, task := range plan.Tasks {
 			add(DanglingReference{Record: task.Target, Kind: "task", Path: task.Path, Missing: missing(task.Story),
 				Fix: "change-saga task set --task " + task.Target + " --story CURRENT_STORY, or task remove"})
+		}
+		// Terms can be removed; inventory records are retired and stay.
+		for _, name := range plan.Names {
+			if strings.HasPrefix(name.Record, termPrefix) {
+				add(DanglingReference{Record: name.Target, Kind: "plan_name", Path: name.Path, Missing: missing(name.Record),
+					Fix: "change-saga plan set-name --plan " + plan.ID + " --id " + name.ID + " --record CURRENT_URN, or --record ''"})
+			}
 		}
 	}
 	sort.Slice(result, func(i, j int) bool { return result[i].Record < result[j].Record })

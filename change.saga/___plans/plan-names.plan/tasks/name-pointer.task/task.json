@@ -8,6 +8,9 @@
   "depends_on": [
     "name-record"
   ],
+  "names": [
+    "vocabulary"
+  ],
   "sizing": {
     "within_two_days": true,
     "reason": "One optional URN checked on write and reported as dangling by health."

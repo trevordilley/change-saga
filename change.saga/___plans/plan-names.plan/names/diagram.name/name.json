@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/name.schema.json",
+  "version": 5,
+  "id": "diagram",
+  "title": "Zoomable diagram",
+  "parent": "view",
+  "links": [
+    {
+      "to": "name-links",
+      "label": "draws"
+    }
+  ],
+  "created_at": "2026-11-07T18:50:17.244607Z"
+}

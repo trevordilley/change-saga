@@ -42,6 +42,8 @@ type planQueryRecord struct {
 	PhaseRows    []planQueryPhase    `json:"phases"`
 	TaskRows     []planQueryTaskRow  `json:"tasks"`
 	SlideRows    []planQuerySlideRow `json:"slides"`
+	// Names is the Plan's names with their progress and gaps, when it has any.
+	Names *planNamesResult `json:"names,omitempty"`
 }
 
 type planQueryPhase struct {
@@ -227,6 +229,10 @@ func queryPlan(args []string, out io.Writer) error {
 		for _, slide := range plan.Deck.Slides {
 			record.SlideRows = append(record.SlideRows, planQuerySlideRow{ID: slide.ID, Target: slide.Target, Title: slide.Title})
 		}
+	}
+	if len(plan.Names) > 0 {
+		names := namesResult(plan)
+		record.Names = &names
 	}
 	return writeQuerySuccess(out, snapshot, map[string]any{"plan": record}, nil)
 }

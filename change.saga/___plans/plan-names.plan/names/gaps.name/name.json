@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/name.schema.json",
+  "version": 5,
+  "id": "gaps",
+  "title": "Gap report",
+  "summary": "Unexpected and unneeded work",
+  "links": [
+    {
+      "to": "checkoff",
+      "label": "reads"
+    }
+  ],
+  "created_at": "2026-11-07T18:50:14.555672Z"
+}

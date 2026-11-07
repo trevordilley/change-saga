@@ -411,6 +411,9 @@ func AddTask(root, planID string, task saga.TaskManifest, unblocks []string, ess
 		if err := refuse(saga.PlanTaskProblems(plan.Phases, candidate)); err != nil {
 			return err
 		}
+		if err := refuseNames(saga.PlanNameProblems(plan.NameManifests(), candidate)); err != nil {
+			return err
+		}
 		tasks, err := store.EnsureDirWithin(document.Root, filepath.Join(plan.Directory, saga.PlanTasksDir))
 		if err != nil {
 			return err
@@ -461,6 +464,9 @@ func UpdateTask(root, planID, taskID string, change func(*saga.TaskManifest) err
 			return err
 		}
 		if err := refuse(saga.PlanTaskProblems(plan.Phases, replaced(plan, task.TaskManifest))); err != nil {
+			return err
+		}
+		if err := refuseNames(saga.PlanNameProblems(plan.NameManifests(), replaced(plan, task.TaskManifest))); err != nil {
 			return err
 		}
 		if err := writeTask(task); err != nil {

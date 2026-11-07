@@ -39,6 +39,12 @@
         "$ref": "#/$defs/id"
       }
     },
+    "names": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      }
+    },
     "code": {
       "type": "array",
       "items": {

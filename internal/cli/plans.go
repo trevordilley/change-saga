@@ -23,7 +23,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "expect", "pass", "widen", "deliver"}
+var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "expect", "pass", "widen", "deliver", "add-name", "set-name", "remove-name", "names"}
 
 // Plan dispatches the Plan commands.
 func Plan(ctx context.Context, args []string, out io.Writer) error {
@@ -61,6 +61,14 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planWiden(ctx, args[1:], out)
 	case "expect":
 		err = planExpect(ctx, args[1:], out)
+	case "add-name":
+		err = planAddName(ctx, args[1:], out)
+	case "set-name":
+		err = planSetName(ctx, args[1:], out)
+	case "remove-name":
+		err = planRemoveName(ctx, args[1:], out)
+	case "names":
+		err = planNames(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["plan"])
 	}
@@ -327,6 +335,12 @@ func planGuide(ctx context.Context, args []string, out io.Writer) error {
 			notReady++
 			fmt.Fprintf(out, "  Judged larger than two days, so split it: %s (%s)\n", task.ID, task.Title)
 		}
+	}
+	// Once a Plan has names, work on none is unexpected and a name no Task
+	// reaches may be unneeded. A Plan without names is not asked to have them.
+	if view := saga.PlanNames(found.NameManifests(), found.Manifests()); view != nil {
+		notReady += len(view.Unnamed) + len(view.Unreached)
+		writeNameGaps(out, found, view)
 	}
 	var titles map[string]plancheckpoint.Story
 	for _, phase := range found.Phases {
@@ -798,6 +812,8 @@ func taskAdd(ctx context.Context, args []string, out io.Writer) error {
 	flags.Var(&unblocks, "unblocks", "task this one unblocks; repeatable")
 	flags.Var(&dependsOn, "depends-on", "task this one depends on; repeatable")
 	flags.Var(&code, "code", "PATH:START-END[=NOTE] to pin at HEAD; repeatable")
+	var names stringList
+	flags.Var(&names, "name", "a name of the Plan this task works on; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -808,7 +824,7 @@ func taskAdd(ctx context.Context, args []string, out io.Writer) error {
 	if err := requireStory(root, *story); err != nil {
 		return err
 	}
-	value := saga.TaskManifest{ID: *id, Title: strings.TrimSpace(*title), Phase: *phase, Story: *story, DependsOn: dependsOn}
+	value := saga.TaskManifest{ID: *id, Title: strings.TrimSpace(*title), Phase: *phase, Story: *story, DependsOn: dependsOn, Names: taskNames(names)}
 	var err error
 	if value.Sizing, err = taskSizing(*sizing, *sizingReason); err != nil {
 		return err
@@ -892,6 +908,8 @@ func taskSet(ctx context.Context, args []string, out io.Writer) error {
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var code stringList
 	flags.Var(&code, "code", "PATH:START-END[=NOTE] to pin at HEAD; repeatable; replaces the task's code references")
+	var names stringList
+	flags.Var(&names, "name", "a name of the Plan this task works on; repeatable; replaces the task's names, and one empty value clears them")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -944,6 +962,9 @@ func taskSet(ctx context.Context, args []string, out io.Writer) error {
 		}
 		if len(code) > 0 {
 			value.Code = references
+		}
+		if given["name"] {
+			value.Names = taskNames(names)
 		}
 		return nil
 	}, essay)
@@ -1104,4 +1125,18 @@ func taskList(ctx context.Context, args []string, out io.Writer) error {
 		}
 	}
 	return nil
+}
+
+// taskNames reads --name values, dropping empty ones, so one empty value clears.
+func taskNames(values []string) []string {
+	names := []string{}
+	for _, value := range values {
+		if value = strings.TrimSpace(value); value != "" {
+			names = append(names, value)
+		}
+	}
+	if len(names) == 0 {
+		return nil
+	}
+	return names
 }

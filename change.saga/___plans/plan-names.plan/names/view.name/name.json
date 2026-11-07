@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/name.schema.json",
+  "version": 5,
+  "id": "view",
+  "title": "Names view",
+  "summary": "Tree and zoomable diagram",
+  "links": [
+    {
+      "to": "checkoff",
+      "label": "shows"
+    },
+    {
+      "to": "gaps",
+      "label": "lists"
+    }
+  ],
+  "created_at": "2026-11-07T18:50:16.153067Z"
+}

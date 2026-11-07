@@ -8,6 +8,9 @@
   "depends_on": [
     "task-names"
   ],
+  "names": [
+    "rollup"
+  ],
   "sizing": {
     "within_two_days": true,
     "reason": "A walk over the hierarchy rolling Task states up to each name, and JSON output."

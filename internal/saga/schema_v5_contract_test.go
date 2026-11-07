@@ -33,6 +33,7 @@ var v5RecordSchemas = []string{
 	"review-comment.schema.json",
 	"plan.schema.json",
 	"task.schema.json",
+	"name.schema.json",
 	"diagram.schema.json",
 }
 
@@ -377,7 +378,7 @@ func TestSagaLoadRefusesEveryOtherContainer(t *testing.T) {
 func TestV5SchemaListIsStable(t *testing.T) {
 	got := append([]string(nil), v5RecordSchemas...)
 	sort.Strings(got)
-	want := []string{"coverage-exception.schema.json", "diagram.schema.json", "plan.schema.json", "quality-evidence.schema.json", "quality-policy.schema.json", "relation.schema.json", "review-approval.schema.json", "review-comment.schema.json", "review.schema.json", "saga.schema.json", "task.schema.json", "test-case-event.schema.json", "test-case-revision.schema.json", "test-case.schema.json", "test-run.schema.json"}
+	want := []string{"coverage-exception.schema.json", "diagram.schema.json", "name.schema.json", "plan.schema.json", "quality-evidence.schema.json", "quality-policy.schema.json", "relation.schema.json", "review-approval.schema.json", "review-comment.schema.json", "review.schema.json", "saga.schema.json", "task.schema.json", "test-case-event.schema.json", "test-case-revision.schema.json", "test-case.schema.json", "test-run.schema.json"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("record schema set = %v, want %v", got, want)
 	}

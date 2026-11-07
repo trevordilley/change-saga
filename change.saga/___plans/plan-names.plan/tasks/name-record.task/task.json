@@ -5,6 +5,11 @@
   "title": "Add the name record and plan name commands",
   "phase": "model",
   "story": "urn:change-saga:change-saga:story:see-a-plan-as-names",
+  "names": [
+    "record",
+    "hierarchy",
+    "name-links"
+  ],
   "sizing": {
     "within_two_days": true,
     "reason": "A record beside Tasks, load and validation of parent and links with a cycle check, schema, and add, set, remove, list."

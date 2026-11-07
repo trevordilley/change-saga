@@ -8,6 +8,9 @@
   "depends_on": [
     "name-progress"
   ],
+  "names": [
+    "tree"
+  ],
   "sizing": {
     "within_two_days": true,
     "reason": "A third Plan tab rendering nested details from the derived progress, and the two gap lists."

@@ -8,6 +8,10 @@
   "depends_on": [
     "name-progress"
   ],
+  "names": [
+    "unnamed",
+    "unreached"
+  ],
   "sizing": {
     "within_two_days": true,
     "reason": "Two lists in plan guide, only for a Plan with names."

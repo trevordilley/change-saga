@@ -8,6 +8,10 @@
   "depends_on": [
     "names-tree"
   ],
+  "names": [
+    "layout",
+    "collapse"
+  ],
   "sizing": {
     "within_two_days": true,
     "reason": "A server-drawn SVG of the focused name's children with their children in miniature, ?focus zoom, breadcrumb, and links collapsed onto visible boxes."

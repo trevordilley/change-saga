@@ -25,8 +25,10 @@ import (
 //	  plan.json               title, phases, prototypes, reviews, delivered
 //	  deck/                   the Plan's deck: one flat deck bundle, role plan
 //	  tasks/<id>.task/
-//	    task.json             title, phase, story, depends_on, code, sizing, state
+//	    task.json             title, phase, story, names, depends_on, code, sizing, state
 //	    essay.md              optional
+//	  names/<id>.name/
+//	    name.json             title, summary, parent, links, record
 const (
 	PlansDir         = "___plans"
 	PlanSuffix       = ".plan"
@@ -153,7 +155,9 @@ type TaskManifest struct {
 	// must unblock a Task that leads to a story.
 	Story string `json:"story,omitempty"`
 	// DependsOn names Tasks of the same Plan. What a Task unblocks is derived.
-	DependsOn []string            `json:"depends_on,omitempty"`
+	DependsOn []string `json:"depends_on,omitempty"`
+	// Names are the ids of the Plan's names the Task works on.
+	Names     []string            `json:"names,omitempty"`
 	Code      []coderef.Reference `json:"code,omitempty"`
 	Sizing    *TaskSizing         `json:"sizing,omitempty"`
 	State     string              `json:"state"`
@@ -181,6 +185,8 @@ type Plan struct {
 	Target    string  `json:"target"`
 	Deck      *Deck   `json:"deck,omitempty"`
 	Tasks     []*Task `json:"tasks,omitempty"`
+	// Names are the Plan's names, by id.
+	Names []*PlanName `json:"names,omitempty"`
 }
 
 // PlanTarget is the URN of a Plan; its deck, slides, Items, and Tasks are named
@@ -502,6 +508,11 @@ func ValidateTaskManifest(sagaID string, manifest TaskManifest) error {
 	case manifest.Story != "" && !validRecordOfKinds(sagaID, manifest.Story, []string{"story"}):
 		return fmt.Errorf("story must be a canonical story URN of this Saga")
 	}
+	for _, name := range manifest.Names {
+		if !ValidID(name) {
+			return fmt.Errorf("names must be ids of names of this Plan")
+		}
+	}
 	for _, reference := range manifest.Code {
 		if reference.WholeFile() {
 			return fmt.Errorf("code references must name exact lines")
@@ -749,7 +760,7 @@ func loadPlan(root, dir, id string, manifest Manifest, options loadOptions, vali
 		switch entry.Name() {
 		case PlanManifestName:
 			continue
-		case PlanDeckDir, PlanTasksDir:
+		case PlanDeckDir, PlanTasksDir, PlanNamesDir:
 			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
 				addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), "plan record directories must be real directories")
 			}
@@ -758,7 +769,7 @@ func loadPlan(root, dir, id string, manifest Manifest, options loadOptions, vali
 		if strings.HasPrefix(entry.Name(), ".change-saga-") {
 			continue
 		}
-		addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), "unknown entry in a plan; a plan holds plan.json, deck, and tasks")
+		addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), "unknown entry in a plan; a plan holds plan.json, deck, tasks, and names")
 	}
 
 	deckDir := filepath.Join(dir, PlanDeckDir)
@@ -801,6 +812,9 @@ func loadPlan(root, dir, id string, manifest Manifest, options loadOptions, vali
 	}
 	for _, problem := range PlanTaskProblems(plan.Phases, plan.Manifests()) {
 		addIssue(validation, "error", relativePath(root, filepath.Join(tasksDir, problem.Task+TaskSuffix)), "task "+problem.Task+": "+problem.Message)
+	}
+	if err := loadNames(root, plan, manifest, validation); err != nil {
+		return nil, err
 	}
 	validatePlanItemRecords(plan, validation)
 	return plan, nil
