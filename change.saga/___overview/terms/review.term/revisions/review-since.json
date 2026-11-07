@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "review-since",
+  "term": "urn:change-saga:change-saga:term:review",
+  "parents": [
+    "urn:change-saga:change-saga:term:review:revision:integration-review-features"
+  ],
+  "name": "Review",
+  "definition": "A pull request's change-specific slide deck, bound to its base and followed head until merge. Its Items explain changed code. Decisions belong to review slides; comments belong to review slides, Items, or code lines, with unowned code-line threads targeting the review itself. A checkpoint's review can be widened to show changes since an earlier checkpoint without changing what it merges into. Feature implementation decks remain ordinary documentation.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "aliases": [
+    "pull-request review",
+    "PR review"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:contextual-comments",
+    "urn:change-saga:change-saga:story:review-decision"
+  ],
+  "code": [
+    {
+      "commit": "34f102fc290bc0bb75f066a61129e9a53460d48a",
+      "path": "internal/saga/review.go",
+      "start": 19,
+      "end": 30,
+      "digest": "sha256:3d1a158507af292d421874757bcfa3c9f5f4f7aaa12703e7fe0655f0c99d4771"
+    },
+    {
+      "commit": "34f102fc290bc0bb75f066a61129e9a53460d48a",
+      "path": "internal/saga/review.go",
+      "start": 64,
+      "end": 86,
+      "digest": "sha256:7971645bf94d31d8068caba2cf5467ca98da26a1a264df2c8f91ac63feb34d5f"
+    }
+  ],
+  "created_at": "2026-11-07T18:30:31.107456Z"
+}

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "34f102fc290bc0bb75f066a61129e9a53460d48a",
       "path": "internal/reviewstate/reviewstate.go",
       "start": 43,
-      "end": 93,
-      "digest": "sha256:39df465c2707ae19ed61835455411284d2d984a8c2eccaf541d0a33b17b9d2f6"
+      "end": 104,
+      "digest": "sha256:176ff22813dfd2d87302a901ecd6209fe47ecbf95841685ed9f6c99c39627e74"
     }
   ]
 }
