@@ -276,16 +276,18 @@ without AI help, would finish in two days or less.
    it with plan set --checkpoint-passer person|agent.
 8. Check. Run plan guide --plan ID until it has nothing left to name.
 
-While the work happens, one agent owns the Plan: the operator. It picks the Tasks
-task list --ready offers, delegates each to an implementing agent with the Task's URN,
-and keeps the record. Once a Task's work is merged into the operator's branch, the
-operator runs task done; it also passes checkpoints, merges them, and updates the Saga.
-Implementors focus on delivery: code and tests on their own branch. They read their
-Task with query task, report with task start when they begin, task note on a finding
-that changes the work, and task note --blocked when they cannot go on, and leave the
-Saga's records to the operator. Do not narrate: every note is a tool call. task start
-and task note are live activity, shared by every worktree of this repository and never
-committed. task done is durable, and it is the one that counts.
+While the work happens, one agent owns the Plan and all of change.saga: the operator.
+Keep the Plan open where you can see it, with change-saga serve and its Tasks tab. The
+operator picks the Tasks task list --ready offers, delegates each to an implementing
+agent with the Task's URN, and keeps the record: task start --agent NAME when it
+delegates, task note with what the implementor reports, and task done once the work is
+merged into its branch. It also passes and merges checkpoints and updates the Saga.
+Implementors only deliver: code and tests on their own branch, then a report to the
+operator of what they did. They run no change-saga command and leave the
+Saga's records to the operator: keeping a Saga is the operator's job, and asking every
+implementor to do it makes the work cumbersome. Do not narrate: every note is a tool
+call. task start and task note are live activity, never committed; task done is
+durable, and it is the one that counts.
 
 At a checkpoint, the operator stops and proves the stretch works: run the tests, then
 plan checkpoint --plan ID --checkpoint PHASE says what it covers and what to do next.

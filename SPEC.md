@@ -1974,8 +1974,9 @@ byte-range pages.
 The recommended way to execute a Plan is one **operator** agent that owns it: it
 delegates ready Tasks to implementing agents, runs `task done` once a Task's work is merged
 into its branch, passes and merges checkpoints, and keeps the Saga current. Implementing
-agents deliver code and tests on their own branches and report live activity, which
-writes no file of the Saga. This is guidance; no command refuses another agent.
+agents deliver code and tests on their own branches, report what they did to the
+operator, and run no command of the Saga; the operator records their live activity with
+`--agent`. This is guidance; no command refuses another agent.
 
 ### Checkpoints
 

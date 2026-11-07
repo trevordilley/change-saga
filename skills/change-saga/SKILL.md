@@ -53,7 +53,10 @@ upkeep nobody asked for. A deck that lags the branch between PR updates is
 expected. When the user asks for Saga work directly, do it then.
 
 A Plan is the deliberate exception: it is written before the code exists, and its
-Tasks are marked done as the work happens. See [writing a Plan](references/plans.md).
+Tasks are marked done as the work happens. One agent, the operator, owns the Plan and
+all of `change.saga`, and keeps the live Plan open with `change-saga serve`.
+Implementing agents only deliver their work and report what they did to the operator;
+they keep no Saga. See [writing a Plan](references/plans.md).
 
 If a user asks to document features while iterating on a PR deck, follow the
 feature authoring workflow at that scope in the same Saga. Keep the PR deck

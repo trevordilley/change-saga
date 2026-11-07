@@ -79,15 +79,20 @@ Attach prototypes with `plan add-prototype`.
 
 ## While the work happens
 
-**One agent owns the Plan.** The operator, a manager agent, owns the task list and the
-record. It picks the Tasks `task list --ready` offers and delegates each to an
-implementing agent, for example a workspace of its own, giving it the Task's URN. Once a
-Task's work is merged into the operator's branch, the operator runs `task done`. It also
-passes and merges checkpoints and keeps the Saga current. Implementors focus on delivery:
-code and tests on their own branch, reading their Task with `query task --task URN`. They
-report live activity, which touches no file, and leave `task done`, `task set`, and every
-other Saga record to the operator. One writer keeps the record consistent, and nobody's
-branch carries Saga edits to conflict over.
+**One agent owns the Plan.** The operator, a manager agent, owns the task list and all
+of `change.saga`. Run the live Plan where the operator can see it, `change-saga serve
+change.saga` with the Plan's Tasks tab open, and go there to see where things stand. The
+operator picks the Tasks `task list --ready` offers and delegates each to an implementing
+agent, for example a workspace of its own, giving it the Task's URN. It records progress
+for them: `task start --agent NAME` when it delegates, `task note` with what they report,
+and `task done` once a Task's work is merged into its branch. It also passes and merges
+checkpoints and keeps the Saga current.
+
+**Implementors only deliver.** They write code and tests on their own branch and report
+what they did to the operator when they finish or get stuck. They run no `change-saga`
+command and keep no Saga: asking every implementor to maintain one makes the work
+cumbersome, and one writer keeps the record consistent with no Saga edits on anyone's
+branch to conflict over.
 
 ```sh
 change-saga task start --plan ID --task TASK change.saga
@@ -96,7 +101,8 @@ change-saga task note --plan ID --task TASK --blocked "no data before 1990" chan
 change-saga task done --plan ID --task TASK --summary TEXT change.saga
 ```
 
-Report on start, when blocked, on a finding that changes the work, and on finish.
+The operator reports on start, when an implementor is blocked, on a finding that changes
+the work, and on finish.
 Do not narrate: every note is a tool call you pay for, and a reader wants news, not a
 log. A later note clears blocked. Before picking up a Task, `task list --ready` and
 `query plan` say who is already on it, and `task start` warns if someone is.

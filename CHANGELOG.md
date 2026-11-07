@@ -12,7 +12,7 @@ tool, and what they have to do about it.
 
 ### Added
 
-- **One operator owns a Plan.** `plan guide` and the skill now recommend one operator agent that delegates ready Tasks, marks them done once their work is merged into its branch, passes and merges checkpoints, and keeps the Saga current, while implementing agents deliver and only report live activity.
+- **One operator owns a Plan.** `plan guide` and the skill now recommend one operator agent that delegates ready Tasks, marks them done once their work is merged into its branch, passes and merges checkpoints, and keeps the Saga current, and keeps the live Plan open, while implementing agents only deliver and report what they did to it, keeping no Saga.
 
 - **Checkpoints: review a big Plan one stretch at a time.** `plan add-phase --checkpoint [--after PHASE]` adds a phase that holds no Tasks and covers every Task since the previous checkpoint. Until it passes, `task list --ready` holds back the work after it and `task start` warns. `plan checkpoint` reports what it covers, a size estimate of about a slide per story, and what would make passing it surprising; `plan guide` names a checkpoint that looks to need more than six slides. `plan expect` states what must be true by it, `plan pass --met ID=HOW` confirms each, and `plan pass` records who passed it and why, refused until its Tasks are done and refused to an agent unless `plan set --checkpoint-passer agent` allows it. `plan link-review --checkpoint` names its review, `plan widen --to EARLIER` widens it to every change since an earlier checkpoint, and `plan deliver` waits for every checkpoint.
 

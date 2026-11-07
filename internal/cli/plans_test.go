@@ -646,7 +646,7 @@ func TestTheNextCheckpointSaysHowThePlanChangedSinceAPass(t *testing.T) {
 func TestPlanGuideRecommendsOneOperator(t *testing.T) {
 	fixture := newPlanFixture(t)
 	out := run(t, Plan, "guide", fixture.root)
-	for _, want := range []string{"one agent owns the Plan: the operator", "operator runs task done", "Implementors focus on delivery", "leave the\nSaga's records to the operator", "the operator merges it there"} {
+	for _, want := range []string{"one agent owns the Plan and all of change.saga: the operator", "change-saga serve and its Tasks tab", "task start --agent NAME when it", "Implementors only deliver", "They run no change-saga command", "leave the\nSaga's records to the operator", "the operator merges it there"} {
 		if !strings.Contains(out, want) {
 			t.Errorf("plan guide has no %q", want)
 		}
