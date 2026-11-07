@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/prototype-annotation.schema.json",
+  "version": 3,
+  "id": "names-gaps",
+  "prototype": "urn:change-saga:change-saga:prototype:plan-names",
+  "target": "urn:change-saga:change-saga:story:see-a-plan-as-names:criterion:unexpected-and-unneeded-work",
+  "rationale": "Tasks on no name, and names no Task reaches, listed beside the diagram.",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-names:revision:r1",
+  "story_revision": "urn:change-saga:change-saga:story:see-a-plan-as-names:revision:r2",
+  "selector": {
+    "kind": "region",
+    "region": {
+      "x": 0.291,
+      "y": 0.733,
+      "width": 0.667,
+      "height": 0.136
+    }
+  },
+  "created_at": "2026-11-07T18:42:16.146939Z"
+}

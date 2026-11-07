@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/prototype-annotation.schema.json",
+  "version": 3,
+  "id": "names-diagram",
+  "prototype": "urn:change-saga:change-saga:prototype:plan-names",
+  "target": "urn:change-saga:change-saga:story:see-a-plan-as-names:criterion:names-diagram",
+  "rationale": "The children of the focused name as boxes holding their own children's names; a box zooms in and the breadcrumb above zooms out.",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-names:revision:r1",
+  "story_revision": "urn:change-saga:change-saga:story:see-a-plan-as-names:revision:r2",
+  "selector": {
+    "kind": "region",
+    "region": {
+      "x": 0.291,
+      "y": 0.241,
+      "width": 0.667,
+      "height": 0.43
+    }
+  },
+  "created_at": "2026-11-07T18:42:16.016731Z"
+}

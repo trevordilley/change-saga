@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/prototype-annotation.schema.json",
+  "version": 3,
+  "id": "names-checkoff",
+  "prototype": "urn:change-saga:change-saga:prototype:plan-names",
+  "target": "urn:change-saga:change-saga:story:see-a-plan-as-names:criterion:tasks-check-off-names",
+  "rationale": "A name's progress is the Tasks under it; a done name is checked off and one under way is marked so.",
+  "prototype_revision": "urn:change-saga:change-saga:prototype:plan-names:revision:r1",
+  "story_revision": "urn:change-saga:change-saga:story:see-a-plan-as-names:revision:r2",
+  "selector": {
+    "kind": "region",
+    "region": {
+      "x": 0.649,
+      "y": 0.258,
+      "width": 0.295,
+      "height": 0.12
+    }
+  },
+  "created_at": "2026-11-07T18:42:16.112283Z"
+}
