@@ -1986,6 +1986,7 @@ no checkpoint.
 
 | Field | Meaning |
 |---|---|
+| `checkpoint.expectations` | `[{id, statement}]`: what must be true by the time the checkpoint is reached: invariants and characteristics of the work, not user stories. |
 | `checkpoint.review` | The id of the review of the checkpoint's work. |
 | `checkpoint.passed` | `{at, by, agent?, reason, to_come?}`: the checkpoint passed, when, by whom, whether an agent passed it, and why. `to_come` lists `{task, phase}` for the work after it at that moment, so a later checkpoint reports what was added, dropped, or moved since. |
 | `checkpoint_passer` (on the Plan) | `person` or `agent`: who passes the Plan's checkpoints. Absent means `person`. |
@@ -1997,6 +1998,8 @@ no checkpoint.
 - `plan pass` MUST be refused until every Task the checkpoint covers is done and every
   earlier checkpoint has passed, and MUST be refused to an agent (`--agent`) unless
   `checkpoint_passer` is `agent`. A pass records `by` and `reason`.
+- `plan pass` MUST be refused until each expectation is confirmed with `--met ID=HOW`, and
+  records them as `passed.met`. A passed checkpoint's expectations no longer change.
 - `plan deliver` MUST be refused while any checkpoint has not passed.
 - `plan checkpoint` reports a checkpoint's Tasks, the stories they lead to, an estimate of
   one slide per story, and what would make passing it surprising. `plan guide` names a

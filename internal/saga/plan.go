@@ -63,10 +63,26 @@ type PlanPhase struct {
 
 // PlanCheckpoint is what a checkpoint phase records.
 type PlanCheckpoint struct {
+	// Expectations are what must be true by the time the checkpoint is reached:
+	// invariants and characteristics of the work, not user stories. A pass confirms
+	// each.
+	Expectations []CheckpointExpectation `json:"expectations,omitempty"`
 	// Review is the id of the review of the checkpoint's work.
 	Review string `json:"review,omitempty"`
 	// Passed records that the checkpoint passed, so the work after it may start.
 	Passed *CheckpointPass `json:"passed,omitempty"`
+}
+
+// CheckpointExpectation is one thing that must be true by a checkpoint.
+type CheckpointExpectation struct {
+	ID        string `json:"id"`
+	Statement string `json:"statement"`
+}
+
+// MetExpectation says how a pass showed an expectation held.
+type MetExpectation struct {
+	Expectation string `json:"expectation"`
+	How         string `json:"how"`
 }
 
 // CheckpointPass says who passed a checkpoint, when, and why.
@@ -82,6 +98,8 @@ type CheckpointPass struct {
 	// Base is the commit the checkpoint's review started from when it passed, so a
 	// later checkpoint's review can be widened back to it.
 	Base string `json:"base,omitempty"`
+	// Met says how each of the checkpoint's expectations was shown to hold.
+	Met []MetExpectation `json:"met,omitempty"`
 }
 
 // PlannedTask is where a Task stood in the Plan at a moment.
@@ -351,6 +369,23 @@ func ValidatePlanManifest(manifest PlanManifest) error {
 			}
 			if pass := checkpoint.Passed; pass != nil && (pass.At.IsZero() || strings.TrimSpace(pass.By) == "" || strings.TrimSpace(pass.Reason) == "") {
 				return fmt.Errorf("checkpoint %q was passed without saying when, by whom, and why", phase.ID)
+			}
+			expected := map[string]bool{}
+			for _, expectation := range checkpoint.Expectations {
+				if !ValidID(expectation.ID) || strings.TrimSpace(expectation.Statement) == "" {
+					return fmt.Errorf("checkpoint %q has an expectation without a stable id and a statement", phase.ID)
+				}
+				if expected[expectation.ID] {
+					return fmt.Errorf("checkpoint %q states expectation %q more than once", phase.ID, expectation.ID)
+				}
+				expected[expectation.ID] = true
+			}
+			if pass := checkpoint.Passed; pass != nil {
+				for _, met := range pass.Met {
+					if !expected[met.Expectation] || strings.TrimSpace(met.How) == "" {
+						return fmt.Errorf("checkpoint %q records expectation %q as met without stating it or saying how", phase.ID, met.Expectation)
+					}
+				}
 			}
 		}
 	}

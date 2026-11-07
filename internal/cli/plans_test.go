@@ -714,3 +714,36 @@ func TestACheckpointsReviewWidensBackToAnEarlierCheckpoint(t *testing.T) {
 		t.Fatalf("widening forward said %q", message)
 	}
 }
+
+// A checkpoint states what must be true by then, and passes only once each is
+// shown to hold; the guide names one that states nothing.
+func TestACheckpointStatesAndProvesItsExpectations(t *testing.T) {
+	fixture := newPlanFixture(t)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "build", "--title", "Build", fixture.root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "proven", "--title", "Proven", "--checkpoint", fixture.root)
+	if out := run(t, Plan, "guide", "--plan", "first", fixture.root); !strings.Contains(out, "Checkpoint proven states no expectations") {
+		t.Fatalf("plan guide said:\n%s", out)
+	}
+	run(t, Plan, "expect", "--plan", "first", "--checkpoint", "proven", "--id", "one-write", "--statement", "A retried payment writes once", fixture.root)
+	run(t, Plan, "expect", "--plan", "first", "--checkpoint", "proven", "--id", "no-downtime", "--statement", "Nothing stops serving", fixture.root)
+	run(t, Plan, "expect", "--plan", "first", "--checkpoint", "proven", "--id", "no-downtime", "--remove", fixture.root)
+	if out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "proven", fixture.root); !strings.Contains(out, "one-write: A retried payment writes once") || strings.Contains(out, "no-downtime") {
+		t.Fatalf("the report said:\n%s", out)
+	}
+	if message := refused(t, planCommand, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "works", "--by", "trevor", fixture.root); !strings.Contains(message, "expectation one-write is not confirmed") {
+		t.Fatalf("a pass without confirming said %q", message)
+	}
+	if message := refused(t, planCommand, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "works", "--by", "trevor", "--met", "one-write=the retry test", "--met", "nothing=else", fixture.root); !strings.Contains(message, "states no expectation nothing") {
+		t.Fatalf("an unknown expectation said %q", message)
+	}
+	run(t, Plan, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "works", "--by", "trevor", "--met", "one-write=the retry test", fixture.root)
+	if met := loadedPlan(t, fixture.root, "first").Phases[1].Checkpoint.Passed.Met; len(met) != 1 || met[0].How != "the retry test" {
+		t.Fatalf("met = %+v", met)
+	}
+	if out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "proven", fixture.root); !strings.Contains(out, "(held: the retry test)") {
+		t.Fatalf("the passed report said:\n%s", out)
+	}
+	if message := refused(t, planCommand, "expect", "--plan", "first", "--checkpoint", "proven", "--id", "late", "--statement", "Too late", fixture.root); !strings.Contains(message, "already passed") {
+		t.Fatalf("an expectation after the pass said %q", message)
+	}
+}

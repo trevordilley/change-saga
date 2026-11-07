@@ -50,6 +50,18 @@ func planCheckpoint(ctx context.Context, args []string, out io.Writer) error {
 		fmt.Fprintf(out, "  Passed by %s on %s: %s\n", who, report.Passed.At.Format(time.DateOnly), report.Passed.Reason)
 	}
 	fmt.Fprintf(out, "  Covers %d of its %d tasks done, in %s.\n", report.TasksDone, report.Tasks, plansFeatureList(report.Phases))
+	if len(report.Expectations) == 0 {
+		fmt.Fprintln(out, "  States no expectations yet: say what must be true by then with plan expect.")
+	} else {
+		fmt.Fprintln(out, "  Must be true by then:")
+		for _, expectation := range report.Expectations {
+			if expectation.How != "" {
+				fmt.Fprintf(out, "    %s: %s (held: %s)\n", expectation.ID, expectation.Statement, expectation.How)
+			} else {
+				fmt.Fprintf(out, "    %s: %s\n", expectation.ID, expectation.Statement)
+			}
+		}
+	}
 	fmt.Fprintf(out, "  Addresses %d %s:\n", len(report.Stories), plural(len(report.Stories), "story", "stories"))
 	for _, story := range report.Stories {
 		proven := 0

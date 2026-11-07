@@ -233,6 +233,22 @@ func PassCheckpoint(root, planID, checkpointID string, pass saga.CheckpointPass)
 			return fmt.Errorf("whoever invokes plan %q passes its checkpoints, not an agent; ask them, or they can let agents with plan set --checkpoint-passer agent", planID)
 		}
 		reasons := []string{}
+		met := map[string]bool{}
+		for _, confirmed := range pass.Met {
+			met[confirmed.Expectation] = true
+		}
+		stated := map[string]bool{}
+		for _, expectation := range phase.Checkpoint.Expectations {
+			stated[expectation.ID] = true
+			if !met[expectation.ID] {
+				reasons = append(reasons, fmt.Sprintf("expectation %s is not confirmed: pass --met %s=HOW to say how it holds", expectation.ID, expectation.ID))
+			}
+		}
+		for _, confirmed := range pass.Met {
+			if !stated[confirmed.Expectation] {
+				reasons = append(reasons, fmt.Sprintf("checkpoint %s states no expectation %s", checkpointID, confirmed.Expectation))
+			}
+		}
 		for _, earlier := range plan.Phases {
 			if earlier.ID == checkpointID {
 				break
@@ -559,5 +575,40 @@ func WidenCheckpointReview(root, planID, checkpointID, toID string) error {
 			return err
 		}
 		return store.WriteJSON(filepath.Join(review.Directory, saga.ReviewManifestName), manifest, false)
+	})
+}
+
+// SetExpectation states, or restates, what must be true by a checkpoint; with an
+// empty statement it removes the expectation. A passed checkpoint no longer changes.
+func SetExpectation(root, planID, checkpointID, id, statement string) error {
+	return mutate(root, func(document *saga.Saga) error {
+		plan, err := editable(document, planID)
+		if err != nil {
+			return err
+		}
+		phase, err := checkpointOf(plan, checkpointID)
+		if err != nil {
+			return err
+		}
+		if phase.CheckpointPassed() {
+			return fmt.Errorf("checkpoint %q already passed, so its expectations no longer change", checkpointID)
+		}
+		expectations := phase.Checkpoint.Expectations
+		index := slices.IndexFunc(expectations, func(expectation saga.CheckpointExpectation) bool { return expectation.ID == id })
+		switch {
+		case strings.TrimSpace(statement) == "" && index < 0:
+			return fmt.Errorf("checkpoint %q states no expectation %q", checkpointID, id)
+		case strings.TrimSpace(statement) == "":
+			expectations = slices.Delete(expectations, index, index+1)
+		case index < 0:
+			expectations = append(expectations, saga.CheckpointExpectation{ID: id, Statement: strings.TrimSpace(statement)})
+		default:
+			expectations[index].Statement = strings.TrimSpace(statement)
+		}
+		phase.Checkpoint.Expectations = expectations
+		if err := saga.ValidatePlanManifest(plan.PlanManifest); err != nil {
+			return err
+		}
+		return writePlan(plan)
 	})
 }

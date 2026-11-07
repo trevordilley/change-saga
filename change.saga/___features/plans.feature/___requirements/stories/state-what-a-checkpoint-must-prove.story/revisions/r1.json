@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:state-what-a-checkpoint-must-prove",
+  "parents": [],
+  "title": "State what must be true at a checkpoint",
+  "statement": "As an architect I can list the invariants and expectations that must hold by a checkpoint, and a checkpoint passes only when each is shown to hold, so the work stays focused on its goals",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:checkpoint-expectations-and-names-20261107"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "checkpoint-lists-expectations",
+      "statement": "A checkpoint records the expectations that must be true by the time it is reached, apart from user stories"
+    },
+    {
+      "id": "pass-confirms-each-expectation",
+      "statement": "plan pass is refused until each expectation is confirmed with how it was shown to hold, and the pass records each"
+    },
+    {
+      "id": "expectations-are-shown",
+      "statement": "plan checkpoint and the checkpoint's review list its expectations, and once it passed, how each held"
+    },
+    {
+      "id": "guide-names-unstated-checkpoint",
+      "statement": "plan guide names a checkpoint that states no expectations"
+    }
+  ],
+  "created_at": "2026-11-07T18:36:06.443947Z"
+}

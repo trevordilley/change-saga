@@ -129,6 +129,7 @@ and covers every Task since the previous checkpoint.
 
 ```sh
 change-saga plan add-phase --plan ID --id CHECKPOINT --title TEXT --checkpoint --after PHASE change.saga
+change-saga plan expect --plan ID --checkpoint CHECKPOINT --id ID --statement TEXT change.saga
 change-saga plan set --plan ID --checkpoint-passer agent change.saga
 change-saga plan checkpoint --plan ID --checkpoint CHECKPOINT change.saga
 change-saga plan link-review --plan ID --review REVIEW --checkpoint CHECKPOINT change.saga
@@ -136,6 +137,9 @@ change-saga plan pass --plan ID --checkpoint CHECKPOINT --reason TEXT (--by NAME
 change-saga plan widen --plan ID --checkpoint CHECKPOINT --to EARLIER change.saga
 ```
 
+- **Expectations.** Each checkpoint states what must be true by then: invariants and
+  characteristics of the work that say the stretch did its job, not user stories.
+  `plan pass` needs `--met ID=HOW` for each, which keeps the work on its goals.
 - **Size.** A stretch should take five or six slides to explain, about one per story it
   addresses. `plan guide` names a checkpoint that looks to need more; split it.
 - **The gate.** Until a checkpoint passes, `task list --ready` leaves out the Tasks after

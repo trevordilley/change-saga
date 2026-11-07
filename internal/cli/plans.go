@@ -23,7 +23,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "pass", "widen", "deliver"}
+var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "expect", "pass", "widen", "deliver"}
 
 // Plan dispatches the Plan commands.
 func Plan(ctx context.Context, args []string, out io.Writer) error {
@@ -59,6 +59,8 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planCheckpoint(ctx, args[1:], out)
 	case "widen":
 		err = planWiden(ctx, args[1:], out)
+	case "expect":
+		err = planExpect(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["plan"])
 	}
@@ -268,7 +270,8 @@ without AI help, would finish in two days or less.
    Item is what lets a reader select the node and open the Task.
 7. Checkpoint. A large Plan is reviewed in stretches. After a few phases, add a
    checkpoint with plan add-phase --checkpoint [--after PHASE]: it holds no Tasks and
-   covers every Task since the previous one. Size each stretch so its review takes five
+   covers every Task since the previous one. State what must be true by then with plan
+   expect: invariants of the work, not stories. Size each stretch so its review takes five
    or six slides, about one per story, not ten to twenty. Ask who passes them, and record
    it with plan set --checkpoint-passer person|agent.
 8. Check. Run plan guide --plan ID until it has nothing left to name.
@@ -336,6 +339,10 @@ func planGuide(ctx context.Context, args []string, out io.Writer) error {
 		report, err := reportCheckpoint(ctx, document, found, phase.ID, titles)
 		if err != nil {
 			return err
+		}
+		if len(phase.Checkpoint.Expectations) == 0 {
+			notReady++
+			fmt.Fprintf(out, "  Checkpoint %s states no expectations: say what must be true by then with plan expect.\n", phase.ID)
 		}
 		if report.Estimate > checkpointSlideBudget {
 			notReady++
@@ -494,11 +501,21 @@ func planPass(ctx context.Context, args []string, out io.Writer) error {
 	agent := flags.Bool("agent", false, "an agent passes it, under the rule of whoever invoked the Plan")
 	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	var metValues stringList
+	flags.Var(&metValues, "met", "ID=HOW: how one of the checkpoint's expectations was shown to hold; repeat for each")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
 	if err := requireLivingArgs(flags, *plan, *checkpoint, *reason); err != nil {
 		return err
+	}
+	met := []saga.MetExpectation{}
+	for _, value := range metValues {
+		id, how, found := strings.Cut(value, "=")
+		if !found || strings.TrimSpace(id) == "" || strings.TrimSpace(how) == "" {
+			return fmt.Errorf("--met %s must be ID=HOW", value)
+		}
+		met = append(met, saga.MetExpectation{Expectation: strings.TrimSpace(id), How: strings.TrimSpace(how)})
 	}
 	root := flags.Arg(0)
 	who := strings.TrimSpace(*by)
@@ -509,7 +526,7 @@ func planPass(ctx context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("--by names who passes the checkpoint; an agent passes with --agent")
 	}
 	planID := planIDOf(*plan)
-	pass := saga.CheckpointPass{At: time.Now().UTC(), By: who, Agent: *agent, Reason: strings.TrimSpace(*reason)}
+	pass := saga.CheckpointPass{At: time.Now().UTC(), By: who, Agent: *agent, Reason: strings.TrimSpace(*reason), Met: met}
 	// Where the checkpoint's review began, so a later review can widen back to it.
 	if document, found, err := planOf(root, planID); err == nil {
 		for _, phase := range found.Phases {
@@ -541,6 +558,37 @@ func planPass(ctx context.Context, args []string, out io.Writer) error {
 	}
 	fmt.Fprintf(out, "Next: merge the checkpoint's branch into %s, then start the next stretch from there in a new workspace.\n", into)
 	return nil
+}
+
+func planExpect(_ context.Context, args []string, out io.Writer) error {
+	name := "plan expect"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint phase")
+	id := flags.String("id", "", "stable expectation id")
+	statement := flags.String("statement", "", "what must be true by the checkpoint: an invariant or characteristic of the work, not a user story")
+	remove := flags.Bool("remove", false, "remove the expectation instead")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *checkpoint, *id); err != nil {
+		return err
+	}
+	if !*remove && strings.TrimSpace(*statement) == "" {
+		return fmt.Errorf("--statement says what must be true; --remove removes the expectation")
+	}
+	if !saga.ValidID(*id) {
+		return fmt.Errorf("--id must be a stable identifier")
+	}
+	value := *statement
+	if *remove {
+		value = ""
+	}
+	if err := planstore.SetExpectation(flags.Arg(0), planIDOf(*plan), *checkpoint, *id, value); err != nil {
+		return err
+	}
+	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
 }
 
 func planWiden(_ context.Context, args []string, out io.Writer) error {

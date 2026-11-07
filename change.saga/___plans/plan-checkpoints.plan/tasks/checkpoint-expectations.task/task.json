@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "checkpoint-expectations",
+  "title": "Let a checkpoint state and prove its expectations",
+  "phase": "commands",
+  "story": "urn:change-saga:change-saga:story:state-what-a-checkpoint-must-prove",
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A list on the checkpoint, a command to edit it, and pass, report, review, and guide reading it."
+  },
+  "state": "planned",
+  "created_at": "2026-11-07T18:37:07.359143Z"
+}

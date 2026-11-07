@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "checkpoint-expectations-and-names-20261107",
+  "kind": "decision",
+  "title": "Checkpoint expectations, one Saga owner, and a hierarchy of names",
+  "reference": "Trevor, 2026-11-07: \"every checkpoint lists off the invariants and expectations of what should be true by the time we hit that checkpoint. This isn't user stories, but essentially characteristics of the work that must be true to say we did the thing. This will help keep the work focused on the goals.\" \"If the agents feel responsible for maintaining their saga it becomes super cumbersome. They just need to get their work done and report on what they did. Our guidance should encourage that there is ONE agent responsible for owning the change.saga plan management. This is the agent where you should probably have running the task list UI itself so you can go to it to see where things are at.\" \"What we see in the plan is not just the big pile of tasks but a diagram mapping out all the components of a system at a high level, and as work is finished those parts of the diagram get checked off. The goal here is that we should be able to see unexpected or unneeded work.\" \"A hierarchy of names: a name is a label for an abstraction. An abstraction is a hiding of details. You can zoom in or out on an abstraction. For a given plan there are a few top level names that label what is being worked on. If you zoom in on them you see more names as your level of detail increases, until finally you get to the nitty gritty stuff that you expect to work on with relations to the code. These names can have linkages and you can visualize it either as a diagram you can zoom in on, or a tree that gets more and more branched the lower you go.\"",
+  "created_at": "2026-11-07T18:36:06.230113Z"
+}

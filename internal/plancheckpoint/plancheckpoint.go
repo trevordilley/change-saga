@@ -41,6 +41,14 @@ type Test struct {
 	Evidence int    `json:"evidence"`
 }
 
+// Expectation is one thing that must be true by a checkpoint, and, once it
+// passed, how it was shown to hold.
+type Expectation struct {
+	ID        string `json:"id"`
+	Statement string `json:"statement"`
+	How       string `json:"how,omitempty"`
+}
+
 // Change is how one Task moved in the Plan since a checkpoint passed: added,
 // dropped, or moved to another phase.
 type Change struct {
@@ -122,6 +130,9 @@ type Report struct {
 	Stories    []Story              `json:"stories"`
 	Estimate   int                  `json:"estimated_slides"`
 	Review     string               `json:"review,omitempty"`
+	// Expectations are what must be true by the checkpoint, and how each held once
+	// it passed.
+	Expectations []Expectation `json:"expectations"`
 	// WidenedTo is the earlier checkpoint the review shows every change since.
 	WidenedTo string   `json:"widened_to,omitempty"`
 	Slides    int      `json:"slides,omitempty"`
@@ -238,6 +249,18 @@ func Build(document *saga.Saga, plan *saga.Plan, checkpointID string, stories ma
 	for earlier := index - 1; earlier >= 0 && !plan.Phases[earlier].IsCheckpoint(); earlier-- {
 		report.Phases = append([]string{plan.Phases[earlier].ID}, report.Phases...)
 	}
+	report.Expectations = []Expectation{}
+	for _, expectation := range phase.Checkpoint.Expectations {
+		row := Expectation{ID: expectation.ID, Statement: expectation.Statement}
+		if report.Passed != nil {
+			for _, met := range report.Passed.Met {
+				if met.Expectation == expectation.ID {
+					row.How = met.How
+				}
+			}
+		}
+		report.Expectations = append(report.Expectations, row)
+	}
 	report.Scope = saga.CheckpointScope(plan.Phases, plan.Manifests(), checkpointID)
 	report.Tasks = len(report.Scope)
 	for _, task := range report.Scope {
@@ -322,6 +345,14 @@ func Build(document *saga.Saga, plan *saga.Plan, checkpointID string, stories ma
 			report.Surprises = append(report.Surprises, fmt.Sprintf("the review took %d slides, more than the %d estimated", report.Slides, report.Estimate))
 		}
 	}
+	confirm := ""
+	if len(report.Expectations) > 0 {
+		ids := make([]string, 0, len(report.Expectations))
+		for _, expectation := range report.Expectations {
+			ids = append(ids, "--met "+expectation.ID+"=HOW")
+		}
+		confirm = " " + strings.Join(ids, " ")
+	}
 	switch {
 	case report.Passed != nil:
 		report.State = "passed"
@@ -334,13 +365,13 @@ func Build(document *saga.Saga, plan *saga.Plan, checkpointID string, stories ma
 		report.Next = fmt.Sprintf("Prove the work works: run the tests, then create its review of the checkpoint's branch into the Plan's feature branch with change-saga review create --base FEATURE --head BRANCH, and link it with change-saga plan link-review --plan %s --review ID --checkpoint %s.", plan.ID, phase.ID)
 	case report.Passer == saga.CheckpointPasserAgent && len(report.Surprises) == 0:
 		report.State = "reached"
-		report.Next = fmt.Sprintf("Nothing here is surprising, so the agent may pass it: change-saga plan pass --plan %s --checkpoint %s --agent --reason TEXT, then merge.", plan.ID, phase.ID)
+		report.Next = fmt.Sprintf("Nothing here is surprising, so the agent may pass it: change-saga plan pass --plan %s --checkpoint %s --agent --reason TEXT%s, then merge.", plan.ID, phase.ID, confirm)
 	case report.Passer == saga.CheckpointPasserAgent:
 		report.State = "reached"
-		report.Next = "Stop for a person: something here is surprising. They pass it with change-saga plan pass --by NAME --reason TEXT."
+		report.Next = "Stop for a person: something here is surprising. They pass it with change-saga plan pass --by NAME --reason TEXT" + confirm + "."
 	default:
 		report.State = "reached"
-		report.Next = fmt.Sprintf("Ask whoever invoked the Plan to pass it: change-saga plan pass --plan %s --checkpoint %s --by NAME --reason TEXT.", plan.ID, phase.ID)
+		report.Next = fmt.Sprintf("Ask whoever invoked the Plan to pass it: change-saga plan pass --plan %s --checkpoint %s --by NAME --reason TEXT%s.", plan.ID, phase.ID, confirm)
 	}
 	return report, nil
 }
