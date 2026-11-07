@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "names-diagram",
+  "title": "Draw the zoomable names diagram",
+  "phase": "zoom",
+  "story": "urn:change-saga:change-saga:story:see-a-plan-as-names",
+  "depends_on": [
+    "names-tree"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A server-drawn SVG of the focused name's children with their children in miniature, ?focus zoom, breadcrumb, and links collapsed onto visible boxes."
+  },
+  "state": "planned",
+  "created_at": "2026-11-07T18:44:01.77451Z"
+}

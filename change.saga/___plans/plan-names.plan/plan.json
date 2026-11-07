@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/plan.schema.json",
+  "version": 5,
+  "id": "plan-names",
+  "title": "See a Plan as a hierarchy of names",
+  "phases": [
+    {
+      "id": "model",
+      "title": "Names in the Plan"
+    },
+    {
+      "id": "attach",
+      "title": "Pointers and Tasks on names"
+    },
+    {
+      "id": "report",
+      "title": "Progress"
+    },
+    {
+      "id": "reader",
+      "title": "Tree and gaps"
+    },
+    {
+      "id": "zoom",
+      "title": "Zoomable diagram"
+    }
+  ],
+  "prototypes": [
+    "urn:change-saga:change-saga:prototype:plan-names"
+  ],
+  "created_at": "2026-11-07T18:42:56.419975Z"
+}

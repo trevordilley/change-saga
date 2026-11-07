@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "name-record",
+  "title": "Add the name record and plan name commands",
+  "phase": "model",
+  "story": "urn:change-saga:change-saga:story:see-a-plan-as-names",
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A record beside Tasks, load and validation of parent and links with a cycle check, schema, and add, set, remove, list."
+  },
+  "state": "planned",
+  "created_at": "2026-11-07T18:43:22.515489Z"
+}

@@ -1,0 +1,18 @@
+{
+  "overview": {
+    "body": "# See a Plan as a hierarchy of names\n\nA pile of Tasks hides the shape of the work. This Plan gives a Plan a few top-level **names** that zoom into more detailed names, down to the parts expected to be worked on. Tasks name the names they work on, so a name is checked off as its Tasks finish, and work on no name, or a name no Task reaches, stands out. [The work is one new record, a field on Tasks, and what is derived from them](annotation:the-work).\n\n## Where names live\n\nA name is a record of the Plan, beside its Tasks: `names/\u003cid\u003e.name/name.json` holds a title, an optional summary, at most one parent, labeled links to other names, and an optional pointer to a Term, Component, or System. Git is its history. It carries no code; its code is the code of the Tasks under it.\n\n## What is derived\n\nEach name's progress rolls up from the Tasks that name it or any name beneath it: done when all are done, under way when any has started. `plan guide` lists Tasks on no name and names no Task reaches, but only for a Plan that has names, and never refuses anything.\n\n## What a reader sees\n\nA Names tab beside Deck and Tasks shows the hierarchy as a tree and as a diagram laid out from it: the focused name's children as boxes, each showing its own children in miniature. Selecting a box zooms in; a breadcrumb zooms out. Links are drawn between the visible boxes holding their ends.\n",
+    "annotations": [
+      {
+        "id": "the-work",
+        "label": "The work is one new record, a field on Tasks, and what is derived from them",
+        "slide": "the-work"
+      }
+    ]
+  },
+  "version": 4,
+  "id": "plan-names",
+  "title": "See a Plan as a hierarchy of names",
+  "role": "plan",
+  "rank": 0,
+  "objective": "How a Plan gains a hierarchy of names that its Tasks check off, and how the reader shows it as a tree and a zoomable diagram"
+}

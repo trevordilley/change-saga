@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "task-names",
+  "title": "Let a Task name the names it works on",
+  "phase": "attach",
+  "story": "urn:change-saga:change-saga:story:see-a-plan-as-names",
+  "depends_on": [
+    "name-record"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A names field on task.json, --name on task add and set, and name removal refused while a Task names it."
+  },
+  "state": "planned",
+  "created_at": "2026-11-07T18:43:59.187808Z"
+}

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Names, then progress, then the view</title>
+  <desc id="diagram-desc">One new Plan record and a field on Tasks; everything a reader sees is derived from them.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-ink:#172554;--diagram-blue-tint:#e8f1ff;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-ink:#cae8ff;--diagram-blue-tint:#121d2f;}}</style>
+  </defs>
+  <g id="name-record" data-diagram-kind="node" transform="translate(40 300)" role="group" aria-label="Name record and commands">
+    <rect width="260" height="90" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="34" font-size="16" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="34">Name record and commands</tspan></text>
+  </g>
+  <g id="name-pointer" data-diagram-kind="node" transform="translate(340 160)" role="group" aria-label="Point at vocabulary">
+    <rect width="260" height="90" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="34" font-size="16" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="34">Point at vocabulary</tspan></text>
+  </g>
+  <g id="task-names" data-diagram-kind="node" transform="translate(340 440)" role="group" aria-label="Tasks name names">
+    <rect width="260" height="90" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="34" font-size="16" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="34">Tasks name names</tspan></text>
+  </g>
+  <g id="name-progress" data-diagram-kind="node" transform="translate(640 440)" role="group" aria-label="Progress per name">
+    <rect width="260" height="90" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="34" font-size="16" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="34">Progress per name</tspan></text>
+  </g>
+  <g id="guide-gaps" data-diagram-kind="node" transform="translate(940 300)" role="group" aria-label="Gaps in plan guide">
+    <rect width="260" height="90" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="34" font-size="16" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="34">Gaps in plan guide</tspan></text>
+  </g>
+  <g id="names-tree" data-diagram-kind="node" transform="translate(940 470)" role="group" aria-label="Names tab: tree">
+    <rect width="260" height="90" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="34" font-size="16" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="34">Names tab: tree</tspan></text>
+  </g>
+  <g id="names-diagram" data-diagram-kind="node" transform="translate(940 600)" role="group" aria-label="Zoomable diagram">
+    <rect width="260" height="90" rx="8" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="18" y="34" font-size="16" fill="#172554" xml:space="preserve" style="fill:var(--diagram-blue-ink,#172554)"><tspan x="18" y="34">Zoomable diagram</tspan></text>
+  </g>
+  <g id="name-record-to-name-pointer" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="name-record to name-pointer" data-from="name-record" data-to="name-pointer">
+    <path d="M300 345 L340 205" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="name-record-to-task-names" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="name-record to task-names" data-from="name-record" data-to="task-names">
+    <path d="M300 345 L340 485" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="task-names-to-name-progress" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="task-names to name-progress" data-from="task-names" data-to="name-progress">
+    <path d="M600 485 L640 485" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="name-progress-to-guide-gaps" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="name-progress to guide-gaps" data-from="name-progress" data-to="guide-gaps">
+    <path d="M900 485 L940 345" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="name-progress-to-names-tree" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="name-progress to names-tree" data-from="name-progress" data-to="names-tree">
+    <path d="M900 485 L940 515" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+  <g id="names-tree-to-names-diagram" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="names-tree to names-diagram" data-from="names-tree" data-to="names-diagram">
+    <path d="M1070 560 L1070 600" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" style="stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+  </g>
+</svg>

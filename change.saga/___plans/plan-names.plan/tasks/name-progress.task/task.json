@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "name-progress",
+  "title": "Derive each name's progress and return names from query plan",
+  "phase": "report",
+  "story": "urn:change-saga:change-saga:story:see-a-plan-as-names",
+  "depends_on": [
+    "task-names"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "A walk over the hierarchy rolling Task states up to each name, and JSON output."
+  },
+  "state": "planned",
+  "created_at": "2026-11-07T18:43:59.781243Z"
+}

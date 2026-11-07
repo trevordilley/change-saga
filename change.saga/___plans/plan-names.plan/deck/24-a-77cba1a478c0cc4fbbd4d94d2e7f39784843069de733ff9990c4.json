@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "line": {
+      "fill": "none",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 2,
+      "font_size": 14
+    },
+    "primary": {
+      "fill": "@diagram-blue-tint",
+      "stroke": "@diagram-blue-accent",
+      "ink": "@diagram-blue-ink",
+      "stroke_width": 2,
+      "font_size": 16
+    }
+  },
+  "elements": [
+    {
+      "id": "name-record",
+      "kind": "node",
+      "shape": "service",
+      "label": "Name record and commands",
+      "x": 40,
+      "y": 300,
+      "width": 260,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "name-pointer",
+      "kind": "node",
+      "shape": "service",
+      "label": "Point at vocabulary",
+      "x": 340,
+      "y": 160,
+      "width": 260,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "task-names",
+      "kind": "node",
+      "shape": "service",
+      "label": "Tasks name names",
+      "x": 340,
+      "y": 440,
+      "width": 260,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "name-progress",
+      "kind": "node",
+      "shape": "service",
+      "label": "Progress per name",
+      "x": 640,
+      "y": 440,
+      "width": 260,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "guide-gaps",
+      "kind": "node",
+      "shape": "service",
+      "label": "Gaps in plan guide",
+      "x": 940,
+      "y": 300,
+      "width": 260,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "names-tree",
+      "kind": "node",
+      "shape": "service",
+      "label": "Names tab: tree",
+      "x": 940,
+      "y": 470,
+      "width": 260,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "names-diagram",
+      "kind": "node",
+      "shape": "service",
+      "label": "Zoomable diagram",
+      "x": 940,
+      "y": 600,
+      "width": 260,
+      "height": 90,
+      "style": "primary"
+    },
+    {
+      "id": "name-record-to-name-pointer",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "name-record",
+      "to": "name-pointer",
+      "points": [
+        {
+          "x": 300,
+          "y": 345
+        },
+        {
+          "x": 340,
+          "y": 205
+        }
+      ]
+    },
+    {
+      "id": "name-record-to-task-names",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "name-record",
+      "to": "task-names",
+      "points": [
+        {
+          "x": 300,
+          "y": 345
+        },
+        {
+          "x": 340,
+          "y": 485
+        }
+      ]
+    },
+    {
+      "id": "task-names-to-name-progress",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "task-names",
+      "to": "name-progress",
+      "points": [
+        {
+          "x": 600,
+          "y": 485
+        },
+        {
+          "x": 640,
+          "y": 485
+        }
+      ]
+    },
+    {
+      "id": "name-progress-to-guide-gaps",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "name-progress",
+      "to": "guide-gaps",
+      "points": [
+        {
+          "x": 900,
+          "y": 485
+        },
+        {
+          "x": 940,
+          "y": 345
+        }
+      ]
+    },
+    {
+      "id": "name-progress-to-names-tree",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "name-progress",
+      "to": "names-tree",
+      "points": [
+        {
+          "x": 900,
+          "y": 485
+        },
+        {
+          "x": 940,
+          "y": 515
+        }
+      ]
+    },
+    {
+      "id": "names-tree-to-names-diagram",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "line",
+      "from": "names-tree",
+      "to": "names-diagram",
+      "points": [
+        {
+          "x": 1070,
+          "y": 560
+        },
+        {
+          "x": 1070,
+          "y": 600
+        }
+      ]
+    }
+  ]
+}

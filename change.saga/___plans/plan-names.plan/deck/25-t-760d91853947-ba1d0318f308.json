@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "deck": "plan-names",
+  "slide": "the-work",
+  "current": "sha256:fbdd686b62d1b22948c30b366979c98ec39399f7705d8900947bad0d40148aab",
+  "revisions": [
+    {
+      "snapshot": "sha256:fbdd686b62d1b22948c30b366979c98ec39399f7705d8900947bad0d40148aab",
+      "request_id": "plan-names-the-work",
+      "created_at": "2026-11-07T18:44:57.482678Z",
+      "asset": "24-a-db5208f83619683814c84262667223106ba2ae19674b8f1ac579.svg",
+      "asset_digest": "sha256:db5208f83619683814c84262667223106ba2ae19674b8f1ac579be321cfb7c17",
+      "slide": {
+        "front": [
+          "A name is a record in the Plan, beside its Tasks.",
+          "Tasks name names; progress rolls up the hierarchy.",
+          "The reader shows a tree, a zoomable diagram, and the gaps."
+        ],
+        "version": 4,
+        "id": "the-work",
+        "deck": "plan-names",
+        "title": "Names, then progress, then the view",
+        "rank": 10,
+        "section": "The work",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-db5208f83619683814c84262667223106ba2ae19674b8f1ac579.svg",
+        "takeaway": "One new Plan record and a field on Tasks; everything a reader sees is derived from them.",
+        "reading_order": [
+          "name-record",
+          "name-pointer",
+          "task-names",
+          "name-progress",
+          "guide-gaps",
+          "names-tree",
+          "names-diagram"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "name-record",
+            "slide": "the-work",
+            "rank": 10,
+            "kind": "node",
+            "label": "Name record and commands",
+            "description": "Name record and commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "name-record"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-names:task:name-record"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "name-pointer",
+            "slide": "the-work",
+            "rank": 20,
+            "kind": "node",
+            "label": "Point at vocabulary",
+            "description": "Point at vocabulary.",
+            "selector": {
+              "type": "element",
+              "element_id": "name-pointer"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-names:task:name-pointer"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "task-names",
+            "slide": "the-work",
+            "rank": 30,
+            "kind": "node",
+            "label": "Tasks name names",
+            "description": "Tasks name names.",
+            "selector": {
+              "type": "element",
+              "element_id": "task-names"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-names:task:task-names"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "name-progress",
+            "slide": "the-work",
+            "rank": 40,
+            "kind": "node",
+            "label": "Progress per name",
+            "description": "Progress per name.",
+            "selector": {
+              "type": "element",
+              "element_id": "name-progress"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-names:task:name-progress"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "guide-gaps",
+            "slide": "the-work",
+            "rank": 50,
+            "kind": "node",
+            "label": "Gaps in plan guide",
+            "description": "Gaps in plan guide.",
+            "selector": {
+              "type": "element",
+              "element_id": "guide-gaps"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-names:task:guide-gaps"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "names-tree",
+            "slide": "the-work",
+            "rank": 60,
+            "kind": "node",
+            "label": "Names tab: tree",
+            "description": "Names tab: tree.",
+            "selector": {
+              "type": "element",
+              "element_id": "names-tree"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-names:task:names-tree"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "names-diagram",
+            "slide": "the-work",
+            "rank": 70,
+            "kind": "node",
+            "label": "Zoomable diagram",
+            "description": "Zoomable diagram.",
+            "selector": {
+              "type": "element",
+              "element_id": "names-diagram"
+            },
+            "record": "urn:change-saga:change-saga:plan:plan-names:task:names-diagram"
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-77cba1a478c0cc4fbbd4d94d2e7f39784843069de733ff9990c4.json",
+        "source_digest": "sha256:77cba1a478c0cc4fbbd4d94d2e7f39784843069de733ff9990c4113174c40250",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

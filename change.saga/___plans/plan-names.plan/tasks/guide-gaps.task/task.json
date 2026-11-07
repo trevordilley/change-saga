@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "guide-gaps",
+  "title": "Report Tasks on no name and names no Task reaches",
+  "phase": "reader",
+  "story": "urn:change-saga:change-saga:story:see-a-plan-as-names",
+  "depends_on": [
+    "name-progress"
+  ],
+  "sizing": {
+    "within_two_days": true,
+    "reason": "Two lists in plan guide, only for a Plan with names."
+  },
+  "state": "planned",
+  "created_at": "2026-11-07T18:44:00.400243Z"
+}
