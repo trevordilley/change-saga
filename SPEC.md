@@ -2003,7 +2003,11 @@ no checkpoint.
   checkpoint estimated at more than six slides. Neither refuses anything.
 
 A checkpoint's review is the checkpoint's branch as a change into the branch the Plan's
-work comes from, linked with `plan link-review --checkpoint`. Once it passes, that branch
+work comes from, linked with `plan link-review --checkpoint`. A pass records `base`, the
+commit its review began from. `plan widen --checkpoint N --to K` sets the review's
+`since` to checkpoint K's `base`, so it shows every change since K; `--to N` clears it. A
+review's `since` MUST be a commit its head descends from, and MUST NOT change its `base`,
+which is still what it merges into. Once it passes, that branch
 is merged there and the next stretch starts from it. A Plan with no checkpoints behaves as
 before.
 

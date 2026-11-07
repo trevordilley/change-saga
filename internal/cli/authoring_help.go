@@ -11,7 +11,7 @@ func init() {
 		"label remove", "milestone remove",
 		"whiteboard list", "whiteboard rename", "whiteboard assign-role", "whiteboard unassign-role",
 		"whiteboard archive", "whiteboard restore",
-		"plan create", "plan list", "plan guide", "plan set", "plan add-phase", "plan remove-phase", "plan add-prototype", "plan link-review", "plan checkpoint", "plan pass", "plan deliver",
+		"plan create", "plan list", "plan guide", "plan set", "plan add-phase", "plan remove-phase", "plan add-prototype", "plan link-review", "plan checkpoint", "plan pass", "plan widen", "plan deliver",
 		"task add", "task depend", "task set", "task start", "task note", "task done", "task remove", "task list",
 	} {
 		if command, ok := grammar.Lookup(name); ok {

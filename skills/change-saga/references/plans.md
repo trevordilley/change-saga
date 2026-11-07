@@ -133,6 +133,7 @@ change-saga plan set --plan ID --checkpoint-passer agent change.saga
 change-saga plan checkpoint --plan ID --checkpoint CHECKPOINT change.saga
 change-saga plan link-review --plan ID --review REVIEW --checkpoint CHECKPOINT change.saga
 change-saga plan pass --plan ID --checkpoint CHECKPOINT --reason TEXT (--by NAME | --agent) change.saga
+change-saga plan widen --plan ID --checkpoint CHECKPOINT --to EARLIER change.saga
 ```
 
 - **Size.** A stretch should take five or six slides to explain, about one per story it
@@ -142,6 +143,9 @@ change-saga plan pass --plan ID --checkpoint CHECKPOINT --reason TEXT (--by NAME
 - **At a checkpoint, the operator proves the work works.** Run the tests. Review the checkpoint's branch
   as a change into the Plan's feature branch, with the usual review deck. `plan checkpoint`
   says what it covers and what to do next.
+- **Reaching back.** A checkpoint's review covers what changed since the previous one
+  merged. `plan widen --to EARLIER` shows every change since an earlier checkpoint's
+  review began instead, and `--to` the checkpoint itself narrows it again.
 - **Who passes.** Whoever invokes the Plan decides, and the Plan records it with
   `plan set --checkpoint-passer`. A person is the default. An agent allowed to pass still
   stops for a person when anything is surprising: the work departed from the Plan, Tasks

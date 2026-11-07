@@ -79,6 +79,9 @@ type CheckpointPass struct {
 	// ToCome is the work after the checkpoint when it passed, so a later reader
 	// sees how the Plan changed since.
 	ToCome []PlannedTask `json:"to_come,omitempty"`
+	// Base is the commit the checkpoint's review started from when it passed, so a
+	// later checkpoint's review can be widened back to it.
+	Base string `json:"base,omitempty"`
 }
 
 // PlannedTask is where a Task stood in the Plan at a moment.

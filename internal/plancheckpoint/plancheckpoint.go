@@ -122,8 +122,10 @@ type Report struct {
 	Stories    []Story              `json:"stories"`
 	Estimate   int                  `json:"estimated_slides"`
 	Review     string               `json:"review,omitempty"`
-	Slides     int                  `json:"slides,omitempty"`
-	Surprises  []string             `json:"surprises"`
+	// WidenedTo is the earlier checkpoint the review shows every change since.
+	WidenedTo string   `json:"widened_to,omitempty"`
+	Slides    int      `json:"slides,omitempty"`
+	Surprises []string `json:"surprises"`
 	// ChangedSince is the title of the previous passed checkpoint, and Changes how
 	// the work after it changed since it passed.
 	ChangedSince string   `json:"changed_since,omitempty"`
@@ -291,6 +293,13 @@ func Build(document *saga.Saga, plan *saga.Plan, checkpointID string, stories ma
 	}
 	if len(unproven) > 0 {
 		report.Surprises = append(report.Surprises, "criteria it addresses with no test evidence: "+strings.Join(unproven, ", "))
+	}
+	if review := document.FindReview(report.Review); review != nil && review.Since != "" {
+		for _, earlier := range plan.Phases[:index] {
+			if earlier.CheckpointPassed() && earlier.Checkpoint.Passed.Base == review.Since {
+				report.WidenedTo = earlier.Title
+			}
+		}
 	}
 	if review := document.FindReview(report.Review); review != nil && review.Deck != nil {
 		report.Slides = len(review.Deck.Slides)

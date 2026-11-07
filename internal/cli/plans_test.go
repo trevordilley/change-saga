@@ -10,6 +10,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/planstore"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -649,5 +650,67 @@ func TestPlanGuideRecommendsOneOperator(t *testing.T) {
 		if !strings.Contains(out, want) {
 			t.Errorf("plan guide has no %q", want)
 		}
+	}
+}
+
+// A pass records where its review began, and a later checkpoint's review can be
+// widened back to it, and narrowed again, without changing what it merges into.
+func TestACheckpointsReviewWidensBackToAnEarlierCheckpoint(t *testing.T) {
+	fixture := newPlanFixture(t)
+	for _, args := range [][]string{
+		{"--id", "build", "--title", "Build"}, {"--id", "proven", "--title", "Proven", "--checkpoint"},
+		{"--id", "late", "--title", "Late"}, {"--id", "shipped", "--title", "Shipped", "--checkpoint"},
+	} {
+		run(t, Plan, append(append([]string{"add-phase", "--plan", "first"}, args...), fixture.root)...)
+	}
+	plan := loadedPlan(t, fixture.root, "first")
+	story := "urn:change-saga:" + plan.Target[len("urn:change-saga:"):strings.Index(plan.Target, ":plan:")] + ":story:first-story"
+	run(t, Task, "add", "--plan", "first", "--id", "base", "--title", "Base", "--phase", "build", "--story", story, fixture.root)
+	run(t, Task, "done", "--plan", "first", "--task", "base", fixture.root)
+	run(t, Plan, "link-review", "--plan", "first", "--review", "pr-7", "--checkpoint", "proven", fixture.root)
+	run(t, Plan, "pass", "--plan", "first", "--checkpoint", "proven", "--reason", "works", "--by", "trevor", fixture.root)
+	began := loadedPlan(t, fixture.root, "first").Phases[1].Checkpoint.Passed.Base
+	if want := strings.TrimSpace(git(t, fixture.repo, "merge-base", "main", "feature/pg")); began != want {
+		t.Fatalf("the pass recorded %q, want the review's merge-base %q", began, want)
+	}
+
+	// The next stretch is its own branch from the feature branch.
+	worktree := filepath.Join(t.TempDir(), "next")
+	git(t, fixture.repo, "worktree", "add", "-q", "-b", "feature/next", worktree, "feature/pg")
+	writeFile(t, filepath.Join(worktree, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"next\" }\n")
+	git(t, worktree, "commit", "-qam", "The next stretch")
+	run(t, Review, "create", "--id", "next-review", "--base", "feature/pg", "--head", "feature/next", fixture.root)
+	run(t, Plan, "link-review", "--plan", "first", "--review", "next-review", "--checkpoint", "shipped", fixture.root)
+
+	reviewRange := func() reviewstate.Range {
+		document, _, err := saga.Load(fixture.root)
+		if err != nil {
+			t.Fatal(err)
+		}
+		value, err := reviewstate.ResolveRange(context.Background(), fixture.repo, document.FindReview("next-review"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		return value
+	}
+	own := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "feature/pg"))
+	if got := reviewRange().BaseOID; got != own {
+		t.Fatalf("the review begins at %s, want the feature branch %s", got, own)
+	}
+	if out := run(t, Plan, "widen", "--plan", "first", "--checkpoint", "shipped", "--to", "proven", fixture.root); !strings.Contains(out, "every change since checkpoint proven") {
+		t.Fatalf("plan widen said %q", out)
+	}
+	if got := reviewRange().BaseOID; got != began {
+		t.Fatalf("the widened review begins at %s, want %s", got, began)
+	}
+	if out := run(t, Plan, "checkpoint", "--plan", "first", "--checkpoint", "shipped", fixture.root); !strings.Contains(out, "widened to every change since checkpoint Proven") {
+		t.Fatalf("the report said:\n%s", out)
+	}
+	run(t, Plan, "widen", "--plan", "first", "--checkpoint", "shipped", "--to", "shipped", fixture.root)
+	if got := reviewRange().BaseOID; got != own {
+		t.Fatalf("narrowed again, the review begins at %s, want %s", got, own)
+	}
+	if message := refused(t, planCommand, "widen", "--plan", "first", "--checkpoint", "proven", "--to", "shipped", fixture.root); !strings.Contains(message, "comes after") {
+		t.Fatalf("widening forward said %q", message)
 	}
 }

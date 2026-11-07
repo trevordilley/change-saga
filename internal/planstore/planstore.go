@@ -518,3 +518,46 @@ func without(values []string, value string) []string {
 	}
 	return result
 }
+
+// WidenCheckpointReview makes a checkpoint's review show every change since an
+// earlier checkpoint's review began, or, given the checkpoint itself, only its own
+// stretch again. It changes what is reviewed, never what the review merges into.
+func WidenCheckpointReview(root, planID, checkpointID, toID string) error {
+	return mutate(root, func(document *saga.Saga) error {
+		plan, err := editable(document, planID)
+		if err != nil {
+			return err
+		}
+		phase, err := checkpointOf(plan, checkpointID)
+		if err != nil {
+			return err
+		}
+		review := document.FindReview(phase.Checkpoint.Review)
+		if review == nil {
+			return fmt.Errorf("checkpoint %q has no review yet; link one with plan link-review --checkpoint %s", checkpointID, checkpointID)
+		}
+		if review.Merged != nil {
+			return fmt.Errorf("review %q has merged and no longer changes", review.ID)
+		}
+		since := ""
+		if toID != checkpointID {
+			to, err := checkpointOf(plan, toID)
+			if err != nil {
+				return err
+			}
+			if slices.IndexFunc(plan.Phases, func(p saga.PlanPhase) bool { return p.ID == toID }) > slices.IndexFunc(plan.Phases, func(p saga.PlanPhase) bool { return p.ID == checkpointID }) {
+				return fmt.Errorf("checkpoint %q comes after %q; a review widens back to an earlier one", toID, checkpointID)
+			}
+			if !to.CheckpointPassed() || to.Checkpoint.Passed.Base == "" {
+				return fmt.Errorf("checkpoint %q did not record where its review began when it passed, so there is nothing to widen back to", toID)
+			}
+			since = to.Checkpoint.Passed.Base
+		}
+		manifest := review.ReviewManifest
+		manifest.Since = since
+		if err := saga.ValidateReviewManifest(manifest); err != nil {
+			return err
+		}
+		return store.WriteJSON(filepath.Join(review.Directory, saga.ReviewManifestName), manifest, false)
+	})
+}

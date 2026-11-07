@@ -69,6 +69,17 @@ func ResolveRange(ctx context.Context, checkout string, review *saga.Review) (Ra
 	if err != nil {
 		return Range{}, fmt.Errorf("review %s: no merge-base between %s and %s", review.ID, review.Base, short(head))
 	}
+	// A widened review starts further back, from a commit its head descends from.
+	if review.Since != "" {
+		since, err := revParse(ctx, checkout, review.Since+"^{commit}")
+		if err != nil {
+			return Range{}, fmt.Errorf("review %s: it is widened to %s, which does not resolve in %s", review.ID, short(review.Since), checkout)
+		}
+		if _, err := gitOutput(ctx, checkout, "merge-base", "--is-ancestor", since, head); err != nil {
+			return Range{}, fmt.Errorf("review %s: it is widened to %s, which %s does not descend from", review.ID, short(since), short(head))
+		}
+		base = since
+	}
 	return Range{BaseOID: base, HeadOID: head, Following: following}, nil
 }
 

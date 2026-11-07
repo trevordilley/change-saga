@@ -65,6 +65,9 @@ func planCheckpoint(ctx context.Context, args []string, out io.Writer) error {
 		size += fmt.Sprintf("; its review %s took %d", report.Review, report.Slides)
 	}
 	fmt.Fprintln(out, size+".")
+	if report.WidenedTo != "" {
+		fmt.Fprintf(out, "  Its review is widened to every change since checkpoint %s.\n", report.WidenedTo)
+	}
 	if report.Estimate > checkpointSlideBudget {
 		fmt.Fprintf(out, "  That is more than %d: consider splitting it with another checkpoint.\n", checkpointSlideBudget)
 	}

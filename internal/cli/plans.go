@@ -23,7 +23,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "pass", "deliver"}
+var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "pass", "widen", "deliver"}
 
 // Plan dispatches the Plan commands.
 func Plan(ctx context.Context, args []string, out io.Writer) error {
@@ -57,6 +57,8 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planPass(ctx, args[1:], out)
 	case "checkpoint":
 		err = planCheckpoint(ctx, args[1:], out)
+	case "widen":
+		err = planWiden(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["plan"])
 	}
@@ -490,6 +492,7 @@ func planPass(ctx context.Context, args []string, out io.Writer) error {
 	reason := flags.String("reason", "", "why it passes: what proves the work works")
 	by := flags.String("by", "", "who passes it; required unless --agent, which defaults to the reporting agent's name")
 	agent := flags.Bool("agent", false, "an agent passes it, under the rule of whoever invoked the Plan")
+	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -506,7 +509,20 @@ func planPass(ctx context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("--by names who passes the checkpoint; an agent passes with --agent")
 	}
 	planID := planIDOf(*plan)
-	if err := planstore.PassCheckpoint(root, planID, *checkpoint, saga.CheckpointPass{At: time.Now().UTC(), By: who, Agent: *agent, Reason: strings.TrimSpace(*reason)}); err != nil {
+	pass := saga.CheckpointPass{At: time.Now().UTC(), By: who, Agent: *agent, Reason: strings.TrimSpace(*reason)}
+	// Where the checkpoint's review began, so a later review can widen back to it.
+	if document, found, err := planOf(root, planID); err == nil {
+		for _, phase := range found.Phases {
+			if phase.ID == *checkpoint && phase.IsCheckpoint() {
+				if review := document.FindReview(phase.Checkpoint.Review); review != nil {
+					if reviewRange, err := reviewstate.ResolveRange(ctx, firstNonEmpty(*repo, root), review); err == nil {
+						pass.Base = reviewRange.BaseOID
+					}
+				}
+			}
+		}
+	}
+	if err := planstore.PassCheckpoint(root, planID, *checkpoint, pass); err != nil {
 		return err
 	}
 	if *jsonOutput {
@@ -524,6 +540,33 @@ func planPass(ctx context.Context, args []string, out io.Writer) error {
 		}
 	}
 	fmt.Fprintf(out, "Next: merge the checkpoint's branch into %s, then start the next stretch from there in a new workspace.\n", into)
+	return nil
+}
+
+func planWiden(_ context.Context, args []string, out io.Writer) error {
+	name := "plan widen"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint whose review to widen")
+	to := flags.String("to", "", "an earlier checkpoint to show every change since; the checkpoint itself shows only its own stretch again")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *checkpoint, *to); err != nil {
+		return err
+	}
+	if err := planstore.WidenCheckpointReview(flags.Arg(0), planIDOf(*plan), *checkpoint, *to); err != nil {
+		return err
+	}
+	if *jsonOutput {
+		return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), true)
+	}
+	if *to == *checkpoint {
+		fmt.Fprintf(out, "Checkpoint %s's review shows its own stretch again.\n", *checkpoint)
+	} else {
+		fmt.Fprintf(out, "Checkpoint %s's review now shows every change since checkpoint %s's review began.\n", *checkpoint, *to)
+	}
 	return nil
 }
 

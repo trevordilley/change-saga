@@ -93,6 +93,11 @@
                         }
                       }
                     }
+                  },
+                  "base": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The commit the checkpoint's review started from when it passed."
                   }
                 }
               }
