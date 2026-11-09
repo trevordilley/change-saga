@@ -21,13 +21,15 @@ without accounts or a hosted service.
 
 Change Saga is experimental, and its format may change before 1.0.
 
-[Install](#install) · [Start with a review](#start-with-a-review) ·
+[Install](#install) · [Example Saga](#see-an-example-saga) ·
+[Start with a review](#start-with-a-review) ·
 [Plan work](#plan-work-with-tasks) · [Documentation](docs/README.md)
 
 <details>
 <summary>Contents</summary>
 
 - [Install](#install)
+- [See an example Saga](#see-an-example-saga)
 - [Start with a review](#start-with-a-review)
 - [Reviewing a Saga](#reviewing-a-saga)
 - [Use it in CI](#use-it-in-ci)
@@ -37,7 +39,6 @@ Change Saga is experimental, and its format may change before 1.0.
 - [Inspect prototypes from your coding agent](#inspect-prototypes-from-your-coding-agent)
 - [Deliver Roadmap extensions](#deliver-roadmap-extensions)
 - [Working with your coding agent](#working-with-your-coding-agent)
-- [See an example Saga](#see-an-example-saga)
 - [Status, check and reconcile](#status-check-and-reconcile)
 - [Structured access for AI](#structured-access-for-ai)
 - [Authoring by hand](#authoring-by-hand)
@@ -96,6 +97,41 @@ or [build from source](#building-from-source). Then check the installation:
 change-saga version
 change-saga help
 ```
+
+## See an example Saga
+
+This repository documents itself with [`change.saga`](change.saga): its
+product requirements, designs, quality cases, implementation explanations, and
+exact code references. Open it from a source checkout:
+
+```sh
+change-saga open change.saga
+```
+
+Or [download it](https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip)
+from the latest release without cloning:
+
+```sh
+curl -fL https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip \
+  -o change-saga-example.saga.zip
+unzip change-saga-example.saga.zip
+change-saga open change.saga
+```
+
+For one concrete path through it, follow the story **Trace a requirement to
+current evidence and back** and its criterion **Each criterion shows its
+current code path**:
+
+```sh
+change-saga query requirements --saga change.saga --requirement evidence-traversal
+change-saga query traceability --saga change.saga \
+  --criterion urn:change-saga:app:story:evidence-traversal:criterion:criterion-code
+```
+
+In the reviewer, open `/requirements/evidence-traversal/criteria/criterion-code`,
+follow **Current criterion evidence paths** to its implementation Item, and
+select the Item to open the exact source it references: requirement → design →
+quality → implementation → code.
 
 ## Start with a review
 
@@ -420,41 +456,6 @@ Review the Saga yourself before asking peers to review the change. Complete
 coverage does not prove that each claim has the right evidence or that every
 link belongs where it was placed. Change Saga provides the surface; the author
 is still responsible for the quality of what is on it.
-
-## See an example Saga
-
-This repository documents itself with [`change.saga`](change.saga): its
-product requirements, designs, quality cases, implementation explanations, and
-exact code references. Open it from a source checkout:
-
-```sh
-change-saga open change.saga
-```
-
-Or [download it](https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip)
-from the latest release without cloning:
-
-```sh
-curl -fL https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip \
-  -o change-saga-example.saga.zip
-unzip change-saga-example.saga.zip
-change-saga open change.saga
-```
-
-For one concrete path through it, follow the story **Trace a requirement to
-current evidence and back** and its criterion **Each criterion shows its
-current code path**:
-
-```sh
-change-saga query requirements --saga change.saga --requirement evidence-traversal
-change-saga query traceability --saga change.saga \
-  --criterion urn:change-saga:app:story:evidence-traversal:criterion:criterion-code
-```
-
-In the reviewer, open `/requirements/evidence-traversal/criteria/criterion-code`,
-follow **Current criterion evidence paths** to its implementation Item, and
-select the Item to open the exact source it references: requirement → design →
-quality → implementation → code.
 
 ## Status, check and reconcile
 
