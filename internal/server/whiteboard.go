@@ -304,7 +304,8 @@ const whiteboardTemplates = `
 <button type="button" data-whiteboard-zoom="1" aria-label="Zoom in whiteboard" title="Zoom in (+)">+</button>
 {{if .Viewport}}<button type="button" data-whiteboard-home>Start here</button>{{end}}
 <button type="button" data-whiteboard-replay hidden>Replay</button>
-<button type="button" data-whiteboard-fields aria-pressed="false" title="Show fields and original authored detail">Details</button>
+<button type="button" data-whiteboard-fields aria-pressed="false" title="Fields and original authored detail appear automatically on focus or zoom. Click to show or hide them explicitly.">Details</button>
+<button type="button" data-whiteboard-auto-details hidden title="Let focus and zoom control field visibility again">Automatic details</button>
 <button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button>
 <label>Focus section <select data-whiteboard-focus><option value="">{{if .Viewport}}Start here{{else}}Whole board{{end}}</option>{{range .Sections}}<option value="{{.Path}}">{{.Title}}</option>{{end}}{{if .Frames}}<optgroup label="Imported sources"{{if .Sections}} hidden{{end}}>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</optgroup>{{end}}</select></label>
 <button type="button" data-whiteboard-evidence hidden>Evidence</button>
@@ -334,7 +335,6 @@ body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
 .shell:has(.whiteboard-canvas) #view-saga{height:100%}
 .whiteboard-canvas{position:relative;height:100%;isolation:isolate;overflow:hidden}
 .whiteboard-viewport{position:absolute;inset:0;overflow:hidden;background:var(--bg);cursor:grab;touch-action:none}
-.whiteboard-canvas:not([data-whiteboard-fields="true"]) .whiteboard-viewport [data-field],.whiteboard-canvas:not([data-whiteboard-fields="true"]) .whiteboard-viewport [data-diagram-detail="field"]{display:none}
 .whiteboard-toolbar button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
 .whiteboard-stale-elements{color:var(--warning-ink,var(--ink));max-width:340px}
 .whiteboard-viewport [data-evidence-badge]{fill:var(--warning-ink,var(--ink));font-size:16px;font-weight:700;paint-order:stroke;stroke:var(--bg);stroke-width:3px;pointer-events:none}

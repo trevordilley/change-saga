@@ -3268,7 +3268,7 @@ const appJavaScript = `(() => {
     }
   }
 
-` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + deprecationJavaScript + planJavaScript + `
+` + diagramInteractionsJavaScript + diagramTracingJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + deprecationJavaScript + planJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the

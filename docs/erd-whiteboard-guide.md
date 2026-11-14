@@ -256,6 +256,14 @@ changes the source evidence. Repeated appearances use paths such as
 `cloud/identity/organization` and `cross-store/organization`; neither path
 changes the identity of the underlying entity.
 
+Hover a native edge to emphasize it and dim the other edges. Hover an entity
+to emphasize its incoming and outgoing edges; section and frame hover traces
+the relationships of their contained instances. Keyboard focus provides the
+same tracing. Escape, moving away, or panning clears pointer highlighting.
+The wider wire target also works on dashed lines. Tracing uses the declared
+instance endpoints, so repeated imports stay independent; it does not infer
+relationships from names or reinterpret opaque SVG artwork.
+
 ## Shared presentation and evidence
 
 The board uses the slide diagram grammar and renderer, including authored
@@ -285,16 +293,22 @@ This does not create slide Items for an ERD. Bundled icons must be authored
 explicitly: embedding an existing SVG does not add icons or infer notes from
 its arbitrary descriptions.
 
-The **Details** control starts off. Give a native entity a concise authored
+Field rows and original authored detail appear automatically when a reader
+focuses their section or imported source, or zooms in to its detail scale.
+**Details** explicitly shows or hides detail across the board; **Automatic details**
+returns to focus and zoom control. An explicit choice lasts for that open page
+and does not change the saved document. Give a native entity a concise authored
 `summary` to explain its role at overview scale. The shared entity renderer uses
 the entity style for its title and a smaller wrapped summary in the same bounds;
-the whiteboard swaps that summary with the complete fields when Details changes.
+the whiteboard swaps that summary with the complete fields as detail changes.
 Source identity and connector endpoints do not change. For entities with an
 authored summary, field names and types occupy compact adjacent columns so they
 remain readable together when zoomed in. The fixed row metrics stay unchanged;
 ordinary entities without summaries retain their original artwork. Standalone
-diagrams keep their full fields by default. Structured field rows are hidden
-until requested.
+diagrams keep their full fields by default. Tables without an authored summary
+keep all their rows visible at every scale; zooming out never leaves an empty
+table body. An authored summary replaces rows at overview scale and gives way
+to them on focus or zoom.
 For supported authored SVGs, explicitly bound entity groups show
 larger names in their original measured bounds; Details restores their exact
 original contents. Relationship geometry and source identities stay unchanged.

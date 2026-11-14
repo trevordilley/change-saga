@@ -749,6 +749,11 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .diagram-interaction-active,.diagram-interaction:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 [data-whiteboard-interacting="true"] .diagram-interaction{outline:none}
 .diagram-note-text{white-space:pre-wrap}
+[data-diagram-kind="edge"],[data-diagram-kind="connection"]{transition:opacity .12s}
+[data-diagram-trace="muted"]{opacity:.07}
+[data-diagram-trace="active"]{opacity:1}
+[data-diagram-trace="active"] [data-diagram-line]{stroke-width:calc(var(--diagram-edge-width,2px)*2)}
+@media(prefers-reduced-motion:reduce){[data-diagram-kind="edge"],[data-diagram-kind="connection"]{transition:none}}
 .element-note>*+.element-note-markdown{padding-top:6px;border-top:1px solid var(--line)}
 .element-note-markdown>:first-child{margin-top:0}.element-note-markdown>:last-child{margin-bottom:0}
 .element-note-markdown p,.element-note-markdown ul,.element-note-markdown ol{margin:0 0 6px}.element-note-markdown ul,.element-note-markdown ol{padding-left:18px}

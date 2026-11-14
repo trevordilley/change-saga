@@ -20,7 +20,19 @@ const whiteboardJavaScript = `
       const geometry = new Map(JSON.parse(q('[data-whiteboard-metadata]', board).dataset.whiteboardMetadata).map(item => [item.path,item]));
       const frames = qa('[data-frame-path]', svg);
       const sections = new Set(qa('[data-whiteboard-section]', board).map(row => row.dataset.whiteboardSection));
-      // Fields on root-authored entities share the same on-demand control.
+      // Start compact while measuring the scene; the first paint reveals
+      // detail at the current camera or focus, unless the reader overrides it.
+      let detailMode = 'auto';
+      const detailPresentations = [];
+      function registerDetail(node, summary = false) {
+        const entity = node.closest('[data-instance-path]');
+        const path = entity?.dataset.instancePath || '';
+        detailPresentations.push({node, summary, path,
+          owner:node.closest('[data-frame-path]')?.dataset.framePath,
+          summarized:Boolean(entity && q('[data-diagram-summary="entity"]',entity)),
+          scale:Math.abs(geometry.get(path)?.transform.scale_x || 1),
+          field:node.hasAttribute('data-field'), shown:undefined});
+      }
       for (const field of qa('[data-field]', svg)) {
         field.style.display = 'none'; field.setAttribute('aria-hidden','true');
       }
@@ -76,8 +88,12 @@ const whiteboardJavaScript = `
         const expanded = board.dataset.whiteboardFields === 'true';
         original.style.display = expanded ? '' : 'none'; original.setAttribute('aria-hidden',String(!expanded));
         summary.style.display = expanded ? 'none' : ''; summary.setAttribute('aria-hidden',String(expanded));
+        registerDetail(original);
+        registerDetail(summary,true);
       }
       }
+      for (const node of qa('[data-field], [data-diagram-detail="entity"], [data-diagram-detail="field"]',svg)) registerDetail(node);
+      for (const node of qa('[data-diagram-summary="entity"]',svg)) registerDetail(node,true);
       prepareEntitySummaries(undefined);
       const details = new Map(qa('[data-frame-detail]', svg).map(node => [node.dataset.frameDetail,node]));
       const summaries = new Map(qa('[data-frame-overview]', svg).map(node => [node.dataset.frameOverview,node]));
@@ -117,11 +133,12 @@ const whiteboardJavaScript = `
       const revealNodes = qa('[data-reveal-step]',svg);
       const revealPaths = revealNodes.map(node => node.closest('[data-instance-path]')?.dataset.instancePath);
       const mode = q('[data-whiteboard-mode]',board), replay = q('[data-whiteboard-replay]',board), fitButton = q('[data-whiteboard-fit]',board);
+      const detailButton = q('[data-whiteboard-fields]',board), autoDetails = q('[data-whiteboard-auto-details]',board);
       let controls = [], controlsDirty = true;
       const attribute = (node,name,value) => { if (node && node.getAttribute(name) !== String(value)) node.setAttribute(name,String(value)); };
       const text = (node,value) => { if (node.textContent !== value) node.textContent = value; };
-      function visible(node, show) {
-        const display = show ? '' : 'none';
+      function visible(node, show, expandedDisplay = '') {
+        const display = show ? expandedDisplay : 'none';
         if (node.style.display !== display) {
           if (!show && node.contains(document.activeElement)) viewport.focus({preventScroll:true});
           node.style.display = display;
@@ -172,6 +189,24 @@ const whiteboardJavaScript = `
           }
           if (!detailed) collapsed.push(path);
         }
+        let expandedDetails = 0, collapsedDetails = 0;
+        for (const state of detailPresentations) {
+          const owner = byFrame.get(state.owner);
+          const inFocus = focused && (state.path === focused || state.path.startsWith(focused+'/'));
+          const expanded = detailMode === 'all' || (detailMode === 'auto' &&
+            (!state.summarized || (owner ? owner.detailed : inFocus || scale*state.scale >= .6)));
+          const show = state.summary ? !expanded : Boolean(expanded);
+          if (state.shown !== show) {
+            state.shown = show;
+            // Imported structured rows have a presentation display="none".
+            visible(state.node,show,state.field ? 'block' : '');
+          }
+          if (!state.summary) expanded ? expandedDetails++ : collapsedDetails++;
+        }
+        attribute(board,'data-whiteboard-detail-mode',detailMode);
+        attribute(board,'data-whiteboard-fields',expandedDetails > 0);
+        attribute(detailButton,'aria-pressed',expandedDetails && collapsedDetails ? 'mixed' : String(expandedDetails > 0));
+        autoDetails.hidden = detailMode === 'auto';
         const visibleEndpoint = path => collapsed.filter(frame => path === frame || path.startsWith(frame + '/')).sort((a,b) => a.length-b.length)[0] || path;
         for (const state of connections) {
           const {node:connection,detail,overview,meta,line} = state;
@@ -201,6 +236,7 @@ const whiteboardJavaScript = `
               }
             } else points.slice(1).forEach(point => {path += ' L' + point.x + ' ' + point.y;});
             line.setAttribute('d',path);
+            diagramTraceHits.get(line)?.setAttribute('d',path);
             visible(detail,true); visible(overview,false);
           } else {
             const simplified = from !== connection.dataset.from || to !== connection.dataset.to;
@@ -304,17 +340,11 @@ const whiteboardJavaScript = `
       q('[data-whiteboard-fit]', board).addEventListener('click', fit);
       q('[data-whiteboard-replay]', board).addEventListener('click', () => replayDiagramReveal(board));
       q('[data-whiteboard-home]', board)?.addEventListener('click', home);
-      q('[data-whiteboard-fields]', board).addEventListener('click', event => {
-        const show = board.dataset.whiteboardFields !== 'true';
-        board.dataset.whiteboardFields = String(show);
-        event.currentTarget.setAttribute('aria-pressed', String(show));
-        for (const row of qa('[data-field], [data-diagram-detail="field"]', svg)) {
-          row.style.display = show ? 'block' : 'none';
-          row.setAttribute('aria-hidden', String(!show));
-        }
-        qa('[data-diagram-detail="entity"]', svg).forEach(node => visible(node, show));
-        qa('[data-diagram-summary="entity"]', svg).forEach(node => visible(node, !show));
+      detailButton.addEventListener('click', () => {
+        detailMode = board.dataset.whiteboardFields === 'true' ? 'none' : 'all';
+        paint();
       });
+      autoDetails.addEventListener('click', () => { detailMode = 'auto'; detailButton.focus(); paint(); });
       qa('[data-whiteboard-zoom]', board).forEach(button => button.addEventListener('click', () => zoom(button.dataset.whiteboardZoom === '1' ? .8 : 1.25)));
       select.addEventListener('change', () => focus(select.value));
       qa('[data-whiteboard-focus-frame]', board).forEach(button => button.addEventListener('click', () => { focus(button.dataset.whiteboardFocusFrame); viewport.focus({preventScroll:true}); }));
@@ -401,6 +431,7 @@ const whiteboardJavaScript = `
           event.preventDefault(); event.stopPropagation(); node.dispatchEvent(new MouseEvent('click', {bubbles:true,cancelable:true}));
         });
       }
+      prepareDiagramTracing(svg, {interactionRoot:board, signal:pageScope.signal});
       controls = qa('[tabindex]',svg).map(node => {
         const owners = []; let owner = node.closest('[data-frame-detail]');
         while (owner) { const state = byFrame.get(owner.dataset.frameDetail); if (state) owners.push(state); owner = owner.parentElement.closest('[data-frame-detail]'); }

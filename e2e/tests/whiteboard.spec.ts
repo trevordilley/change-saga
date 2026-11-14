@@ -133,8 +133,11 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(opaqueBinding).toHaveAttribute("data-documentation-target", /data-entity:local-edit$/);
   await expect(opaqueBinding).toHaveAttribute("tabindex", "0");
   await expect(opaqueBinding).toHaveAttribute("role", "button");
-  await expect(opaqueBinding.locator('[data-diagram-summary="entity"]')).toBeVisible();
+  await expect(opaqueBinding.locator('[data-diagram-summary="entity"]')).toBeHidden();
+  await expect(opaqueBinding.locator('[data-diagram-detail="entity"]')).toBeVisible();
+  await board.locator("[data-whiteboard-fields]").click();
   await expect(opaqueBinding.locator('[data-diagram-detail="entity"]')).toBeHidden();
+  await expect(opaqueBinding.locator('[data-diagram-summary="entity"]')).toBeVisible();
   await board.locator("[data-whiteboard-fields]").click();
   await expect(opaqueBinding.locator('[data-diagram-detail="entity"]')).toBeVisible();
   await expect(opaqueBinding.locator('[data-diagram-summary="entity"]')).toBeHidden();
@@ -181,7 +184,7 @@ test("mixed nested detail keeps each connection on its visible semantic endpoint
   await waitForSettledSaga(page);
   const board = page.locator("[data-whiteboard-view]");
   const edge = board.locator('[data-instance-path="sync"]');
-  const line = edge.locator('[data-connection-detail] > path');
+  const line = edge.locator('[data-connection-detail] > [data-diagram-line]');
   await expect(edge).toHaveAttribute("data-whiteboard-from", "local");
   await expect(edge).toHaveAttribute("data-whiteboard-to", "cloud/postgres");
   const overview = await line.getAttribute("d");
@@ -224,7 +227,7 @@ test("authored opening camera, fields and renderer reveal stay separate from ful
   const svg = board.locator("[data-whiteboard-viewport] > svg");
   const initial = await svg.getAttribute("viewBox");
   const fields = board.locator('[data-instance-path="local/local-edit"] [data-field]');
-  await expect(fields.first()).toBeHidden();
+  await expect(fields.first()).toBeVisible();
   await board.locator('[data-whiteboard-fit]').click();
   await expect(svg).not.toHaveAttribute("viewBox", initial!);
   const whole = await svg.getAttribute("viewBox");
@@ -238,7 +241,7 @@ test("authored opening camera, fields and renderer reveal stay separate from ful
   await expect(svg).toHaveAttribute("viewBox", whole!);
   await board.getByLabel("Focus section").selectOption("local");
   await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
-  await expect(fields.first()).toBeHidden();
+  await expect(fields.first()).toBeVisible();
   await board.locator('[data-whiteboard-toolbar] [data-whiteboard-evidence]').click();
   await expect(page.locator('[data-erd-evidence]')).toContainText('members have no code references');
   await page.locator('.diff-drawer summary').filter({hasText:'Definition history'}).click();
@@ -247,6 +250,8 @@ test("authored opening camera, fields and renderer reveal stay separate from ful
   await historyRequest;
   await expect(page.locator('[data-erd-evidence]')).toBeVisible();
   await page.keyboard.press('Escape');
+  await board.locator('[data-whiteboard-fields]').click();
+  await expect(fields.first()).toBeHidden();
   await board.locator('[data-whiteboard-fields]').click();
   await expect(fields.first()).toBeVisible();
   await board.locator('[data-whiteboard-replay]').click();
@@ -308,7 +313,8 @@ test("offscreen diagrams restore on focus while camera updates batch without scr
   await board.getByLabel('Focus section').selectOption('legacy');
   await expect(board).toHaveAttribute('data-whiteboard-moving','false');
   await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
-  await expect(legacy.locator('[data-diagram-summary]')).toBeVisible();
+  await expect(legacy.locator('[data-diagram-summary]')).toBeHidden();
+  await expect(legacy.locator('[data-diagram-detail="entity"]')).toBeVisible();
 
   // A burst of pointer input must coalesce into one camera render; panning
   // does not require screen transforms or rebuilding keyboard affordances.
@@ -338,7 +344,8 @@ test("offscreen diagrams restore on focus while camera updates batch without scr
   await board.getByLabel('Focus section').selectOption('legacy');
   await expect(board).toHaveAttribute('data-whiteboard-moving','false');
   await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
-  await expect(legacy.locator('[data-diagram-summary]')).toBeVisible();
+  await expect(legacy.locator('[data-diagram-summary]')).toBeHidden();
+  await expect(legacy.locator('[data-diagram-detail="entity"]')).toBeVisible();
 });
 
 test("wheel and trackpad scroll pan the board while modified scroll zooms", async ({ page, saga }) => {

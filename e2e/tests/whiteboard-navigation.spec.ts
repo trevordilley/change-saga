@@ -157,6 +157,56 @@ function nativeModel(saga: SagaFixture, stories = false) {
 
 }
 
+test("native ERD fields appear on zoom and focus with explicit overrides @critical", async ({page, saga}, testInfo) => {
+  const path = join(saga.root, "field-visibility.json");
+  writeFileSync(path, JSON.stringify({version:1,width:4000,height:2600,elements:[
+    {id:"identity",kind:"group",shape:"section",label:"Identity",x:1500,y:950,width:1000,height:700,style:"normal"},
+    {id:"users",parent:"identity",kind:"node",shape:"entity",label:"users",summary:"Registered users and their organization.",x:50,y:100,width:400,height:230,style:"normal",fields:[
+      {name:"id",type:"uuid",key:"pk"},{name:"organization_id",type:"uuid ?",key:"fk"},{name:"email",type:"text"}
+    ]},
+    {id:"audit",parent:"identity",kind:"node",shape:"entity",label:"audit",x:500,y:100,width:400,height:230,style:"normal",fields:[{name:"event_id",type:"uuid",key:"pk"}]}
+  ]}));
+  const published = runCLI(saga,["whiteboard","publish","--id","data-model","--name","Column visibility regression","--revision","r1","--from",path,saga.sagaRoot]);
+  expect(published.status,published.stdout+published.stderr).toBe(0);
+  await page.goto(saga.baseURL+"/technical/erd"); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'),entity=board.locator('[data-instance-path="identity/users"]');
+  const field=entity.locator('[data-field="organization_id"]');
+  await expect(field).toBeHidden();
+  const plainField=board.locator('[data-instance-path="identity/audit"] [data-field="event_id"]');
+  await expect(plainField).toBeVisible();
+  await expect(board).toHaveAttribute('data-whiteboard-detail-mode','auto');
+  for(let i=0;i<5;i++) await board.locator('[data-whiteboard-zoom="1"]').click();
+  await expect(field).toBeVisible();
+  await expect(field).toContainText('organization_id');
+  await expect(field).toContainText('uuid ?');
+  await expect(field).toContainText('FK');
+  await expect(entity.locator('[data-key="pk"]')).toContainText('PK');
+  await board.getByRole('button',{name:'Fit board',exact:true}).click();
+  await expect(field).toBeHidden();
+  await board.getByLabel('Focus section').selectOption('identity');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  await expect(field).toBeVisible();
+  await board.screenshot({path:testInfo.outputPath('native-erd-automatic-columns.png')});
+  await board.locator('[data-whiteboard-fields]').click();
+  await expect(field).toBeHidden();
+  await board.locator('[data-whiteboard-zoom="1"]').click();
+  await expect(field).toBeHidden();
+  await board.getByRole('button',{name:'Automatic details',exact:true}).click();
+  await expect(field).toBeVisible();
+  await board.locator('[data-whiteboard-fields]').click();
+  await expect(field).toBeHidden();
+  await board.locator('[data-whiteboard-fields]').click();
+  await expect(field).toBeVisible();
+  await board.getByRole('button',{name:'Fit board',exact:true}).click();
+  await expect(field).toBeVisible();
+  await expect(board).toHaveAttribute('data-whiteboard-detail-mode','all');
+  await expect(board).toHaveAttribute('data-whiteboard-revision','r1');
+  await page.reload(); await waitForSettledSaga(page);
+  await expect(board).toHaveAttribute('data-whiteboard-detail-mode','auto');
+  await expect(field).toBeHidden();
+  await expect(plainField).toBeVisible();
+});
+
 test("one native model exposes sections, fields and exact entity/relationship evidence without child ERDs @critical", async ({ page, saga }) => {
   nativeModel(saga);
   await page.goto(saga.baseURL + "/technical/erd");
@@ -200,16 +250,19 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await expect(evidence).not.toHaveAttribute("data-documentation-target");
   const record = board.locator('[data-instance-path="shared/record"]');
   await expect(record).toHaveAccessibleName("Inspect Saved record");
-  await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
+  await expect(record.locator('[data-diagram-summary="entity"]')).toBeHidden();
   await expect(record.locator('[data-diagram-summary="entity"]')).toContainText("Preserves the accepted edit for shared access.");
-  await expect(record.locator('[data-diagram-detail="entity"]')).toBeHidden();
-  expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(true);
+  await expect(record.locator('[data-diagram-detail="entity"]')).toBeVisible();
+  expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(false);
   await record.focus(); await page.keyboard.press("Enter");
   await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", /data-entity:record:revision:r1$/);
   await expect(board.locator("[data-whiteboard-inspection]")).toBeHidden();
   await expect(page.locator('.drawer-body [data-file-path="src/app.go"]')).toContainText("Entity evidence at its saved commit.");
   await expect(page.locator('.drawer-body [data-evidence-integrity="verified"]')).toBeVisible();
   await page.keyboard.press("Escape");
+  await board.locator("[data-whiteboard-fields]").click();
+  await expect(record.locator("[data-field]").first()).toBeHidden();
+  await expect(board).toHaveAttribute("data-whiteboard-detail-mode", "none");
   await board.locator("[data-whiteboard-fields]").click();
   await expect(record.locator("[data-field]").first()).toBeVisible();
   expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(false);
@@ -220,6 +273,9 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(true);
   await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
   await expect(record.locator('[data-diagram-detail="entity"]')).toBeHidden();
+  await board.getByRole("button", {name:"Automatic details", exact:true}).click();
+  await expect(record.locator("[data-field]").first()).toBeVisible();
+  await expect(board).toHaveAttribute("data-whiteboard-detail-mode", "auto");
   await select.selectOption("");
   await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
   await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
@@ -551,7 +607,7 @@ test("oversized native entity actions stay reachable at readable field zoom", as
   await viewport.focus(); await record.hover();
   const ordinaryHover=await bar.boundingBox();
   expect(ordinaryHover!.x).toBeCloseTo(ordinary!.x,1); expect(ordinaryHover!.y).toBeCloseTo(ordinary!.y,1);
-  await board.locator('[data-whiteboard-fields]').click();
+  await expect(record.locator('[data-field]').first()).toBeVisible();
   for(let i=0;i<8;i++) await board.locator('[data-whiteboard-zoom="1"]').click();
   await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
   const pan=await record.evaluate(node=>{
