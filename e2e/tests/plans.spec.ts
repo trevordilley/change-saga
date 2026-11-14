@@ -47,6 +47,9 @@ test("selecting a node on Tasks marks its path and shows its detail", async ({ p
   await page.goto(`${saga.baseURL}/plans/tides/tasks`);
   await waitForSettledSaga(page);
 
+  // Tasks omit the optional detail controls but still initialize the shared camera.
+  await expect(page.getByRole('toolbar', { name: 'Whiteboard navigation' })).toBeVisible();
+  await expect(page.locator('[data-whiteboard-auto-details]')).toHaveCount(0);
   await page.locator('[data-plan-node="task:read-tides"]').click();
   await expect(page.locator('[data-plan-node="task:tide-source"]')).toHaveClass(/plan-path/);
   await expect(page.locator('[data-plan-node^="story:"]')).toHaveClass(/plan-onward/);

@@ -206,7 +206,7 @@ const whiteboardJavaScript = `
         attribute(board,'data-whiteboard-detail-mode',detailMode);
         attribute(board,'data-whiteboard-fields',expandedDetails > 0);
         attribute(detailButton,'aria-pressed',expandedDetails && collapsedDetails ? 'mixed' : String(expandedDetails > 0));
-        autoDetails.hidden = detailMode === 'auto';
+        if (autoDetails) autoDetails.hidden = detailMode === 'auto';
         const visibleEndpoint = path => collapsed.filter(frame => path === frame || path.startsWith(frame + '/')).sort((a,b) => a.length-b.length)[0] || path;
         for (const state of connections) {
           const {node:connection,detail,overview,meta,line} = state;
@@ -344,7 +344,7 @@ const whiteboardJavaScript = `
         detailMode = board.dataset.whiteboardFields === 'true' ? 'none' : 'all';
         paint();
       });
-      autoDetails.addEventListener('click', () => { detailMode = 'auto'; detailButton.focus(); paint(); });
+      autoDetails?.addEventListener('click', () => { detailMode = 'auto'; detailButton.focus(); paint(); });
       qa('[data-whiteboard-zoom]', board).forEach(button => button.addEventListener('click', () => zoom(button.dataset.whiteboardZoom === '1' ? .8 : 1.25)));
       select.addEventListener('change', () => focus(select.value));
       qa('[data-whiteboard-focus-frame]', board).forEach(button => button.addEventListener('click', () => { focus(button.dataset.whiteboardFocusFrame); viewport.focus({preventScroll:true}); }));
