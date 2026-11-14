@@ -47,7 +47,10 @@ const diagramTracingJavaScript = `
     let hovered = null, focused = null, dismissed = null;
     const paused = () => interactionRoot.dataset.whiteboardInteracting === 'true';
     const targetFor = target => {
-      const node = target?.closest?.('[data-instance-path]');
+      // The controls and note live outside the SVG. They still belong to the
+      // same instance, so entering them must not drop its relationship trace.
+      const control = notePopover?.contains(target) ? noteOwner : target;
+      const node = diagramAffordanceOwner(control)?.closest?.('[data-instance-path]');
       return regions.has(node) && !node.closest('[aria-hidden="true"],[hidden],[inert]') ? node : null;
     };
     function paint() {
@@ -67,7 +70,9 @@ const diagramTracingJavaScript = `
     };
     const leave = event => {
       if (hovered?.contains(event.relatedTarget)) return;
-      hovered = targetFor(event.relatedTarget); paint();
+      const next = targetFor(event.relatedTarget);
+      if (next === hovered) return;
+      hovered = next; paint();
     };
     const focus = event => { focused = targetFor(event.target); dismissed = null; paint(); };
     const blur = event => { focused = targetFor(event.relatedTarget); paint(); };
@@ -80,7 +85,7 @@ const diagramTracingJavaScript = `
       hovered = targetFor(event.target); dismissed = null; paint();
     };
     const listeners = [['pointerover',enter],['pointerout',leave],['focusin',focus],['focusout',blur],['keydown',escape],['pointerdown',touch]];
-    for (const [type,handler] of listeners) root.addEventListener(type,handler);
+    for (const [type,handler] of listeners) document.addEventListener(type,handler);
     const observer = new MutationObserver(() => {
       hovered = null;
       focused = paused() ? null : targetFor(document.activeElement);
@@ -89,7 +94,7 @@ const diagramTracingJavaScript = `
     observer.observe(interactionRoot,{attributes:true,attributeFilter:['data-whiteboard-interacting']});
     signal?.addEventListener('abort',() => {
       observer.disconnect(); hovered = focused = null; paint();
-      for (const [type,handler] of listeners) root.removeEventListener(type,handler);
+      for (const [type,handler] of listeners) document.removeEventListener(type,handler);
       for (const node of addedFocus) node.removeAttribute('tabindex');
       for (const hit of hits) hit.remove();
       for (const line of lines) { diagramTraceHits.delete(line); line.removeAttribute('data-diagram-line'); line.style.removeProperty('--diagram-edge-width'); }

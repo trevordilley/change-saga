@@ -72,6 +72,57 @@ test("hover and keyboard trace declared edges without hiding columns or changing
   await expectNoSeriousAccessibilityViolations(page,'[data-whiteboard-view]');
 });
 
+for (const id of ['ab','b']) test("hover annotations stay nearby and retain the trace for "+id, async ({page,saga},testInfo) => {
+  const annotated={...model,elements:model.elements.map(element=>element.id === id ? {
+    ...element,note:'Inspect this relationship without losing its context. [Saved definition](https://example.test/definition)',
+    evidence:[{commit:saga.identity.head,path:'src/app.go',start:3,end:3,note:'The saved implementation.'}]
+  } : element)};
+  author(saga,'annotated-board',annotated,'whiteboard','publish','--id','data-model','--name','Hover annotations','--revision','r1');
+  await page.goto(saga.baseURL+'/technical/erd'); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
+  const owner=board.locator(`[data-instance-path="${id}"]`);
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  const point=await owner.evaluate((node,id)=>{
+    if (id === 'b') {
+      const box=node.getBoundingClientRect(); return {x:box.x+box.width*.35,y:box.y+box.height*.7};
+    }
+    const path=node.querySelector<SVGPathElement>('[data-diagram-line]')!;
+    const p=path.getPointAtLength(path.getTotalLength()*.3).matrixTransform(path.getScreenCTM()!);
+    return {x:p.x,y:p.y};
+  },id);
+  await page.mouse.move(point.x,point.y);
+  const info=bar.getByRole('button',{name:/More information/});
+  await expect(info).toBeVisible();
+  await expect(bar).not.toHaveAttribute('aria-busy','true');
+  const anchor=await bar.boundingBox();
+  expect(Math.abs(anchor!.x-point.x)).toBeLessThan(10);
+  expect(Math.abs(anchor!.y-point.y)).toBeLessThan(20);
+  const button=await info.boundingBox();
+  const destination={x:button!.x+button!.width/2,y:button!.y+button!.height/2};
+  for(let i=1;i<=12;i++) {
+    await page.mouse.move(point.x+(destination.x-point.x)*i/12,point.y+(destination.y-point.y)*i/12);
+    await page.waitForTimeout(25);
+  }
+  await expect(bar).toHaveAttribute('aria-label','Actions for '+await owner.getAttribute('aria-label'));
+  expect(await bar.boundingBox()).toEqual(anchor);
+  const ab=board.locator('[data-instance-path="ab"]'),dc=board.locator('[data-instance-path="dc"]');
+  await expect(ab).toHaveAttribute('data-diagram-trace','active');
+  await expect(dc).toHaveAttribute('data-diagram-trace','muted');
+  await page.mouse.click(destination.x,destination.y);
+  const note=page.locator('#element-note-popover');
+  await expect(note).toContainText('without losing its context');
+  await note.getByRole('link',{name:'Saved definition'}).hover();
+  await expect(ab).toHaveAttribute('data-diagram-trace','active');
+  await expect(dc).toHaveAttribute('data-diagram-trace','muted');
+  await info.focus();
+  await expect(ab).toHaveAttribute('data-diagram-trace','active');
+  await board.screenshot({path:testInfo.outputPath('reachable-hover-annotations.png')});
+  await page.keyboard.press('Escape');
+  await page.mouse.move(5,5);
+  await board.locator('[data-whiteboard-viewport]').focus();
+  await expect(ab).not.toHaveAttribute('data-diagram-trace');
+});
+
 test("repeated native imports trace their own instance paths and cross-frame connections", async ({page,saga}) => {
   let result=runCLI(saga,['inventory','adopt-format','--format','2',saga.sagaRoot]);
   expect(result.status,result.stdout+result.stderr).toBe(0);

@@ -170,15 +170,11 @@ const diagramInteractionsJavaScript = `
       diagramNoteTemplates.set(button,template); bar.append(button);
     }
     function place(node, pointer) {
-      const onConnection = node.dataset.diagramKind === 'connection' || node.hasAttribute('data-source-relationship');
-      const hasPointer = Number.isFinite(pointer?.clientX) && Number.isFinite(pointer?.clientY);
-      const box = onConnection && hasPointer ? null : position(node);
-      const clip = box?.viewport;
-      const outside = clip && (box.right < clip.left || box.right > clip.right || box.top < clip.top || box.top > clip.bottom);
-      const atPointer = hasPointer && (onConnection || (node.dataset.diagramKind === 'node' && outside));
+      const atPointer = Number.isFinite(pointer?.clientX) && Number.isFinite(pointer?.clientY);
+      const box = atPointer ? null : position(node);
       if (!atPointer && !box) return false;
-      // Long edges and zoomed native cards may have offscreen anchors. Keep
-      // their pointer actions nearby, with a four-pixel crossing into the strip.
+      // Keep hover actions beside the point the reader is inspecting, rather
+      // than a distant label or card corner. The strip stays put while entered.
       // Keyboard focus keeps the cached authored geometry; neither reads SVG.
       const flip = atPointer && pointer.clientX > innerWidth-180;
       bar.style.transform = flip ? 'translateX(-100%)' : '';

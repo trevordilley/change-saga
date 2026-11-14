@@ -415,7 +415,8 @@ test("native hover reuses slide actions and loads real pinned code and Item stor
   await page.locator('.diff-drawer').evaluate(async node=>{await Promise.all(node.getAnimations().map(animation=>animation.finished));});
   await page.screenshot({path:testInfo.outputPath('native-code-evidence.png')});
   await page.keyboard.press('Escape'); await expect(record).toBeFocused();
-  await board.locator('[data-instance-path="shared/record-copy"]').hover();
+  // Enter away from the current strip, which now stays beside the pointer.
+  await board.locator('[data-instance-path="shared/record-copy"]').hover({position:{x:10,y:10}});
   await bar.locator('.element-note-trigger').click();
   await expect(page.locator('#element-note-popover strong')).toHaveText('different note');
   await expect(page.locator('#element-note-popover')).not.toContainText('authored record note');
@@ -606,7 +607,9 @@ test("oversized native entity actions stay reachable at readable field zoom", as
   const ordinary=await bar.boundingBox(); expect(ordinary).not.toBeNull();
   await viewport.focus(); await record.hover();
   const ordinaryHover=await bar.boundingBox();
-  expect(ordinaryHover!.x).toBeCloseTo(ordinary!.x,1); expect(ordinaryHover!.y).toBeCloseTo(ordinary!.y,1);
+  const recordBox=await record.boundingBox();
+  expect(ordinaryHover!.x).toBeCloseTo(recordBox!.x+recordBox!.width/2+4,1);
+  expect(ordinaryHover!.y).toBeCloseTo(recordBox!.y+recordBox!.height/2-14,1);
   await expect(record.locator('[data-field]').first()).toBeVisible();
   for(let i=0;i<8;i++) await board.locator('[data-whiteboard-zoom="1"]').click();
   await expect(board).toHaveAttribute('data-whiteboard-interacting','false');

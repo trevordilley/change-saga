@@ -273,9 +273,11 @@ finished drawing. Hover or focus an element to reveal the same action strip
 used by implementation slides. Its information control opens the shared note
 popover; documentation and code actions open the existing drawers. The strip
 loads metadata for the exact saved pin on demand, and code is loaded when its
-panel opens. Repeated appearances retain their own authored notes. Long
-relationships place pointer actions beside the visible segment; keyboard focus
-uses the cached diagram position.
+panel opens. Repeated appearances retain their own authored notes. Hover actions
+appear beside the pointer and stay put while the reader enters them. The edge
+trace stays active inside its controls and note, so inspecting an annotation
+preserves its relationship context. Keyboard focus uses the cached diagram
+position.
 
 A conceptual shape may pin an existing ERD as its broader evidence scope.
 Its code action then uses the existing ERD directory evidence collector: saved
