@@ -5,6 +5,17 @@ design for a change, or to break work into Tasks. Run `change-saga plan guide
 change.saga` for the workflow and `change-saga plan guide --plan ID change.saga`
 to see what is not yet ready.
 
+Check the actual executable before diagnosing missing support: `type -a
+change-saga`, then its `version` command and `change-saga query schema plans`.
+v0.7.0 authors phased Plans; v0.8.0 adds Plan queries. Both reject the later
+normalized current-record layouts even though the root manifest is still v5.
+This build supports those layouts but rejects native `checkpoint` and
+`checkpoint_passer` fields from the unmerged checkpoint branch. Never delete
+unsupported fields or silently downgrade data. Use one absolute, pinned build
+for the whole Saga; this branch's `doctor --json change.saga` reports its
+capabilities and runs read-only whole-Saga validation. See
+[compatibility and diagnosis](../../../docs/plan-cli-compatibility.md).
+
 A Plan describes a body of work and how it can be executed in parallel. It is
 where the technical design for a change is drafted, and its Tasks are how the
 work gets done. A review explains what a change did; a Plan says what it will do.

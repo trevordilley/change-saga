@@ -95,7 +95,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
 	"label", "milestone", "deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "task", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
-	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
+	"review", "doctor", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"setup-ci",
 	"move-deck", "move-slide", "move-chapter", "move-section", "move-fragment",
 	"theme", "serve", "open", "install-skill", "spec",
@@ -253,6 +253,7 @@ var commandUsage = map[string]string{
 	"review withdraw":               "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
 	"review comment":                "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID | --path PATH --line N [--end-line M] [--side new|old] [--target SLIDE[/ITEM]]) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                      "change-saga validate [--json] [--fix] <saga>",
+	"doctor":                        "change-saga doctor [--json] [<saga>]",
 	"reconcile":                     "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json [--summary]] [--all] <saga>",
 	"status":                        "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                         "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
@@ -551,6 +552,7 @@ untouched.`,
 	"serve":            "Serve the saga on loopback for review. Detached instances are managed with\nchange-saga serve status [SAGA] and change-saga serve stop [SAGA].",
 	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill\nand change-saga-context reading skill. Pipe it to a coding agent; it neither\nwrites to this repository nor creates a saga.",
 	"validate":         "Check the format and authoring completeness, including a warning for every Markdown\nfootnote without an evidence-bearing exact-text landmark. --fix adds missing stable\nheading anchors and changes nothing else.",
+	"doctor":           "Report this executable, build identity, Plan capabilities and whole-Saga format support.\nWith a Saga path, run read-only validation of all record families; never normalize or repair.",
 }
 
 func flagWasSet(flags *flag.FlagSet, name string) bool {
@@ -977,16 +979,10 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 		}
 		fixes = applied
 	}
-	document, validation, err := saga.Load(flags.Arg(0))
+	_, validation, err := validateSaga(flags.Arg(0))
 	if err != nil {
 		return err
 	}
-	appendPrototypeIssues(flags.Arg(0), document, &validation)
-	appendQualityIssues(flags.Arg(0), document, &validation)
-	appendAppIssues(flags.Arg(0), document, &validation)
-	appendInventoryIssues(flags.Arg(0), document, &validation)
-	appendWhiteboardIssues(flags.Arg(0), document, &validation)
-	appendThemeIssues(flags.Arg(0), &validation)
 	if *jsonOutput {
 		if err := writeJSON(out, validationOutput{Validation: validation, Fixes: fixes}); err != nil {
 			return err
@@ -1004,6 +1000,22 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 		return &StatusError{Code: 1}
 	}
 	return nil
+}
+
+// validateSaga checks every record family for both validate and doctor. Plan
+// support alone says nothing about whether the rest of a Saga can be read.
+func validateSaga(root string) (*saga.Saga, saga.Validation, error) {
+	document, validation, err := saga.Load(root)
+	if err != nil {
+		return document, validation, err
+	}
+	appendPrototypeIssues(root, document, &validation)
+	appendQualityIssues(root, document, &validation)
+	appendAppIssues(root, document, &validation)
+	appendInventoryIssues(root, document, &validation)
+	appendWhiteboardIssues(root, document, &validation)
+	appendThemeIssues(root, &validation)
+	return document, validation, nil
 }
 
 // appendPrototypeIssues reports the prototype capability through

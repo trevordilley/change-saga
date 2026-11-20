@@ -314,7 +314,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"add-landmark": AddLandmark, "deck": Deck, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
 	"replace-coverage": ReplaceCoverage, "references": References, "repin": Repin, "sync": Sync,
 	"move-deck": MoveDeck, "move-slide": MoveSlide, "move-chapter": MoveChapter, "move-section": MoveSection, "move-fragment": MoveFragment,
-	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "reconcile": Reconcile, "check": Check, "query": Query,
+	"add-claim": AddClaim, "verify-claim": VerifyClaim, "doctor": Doctor, "validate": Validate, "status": Status, "reconcile": Reconcile, "check": Check, "query": Query,
 	"visual-qa":     VisualQA,
 	"serve":         func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, false) },
 	"open":          func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, true) },

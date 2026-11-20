@@ -22,6 +22,25 @@ func TestRunSetupCI(t *testing.T) {
 	}
 }
 
+func TestRunDoctorJSON(t *testing.T) {
+	for _, test := range []struct {
+		args []string
+		code int
+	}{
+		{[]string{"doctor", "--json"}, 0},
+		{[]string{"doctor", "--json", filepath.Join(t.TempDir(), "missing.saga")}, 1},
+	} {
+		var stdout, stderr bytes.Buffer
+		if code := run(test.args, &stdout, &stderr); code != test.code || stderr.Len() != 0 {
+			t.Fatalf("doctor exit=%d stderr=%s stdout=%s", code, &stderr, &stdout)
+		}
+		var report map[string]any
+		if err := json.Unmarshal(stdout.Bytes(), &report); err != nil || report["schema"] != "change-saga.doctor/v1" {
+			t.Fatalf("doctor did not emit one structured report: %v %s", err, &stdout)
+		}
+	}
+}
+
 func TestRunQueryKeepsMachineOutputOnStdout(t *testing.T) {
 	tests := []struct {
 		name string

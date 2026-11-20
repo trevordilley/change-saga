@@ -489,7 +489,7 @@ func loadPlan(root, dir, id string, manifest Manifest, options loadOptions, vali
 	rel := relativePath(root, dir)
 	manifestPath := filepath.Join(dir, PlanManifestName)
 	var value PlanManifest
-	if err := readJSON(manifestPath, &value); err != nil {
+	if err := readPlanJSON(manifestPath, &value); err != nil {
 		addIssue(validation, "error", relativePath(root, manifestPath), err.Error())
 		return nil, nil
 	}
@@ -568,7 +568,7 @@ func loadPlan(root, dir, id string, manifest Manifest, options loadOptions, vali
 func loadTask(root, dir, id string, plan *Plan, manifest Manifest, validation *Validation) *Task {
 	manifestPath := filepath.Join(dir, TaskManifestName)
 	var value TaskManifest
-	if err := readJSON(manifestPath, &value); err != nil {
+	if err := readPlanJSON(manifestPath, &value); err != nil {
 		addIssue(validation, "error", relativePath(root, manifestPath), err.Error())
 		return nil
 	}
@@ -599,6 +599,27 @@ func loadTask(root, dir, id string, plan *Plan, manifest Manifest, validation *V
 		}
 	}
 	return task
+}
+
+// readPlanJSON keeps strict decoding and adds a recovery path for known
+// incompatible layouts. Never strip fields: even an empty checkpoint object
+// carries execution semantics in builds that support it.
+func readPlanJSON(path string, dst any) error {
+	err := readJSON(path, dst)
+	if err == nil {
+		return nil
+	}
+	for _, field := range []string{"checkpoint", "checkpoint_passer"} {
+		if strings.Contains(err.Error(), `json: unknown field "`+field+`"`) {
+			return fmt.Errorf("%w; this build does not support native Plan checkpoints (including checkpoint_passer). Preserve the fields and use a build verified for both checkpoints and the whole Saga layout; see docs/plan-cli-compatibility.md", err)
+		}
+	}
+	for _, field := range []string{"waves", "wave"} {
+		if strings.Contains(err.Error(), `json: unknown field "`+field+`"`) {
+			return fmt.Errorf("%w; this build uses phased Plans, not legacy wave/work-item layouts. Preserve the original data and arrange an explicit migration; see docs/plan-cli-compatibility.md", err)
+		}
+	}
+	return err
 }
 
 // validatePlanItemRecords checks that a slide Item naming a Task names one of

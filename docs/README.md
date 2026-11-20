@@ -27,6 +27,8 @@ remove, or archive existing content and assign whiteboards to navigation roles.
 
 | | |
 | --- | --- |
+| [plan-cli-compatibility.md](plan-cli-compatibility.md) | Plan authoring versus queries, waves versus phases, checkpoint limits, current-record compatibility, executable diagnostics and pinned builds. |
+| [support-access-proposal.md](support-access-proposal.md) | Proposed operational log/metric access, separate deployment triggers and temporary customer-data elevation; unresolved approval and revocation owners. |
 | [CI and review ownership setup](../internal/cli/setup_ci_prompt.md) | The guide printed by `change-saga setup-ci`: no CI or CODEOWNERS for Saga-only changes by default, with checks and review ownership as opt-ins. |
 | [releasing.md](releasing.md) | How a release is built, signed, notarized, checksummed, and published, plus the [versioning policy](releasing.md#versioning-policy) and release checklist. |
 | [../CHANGELOG.md](../CHANGELOG.md) | Curated release history. |

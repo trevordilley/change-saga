@@ -134,3 +134,9 @@ version rather than silently ignoring documentation. Upgrade readers before
 writing normalized data. Normalize legacy documentation branches before merging
 them into a current-record branch so Git compares the same current files.
 To inspect the original layout, use its Git commit; there is no automatic downgrade.
+
+Plan layout alone does not select a compatible reader: v0.7.0 supports phased
+authoring and v0.8.0 adds Plan queries, but both reject current-record layouts.
+Use [whole-Saga compatibility diagnostics](plan-cli-compatibility.md) before
+selecting a pinned build. Native checkpoint fields remain a separate unmerged
+feature and are rejected by this reader.

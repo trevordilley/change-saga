@@ -102,14 +102,21 @@ change-saga version
 change-saga help
 ```
 
+This source checkout uses normalized current records that released readers up
+through v0.8.0 reject, even though they support phased Plans. Use a compatible
+pinned source build to read or author this checkout's Saga; a matching release
+binary can read its own release's example. See [build compatibility and
+diagnostics](docs/plan-cli-compatibility.md) before selecting a build.
+
 ## See an example Saga
 
 This repository documents itself with [`change.saga`](change.saga): its
 product requirements, designs, quality cases, implementation explanations, and
-exact code references. Open it from a source checkout:
+exact code references. [Build this checkout's reader](#building-from-source),
+then open it with that binary:
 
 ```sh
-change-saga open change.saga
+./bin/change-saga open change.saga
 ```
 
 Or [download it](https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip)
@@ -594,6 +601,7 @@ separate repository from the code.
 | Command | What it does |
 | --- | --- |
 | `version` | Print the installed version. |
+| `doctor [--json] [PATH]` | Report this executable and its Plan/Saga capabilities; optionally validate the whole Saga without writes. |
 | `help` | Overview of the workflow and every command. |
 | `install-skill` | Print the prompt that installs the authoring skills into your coding agent. |
 | `init [name.saga]` | Create the repository's Saga, `change.saga` by default. |

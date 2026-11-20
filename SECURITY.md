@@ -30,9 +30,11 @@ intended date and we will work to it.
 
 ## Supported versions
 
-Change Saga is pre-1.0 and experimental, and no tagged release exists yet.
-Security fixes land on `main`; once releases begin, they will go out in the next
-release and older tags will not be patched.
+Change Saga is pre-1.0 and experimental. Tagged releases exist, including
+[v0.8.0](https://github.com/trevordilley/change-saga/releases/tag/v0.8.0).
+Security fixes land on `main` and ship in the next release; older tags are not
+patched. Reader capabilities and the actual Saga layout must both match; see
+[compatibility guidance](docs/plan-cli-compatibility.md) before choosing a build.
 
 ## Threat model
 
@@ -71,3 +73,12 @@ that is deliberately restricted to the loopback interface.
 
 Functional bugs, crashes without a security impact, and format questions belong
 in public issues. See [SUPPORT.md](SUPPORT.md).
+
+## Future operational support access
+
+The [support-access boundary](docs/support-access-proposal.md) is a reviewable
+proposal for a deployment design, not a change to this local tool's permissions
+or a claim about deployed systems. It distinguishes log contents and metrics,
+deployment triggers and temporary customer-data elevation. No standing-access
+guarantee should be made until effective access and logging are verified and
+approval/revocation owners and scope are agreed.

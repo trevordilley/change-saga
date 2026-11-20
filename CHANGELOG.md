@@ -23,10 +23,22 @@ tool, and what they have to do about it.
 
 ### Added
 
+- `doctor [--json] [PATH]` reports the executing binary, SHA256, build metadata
+  and separate phased Plan authoring/query, checkpoint and whole-Saga layout
+  capabilities. With a Saga path it validates all record families without writes.
+- Plan compatibility and pinned-build guidance, and a proposed support-access
+  boundary separating operational log/metric reads, deployment triggers and
+  approved temporary customer-data access; approval/revocation owners remain open.
+
 - `query prototype` returns a prototype's HTML in byte-range pages, as recorded
   in the Saga or at its pinned commit, with its current digest, files, and annotations.
 - `diagram describe` shows the record an Item names, so an agent reading a Plan
   slide can follow a node to its Task or story.
+
+### Fixed
+
+- Unsupported native checkpoint and legacy wave fields in Plan/Task JSON now
+  explain the reader mismatch while retaining strict rejection and authored data.
 
 ## [0.8.0] - 2026-11-03
 

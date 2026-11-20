@@ -36,6 +36,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 	case "version", "--version":
 		fmt.Fprintln(stdout, cli.VersionString())
 		return 0
+	case "doctor":
+		err = cli.Doctor(ctx, args[1:], stdout)
 	case "init":
 		err = cli.Init(ctx, args[1:], stdout)
 	case "setup-initial-saga":

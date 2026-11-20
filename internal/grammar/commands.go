@@ -785,6 +785,12 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "doctor", Status: StatusImplemented, Usage: "change-saga doctor [--json] [<saga>]",
+		Summary:     "report executable identity and separate Plan and whole-Saga capabilities; optionally validate every record family without writes",
+		Flags:       []Flag{jsonFlag},
+		Positionals: []string{"[<saga>]"},
+	},
+	{
 		Name: "validate", Status: StatusImplemented, Usage: "change-saga validate [--json] [--fix] <saga>",
 		Summary:     "check every structural invariant without writing",
 		Flags:       []Flag{jsonFlag, optional("fix", "", "add missing stable Markdown heading anchors")},
