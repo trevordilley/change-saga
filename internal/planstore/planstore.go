@@ -111,13 +111,22 @@ func Create(root string, manifest saga.PlanManifest, deck saga.DeckManifest) err
 }
 
 // AddPhase appends a phase to the Plan's order.
-func AddPhase(root, planID string, phase saga.PlanPhase) error {
+// AddPhase adds a phase at the end, or right after the phase named by after.
+func AddPhase(root, planID string, phase saga.PlanPhase, after string) error {
 	return mutate(root, func(document *saga.Saga) error {
 		plan, err := editable(document, planID)
 		if err != nil {
 			return err
 		}
-		plan.Phases = append(plan.Phases, phase)
+		at := len(plan.Phases)
+		if after != "" {
+			index := slices.IndexFunc(plan.Phases, func(existing saga.PlanPhase) bool { return existing.ID == after })
+			if index < 0 {
+				return fmt.Errorf("phase %q is not a phase of plan %q", after, planID)
+			}
+			at = index + 1
+		}
+		plan.Phases = slices.Insert(plan.Phases, at, phase)
 		if err := saga.ValidatePlanManifest(plan.PlanManifest); err != nil {
 			return err
 		}
@@ -149,6 +158,12 @@ func RemovePhase(root, planID, phaseID string) error {
 
 // LinkReview records a pull request review that implements the Plan.
 func LinkReview(root, planID, reviewID string) error {
+	return LinkCheckpointReview(root, planID, reviewID, "")
+}
+
+// LinkCheckpointReview links a review to the Plan and, given a checkpoint, names
+// it as that checkpoint's review.
+func LinkCheckpointReview(root, planID, reviewID, checkpointID string) error {
 	return mutate(root, func(document *saga.Saga) error {
 		plan, err := editable(document, planID)
 		if err != nil {
@@ -157,10 +172,119 @@ func LinkReview(root, planID, reviewID string) error {
 		if document.FindReview(reviewID) == nil {
 			return fmt.Errorf("review %q does not exist", reviewID)
 		}
-		if slices.Contains(plan.Reviews, reviewID) {
-			return nil
+		if checkpointID != "" {
+			phase, err := checkpointOf(plan, checkpointID)
+			if err != nil {
+				return err
+			}
+			phase.Checkpoint.Review = reviewID
 		}
-		plan.Reviews = append(plan.Reviews, reviewID)
+		if !slices.Contains(plan.Reviews, reviewID) {
+			plan.Reviews = append(plan.Reviews, reviewID)
+		}
+		return writePlan(plan)
+	})
+}
+
+func checkpointOf(plan *saga.Plan, checkpointID string) (*saga.PlanPhase, error) {
+	for index := range plan.Phases {
+		if plan.Phases[index].ID == checkpointID {
+			if !plan.Phases[index].IsCheckpoint() {
+				return nil, fmt.Errorf("phase %q is not a checkpoint", checkpointID)
+			}
+			return &plan.Phases[index], nil
+		}
+	}
+	return nil, fmt.Errorf("checkpoint %q is not a phase of plan %q", checkpointID, plan.ID)
+}
+
+// SetCheckpointPasser says who passes the Plan's checkpoints.
+func SetCheckpointPasser(root, planID, passer string) error {
+	return mutate(root, func(document *saga.Saga) error {
+		plan, err := editable(document, planID)
+		if err != nil {
+			return err
+		}
+		plan.CheckpointPasser = passer
+		if err := saga.ValidatePlanManifest(plan.PlanManifest); err != nil {
+			return err
+		}
+		return writePlan(plan)
+	})
+}
+
+// PassCheckpoint records a checkpoint's pass. It is refused until every Task it
+// covers is done and every earlier checkpoint has passed, and refused to an agent
+// unless whoever invoked the Plan lets agents pass its checkpoints.
+func PassCheckpoint(root, planID, checkpointID string, pass saga.CheckpointPass) error {
+	return mutate(root, func(document *saga.Saga) error {
+		plan, err := editable(document, planID)
+		if err != nil {
+			return err
+		}
+		phase, err := checkpointOf(plan, checkpointID)
+		if err != nil {
+			return err
+		}
+		if phase.CheckpointPassed() {
+			return fmt.Errorf("checkpoint %q already passed on %s", checkpointID, phase.Checkpoint.Passed.At.Format("2006-01-02"))
+		}
+		if pass.Agent && plan.CheckpointPasser != saga.CheckpointPasserAgent {
+			return fmt.Errorf("whoever invokes plan %q passes its checkpoints, not an agent; ask them, or they can let agents with plan set --checkpoint-passer agent", planID)
+		}
+		reasons := []string{}
+		met := map[string]bool{}
+		for _, confirmed := range pass.Met {
+			met[confirmed.Expectation] = true
+		}
+		stated := map[string]bool{}
+		for _, expectation := range phase.Checkpoint.Expectations {
+			stated[expectation.ID] = true
+			if !met[expectation.ID] {
+				reasons = append(reasons, fmt.Sprintf("expectation %s is not confirmed: pass --met %s=HOW to say how it holds", expectation.ID, expectation.ID))
+			}
+		}
+		for _, confirmed := range pass.Met {
+			if !stated[confirmed.Expectation] {
+				reasons = append(reasons, fmt.Sprintf("checkpoint %s states no expectation %s", checkpointID, confirmed.Expectation))
+			}
+		}
+		for _, earlier := range plan.Phases {
+			if earlier.ID == checkpointID {
+				break
+			}
+			if earlier.IsCheckpoint() && !earlier.CheckpointPassed() {
+				reasons = append(reasons, fmt.Sprintf("checkpoint %s before it has not passed", earlier.ID))
+			}
+		}
+		for _, task := range saga.CheckpointScope(plan.Phases, plan.Manifests(), checkpointID) {
+			if task.State != saga.TaskDone {
+				reasons = append(reasons, fmt.Sprintf("task %s is %s", task.ID, task.State))
+			}
+		}
+		if len(reasons) > 0 {
+			return fmt.Errorf("checkpoint %q cannot pass yet: %s", checkpointID, strings.Join(reasons, "; "))
+		}
+		after := false
+		pass.ToCome = nil
+		for _, later := range plan.Phases {
+			if later.ID == checkpointID {
+				after = true
+				continue
+			}
+			if !after {
+				continue
+			}
+			for _, task := range plan.Tasks {
+				if task.Phase == later.ID {
+					pass.ToCome = append(pass.ToCome, saga.PlannedTask{Task: task.ID, Phase: later.ID})
+				}
+			}
+		}
+		phase.Checkpoint.Passed = &pass
+		if err := saga.ValidatePlanManifest(plan.PlanManifest); err != nil {
+			return err
+		}
 		return writePlan(plan)
 	})
 }
@@ -197,6 +321,11 @@ func Deliver(root, planID string, merged func(*saga.Review) bool) error {
 		}
 		if len(plan.Reviews) == 0 {
 			reasons = append(reasons, "no Review is linked; add one with plan link-review")
+		}
+		for _, phase := range plan.Phases {
+			if phase.IsCheckpoint() && !phase.CheckpointPassed() {
+				reasons = append(reasons, fmt.Sprintf("checkpoint %s has not passed", phase.ID))
+			}
 		}
 		for _, id := range plan.Reviews {
 			review := document.FindReview(id)
@@ -404,4 +533,82 @@ func without(values []string, value string) []string {
 		}
 	}
 	return result
+}
+
+// WidenCheckpointReview makes a checkpoint's review show every change since an
+// earlier checkpoint's review began, or, given the checkpoint itself, only its own
+// stretch again. It changes what is reviewed, never what the review merges into.
+func WidenCheckpointReview(root, planID, checkpointID, toID string) error {
+	return mutate(root, func(document *saga.Saga) error {
+		plan, err := editable(document, planID)
+		if err != nil {
+			return err
+		}
+		phase, err := checkpointOf(plan, checkpointID)
+		if err != nil {
+			return err
+		}
+		review := document.FindReview(phase.Checkpoint.Review)
+		if review == nil {
+			return fmt.Errorf("checkpoint %q has no review yet; link one with plan link-review --checkpoint %s", checkpointID, checkpointID)
+		}
+		if review.Merged != nil {
+			return fmt.Errorf("review %q has merged and no longer changes", review.ID)
+		}
+		since := ""
+		if toID != checkpointID {
+			to, err := checkpointOf(plan, toID)
+			if err != nil {
+				return err
+			}
+			if slices.IndexFunc(plan.Phases, func(p saga.PlanPhase) bool { return p.ID == toID }) > slices.IndexFunc(plan.Phases, func(p saga.PlanPhase) bool { return p.ID == checkpointID }) {
+				return fmt.Errorf("checkpoint %q comes after %q; a review widens back to an earlier one", toID, checkpointID)
+			}
+			if !to.CheckpointPassed() || to.Checkpoint.Passed.Base == "" {
+				return fmt.Errorf("checkpoint %q did not record where its review began when it passed, so there is nothing to widen back to", toID)
+			}
+			since = to.Checkpoint.Passed.Base
+		}
+		manifest := review.ReviewManifest
+		manifest.Since = since
+		if err := saga.ValidateReviewManifest(manifest); err != nil {
+			return err
+		}
+		return store.WriteJSON(filepath.Join(review.Directory, saga.ReviewManifestName), manifest, false)
+	})
+}
+
+// SetExpectation states, or restates, what must be true by a checkpoint; with an
+// empty statement it removes the expectation. A passed checkpoint no longer changes.
+func SetExpectation(root, planID, checkpointID, id, statement string) error {
+	return mutate(root, func(document *saga.Saga) error {
+		plan, err := editable(document, planID)
+		if err != nil {
+			return err
+		}
+		phase, err := checkpointOf(plan, checkpointID)
+		if err != nil {
+			return err
+		}
+		if phase.CheckpointPassed() {
+			return fmt.Errorf("checkpoint %q already passed, so its expectations no longer change", checkpointID)
+		}
+		expectations := phase.Checkpoint.Expectations
+		index := slices.IndexFunc(expectations, func(expectation saga.CheckpointExpectation) bool { return expectation.ID == id })
+		switch {
+		case strings.TrimSpace(statement) == "" && index < 0:
+			return fmt.Errorf("checkpoint %q states no expectation %q", checkpointID, id)
+		case strings.TrimSpace(statement) == "":
+			expectations = slices.Delete(expectations, index, index+1)
+		case index < 0:
+			expectations = append(expectations, saga.CheckpointExpectation{ID: id, Statement: strings.TrimSpace(statement)})
+		default:
+			expectations[index].Statement = strings.TrimSpace(statement)
+		}
+		phase.Checkpoint.Expectations = expectations
+		if err := saga.ValidatePlanManifest(plan.PlanManifest); err != nil {
+			return err
+		}
+		return writePlan(plan)
+	})
 }

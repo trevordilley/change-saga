@@ -20,7 +20,8 @@ commercial support, no hosted service, and no paid tier — just this repository
 change-saga`, `change-saga version`, and `change-saga query schema plans` in
 the failing environment. v0.7.0 authors phased Plans; v0.8.0 adds Plan queries.
 Neither reads the normalized current-record Saga layouts introduced later.
-Checkpoint fields are another separate, unmerged capability. Preserve unknown
+Checkpoint fields are another separate capability: this build integrates them,
+while `ce8d796d` and the released readers reject them. Preserve unknown
 fields and capture the exact command/error. This branch's `doctor --json PATH`
 reports the executable and capabilities and validates the whole Saga without
 writing. See [Plan compatibility and pinned-build guidance](docs/plan-cli-compatibility.md).

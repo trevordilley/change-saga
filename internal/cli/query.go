@@ -604,8 +604,8 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"term-references":      {"data.subject", "data.references", "data.counts", "data.completeness"},
 		"prototype":            {"data.prototype", "data.prototype.content.data", "data.prototype.content.next_offset", "data.prototype.files", "data.prototype.annotations"},
 		"plans":                {"data.plans", "data.plans[].tasks_done", "data.plans[].reviews"},
-		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.tasks", "data.plan.slides"},
-		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides"},
+		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.phases[].checkpoint", "data.plan.checkpoint_passer", "data.plan.tasks", "data.plan.slides"},
+		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides", "data.task.held_by"},
 		"layers":               {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{

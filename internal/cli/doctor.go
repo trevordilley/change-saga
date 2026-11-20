@@ -73,11 +73,12 @@ func Doctor(_ context.Context, args []string, out io.Writer) error {
 		"Check shell resolution with type -a change-saga; use the same absolute executable for authoring, queries and serving.",
 		"Phased Plan authoring, Plan queries, checkpoint fields and whole-Saga layouts are separate capabilities.",
 		"v0.8.0 supports phased Plans and Plan queries, but rejects normalized current-record Sagas; manifest version 5 alone is insufficient.",
-		"This build rejects native checkpoints and legacy waves. Preserve unsupported fields; do not delete them to make a reader accept the data.",
+		"This build supports native checkpoints and current records together. Legacy waves and unknown fields are rejected; never delete fields to make a reader accept the data.",
 		"Validate the actual whole Saga with the pinned build. See docs/plan-cli-compatibility.md; no normalization or evidence repinning is performed here.",
 	}}
 	report.Capabilities.Plans.Layout = "phases"
 	report.Capabilities.Plans.Authoring = true
+	report.Capabilities.Plans.Checkpoints = true
 	report.Capabilities.Plans.Queries = []string{"plans", "plan", "task"}
 	report.Capabilities.Saga.ManifestVersion = saga.SagaVersion
 	report.Capabilities.Saga.CurrentRecords = true
@@ -102,7 +103,7 @@ func Doctor(_ context.Context, args []string, out io.Writer) error {
 		if report.Build.ExecutableError != "" {
 			fmt.Fprintf(out, "Executable inspection: %s\n", report.Build.ExecutableError)
 		}
-		fmt.Fprintln(out, "Plans: phases; authoring: yes; queries: plans, plan, task; checkpoints: no; legacy waves: no")
+		fmt.Fprintln(out, "Plans: phases; authoring: yes; queries: plans, plan, task; checkpoints: yes; legacy waves: no")
 		fmt.Fprintf(out, "Saga: manifest v%d; current records and legacy reads; strict JSON decoding\n", saga.SagaVersion)
 		if check := report.SagaCheck; check != nil {
 			fmt.Fprintf(out, "Whole-Saga validation: %s; valid: %t\n", check.Path, check.Valid)

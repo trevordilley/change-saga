@@ -123,9 +123,13 @@ is created.
 
 Competing legacy heads stop normalization and list the competing IDs and paths.
 All independently authored files remain. Preserve them in Git, inspect and
-combine their content explicitly, resolve the old parent set to one selected
-value, then retry. This is a one-time legacy resolution, not an authoring
-workflow for the current format. Missing evidence sources also stop conversion;
+combine their content explicitly. For a whiteboard, publish that complete
+resolved document with ordinary `whiteboard publish --id ID --from FILE PATH`.
+The writer verifies the competing legacy files are committed before replacing
+them with one current record and converting exact pins. It does not choose a
+head, require parent IDs, or keep a second history store. Automatic normalization
+still stops on ambiguity; explicit authoring supplies the resolved content.
+Missing evidence sources also stop conversion;
 restore the exact source from Git or author a verified replacement pin.
 
 The Saga manifest remains version 5; the current-record component schemas
@@ -138,5 +142,5 @@ To inspect the original layout, use its Git commit; there is no automatic downgr
 Plan layout alone does not select a compatible reader: v0.7.0 supports phased
 authoring and v0.8.0 adds Plan queries, but both reject current-record layouts.
 Use [whole-Saga compatibility diagnostics](plan-cli-compatibility.md) before
-selecting a pinned build. Native checkpoint fields remain a separate unmerged
-feature and are rejected by this reader.
+selecting a pinned build. Native checkpoints are now integrated with this
+current-record reader. Earlier builds, including `ce8d796d`, reject them.

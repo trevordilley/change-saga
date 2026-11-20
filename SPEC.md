@@ -1912,6 +1912,32 @@ a Plan's deck essay and a Task's essay. `query plans` omits delivered Plans unle
 `--all` is given. `query prototype` reads a prototype's HTML the same way, in
 byte-range pages.
 
+### Checkpoints
+
+A phase MAY have a `checkpoint` object. A checkpoint MUST NOT hold Tasks; it
+covers the Tasks in phases since the previous checkpoint. The first unpassed
+checkpoint holds later work out of readiness in the CLI, queries and reader.
+Optional `expectations` contain stable `id` and `statement` pairs; `review` names
+the review covering that stretch. A null checkpoint is invalid, and unknown
+fields MUST be rejected rather than silently discarded.
+
+The Plan's optional `checkpoint_passer` is `person` (the default) or `agent`.
+`plan pass` requires completed covered Tasks, all earlier checkpoints passed,
+confirmation of every expectation through `--met ID=HOW`, and the caller's name
+and reason. An agent pass requires explicit permission in the Plan. The saved
+`passed` object records `at`, `by`, `reason`, optional `agent`, confirmed `met`
+expectations, the exact review `base` when available, and `to_come` Task/phase
+pairs. These are actual recorded judgments, not a content revision graph.
+Reading, validating, editing slides or normalizing MUST NOT pass a checkpoint.
+A pass does not itself merge code, deploy or grant permissions.
+
+`plan checkpoint` reports the stretch and its expectations, current evidence,
+estimated review size and material surprises. `plan expect`, `plan set`, and
+`plan link-review --checkpoint` author its requirements and review association.
+`plan widen --to PHASE` records a review's optional `since` base; it changes the
+reviewed range, never its merge destination. A delivered Plan requires every
+checkpoint passed. Git retains earlier wording, diagram content and Plan states.
+
 ### Plan decks
 
 A Plan's deck is authored with `apply-slide --plan ID` and `deck overview --plan

@@ -46,6 +46,85 @@ func boardDocument(pin DocumentationLink) diagram.Document {
 	}}
 }
 
+func TestExplicitWhiteboardEditResolvesLegacyForkWithHistoryOnlyInGit(t *testing.T) {
+	root, pin, _ := whiteboardFixture(t)
+	base := boardDocument(pin)
+	if _, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "erd", "base", "", "Work", base); err != nil {
+		t.Fatal(err)
+	}
+	left := boardDocument(pin)
+	left.Elements[0].Label = "Reviewed cloud boundary"
+	leftRecord, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "erd", "left", "base", "Work", left)
+	if err != nil {
+		t.Fatal(err)
+	}
+	right := boardDocument(pin)
+	right.Elements[1].Note = "Confirmed storage purpose"
+	rightRecord, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "erd", "right", "base", "Work", right)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := LoadWhiteboard(root, "test", "erd", ""); err == nil {
+		t.Fatal("an ordinary read silently selected a head")
+	}
+	merged := left
+	merged.Elements[1].Note = right.Elements[1].Note
+	// A different, still-legacy package pins an older board value. Its exact
+	// reference must be converted before the board's source files disappear.
+	annotationPath := filepath.Join(root, "___deprecations", "old-board.deprecation", "revisions", "r1.json")
+	if err := os.MkdirAll(filepath.Dir(annotationPath), 0755); err != nil {
+		t.Fatal(err)
+	}
+	annotation := DeprecationRevision{
+		Schema: DeprecationRevisionSchemaURL, Version: 5, ID: "r1",
+		Deprecation: "urn:change-saga:test:deprecation:old-board", Parents: []string{},
+		Reason: "Preserve the original annotation", Scope: "content", CreatedAt: testTime,
+		Target: DeprecationTarget{Target: "urn:change-saga:test:whiteboard:erd", Revision: "urn:change-saga:test:whiteboard:erd:revision:base", Element: "cloud/jobs"},
+	}
+	if err := store.WriteJSON(annotationPath, annotation, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := PublishWhiteboard(context.Background(), root, "test", "erd", "", "", "Work", merged); err == nil || !strings.Contains(err.Error(), "commit the legacy whiteboard") {
+		t.Fatalf("uncommitted legacy inputs were discarded: %v", err)
+	}
+	commitCurrencyFixture(t, root)
+	leftDigest, _ := WhiteboardContentDigest(*leftRecord)
+	rightDigest, _ := WhiteboardContentDigest(*rightRecord)
+	current, err := PublishWhiteboard(context.Background(), root, "test", "erd", "", "", "Work", merged)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if current.Document.Elements[0].Label != left.Elements[0].Label || current.Document.Elements[1].Note != right.Elements[1].Note || *current.Document.Elements[1].Source != *base.Elements[1].Source {
+		t.Fatal("resolved content or an exact source pin was lost")
+	}
+	if _, err := os.Stat(filepath.Join(root, WhiteboardDir, "erd", "revisions")); !os.IsNotExist(err) {
+		t.Fatal("Saga retained a revision store")
+	}
+	data, err := os.ReadFile(annotationPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var converted DeprecationRevision
+	if err := json.Unmarshal(data, &converted); err != nil {
+		t.Fatal(err)
+	}
+	baseDigest, _ := WhiteboardContentDigest(WhiteboardRevision{Name: "Work", Document: base})
+	if converted.Target.Revision != baseDigest || converted.Target.Element != annotation.Target.Element || converted.Reason != annotation.Reason {
+		t.Fatalf("an external legacy pin was lost or refreshed: %+v", converted)
+	}
+	commitCurrencyFixture(t, root)
+	for _, digest := range []string{leftDigest, rightDigest} {
+		saved, err := LoadWhiteboard(root, "test", "erd", digest)
+		if err != nil || saved == nil {
+			t.Fatalf("Git did not retain %s: %v", digest, err)
+		}
+		actual, _ := WhiteboardContentDigest(*saved)
+		if actual != digest {
+			t.Fatal("historical evidence substituted current content")
+		}
+	}
+}
+
 func TestWhiteboardGitHistoryAndStructuredERDCompatibility(t *testing.T) {
 	root, pin, entity := whiteboardFixture(t)
 	inventory, err := LoadInventory(root, "test")

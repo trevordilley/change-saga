@@ -201,6 +201,10 @@ var pinFields = map[string]bool{"revision": true, "story_revision": true, "proto
 // identities are untouched; parent graph edges are discarded by publication,
 // not converted into evidence.
 func (p *Pins) Normalize(data []byte) ([]byte, error) {
+	return p.normalizePins(data, "")
+}
+
+func (p *Pins) normalizePins(data []byte, prefix string) ([]byte, error) {
 	var value any
 	if err := json.Unmarshal(data, &value); err != nil {
 		return nil, err
@@ -213,7 +217,7 @@ func (p *Pins) Normalize(data []byte) ([]byte, error) {
 				if key == "parents" || key == "parent_snapshots" {
 					continue
 				}
-				if text, ok := child.(string); ok && isPinField(key) && strings.Contains(text, ":revision:") {
+				if text, ok := child.(string); ok && isPinField(key) && strings.Contains(text, ":revision:") && (prefix == "" || strings.HasPrefix(text, prefix)) {
 					digest, err := p.Resolve(text)
 					if err != nil {
 						return err
@@ -311,6 +315,36 @@ func (p *Pins) PersistReferences() error {
 		}
 	}
 	return p.cleanupRelations()
+}
+
+// PersistLegacyReferencesBeforeRemoval converts references to a scoped source
+// in other, still-legacy packages before that source's files are removed. It
+// neither selects their heads nor requires unrelated obsolete pins to resolve.
+// The removed package itself stays in Git; its unselected content is not copied
+// into current documentation. Call under the writer lock before cleanup.
+func (p *Pins) PersistLegacyReferencesBeforeRemoval(sourceDir, sourcePinPrefix string) error {
+	paths := make([]string, 0)
+	for path, data := range p.files {
+		if !strings.Contains(filepath.ToSlash(path), "/revisions/") || strings.HasPrefix(path, sourceDir+string(filepath.Separator)) || !bytes.Contains(data, []byte(sourcePinPrefix)) {
+			continue
+		}
+		paths = append(paths, path)
+	}
+	slices.Sort(paths)
+	pending := []store.WriteBatchEntry{}
+	for _, path := range paths {
+		data, err := p.normalizePins(p.files[path], sourcePinPrefix)
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
+		pending = append(pending, store.WriteBatchEntry{Path: path, Data: append(data, '\n')})
+	}
+	for _, entry := range pending {
+		if err := store.WriteFile(entry.Path, entry.Data, 0644, false); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // normalizeSlide discards an unambiguous legacy content graph at its existing

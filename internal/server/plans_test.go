@@ -32,6 +32,54 @@ func addServerTask(t *testing.T, root, plan, id, story string, unblocks ...strin
 	}
 }
 
+func TestCheckpointGatesAppearOnTheBoardAndInTheirReview(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	addServerPlan(t, fixture.root, "first")
+	for _, phase := range []saga.PlanPhase{
+		{ID: "design", Title: "Design"},
+		{ID: "security", Title: "Security review", Checkpoint: &saga.PlanCheckpoint{}},
+		{ID: "ship", Title: "Ship"},
+	} {
+		if err := planstore.AddPhase(fixture.root, "first", phase, ""); err != nil {
+			t.Fatal(err)
+		}
+	}
+	story := "urn:change-saga:" + serverSagaID(t, fixture.root) + ":story:missing"
+	for _, task := range []saga.TaskManifest{
+		{ID: "design-work", Title: "Design the boundary", Phase: "design", Story: story},
+		{ID: "ship-work", Title: "Implement the boundary", Phase: "ship", Story: story},
+	} {
+		if _, err := planstore.AddTask(fixture.root, "first", task, nil, ""); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := planstore.SetExpectation(fixture.root, "first", "security", "approved", "The access design has been approved"); err != nil {
+		t.Fatal(err)
+	}
+	if err := planstore.LinkCheckpointReview(fixture.root, "first", "pr-7", "security"); err != nil {
+		t.Fatal(err)
+	}
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	folded := getPage(t, handler, "/plans/first/tasks").Body.String()
+	for _, want := range []string{`data-plan-node="checkpoint:security"`, `data-plan-node="stretch:later"`, `data-plan-fold`, `Show every task`} {
+		if !strings.Contains(folded, want) {
+			t.Errorf("folded board is missing %q", want)
+		}
+	}
+	expanded := getPage(t, handler, "/plans/first/tasks?fold=0").Body.String()
+	for _, want := range []string{`data-plan-node="task:ship-work"`, "Held by checkpoint Security review"} {
+		if !strings.Contains(expanded, want) {
+			t.Errorf("expanded board is missing %q", want)
+		}
+	}
+	review := getPage(t, handler, "/reviews/pr-7").Body.String()
+	for _, want := range []string{`data-review-checkpoint`, `data-checkpoint-expectations`, "The access design has been approved"} {
+		if !strings.Contains(review, want) {
+			t.Errorf("checkpoint review is missing %q", want)
+		}
+	}
+}
+
 func TestPlansHaveTheirOwnSide(t *testing.T) {
 	t.Parallel()
 	fixture := newServerReviewFixture(t)

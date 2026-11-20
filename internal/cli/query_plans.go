@@ -17,18 +17,19 @@ import (
 
 // planQuerySummary is one Plan as query plans lists it.
 type planQuerySummary struct {
-	ID          string     `json:"id"`
-	Target      string     `json:"target"`
-	Title       string     `json:"title"`
-	Objective   string     `json:"objective,omitempty"`
-	Path        string     `json:"path"`
-	Phases      int        `json:"phase_count"`
-	Tasks       int        `json:"task_count"`
-	TasksDone   int        `json:"tasks_done"`
-	Slides      int        `json:"slide_count"`
-	Prototypes  []string   `json:"prototypes"`
-	Reviews     []string   `json:"reviews"`
-	DeliveredAt *time.Time `json:"delivered_at,omitempty"`
+	ID               string     `json:"id"`
+	Target           string     `json:"target"`
+	Title            string     `json:"title"`
+	Objective        string     `json:"objective,omitempty"`
+	Path             string     `json:"path"`
+	Phases           int        `json:"phase_count"`
+	Tasks            int        `json:"task_count"`
+	TasksDone        int        `json:"tasks_done"`
+	Slides           int        `json:"slide_count"`
+	Prototypes       []string   `json:"prototypes"`
+	Reviews          []string   `json:"reviews"`
+	DeliveredAt      *time.Time `json:"delivered_at,omitempty"`
+	CheckpointPasser string     `json:"checkpoint_passer"`
 }
 
 // planQueryRecord is one Plan with its essay, phases, and compact Tasks.
@@ -41,9 +42,10 @@ type planQueryRecord struct {
 }
 
 type planQueryPhase struct {
-	ID    string   `json:"id"`
-	Title string   `json:"title"`
-	Tasks []string `json:"tasks"`
+	ID         string               `json:"id"`
+	Title      string               `json:"title"`
+	Checkpoint *saga.PlanCheckpoint `json:"checkpoint,omitempty"`
+	Tasks      []string             `json:"tasks"`
 }
 
 // planQueryTaskRow leaves out the essay: query task returns it.
@@ -72,6 +74,7 @@ func queryPlanSummary(plan *saga.Plan) planQuerySummary {
 		ID: plan.ID, Target: plan.Target, Title: plan.Title, Path: plan.Path,
 		Phases: len(plan.Phases), Tasks: len(plan.Tasks), DeliveredAt: plan.DeliveredAt,
 		Prototypes: append([]string{}, plan.Prototypes...), Reviews: append([]string{}, plan.Reviews...),
+		CheckpointPasser: firstNonEmpty(plan.CheckpointPasser, saga.CheckpointPasserPerson),
 	}
 	for _, task := range plan.Tasks {
 		if task.State == saga.TaskDone {
@@ -89,12 +92,13 @@ func taskRows(plan *saga.Plan) map[string]taskRow {
 	manifests := plan.Manifests()
 	unblocks := saga.TaskUnblocks(manifests)
 	canStart := map[string]bool{}
-	for _, task := range saga.TasksReady(manifests) {
+	ready, held := saga.TasksReadyNow(plan.Phases, manifests)
+	for _, task := range ready {
 		canStart[task.ID] = true
 	}
 	rows := make(map[string]taskRow, len(plan.Tasks))
 	for _, task := range plan.Tasks {
-		rows[task.ID] = taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID]}
+		rows[task.ID] = taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID], HeldBy: held[task.ID]}
 	}
 	return rows
 }
@@ -192,7 +196,7 @@ func queryPlan(args []string, out io.Writer) error {
 	record := planQueryRecord{planQuerySummary: queryPlanSummary(plan), PhaseRows: []planQueryPhase{}, TaskRows: []planQueryTaskRow{}, SlideRows: []planQuerySlideRow{}}
 	rows := taskRows(plan)
 	for _, phase := range plan.Phases {
-		row := planQueryPhase{ID: phase.ID, Title: phase.Title, Tasks: []string{}}
+		row := planQueryPhase{ID: phase.ID, Title: phase.Title, Checkpoint: phase.Checkpoint, Tasks: []string{}}
 		for _, task := range plan.Tasks {
 			if task.Phase == phase.ID {
 				row.Tasks = append(row.Tasks, task.ID)

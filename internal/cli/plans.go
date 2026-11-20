@@ -10,17 +10,19 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitexec"
+	"github.com/twentyideas/changesaga/internal/plancheckpoint"
 	"github.com/twentyideas/changesaga/internal/planstore"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var planOperations = []string{"create", "list", "guide", "add-phase", "remove-phase", "add-prototype", "link-review", "deliver"}
+var planOperations = []string{"create", "list", "guide", "set", "add-phase", "remove-phase", "add-prototype", "link-review", "checkpoint", "expect", "pass", "widen", "deliver"}
 
 // Plan dispatches the Plan commands.
 func Plan(ctx context.Context, args []string, out io.Writer) error {
@@ -48,6 +50,16 @@ func Plan(ctx context.Context, args []string, out io.Writer) error {
 		err = planLinkReview(ctx, args[1:], out)
 	case "deliver":
 		err = planDeliver(ctx, args[1:], out)
+	case "set":
+		err = planSet(ctx, args[1:], out)
+	case "pass":
+		err = planPass(ctx, args[1:], out)
+	case "checkpoint":
+		err = planCheckpoint(ctx, args[1:], out)
+	case "widen":
+		err = planWiden(ctx, args[1:], out)
+	case "expect":
+		err = planExpect(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["plan"])
 	}
@@ -255,10 +267,21 @@ without AI help, would finish in two days or less.
    essay with deck overview --plan, organized by phase. Give each diagram node that
    represents work an Item that selects the node and whose record names its Task: that
    Item is what lets a reader select the node and open the Task.
-7. Check. Run plan guide --plan ID until it has nothing left to name.
+7. Checkpoint. A large Plan is reviewed in stretches. After a few phases, add a
+   checkpoint with plan add-phase --checkpoint [--after PHASE]: it holds no Tasks and
+   covers every Task since the previous one. State what must be true by then with plan
+   expect: invariants of the work, not stories. Size each stretch so its review takes five
+   or six slides, about one per story, not ten to twenty. Ask who passes them, and record
+   it with plan set --checkpoint-passer person|agent.
+8. Check. Run plan guide --plan ID until it has nothing left to name.
+
+At a checkpoint, prove the stretch works, inspect plan checkpoint, and ask the
+Plan's designated person to pass it. An agent can pass only when explicitly allowed.
+A pass records a judgment; it does not itself merge code or deploy anything.
+
 `
 
-func planGuide(_ context.Context, args []string, out io.Writer) error {
+func planGuide(ctx context.Context, args []string, out io.Writer) error {
 	name := "plan guide"
 	flags := commandFlags(name, commandUsage[name], out)
 	plan := flags.String("plan", "", "report what this Plan still needs, instead of only the workflow")
@@ -272,7 +295,7 @@ func planGuide(_ context.Context, args []string, out io.Writer) error {
 	if *plan == "" {
 		return nil
 	}
-	_, found, err := planOf(flags.Arg(0), *plan)
+	document, found, err := planOf(flags.Arg(0), *plan)
 	if err != nil {
 		return err
 	}
@@ -290,6 +313,27 @@ func planGuide(_ context.Context, args []string, out io.Writer) error {
 		case !task.Sizing.WithinTwoDays:
 			notReady++
 			fmt.Fprintf(out, "  Judged larger than two days, so split it: %s (%s)\n", task.ID, task.Title)
+		}
+	}
+	var titles map[string]plancheckpoint.Story
+	for _, phase := range found.Phases {
+		if !phase.IsCheckpoint() || phase.CheckpointPassed() {
+			continue
+		}
+		if titles == nil {
+			titles = plancheckpoint.Stories(document.Root, document.Manifest.ID)
+		}
+		report, err := reportCheckpoint(ctx, document, found, phase.ID, titles)
+		if err != nil {
+			return err
+		}
+		if len(phase.Checkpoint.Expectations) == 0 {
+			notReady++
+			fmt.Fprintf(out, "  Checkpoint %s states no expectations: say what must be true by then with plan expect.\n", phase.ID)
+		}
+		if report.Estimate > checkpointSlideBudget {
+			notReady++
+			fmt.Fprintf(out, "  Checkpoint %s addresses %d stories in %d tasks: about %d slides to explain, more than %d. Split it with another checkpoint.\n", phase.ID, len(report.Stories), report.Tasks, report.Estimate, checkpointSlideBudget)
 		}
 	}
 	if found.Deck == nil || len(found.Deck.Slides) == 0 {
@@ -311,6 +355,8 @@ func planAddPhase(_ context.Context, args []string, out io.Writer) error {
 	plan := flags.String("plan", "", "plan id or URN")
 	id := flags.String("id", "", "stable phase id")
 	title := flags.String("title", "", "phase title")
+	after := flags.String("after", "", "put the phase right after this one instead of at the end")
+	checkpoint := flags.Bool("checkpoint", false, "make it a checkpoint: it holds no Tasks, covers every Task since the previous checkpoint, and holds the work after it until it passes")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -318,7 +364,11 @@ func planAddPhase(_ context.Context, args []string, out io.Writer) error {
 	if err := requireLivingArgs(flags, *plan, *id, *title); err != nil {
 		return err
 	}
-	if err := planstore.AddPhase(flags.Arg(0), planIDOf(*plan), saga.PlanPhase{ID: *id, Title: strings.TrimSpace(*title)}); err != nil {
+	phase := saga.PlanPhase{ID: *id, Title: strings.TrimSpace(*title)}
+	if *checkpoint {
+		phase.Checkpoint = &saga.PlanCheckpoint{}
+	}
+	if err := planstore.AddPhase(flags.Arg(0), planIDOf(*plan), phase, *after); err != nil {
 		return err
 	}
 	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
@@ -347,6 +397,7 @@ func planLinkReview(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags(name, commandUsage[name], out)
 	plan := flags.String("plan", "", "plan id or URN")
 	review := flags.String("review", "", "id of a review that implements the plan")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint this review covers")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -354,7 +405,7 @@ func planLinkReview(_ context.Context, args []string, out io.Writer) error {
 	if err := requireLivingArgs(flags, *plan, *review); err != nil {
 		return err
 	}
-	if err := planstore.LinkReview(flags.Arg(0), planIDOf(*plan), *review); err != nil {
+	if err := planstore.LinkCheckpointReview(flags.Arg(0), planIDOf(*plan), *review, *checkpoint); err != nil {
 		return err
 	}
 	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
@@ -407,6 +458,151 @@ func planDeliver(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	return writePlanChange(out, name, root, planIDOf(*plan), *jsonOutput)
+}
+
+func planSet(_ context.Context, args []string, out io.Writer) error {
+	name := "plan set"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	passer := flags.String("checkpoint-passer", "", "who passes the Plan's checkpoints: person, or agent, which passes them unless what it found is surprising or urgent")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *passer); err != nil {
+		return err
+	}
+	if err := planstore.SetCheckpointPasser(flags.Arg(0), planIDOf(*plan), *passer); err != nil {
+		return err
+	}
+	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
+}
+
+func planPass(ctx context.Context, args []string, out io.Writer) error {
+	name := "plan pass"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint phase to pass")
+	reason := flags.String("reason", "", "why it passes: what proves the work works")
+	by := flags.String("by", "", "who passes it; required unless --agent, which defaults to the reporting agent's name")
+	agent := flags.Bool("agent", false, "an agent passes it, under the rule of whoever invoked the Plan")
+	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	var metValues stringList
+	flags.Var(&metValues, "met", "ID=HOW: how one of the checkpoint's expectations was shown to hold; repeat for each")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *checkpoint, *reason); err != nil {
+		return err
+	}
+	met := []saga.MetExpectation{}
+	for _, value := range metValues {
+		id, how, found := strings.Cut(value, "=")
+		if !found || strings.TrimSpace(id) == "" || strings.TrimSpace(how) == "" {
+			return fmt.Errorf("--met %s must be ID=HOW", value)
+		}
+		met = append(met, saga.MetExpectation{Expectation: strings.TrimSpace(id), How: strings.TrimSpace(how)})
+	}
+	root := flags.Arg(0)
+	who := strings.TrimSpace(*by)
+	if who == "" && *agent {
+		who = "agent"
+	}
+	if who == "" {
+		return fmt.Errorf("--by names who passes the checkpoint; an agent passes with --agent")
+	}
+	planID := planIDOf(*plan)
+	pass := saga.CheckpointPass{At: time.Now().UTC(), By: who, Agent: *agent, Reason: strings.TrimSpace(*reason), Met: met}
+	// Where the checkpoint's review began, so a later review can widen back to it.
+	if document, found, err := planOf(root, planID); err == nil {
+		for _, phase := range found.Phases {
+			if phase.ID == *checkpoint && phase.IsCheckpoint() {
+				if review := document.FindReview(phase.Checkpoint.Review); review != nil {
+					if reviewRange, err := reviewstate.ResolveRange(ctx, firstNonEmpty(*repo, root), review); err == nil {
+						pass.Base = reviewRange.BaseOID
+					}
+				}
+			}
+		}
+	}
+	if err := planstore.PassCheckpoint(root, planID, *checkpoint, pass); err != nil {
+		return err
+	}
+	if *jsonOutput {
+		return writePlanChange(out, name, root, planID, true)
+	}
+	fmt.Fprintf(out, "Passed checkpoint %s as %s.\n", *checkpoint, who)
+	into := "the branch the Plan's work comes from"
+	if document, found, err := planOf(root, planID); err == nil {
+		for _, phase := range found.Phases {
+			if phase.ID == *checkpoint && phase.Checkpoint.Review != "" {
+				if review := document.FindReview(phase.Checkpoint.Review); review != nil && review.Base != "" {
+					into = review.Base
+				}
+			}
+		}
+	}
+	fmt.Fprintf(out, "Next: merge the checkpoint's branch into %s, then start the next stretch from there in a new workspace.\n", into)
+	return nil
+}
+
+func planExpect(_ context.Context, args []string, out io.Writer) error {
+	name := "plan expect"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint phase")
+	id := flags.String("id", "", "stable expectation id")
+	statement := flags.String("statement", "", "what must be true by the checkpoint: an invariant or characteristic of the work, not a user story")
+	remove := flags.Bool("remove", false, "remove the expectation instead")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *checkpoint, *id); err != nil {
+		return err
+	}
+	if !*remove && strings.TrimSpace(*statement) == "" {
+		return fmt.Errorf("--statement says what must be true; --remove removes the expectation")
+	}
+	if !saga.ValidID(*id) {
+		return fmt.Errorf("--id must be a stable identifier")
+	}
+	value := *statement
+	if *remove {
+		value = ""
+	}
+	if err := planstore.SetExpectation(flags.Arg(0), planIDOf(*plan), *checkpoint, *id, value); err != nil {
+		return err
+	}
+	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
+}
+
+func planWiden(_ context.Context, args []string, out io.Writer) error {
+	name := "plan widen"
+	flags := commandFlags(name, commandUsage[name], out)
+	plan := flags.String("plan", "", "plan id or URN")
+	checkpoint := flags.String("checkpoint", "", "the checkpoint whose review to widen")
+	to := flags.String("to", "", "an earlier checkpoint to show every change since; the checkpoint itself shows only its own stretch again")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *plan, *checkpoint, *to); err != nil {
+		return err
+	}
+	if err := planstore.WidenCheckpointReview(flags.Arg(0), planIDOf(*plan), *checkpoint, *to); err != nil {
+		return err
+	}
+	if *jsonOutput {
+		return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), true)
+	}
+	if *to == *checkpoint {
+		fmt.Fprintf(out, "Checkpoint %s's review shows its own stretch again.\n", *checkpoint)
+	} else {
+		fmt.Fprintf(out, "Checkpoint %s's review now shows every change since checkpoint %s's review began.\n", *checkpoint, *to)
+	}
+	return nil
 }
 
 func writePlanChange(out io.Writer, operation, root, planID string, jsonOutput bool) error {
@@ -810,6 +1006,7 @@ type taskRow struct {
 	Target   string   `json:"target"`
 	Unblocks []string `json:"unblocks"`
 	CanStart bool     `json:"can_start"`
+	HeldBy   string   `json:"held_by,omitempty"`
 }
 
 func taskList(_ context.Context, args []string, out io.Writer) error {
@@ -831,7 +1028,8 @@ func taskList(_ context.Context, args []string, out io.Writer) error {
 	manifests := found.Manifests()
 	unblocks := saga.TaskUnblocks(manifests)
 	canStart := map[string]bool{}
-	for _, task := range saga.TasksReady(manifests) {
+	readyNow, held := saga.TasksReadyNow(found.Phases, manifests)
+	for _, task := range readyNow {
 		canStart[task.ID] = true
 	}
 	rows := []taskRow{}
@@ -839,7 +1037,7 @@ func taskList(_ context.Context, args []string, out io.Writer) error {
 		if *ready && !canStart[task.ID] {
 			continue
 		}
-		rows = append(rows, taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID]})
+		rows = append(rows, taskRow{TaskManifest: task.TaskManifest, Target: task.Target, Unblocks: append([]string{}, unblocks[task.ID]...), CanStart: canStart[task.ID], HeldBy: held[task.ID]})
 	}
 	if *jsonOutput {
 		return writeJSON(out, struct {
@@ -851,6 +1049,9 @@ func taskList(_ context.Context, args []string, out io.Writer) error {
 		state := row.State
 		if row.CanStart {
 			state = "can start"
+		}
+		if row.HeldBy != "" && row.State == saga.TaskPlanned {
+			state = "held by checkpoint " + row.HeldBy
 		}
 		fmt.Fprintf(out, "%s: %s (%s)\n", row.ID, row.Title, state)
 	}

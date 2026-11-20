@@ -14,7 +14,8 @@ layouts. See [the migration contract](git-owned-history.md).
 | Observed `0.5.1-local.removal` binary | Legacy waves/work items | Old workflow; not phased Plan authoring | No | No verified support | No |
 | v0.7.0 (`0b399de788e8`) | Phases | Yes | No | Rejected | Rejected |
 | v0.8.0 (`cd8a55c74ffe`) | Phases | Yes | Yes | Rejected | Rejected |
-| Git-owned-history base `6536dafb9affaa8318a22adfcfddcf48aea48de7` and this follow-up | Phases | Yes | Yes | Rejected | Yes; legacy reads retained |
+| Git-owned-history base `6536dafb9affaa8318a22adfcfddcf48aea48de7` and diagnostic build `ce8d796d` | Phases | Yes | Yes | Rejected | Yes; legacy reads retained |
+| This branch after checkpoint integration | Phases with optional checkpoints | Yes | Yes | Supported, with held readiness and explicit passes | Yes; legacy reads retained |
 | Unmerged `plan-live-activity` branch | Phases with optional checkpoints | Branch-specific | Verify exact commit | Branch-specific support | Not established; do not assume compatibility with normalized Sagas |
 
 Native fields include `phases[].checkpoint` and `checkpoint_passer`. Even an
@@ -22,7 +23,8 @@ empty checkpoint object carries semantics. Strict JSON decoding is intentional:
 never strip unknown fields, replace checkpoints with ordinary phases, or retry
 through a reader that silently drops data. Wave/work-item data needs an explicit,
 reviewed migration; changing field names is not a supported conversion.
-The current reader adds specific recovery hints for these incompatible fields.
+The current reader supports native checkpoints, rejects unknown fields inside
+them, and adds a specific recovery hint for incompatible legacy waves.
 
 ## Diagnose the actual invocation
 
@@ -76,7 +78,9 @@ over a working binary as a diagnostic step.
 For normalized Sagas without checkpoints, the known compatible source baseline
 is `6536dafb9affaa8318a22adfcfddcf48aea48de7`; this branch adds diagnostics and
 tests on top of it. Pin an exact reviewed commit of this follow-up when its
-diagnostics are needed. Build in a separate checkout/output directory so neither
+diagnostics are needed. For checkpoint-enabled Sagas, pin the later checkpoint
+integration on this branch: it combines the native fields and their behavior
+with current records. Build in a separate checkout/output directory so neither
 PATH nor the working Saga is changed. For example, from a clean checkout of the
 reviewed commit, with this repository's pinned Go toolchain installed:
 
@@ -85,7 +89,7 @@ BUILD_COMMIT=$(git rev-parse HEAD)
 test -z "$(git status --porcelain)" || exit 1
 BUILD_DIR=$(mktemp -d)
 GOTOOLCHAIN=local go build -trimpath \
-  -ldflags "-X github.com/twentyideas/changesaga/internal/cli.Version=0.8.0-compat-dev -X github.com/twentyideas/changesaga/internal/cli.Commit=$BUILD_COMMIT" \
+  -ldflags "-X github.com/twentyideas/changesaga/internal/cli.Version=0.8.0-checkpoints-dev -X github.com/twentyideas/changesaga/internal/cli.Commit=$BUILD_COMMIT" \
   -o "$BUILD_DIR/change-saga" ./cmd/change-saga
 "$BUILD_DIR/change-saga" version
 "$BUILD_DIR/change-saga" doctor --json /path/to/change.saga
@@ -93,13 +97,13 @@ GOTOOLCHAIN=local go build -trimpath \
 ```
 
 Record the full reviewed commit, toolchain, binary path, SHA256 and validation
-result together in the handoff. The `compat-dev` label is a local build label,
+result together in the handoff. The `checkpoints-dev` label is a local build label,
 not a release. Keep the selected file at a stable absolute path for ongoing use.
 The baseline predates `doctor`; use `version`, `validate --json` and the schema
-probes there. Neither baseline nor this follow-up supports checkpoints. If both
-checkpoints and normalized records are required, there is no verified single
-compatible build in this audit: integration and testing are a separate decision.
-Do not automatically merge that feature branch or downgrade normalized data.
+probes there. Neither that baseline nor `ce8d796d` supports checkpoints. This
+branch now integrates them; the old diagnostic binary must be rebuilt from the
+later commit before it can read such a Plan. Do not downgrade normalized data
+or delete gates. See [checkpoint integration and Git migration](checkpoint-integration.md).
 
 Agree on the build **before writing**. Writers can normalize encountered legacy
 packages; upgrade all readers first. Git owns content history; preserve stable
@@ -124,8 +128,8 @@ layout, use its Git commit in a separate checkout.
 - In an isolated legacy-layout Saga, the installed v0.7.0 successfully created
   a Plan and added a phase; the checksummed v0.8.0 release then read that phase
   through `query plan`. Adding `phases[].checkpoint: {}` made both v0.8.0 and
-  this follow-up reject the query, retaining the checkpoint bytes. The
-  follow-up's whole-Saga `doctor` also validated the repository's normalized
+  `ce8d796d` reject the query, retaining the checkpoint bytes. That diagnostic
+  build's whole-Saga `doctor` also validated the repository's normalized
   Saga successfully (235 warnings, no errors); it did not refresh any pins.
 - On this machine, `type -a` resolves `~/.local/bin/change-saga` first:
   `0.7.0 (0b399de788e8)`, which rejects `query schema plans` as an unknown
@@ -136,7 +140,8 @@ layout, use its Git commit in a separate checkout.
 - Inspected `plan-live-activity` at
   `ec1aff418dcc241056f544a87bbaddb1a9948b93` for checkpoint types. It is not
   an ancestor of this branch. The native fields are absent from v0.7.0,
-  v0.8.0, and the current baseline. No checkpoint implementation was imported.
+  v0.8.0, and the Git-owned-history baseline. The initial diagnostic build did
+  not import checkpoints; the later integration was explicitly authorized.
 
 Greyson's resolved executable, version/build, exact failing command and exact
 error are still unknown. Request those together with the three diagnostic

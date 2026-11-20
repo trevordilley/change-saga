@@ -12,6 +12,14 @@ tool, and what they have to do about it.
 
 ### Changed
 
+- **Format:** Native Plan checkpoints are integrated with Git-owned current
+  records: expectations, explicit passes, held Task readiness, checkpoint reports,
+  linked review context and widened review ranges. Earlier builds reject the new
+  fields; `doctor` now reports checkpoint support. Reads never pass a gate.
+- A complete authored `whiteboard publish` can resolve competing legacy values
+  after their files are committed to Git. It publishes one current record,
+  preserves exact pins and removes legacy storage; Git retains earlier values.
+
 - **Format:** Git owns documentation revision history. Current record content
   and state are editable in place; legacy content graphs normalize on write
   after evidence pins are converted to exact content digests. Complete slides
@@ -37,8 +45,9 @@ tool, and what they have to do about it.
 
 ### Fixed
 
-- Unsupported native checkpoint and legacy wave fields in Plan/Task JSON now
-  explain the reader mismatch while retaining strict rejection and authored data.
+- Legacy wave fields in Plan/Task JSON explain the reader mismatch while
+  retaining strict rejection and authored data. Unknown nested checkpoint fields
+  and null checkpoints are rejected instead of discarding gate semantics.
 
 ## [0.8.0] - 2026-11-03
 

@@ -9,8 +9,8 @@ Check the actual executable before diagnosing missing support: `type -a
 change-saga`, then its `version` command and `change-saga query schema plans`.
 v0.7.0 authors phased Plans; v0.8.0 adds Plan queries. Both reject the later
 normalized current-record layouts even though the root manifest is still v5.
-This build supports those layouts but rejects native `checkpoint` and
-`checkpoint_passer` fields from the unmerged checkpoint branch. Never delete
+This build supports those layouts together with native `checkpoint` and
+`checkpoint_passer` fields. Earlier builds, including `ce8d796d`, reject them. Never delete
 unsupported fields or silently downgrade data. Use one absolute, pinned build
 for the whole Saga; this branch's `doctor --json change.saga` reports its
 capabilities and runs read-only whole-Saga validation. See
@@ -46,6 +46,28 @@ again. A different body of work gets its own Plan.
   you learn. A Plan is a working document until it is delivered.
 
 ## Authoring
+
+A checkpoint is a phase that holds no Tasks and covers the work since the
+previous checkpoint. Later Tasks stay out of `task list --ready` until it passes.
+`query plan` includes checkpoint expectations, linked review and pass record;
+`query task` and `task list --json` include `held_by` when a gate holds a Task.
+
+```sh
+change-saga plan add-phase --plan ID --id SECURITY --title "Security review" --checkpoint --after DESIGN change.saga
+change-saga plan expect --plan ID --checkpoint SECURITY --id approved --statement "The designated reviewer approved the design" change.saga
+change-saga plan checkpoint --plan ID --checkpoint SECURITY change.saga
+```
+
+The default passer is a person. `plan set --checkpoint-passer agent` explicitly
+permits agent passes; the agent still stops for a person when the report raises
+something surprising. `plan pass --checkpoint PHASE --plan ID --by NAME --reason
+TEXT --met approved=HOW change.saga` records the judgment only after all covered
+Tasks are done, earlier gates passed, and every expectation is confirmed.
+It does not perform a Git merge, deploy, grant access, or replace a customer's
+approval process. Reads and slide regeneration never pass a checkpoint.
+`plan link-review --checkpoint PHASE` associates its review; `plan widen` can
+show a later checkpoint's review from an earlier recorded base without changing
+the branch the review merges into. Git owns earlier Plan and diagram content.
 
 ```sh
 change-saga plan create --id ID --title TEXT change.saga

@@ -14,6 +14,27 @@ function run(saga: SagaFixture, ...args: string[]): void {
   expect(result.status, `${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
 }
 
+test("checkpoint gates hold later tasks and the board expands by clicking", async ({ page, saga }, testInfo) => {
+  run(saga, "plan", "create", "--id", "gated", "--title", "Review before implementation");
+  run(saga, "plan", "add-phase", "--plan", "gated", "--id", "design", "--title", "Design");
+  run(saga, "plan", "add-phase", "--plan", "gated", "--id", "security", "--title", "Security review", "--checkpoint");
+  run(saga, "plan", "expect", "--plan", "gated", "--checkpoint", "security", "--id", "approved", "--statement", "The designated person approved the access design");
+  run(saga, "plan", "add-phase", "--plan", "gated", "--id", "implement", "--title", "Implement");
+  for (const [id, phase] of [["design-work", "design"], ["implementation", "implement"]]) {
+    run(saga, "task", "add", "--plan", "gated", "--id", id, "--title", id, "--phase", phase,
+      "--story", "urn:change-saga:wave-one:story:read-the-tide");
+  }
+  await page.goto(`${saga.baseURL}/plans/gated/tasks`);
+  await waitForSettledSaga(page);
+  await expect(page.locator('[data-plan-node="checkpoint:security"]')).toHaveCount(1);
+  await expect(page.locator('[data-plan-node="stretch:later"]')).toHaveCount(1);
+  await page.getByRole("link", { name: "Show every task" }).click();
+  await expect(page.locator('[data-plan-node="task:implementation"]')).toHaveCount(1);
+  await page.locator('[data-plan-node="task:implementation"]').click();
+  await expect(page.locator('.diff-drawer.open')).toContainText("Held by checkpoint Security review");
+  await page.screenshot({ path: testInfo.outputPath("checkpoint-board.png"), fullPage: true });
+});
+
 test("a Plan's tabs can be followed, and back returns to the last one", async ({ page, saga }) => {
   run(saga, "plan", "create", "--id", "tides", "--title", "Plan the tides");
   run(saga, "task", "add", "--plan", "tides", "--id", "read-tides", "--title", "Read the tide table",

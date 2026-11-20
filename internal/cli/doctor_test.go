@@ -28,7 +28,7 @@ func TestDoctorReportsCapabilitiesWithoutASaga(t *testing.T) {
 		t.Fatalf("missing build diagnostics: %+v", report)
 	}
 	caps := report.Capabilities
-	if caps.Plans.Layout != "phases" || !caps.Plans.Authoring || caps.Plans.Checkpoints || caps.Plans.LegacyWaves || !reflect.DeepEqual(caps.Plans.Queries, []string{"plans", "plan", "task"}) || !caps.Saga.CurrentRecords || !caps.Saga.StrictJSON || caps.Saga.ManifestVersion != 5 {
+	if caps.Plans.Layout != "phases" || !caps.Plans.Authoring || !caps.Plans.Checkpoints || caps.Plans.LegacyWaves || !reflect.DeepEqual(caps.Plans.Queries, []string{"plans", "plan", "task"}) || !caps.Saga.CurrentRecords || !caps.Saga.StrictJSON || caps.Saga.ManifestVersion != 5 {
 		t.Fatalf("incorrect capabilities: %+v", caps)
 	}
 	// Reported query names must actually be available independently of data.
@@ -44,6 +44,8 @@ func TestDoctorValidatesCurrentRecordsAndLeavesBytesUnchanged(t *testing.T) {
 	t.Parallel()
 	root := newPlanFixture(t).root
 	run(t, Plan, "add-phase", "--plan", "first", "--id", "build", "--title", "Build", root)
+	run(t, Plan, "add-phase", "--plan", "first", "--id", "security", "--title", "Security review", "--checkpoint", root)
+	run(t, Plan, "expect", "--plan", "first", "--checkpoint", "security", "--id", "approved", "--statement", "The designated person approved the design", root)
 	run(t, Task, "add", "--plan", "first", "--id", "work", "--title", "Work", "--phase", "build", "--story", planStoryURN, root)
 	if err := Normalize(context.Background(), []string{root}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
@@ -63,6 +65,10 @@ func TestDoctorValidatesCurrentRecordsAndLeavesBytesUnchanged(t *testing.T) {
 	// Plan queries remain usable on normalized whole-Saga data.
 	if err := Query(context.Background(), []string{"plan", "--saga", root, "--plan", "first"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
+	}
+	plan := loadedPlan(t, root, "first")
+	if gate := plan.Phases[1].Checkpoint; gate == nil || gate.Passed != nil || len(gate.Expectations) != 1 {
+		t.Fatalf("checkpoint changed during normalized read: %+v", gate)
 	}
 }
 
@@ -95,9 +101,8 @@ func TestUnsupportedPlanFieldsArePreservedAndDiagnosed(t *testing.T) {
 		value any
 		hint  string
 	}{
-		{"checkpoint authority", false, "checkpoint_passer", "person", "native Plan checkpoints"},
-		{"checkpoint phase", false, "phases", []any{map[string]any{"id": "gate", "title": "Gate", "checkpoint": map[string]any{}}}, "native Plan checkpoints"},
-		{"null checkpoint", false, "phases", []any{map[string]any{"id": "gate", "title": "Gate", "checkpoint": nil}}, "native Plan checkpoints"},
+		{"unknown checkpoint field", false, "phases", []any{map[string]any{"id": "gate", "title": "Gate", "checkpoint": map[string]any{"future_gate": true}}}, "unknown field"},
+		{"null checkpoint", false, "phases", []any{map[string]any{"id": "gate", "title": "Gate", "checkpoint": nil}}, "checkpoint must be an object"},
 		{"wave plan", false, "waves", []any{}, "legacy wave/work-item"},
 		{"wave task", true, "wave", "old-stage", "legacy wave/work-item"},
 		{"unknown plan field", false, "future_field", true, `unknown field`},

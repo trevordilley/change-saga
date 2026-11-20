@@ -168,6 +168,9 @@ const whiteboardNavigationJavaScript = `
       let path = entry?.path;
       if (path === undefined && link.matches('a[href]')) {
         const url = new URL(link.getAttribute('href'), location.href);
+        // Folding a Plan changes its server-rendered diagram. It is not a
+        // focus move within the board, even though the pathname is identical.
+        if (url.searchParams.get('fold') !== new URL(location.href).searchParams.get('fold')) return;
         if (url.origin === location.origin && sameDocument(url)) {
           path = url.searchParams.get('focus') || '';
           if (path && !paths.has(path)) return;

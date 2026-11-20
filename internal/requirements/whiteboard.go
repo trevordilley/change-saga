@@ -1,10 +1,12 @@
 package requirements
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -12,6 +14,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -324,11 +327,18 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, par
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		// Inspect the old document before any mutation. Competing heads cannot be
-		// hidden by publishing a replacement value.
-		old, err := LoadWhiteboard(root, sagaID, boardID, "")
+		// A full authored replacement can resolve legacy ambiguity. Never choose
+		// a head implicitly, and keep every earlier authored value in Git before
+		// removing legacy files. Ordinary reads and automatic normalization still
+		// refuse an ambiguous selection.
+		history, heads, err := whiteboardHistory(root, sagaID, boardID)
 		if err != nil {
 			return err
+		}
+		if len(heads) > 1 {
+			if err := preserveLegacyWhiteboardInGit(ctx, root, boardID, history); err != nil {
+				return err
+			}
 		}
 		pins, err := currentrecord.AuditPins(root)
 		if err != nil {
@@ -359,7 +369,7 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, par
 			return err
 		}
 		dir := filepath.Join(root, WhiteboardDir, boardID)
-		if old == nil {
+		if len(history) == 0 {
 			ids, err := ListWhiteboardIDs(root)
 			if err != nil {
 				return err
@@ -377,6 +387,9 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, par
 			if err := pins.PersistReferences(); err != nil {
 				return err
 			}
+			if err := pins.PersistLegacyReferencesBeforeRemoval(filepath.Join(dir, "revisions"), "urn:change-saga:"+sagaID+":whiteboard:"+boardID+":revision:"); err != nil {
+				return err
+			}
 			if err := currentrecord.Write(dir, value, nil); err != nil {
 				return err
 			}
@@ -388,6 +401,33 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, par
 		return err
 	})
 	return result, err
+}
+
+// This is a migration guard, not another history store. A caller resolving an
+// old fork must first preserve its inputs in Git, then supply the complete
+// resolved document through the ordinary publish command.
+func preserveLegacyWhiteboardInGit(ctx context.Context, root, boardID string, history map[string]WhiteboardRevision) error {
+	failure := fmt.Errorf("commit the legacy whiteboard files to Git before publishing a resolved current document; no revision or parent selection is required")
+	head, err := gitexec.Output(ctx, "-C", root, "rev-parse", "HEAD")
+	if err != nil {
+		return failure
+	}
+	prefix, err := gitexec.Output(ctx, "-C", root, "rev-parse", "--show-prefix")
+	if err != nil {
+		return failure
+	}
+	for id := range history {
+		rel := filepath.ToSlash(filepath.Join(WhiteboardDir, boardID, "revisions", id+".json"))
+		authored, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(rel)))
+		if err != nil {
+			return err
+		}
+		saved, err := gitexec.Output(ctx, "-C", root, "show", strings.TrimSpace(string(head))+":"+strings.TrimSuffix(string(prefix), "\n")+rel)
+		if err != nil || !bytes.Equal(saved, authored) {
+			return failure
+		}
+	}
+	return nil
 }
 
 func LoadResolvedWhiteboard(root, sagaID, boardID, revision string) (*ResolvedWhiteboard, error) {
