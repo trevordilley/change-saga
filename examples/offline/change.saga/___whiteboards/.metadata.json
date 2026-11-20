@@ -1,0 +1,11 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/whiteboard-metadata.schema.json",
+  "version": 1,
+  "saga_id": "harbor-watch",
+  "roles": {
+    "data-flows": "arrival",
+    "erd": "",
+    "infrastructure": ""
+  },
+  "boards": {}
+}

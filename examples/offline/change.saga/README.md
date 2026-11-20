@@ -13,8 +13,8 @@ change-saga open change.saga
 change-saga query plan --saga change.saga --plan arrival-window
 ```
 
-Explore the Arrival-window whiteboard, the Roadmap story, and the Plan's Tasks
-board. Both Tasks are planned. The review checkpoint is unpassed, so the later
+Explore Technical design → Data flows for the Arrival-window whiteboard,
+the Roadmap story, and the Plan's Tasks board. Both Tasks are planned. The review checkpoint is unpassed, so the later
 Task is held. The statements describe sample intent; no implementation evidence,
 test result or human approval is recorded.
 

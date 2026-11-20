@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -16,6 +17,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/releasearchive"
+	"github.com/twentyideas/changesaga/internal/saga"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
 )
 
@@ -98,13 +100,21 @@ func TestOfflineExampleArchiveNeedsNoCheckout(t *testing.T) {
 		}
 	})
 	client := &http.Client{Timeout: 15 * time.Second}
-	for path, text := range map[string]string{"/": "Harbor Watch", "/plans/arrival-window/tasks": "Review the assumptions", "/technical/whiteboards/arrival": "Read the tide bulletin"} {
+	for path, text := range map[string]string{
+		"/": "Harbor Watch", "/technical": "Technical design",
+		"/api/fragment?target=" + url.QueryEscape(saga.FragmentTarget("harbor-watch", "harbor-watch-pitch")):            "fictional planned product",
+		"/api/fragment?target=" + url.QueryEscape(saga.FragmentTarget("harbor-watch", "harbor-watch-technical-design")): "arrival-window conversation",
+		"/plans/arrival-window/tasks": "Review the assumptions", "/technical/whiteboards/arrival": "Read the tide bulletin",
+	} {
 		response, err := client.Get(baseURL + path)
 		if err != nil {
 			t.Fatal(err)
 		}
 		body, err := io.ReadAll(response.Body)
 		_ = response.Body.Close()
+		if path == "/" && !bytes.Contains(body, []byte(`href="/technical/whiteboards/arrival"`)) {
+			t.Fatal("the offline whiteboard is not reachable from the example's navigation")
+		}
 		if err != nil || response.StatusCode != http.StatusOK || !bytes.Contains(body, []byte(text)) {
 			t.Fatalf("offline page %s: status %d, error %v, body %s", path, response.StatusCode, err, body)
 		}
