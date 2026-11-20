@@ -84,7 +84,19 @@ func TestDoctorChecksRecordsOutsidePlans(t *testing.T) {
 	var out bytes.Buffer
 	err := Doctor(context.Background(), []string{"--json", root}, &out)
 	var status *StatusError
-	if !errors.As(err, &status) || status.Code != 1 || !strings.Contains(out.String(), `"valid": false`) || !strings.Contains(out.String(), testPersona+".persona/current.json") {
+	var report doctorReport
+	if decodeErr := json.Unmarshal(out.Bytes(), &report); decodeErr != nil {
+		t.Fatalf("doctor returned invalid JSON: %v", decodeErr)
+	}
+	found := false
+	if report.SagaCheck != nil {
+		for _, issue := range report.SagaCheck.Issues {
+			if issue.Severity == "error" && strings.Contains(issue.Message, path) {
+				found = true
+			}
+		}
+	}
+	if !errors.As(err, &status) || status.Code != 1 || report.SagaCheck == nil || report.SagaCheck.Valid || !found {
 		t.Fatalf("doctor ignored non-Plan content: %v %s", err, &out)
 	}
 	if !reflect.DeepEqual(before, snapshotFiles(t, root)) {
