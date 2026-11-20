@@ -314,6 +314,8 @@ func ValidateReviewManifest(manifest ReviewManifest) error {
 		return fmt.Errorf("base must name the revision the pull request merges into")
 	case strings.ContainsAny(manifest.Head, " \t\n") || strings.HasPrefix(manifest.Head, "-"):
 		return fmt.Errorf("head must be a ref name")
+	case manifest.Since != "" && !coderef.ValidCommit(manifest.Since):
+		return fmt.Errorf("since must be a full immutable Git commit")
 	case manifest.CreatedAt.IsZero():
 		return fmt.Errorf("created_at is required")
 	}

@@ -78,3 +78,20 @@ func TestACheckpointsRecordIsValidated(t *testing.T) {
 		t.Fatalf("a pass with no reason must be refused: %v", err)
 	}
 }
+
+func TestWidenedReviewRequiresAnImmutableCommit(t *testing.T) {
+	manifest := ReviewManifest{Schema: ReviewSchemaURL, Version: ReviewVersion,
+		ID: "checkpoint-review", Title: "Checkpoint", Base: "main", CreatedAt: time.Now()}
+	for _, since := range []string{"", strings.Repeat("a", 40), strings.Repeat("b", 64)} {
+		manifest.Since = since
+		if err := ValidateReviewManifest(manifest); err != nil {
+			t.Fatalf("valid since %q: %v", since, err)
+		}
+	}
+	for _, since := range []string{"main", "HEAD~1", "abcdef1", "--all", strings.Repeat("A", 40)} {
+		manifest.Since = since
+		if err := ValidateReviewManifest(manifest); err == nil || !strings.Contains(err.Error(), "immutable Git commit") {
+			t.Fatalf("movable or invalid since %q accepted: %v", since, err)
+		}
+	}
+}

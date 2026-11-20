@@ -14,7 +14,9 @@ service. Unknown nested checkpoint fields and null checkpoints are rejected.
 `doctor` now reports both `plans.checkpoints: true` and `saga.current_records: true`.
 
 A checkpoint is an execution/review gate, not a version of documentation.
-Its expectations and actual pass judgment remain in the current Plan. Reads,
+Its expectations and actual pass judgment remain in the current Plan. A widened
+review boundary must be a full immutable Git commit, never a movable branch
+name. Reads,
 validation, normalization and slide regeneration never pass it. The default
 passer is a person; configuring an agent passer is explicit. The tool's free-text
 attribution is not an IAM approval mechanism or an agreement about support access.
