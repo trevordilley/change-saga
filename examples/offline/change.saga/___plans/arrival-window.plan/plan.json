@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/plan.schema.json",
+  "version": 5,
+  "id": "arrival-window",
+  "title": "Explain the arrival-window design",
+  "phases": [
+    {
+      "id": "understand",
+      "title": "Understand the bulletin"
+    },
+    {
+      "id": "review",
+      "title": "Review the assumptions",
+      "checkpoint": {
+        "expectations": [
+          {
+            "id": "reviewed",
+            "statement": "A designated person has reviewed uncertainty handling and the limits of the illustrative design."
+          }
+        ]
+      }
+    },
+    {
+      "id": "build",
+      "title": "Build the illustrative screen"
+    }
+  ],
+  "created_at": "2026-11-20T23:09:08.537309Z"
+}

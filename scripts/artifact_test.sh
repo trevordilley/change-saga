@@ -210,9 +210,9 @@ example_archive="change-saga-example.saga.zip"
 "$repo_root/scripts/build-example-saga.sh" "$example_dist" >/dev/null
 unzip -Z1 "$example_dist/$example_archive" > "$work/example-names"
 
-expected_example_files="$(find "$repo_root/change.saga" -type f | wc -l | tr -d ' ')"
+expected_example_files="$(find "$repo_root/examples/offline/change.saga" -type f | wc -l | tr -d ' ')"
 actual_example_files="$(wc -l < "$work/example-names" | tr -d ' ')"
-assert_eq "example archive includes every Saga file" "$expected_example_files" "$actual_example_files"
+assert_eq "example archive includes every authored offline-example file" "$expected_example_files" "$actual_example_files"
 if awk '
 	index($0, "change.saga/") != 1 ||
 	$0 ~ /(^|\/)\.\.?($|\/)/ ||
@@ -235,9 +235,15 @@ assert_sidecar "example archive" "$example_dist" "$example_archive"
 example_unpack="$work/unpack-example"
 mkdir -p "$example_unpack"
 unzip -q "$example_dist/$example_archive" -d "$example_unpack"
-if "$unpack/change-saga" validate "$example_unpack/change.saga" >/dev/null; then
+if git -C "$example_unpack" rev-parse --show-toplevel >/dev/null 2>&1; then
+	record "example is extracted outside a Git checkout" 1
+else
+	record "example is extracted outside a Git checkout" 0
+fi
+if "$unpack/change-saga" validate "$example_unpack/change.saga" >"$work/example-validation.log" 2>&1; then
 	record "released binary validates the downloaded example Saga" 0
 else
+	cat "$work/example-validation.log" >&2
 	record "released binary validates the downloaded example Saga" 1
 fi
 

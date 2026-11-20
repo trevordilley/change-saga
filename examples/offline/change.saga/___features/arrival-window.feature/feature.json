@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "arrival-window",
+  "title": "Plan a harbor visit",
+  "description": "Illustrative planned capability: a visitor can read a tide bulletin before choosing an arrival window. No implementation or safety certification is asserted.",
+  "created_at": "2026-11-20T23:09:08.444284Z"
+}

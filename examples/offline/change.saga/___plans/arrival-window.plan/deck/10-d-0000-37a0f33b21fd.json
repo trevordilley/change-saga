@@ -1,0 +1,11 @@
+{
+  "overview": {
+    "body": "This fictional Plan demonstrates phases and a checkpoint. Read the Tasks board: later work is held until the assumptions review passes. Both Tasks are planned; the checkpoint is unpassed. No build, test result or human approval is recorded."
+  },
+  "version": 4,
+  "id": "arrival-window",
+  "title": "Explain the arrival-window design",
+  "role": "plan",
+  "rank": 0,
+  "objective": "Demonstrate phased Tasks and an explicit unpassed review checkpoint in a self-contained example."
+}

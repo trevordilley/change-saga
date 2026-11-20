@@ -45,6 +45,10 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- Downloadable example archives use a separately authored current-record Saga
+  that validates and opens without a checkout. The full repository Saga retains
+  its historical Git pins and remains available through a clone.
+
 - Legacy wave fields in Plan/Task JSON explain the reader mismatch while
   retaining strict rejection and authored data. Unknown nested checkpoint fields
   and null checkpoints are rejected instead of discarding gate semantics.

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "description": "An illustrative visitor who wants to plan an arrival from a tide bulletin; this is a fictional product example.",
+    "name": "Harbor visitor",
+    "persona": "urn:change-saga:harbor-watch:persona:harbor-visitor"
+  },
+  "state": {
+    "persona": "urn:change-saga:harbor-watch:persona:harbor-visitor",
+    "state": "active"
+  }
+}

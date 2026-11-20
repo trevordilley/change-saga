@@ -350,7 +350,7 @@ jobs:
             echo
             echo "## Example Saga"
             echo
-            echo "Download [\`change-saga-example.saga.zip\`](https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/change-saga-example.saga.zip), extract it, and run \`change-saga open change.saga\`. It is the validated, self-hosting Saga used by this repository."
+            echo "Download [\`change-saga-example.saga.zip\`](https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/change-saga-example.saga.zip), extract it, and run \`change-saga open change.saga\`. It is the authored offline example, with current records and an unpassed Plan checkpoint; clone the repository for its full self-hosting Saga and Git history."
             echo
             echo "## Verify manually"
             echo

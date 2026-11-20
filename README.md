@@ -119,8 +119,12 @@ then open it with that binary:
 ./bin/change-saga open change.saga
 ```
 
-Or [download it](https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip)
-from the latest release without cloning:
+[Download the example ZIP](https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip)
+from the same published release as your binary, without cloning. This checkout's
+packaging uses the separately authored [`examples/offline/change.saga`](examples/offline/change.saga):
+a fictional planned product with current records and an unpassed checkpoint.
+Older releases packaged their repository Saga instead. The full repository Saga
+and its exact historical pins require the corresponding Git checkout:
 
 ```sh
 curl -fL https://github.com/trevordilley/change-saga/releases/latest/download/change-saga-example.saga.zip \
@@ -129,7 +133,7 @@ unzip change-saga-example.saga.zip
 change-saga open change.saga
 ```
 
-For one concrete path through it, follow the story **Trace a requirement to
+In the full repository checkout, one concrete path follows the story **Trace a requirement to
 current evidence and back** and its criterion **Each criterion shows its
 current code path**:
 

@@ -144,3 +144,19 @@ authoring and v0.8.0 adds Plan queries, but both reject current-record layouts.
 Use [whole-Saga compatibility diagnostics](plan-cli-compatibility.md) before
 selecting a pinned build. Native checkpoints are now integrated with this
 current-record reader. Earlier builds, including `ce8d796d`, reject them.
+
+## Offline examples and exports
+
+An archive of a Saga is not an archive of its Git history. An exact pin to content
+that is absent from the current files still requires the real Git objects;
+missing content must fail explicitly. Neither export nor validation substitutes
+the current definition or copies older values into a Saga history sidecar.
+
+The downloadable example is deliberately authored in
+[`examples/offline/change.saga`](../examples/offline/change.saga), separately from
+the canonical repository Saga. It has current documentation and an unpassed Plan
+checkpoint, with no historical evidence dependency. Its archive is tested after
+extraction outside a checkout, including validation, Plan queries and reader
+pages. To inspect the full repository Saga and its historical evidence, use its
+corresponding Git checkout. An export promising historical views must provide
+access to genuine Git provenance and objects.
