@@ -22,12 +22,12 @@
           {
             "references": [
               {
-                "commit": "f246ec2cd1278ac04b451beec94d46434a139191",
-                "digest": "sha256:471c33147a5cb6104cd9978c3ab4eff399e13b5484087e667123b88ba49563b4",
-                "end": 677,
+                "commit": "c97ec42963179e744c774df9a3449896e1740d88",
+                "digest": "sha256:8b6709aa47abd9900178ea4331c5d4292009cea31504ee49012f57e8e2705e34",
+                "end": 794,
                 "note": "Published command shapes including review operations",
                 "path": "internal/grammar/commands.go",
-                "start": 612
+                "start": 723
               }
             ],
             "version": 2

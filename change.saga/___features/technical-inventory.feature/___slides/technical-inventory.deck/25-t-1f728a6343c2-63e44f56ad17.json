@@ -38,8 +38,8 @@
           {
             "references": [
               {
-                "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
-                "digest": "sha256:56cb223fa7eabb93afbad1e1328cfb2ebbaaa5293f147240c13ce761d4596ad7",
+                "commit": "c97ec42963179e744c774df9a3449896e1740d88",
+                "digest": "sha256:4cdfd8ceed723d35d945ba91beaa61c57982e7805ae596c14bb59e6a5c198f57",
                 "end": 37,
                 "note": "The page stylesheet and page switch include Technical design.",
                 "path": "internal/server/assets.go",

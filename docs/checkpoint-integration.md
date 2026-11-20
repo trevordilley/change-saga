@@ -80,3 +80,37 @@ and the 187-element conceptual view
 (`sha256:14a0770b315d19a0e9cd16a2664ac8add6b63857f7627855fc6a5ef879d544af`).
 Their former files are absent from the working Saga. This checks the actual
 repair as well as the smaller regression fixture.
+
+## CI follow-up: offline packaging and scoped evidence reassessment
+
+The first hosted CI run exposed an inherited distribution gap: the repository
+Saga's `data-model` whiteboard pins a source that exists only in Git. Copying the
+Saga into a ZIP loses that source. Both the diagnostic baseline and the integrated
+reader correctly reject the isolated copy. The package now ships the separately
+authored `examples/offline/change.saga`, rather than altering canonical pins or
+embedding a second history store. The example validates with zero warnings and
+its overview, Plan board and whiteboard render after extraction outside a checkout.
+The full repository Saga and historical views still use the real Git checkout.
+Earlier published example assets retain the contract of their own release; this
+change does not publish a release or change an existing asset.
+
+The initial health result was 388 gaps, compared with 382 at the exact
+`6536dafb9affaa8318a22adfcfddcf48aea48de7` baseline. After reading each affected
+explanation, source span and proposed diff, six references were explicitly
+reassessed against `c97ec42963179e744c774df9a3449896e1740d88`:
+
+| Reference | Semantic reassessment and verification |
+| --- | --- |
+| Review term, code reference 2 | `ReviewManifest` still names the merge destination and followed head. `Since` adds an earlier immutable review boundary. The existing term definition, first code pin, aliases, story links, maturity and lifecycle remain valid and unchanged. Immutable-boundary and checkpoint-widening regressions pass. |
+| `decision-write-path` / `capture-head` | `ResolveRange` still resolves the full followed head; widening changes the base, with an ancestor check, rather than the captured head. The checkpoint review-widening regression passes. |
+| `htmx-shell` / `hashed-assets` | Adding checkpoint CSS changes the hashed stylesheet bytes. Asset URL hashing, immutable caching and refusal of old hashes retain their documented behavior. `TestShellAssetsAreVersionedAndImmutable` passes. |
+| `ti-ui-impl-overview` / `directory`, CSS reference | The stylesheet still includes Technical design. The change adds checkpoint styles alongside it. This reassessment covers stylesheet inclusion only, with the shell-assets and checkpoint reader regressions; other directory references retain their own existing pins and findings. |
+| `comment-round-trip` / `open-review` | The page still builds its current review report before displaying feedback controls. The added checkpoint context is a read of the linked Plan. Checkpoint review rendering and hosted feedback flows pass. |
+| `structured-query` / `caller` | Published command metadata still describes review operations and discovery; it now includes `doctor`. Query-help/schema regressions verify discovery without opening an application session. |
+
+Only these six code references changed, through scoped authoring commands. No
+other evidence, explanation, criterion link, source pin, approval or lifecycle
+fact was refreshed. The resulting health gap set equals the inherited 382 by
+resource and kind, with zero added or removed baseline gaps. Those inherited
+findings remain explicit integration work; this branch does not weaken the
+repository's health gate.
