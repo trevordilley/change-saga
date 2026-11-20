@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "A token cannot cross operations or normalized filter contexts.",
+    "preconditions": [
+      "Use livingFixture with checkout and refund accepted stories, obtain a requirements cursor at limit 1."
+    ],
+    "steps": [
+      {
+        "action": "Append A to the cursor; reuse the original cursor for relations; reuse it for requirements filtered state=accepted.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context"
+        ],
+        "expected_result": "Each query fails with invalid_argument.",
+        "id": "reject"
+      },
+      {
+        "action": "Inspect each emitted JSON error and compare normalized-equivalent selector requests separately.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context"
+        ],
+        "expected_result": "Invalid cursor errors are non-retryable; an equivalent normalized filter is not rejected merely for spelling normalization.",
+        "id": "retryability"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection",
+    "title": "Reject malformed and cross-context continuation tokens"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-context-rejection"
+  }
+}

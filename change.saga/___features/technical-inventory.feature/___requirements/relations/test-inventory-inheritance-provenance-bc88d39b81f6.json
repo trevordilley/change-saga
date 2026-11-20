@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-inheritance-provenance-bc88d39b81f6",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-inheritance-provenance",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
-  "scope": "self",
-  "rationale": "Steps owners define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-inheritance-provenance:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:02.65922Z",
-  "request_id": "test-inventory-inheritance-provenance-bc88d39b81f6"
+  "from": "urn:change-saga:change-saga:test-case:inventory-inheritance-provenance",
+  "from_revision": "sha256:0b05ae2b0fd0b159b245f244366dc254e5e283ff8d469d51928d99ad6cfa9191",
+  "id": "test-inventory-inheritance-provenance-bc88d39b81f6",
+  "rationale": "Steps owners define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-inheritance-provenance-bc88d39b81f6",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "verifies",
+  "version": 5
 }

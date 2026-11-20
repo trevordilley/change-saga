@@ -114,7 +114,7 @@ func TestCriterionCommandsSupportStructuredInputEditorAndCompleteResults(t *test
 	ctx := context.Background()
 	var output bytes.Buffer
 	if err := Story(ctx, []string{
-		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--request-id", "story-request", "--json",
 	}, &output); err != nil {
@@ -128,29 +128,27 @@ func TestCriterionCommandsSupportStructuredInputEditorAndCompleteResults(t *test
 		t.Fatalf("structured criterion add: %v\n%s", err, output.String())
 	}
 	added := decodeLivingOutput(t, &output)
-	r2 := storyURN + ":revision:r2"
-	if !added.OK || added.Resource != storyURN+":criterion:audited" || !reflect.DeepEqual(added.Created, []string{r2}) || !reflect.DeepEqual(added.CurrentHeads, []string{r2}) || len(added.Paths) != 1 {
+	if !added.OK || added.Resource != storyURN+":criterion:audited" || !reflect.DeepEqual(added.Created, []string{added.Resource}) || len(added.CurrentHeads) != 0 || len(added.Paths) != 1 {
 		t.Fatalf("criterion add result = %#v", added)
 	}
 
 	t.Setenv("EDITOR", "true")
 	output.Reset()
 	if err := Criterion(ctx, []string{
-		"revise", root, "--story", storyURN, "--criterion", added.Resource, "--parent", r2,
-		"--revision", "r3", "--statement", "Every purchase is audited", "--request-id", "criterion-revise", "--edit", "--json",
+		"revise", root, "--story", storyURN, "--criterion", added.Resource,
+		"--statement", "Every purchase is audited", "--request-id", "criterion-revise", "--edit", "--json",
 	}, &output); err != nil {
 		t.Fatalf("criterion editor revise: %v\n%s", err, output.String())
 	}
 	revised := decodeLivingOutput(t, &output)
-	r3 := storyURN + ":revision:r3"
-	if !reflect.DeepEqual(revised.CurrentHeads, []string{r3}) || revised.Replayed {
+	if revised.Resource != added.Resource || len(revised.CurrentHeads) != 0 || revised.Replayed {
 		t.Fatalf("criterion revise result = %#v", revised)
 	}
 
 	output.Reset()
 	if err := Criterion(ctx, []string{
-		"remove", root, "--story", storyURN, "--criterion", added.Resource, "--parent", r3,
-		"--revision", "r4", "--reason", "Replaced by a materially different obligation", "--request-id", "criterion-remove", "--json",
+		"remove", root, "--story", storyURN, "--criterion", added.Resource,
+		"--reason", "Replaced by a materially different obligation", "--request-id", "criterion-remove", "--json",
 	}, &output); err != nil {
 		t.Fatalf("criterion remove: %v\n%s", err, output.String())
 	}
@@ -163,7 +161,7 @@ func TestCriterionCommandsSupportStructuredInputEditorAndCompleteResults(t *test
 		t.Fatal(err)
 	}
 	current := document.Stories[0].CurrentRevision
-	if current == nil || current.ID != "r4" || len(current.AcceptanceCriteria) != 1 || current.AcceptanceCriteria[0].ID != "fast" {
+	if current == nil || !strings.HasPrefix(current.ID, "sha256-") || len(current.AcceptanceCriteria) != 1 || current.AcceptanceCriteria[0].ID != "fast" {
 		t.Fatalf("current full revision = %#v", current)
 	}
 }
@@ -176,19 +174,19 @@ func TestStoryStructuredInputAndEditorUseExistingRevisionWriter(t *testing.T) {
 		t.Fatalf("structured story add: %v\n%s", err, output.String())
 	}
 	added := decodeLivingOutput(t, &output)
-	if len(added.Created) != 3 || added.Created[0] != added.Resource || len(added.Paths) != 3 || len(added.CurrentHeads) != 2 {
+	if len(added.Created) != 1 || added.Created[0] != added.Resource || len(added.Paths) != 2 || len(added.CurrentHeads) != 0 {
 		t.Fatalf("complete story add result = %#v", added)
 	}
 	t.Setenv("EDITOR", "true")
 	output.Reset()
 	if err := Story(context.Background(), []string{
-		"revise", root, "--story", added.Resource, "--revision", "r2", "--parent", added.CurrentHeads[0],
+		"revise", root, "--story", added.Resource,
 		"--title", "Checkout clarified", "--edit", "--request-id", "story-edit", "--json",
 	}, &output); err != nil {
 		t.Fatalf("story editor revise: %v\n%s", err, output.String())
 	}
 	revised := decodeLivingOutput(t, &output)
-	if revised.Resource != added.Resource+":revision:r2" || !reflect.DeepEqual(revised.CurrentHeads, []string{revised.Resource}) {
+	if revised.Resource != added.Resource || len(revised.CurrentHeads) != 0 || !strings.HasSuffix(revised.Path, "/current.json") {
 		t.Fatalf("story editor result = %#v", revised)
 	}
 }
@@ -198,7 +196,7 @@ func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
 	root := newLivingSaga(t)
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{
-		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly",
 	}, &output); err != nil {
@@ -215,9 +213,9 @@ func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
 	if result.OK || result.Error == nil || !strings.Contains(result.Error.Message, "unknown field") {
 		t.Fatalf("structured failure = %#v", result)
 	}
-	path := filepath.Join(testFeatureDir(root), "___requirements", "stories", "checkout.story", "revisions", "r2.json")
-	if _, statErr := os.Stat(path); !os.IsNotExist(statErr) {
-		t.Fatalf("failed structured mutation wrote %s: %v", path, statErr)
+	document, loadErr := requirements.Load(root, "atomic")
+	if loadErr != nil || document.FindStory("checkout").CurrentRevision.AcceptanceCriteria[0].ID != "fast" || len(document.FindStory("checkout").CurrentRevision.AcceptanceCriteria) != 1 {
+		t.Fatalf("invalid structured input changed current content: %v", loadErr)
 	}
 }
 
@@ -315,7 +313,7 @@ func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
 	}
 
 	storyArgs := []string{
-		"add", "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout", "--revision", "checkout-r1", "--event", "checkout-proposed",
+		"add", "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "high",
 		"--citation", citation.Resource, "--criterion", "fast=Completes promptly", "--request-id", "story-request",
 		"--json", root,
@@ -329,18 +327,14 @@ func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
 		t.Fatalf("story result = %#v", story)
 	}
 
-	parent, err := requirements.StoryEventURN("atomic", "checkout", "checkout-proposed")
-	if err != nil {
-		t.Fatal(err)
-	}
 	output.Reset()
 	if err := Story(ctx, []string{
-		"set-state", root, "--story", story.Resource, "--event", "checkout-accepted", "--parent", parent,
+		"set-state", root, "--story", story.Resource,
 		"--state", "accepted", "--reason", "Ready", "--request-id", "accept-request", "--json",
 	}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if state := decodeLivingOutput(t, &output); !state.OK || len(state.EventIDs) != 1 || state.EventIDs[0] != "checkout-accepted" {
+	if state := decodeLivingOutput(t, &output); !state.OK || len(state.EventIDs) != 0 || !strings.HasSuffix(state.Path, "/current.json") {
 		t.Fatalf("state result = %#v", state)
 	}
 

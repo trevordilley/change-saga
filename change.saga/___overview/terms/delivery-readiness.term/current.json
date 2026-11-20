@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+        "digest": "sha256:b3e93cd3219925e655485d0e362cf3b3a7401ab96d4fbc570464a68ebe8c4ec7",
+        "end": 304,
+        "path": "internal/livingapp/compose.go",
+        "start": 269
+      },
+      {
+        "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+        "digest": "sha256:b68c33f35ae658c0682870f11a6f441c0604c1e63beb8040235090dbb8388cec",
+        "end": 297,
+        "path": "internal/livingapp/compose.go",
+        "start": 292
+      },
+      {
+        "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+        "digest": "sha256:c68d9dd4f91dfab97aaf46662ea04543b39c847492767f777d16bba8d12172b9",
+        "end": 69,
+        "path": "internal/readiness/readiness.go",
+        "start": 50
+      },
+      {
+        "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+        "digest": "sha256:3b8d041d4bfd6ba1efecb37c259a888a5077795ba00a216d2b63a3415cd7edfd",
+        "end": 100,
+        "path": "internal/readiness/readiness.go",
+        "start": 84
+      }
+    ],
+    "definition": "A per-criterion projection that keeps requirement, plan and delivery coverage separate. Plan coverage counts a criterion whose story a Task names. Delivery requires current claim or verified verification evidence, and no blocker on its delivery path. A Task's done state, Quality definitions, legacy test runs and execution artifacts do not prove delivery; readiness is not an approval verdict.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "delivery readiness",
+    "stories": [
+      "urn:change-saga:change-saga:story:criterion-quality-readiness"
+    ],
+    "term": "urn:change-saga:change-saga:term:delivery-readiness"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:delivery-readiness"
+  }
+}

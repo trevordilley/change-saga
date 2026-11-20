@@ -1,17 +1,17 @@
 {
+  "description": "The endpoint loads the saved definition and draws its directed Component diagram with explicit noncurrent status. It reads the record store itself; the drawer and query inventory are independent readers, not a request chain.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:system:technical-documentation",
-    "revision": "urn:change-saga:change-saga:system:technical-documentation:revision:r4"
+    "revision": "sha256:c5554f3a80277c25cd45f9fc7ff93c95307330ec0f5c29316ed9d5448702e761",
+    "target": "urn:change-saga:change-saga:system:technical-documentation"
   },
-  "version": 4,
   "id": "fetch",
-  "slide": "technical-inventory-navigation",
-  "rank": 10,
   "kind": "node",
   "label": "Saved explanation",
-  "description": "The endpoint loads the saved definition and draws its directed Component diagram with explicit noncurrent status. It reads the record store itself; the drawer and query inventory are independent readers, not a request chain.",
+  "rank": 10,
   "selector": {
-    "type": "element",
-    "element_id": "fetch"
-  }
+    "element_id": "fetch",
+    "type": "element"
+  },
+  "slide": "technical-inventory-navigation",
+  "version": 4
 }

@@ -20,7 +20,7 @@ func prototypeAdd(ctx context.Context, args []string, out io.Writer) error {
 	name := "prototype add"
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable prototype id")
-	revision := flags.String("revision", "", "stable initial revision id")
+	revision := new(string)
 	title := flags.String("title", "", "prototype title")
 	entry := flags.String("path", "", "the prototype's .html entrypoint")
 	rootDir := flags.String("root", "", "directory served beside the entrypoint")
@@ -74,10 +74,9 @@ func prototypeUpdate(ctx context.Context, args []string, out io.Writer) error {
 	name := "prototype update"
 	flags := commandFlags(name, commandUsage[name], out)
 	prototype := flags.String("prototype", "", "canonical prototype URN")
-	revision := flags.String("revision", "", "stable new revision id")
 	commit := flags.String("commit", "", "commit to re-pin at; defaults to HEAD")
-	title := flags.String("title", "", "title; defaults to the current revision's")
-	state := flags.String("state", "", "draft, ready, or retired; defaults to the current revision's")
+	title := flags.String("title", "", "title; defaults to the current definition's")
+	state := flags.String("state", "", "draft, ready, or retired; defaults to the current definition's")
 	repo := flags.String("repo", "", "repository checkout; defaults to the one containing the Saga")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
@@ -102,7 +101,7 @@ func prototypeUpdate(ctx context.Context, args []string, out io.Writer) error {
 	}
 	current := found.CurrentRevision
 	if current == nil {
-		return fmt.Errorf("prototype %q has more than one current revision; reconcile it with prototype revise", id)
+		return fmt.Errorf("prototype %q has competing legacy content; explicitly select a complete current definition before editing", id)
 	}
 	if current.Source.Kind != prototypes.SourceRepo {
 		return fmt.Errorf("prototype %q is not a repository prototype; use prototype revise", id)
@@ -115,13 +114,9 @@ func prototypeUpdate(ctx context.Context, args []string, out io.Writer) error {
 	if source.Object == current.Source.Object {
 		return fmt.Errorf("prototype %q already matches %s at %s; nothing changed to record", id, source.RepoPackage(), source.Commit[:12])
 	}
-	if *revision == "" {
-		*revision = nextRevisionID(*found)
-	}
-	parent, _ := prototypes.RevisionURN(document.SagaID, id, current.ID)
 	input := prototypes.ReviseInput{
-		Prototype: *prototype, ID: *revision, Parents: []string{parent},
-		Title: firstNonEmpty(*title, current.Title), State: prototypes.State(firstNonEmpty(*state, string(current.State))),
+		Prototype: *prototype,
+		Title:     firstNonEmpty(*title, current.Title), State: prototypes.State(firstNonEmpty(*state, string(current.State))),
 		Source: source, RequestID: *requestID,
 	}
 	result, err := prototypes.Revise(root, document.SagaID, input)
@@ -129,16 +124,6 @@ func prototypeUpdate(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	return writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, *jsonOutput)
-}
-
-// nextRevisionID is the first rN after the prototype's revision count that
-// no revision uses yet.
-func nextRevisionID(prototype prototypes.Prototype) string {
-	for n := len(prototype.Revisions) + 1; ; n++ {
-		if id := fmt.Sprintf("r%d", n); prototype.Revision(id) == nil {
-			return id
-		}
-	}
 }
 
 // repoPrototypePaths turns the authored entrypoint and root into

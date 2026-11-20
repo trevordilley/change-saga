@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "approach",
+        "overview": "The essay explains decisions and tradeoffs. Supporting pages hold detail while retaining a link back to the overall approach.",
+        "statement": "The Technical design landing page renders an authored approach essay with links to the ERD, Infrastructure and Data flows whiteboards.",
+        "title": "Read the approach"
+      },
+      {
+        "id": "relationships",
+        "overview": "A many-to-one association must put the many marker at the owner endpoint and the one marker at its destination when that is the recorded relationship. Unknown cardinality must not be presented as known.",
+        "statement": "The ERD can show associations with crow's-foot endpoints that distinguish one, many and optional participation.",
+        "title": "Read relationship multiplicity"
+      },
+      {
+        "id": "platforms",
+        "overview": "The repository's current board describes the local binary, browser, Git checkout and filesystem. Deferred hosting is not presented as deployed infrastructure.",
+        "statement": "The Infrastructure whiteboard can show the application's actual runtime platforms, processes and resources.",
+        "title": "Locate actual resources"
+      },
+      {
+        "id": "flows",
+        "overview": "Authoring, reading and review actions have different persistence and failure boundaries; a list of modules alone does not communicate these flows.",
+        "statement": "The Data flows whiteboard can show directed, labeled paths through the key services, transformations and stores.",
+        "title": "Follow data movement"
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:reading-design-implementation"
+    ],
+    "overview": "A reader should find the general technical approach in one essay, with supporting pages for details. The essay connects the record model, actual platform/resource layout and movement of data through key services. These views share a coherent explanation; a catalog of Components and Systems is not a replacement.\n\nThis story records the design shape requested for Change Saga. Existing legacy inventory remains inspectable so historical pins do not break. The current local-runtime implementation is the basis of this Saga's boards.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect, I can read one approach essay and inspect an ERD, Infrastructure and Data flows whiteboard so I can understand how the application works before changing it.",
+    "story": "urn:change-saga:change-saga:story:read-application-technical-design",
+    "title": "Read an application through its technical design"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:read-application-technical-design"
+  }
+}

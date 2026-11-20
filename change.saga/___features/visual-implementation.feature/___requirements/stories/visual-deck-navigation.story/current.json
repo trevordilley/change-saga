@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "opens-first-slide",
+        "statement": "Opening a feature Implementation section displays the first slide of its implementation deck."
+      },
+      {
+        "id": "bounded-navigation",
+        "statement": "Selecting a slide thumbnail or Previous or Next displays that slide, updates the slide position and URL anchor, and does not step into another deck."
+      },
+      {
+        "id": "presentation",
+        "statement": "Entering presentation mode displays the active slide without documentation chrome or Item hotspots, and exiting returns to the same active slide."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer reviewing technical work, I can move through a feature implementation deck and present the active slide so I can follow the explanation without losing my place.",
+    "story": "urn:change-saga:change-saga:story:visual-deck-navigation",
+    "title": "Navigate and present an implementation deck"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:visual-deck-navigation"
+  }
+}

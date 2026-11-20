@@ -265,7 +265,7 @@ func (b *builder) storyOptions(gap *storyGap, id, story string, exists bool) []O
 		}
 	}
 	title := firstNonEmptyString(gap.places[0].Title, gap.places[0].Target)
-	capture := append([]grammar.Invocation{b.invoke("story add", grammar.V("id", id), grammar.V("revision", "r1"), grammar.V("event", "proposed"),
+	capture := append([]grammar.Invocation{b.invoke("story add", grammar.V("id", id),
 		grammar.V("title", title), grammar.V("statement", ""))}, relate(story)...)
 	return []Option{
 		option("capture it", "a proposed Product story record, and an addresses relation from each place that documents the code it explains", capture...),
@@ -356,8 +356,7 @@ func (b *builder) personaGrowth() {
 // the complete snapshot it writes, though a single-parent revise would inherit
 // them anyway. An empty persona is an input the author supplies.
 func (b *builder) reviseStory(row livingapp.StoryStatus, personas []string) grammar.Invocation {
-	values := []grammar.Value{grammar.V("story", row.Story), grammar.V("revision", "")}
-	values = append(values, parents(row.RevisionHeads)...)
+	values := []grammar.Value{grammar.V("story", row.Story)}
 	values = append(values, grammar.V("title", row.Title), grammar.V("statement", row.Statement))
 	if row.Priority != "" {
 		values = append(values, grammar.V("priority", row.Priority))

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Only architecturally meaningful fields and keys need appear; omission alone is not labeled missing implementation.",
+    "preconditions": [
+      "Disposable format-2 Saga using the PDF inventory fixture: implemented PDF report held by Record store, proposed JSON PDF job held by Job queue, report-to-job production relationship, application ERD, and pdf-jobs overlay; the reporting ERD also includes a job association with owner 0..many and destination unknown.",
+      "Reviewer has the intended application architecture and source model available; the ERD intentionally omits low-level payload properties and database columns."
+    ],
+    "steps": [
+      {
+        "action": "Read the overview and inspect the author-selected entities, layout and relationship explanations.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview"
+        ],
+        "expected_result": "The diagram communicates the application shape and permits deliberate omissions; it is not an exhaustive schema dump.",
+        "id": "composition"
+      },
+      {
+        "action": "Compare the declared field list with source and inspect the report for omitted fields.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail"
+        ],
+        "expected_result": "Only architecturally meaningful fields and keys need appear; omission alone is not labeled missing implementation.",
+        "id": "omissions"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-authored-composition",
+    "title": "Review the ERD as an authored architectural explanation"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-authored-composition"
+  }
+}

@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-item-exact-code-pin-ae3a47047313",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-item-exact-code-pin",
-  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
-  "scope": "self",
-  "rationale": "Steps cover, read define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-item-exact-code-pin:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:reading-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:24.257301Z",
-  "request_id": "test-review-item-exact-code-pin-ae3a47047313"
+  "from": "urn:change-saga:change-saga:test-case:review-item-exact-code-pin",
+  "from_revision": "sha256:9b5a9b22197a29b1c5cc8ad7cbea1044fd115bc3723916af893f5d19985d6f1b",
+  "id": "test-review-item-exact-code-pin-ae3a47047313",
+  "rationale": "Steps cover, read define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-item-exact-code-pin-ae3a47047313",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "type": "verifies",
+  "version": 5
 }

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The persisted source repository equals the portable canonical identity.",
+    "preconditions": [
+      "Use a Git checkout whose origin is https://user:secret@EXAMPLE.TEST/acme/app.git/."
+    ],
+    "steps": [
+      {
+        "action": "Discover the source identity used by initialization.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-or-companion:criterion:repository-identity"
+        ],
+        "expected_result": "It becomes https://example.test/acme/app.git with no username or credential.",
+        "id": "canonical"
+      },
+      {
+        "action": "Initialize a new Saga and inspect its source identity through public query.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-or-companion:criterion:repository-identity"
+        ],
+        "expected_result": "The persisted source repository equals the portable canonical identity.",
+        "id": "record"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-canonical-repository",
+    "title": "Initialize portable source identity without transport credentials"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-canonical-repository"
+  }
+}

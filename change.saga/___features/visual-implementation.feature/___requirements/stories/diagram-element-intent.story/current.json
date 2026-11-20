@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "item-only",
+        "statement": "Creating a visual explains or addresses relation from a deck or slide is rejected without writing a relation, while the same relation from a slide Item is accepted."
+      },
+      {
+        "id": "separate-controls",
+        "statement": "When an Item has both a story link and code evidence, the reviewer exposes separate Story and Code controls, and each opens only its corresponding drawer content."
+      },
+      {
+        "id": "story-details",
+        "statement": "The Item Story drawer shows the linked story, criterion when targeted, rationale, and current, stale, or invalid currency."
+      },
+      {
+        "id": "summary-scope",
+        "statement": "The slide story summary counts each story once from active exact-Item links; legacy slide or deck links are excluded from the count and shown as needing element assignment."
+      },
+      {
+        "id": "summary-preview",
+        "statement": "Hovering or focusing the slide story summary highlights only Items with exact story links, and removing hover or focus clears the preview."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect, I can bind a specific diagram element to the story or criterion it explains and inspect that intent separately from its code evidence so reviewers do not mistake a whole slide for implementation proof.",
+    "story": "urn:change-saga:change-saga:story:diagram-element-intent",
+    "title": "Bind a diagram element to product intent"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:diagram-element-intent"
+  }
+}

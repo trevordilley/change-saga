@@ -68,7 +68,7 @@ grouping for its directory and sidebar: None, Theme (when themes exist),
 Persona, Label, or Milestone. Theme is the default when available. Each section
 remembers its grouping independently, including on feature deep links. Labels and
 milestones are shared entities referenced by features; see
-[feature organization](feature-story-reading.md#roadmap).
+[feature organization](feature-story-reading.md#roadmap-and-built-features).
 Persona membership comes from current story revisions, including proposed
 stories, deduplicated per feature and persona. Every grouped view keeps
 ungrouped features visible. Choosing a grouping reloads the page and saves the

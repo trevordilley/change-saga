@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:175efc861a44572f32ddae77c6f38dc30e3afe657c095c929f57fec52ef52b36",
+      "end": 317,
+      "path": "internal/quality/mutation_test.go",
+      "start": 282
+    }
+  ],
+  "created_at": "2026-10-16T23:23:49Z",
   "id": "check-guarded-run-assertions",
-  "test_case": "urn:change-saga:change-saga:test-case:core-legacy-run-head-guards",
-  "test_revision": "urn:change-saga:change-saga:test-case:core-legacy-run-head-guards:revision:r1",
+  "request_id": "saga-evidence-core-legacy-run-head-guards-check-guarded-run-assertions",
   "role": "test_implementation",
   "steps": [
     "check-guarded-run"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/quality/mutation_test.go",
-      "start": 282,
-      "end": 317,
-      "digest": "sha256:175efc861a44572f32ddae77c6f38dc30e3afe657c095c929f57fec52ef52b36"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:49Z",
-  "request_id": "saga-evidence-core-legacy-run-head-guards-check-guarded-run-assertions"
+  "test_case": "urn:change-saga:change-saga:test-case:core-legacy-run-head-guards",
+  "test_revision": "sha256:9e7a97a22f2ecb1e6461e63848a28c61df322abe3efb4f2a5d78971378039e6c",
+  "verifications": [],
+  "version": 5
 }

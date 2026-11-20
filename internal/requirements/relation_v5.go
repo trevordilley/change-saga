@@ -1,6 +1,7 @@
 package requirements
 
 import (
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 )
@@ -10,7 +11,7 @@ import (
 // changes how a v3 record is read: validateRelation dispatches on version.
 func validateV5Relation(value Relation, sagaID, expectedID string) error {
 	var problems validationErrors
-	if value.Schema != V5RelationSchemaURL {
+	if value.Schema != V5RelationSchemaURL && value.Schema != currentrecord.RelationSchema {
 		problems.add("$schema must be %q", V5RelationSchemaURL)
 	}
 	if value.Version != V5RelationVersion {
@@ -119,6 +120,9 @@ func validateV5EndpointPins(problems *validationErrors, side string, endpoint en
 // pinsEndpointRevision reports whether revision is a revision URN of the
 // endpoint's own definition (a criterion is pinned by its story's revision).
 func pinsEndpointRevision(endpoint endpoint, revision string) bool {
+	if contentDigestPattern.MatchString(revision) {
+		return true
+	}
 	if endpoint.Kind == endpointDeprecation {
 		return parseMemberURN(endpoint.SagaID, "deprecation", endpoint.ID, "revision", revision) != ""
 	}

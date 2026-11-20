@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each owner names the Item, store-read selection and two-hop path; authored code arrays remain empty.",
+    "preconditions": [
+      "Use inherited_test fixture: 100-line store.go, containing evidence 14-96, selected range 14-40, System→store path, plus an undeclared missing-Component path."
+    ],
+    "steps": [
+      {
+        "action": "Resolve the valid and undeclared paths and evaluate inherited coverage.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+        ],
+        "expected_result": "Valid selection attaches, invalid path remains unresolved; 27 of 101 change atoms are covered and the other 74 stay uncovered.",
+        "id": "paths"
+      },
+      {
+        "action": "Inspect each inherited owner and the original Item/landmark code arrays.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path"
+        ],
+        "expected_result": "Each owner names the Item, store-read selection and two-hop path; authored code arrays remain empty.",
+        "id": "owners"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-inheritance-provenance",
+    "title": "Expose inherited ownership and unresolved selection paths"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-inheritance-provenance"
+  }
+}

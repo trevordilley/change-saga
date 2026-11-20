@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Share labels without copying names or losing memberships.",
+    "preconditions": [
+      "A disposable Saga has two features and labels DevOps and Reliability."
+    ],
+    "steps": [
+      {
+        "action": "Assign DevOps to both features and Reliability additionally to one.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:shared-definition"
+        ],
+        "expected_result": "Both share one DevOps identity, and the second assignment does not copy the label name into the plan.",
+        "id": "check-shared-definition"
+      },
+      {
+        "action": "Rename DevOps to Platform operations and inspect the feature plans and pages.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:rename-once"
+        ],
+        "expected_result": "Every assigned feature displays the new name without membership changes.",
+        "id": "check-rename-once"
+      },
+      {
+        "action": "Change only priority, inspect labels, then explicitly clear labels.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:preserve-or-clear"
+        ],
+        "expected_result": "Omission preserves the existing label assignment; explicit clearing removes all assignments.",
+        "id": "check-preserve-or-clear"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-shared-labels",
+    "title": "Share labels without copying names or losing memberships"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-shared-labels"
+  }
+}

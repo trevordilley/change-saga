@@ -62,7 +62,7 @@ defaults; use the IDs actually assigned to these roles.
 ## Reading whiteboards
 
 Use `change-saga query whiteboards --saga PATH` for snapshot-bound, paginated
-board discovery, including titles, current revisions, archival, and role
+board discovery, including titles and current content, archival, and role
 assignments. Page to completion with the returned cursor. `data.snapshot` is
 the presentation metadata snapshot used for authoring concurrency; the query
 envelope snapshot also includes current board rows. These snapshots have
@@ -70,13 +70,13 @@ different purposes. `whiteboard list --json` is the unpaginated authoring view.
 
 Use `change-saga whiteboard describe --id ID --format json PATH` for a named
 technical-design document. Add `--focus INSTANCE_PATH` to inspect a returned
-section or element path, and `--revision REVISION` to retain exact history.
+section or element path, and use `query history` for Git-backed historical inspection.
 Use `change-saga whiteboard get --id ID PATH` for the complete shared diagram
 source and `change-saga whiteboard check --id ID PATH` for validation. These
 are dedicated document commands, not paginated query-envelope responses.
 Document identity is independent of subject; the ERD role selects an existing
 document, defaulting to `data-model` before explicit metadata is authored.
-Source pins identify exact entity/relationship revisions;
+Source pins identify exact entity/relationship content digests;
 repeated appearances have distinct instance paths. Existing ERD inventory
 records remain readable through `query inventory`, but are optional sources,
 not a required document per whiteboard section.
@@ -133,7 +133,7 @@ operation.
 
 There is no guarded name-only rename command yet. Use the existing explicit
 persona or term revision operation only when the task authorizes a deliberate
-revision and supplies the required parents and revision identity. Never emulate
+edit and preserves its stable identity and evidence. Never emulate
 a rename by editing files, changing a URN, rewriting prose/SVG, or repinning or
 approving dependencies.
 
@@ -159,8 +159,8 @@ covered lines are not proof of a correct explanation.
 ## Operations
 
 <!-- query-operations:begin -->
-- `deprecations`: authored deprecation assertions, exact content and code scope, target health, optional story relations and immutable history; absence is no recorded deprecation, never proof of non-deprecation.
-  `change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--history] [--cursor CURSOR] [--limit N]`
+- `deprecations`: authored deprecation assertions, exact content and code scope, target health, optional story relations and current state; absence is no recorded deprecation, never proof of non-deprecation.
+  `change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--cursor CURSOR] [--limit N]`
 - `schema`: the response paths and pagination contract for a query operation; no saga is required.
   `change-saga query schema <operation>`
 - `overview`: compact saga directory, source comparison and coverage summary; --deck URN includes only that deck's full overview report.
@@ -187,7 +187,7 @@ covered lines are not proof of a correct explanation.
   `change-saga query verifications --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `context`: a compact, bounded feature-owned index with one-story expansion for exact intent, provenance, visual Items, code links, terms, neighbors, gaps, and conflicts.
   `change-saga query context --saga PATH --feature ID|URN [--expand STORY-ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
-- `personas`: current persona definitions and lifecycle heads, selected exactly by stable ID or canonical URN.
+- `personas`: current persona definitions and state, selected exactly by stable ID or canonical URN.
   `change-saga query personas --saga PATH [--persona ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `feature-themes`: optional product themes with authored Markdown overview, feature membership, and rationale decks in the current Saga.
   `change-saga query feature-themes --saga PATH [--theme ID|URN] [--cursor TOKEN] [--limit N]`
@@ -199,10 +199,8 @@ covered lines are not proof of a correct explanation.
   `change-saga query roadmap --saga PATH [--cursor TOKEN] [--limit N]`
 - `persona-references`: direct explicit incoming and outgoing persona references with provenance and declared coverage.
   `change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
-- `requirements`: current requirement definitions and lifecycle heads without fabricating winners for conflicts.
+- `requirements`: current requirement definitions and state without fabricating winners for conflicts.
   `change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
-- `requirement-history`: append-only revision and lifecycle history in deterministic graph order.
-  `change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `citations`: immutable requirement provenance records.
   `change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `relations`: typed current, stale, and superseded living-Saga relations.
@@ -211,8 +209,8 @@ covered lines are not proof of a correct explanation.
   `change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `quality`: verification definitions, criterion-to-step mappings, and implementation evidence; no run results.
   `change-saga query quality --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]`
-- `quality-history`: immutable case history including deprecated legacy_runs; inert metadata only.
-  `change-saga query quality-history --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]`
+- `quality-runs`: recorded executions including deprecated legacy_runs; inert metadata only.
+  `change-saga query quality-runs --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]`
 - `readiness`: independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness.
   `change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `audit`: a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts.
@@ -223,12 +221,12 @@ covered lines are not proof of a correct explanation.
   `change-saga query history --saga PATH --node URN`
 - `review-threads`: one review's discussion thread by thread: every comment on its slides, Items, and code lines, with each code-line thread's anchor and where it shows in the review's current range (current, moved, or outdated since its lines changed).
   `change-saga query review-threads --saga PATH --review ID [--path PATH] [--state open|resolved] [--lines] [--repo PATH]`
-- `whiteboards`: Whiteboard identities, titles, revisions, lifecycle and technical design role assignments without rendering source.
+- `whiteboards`: Whiteboard identities, titles, current content and state and technical design role assignments without rendering source.
   `change-saga query whiteboards --saga PATH [--cursor TOKEN] [--limit N]`
-- `inventory`: Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page.
-  `change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]`
+- `inventory`: Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and current definitions; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page.
+  `change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]`
 - `inventory-uses`: declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness.
-  `change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member|data_holder|relationship_destination|erd_directory|erd_overlay] [--cursor TOKEN] [--limit N] [--repo PATH]`
+  `change-saga query inventory-uses --saga PATH --target URN [--content-digest DIGEST] [--depth N] [--role implementation_item|review_item|system_member|data_holder|relationship_destination|erd_directory|erd_overlay] [--cursor TOKEN] [--limit N] [--repo PATH]`
 - `inventory-coverage`: which tracked code at one source revision the current technical definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage.
   `change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]`
 - `inventory-selections`: saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage.
@@ -243,13 +241,13 @@ covered lines are not proof of a correct explanation.
   `change-saga query plan --saga PATH --plan ID|URN`
 - `task`: one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it.
   `change-saga query task --saga PATH --task ID|URN [--plan ID|URN]`
-- `prototype`: one prototype's HTML as it was recorded, by byte range, with its revisions, files, and annotations; a prototype hosted elsewhere returns its URLs.
-  `change-saga query prototype --saga PATH --prototype ID|URN [--revision ID] [--file PATH] [--offset N] [--limit N] [--repo PATH]`
+- `prototype`: one prototype's HTML as it was recorded, by byte range, with its current source, files, and annotations; a prototype hosted elsewhere returns its URLs.
+  `change-saga query prototype --saga PATH --prototype ID|URN [--file PATH] [--offset N] [--limit N] [--repo PATH]`
 <!-- query-operations:end -->
 
 Feature `query context` includes an optional `feature.overview` descriptor
 (target, path, media_type). Read it with `query fragment --target URN`; use
-`query history --node URN` for Git history. Story `current_revision.overview`
-in `query requirements`, expanded context, and `revision.overview` in
-`query requirement-history` is optional authored Markdown, not a generated
-summary. Missing prose remains missing; never derive personas from old titles.
+`query history --node URN` for Git history. Story `content.overview`
+in `query requirements` and expanded context is optional authored Markdown,
+not a generated summary. Earlier values come from Git commits. Missing prose
+remains missing; never derive personas from old titles.

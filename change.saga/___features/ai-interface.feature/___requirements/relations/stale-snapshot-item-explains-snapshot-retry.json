@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "stale-snapshot-item-explains-snapshot-retry",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:39:25.81593Z",
   "from": "urn:change-saga:change-saga:slide:cursor-state:item:stale-snapshot",
-  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:snapshot-retry",
-  "scope": "self",
+  "id": "stale-snapshot-item-explains-snapshot-retry",
   "rationale": "The stale-snapshot Item shows that a changed Saga produces retryable stale_snapshot instead of mixed-page data.",
-  "to_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:39:25.81593Z"
+  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:snapshot-retry",
+  "to_revision": "sha256:563647473b06d2abf0d329a897d246df0285a5b3b99ffa2bf35da83969fd02a8",
+  "type": "explains",
+  "version": 5
 }

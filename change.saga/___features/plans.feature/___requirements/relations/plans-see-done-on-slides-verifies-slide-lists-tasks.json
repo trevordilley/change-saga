@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-see-done-on-slides-verifies-slide-lists-tasks",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:19:02.526139Z",
   "from": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides",
-  "to": "urn:change-saga:change-saga:story:see-done-on-slides:criterion:slide-lists-tasks",
-  "scope": "self",
+  "from_revision": "sha256:d31c759a7c7b8c1f58305c3658688b45c9c909a64444cf7377f47079e5042ae0",
+  "id": "plans-see-done-on-slides-verifies-slide-lists-tasks",
   "rationale": "Step slide-lists-tasks checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:see-done-on-slides:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:19:02.526139Z"
+  "to": "urn:change-saga:change-saga:story:see-done-on-slides:criterion:slide-lists-tasks",
+  "to_revision": "sha256:a3d3f9f4f0d7d230987d30dedfbf99d52d0deb36f29c4140919433889c985d50",
+  "type": "verifies",
+  "version": 5
 }

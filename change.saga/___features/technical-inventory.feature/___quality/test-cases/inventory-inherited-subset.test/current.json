@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Only 4-5 and 9-10 are inherited; surrounding lines 3,8,11 remain uncovered.",
+    "preconditions": [
+      "Format-2 PDF fixture has pipeline Item selecting store get evidence lines 9-10 from 8-11 and report Item selecting holder put lines 4-5 from 3-6; no duplicate independent code mapping."
+    ],
+    "steps": [
+      {
+        "action": "Query inventory-selections and inspect both attached resolutions.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset"
+        ],
+        "expected_result": "Both selections are eligible and attached to their originating Items.",
+        "id": "selection"
+      },
+      {
+        "action": "Query changed-code gaps against the pre-Saga baseline.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+        ],
+        "expected_result": "Only 4-5 and 9-10 are inherited; surrounding lines 3,8,11 remain uncovered.",
+        "id": "coverage"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-inherited-subset",
+    "title": "Credit only selected code through declared inventory paths"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-inherited-subset"
+  }
+}

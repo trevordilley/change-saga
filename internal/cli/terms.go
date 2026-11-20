@@ -115,15 +115,15 @@ func termAdd(ctx context.Context, args []string, out io.Writer) error {
 	name := "term add"
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable term id")
-	revision := flags.String("revision", "r1", "initial revision id")
-	event := flags.String("event", "active", "initial active-event id")
+	revision := new(string)
+	event := new(string)
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	content := registerTermDefinition(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *id, *revision, *event, *content.name, *content.definition); err != nil {
+	if err := requireLivingArgs(flags, *id, *content.name, *content.definition); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -148,16 +148,16 @@ func termRevise(ctx context.Context, args []string, out io.Writer) error {
 	name := "term revise"
 	flags := commandFlags(name, commandUsage[name], out)
 	term := flags.String("term", "", "canonical term URN")
-	revision := flags.String("revision", "", "new revision id")
+	revision := new(string)
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents stringList
-	flags.Var(&parents, "parent", "current revision head URN; repeatable")
+
 	content := registerTermDefinition(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *term, *revision, *content.name, *content.definition); err != nil {
+	if err := requireLivingArgs(flags, *term, *content.name, *content.definition); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -182,17 +182,17 @@ func termSetState(_ context.Context, args []string, out io.Writer) error {
 	name := "term set-state"
 	flags := commandFlags(name, commandUsage[name], out)
 	term := flags.String("term", "", "canonical term URN")
-	event := flags.String("event", "", "new lifecycle event id")
+	event := new(string)
 	state := flags.String("state", "", "active or retired")
 	reason := flags.String("reason", "", "why the lifecycle changed")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents stringList
-	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *term, *event, *state); err != nil {
+	if err := requireLivingArgs(flags, *term, *state); err != nil {
 		return err
 	}
 	root := flags.Arg(0)

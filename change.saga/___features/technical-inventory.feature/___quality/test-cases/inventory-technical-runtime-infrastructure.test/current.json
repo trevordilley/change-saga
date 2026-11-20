@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Actual resources are distinguished from proposals; deferred hosting is not presented as deployed infrastructure.",
+    "preconditions": [
+      "Use the application's authored Infrastructure board and the source revision it describes; reviewer can inspect the local binary/server, browser, Git checkout and filesystem implementation."
+    ],
+    "steps": [
+      {
+        "action": "Open Infrastructure and follow its platform, process, resource and connection labels.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:platforms"
+        ],
+        "expected_result": "The board identifies the local binary, browser, checkout and filesystem as the current runtime.",
+        "id": "read"
+      },
+      {
+        "action": "Compare each deployed-runtime assertion to source and inspect deferred hosting labels.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:platforms"
+        ],
+        "expected_result": "Actual resources are distinguished from proposals; deferred hosting is not presented as deployed infrastructure.",
+        "id": "verify"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-runtime-infrastructure",
+    "title": "Read the actual local runtime infrastructure"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-runtime-infrastructure"
+  }
+}

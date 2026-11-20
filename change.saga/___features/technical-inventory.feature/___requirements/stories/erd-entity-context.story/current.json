@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "diagram-and-directory",
+        "statement": "The ERD root has an expandable directory of its data entities; selecting an entity in either the diagram or directory opens the same canonical entity definition."
+      },
+      {
+        "id": "structure-and-resource",
+        "statement": "Entity details expose its described structure, purpose, and storage-resource context, distinguishing the data entity from the queue, database, or other resource holding it."
+      },
+      {
+        "id": "relationship-navigation",
+        "statement": "Entity details identify related entities and explain their relationships, including logical flow from a queued payload to a persisted record, with navigation to those definitions."
+      },
+      {
+        "id": "code-and-usages",
+        "statement": "Entity details expose exact code references with currency and links to the feature implementation decks, slides, and Items that use the entity."
+      },
+      {
+        "id": "progressive-detail",
+        "statement": "From the architectural ERD, a reader can follow a canonical entity to implementation slides explaining its feature-specific behavior and deeper code detail without creating a separate definition of the same entity."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924",
+      "urn:change-saga:change-saga:citation:authored-erd-design-20260924"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect",
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As an Architect or Developer, I can easily find the specific details of a data entity in the ERD so I understand its structure, purpose, and role in the wider application.",
+    "story": "urn:change-saga:change-saga:story:erd-entity-context",
+    "title": "Inspect a data entity in application context"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:erd-entity-context"
+  }
+}

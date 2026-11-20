@@ -13,10 +13,11 @@ import (
 // next action prints, so a guard on the defaulting path alone is no guard.
 func TestRepinRefusesThePinsItAlreadyConfirms(t *testing.T) {
 	root := newV5Saga(t)
-	if _, err := AddRelation(root, "test", verifiesInput()); err != nil {
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
+	if _, err := AddRelation(root, "test", verifiesInput(v5StoryR1)); err != nil {
 		t.Fatal(err)
 	}
-	storyR2 := "urn:change-saga:test:story:checkout:revision:r2"
+
 	if _, err := ReviseStory(root, "test", ReviseStoryInput{Personas: testPersonas,
 		Story: v5Story, ID: "r2", Parents: []string{v5StoryR1}, Title: "Checkout", Statement: "As a buyer, I can check out",
 		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes in two seconds"}},
@@ -24,6 +25,7 @@ func TestRepinRefusesThePinsItAlreadyConfirms(t *testing.T) {
 	}); err != nil {
 		t.Fatal(err)
 	}
+	storyR2 := currentFixtureStoryPin(t, root, v5Story)
 	advance := func(id, rationale string) error {
 		_, err := RepinRelation(root, "test", RepinRelationInput{
 			Relation: v5RelationURN, ID: id, ToRevision: storyR2, Rationale: rationale, CreatedAt: testTime.Add(2 * time.Minute)})
@@ -47,7 +49,7 @@ func TestRepinRefusesThePinsItAlreadyConfirms(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if repins := document.Relations[0].Repins; len(repins) != 1 || repins[0].ID != "r2" {
-		t.Fatalf("only the confirmation that moved a pin was written: %#v", repins)
+	if relation := document.Relations[0]; len(relation.Repins) != 0 || relation.Confirmed().ToRevision != storyR2 {
+		t.Fatalf("current confirmation was not stored in place: %#v", relation)
 	}
 }

@@ -1,15 +1,15 @@
 package grammar
 
-// Whiteboards use the shared diagram source but own complete document revisions.
+// Whiteboards use the shared diagram source but own editable current documents.
 var whiteboardCommands = []Command{
 	{
 		Name: "whiteboard publish", Status: StatusImplemented, Mutates: true,
-		Writes:  []string{"whiteboard-revision"},
-		Usage:   "change-saga whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] [--repo PATH] --from FILE|- <saga>",
-		Summary: "publish a complete immutable technical-design whiteboard with exact source pins; updates require the observed current parent",
+		Writes:  []string{"whiteboard"},
+		Usage:   "change-saga whiteboard publish --id ID [--name TITLE] [--repo PATH] --from FILE|- <saga>",
+		Summary: "publish the complete current technical-design whiteboard with exact source pins; Git records its history",
 		Flags: []Flag{
-			required("id", "ID", "whiteboard document identity"), required("revision", "ID", "new immutable board revision"),
-			optional("parent", "ID", "current board revision, required for updates"), optional("name", "TITLE", "authored board title"),
+			required("id", "ID", "whiteboard document identity"),
+			optional("name", "TITLE", "authored board title"),
 			required("from", "FILE|-", "complete shared diagram.Document JSON; evidence accepts a commit-ish and omitted digest, pinned on publish"),
 			optional("repo", "PATH", "source checkout when separate"),
 		},
@@ -17,30 +17,30 @@ var whiteboardCommands = []Command{
 	},
 	{
 		Name: "whiteboard get", Status: StatusImplemented,
-		Usage:   "change-saga whiteboard get --id ID [--revision ID] [--focus PATH] <saga>",
+		Usage:   "change-saga whiteboard get --id ID [--focus PATH] <saga>",
 		Summary: "return complete whiteboard diagram source or describe one focused appearance with source pins and connection context",
 		Flags: []Flag{
-			required("id", "ID", "whiteboard document identity"), optional("revision", "ID", "exact historical board revision; defaults to current"),
+			required("id", "ID", "whiteboard document identity"),
 			optional("focus", "PATH", "element instance path"),
 		},
 		Positionals: sagaOnly,
 	},
 	{
 		Name: "whiteboard describe", Status: StatusImplemented,
-		Usage:   "change-saga whiteboard describe --id ID [--revision ID] [--focus PATH] [--format text|json] <saga>",
+		Usage:   "change-saga whiteboard describe --id ID [--focus PATH] [--format text|json] <saga>",
 		Summary: "describe a whiteboard or focused appearance with transformed geometry, source pins and connection context",
 		Flags: []Flag{
-			required("id", "ID", "whiteboard document identity"), optional("revision", "ID", "exact historical board revision; defaults to current"),
+			required("id", "ID", "whiteboard document identity"),
 			optional("focus", "PATH", "element instance path"), optional("format", "text|json", "output format; defaults to text"),
 		},
 		Positionals: sagaOnly,
 	},
 	{
 		Name: "whiteboard check", Status: StatusImplemented,
-		Usage:   "change-saga whiteboard check --id ID [--revision ID] [--focus PATH] [--json] <saga>",
-		Summary: "validate complete whiteboard history and resolve the current composition, or check one exact revision",
+		Usage:   "change-saga whiteboard check --id ID [--focus PATH] [--json] <saga>",
+		Summary: "validate the current whiteboard and its exact source pins",
 		Flags: []Flag{
-			required("id", "ID", "whiteboard document identity"), optional("revision", "ID", "exact board revision; otherwise validate all history"),
+			required("id", "ID", "whiteboard document identity"),
 			optional("focus", "PATH", "also verify this instance path resolves"), jsonFlag,
 		},
 		Positionals: sagaOnly,
@@ -57,7 +57,7 @@ func init() {
 			c.Writes = []string{"whiteboard-metadata"}
 			c.Flags = append(c.Flags, required("id", "ID", "stable whiteboard identity"), optional("expected-snapshot", "HASH", "observed metadata snapshot"), Flag{Name: "dry-run", Description: "validate without writing"})
 			c.Usage += " --id ID"
-			c.Summary = "update presentation metadata without changing identity or immutable source revisions"
+			c.Summary = "update presentation metadata without changing identity or pinned source content"
 		}
 		switch op {
 		case "assign-role":
@@ -72,7 +72,7 @@ func init() {
 		case "archive":
 			c.Summary = "hide an unassigned board from discovery while preserving direct links, sources and history"
 		case "restore":
-			c.Summary = "restore an archived board to discovery without changing history or assigning a role"
+			c.Summary = "restore an archived board to discovery without assigning a role"
 		}
 		if op != "list" {
 			c.Usage += " [--expected-snapshot HASH] [--dry-run]"

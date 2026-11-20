@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Expose missing stale and excluded definition states.",
+    "preconditions": [
+      "Use the quality status fixture with missing coverage, stale test-revision evidence, an excluded criterion and stale verifies pins."
+    ],
+    "steps": [
+      {
+        "action": "Inspect the missing definition, stale evidence, exclusion and stale criterion relation entries.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty"
+        ],
+        "expected_result": "The entries retain their missing/stale/excluded reasons and original versus current revision pins.",
+        "id": "check-known-reasons"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-definition-known-uncertainty",
+    "title": "Expose missing stale and excluded definition states"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-definition-known-uncertainty"
+  }
+}

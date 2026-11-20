@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-design-boundaries-boundary",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-design-boundaries:item:boundary",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
-  "scope": "self",
-  "rationale": "Existing documentation links transfer no code ownership. The proposed selected-subset resolver must not grant coverage to unselected members.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T22:40:08.864419Z",
-  "superseded_at": "2026-09-27T10:27:24.429459Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-design-boundaries:item:boundary",
+  "id": "ti-design-boundaries-boundary",
+  "rationale": "Existing documentation links transfer no code ownership. The proposed selected-subset resolver must not grant coverage to unselected members.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:24.429459Z",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "explains",
+  "version": 5
 }

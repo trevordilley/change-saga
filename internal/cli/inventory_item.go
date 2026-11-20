@@ -189,13 +189,13 @@ func containsSelection(values []saga.ItemSelection, value saga.ItemSelection) bo
 // the current revision of an active, unconflicted record is admitted; with a
 // view the exact pin must be that view's unambiguous active binding.
 func admitDocumentationPin(ctx context.Context, d *requirements.Inventory, root, checkout string, manifest saga.Manifest, pin saga.DocumentationLink, viewOID string) error {
-	request := technicalpolicy.PinRequest{Requested: technicalpolicy.Pin{Target: pin.Target, Revision: pin.Revision}, Global: savedview.GlobalHealth(d, pin.Target)}
+	request := technicalpolicy.PinRequest{Requested: technicalpolicy.Pin{Target: pin.Target, Revision: pin.Revision}, Global: savedview.GlobalHealth(d, pin.Target, pin.Revision)}
 	if viewOID != "" {
 		view, err := savedview.Load(ctx, checkout, root, manifest, viewOID)
 		if err != nil {
 			return err
 		}
-		facts := view.Facts(pin.Target)
+		facts := view.Facts(pin.Target, pin.Revision)
 		request.View = &facts
 	}
 	admission := technicalpolicy.AdmitPin(request)

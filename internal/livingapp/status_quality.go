@@ -516,7 +516,7 @@ func definitionSteps(test quality.TestCase, links []VerifiesLink) []TestStepStat
 		return rows
 	}
 	for _, step := range test.CurrentRevision.Steps {
-		revision := test.CurrentRevision.TestCase + ":revision:" + test.CurrentRevision.ID
+		revision := requirements.ContentPin(test.CurrentRevision.TestCase, test.CurrentRevision.ID)
 		row := TestStepStatus{Step: test.CurrentRevision.TestCase + ":step:" + step.ID, Revision: revision, ID: step.ID, Criteria: copyStrings(step.Criteria), Verifies: []VerifiesLink{}, Evidence: []string{}, Issues: []string{}}
 		for _, criterion := range step.Criteria {
 			found := false

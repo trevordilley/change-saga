@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-erd-entry-overlay-28a52d64364f",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay",
-  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
-  "scope": "self",
-  "rationale": "Steps overlay, context define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:03:33.751992Z",
-  "request_id": "test-inventory-erd-entry-overlay-28a52d64364f"
+  "from": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay",
+  "from_revision": "sha256:2c1a7ee9c8c5e3ec05ec90319a8a90fc699802db1beb48eee5157aac1f5698d3",
+  "id": "test-inventory-erd-entry-overlay-28a52d64364f",
+  "rationale": "Steps overlay, context define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-erd-entry-overlay-28a52d64364f",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+  "to_revision": "sha256:d0f98c335eecab015058b9df75d15c18ce81a532497a8e32083bf97fb90975bf",
+  "type": "verifies",
+  "version": 5
 }

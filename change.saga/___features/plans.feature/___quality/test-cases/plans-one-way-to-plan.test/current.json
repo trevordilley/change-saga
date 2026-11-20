@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Run each removed work plan command.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:one-way-to-plan:criterion:one-grammar"
+        ],
+        "expected_result": "Each is refused.",
+        "id": "one-grammar"
+      },
+      {
+        "action": "Load a Saga holding a ___workplan directory, and read plan coverage from Tasks.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:one-way-to-plan:criterion:no-old-records"
+        ],
+        "expected_result": "The directory is refused, and readiness counts what Tasks name.",
+        "id": "no-old-records"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-one-way-to-plan",
+    "title": "One way to plan work"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-one-way-to-plan"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "It names Understand a request, links The intent is visible on the element, and marks both current.",
+    "preconditions": [
+      "Use no-diff Item with both whole-story and criterion explains relations to Understand a request / visible."
+    ],
+    "steps": [
+      {
+        "action": "Open Linked stories from the exact Item.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+        ],
+        "expected_result": "Drawer contains the two exact links.",
+        "id": "drawer"
+      },
+      {
+        "action": "Inspect the story summary drawer containing those same two Item links.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+        ],
+        "expected_result": "It names Understand a request, links The intent is visible on the element, and marks both current.",
+        "id": "details"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-story-details-current",
+    "title": "Show current story and criterion in the Item story drawer"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-story-details-current"
+  }
+}

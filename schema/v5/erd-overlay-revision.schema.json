@@ -64,8 +64,16 @@
           "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
         },
         "revision": {
-          "type": "string",
-          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
         }
       }
     },
@@ -89,8 +97,16 @@
             "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
           },
           "revision": {
-            "type": "string",
-            "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            ]
           }
         }
       }
@@ -171,8 +187,16 @@
                 "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
               },
               "revision": {
-                "type": "string",
-                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                ]
               }
             }
           },
@@ -197,8 +221,16 @@
                     "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
                   },
                   "revision": {
-                    "type": "string",
-                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      }
+                    ]
                   }
                 }
               },

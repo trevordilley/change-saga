@@ -10,10 +10,21 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Changed
+
+- **Format:** Git owns documentation revision history. Current record content
+  and state are editable in place; legacy content graphs normalize on write
+  after evidence pins are converted to exact content digests. Complete slides
+  store one content value, and graph history selectors and reconciliation are
+  removed. Stable identities, source commit pins, assets, actual review decisions,
+  and evidence remain. Reads do not persist normalization; older readers must
+  upgrade before reading the new current-record layouts. See
+  [migration behavior](docs/git-owned-history.md).
+
 ### Added
 
 - `query prototype` returns a prototype's HTML in byte-range pages, as recorded
-  in the Saga or at its pinned commit, with its revisions, files, and annotations.
+  in the Saga or at its pinned commit, with its current digest, files, and annotations.
 - `diagram describe` shows the record an Item names, so an agent reading a Plan
   slide can follow a node to its Task or story.
 

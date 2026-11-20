@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "selected-code",
+        "statement": "Opening code from a referenced slide Item identifies the code subset selected for that use, separately from the entity's complete code references."
+      },
+      {
+        "id": "source-identity",
+        "statement": "The displayed code identifies its source commit, path, and exact range, and reports stale or unresolved references rather than silently substituting other code."
+      },
+      {
+        "id": "return-context",
+        "statement": "Returning from the code view restores the originating deck, slide, and Item context."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+      "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect",
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As an Architect or Developer reviewing an implementation deck, I can follow a referenced System, Component, or data entity to the particular code relevant to the slide and return without losing my place.",
+    "story": "urn:change-saga:change-saga:story:inventory-trace-slide-code",
+    "title": "Trace a diagram entity to relevant code"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:inventory-trace-slide-code"
+  }
+}

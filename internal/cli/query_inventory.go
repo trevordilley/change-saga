@@ -29,12 +29,13 @@ type inventoryLinkHealth struct {
 	Status string                 `json:"status"`
 }
 type inventoryEntry struct {
+	ContentDigest    string                          `json:"content_digest,omitempty"`
 	Kind             string                          `json:"kind"`
 	Target           string                          `json:"target"`
-	RevisionHeads    []string                        `json:"revision_heads"`
-	LifecycleHeads   []string                        `json:"lifecycle_heads"`
-	CurrentRevision  *requirements.TechnicalRevision `json:"current_revision"`
-	CurrentLifecycle *requirements.TechnicalEvent    `json:"current_lifecycle"`
+	RevisionHeads    []string                        `json:"-"`
+	LifecycleHeads   []string                        `json:"-"`
+	CurrentRevision  *requirements.TechnicalRevision `json:"content"`
+	CurrentLifecycle *requirements.TechnicalEvent    `json:"state_detail"`
 	History          *requirements.TechnicalRecord   `json:"history,omitempty"`
 	Code             []inventoryCodeHealth           `json:"code_health"`
 	Links            []inventoryLinkHealth           `json:"links"`
@@ -48,7 +49,7 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 	repo := flags.String("repo", "", "source checkout")
 	target := flags.String("target", "", "canonical technical URN")
 	kind := flags.String("kind", "", "component, system, data-entity, erd or erd-overlay")
-	history := flags.Bool("history", false, "include immutable history for the selected target")
+	history := new(bool)
 	head := flags.String("head", "HEAD", "source revision to observe")
 	against := flags.String("against", "", "comparison baseline for newness")
 	intent := flags.String("intent", "", "proposed, implemented or unspecified")
@@ -167,6 +168,7 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 	entries := []inventoryEntry{}
 	for _, r := range selected[start:end] {
 		entry := inventoryEntry{Kind: r.Kind, Target: r.Target, RevisionHeads: r.RevisionHeads, LifecycleHeads: r.LifecycleHeads, CurrentRevision: r.CurrentRevision, CurrentLifecycle: r.CurrentLifecycle, Code: []inventoryCodeHealth{}, Links: []inventoryLinkHealth{}}
+		entry.ContentDigest, _ = r.CurrentContentDigest()
 		if *history {
 			copy := r
 			entry.History = &copy

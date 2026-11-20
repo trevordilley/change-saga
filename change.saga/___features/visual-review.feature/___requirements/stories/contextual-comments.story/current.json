@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "element-context",
+        "statement": "A reviewer can attach a comment to a specific slide or review item."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer reviewing a change, I can comment on a specific review element so discussion stays connected to its context.",
+    "story": "urn:change-saga:change-saga:story:contextual-comments",
+    "title": "Discuss a review element"
+  },
+  "state": {
+    "reason": "Confirmed during the initial product interview.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:contextual-comments"
+  }
+}

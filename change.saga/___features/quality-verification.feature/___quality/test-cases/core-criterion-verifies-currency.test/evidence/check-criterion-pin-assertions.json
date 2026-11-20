@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:dae3fabaf5711c1b23b7cf161a244eb4ad6031b0d34af2bcaa5ea5dec716c9b4",
+      "end": 111,
+      "path": "internal/cli/relation_currency_test.go",
+      "start": 98
+    }
+  ],
+  "created_at": "2026-10-16T23:23:49Z",
   "id": "check-criterion-pin-assertions",
-  "test_case": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency",
-  "test_revision": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency:revision:r1",
+  "request_id": "saga-evidence-core-criterion-verifies-currency-check-criterion-pin-assertions",
   "role": "test_implementation",
   "steps": [
     "check-criterion-pin"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/relation_currency_test.go",
-      "start": 98,
-      "end": 111,
-      "digest": "sha256:dae3fabaf5711c1b23b7cf161a244eb4ad6031b0d34af2bcaa5ea5dec716c9b4"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:49Z",
-  "request_id": "saga-evidence-core-criterion-verifies-currency-check-criterion-pin-assertions"
+  "test_case": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency",
+  "test_revision": "sha256:5bc63f80d13fbb8e6e9a75b27f5b53e286329a33d164b770f58765394bcfe944",
+  "verifications": [],
+  "version": 5
 }

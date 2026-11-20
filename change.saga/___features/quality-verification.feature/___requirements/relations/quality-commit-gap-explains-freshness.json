@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "quality-commit-gap-explains-freshness",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:40:48.650367Z",
   "from": "urn:change-saga:change-saga:slide:quality-trust-gaps:item:commit-freshness-gap",
-  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness",
-  "scope": "self",
+  "id": "quality-commit-gap-explains-freshness",
   "rationale": "This gap Item documents that the proposed observed-HEAD freshness rule is absent today: run projection does not compare the recorded commit with current source HEAD.",
-  "to_revision": "urn:change-saga:change-saga:story:quality-result-trust:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:40:48.650367Z"
+  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness",
+  "to_revision": "sha256:4e4ee0c439690351c47a6fa591aeb0ed12a022f4703120fd3fec188a2627aa97",
+  "type": "explains",
+  "version": 5
 }

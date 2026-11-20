@@ -14,7 +14,8 @@ import (
 // forward, and says so.
 func TestRelationToUnchangedCriterionSurvivesAnUnrelatedRevision(t *testing.T) {
 	root := newV5Saga(t)
-	if _, err := AddRelation(root, "test", verifiesInput()); err != nil {
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
+	if _, err := AddRelation(root, "test", verifiesInput(v5StoryR1)); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddPersona(root, "test", AddPersonaInput{ID: "newcomer", RevisionID: "r1", EventID: "active",
@@ -47,7 +48,7 @@ func TestRelationToUnchangedCriterionSurvivesAnUnrelatedRevision(t *testing.T) {
 	// The pin still names the revision a person confirmed, and the report says
 	// the rest was carried forward rather than affirmed.
 	want := []CarriedForward{{Endpoint: "to", Code: CarriedCriterionUnchanged, Confirmed: v5StoryR1,
-		Current: "urn:change-saga:test:story:checkout:revision:r2",
+		Current: currentFixtureStoryPin(t, root, v5Story),
 		Message: "to criterion content is unchanged since the confirmed revision"}}
 	if !reflect.DeepEqual(got[0].CarriedForward, want) {
 		t.Fatalf("carried forward = %#v", got[0].CarriedForward)
@@ -61,7 +62,8 @@ func TestRelationToUnchangedCriterionSurvivesAnUnrelatedRevision(t *testing.T) {
 // and says which criterion changed under it.
 func TestRelationGoesStaleWhenTheCriterionStatementChanges(t *testing.T) {
 	root := newV5Saga(t)
-	if _, err := AddRelation(root, "test", verifiesInput()); err != nil {
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
+	if _, err := AddRelation(root, "test", verifiesInput(v5StoryR1)); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := ReviseStory(root, "test", ReviseStoryInput{Personas: testPersonas,
@@ -96,7 +98,8 @@ func TestCosmeticCriterionEditsAreStillStale(t *testing.T) {
 	} {
 		t.Run(name, func(t *testing.T) {
 			root := newV5Saga(t)
-			if _, err := AddRelation(root, "test", verifiesInput()); err != nil {
+			v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
+			if _, err := AddRelation(root, "test", verifiesInput(v5StoryR1)); err != nil {
 				t.Fatal(err)
 			}
 			if _, err := ReviseStory(root, "test", ReviseStoryInput{Personas: testPersonas,

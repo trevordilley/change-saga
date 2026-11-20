@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "envelope",
+        "statement": "Machine-readable queries use one versioned JSON envelope."
+      },
+      {
+        "id": "discovery",
+        "statement": "Operations publish their purpose, input shape, pagination behavior, and stable errors."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer using an AI assistant, I can give it stable machine-readable operations for querying and authoring a Saga so it can work without scraping storage files or prose output.",
+    "story": "urn:change-saga:change-saga:story:structured-ai-contract",
+    "title": "Give AI a stable application contract"
+  },
+  "state": {
+    "reason": "Confirmed after the initial implementation investigation.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:structured-ai-contract"
+  }
+}

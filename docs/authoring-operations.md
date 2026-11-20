@@ -13,18 +13,17 @@ different properties.
 | Feature | `feature add`; `query overview`, `query context` | `feature rename`, `feature set-overview` | `feature set-plan --priority`; built/planned placement uses `--status` | `feature archive` / `restore` hide it; `feature deliver` moves a Roadmap feature's records into the feature it `--augments` (set by `feature add`/`set-plan`) with URNs unchanged, deletes it, and marks the recipient's overview for revision; `feature remove` deletes an empty feature, `--with-content` deletes it with everything in it and lists what else to adjust |
 | Product theme | `feature-theme add`; `query feature-themes` | `feature-theme rename`, `set-overview` | `set-features` replaces membership; features retain their identities | `feature-theme remove` refuses decks and inbound dependencies |
 | Label, milestone | `label add`, `milestone add`; corresponding queries | Existing `rename` changes the shared title once | Assign through `feature set-plan`; clear assignments explicitly | `remove` refuses referenced records |
-| Story, persona, criterion | Existing family `add`; corresponding queries | Existing `revise` appends immutable revisions | `story move` changes its feature without changing its URN | `story remove`, `persona remove` delete them with the links that only pointed at them and list what else to adjust; `criterion remove` appends a story revision |
-| Component, system, data entity, ERD, overlay, term | Existing family `add`; inventory and term queries | Existing `revise` appends a revision with explicit parents | Revise relationships or membership through the owning entity | Existing `set-state` retires records; no destructive history deletion |
-| Flag, prototype | Existing `flag add`, `prototype add` / `add-external` / `add-html`; corresponding queries | Existing `revise` preserves identity and revision history; `prototype update` records a changed prototype file | Revise associations through the owning API | `flag remove`, `prototype remove` (with its annotations); `flag set-state` and `prototype revise --state retired` still retire |
+| Story, persona, criterion | Existing family `add`; corresponding queries | Existing `revise` edits current content in place | `story move` changes its feature without changing its URN | `story remove`, `persona remove` delete them with the links that only pointed at them and list what else to adjust; `criterion remove` updates the current story |
+| Component, system, data entity, ERD, overlay, term | Existing family `add`; inventory and term queries | Existing `revise` replaces current content | Revise relationships or membership through the owning entity | Existing `set-state` updates the current retirement state and reason; Git retains previous values |
+| Flag, prototype | Existing `flag add`, `prototype add` / `add-external` / `add-html`; corresponding queries | Existing `revise` preserves identity; Git records previous values; `prototype update` records a changed prototype file | Revise associations through the owning API | `flag remove`, `prototype remove` (with its annotations); `flag set-state` and `prototype revise --state retired` still retire |
 | Plan, Task | `plan create`, `task add`; `plan list`, `task list` | `plan add-phase`, `remove-phase`, `add-prototype`, `link-review`; `task set`, `task done` | `task set --phase`; `task depend` sets explicit dependencies | `task remove` refuses to strand a Task; `plan deliver` closes a Plan and Git keeps its history |
 | Technical or UX deck | `add-deck` (`--role ux` for a feature's UX flows); `query children`, `query overview --deck` | `revise-deck --title`, `deck overview` | `move-deck --feature`; `revise-deck --rank` | Existing `remove-deck` reports contained targets and affected relations |
-| Slide, Item | `add-slide`, `add-item`, `apply-slide`; `query slide`, `query children` | Existing `revise-slide`, `revise-item`, content editing, or complete-slide transactions | `move-slide --deck`; rank edits or complete-slide transactions | `remove-slide` preserves transaction history; removing a transaction Item alone requires an `apply-slide` update |
+| Slide, Item | `add-slide`, `add-item`, `apply-slide`; `query slide`, `query children` | Existing `revise-slide`, `revise-item`, content editing, or complete-slide transactions | `move-slide --deck`; rank edits or complete-slide transactions | `remove-slide` publishes current deletion state; Git preserves the prior slide; removing a transaction Item alone requires an `apply-slide` update |
 | Chapter, section, fragment | Existing `add-*`; `query children`, `query fragment` | Existing `revise-* --title`; `set-fragment-content` | `move-* --target --parent`; existing `revise-* --order` | Existing `remove-*` accounts for contained content and dependent relations |
-| Whiteboard | `whiteboard publish`, `get`, `describe`, `list`; `query whiteboards` | `whiteboard rename` changes display metadata; `publish` appends content history | `assign-role`, `unassign-role` change Technical Design placement | `archive`, `restore` change discovery without deleting history |
-| Evidence, relation, review, claim, verification | Existing typed authoring and query APIs | Exact coverage replacement/repinning; immutable relation/review/claim history | Ownership changes do not confer coverage or approval | Use owning lifecycle APIs; never cascade through immutable records |
+| Whiteboard | `whiteboard publish`, `get`, `describe`, `list`; `query whiteboards` | `whiteboard rename` changes display metadata; `publish` replaces current content | `assign-role`, `unassign-role` change Technical Design placement | `archive`, `restore` change discovery without deleting history |
+| Evidence, relation, review, claim, verification | Existing typed authoring and query APIs | Exact coverage replacement/repinning; current relation confirmations plus factual review/claim evidence | Ownership changes do not confer coverage or approval | Use owning lifecycle APIs; never cascade through immutable records |
 
-“Remove” is deliberately not universal. Requirements and technical inventory
-carry immutable history; lifecycle transitions express retirement. Whiteboards
+“Remove” is deliberately not universal. Requirements and technical inventory keep current authored content and state; Git keeps earlier values. Whiteboards
 can be archived and restored. Feature and classification removal is conservative:
 resolve dependencies first, then remove the unused container or shared record.
 
@@ -32,14 +31,15 @@ resolve dependencies first, then remove the unused container or shared record.
 
 Use `--title` for existing title-based entities and `--name` for whiteboards,
 matching `whiteboard publish`. A rename does not rename the ID, URN, directory,
-or historic revision. Omitted fields stay unchanged.
+or Git history. Omitted fields stay unchanged.
 
 Ranked deck content uses `--rank`; narrative uses `--order`; planned features use
 `feature set-plan --priority`. These existing controls also support shuffling:
 assign the desired explicit positions. There is no random shuffle command.
 Each invocation is a transaction; a sequence of rank edits is not one atomic
-batch. Complete-slide content uses its existing snapshot/parent transaction
-contract rather than rewriting a published revision.
+batch. Complete-slide content replaces its current record atomically.
+An optional expected content digest rejects a concurrent edit; delta operations
+require that digest.
 
 ## Move content
 
@@ -60,8 +60,8 @@ content. A slide cited by its source deck's overview must be removed from that
 overview explicitly before moving; dry-run also reports this dependency.
 
 `move-slide` supports ordinary implementation slides. A complete-slide
-transaction's history is bound to its original deck; moving it individually is
-refused. Move the whole deck with `move-deck` to retain that history unchanged.
+transaction's published identity is bound to its original deck; moving it
+individually is refused. Move the whole deck with `move-deck` to retain that identity.
 
 Inspect the dry-run result, repeat without `--dry-run`, then query the source
 and destination and validate the Saga. Unsupported moves fail with no changes;
@@ -76,18 +76,18 @@ change-saga remove-slide --slide SLIDE_URN --expected-snapshot SNAPSHOT --dry-ru
 ```
 
 Use the returned deck or slide ID/URN, not its feature's ID. These commands
-support slides authored with `apply-slide`. They append removal revisions and
-retain historical assets; removed content disappears from active queries and
-Technical Design. Removing a deck with transaction history retains its directory
+support slides authored with `apply-slide`. They publish current deletion state
+and retain assets; removed content disappears from active queries and Technical
+Design. Removing a deck with transaction records retains its directory
 with a deletion marker. Existing unrelated content stays active. External
 relations left dangling are listed in the result.
 
 For individual slides, obtain `authoring_snapshot` from `query slide` and pass
 it as `--expected-snapshot` to refuse a newer edit. Omit that optional flag to
-remove the current state under the Saga lock. Reconcile divergent histories
-first, and remove any references in the deck overview before removing a slide.
+remove the current state under the Saga lock. Resolve any legacy ambiguity
+first, and remove references in the deck overview before removing a slide.
 Review slides remain protected. Upgrade readers before adopting deletion markers;
-older readers may reject the retained history. Use a new ID for replacement content.
+older readers may reject the current deletion layout. Use a new ID for replacement content.
 
 ## Assign the existing board to ERD
 
@@ -106,7 +106,7 @@ Technical Design shows the four role entries **ERD**, **Infrastructure**,
 a fourth sidebar entry. Other authored boards remain discoverable from the
 Technical Design overview and retain their named URLs. Supporting essay pages
 also remain in that overview and keep their direct links. Role assignment does
-not publish a new board revision, duplicate its identity, or delete the board
+not edit board content, duplicate its identity, or delete the board
 previously occupying the role.
 
 Replace `CURRENT_ID_OR_none` with the observed role owner, or `none` when empty.
@@ -118,7 +118,7 @@ role must be unassigned there first, or moved explicitly using
 
 Use `unassign-role --id CURRENT_ID --role erd` to clear an assignment explicitly. Renaming a
 board is independent of its role. Archiving hides an unassigned board from
-ordinary discovery while preserving content, revision history, and exact links;
+ordinary discovery while preserving content and exact links; Git retains history;
 restore reverses it. Reassign or unassign a role before archiving its board.
 Listings include archived boards with their archival state so authors can
 find and restore them.
@@ -133,5 +133,6 @@ and unmet dependencies are errors, not permission to cascade deletion.
 Inspect removal output for contained targets and dangling relations. Resolve
 the listed dependencies explicitly; never invent replacement references.
 Coverage stays on the same exact semantic targets and review state remains
-review-owned. History-bearing APIs retain their observed-parent or snapshot
-checks; a lock serializes writes but does not replace those checks.
+review-owned. Current-content APIs retain applicable digest expectations;
+a lock serializes writes but does not replace those checks. Git handles file
+merges and prior content; no Saga parent graph is created.

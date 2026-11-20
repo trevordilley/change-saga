@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Keep terms tied to definitions, intent and source.",
+    "preconditions": [
+      "Create a named typed constant, a related story and a term with aliases and an exact code reference in a disposable source/Saga fixture."
+    ],
+    "steps": [
+      {
+        "action": "Query the term and inspect its reading page and references.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:shared-product-language:criterion:term-context"
+        ],
+        "expected_result": "Name, definition, aliases, related stories/records and defining code are discoverable.",
+        "id": "check-term-context"
+      },
+      {
+        "action": "Rename the defining constant, query term health, and then edit the current term with deliberately reassessed code pins.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:shared-product-language:criterion:code-currency"
+        ],
+        "expected_result": "The changed reference is stale and names its owner; the new revision restores current linkage without altering semantic maturity.",
+        "id": "check-code-currency"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-term-context",
+    "title": "Keep terms tied to definitions, intent and source"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-term-context"
+  }
+}

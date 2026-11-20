@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The old r1 remains readable with stale status, without repinning the context.",
+    "preconditions": [
+      "Browser fixture has one FeatureFlag System with FlagClient/FlagStore members and checkout/search slides referencing its r1; add a second implementation deck for the manual cross-deck extension."
+    ],
+    "steps": [
+      {
+        "action": "Open the shared System from checkout and search Items; follow FlagStore then return to the System.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:shared-identity",
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:contextual-use"
+        ],
+        "expected_result": "Both contexts resolve the same System identity, saved member and code without independent definitions.",
+        "id": "shared"
+      },
+      {
+        "action": "Give Items in two distinct decks different use descriptions and pin the same saved definition; query both Items.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:shared-identity",
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:contextual-use"
+        ],
+        "expected_result": "Both retain the same canonical identity/revision and their own contextual explanations.",
+        "id": "two-decks"
+      },
+      {
+        "action": "Revise the System and reopen its old slide Item.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding"
+        ],
+        "expected_result": "The old r1 remains readable with stale status, without repinning the context.",
+        "id": "saved"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-shared-contexts",
+    "title": "Reuse one canonical definition from separate design contexts"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-shared-contexts"
+  }
+}

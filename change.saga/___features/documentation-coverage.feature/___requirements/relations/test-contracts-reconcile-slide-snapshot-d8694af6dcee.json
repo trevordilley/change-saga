@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-contracts-reconcile-slide-snapshot-d8694af6dcee",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:contracts-reconcile-slide-snapshot",
-  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
-  "scope": "self",
-  "rationale": "Steps inspect, update define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-slide-snapshot:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:23:25.98458Z",
-  "request_id": "test-contracts-reconcile-slide-snapshot-d8694af6dcee"
+  "from": "urn:change-saga:change-saga:test-case:contracts-reconcile-slide-snapshot",
+  "from_revision": "sha256:e8267ec9d6bc700d3ab6ae42535230c5f06e427b11e0c1020d1ee6ba962e77f7",
+  "id": "test-contracts-reconcile-slide-snapshot-d8694af6dcee",
+  "rationale": "Steps inspect, update define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-contracts-reconcile-slide-snapshot-d8694af6dcee",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+  "to_revision": "sha256:eb4ef03bbf195b5139e220be46e4d49c341a6d645e8d535056bb7f0414016faf",
+  "type": "verifies",
+  "version": 5
 }

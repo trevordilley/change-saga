@@ -79,11 +79,11 @@ func TestAddTestCaseWritesIntoTheNamedFeature(t *testing.T) {
 	}
 
 	// Existing-record operations write into the feature holding the record.
-	revised, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r2", Parents: []string{result.CurrentHeads[0]}, Definition: deadlineDefinition()})
+	revised, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r2", Definition: deadlineDefinition()})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if revised.Path != "___features/billing.feature/___quality/test-cases/deadline.test/revisions/r2.json" {
+	if revised.Path != "___features/billing.feature/___quality/test-cases/deadline.test/current.json" {
 		t.Fatalf("revision path = %q", revised.Path)
 	}
 
@@ -103,7 +103,7 @@ func TestCreatesRequireAKnownFeature(t *testing.T) {
 	}
 	policy := SetPolicyInput{
 		Criterion:     "urn:change-saga:checkout:story:refund:criterion:cutoff",
-		StoryRevision: "urn:change-saga:checkout:story:refund:revision:r1",
+		StoryRevision: "sha256:" + strings.Repeat("c", 64),
 		RequiredKinds: []CoverageKind{CoveragePositive}, AllowedAutomation: []Automation{AutomationManual}, Rationale: "r",
 	}
 	if _, err := SetPolicy(root, policy); err == nil || !strings.Contains(err.Error(), "a feature is required") {

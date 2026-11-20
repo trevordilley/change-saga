@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:b2eb0be2ac07762c1a5d0223aa6a4d4f6ad42641105f796456a384ec07d4f6c5",
+      "end": 317,
+      "path": "internal/cli/query_inventory_view_test.go",
+      "start": 307
+    }
+  ],
+  "created_at": "2026-10-16T23:23:50Z",
   "id": "evidence-2",
-  "test_case": "urn:change-saga:change-saga:test-case:inventory-stale-coverage",
-  "test_revision": "urn:change-saga:change-saga:test-case:inventory-stale-coverage:revision:r1",
+  "request_id": "saga-evidence-inventory-stale-coverage-evidence-2",
   "role": "test_implementation",
   "steps": [
     "edit"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/query_inventory_view_test.go",
-      "start": 307,
-      "end": 317,
-      "digest": "sha256:b2eb0be2ac07762c1a5d0223aa6a4d4f6ad42641105f796456a384ec07d4f6c5"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:50Z",
-  "request_id": "saga-evidence-inventory-stale-coverage-evidence-2"
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-stale-coverage",
+  "test_revision": "sha256:5be780bef66dbf671c59be383715c2ff3039d7f5c50701ae71af0dbbf47991aa",
+  "verifications": [],
+  "version": 5
 }

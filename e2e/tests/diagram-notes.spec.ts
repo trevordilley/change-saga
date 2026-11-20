@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { codeDigest, git, runCLI, startSagaServer, stopSagaServer, type SagaRepositories } from "../support/fixture-builder.js";
+import { currentRecordPin, codeDigest, git, runCLI, startSagaServer, stopSagaServer, type SagaRepositories } from "../support/fixture-builder.js";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 
 // An author can annotate any diagram element with a short Markdown note. A
@@ -231,8 +231,7 @@ test("an implementation deck shows its diagram notes the same way, and in an Ite
   };
   run("add-deck", "--feature", "wave-one", "--id", "noted-flow", "--title", "Noted flow", "--objective", "Explain the greeting flow.", saga.sagaRoot, "Noted flow");
   const story = "urn:change-saga:wave-one:story:noted-greeting";
-  run("story", "add", "--feature", "wave-one", "--id", "noted-greeting", "--revision", "r1", "--event", "proposed",
-    "--title", "Greet by name", "--statement", "As a caller I am greeted by name.", "--criterion", "named=The greeting names the caller", saga.sagaRoot);
+  run("story", "add", "--feature", "wave-one", "--id", "noted-greeting", "--title", "Greet by name", "--statement", "As a caller I am greeted by name.", "--criterion", "named=The greeting names the caller", saga.sagaRoot);
   const head = saga.identity.head;
   const request = {
     version: 1, operation: "create", request_id: "noted-implementation", deck: "noted-flow", expected_snapshot: "absent",
@@ -241,7 +240,7 @@ test("an implementation deck shows its diagram notes the same way, and in an Ite
     items: [{
       id: "greeting", rank: 10, kind: "node", label: "Greeting", description: "Greeting returns the supplied name.", selector: { type: "element", element_id: "greeting" },
       evidence: [{ version: 2, references: [{ commit: head, path: "src/app.go", start: 3, end: 3, digest: codeDigest(saga.sourceRepo, head, "src/app.go", 3), note: "The greeting names the caller." }] }],
-      criterion_links: [{ id: "greeting-named", criterion: `${story}:criterion:named`, story_revision: `${story}:revision:r1`, rationale: "The greeting is the named line." }],
+      criterion_links: [{ id: "greeting-named", criterion: `${story}:criterion:named`, story_revision: currentRecordPin(saga,"story","noted-greeting").revision, rationale: "The greeting is the named line." }],
     }],
   };
   const requestPath = join(saga.root, "noted-implementation.json");

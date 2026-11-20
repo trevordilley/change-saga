@@ -7,8 +7,12 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
+	"github.com/twentyideas/changesaga/internal/livingid"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -70,6 +74,9 @@ func NodeHistory(ctx context.Context, root, urn string) (History, error) {
 	}
 	node := current.inventory.Resolve(urn)
 	if node == nil {
+		node = packageHistoryNode(root, document.Manifest.ID, urn)
+	}
+	if node == nil {
 		return History{}, fmt.Errorf("no record %s in the Saga", urn)
 	}
 	history := History{NodeRef: refOf(node), Files: node.Files, Replaced: []string{}, Events: []HistoryEvent{}, Reviews: []ReviewLink{}}
@@ -78,13 +85,14 @@ func NodeHistory(ctx context.Context, root, urn string) (History, error) {
 		history.Uncommitted = true
 		return history, nil
 	}
-	paths := make([]string, 0, len(node.Files))
-	for _, file := range node.Files {
+	historyFiles := recordHistoryFiles(node.Files)
+	paths := make([]string, 0, len(historyFiles))
+	for _, file := range historyFiles {
 		paths = append(paths, path.Join(location.Path, file))
 	}
 	commits := []commitInfo{}
 	if _, err := revParse(ctx, location.Repo, "HEAD"); err == nil {
-		if commits, err = recordCommits(ctx, location, node.Files); err != nil {
+		if commits, err = recordCommits(ctx, location, historyFiles); err != nil {
 			return History{}, err
 		}
 	}
@@ -118,6 +126,40 @@ func NodeHistory(ctx context.Context, root, urn string) (History, error) {
 		history.Replaced = replacedAt(ctx, location, commits[0].Commit, node.URN)
 	}
 	return history, nil
+}
+
+// Technical definitions and boards load independently of the narrative index.
+// Their current packages still have ordinary Git history, including deleted
+// legacy members; no semantic version index is needed to expose it.
+func packageHistoryNode(root, sagaID, urn string) *Node {
+	if absolute, err := filepath.Abs(root); err == nil {
+		root = absolute
+	}
+	if resolved, err := filepath.EvalSymlinks(root); err == nil {
+		root = resolved
+	}
+	parts := strings.Split(urn, ":")
+	if len(parts) != 5 || parts[0] != "urn" || parts[1] != "change-saga" || parts[2] != sagaID || !livingid.ValidID(parts[4]) {
+		return nil
+	}
+	kind, id := parts[3], parts[4]
+	dir := ""
+	switch kind {
+	case "component", "system", "data-entity", "erd", "erd-overlay":
+		dir = requirements.TechnicalPath(kind, id)
+	case "deprecation":
+		dir = "___deprecations/" + id + ".deprecation"
+	case "whiteboard":
+		dir = requirements.WhiteboardDir + "/" + id
+	default:
+		return nil
+	}
+	info, err := os.Lstat(filepath.Join(root, filepath.FromSlash(dir)))
+	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+		return nil
+	}
+	builder := inventoryBuilder{root: root}
+	return &Node{URN: urn, Kind: kind, Title: id, Files: builder.tree(dir)}
 }
 
 // codeComparison maps a Saga comparison to the code comparison that opens
@@ -166,7 +208,7 @@ func replacedAt(ctx context.Context, location Location, introduced, urn string) 
 		if err != nil {
 			return &Inventory{Nodes: map[string]*Node{}}
 		}
-		at, err := loadSnapshot(ctx, root, nil)
+		at, err := loadSnapshot(ctx, root, nil, currentrecord.GitSource{Repository: location.Repo, SagaPath: location.Path, Commit: commit})
 		if err != nil {
 			return &Inventory{Nodes: map[string]*Node{}}
 		}

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-see-plans-from-stories-verifies-feature-shows-plans",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:19:07.007673Z",
   "from": "urn:change-saga:change-saga:test-case:plans-see-plans-from-stories",
-  "to": "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:feature-shows-plans",
-  "scope": "self",
+  "from_revision": "sha256:a0dbff2e5e399277c198b9588b1de50cd9b6aa2016aafcf495d61b39dbeeaf59",
+  "id": "plans-see-plans-from-stories-verifies-feature-shows-plans",
   "rationale": "Step feature-shows-plans checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-see-plans-from-stories:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:see-plans-from-stories:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:19:07.007673Z"
+  "to": "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:feature-shows-plans",
+  "to_revision": "sha256:7918eecef8f1205e7019cbbead0ddaa8a08b249a900576671823ec78028847d8",
+  "type": "verifies",
+  "version": 5
 }

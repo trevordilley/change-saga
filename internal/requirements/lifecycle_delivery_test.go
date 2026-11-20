@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func TestFeatureFlagStatesAndRetirementHistory(t *testing.T) {
+func TestFeatureFlagStatesAndRetirementCurrent(t *testing.T) {
 	root := newSaga(t)
 	if _, err := AddStory(root, "test", storyInput("checkout", "r1", "proposed", nil)); err != nil {
 		t.Fatal(err)
@@ -37,19 +37,15 @@ func TestFeatureFlagStatesAndRetirementHistory(t *testing.T) {
 	if loaded == nil || loaded.CurrentLifecycle == nil || loaded.CurrentLifecycle.State != FlagRetired {
 		t.Fatalf("retired flag = %#v", loaded)
 	}
-	states := map[FlagState]bool{}
-	for _, event := range loaded.Events {
-		states[event.State] = true
-	}
-	if len(loaded.Events) != 3 || !states[FlagOff] || !states[FlagOn] || !states[FlagRetired] {
-		t.Fatalf("flag history = %#v", loaded.Events)
+	if len(loaded.Events) != 1 || loaded.CurrentLifecycle.Reason != "The rollout completed." {
+		t.Fatalf("current flag lost retirement reason: %#v", loaded)
 	}
 	if gates := document.Gates(); len(gates.Off["checkout"]) != 0 || len(gates.On["checkout"]) != 0 {
 		t.Fatalf("retired flag still gates checkout: %#v", gates)
 	}
 }
 
-func TestStoryLifecycleStatesAndRetirementHistory(t *testing.T) {
+func TestStoryLifecycleStatesAndRetirementCurrent(t *testing.T) {
 	root := newSaga(t)
 	criteria := []Criterion{{ID: "works", Statement: "The behavior works."}}
 	add := func(id string) string {
@@ -98,11 +94,7 @@ func TestStoryLifecycleStatesAndRetirementHistory(t *testing.T) {
 		}
 	}
 	retiredStory := document.FindStory("retired-story")
-	history := map[LifecycleState]bool{}
-	for _, event := range retiredStory.Events {
-		history[event.State] = true
-	}
-	if len(retiredStory.Events) != 3 || !history[StateProposed] || !history[StateAccepted] || !history[StateRetired] || retiredStory.CurrentRevision == nil {
-		t.Fatalf("retired story history = %#v", retiredStory)
+	if len(retiredStory.Events) != 1 || retiredStory.CurrentLifecycle.Reason != "Exercise the lifecycle state." || retiredStory.CurrentRevision == nil {
+		t.Fatalf("current story lost retirement content/reason: %#v", retiredStory)
 	}
 }

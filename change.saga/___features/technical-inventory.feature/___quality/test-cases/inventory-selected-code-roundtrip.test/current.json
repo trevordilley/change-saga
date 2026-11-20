@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The displayed code identifies full commit/path/range and marks stale/unresolved without substituting other source.",
+    "preconditions": [
+      "Use public CLI browser fixture: Pipeline System→Store evidence src/app.go 3-5 with greeting-store/store selecting only line 4."
+    ],
+    "steps": [
+      {
+        "action": "Open the Item's technical explanation and inspect greet-only selection.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:selected-code",
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path"
+        ],
+        "expected_result": "The path shows Pipeline→Store, exactly one referenced line is shown, digest integrity matches, and whole-definition code is separately labeled.",
+        "id": "selected"
+      },
+      {
+        "action": "Open Store member, return to the prior explanation, then close it.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context"
+        ],
+        "expected_result": "Member view has no Item selection; back restores greet-only; close restores the originating control and exact slide URL.",
+        "id": "return"
+      },
+      {
+        "action": "Inspect the code caption, then repeat with stale and unavailable exact references.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity"
+        ],
+        "expected_result": "The displayed code identifies full commit/path/range and marks stale/unresolved without substituting other source.",
+        "id": "provenance"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip",
+    "title": "Inspect selected code and return to the originating Item"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip"
+  }
+}

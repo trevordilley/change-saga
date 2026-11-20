@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The freehand mark remains visible on that slide.",
+    "preconditions": [
+      "Open a writable review slide with annotation tools."
+    ],
+    "steps": [
+      {
+        "action": "Choose Freehand, drag a curved multi-point path over a visible element, enter a comment and save.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:freehand"
+        ],
+        "expected_result": "The freehand path follows the drawn gesture over the slide.",
+        "id": "draw"
+      },
+      {
+        "action": "Reload the same review slide.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:freehand"
+        ],
+        "expected_result": "The freehand mark remains visible on that slide.",
+        "id": "reload"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-freehand",
+    "title": "Draw a freehand mark on a review slide"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-freehand"
+  }
+}

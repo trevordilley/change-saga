@@ -20,6 +20,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -43,13 +44,12 @@ type SlideTransactionRequest struct {
 	Review string `json:"review,omitempty"`
 	// Plan names the Plan whose deck holds the slide. Its Items carry no evidence
 	// or criterion links, and may name the Plan's Tasks and user stories.
-	Plan              string                        `json:"plan,omitempty"`
-	ExpectedSnapshot  string                        `json:"expected_snapshot,omitempty"`
-	ExpectedSnapshots []string                      `json:"expected_snapshots,omitempty"`
-	Slide             SlideTransactionSlide         `json:"slide"`
-	Asset             SlideTransactionAsset         `json:"asset"`
-	Diagram           *diagram.Document             `json:"diagram,omitempty"`
-	Items             []SlideTransactionItemRequest `json:"items"`
+	Plan             string                        `json:"plan,omitempty"`
+	ExpectedSnapshot string                        `json:"expected_snapshot,omitempty"`
+	Slide            SlideTransactionSlide         `json:"slide"`
+	Asset            SlideTransactionAsset         `json:"asset"`
+	Diagram          *diagram.Document             `json:"diagram,omitempty"`
+	Items            []SlideTransactionItemRequest `json:"items"`
 }
 
 type SlideTransactionSlide struct {
@@ -143,6 +143,10 @@ func guardCompleteSlideMutation(operation string, slide *saga.Slide) error {
 // then the record is atomically created/replaced. The operation does not claim
 // atomicity with unrelated Saga records or arbitrary filesystem writes.
 func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, request SlideTransactionRequest, dryRun bool) (SlideTransactionResult, error) {
+	if err := currentrecord.NormalizeValue(root, &request); err != nil {
+		return SlideTransactionResult{}, err
+	}
+
 	return applySlideTransaction(ctx, root, requestBase, repo, request, dryRun, false)
 }
 
@@ -158,22 +162,20 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 	if len(asset) > saga.MaxSlideAssetBytes {
 		return SlideTransactionResult{}, fmt.Errorf("slide asset exceeds %d bytes", saga.MaxSlideAssetBytes)
 	}
-	if request.Version != saga.SlideTransactionVersion || (request.Operation != "create" && request.Operation != "update" && request.Operation != "reconcile") {
-		return SlideTransactionResult{}, fmt.Errorf("request requires version %d and operation create, update, or reconcile", saga.SlideTransactionVersion)
+	if request.Version != saga.SlideTransactionVersion || (request.Operation != "create" && request.Operation != "update") {
+		return SlideTransactionResult{}, fmt.Errorf("request requires version %d and operation create or update", saga.SlideTransactionVersion)
+	}
+	if request.RequestID == "" {
+		request.RequestID = "edit"
 	}
 	if !livingid.ValidID(request.RequestID) {
 		return SlideTransactionResult{}, fmt.Errorf("request_id must be a stable identifier")
 	}
-	if request.Operation == "create" && (request.ExpectedSnapshot != "absent" || len(request.ExpectedSnapshots) != 0) {
+	if request.Operation == "create" && (request.ExpectedSnapshot != "" && request.ExpectedSnapshot != "absent") {
 		return SlideTransactionResult{}, fmt.Errorf("create requires expected_snapshot %q", "absent")
 	}
-	if request.Operation == "update" && (!validSnapshotSet([]string{request.ExpectedSnapshot}) || len(request.ExpectedSnapshots) != 0) {
+	if request.Operation == "update" && (request.ExpectedSnapshot != "" && !validSnapshotSet([]string{request.ExpectedSnapshot})) {
 		return SlideTransactionResult{}, fmt.Errorf("update requires the exact sha256 expected_snapshot returned by the previous transaction")
-	}
-	if request.Operation == "reconcile" {
-		if request.ExpectedSnapshot != "" || len(request.ExpectedSnapshots) < 2 || !validSnapshotSet(request.ExpectedSnapshots) {
-			return SlideTransactionResult{}, fmt.Errorf("reconcile requires expected_snapshot to be empty and expected_snapshots to contain every distinct divergent sha256 head")
-		}
 	}
 	assetName, err := saga.SlideAssetFilename(asset, extension)
 	if err != nil {
@@ -347,29 +349,20 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			heads = []string{legacy.Snapshot}
 		}
 
-		// Idempotency precedes create/update existence checks. The same request
-		// may be retried after a response was lost; a reused ID with any changed
-		// complete payload or operation is always rejected.
-		for storedIndex, stored := range record.Revisions {
-			if stored.RequestID != request.RequestID {
-				continue
+		if previous != nil {
+			candidateDigest, digestErr := saga.SlideContentDigest(revision)
+			if digestErr != nil {
+				return digestErr
 			}
-			candidate := revision
-			candidate.ParentSnapshots = append([]string{}, stored.ParentSnapshots...)
-			candidate.Snapshot, err = saga.SlideRevisionSnapshot(candidate)
-			if err != nil {
-				return err
+			previousDigest, digestErr := saga.SlideContentDigest(*previous)
+			if digestErr != nil {
+				return digestErr
 			}
-			storedOperation := transactionOperationForParents(stored.ParentSnapshots)
-			if len(stored.ParentSnapshots) == 0 && storedIndex > 0 {
-				storedOperation = "update"
+			if candidateDigest == previousDigest {
+				result = transactionResult(deck, target, recordPath, root, request.Operation, dryRun, true, previous, previous)
+				result.Unchanged = true
+				return nil
 			}
-			if stored.Snapshot != candidate.Snapshot || storedOperation != request.Operation || !storedExpectationMatches(request, record, storedIndex) {
-				return fmt.Errorf("request_id %q was already used with a different complete-slide payload or operation", request.RequestID)
-			}
-			result = transactionResult(deck, target, recordPath, root, request.Operation, dryRun, true, &stored, &stored)
-			result.PreviousSnapshot = storedPreviousSnapshot(record, storedIndex)
-			return nil
 		}
 		inventory, err := requirements.LoadInventory(root, document.Manifest.ID)
 		if err != nil {
@@ -415,16 +408,16 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 				return fmt.Errorf("slide %q belongs to deck %q, not %q", request.Slide.ID, existing.DeckID, deck.ID)
 			}
 			if len(heads) > 1 {
-				return fmt.Errorf("slide transaction has divergent heads %s; preserve every revision and submit operation reconcile with expected_snapshots containing every head", strings.Join(heads, ", "))
+				return fmt.Errorf("slide transaction has divergent heads %s; preserve the file in Git and combine the authored content explicitly", strings.Join(heads, ", "))
 			}
-			if len(heads) != 1 || request.ExpectedSnapshot != heads[0] {
+			if len(heads) != 1 || (request.ExpectedSnapshot != "" && request.ExpectedSnapshot != heads[0]) {
 				actual := "absent"
 				if len(heads) == 1 {
 					actual = heads[0]
 				}
 				return fmt.Errorf("expected_snapshot mismatch: got %q, current is %q", request.ExpectedSnapshot, actual)
 			}
-			revision.ParentSnapshots = []string{heads[0]}
+			revision.ParentSnapshots = nil
 			if recordExists && previous != nil {
 				if _, changed := slideTransactionDiff(deck, previous, &revision); len(changed) == 0 {
 					// Republishing the current revision unchanged (apply-slide
@@ -434,30 +427,23 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 					return nil
 				}
 			}
-		} else {
-			if !recordExists || existing == nil {
-				return fmt.Errorf("reconcile requires an existing complete-slide transaction with divergent heads")
-			}
-			if len(heads) < 2 {
-				return fmt.Errorf("slide transaction has no divergent heads to reconcile; use operation update with expected_snapshot %q", firstSnapshot(heads))
-			}
-			if !sameSnapshotSet(request.ExpectedSnapshots, heads) {
-				return fmt.Errorf("expected_snapshots mismatch: got %s, divergent heads are %s", strings.Join(sortedSnapshotCopy(request.ExpectedSnapshots), ", "), strings.Join(heads, ", "))
-			}
-			revision.ParentSnapshots = append([]string{}, heads...)
+
 		}
 
-		revision.Snapshot, err = saga.SlideRevisionSnapshot(revision)
+		revision.Snapshot, err = saga.SlideContentDigest(revision)
 		if err != nil {
 			return err
 		}
 		revision.CreatedAt = time.Now().UTC()
 		record.Current = revision.Snapshot
-		record.Revisions = append(record.Revisions, revision)
+		record.Revisions = []saga.SlideTransactionRevision{revision}
 		if len(record.Revisions) > saga.MaxSlideRevisions {
 			return fmt.Errorf("slide revision limit of %d reached", saga.MaxSlideRevisions)
 		}
 		encodedRecord, marshalErr := json.Marshal(record)
+		if marshalErr == nil {
+			marshalErr = json.Unmarshal(encodedRecord, &record)
+		}
 		if marshalErr != nil {
 			return marshalErr
 		}
@@ -783,7 +769,17 @@ func validateTransactionCriteria(document *saga.Saga, items []saga.TransactionIt
 			if story == nil || story.CurrentRevision == nil {
 				return fmt.Errorf("item %q link %q criterion story has no single current revision", item.Item.ID, link.ID)
 			}
-			currentRevision, _ := livingid.Build(livingid.Reference{SagaID: document.Manifest.ID, Kind: livingid.KindRevision, ParentID: target.ParentID, ID: story.CurrentRevision.ID})
+			currentRevision, _ := livingid.Revision(document.Manifest.ID, target.ParentID, story.CurrentRevision.ID)
+			if !currentrecord.ValidDigest(currentRevision) {
+				pins, err := currentrecord.AuditPins(document.Root)
+				if err != nil {
+					return err
+				}
+				currentRevision, err = pins.Resolve(currentRevision)
+				if err != nil {
+					return err
+				}
+			}
 			if link.StoryRevision != currentRevision {
 				return fmt.Errorf("item %q link %q story_revision is stale (got %q, current is %q)", item.Item.ID, link.ID, link.StoryRevision, currentRevision)
 			}
@@ -879,43 +875,6 @@ func sortedUniqueTransactionIDs(values []string) []string {
 	return result
 }
 
-func transactionOperationForParents(parents []string) string {
-	switch len(parents) {
-	case 0:
-		return "create"
-	case 1:
-		return "update"
-	default:
-		return "reconcile"
-	}
-}
-
-func storedPreviousSnapshot(record saga.SlideTransactionRecord, index int) string {
-	if index < 0 || index >= len(record.Revisions) {
-		return ""
-	}
-	if parents := record.Revisions[index].ParentSnapshots; len(parents) > 0 {
-		return sortedSnapshotCopy(parents)[0]
-	}
-	if index > 0 { // Parent edges omitted by records written before the DAG field.
-		return record.Revisions[index-1].Snapshot
-	}
-	return ""
-}
-
-func storedExpectationMatches(request SlideTransactionRequest, record saga.SlideTransactionRecord, index int) bool {
-	switch request.Operation {
-	case "create":
-		return request.ExpectedSnapshot == "absent"
-	case "update":
-		return request.ExpectedSnapshot == storedPreviousSnapshot(record, index)
-	case "reconcile":
-		return sameSnapshotSet(request.ExpectedSnapshots, record.Revisions[index].ParentSnapshots)
-	default:
-		return false
-	}
-}
-
 func validSnapshotSet(values []string) bool {
 	seen := map[string]bool{}
 	for _, value := range values {
@@ -944,17 +903,6 @@ func sameSnapshotSet(left, right []string) bool {
 	return reflect.DeepEqual(l, r)
 }
 
-func firstSnapshot(values []string) string {
-	if len(values) == 0 {
-		return "absent"
-	}
-	return values[0]
-}
-
-// slideTransactionContent returns the slide asset and, for a diagram-sourced
-// request, the canonical diagram source it was rendered from. A diagram fills
-// an omitted media_type with SVG; the rendered SVG's accessible name and
-// summary are the slide title and takeaway.
 func slideTransactionContent(base string, request *SlideTransactionRequest) ([]byte, string, []byte, error) {
 	if request.Diagram == nil {
 		asset, extension, err := readSlideTransactionAsset(base, request.Asset)

@@ -1,7 +1,7 @@
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
-import { codeDigest, runCLI, type SagaFixture } from "../support/fixture-builder.js";
+import { currentRecordPin, codeDigest, git, runCLI, type SagaFixture } from "../support/fixture-builder.js";
 
 function navigationBoard(saga: SagaFixture, withSection = false) {
   const run = (...args: string[]) => {
@@ -13,7 +13,7 @@ function navigationBoard(saga: SagaFixture, withSection = false) {
     writeFileSync(path, JSON.stringify(value));
     return path;
   };
-  const pin = (kind: string, id: string) => ({ target: `urn:change-saga:wave-one:${kind}:${id}`, revision: `urn:change-saga:wave-one:${kind}:${id}:revision:r1` });
+  const pin = (kind: string, id: string) => currentRecordPin(saga, kind, id);
   run("inventory", "adopt-format", "--format", "2", saga.sagaRoot);
   run("data-entity", "add", "--id", "record", "--from", file("record", { name: "Saved record", explanation: "A saved record.", intent: "proposed", baseline: "none", fields: [{ id: "id", name: "id", type: "uuid" }] }), "--repo", saga.sourceRepo, saga.sagaRoot);
   for (const id of ["local", "remote"]) {
@@ -21,14 +21,23 @@ function navigationBoard(saga: SagaFixture, withSection = false) {
   }
   // Deliberately author z before a: link resolution must use instance identity,
   // not incidental DOM order, while each repeat retains its own deep link.
-  run("whiteboard", "publish", "--id", "data-model", "--name", "Navigation board", "--revision", "r1", "--from", file("board", { version: 1, width: 2000, height: 1200, elements: [
+  run("whiteboard", "publish", "--id", "data-model", "--name", "Navigation board", "--from", file("board", { version: 1, width: 2000, height: 1200, elements: [
     ...(withSection ? [{id:"model-section",kind:"group",shape:"section",label:"Local and remote",x:10,y:20,width:1800,height:1100,style:"normal"}] : []),
     { id: "z-copy", kind: "frame", label: "Second local", x: 1100, y: 50, width: 600, height: 300, style: "normal", source: pin("erd", "local") },
     { id: "a-first", kind: "frame", label: "First local", x: 50, y: 50, width: 600, height: 300, style: "normal", source: pin("erd", "local") },
     { id: "source-note", kind: "text", label: "Read local diagram", x: 50, y: 450, width: 700, height: 80, style: "normal", source: pin("erd", "local") },
     { id: "remote", kind: "frame", label: "Remote", x: 50, y: 700, width: 600, height: 300, style: "normal", source: pin("erd", "remote") }
   ] }), saga.sagaRoot);
-  run("erd", "revise", "--id", "local", "--from", join(saga.root, "local.json"), "--revision", "r2", "--parent", pin("erd", "local").revision, "--repo", saga.sourceRepo, saga.sagaRoot);
+  const oldPin = pin("erd", "local").revision;
+  // Historical content is available only because the real repository owns it.
+  git(saga.sagaRepo, "add", ".");
+  git(saga.sagaRepo, "commit", "-m", "Document the original imported models");
+  const localPath = join(saga.root, "local.json");
+  const local = JSON.parse(readFileSync(localPath, "utf8"));
+  local.explanation = "Updated model, intentionally absent from the board.";
+  writeFileSync(localPath, JSON.stringify(local));
+  run("erd", "revise", "--id", "local", "--from", localPath, "--repo", saga.sourceRepo, saga.sagaRoot);
+  return {oldPin, newPin:pin("erd", "local").revision};
 }
 
 test("ERD links focus exact instances without replacing the whiteboard and restore history", async ({ page, saga }) => {
@@ -66,8 +75,8 @@ test("ERD links focus exact instances without replacing the whiteboard and resto
   await expect(board.locator("[data-whiteboard-focus]")).toHaveValue("");
 });
 
-test("latest ERD routes enter the board; exact historical routes and entity inspection survive", async ({ page, saga }) => {
-  navigationBoard(saga);
+test("latest ERD routes enter the board; exact Git content and entity inspection survive", async ({ page, saga }) => {
+  const {oldPin} = navigationBoard(saga);
   await page.goto(saga.baseURL + "/technical/erd/local");
   await waitForSettledSaga(page);
   await expect(page).toHaveURL(/\/technical\/erd\?focus=a-first$/);
@@ -75,9 +84,10 @@ test("latest ERD routes enter the board; exact historical routes and entity insp
   await page.locator('[data-instance-path="a-first/record"]').click();
   await expect(page.locator(".diff-drawer.open")).toBeVisible();
   await expect(page).toHaveURL(/focus=a-first$/);
-  await page.goto(saga.baseURL + "/technical/erd/local?revision=r1");
+  expect((await page.request.get(saga.baseURL + "/technical/erd/local?revision=r1")).status()).toBe(410);
+  await page.goto(saga.baseURL + "/technical/erd/local?" + new URLSearchParams({content_digest:oldPin}));
   await waitForSettledSaga(page);
-  await expect(page.locator('[data-erd-revision="r1"]')).toBeVisible();
+  await expect(page.locator('[data-technical-entity]')).toContainText("An embedded source.");
   await expect(page.locator("[data-whiteboard-view]")).toHaveCount(0);
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);
@@ -88,30 +98,30 @@ test("latest ERD routes enter the board; exact historical routes and entity insp
 
 
 test("saved ERD links match exact pins and prefer their enclosing repeated instance", async ({ page, saga }) => {
-  navigationBoard(saga);
+  const {oldPin, newPin} = navigationBoard(saga);
   await page.goto(saga.baseURL + "/technical/erd");
   await waitForSettledSaga(page);
   const board = page.locator("[data-whiteboard-view]");
   await board.locator('[data-instance-path="source-note"]').click();
   await expect(page).toHaveURL(/focus=a-first$/);
   await expect(page.locator(".diff-drawer.open")).toHaveCount(0);
-  await board.locator('[data-whiteboard-frame="z-copy"]').evaluate(row => {
-    for (const revision of ["r1", "r2"]) {
+  await board.locator('[data-whiteboard-frame="z-copy"]').evaluate((row, pins) => {
+    for (const [revision, digest] of [["r1", pins.oldPin], ["r2", pins.newPin]]) {
       const link = document.createElement("a");
       link.id = "saved-" + revision;
-      link.href = "/technical/erd/local?revision=" + revision;
+      link.href = "/technical/erd/local?" + new URLSearchParams({content_digest:digest});
       link.textContent = "Read saved " + revision;
       row.append(link);
     }
-  });
+  }, {oldPin, newPin});
   await page.locator("#saved-r1").evaluate((link: HTMLAnchorElement) => link.click());
   await expect(page).toHaveURL(/focus=z-copy$/);
   await expect(board.locator("[data-whiteboard-focus]")).toHaveValue("z-copy");
-  await expect(board.locator('[data-whiteboard-frame="z-copy"]')).toHaveAttribute("data-whiteboard-source-href", "/technical/erd/local?revision=r1");
+  await expect(board.locator('[data-whiteboard-frame="z-copy"]')).toHaveAttribute("data-whiteboard-source-href", "/technical/erd/local?" + new URLSearchParams({content_digest:oldPin}));
   // r2 exists but is absent from this board: never silently focus its r1 copy.
   await page.locator("#saved-r2").evaluate((link: HTMLAnchorElement) => link.click());
-  await expect(page).toHaveURL(/\/technical\/erd\/local\?revision=r2$/);
-  await expect(page.locator('[data-erd-revision="r2"]')).toBeVisible();
+  await expect(page).toHaveURL(saga.baseURL + "/technical/erd/local?" + new URLSearchParams({content_digest:newPin}));
+  await expect(page.locator('[data-technical-entity]')).toContainText("Updated model, intentionally absent from the board.");
   await page.goBack();
   await expect(page).toHaveURL(/focus=z-copy$/);
   await expect(board.locator("[data-whiteboard-focus]")).toHaveValue("z-copy");
@@ -128,12 +138,12 @@ function nativeModel(saga: SagaFixture, stories = false) {
     writeFileSync(path, JSON.stringify(value));
     return path;
   };
-  const pin = (id: string) => ({ target: `urn:change-saga:wave-one:data-entity:${id}`, revision: `urn:change-saga:wave-one:data-entity:${id}:revision:r1` });
+  const pin = (id: string) => currentRecordPin(saga, "data-entity", id);
   const code = (id: string, start: number, note: string) => ({ id, commit: "HEAD", path: "src/app.go", start, end: start, note });
   run("inventory", "adopt-format", "--format", "2", saga.sagaRoot);
   run("data-entity", "add", "--id", "edit", "--from", file("edit", {name:"Local edit", explanation:"Authored directly in the model.", intent:"implemented", code:[code("edit",3,"Local edit evidence.")], fields:[{id:"id",name:"id",type:"uuid"}]}), "--delivery", "HEAD", "--repo", saga.sourceRepo, saga.sagaRoot);
   run("data-entity", "add", "--id", "record", "--from", file("record", {name:"Saved record", explanation:"A shared record.", intent:"implemented", fields:[{id:"id",name:"id",type:"uuid"}], code:[code("saved",3,"Entity evidence at its saved commit.")], relationships:[{id:"sync",meaning:"production",destination:pin("edit"),label:"synchronized from",flow:"destination_to_owner",explanation:"A saved edit produces a shared record.",intent:"implemented",code:[code("sync-code",4,"Relationship evidence at its saved commit.")]}]}), "--delivery", "HEAD", "--repo", saga.sourceRepo, saga.sagaRoot);
-  run("whiteboard", "publish", "--id", "data-model", "--name", "One cohesive model", "--revision", "r1", "--from", file("native-board", {version:1,width:3200,height:1500,reveal:"fade",elements:[
+  run("whiteboard", "publish", "--id", "data-model", "--name", "One cohesive model", "--from", file("native-board", {version:1,width:3200,height:1500,reveal:"fade",elements:[
     {id:"delivery",kind:"group",shape:"section",label:"Delivery",x:50,y:150,width:1000,height:850,style:"normal",color:"blue"},
     {id:"edit",parent:"delivery",kind:"node",shape:"entity",label:"Local edit",summary:"Captures local work before delivery.",x:80,y:150,width:500,height:240,style:"normal",source:pin("edit"),fields:[{name:"id",type:"uuid"}]},
     {id:"shared",kind:"group",shape:"section",label:"Shared records",x:2100,y:150,width:1000,height:850,style:"normal",color:"green"},
@@ -146,12 +156,12 @@ function nativeModel(saga: SagaFixture, stories = false) {
   if (stories) {
     run("add-deck", "--feature", "wave-one", "--id", "record-flow", "--title", "Record flow", "--objective", "Explain shared records.", saga.sagaRoot, "Record flow");
     const story = "urn:change-saga:wave-one:story:record-story";
-    run("story", "add", "--feature", "wave-one", "--id", "record-story", "--revision", "r1", "--event", "proposed", "--title", "Read shared records", "--statement", "As a reader I can read shared records.", "--criterion", "saved=The accepted record is readable", saga.sagaRoot);
+    run("story", "add", "--feature", "wave-one", "--id", "record-story", "--title", "Read shared records", "--statement", "As a reader I can read shared records.", "--criterion", "saved=The accepted record is readable", saga.sagaRoot);
     run("apply-slide", "--from", file("record-slide", {
       version:1,operation:"create",request_id:"record-slide",deck:"record-flow",expected_snapshot:"absent",
       slide:{id:"record-slide",title:"Record flow",rank:10,intent:"explain",layout:"diagram",takeaway:"Saved records retain their evidence.",reading_order:["record"]},
       diagram:{version:1,width:800,height:400,elements:[{id:"record",kind:"node",shape:"rect",label:"Saved record",x:50,y:50,width:400,height:200,style:"normal"}]},
-      items:[{id:"record",rank:10,kind:"node",label:"Recorded implementation element",description:"Reads this exact saved definition.",selector:{type:"element",element_id:"record"},documentation:pin("record"),evidence:[{version:2,references:[{commit:saga.identity.head,path:"src/app.go",start:3,end:3,digest:codeDigest(saga.sourceRepo,saga.identity.head,"src/app.go",3),note:"This real slide explains the shared record."}]}],criterion_links:[{id:"record-saved",criterion:story+":criterion:saved",story_revision:story+":revision:r1",rationale:"This implementation element explains reading a saved record."}]}]
+      items:[{id:"record",rank:10,kind:"node",label:"Recorded implementation element",description:"Reads this exact saved definition.",selector:{type:"element",element_id:"record"},documentation:pin("record"),evidence:[{version:2,references:[{commit:saga.identity.head,path:"src/app.go",start:3,end:3,digest:codeDigest(saga.sourceRepo,saga.identity.head,"src/app.go",3),note:"This real slide explains the shared record."}]}],criterion_links:[{id:"record-saved",criterion:story+":criterion:saved",story_revision:currentRecordPin(saga,"story","record-story").revision,rationale:"This implementation element explains reading a saved record."}]}]
     }), "--repo", saga.sourceRepo, saga.sagaRoot);
   }
 
@@ -166,7 +176,7 @@ test("native ERD fields appear on zoom and focus with explicit overrides @critic
     ]},
     {id:"audit",parent:"identity",kind:"node",shape:"entity",label:"audit",x:500,y:100,width:400,height:230,style:"normal",fields:[{name:"event_id",type:"uuid",key:"pk"}]}
   ]}));
-  const published = runCLI(saga,["whiteboard","publish","--id","data-model","--name","Column visibility regression","--revision","r1","--from",path,saga.sagaRoot]);
+  const published = runCLI(saga,["whiteboard","publish","--id","data-model","--name","Column visibility regression","--from",path,saga.sagaRoot]);
   expect(published.status,published.stdout+published.stderr).toBe(0);
   await page.goto(saga.baseURL+"/technical/erd"); await waitForSettledSaga(page);
   const board=page.locator('[data-whiteboard-view]'),entity=board.locator('[data-instance-path="identity/users"]');
@@ -200,7 +210,7 @@ test("native ERD fields appear on zoom and focus with explicit overrides @critic
   await board.getByRole('button',{name:'Fit board',exact:true}).click();
   await expect(field).toBeVisible();
   await expect(board).toHaveAttribute('data-whiteboard-detail-mode','all');
-  await expect(board).toHaveAttribute('data-whiteboard-revision','r1');
+  await expect(board).toHaveAttribute('data-whiteboard-content-digest',/^sha256:[0-9a-f]{64}$/);
   await page.reload(); await waitForSettledSaga(page);
   await expect(board).toHaveAttribute('data-whiteboard-detail-mode','auto');
   await expect(field).toBeHidden();
@@ -255,7 +265,7 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await expect(record.locator('[data-diagram-detail="entity"]')).toBeVisible();
   expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(false);
   await record.focus(); await page.keyboard.press("Enter");
-  await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", /data-entity:record:revision:r1$/);
+  await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", /^sha256:[0-9a-f]{64}$/);
   await expect(board.locator("[data-whiteboard-inspection]")).toBeHidden();
   await expect(page.locator('.drawer-body [data-file-path="src/app.go"]')).toContainText("Entity evidence at its saved commit.");
   await expect(page.locator('.drawer-body [data-evidence-integrity="verified"]')).toBeVisible();
@@ -327,14 +337,14 @@ test("section and imported-source focus share history without carrying a source 
   await expect(select.locator('optgroup[label="Imported sources"]')).toHaveAttribute("hidden", "");
   await board.locator('[data-whiteboard-focus-frame="a-first"]').evaluate((node: HTMLButtonElement) => node.click());
   await expect(select).toHaveValue("a-first");
-  await expect(evidence).toHaveAttribute("data-documentation-revision", /erd:local:revision:r1$/);
+  await expect(evidence).toHaveAttribute("data-documentation-revision", /^sha256:[0-9a-f]{64}$/);
   await select.selectOption("model-section");
   await expect(page).toHaveURL(/focus=model-section$/);
   await expect(evidence).toBeHidden();
   await expect(evidence).not.toHaveAttribute("data-documentation-target");
   await page.goBack();
   await expect(select).toHaveValue("a-first");
-  await expect(evidence).toHaveAttribute("data-documentation-revision", /erd:local:revision:r1$/);
+  await expect(evidence).toHaveAttribute("data-documentation-revision", /^sha256:[0-9a-f]{64}$/);
   await page.goForward();
   await expect(select).toHaveValue("model-section");
   await expect(evidence).not.toHaveAttribute("data-documentation-revision");
@@ -656,10 +666,10 @@ test("role reassignment opens an existing whiteboard without a duplicate technic
     { id: "section", kind: "group", shape: "section", label: "Existing section", x: 10, y: 10, width: 700, height: 400, style: "normal" }
   ] }));
   for (const id of ["data-model", "existing-model"]) {
-    run("whiteboard", "publish", "--id", id, "--revision", "r1", "--name", "Original " + id, "--from", source, saga.sagaRoot);
-    run("whiteboard", "publish", "--id", id, "--revision", "r2", "--parent", "r1", "--name", "Updated " + id, "--from", source, saga.sagaRoot);
+    run("whiteboard", "publish", "--id", id, "--name", "Original " + id, "--from", source, saga.sagaRoot);
+    run("whiteboard", "publish", "--id", id, "--name", "Updated " + id, "--from", source, saga.sagaRoot);
   }
-  const before = run("whiteboard", "get", "--id", "existing-model", "--revision", "r1", saga.sagaRoot);
+  const before = run("whiteboard", "get", "--id", "existing-model", saga.sagaRoot);
   run("whiteboard", "assign-role", "--id", "existing-model", "--role", "erd", "--expect", "data-model", saga.sagaRoot);
   run("whiteboard", "rename", "--id", "existing-model", "--name", "Renamed model", saga.sagaRoot);
   await page.goto(saga.baseURL + "/technical");
@@ -675,11 +685,8 @@ test("role reassignment opens an existing whiteboard without a duplicate technic
   await waitForSettledSaga(page);
   await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-id", "existing-model");
   await expect(page.getByRole("heading", { name: "Renamed model", exact: true })).toBeVisible();
-  await page.goto(saga.baseURL + "/technical/whiteboards/existing-model?revision=r1");
-  await waitForSettledSaga(page);
-  await expect(page.locator("[data-whiteboard-view]")).toHaveAttribute("data-whiteboard-revision", "r1");
-  await expect(page.getByRole("heading", { name: "Original existing-model", exact: true })).toBeVisible();
-  expect(run("whiteboard", "get", "--id", "existing-model", "--revision", "r1", saga.sagaRoot)).toBe(before);
+  expect((await page.request.get(saga.baseURL + "/technical/whiteboards/existing-model?revision=r1")).status()).toBe(410);
+  expect(run("whiteboard", "get", "--id", "existing-model", saga.sagaRoot)).toBe(before);
   run("whiteboard", "assign-role", "--id", "data-model", "--role", "erd", "--expect", "existing-model", saga.sagaRoot);
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);

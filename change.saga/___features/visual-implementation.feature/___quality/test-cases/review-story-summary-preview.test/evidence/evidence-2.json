@@ -1,32 +1,32 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:aa28931e3728393db354c3c28f30fd2ded8d99fb66087e650b438169c6c6f1bb",
+      "end": 90,
+      "path": "internal/server/storylinks.go",
+      "start": 86
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:98ac5b4ee8977b65683779371b497dea5e429ffcb7a4976a683245c4638bcb94",
+      "end": 154,
+      "path": "internal/server/storylinks.go",
+      "start": 150
+    }
+  ],
+  "created_at": "2026-10-16T23:24:08Z",
   "id": "evidence-2",
-  "test_case": "urn:change-saga:change-saga:test-case:review-story-summary-preview",
-  "test_revision": "urn:change-saga:change-saga:test-case:review-story-summary-preview:revision:r1",
+  "request_id": "saga-evidence-review-story-summary-preview-evidence-2",
   "role": "implementation_under_test",
   "steps": [
     "hover"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/server/storylinks.go",
-      "start": 86,
-      "end": 90,
-      "digest": "sha256:aa28931e3728393db354c3c28f30fd2ded8d99fb66087e650b438169c6c6f1bb"
-    },
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/server/storylinks.go",
-      "start": 150,
-      "end": 154,
-      "digest": "sha256:98ac5b4ee8977b65683779371b497dea5e429ffcb7a4976a683245c4638bcb94"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:08Z",
-  "request_id": "saga-evidence-review-story-summary-preview-evidence-2"
+  "test_case": "urn:change-saga:change-saga:test-case:review-story-summary-preview",
+  "test_revision": "sha256:9de5b41b6c0db8b6255d48b9d9d070c3836b49953e7be327aac381c688cee4b1",
+  "verifications": [],
+  "version": 5
 }

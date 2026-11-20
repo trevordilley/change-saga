@@ -5,6 +5,10 @@ package grammar
 // repair, claims, and the read-only commands. With the living
 // record writers in commands they make the table every command the CLI runs.
 var contentCommands = []Command{
+	{Name: "normalize", Status: StatusImplemented, Mutates: true, Writes: []string{"current-record"},
+		Usage:   "change-saga normalize [--json] <saga>",
+		Summary: "Normalize unambiguous legacy content to current records while preserving exact evidence pins; Git owns history.",
+		Flags:   []Flag{jsonFlag}, Positionals: sagaOnly},
 	{
 		Name: "add-chapter", Status: StatusImplemented, Mutates: true, Writes: []string{"chapter"},
 		Usage:   "change-saga add-chapter (--feature ID | --app designsystem) [flags] <saga> <name>",
@@ -240,7 +244,7 @@ var contentCommands = []Command{
 		Positionals: []string{"<saga>"},
 	},
 	{
-		Name: "prototype add", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-revision"},
+		Name: "prototype add", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-definition-digest"},
 		Usage:   "change-saga prototype add --feature ID --id ID --title TEXT --path PATH [--root DIR] [--revision ID] [--commit REV] [--state STATE] [flags] <saga>",
 		Summary: "add a prototype: an HTML file committed in the project, which the Saga points at rather than copies; it goes stale when the file changes",
 		Flags: []Flag{
@@ -259,7 +263,7 @@ var contentCommands = []Command{
 		Positionals: []string{"<saga>"},
 	},
 	{
-		Name: "prototype update", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype-revision"},
+		Name: "prototype update", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype-definition-digest"},
 		Usage:   "change-saga prototype update --prototype URN [--revision ID] [--commit REV] [--title TEXT] [--state STATE] [flags] <saga>",
 		Summary: "record a new version of a prototype after its file changed and was committed",
 		Flags: []Flag{
@@ -275,7 +279,7 @@ var contentCommands = []Command{
 		Positionals: []string{"<saga>"},
 	},
 	{
-		Name: "prototype add-external", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-revision"},
+		Name: "prototype add-external", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-definition-digest"},
 		Usage:   "change-saga prototype add-external --feature ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
 		Summary: "add a prototype that lives outside the Saga",
 		Flags: []Flag{
@@ -297,7 +301,7 @@ var contentCommands = []Command{
 		Positionals: []string{"<saga>"},
 	},
 	{
-		Name: "prototype revise", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype-revision"},
+		Name: "prototype revise", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype-definition-digest"},
 		Usage:   "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
 		Summary: "append a complete immutable prototype revision",
 		Flags: []Flag{

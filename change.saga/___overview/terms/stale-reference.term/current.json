@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:4db6976c84350bcf9762db5db8614ea472cfa4719b5cadeefb1c3eaf911e7181",
+        "end": 40,
+        "path": "internal/coderesolve/resolve.go",
+        "start": 23
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:1ade6cc9ad4a1925e0ea8039ea70a60cc0a340a2420a77e2363b3da6c6311ded",
+        "end": 50,
+        "path": "internal/coverage/coverage.go",
+        "start": 43
+      }
+    ],
+    "definition": "A code reference whose selected bytes changed, disappeared, or can no longer be verified at the viewed commit. It owns no changed code until it is re-authored. This is code-evidence staleness, not the same as a stale criterion relation, which reflects changed requirement meaning.",
+    "name": "Stale reference",
+    "stories": [
+      "urn:change-saga:change-saga:story:changed-code-explained",
+      "urn:change-saga:change-saga:story:shared-product-language"
+    ],
+    "term": "urn:change-saga:change-saga:term:stale-reference"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:stale-reference"
+  }
+}

@@ -114,7 +114,7 @@ func relationCommand(ctx context.Context, args []string, out *bytes.Buffer) erro
 // addStory adds a proposed story with one criterion, "fast", to feature.
 func addStory(t *testing.T, root, feature, id string, personas ...string) livingMutationOutput {
 	t.Helper()
-	args := []string{"add", root, "--feature", feature, "--id", id, "--revision", "r1", "--event", "proposed",
+	args := []string{"add", root, "--feature", feature, "--id", id,
 		"--title", id, "--statement", "As a user I can " + id, "--priority", "must", "--criterion", "fast=It finishes promptly"}
 	for _, persona := range personas {
 		args = append(args, "--persona", persona)
@@ -124,8 +124,8 @@ func addStory(t *testing.T, root, feature, id string, personas ...string) living
 
 func acceptStory(t *testing.T, root, story string) {
 	t.Helper()
-	mustLiving(t, "story set-state", storyCommand, "set-state", root, "--story", story, "--event", "accepted",
-		"--parent", story+":event:proposed", "--state", "accepted")
+	mustLiving(t, "story set-state", storyCommand, "set-state", root, "--story", story,
+		"--state", "accepted")
 }
 
 func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
@@ -256,20 +256,15 @@ func TestPersonaAddReviseAndSetState(t *testing.T) {
 		t.Fatalf("a duplicate persona must be refused: %v", err)
 	}
 
-	revised := mustLiving(t, "persona revise", personaCommand, "revise", root, "--persona", persona, "--revision", "r2",
-		"--parent", persona+":revision:r1", "--name", "Store admin", "--description", "Runs one store")
-	if !reflect.DeepEqual(revised.CurrentHeads, []string{persona + ":revision:r2"}) {
+	revised := mustLiving(t, "persona revise", personaCommand, "revise", root, "--persona", persona,
+		"--name", "Store admin", "--description", "Runs one store")
+	if len(revised.CurrentHeads) != 0 || !strings.HasSuffix(revised.Path, "/current.json") {
 		t.Fatalf("persona revise = %#v", revised)
 	}
-	output.Reset()
-	if err := Persona(context.Background(), []string{"revise", root, "--persona", persona, "--revision", "r3",
-		"--parent", persona + ":revision:r1", "--name", "Stale", "--description", "Stale"}, &output); err == nil || !strings.Contains(err.Error(), "every current head") {
-		t.Fatalf("a stale persona parent must be refused: %v", err)
-	}
 
-	retired := mustLiving(t, "persona set-state", personaCommand, "set-state", root, "--persona", persona, "--event", "retired",
-		"--parent", persona+":event:active", "--state", "retired", "--reason", "No longer served")
-	if !reflect.DeepEqual(retired.EventIDs, []string{"retired"}) {
+	retired := mustLiving(t, "persona set-state", personaCommand, "set-state", root, "--persona", persona,
+		"--state", "retired", "--reason", "No longer served")
+	if len(retired.EventIDs) != 0 {
 		t.Fatalf("persona set-state = %#v", retired)
 	}
 	document, err := requirements.Load(root, "atomic")
@@ -297,7 +292,7 @@ func TestCreateCommandsRequireAnFeatureAmongSeveral(t *testing.T) {
 		run  func(*bytes.Buffer) error
 	}{
 		{"story add", func(out *bytes.Buffer) error {
-			return Story(ctx, []string{"add", root, "--persona", testPersonaURN, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, out)
+			return Story(ctx, []string{"add", root, "--persona", testPersonaURN, "--id", "s", "--title", "S", "--statement", "S", "--priority", "must"}, out)
 		}},
 		{"citation add", func(out *bytes.Buffer) error {
 			return Citation(ctx, []string{"add", root, "--id", "c", "--kind", "url", "--title", "C", "--reference", "https://example.test/c"}, out)
@@ -306,16 +301,16 @@ func TestCreateCommandsRequireAnFeatureAmongSeveral(t *testing.T) {
 			return Relation(ctx, []string{"add", root, "--id", "r", "--type", "refines", "--from", story, "--to", story + ":criterion:fast", "--rationale", "R"}, out)
 		}},
 		{"prototype add-html", func(out *bytes.Buffer) error {
-			return Prototype(ctx, []string{"add-html", root, "--id", "p", "--revision", "r1", "--title", "P", "--source", source}, out)
+			return Prototype(ctx, []string{"add-html", root, "--id", "p", "--title", "P", "--source", source}, out)
 		}},
 		{"prototype add-external", func(out *bytes.Buffer) error {
-			return Prototype(ctx, []string{"add-external", root, "--id", "p", "--revision", "r1", "--title", "P", "--url", "https://example.test/p"}, out)
+			return Prototype(ctx, []string{"add-external", root, "--id", "p", "--title", "P", "--url", "https://example.test/p"}, out)
 		}},
 		{"quality test-case add", func(out *bytes.Buffer) error {
 			return Quality(ctx, []string{"test-case", "add", root, "--id", "t", "--title", "T", "--kind", "positive", "--automation", "manual", "--step", `{"id":"s1","action":"A","expected_result":"E"}`, "--expected-result", "E"}, out)
 		}},
 		{"quality policy set", func(out *bytes.Buffer) error {
-			return Quality(ctx, []string{"policy", "set", root, "--criterion", story + ":criterion:fast", "--story-revision", story + ":revision:r1", "--require", "positive", "--rationale", "R"}, out)
+			return Quality(ctx, []string{"policy", "set", root, "--criterion", story + ":criterion:fast", "--story-content-digest", story + ":revision:r1", "--require", "positive", "--rationale", "R"}, out)
 		}},
 		{"add-deck", func(out *bytes.Buffer) error {
 			return AddDeck(ctx, []string{"--objective", "Explain.", root, "implementation"}, out)
@@ -346,15 +341,15 @@ func TestCreateCommandsRequireAnFeatureAmongSeveral(t *testing.T) {
 	// A story needs no persona: personas are optional, so a first story can
 	// be written before anyone is named.
 	var output bytes.Buffer
-	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, &output); err != nil {
+	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "s", "--title", "S", "--statement", "S", "--priority", "must"}, &output); err != nil {
 		t.Fatalf("story add without --persona = %v", err)
 	}
 	// Nor a priority: it is optional free text, so incremental adoption never
 	// makes an author invent one.
-	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "unprioritized", "--revision", "r1", "--event", "proposed", "--title", "U", "--statement", "U"}, &output); err != nil {
+	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "unprioritized", "--title", "U", "--statement", "U"}, &output); err != nil {
 		t.Fatalf("story add without --priority = %v", err)
 	}
-	revision, err := os.ReadFile(filepath.Join(root, "___features", testFeature+".feature", "___requirements", "stories", "unprioritized.story", "revisions", "r1.json"))
+	revision, err := os.ReadFile(filepath.Join(root, "___features", testFeature+".feature", "___requirements", "stories", "unprioritized.story", "current.json"))
 	if err != nil || strings.Contains(string(revision), "priority") {
 		t.Fatalf("a story with no priority records none: %v\n%s", err, revision)
 	}
@@ -391,19 +386,19 @@ func TestFeatureMismatchOnAnExistingRecordIsRejected(t *testing.T) {
 	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
 	story := addStory(t, root, testFeature, "checkout", testPersonaURN).Resource
 	var output bytes.Buffer
-	err := Story(context.Background(), []string{"set-state", root, "--feature", "billing", "--story", story, "--event", "accepted",
-		"--parent", story + ":event:proposed", "--state", "accepted"}, &output)
+	err := Story(context.Background(), []string{"set-state", root, "--feature", "billing", "--story", story,
+		"--state", "accepted"}, &output)
 	if err == nil || !strings.Contains(err.Error(), `is in feature "core", not "billing"`) {
 		t.Fatalf("story set-state with the wrong feature = %v", err)
 	}
-	err = Story(context.Background(), []string{"revise", root, "--feature", "billing", "--story", story, "--revision", "r2",
-		"--parent", story + ":revision:r1", "--persona", testPersonaURN, "--title", "T", "--statement", "S", "--priority", "must"}, &output)
+	err = Story(context.Background(), []string{"revise", root, "--feature", "billing", "--story", story,
+		"--persona", testPersonaURN, "--title", "T", "--statement", "S", "--priority", "must"}, &output)
 	if err == nil || !strings.Contains(err.Error(), `is in feature "core", not "billing"`) {
 		t.Fatalf("story revise with the wrong feature = %v", err)
 	}
 	// The matching feature, by ID or URN, is accepted.
 	mustLiving(t, "story set-state", storyCommand, "set-state", root, "--feature", "urn:change-saga:atomic:feature:core", "--story", story,
-		"--event", "accepted", "--parent", story+":event:proposed", "--state", "accepted")
+		"--state", "accepted")
 
 	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--id", "backend", "--title", "Backend", root, "backend"}, &output); err != nil {
 		t.Fatal(err)
@@ -617,8 +612,8 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 		}
 	}
 
-	mustLiving(t, "persona set-state", personaCommand, "set-state", root, "--persona", user, "--event", "retired",
-		"--parent", user+":event:active", "--state", "retired", "--reason", "The app no longer serves them")
+	mustLiving(t, "persona set-state", personaCommand, "set-state", root, "--persona", user,
+		"--state", "retired", "--reason", "The app no longer serves them")
 	status, raw = runAppStatus(t, root, repo)
 	if len(status.PersonaOrphans) != 1 {
 		t.Fatalf("one retirement is one persona_orphans group: %#v\n%s", status.PersonaOrphans, raw)
@@ -777,8 +772,8 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 		t.Fatalf("text status omits the gated story:\n%s", text.String())
 	}
 
-	mustLiving(t, "flag set-state", flagCommand, "set-state", root, "--flag", flag.Resource, "--event", "on",
-		"--parent", flag.Resource+":event:off", "--state", "on", "--reason", "Released")
+	mustLiving(t, "flag set-state", flagCommand, "set-state", root, "--flag", flag.Resource,
+		"--state", "on", "--reason", "Released")
 	status, raw = runAppStatus(t, root, repo)
 	if availability, gatedBy := storyRow(status); availability != "implemented_enabled" || len(gatedBy) != 0 {
 		t.Fatalf("enabled story = %s gated by %v\n%s", availability, gatedBy, raw)
@@ -878,7 +873,7 @@ func TestOmittedFeatureDefaultsAndSaysWhatItChose(t *testing.T) {
 		t.Fatalf("the created feature is reported: %q", notices.String())
 	}
 	notices.Reset()
-	if err := Story(ctx, []string{"add", root, "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "S", "--priority", "must"}, &bytes.Buffer{}); err != nil {
+	if err := Story(ctx, []string{"add", root, "--id", "pay", "--title", "Pay", "--statement", "S", "--priority", "must"}, &bytes.Buffer{}); err != nil {
 		t.Fatalf("story add with one feature: %v", err)
 	}
 	if !strings.Contains(notices.String(), `Using feature "checkout-flow", the app's only feature`) {

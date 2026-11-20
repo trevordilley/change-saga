@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-contracts-criterion-axis-reasons-70e27fe2efc1",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons",
-  "to": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:criterion-axis-reasons",
-  "scope": "self",
-  "rationale": "Steps project, stale define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:23:08.151768Z",
-  "request_id": "test-contracts-criterion-axis-reasons-70e27fe2efc1"
+  "from": "urn:change-saga:change-saga:test-case:contracts-criterion-axis-reasons",
+  "from_revision": "sha256:f9a651e14da3c3ab8dff547301057fdb937cc4a36e5983d4490d0fe839ee1c07",
+  "id": "test-contracts-criterion-axis-reasons-70e27fe2efc1",
+  "rationale": "Steps project, stale define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-contracts-criterion-axis-reasons-70e27fe2efc1",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:criterion-axis-reasons",
+  "to_revision": "sha256:94c2b8148232ca1ef74b6ccea7baa60f87f4468289794d341a0fda9cbd45af7d",
+  "type": "verifies",
+  "version": 5
 }

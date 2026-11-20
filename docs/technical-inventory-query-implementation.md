@@ -1,5 +1,10 @@
 # Technical inventory: read, coverage and reconciliation implementation
 
+> Historical implementation contract or report. Its content revision graphs and
+> parent/head workflows are superseded by [Git-owned history](git-owned-history.md).
+> Exact source evidence, implementation assertions, and saved Git view rules
+> retain their meaning; use current content digests for new authoring.
+
 Status: implemented on `feature/inventory-query-coverage-claude` over the
 records contract (format 1 and format 2 inventories, Item selections).
 The [design](technical-inventory-design.md) and

@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-label-replacement-c50e88e59c2c",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-label-replacement",
-  "to": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:preserve-or-clear",
-  "scope": "self",
-  "rationale": "Steps check-nonempty-replacement define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-label-replacement:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:18:36.989285Z",
-  "request_id": "test-core-label-replacement-c50e88e59c2c"
+  "from": "urn:change-saga:change-saga:test-case:core-label-replacement",
+  "from_revision": "sha256:8d6df8b104a9312f7e85644e61a7448508db135fc58573869276f13198e6c8ce",
+  "id": "test-core-label-replacement-c50e88e59c2c",
+  "rationale": "Steps check-nonempty-replacement define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-label-replacement-c50e88e59c2c",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:preserve-or-clear",
+  "to_revision": "sha256:6961a862af4838d5dac5d2a81754277d39242f579c1193ed4a43be26450a36fd",
+  "type": "verifies",
+  "version": 5
 }

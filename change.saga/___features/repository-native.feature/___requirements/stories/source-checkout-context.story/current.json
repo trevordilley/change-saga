@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "in-repository-checkout",
+        "statement": "When the Saga is stored inside its source checkout, opening it without --repo resolves source-backed views from that checkout."
+      },
+      {
+        "id": "companion-checkout",
+        "statement": "When the Saga is stored in a companion repository, opening it with --repo pointing at a matching source checkout resolves source-backed views from that checkout."
+      },
+      {
+        "id": "mismatch-refused",
+        "statement": "A source-backed operation refuses a checkout whose canonical repository identity differs from the Saga unless the author explicitly enables the repository-mismatch override."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can open or inspect a Saga against the intended source checkout so code-backed evidence is never silently resolved from a companion repository.",
+    "story": "urn:change-saga:change-saga:story:source-checkout-context",
+    "title": "Open the intended source context"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:source-checkout-context"
+  }
+}

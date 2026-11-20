@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "A writer must reread current heads before changing a history it no longer owns.",
+    "preconditions": [
+      "Create checkout r1, append r2 via AddCriterion safe, and retain a writer input based on r1."
+    ],
+    "steps": [
+      {
+        "action": "Try to append criterion clear as r3 using stale r1 parent.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:stale-parent-rejected"
+        ],
+        "expected_result": "A stale-parent error is returned.",
+        "id": "reject"
+      },
+      {
+        "action": "Submit a complete story revision against the old parent set through story revise and inspect the error and public history.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:stale-parent-rejected"
+        ],
+        "expected_result": "The expected current head set is identified, no revision is created, and r2 stays current.",
+        "id": "full-revision"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent",
+    "title": "Reject a stale story parent and identify the expected heads"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent"
+  }
+}

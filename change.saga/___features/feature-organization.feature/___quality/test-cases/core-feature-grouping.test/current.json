@@ -1,0 +1,94 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Keep Features and Roadmap grouping independent.",
+    "preconditions": [
+      "A built feature and two planned features exist; one planned feature has two labels, the other has none; create a theme and milestone."
+    ],
+    "steps": [
+      {
+        "action": "Open each collection and inspect its grouping choices with and without a theme.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:group-options"
+        ],
+        "expected_result": "None, Persona, Label and Milestone are available; Theme is available when themes exist.",
+        "id": "check-group-options"
+      },
+      {
+        "action": "Choose label grouping in Features and milestone grouping in Roadmap; open a feature.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:independent-preferences"
+        ],
+        "expected_result": "Each collection retains its own grouping selection.",
+        "id": "check-independent-preferences"
+      },
+      {
+        "action": "Group Roadmap by label and count the multi-label feature occurrences.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:membership-without-copying"
+        ],
+        "expected_result": "The feature appears twice, once for each assigned label.",
+        "id": "check-membership-without-copying"
+      },
+      {
+        "action": "Inspect Roadmap grouped by milestone, then label.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:unassigned-visible"
+        ],
+        "expected_result": "No milestone and Unlabeled headings remain visible.",
+        "id": "check-unassigned-visible"
+      },
+      {
+        "action": "Rename the shared label and milestone, reload a member feature, and inspect its plan and navigation.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:find-shared-names"
+        ],
+        "expected_result": "The renamed shared names are displayed.",
+        "id": "check-find-shared-names"
+      },
+      {
+        "action": "Set Features to label grouping and Roadmap to milestone grouping, then navigate into a story and back to each collection.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:independent-preferences"
+        ],
+        "expected_result": "Features retains label grouping and Roadmap retains milestone grouping.",
+        "id": "check-story-preferences"
+      },
+      {
+        "action": "Open each of those two feature occurrences and compare destination URLs and feature identity.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:membership-without-copying"
+        ],
+        "expected_result": "Both open the same canonical feature.",
+        "id": "check-canonical-group-links"
+      },
+      {
+        "action": "Inspect the features listed under No milestone and Unlabeled.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:unassigned-visible"
+        ],
+        "expected_result": "The unassigned feature itself is visible under both applicable groups.",
+        "id": "check-unassigned-membership"
+      },
+      {
+        "action": "In Features and Roadmap, filter separately by each renamed label and milestone name.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:find-shared-names"
+        ],
+        "expected_result": "Each directory displays current names and finds matching member features.",
+        "id": "check-both-directory-searches"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-feature-grouping",
+    "title": "Keep Features and Roadmap grouping independent"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-feature-grouping"
+  }
+}

@@ -18,9 +18,9 @@ import (
 	"path"
 	"strings"
 	"sync"
-
-	"github.com/twentyideas/changesaga/internal/saga"
 )
+
+const manifestName = "saga.json"
 
 // Move is one commit that moved the whole Saga from one directory to another.
 type Move struct {
@@ -66,7 +66,7 @@ func Of(ctx context.Context, repo, sagaPath string) Lineage {
 	if count := len(lineage.Moves); count > 0 {
 		oldest, before = lineage.Moves[count-1].From, lineage.Moves[count-1].Commit+"^1"
 	}
-	if born, err := output(ctx, repo, "log", "-1", "--diff-filter=A", "--format=%H", before, "--", path.Join(oldest, saga.ManifestName)); err == nil {
+	if born, err := output(ctx, repo, "log", "-1", "--diff-filter=A", "--format=%H", before, "--", path.Join(oldest, manifestName)); err == nil {
 		lineage.Born = strings.TrimSpace(born)
 	}
 	lineages.Store(key, lineage)
@@ -81,7 +81,7 @@ var lineages sync.Map
 // path. Git calls one near-identical manifest a rename of another, so a Saga
 // deleted in the commit that added a new one would otherwise pass for it.
 func moves(ctx context.Context, repo, sagaPath, head string) []Move {
-	manifest := path.Join(sagaPath, saga.ManifestName)
+	manifest := path.Join(sagaPath, manifestName)
 	log, err := output(ctx, repo, "log", "--follow", "--diff-filter=R", "--name-status", "-z", "--format=%x1e%H", head, "--", manifest)
 	if err != nil {
 		return nil
@@ -95,7 +95,7 @@ func moves(ctx context.Context, repo, sagaPath, head string) []Move {
 		}
 		commit := strings.TrimSpace(fields[0])
 		status, from, to := strings.TrimSpace(fields[1]), fields[2], fields[3]
-		if !strings.HasPrefix(status, "R") || path.Base(from) != saga.ManifestName || path.Base(to) != saga.ManifestName || path.Dir(to) != want {
+		if !strings.HasPrefix(status, "R") || path.Base(from) != manifestName || path.Base(to) != manifestName || path.Dir(to) != want {
 			break
 		}
 		move := Move{Commit: commit, From: path.Dir(from), To: path.Dir(to)}
@@ -118,7 +118,7 @@ func sameSaga(ctx context.Context, repo string, move Move) bool {
 }
 
 func manifestID(ctx context.Context, repo, commit, sagaPath string) string {
-	data, err := output(ctx, repo, "show", commit+":"+path.Join(sagaPath, saga.ManifestName))
+	data, err := output(ctx, repo, "show", commit+":"+path.Join(sagaPath, manifestName))
 	if err != nil {
 		return ""
 	}

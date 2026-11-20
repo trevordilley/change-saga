@@ -63,13 +63,6 @@ func Preintegrate(ctx context.Context, args []string, out io.Writer) error {
 			}
 		}
 	}
-	fmt.Fprintf(out, "Competing heads: %d\n", len(report.CompetingHeads))
-	for _, finding := range report.CompetingHeads {
-		fmt.Fprintf(out, "  story %s: %s\n", finding.Story, finding.Explanation)
-		for _, provenance := range finding.Provenance {
-			fmt.Fprintf(out, "    %s %s revisions=%v lifecycle=%v\n", provenance.Ref, provenance.Commit, finding.RevisionHeads[provenance.Ref], finding.LifecycleHeads[provenance.Ref])
-		}
-	}
 	fmt.Fprintf(out, "Overlapping-intent candidates: %d\n", len(report.IntentCandidates))
 	for _, finding := range report.IntentCandidates {
 		fmt.Fprintf(out, "  %s <> %s (%.2f): %s\n", finding.Left, finding.Right, finding.Score, finding.Explanation)

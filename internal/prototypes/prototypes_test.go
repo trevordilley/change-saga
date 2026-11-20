@@ -67,7 +67,11 @@ func TestHTMLPrototypeIsImmutableDigestVerifiedPackage(t *testing.T) {
 		t.Fatalf("external source change affected saga: %v", err)
 	}
 
-	packaged := filepath.Join(root, filepath.FromSlash(revisionPath("core", "checkout", "r1")), "html", "index.html")
+	assetDir, err := doc.RevisionDir(doc.Prototypes[0], revision.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	packaged := filepath.Join(assetDir, "html", "index.html")
 	mustWrite(t, packaged, "tampered")
 	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "digest mismatch") {
 		t.Fatalf("tamper error = %v", err)
@@ -107,8 +111,14 @@ func TestUnresolvedAnnotationsAreQualityGapsUntilComposition(t *testing.T) {
 	root := newSaga(t)
 	prototype := "urn:change-saga:test:prototype:checkout"
 	story := "urn:change-saga:test:story:buyer"
-	storyRevision := story + ":revision:s1"
-	prototypeRevision := prototype + ":revision:r1"
+	storyRevision := "sha256:" + strings.Repeat("1", 64)
+	source := filepath.Join(t.TempDir(), "prototype.html")
+	mustWrite(t, source, "<button id=buy>Buy</button>")
+	planned := newSaga(t)
+	if _, err := AddHTML(planned, "test", AddHTMLInput{Feature: "core", ID: "checkout", Title: "Checkout", State: StateReady, SourcePath: source, CreatedAt: testTime}); err != nil {
+		t.Fatal(err)
+	}
+	prototypeRevision := prototypeContentPin(t, planned, prototype)
 	annotation, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "buy-button", Prototype: prototype, Target: story, Rationale: "Shows the primary action.", PrototypeRevision: prototypeRevision, StoryRevision: storyRevision, Selector: Selector{Kind: SelectorElement, ElementID: "buy"}, CreatedAt: testTime})
 	if err != nil {
 		t.Fatalf("annotation should not require either endpoint: %v", err)
@@ -122,8 +132,6 @@ func TestUnresolvedAnnotationsAreQualityGapsUntilComposition(t *testing.T) {
 		t.Fatalf("unresolved projection = %#v", projection)
 	}
 
-	source := filepath.Join(t.TempDir(), "prototype.html")
-	mustWrite(t, source, "<button id=buy>Buy</button>")
 	if _, err := AddHTML(root, "test", AddHTMLInput{Feature: "core", ID: "checkout", RevisionID: "r1", Title: "Checkout", State: StateReady, SourcePath: source, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
@@ -147,7 +155,7 @@ func TestRevisionPinsBecomeStaleWithoutRetargeting(t *testing.T) {
 		t.Fatal(err)
 	}
 	story := "urn:change-saga:test:story:buyer"
-	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "flow-link", Prototype: prototype, Target: story, Rationale: "Shows flow.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorProvider, ProviderID: "node-1"}, CreatedAt: testTime}); err != nil {
+	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "flow-link", Prototype: prototype, Target: story, Rationale: "Shows flow.", PrototypeRevision: prototypeContentPin(t, root, prototype), StoryRevision: "sha256:" + strings.Repeat("1", 64), Selector: Selector{Kind: SelectorProvider, ProviderID: "node-1"}, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Revise(root, "test", ReviseInput{Prototype: prototype, ID: "r2", Parents: []string{prototype + ":revision:r1"}, Title: "Flow v2", State: StateReady, Source: Source{Kind: SourceExternal, URL: "https://example.com/flow-v2"}, CreatedAt: testTime.Add(time.Minute)}); err != nil {
@@ -157,7 +165,7 @@ func TestRevisionPinsBecomeStaleWithoutRetargeting(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	projection := Compose(doc, CompositionInputs{Stories: []StoryInput{{URN: story, CurrentRevision: story + ":revision:s2", PrototypeRequired: true}}})
+	projection := Compose(doc, CompositionInputs{Stories: []StoryInput{{URN: story, CurrentRevision: "sha256:" + strings.Repeat("2", 64), PrototypeRequired: true}}})
 	reasons := strings.Join(projection.Annotations[0].StaleReasons, ",")
 	if projection.Annotations[0].Current || !strings.Contains(reasons, "prototype revision changed") || !strings.Contains(reasons, "story revision changed") {
 		t.Fatalf("stale projection = %#v", projection.Annotations[0])
@@ -225,7 +233,7 @@ func TestAnnotationIdentityIsScopedToPrototype(t *testing.T) {
 	story := "urn:change-saga:test:story:shared"
 	for _, prototypeID := range []string{"one", "two"} {
 		prototype := "urn:change-saga:test:prototype:" + prototypeID
-		if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "same", Prototype: prototype, Target: story, Rationale: "Scoped edge.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorRegion, Region: &Region{X: 0, Y: 0, Width: 1, Height: 1}}, CreatedAt: testTime}); err != nil {
+		if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "same", Prototype: prototype, Target: story, Rationale: "Scoped edge.", PrototypeRevision: "sha256:" + strings.Repeat("b", 64), StoryRevision: "sha256:" + strings.Repeat("1", 64), Selector: Selector{Kind: SelectorRegion, Region: &Region{X: 0, Y: 0, Width: 1, Height: 1}}, CreatedAt: testTime}); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -242,18 +250,18 @@ func TestSelectorValidationAndSourceCompatibility(t *testing.T) {
 		t.Fatal(err)
 	}
 	story := "urn:change-saga:test:story:story"
-	_, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "bad-region", Prototype: prototype, Target: story, Rationale: "Bad region.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorRegion, Region: &Region{X: .9, Y: 0, Width: .2, Height: .2}}, CreatedAt: testTime})
+	_, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "bad-region", Prototype: prototype, Target: story, Rationale: "Bad region.", PrototypeRevision: prototypeContentPin(t, root, prototype), StoryRevision: "sha256:" + strings.Repeat("1", 64), Selector: Selector{Kind: SelectorRegion, Region: &Region{X: .9, Y: 0, Width: .2, Height: .2}}, CreatedAt: testTime})
 	if err == nil || !strings.Contains(err.Error(), "normalized") {
 		t.Fatalf("region error = %v", err)
 	}
-	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "html-selector", Prototype: prototype, Target: story, Rationale: "Incompatible after composition.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorText, ExactText: "Hello"}, CreatedAt: testTime}); err != nil {
+	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Feature: "core", ID: "html-selector", Prototype: prototype, Target: story, Rationale: "Incompatible after composition.", PrototypeRevision: prototypeContentPin(t, root, prototype), StoryRevision: "sha256:" + strings.Repeat("1", 64), Selector: Selector{Kind: SelectorText, ExactText: "Hello"}, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	doc, err := Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
-	projection := Compose(doc, CompositionInputs{Stories: []StoryInput{{URN: story, CurrentRevision: story + ":revision:s1"}}})
+	projection := Compose(doc, CompositionInputs{Stories: []StoryInput{{URN: story, CurrentRevision: "sha256:" + strings.Repeat("1", 64)}}})
 	if projection.Annotations[0].Current || !strings.Contains(strings.Join(projection.Annotations[0].StaleReasons, ","), "incompatible") {
 		t.Fatalf("compatibility = %#v", projection)
 	}
@@ -289,11 +297,11 @@ func TestPrototypesLoadFromEveryFeatureAndCreatesNameTheirFeature(t *testing.T) 
 	}
 	prototype := "urn:change-saga:test:prototype:invoice"
 	revised, err := Revise(root, "test", ReviseInput{Prototype: prototype, ID: "r2", Parents: []string{prototype + ":revision:r1"}, Title: "Invoice v2", State: StateReady, Source: Source{Kind: SourceExternal, URL: "https://example.com/invoice-v2"}, CreatedAt: testTime.Add(time.Minute)})
-	if err != nil || revised.Path != "___features/billing.feature/___requirements/prototypes/invoice.prototype/revisions/r2.revision" {
+	if err != nil || revised.Path != "___features/billing.feature/___requirements/prototypes/invoice.prototype/current.json" {
 		t.Fatalf("revise = %#v, %v", revised, err)
 	}
 	story := "urn:change-saga:test:story:pay"
-	annotation := AddAnnotationInput{ID: "pay", Prototype: prototype, Target: story, Rationale: "Pay.", PrototypeRevision: prototype + ":revision:r2", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorProvider, ProviderID: "n1"}, CreatedAt: testTime}
+	annotation := AddAnnotationInput{ID: "pay", Prototype: prototype, Target: story, Rationale: "Pay.", PrototypeRevision: prototypeContentPin(t, root, prototype), StoryRevision: "sha256:" + strings.Repeat("1", 64), Selector: Selector{Kind: SelectorProvider, ProviderID: "n1"}, CreatedAt: testTime}
 	wrong := annotation
 	wrong.Feature = "core"
 	if _, err := AddAnnotation(root, "test", wrong); err == nil || !strings.Contains(err.Error(), "is in feature") {
@@ -372,4 +380,22 @@ func mustWrite(t *testing.T, path, value string) {
 	if err := os.WriteFile(path, []byte(value), 0o644); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func prototypeContentPin(t *testing.T, root, target string) string {
+	t.Helper()
+	doc, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	id := target[strings.LastIndex(target, ":")+1:]
+	record := doc.Find(id)
+	if record == nil || record.CurrentRevision == nil {
+		t.Fatalf("no unambiguous current prototype %s", target)
+	}
+	pin, err := RevisionURN("test", id, record.CurrentRevision.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return pin
 }

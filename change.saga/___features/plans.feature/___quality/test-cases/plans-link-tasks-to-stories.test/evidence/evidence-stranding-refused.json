@@ -1,24 +1,24 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "digest": "sha256:46fa18ebadaa9fdecdbf7964720144616cfc027315b956d9678949609a5bcb14",
+      "end": 118,
+      "path": "internal/cli/plans_test.go",
+      "start": 97
+    }
+  ],
+  "created_at": "2026-11-02T22:18:49Z",
   "id": "evidence-stranding-refused",
-  "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
-  "test_revision": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories:revision:r1",
   "role": "test_implementation",
   "steps": [
     "stranding-refused"
   ],
-  "code": [
-    {
-      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
-      "path": "internal/cli/plans_test.go",
-      "start": 97,
-      "end": 118,
-      "digest": "sha256:46fa18ebadaa9fdecdbf7964720144616cfc027315b956d9678949609a5bcb14"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-11-02T22:18:49Z"
+  "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
+  "test_revision": "sha256:72a00fd5fa61f6d535a956c6da80c0ee532a370b00d08a6c36a63fb1e72dd6d3",
+  "verifications": [],
+  "version": 5
 }

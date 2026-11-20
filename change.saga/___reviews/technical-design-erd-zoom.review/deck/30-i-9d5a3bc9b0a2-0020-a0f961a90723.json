@@ -1,17 +1,17 @@
 {
+  "description": "Zoom out, level, zoom in and fit width; + - 0 in the region; a mouse drag pans and suppresses the click it ends on; touch pans natively. Zoom keeps the centre and bound entities stay clickable.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:authored-erd-view",
-    "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+    "revision": "sha256:ee105917fcee0403a01eb9f3ffa2357d7b16993e3821e8d1ed6d58c54b58f969",
+    "target": "urn:change-saga:change-saga:component:authored-erd-view"
   },
-  "version": 4,
   "id": "controls",
-  "slide": "tdsz-review-zoom",
-  "rank": 20,
   "kind": "statement",
   "label": "Toolbar, keys, drag and touch",
-  "description": "Zoom out, level, zoom in and fit width; + - 0 in the region; a mouse drag pans and suppresses the click it ends on; touch pans natively. Zoom keeps the centre and bound entities stay clickable.",
+  "rank": 20,
   "selector": {
-    "type": "element",
-    "element_id": "controls"
-  }
+    "element_id": "controls",
+    "type": "element"
+  },
+  "slide": "tdsz-review-zoom",
+  "version": 4
 }

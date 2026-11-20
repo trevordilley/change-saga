@@ -1,10 +1,10 @@
 {
   "version": 2,
   "id": "whiteboard-history",
-  "label": "Independent whiteboard history",
+  "label": "Current whiteboards and Git history",
   "selector": {
     "type": "text",
-    "exact": "Whiteboards publish complete immutable diagram documents under independent document IDs."
+    "exact": "Whiteboards publish complete editable current documents under independent stable IDs."
   },
   "target": ""
 }

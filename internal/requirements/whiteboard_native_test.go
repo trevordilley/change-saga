@@ -5,6 +5,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
 )
 
@@ -19,6 +20,12 @@ func TestWhiteboardNativeSectionsAndRelationshipsWithoutERDRecords(t *testing.T)
 		Relationships: []Relationship{{ID: "produced-from-job", Meaning: "production", Destination: job,
 			Label: "produced from", Flow: "destination_to_owner", Explanation: "Worker renders a queued job.", Intent: IntentProposed}},
 	}), "r1")
+	if err := currentrecord.NormalizeValue(root, &job); err != nil {
+		t.Fatal(err)
+	}
+	if err := currentrecord.NormalizeValue(root, &report); err != nil {
+		t.Fatal(err)
+	}
 	ref := func(pin DocumentationLink) *diagram.SourceReference {
 		return &diagram.SourceReference{Target: pin.Target, Revision: pin.Revision}
 	}
@@ -35,7 +42,7 @@ func TestWhiteboardNativeSectionsAndRelationshipsWithoutERDRecords(t *testing.T)
 	if _, err := PublishWhiteboard(context.Background(), root, "test", "erd", "r1", "", "System data model", doc); err != nil {
 		t.Fatal(err)
 	}
-	board, err := LoadResolvedWhiteboard(root, "test", "erd", "r1")
+	board, err := LoadResolvedWhiteboard(root, "test", "erd", "")
 	if err != nil {
 		t.Fatal(err)
 	}

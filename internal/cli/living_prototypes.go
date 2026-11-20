@@ -63,7 +63,7 @@ func prototypeAddHTML(_ context.Context, args []string, out io.Writer) error {
 	name := "prototype add-html"
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable prototype id")
-	revision := flags.String("revision", "", "stable initial revision id")
+	revision := new(string)
 	title := flags.String("title", "", "prototype title")
 	source := flags.String("source", "", "single .html file or real directory containing index.html")
 	state := flags.String("state", string(prototypes.StateDraft), "draft, ready, or retired")
@@ -73,7 +73,7 @@ func prototypeAddHTML(_ context.Context, args []string, out io.Writer) error {
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *id, *revision, *title, *source); err != nil {
+	if err := requireLivingArgs(flags, *id, *title, *source); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -99,7 +99,7 @@ func prototypeAddExternal(_ context.Context, args []string, out io.Writer) error
 	name := "prototype add-external"
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable prototype id")
-	revision := flags.String("revision", "", "stable initial revision id")
+	revision := new(string)
 	title := flags.String("title", "", "prototype title")
 	state := flags.String("state", string(prototypes.StateDraft), "draft, ready, or retired")
 	external := registerExternalPrototypeFlags(flags)
@@ -109,7 +109,7 @@ func prototypeAddExternal(_ context.Context, args []string, out io.Writer) error
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *id, *revision, *title, *external.url); err != nil {
+	if err := requireLivingArgs(flags, *id, *title, *external.url); err != nil {
 		return err
 	}
 	allowlist, err := external.allowlist()
@@ -140,7 +140,7 @@ func prototypeRevise(_ context.Context, args []string, out io.Writer) error {
 	name := "prototype revise"
 	flags := commandFlags(name, commandUsage[name], out)
 	prototype := flags.String("prototype", "", "canonical prototype URN")
-	revision := flags.String("revision", "", "stable revision id")
+	revision := new(string)
 	title := flags.String("title", "", "complete revised title")
 	state := flags.String("state", string(prototypes.StateDraft), "draft, ready, or retired")
 	source := flags.String("source", "", "fresh .html file or real directory for an html revision")
@@ -149,11 +149,11 @@ func prototypeRevise(_ context.Context, args []string, out io.Writer) error {
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	var parents stringList
-	flags.Var(&parents, "parent", "current revision head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *prototype, *revision, *title); err != nil {
+	if err := requireLivingArgs(flags, *prototype, *title); err != nil {
 		return err
 	}
 	htmlRevision, externalRevision := *source != "", *external.url != "" || *external.embedURL != ""
@@ -198,9 +198,9 @@ func prototypeAnnotate(_ context.Context, args []string, out io.Writer) error {
 	id := flags.String("id", "", "stable annotation id")
 	target := flags.String("target", "", "canonical story or criterion URN the prototype is pinned to")
 	rationale := flags.String("rationale", "", "why this part of the prototype means that requirement")
-	prototypeRevision := flags.String("prototype-revision", "", "exact prototype revision URN pin")
+	prototypeRevision := flags.String("prototype-definition-digest", "", "exact prototype revision URN pin")
 	contentDigest := flags.String("prototype-content-digest", "", "exact prototype content digest pin")
-	storyRevision := flags.String("story-revision", "", "exact story revision URN the target is pinned to")
+	storyRevision := flags.String("story-content-digest", "", "exact story revision URN the target is pinned to")
 	elementID := flags.String("element-id", "", "element selector: stable id inside the prototype")
 	text := flags.String("text", "", "text selector: exact text inside the prototype")
 	region := flags.String("region", "", "region selector: normalized x,y,width,height")
@@ -216,7 +216,7 @@ func prototypeAnnotate(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	if (*prototypeRevision == "") == (*contentDigest == "") {
-		return fmt.Errorf("provide exactly one prototype pin: --prototype-revision or --prototype-content-digest")
+		return fmt.Errorf("provide exactly one prototype pin: --prototype-definition-digest or --prototype-content-digest")
 	}
 	selector, err := parsePrototypeSelector(*elementID, *text, *region, *providerID, *deepLink)
 	if err != nil {

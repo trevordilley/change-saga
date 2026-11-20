@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "review target",
+      "comment target"
+    ],
+    "code": [
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:2dac1623c1d310013b60028b2b9ef8b700f0abfb4a943cc1b51511c527ec6826",
+        "end": 207,
+        "path": "internal/saga/review.go",
+        "start": 119
+      },
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:c591225b2b2a58cfc159fd05c04544bcf76eeb4552f5d2697c1f1cbff7d9eeeb",
+        "end": 317,
+        "path": "internal/reviewstore/reviewstore.go",
+        "start": 286
+      }
+    ],
+    "definition": "The review slide, Item, or review target that keeps a thread attached to its context. A root may carry normalized drawing or note geometry, or an exact code-line anchor. Replies inherit the root target; annotation updates and deletes append to the create root. Code-line anchors remain distinct from spatial markup.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Review anchor",
+    "stories": [
+      "urn:change-saga:change-saga:story:contextual-comments",
+      "urn:change-saga:change-saga:story:review-thread-lifecycle"
+    ],
+    "term": "urn:change-saga:change-saga:term:review-anchor"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:review-anchor"
+  }
+}

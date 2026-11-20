@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-technical-cardinality-0702c604e90e",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-technical-cardinality",
-  "to": "urn:change-saga:change-saga:story:read-application-technical-design:criterion:relationships",
-  "scope": "self",
-  "rationale": "Steps render, focus, unknown define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-technical-cardinality:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:read-application-technical-design:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:16.425348Z",
-  "request_id": "test-inventory-technical-cardinality-0702c604e90e"
+  "from": "urn:change-saga:change-saga:test-case:inventory-technical-cardinality",
+  "from_revision": "sha256:5901c0225aba1181d1bb717a02163a49277b12a9e318d9a7833510d6cffce6bd",
+  "id": "test-inventory-technical-cardinality-0702c604e90e",
+  "rationale": "Steps render, focus, unknown define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-technical-cardinality-0702c604e90e",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:read-application-technical-design:criterion:relationships",
+  "to_revision": "sha256:7d4b17a9f5392660df775ec20a65b9ad14360d4704bd844948dbec4f3bc57999",
+  "type": "verifies",
+  "version": 5
 }

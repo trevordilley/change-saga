@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "human",
+        "statement": "A human-authored review action identifies the human actor."
+      },
+      {
+        "id": "delegated-ai",
+        "statement": "A review action performed by an AI on a human's behalf identifies both the AI and the human principal."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a review participant, I can see whether an action came from a human or an AI acting on a human's behalf so its authority and provenance are clear.",
+    "story": "urn:change-saga:change-saga:story:delegated-ai-attribution",
+    "title": "Understand review-action provenance"
+  },
+  "state": {
+    "reason": "Confirmed during the initial product interview.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:delegated-ai-attribution"
+  }
+}

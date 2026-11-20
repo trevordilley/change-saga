@@ -24,7 +24,7 @@ test("deprecation preserves exact code scope, board reasons and withdrawal histo
   writeFileSync(board, JSON.stringify({ version: 1, width: 600, height: 400, elements: [
     { id: "legacy", kind: "node", shape: "rect", label: "Legacy greeting", x: 20, y: 20, width: 250, height: 120, style: "normal" }
   ] }));
-  cli(["whiteboard", "publish", "--id", "legacy", "--revision", "b1", "--name", "Legacy greeting", "--from", board, saga.sagaRoot]);
+  cli(["whiteboard", "publish", "--id", "legacy", "--name", "Legacy greeting", "--from", board, saga.sagaRoot]);
   const target = "urn:change-saga:wave-one:whiteboard:legacy";
   cli(["deprecation", "add", "--id", "old-explanation", "--scope", "content", "--target", target, "--element", "legacy",
     "--reason", "This diagram describes the retired greeting flow.", "--repo", saga.sourceRepo, "--ref", ref, saga.sagaRoot]);
@@ -49,8 +49,7 @@ test("deprecation preserves exact code scope, board reasons and withdrawal histo
   await expectNoSeriousAccessibilityViolations(page);
   await page.screenshot({ path: testInfo.outputPath("deprecation-code.png"), fullPage: true });
   const dep = "urn:change-saga:wave-one:deprecation:old-code";
-  cli(["deprecation", "set-state", "--deprecation", dep, "--event", "withdraw", "--parent", dep + ":event:active",
-    "--state", "withdrawn", "--reason", "The implementation is still supported; only its explanation is obsolete.", saga.sagaRoot]);
+  cli(["deprecation", "set-state", "--deprecation", dep, "--state", "withdrawn", "--reason", "The implementation is still supported; only its explanation is obsolete.", saga.sagaRoot]);
   await page.reload();
   await page.locator("details.term-code-list > summary").click();
   await inspectDeprecation(page, "Use the replacement greeting implementation.");

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+        "digest": "sha256:0e71996736ac7aa85da8f940f72a5b006c255f084db070050be137632278cc18",
+        "end": 896,
+        "path": "internal/reviewapp/session.go",
+        "start": 883
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:6f04119cdfdfeca1c5b9951c8877a72e1478b38096ccadf1075b7e843bd3a3db",
+        "end": 896,
+        "path": "internal/reviewapp/session.go",
+        "start": 892
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:d420e057098300a6b78ca88a8ea6e2b300779683757d46635b7ab35a063d548e",
+        "end": 940,
+        "path": "internal/reviewapp/session.go",
+        "start": 938
+      }
+    ],
+    "definition": "A deterministic SHA-256 identity for the exact Saga tree and source comparison read by a query. Clients keep the same value while paging; if the underlying snapshot changes, an old cursor fails instead of mixing states. It is a read fingerprint, not a stored comparison or a Git commit.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Query snapshot",
+    "stories": [
+      "urn:change-saga:change-saga:story:bounded-query-pagination",
+      "urn:change-saga:change-saga:story:structured-ai-contract"
+    ],
+    "term": "urn:change-saga:change-saga:term:query-snapshot"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:query-snapshot"
+  }
+}

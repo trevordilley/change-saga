@@ -144,7 +144,7 @@ func TestStaleRelationIsRepinnedRatherThanRetiredAndRenamed(t *testing.T) {
 		t.Fatalf("yes re-affirms the relation it already has: %#v", yes)
 	}
 	if !hasArgument(yes[0], "relation", "urn:change-saga:checkout:relation:old") ||
-		!hasArgument(yes[0], "to-revision", "urn:change-saga:checkout:story:refund:revision:r2") {
+		!hasArgument(yes[0], "to-definition-digest", "urn:change-saga:checkout:story:refund:revision:r2") {
 		t.Fatalf("the repin names the relation and the head it advances to: %#v", yes[0])
 	}
 	no := action.Question.Options[1].Commands
@@ -256,4 +256,30 @@ func hasArgument(invocation grammar.Invocation, flag, value string) bool {
 		}
 	}
 	return false
+}
+
+func TestLegacyAmbiguityNeverSuggestsASecondReconciliationGraph(t *testing.T) {
+	story := "urn:change-saga:checkout:story:refund"
+	status := livingapp.Status{SagaID: "checkout", SagaVersion: 5, Stories: []livingapp.StoryStatus{{Story: story, RevisionHeads: []string{story + ":revision:a", story + ":revision:b"}, LifecycleHeads: []string{story + ":event:a", story + ":event:b"}}}}
+	count := 0
+	for _, action := range Derive(status, saga) {
+		if action.Category != CategoryConflict {
+			continue
+		}
+		count++
+		if action.Question == nil {
+			t.Fatal("ambiguity missing explicit choice")
+		}
+		for _, option := range action.Question.Options {
+			if len(option.Commands) != 0 {
+				t.Fatalf("legacy ambiguity suggested an ordinary writer: %#v", option.Commands)
+			}
+			if !strings.Contains(option.Effect, "Git") || !strings.Contains(option.Effect, "current.json") {
+				t.Fatalf("resolution path omitted preservation/publication: %s", option.Effect)
+			}
+		}
+	}
+	if count != 2 {
+		t.Fatalf("content and state ambiguities lost: %d", count)
+	}
 }

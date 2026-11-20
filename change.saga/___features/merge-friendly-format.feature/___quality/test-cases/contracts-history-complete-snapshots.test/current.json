@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Git retains exact prior definitions, state, reasons and attribution; Saga stores one current value.",
+    "preconditions": [
+      "Use an isolated real Git repository with a feature, persona and proposed story S. Commit the original current definition."
+    ],
+    "steps": [
+      {
+        "action": "Edit current S through story revise, commit the changed content, and query Git-backed history for its stable URN.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:auditable-requirement-history:criterion:revision-history"
+        ],
+        "expected_result": "History identifies the actual commits and authors; each committed tree contains its exact complete definition.",
+        "id": "revise"
+      },
+      {
+        "action": "Set S accepted with reason Agreed scope, commit it, and inspect the prior and current Git trees.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:auditable-requirement-history:criterion:lifecycle-history"
+        ],
+        "expected_result": "The previous state and new accepted state with its reason remain inspectable through Git; no lifecycle event graph is created.",
+        "id": "state"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-history-complete-snapshots",
+    "title": "Read earlier story content and state from real Git commits"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-history-complete-snapshots"
+  }
+}

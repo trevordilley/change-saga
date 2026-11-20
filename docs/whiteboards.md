@@ -28,8 +28,12 @@ The main essay lives in `___overview/technical-design.fragment`; supporting
 pages live in `___overview/technical-design-<page>.fragment` and open at
 `/technical/pages/<page>`. Later writes replace content while preserving fragment
 identity; Git records the prose history. `--title` sets the title on creation.
-Link with ordinary Markdown, for example `[Infrastructure](/technical/whiteboards/infrastructure)`
-or `[Retry path](/technical/whiteboards/data-flows?focus=delivery/retry)`.
+Link with ordinary Markdown, for example:
+
+```markdown
+[Infrastructure](/technical/whiteboards/infrastructure)
+[Retry path](/technical/whiteboards/data-flows?focus=delivery/retry)
+```
 
 For ERD relationships, use the renderer's `head` and `tail` markers:
 `only-one`, `zero-or-one`, `one-or-many`, or `zero-or-many`, according to the
@@ -40,7 +44,7 @@ directed arrows where direction matters, with labels explaining their meaning.
 
 Each whiteboard is a cohesive spatial document with nested sections and room to
 pan, zoom and inspect detail. All four use the shared diagram grammar and
-independent revision histories. They are authoring conventions, not new
+independent current records with history in Git. They are authoring conventions, not new
 inventory kinds or different JSON formats.
 
 ## Architecture: the context for implementation
@@ -66,22 +70,22 @@ for the question-led storyboard and evidence expectations.
 ## Named documents
 
 A Saga can hold several independent whiteboards. Each has a document ID, title
-and immutable revision history. All use the same shared diagram grammar and
+and Git-backed history. All use the same shared diagram grammar and
 whiteboard JSON contract; data models, infrastructure, data flows and architecture are
 authoring subjects, not kinds. Use `change-saga whiteboard
 publish|get|describe|check --id ID`. For example, publish separate documents:
 
 ```sh
-change-saga whiteboard publish --id data-model --revision r1 \
+change-saga whiteboard publish --id data-model \
   --name "Application data" --from data-model.json change.saga
-change-saga whiteboard publish --id infrastructure --revision r1 \
+change-saga whiteboard publish --id infrastructure \
   --name "Infrastructure" --from infrastructure.json change.saga
-change-saga whiteboard publish --id data-flows --revision r1 \
+change-saga whiteboard publish --id data-flows \
   --name "Data flows" --from data-flows.json change.saga
 ```
 
 The files contain complete diagram documents. Each board is stored under
-`___whiteboards/<board-id>/revisions/<revision-id>.json` and opens at
+`___whiteboards/<board-id>/current.json` and opens at
 `/technical/whiteboards/<id>`. `--id` always names the document; `--focus PATH`
 selects an element inside it. There is no kind selector or `diagram` command alias.
 The existing Data model page at `/technical/erd` uses `data-model` by default.
@@ -94,7 +98,7 @@ remain discoverable from the Technical Design overview. See
 archival, dry-run and concurrency checks.
 
 The [data-model authoring guide](erd-whiteboard-guide.md) gives a worked example
-of the shared grammar, revision policy and viewer. Current source adapters resolve
+of the shared grammar, current-record contract and viewer. Current source adapters resolve
 exact ERD and data-entity pins and import ERD frames. Component and system inventory
 pins are not supported, regardless of the subject or name of the whiteboard.
 Existing feature `___design` fragments are not automatically migrated.
@@ -206,8 +210,8 @@ Item metadata. The `code` field remains literal code-block text.
 Use pinned evidence instead of repository URLs in the info note. `whiteboard
 check` reports these URLs as warnings without blocking or rewriting them. When
 referenced code changes, the element reads stale in the reader and status and
-counts against health. Reassess the element and publish a new revision with the
-observed `--parent`; historical revisions keep their original pins. Current
+counts against health. Reassess the element and replace its current content and explicit pins.
+Git retains the earlier explanation. Current
 active board evidence joins `references`, `reconcile`, and living documented-code
 coverage. Review decks retain their own independent coverage.
 Overview explanations also identify their sources. A reader should be able to
@@ -219,10 +223,10 @@ it appears near another element, and a slide Item’s links retain that provenan
 Repeated appearances remain allowed and have distinct instance paths while
 sharing the same underlying source identity.
 
-Publishing creates a complete immutable revision of the selected whiteboard document.
-If an imported frame changes, adopting a different child revision is an explicit
-edit and publication; historical boards never silently follow new source heads.
-Older ERDs and revisions remain readable for compatibility. No holder semantics
+Publishing atomically replaces the selected whiteboard current document.
+Adopting changed source content is an explicit pin edit after reassessment.
+Historical boards and ERDs are read at real Git commits; no pin silently follows
+a current replacement. No holder semantics
 or inventory kinds are changed.
 
 ## Inspection and viewer behavior

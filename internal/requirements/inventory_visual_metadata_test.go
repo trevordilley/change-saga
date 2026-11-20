@@ -24,7 +24,7 @@ func TestStructuredERDIconPublicationPreservesLicense(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	revision := inventory.Pinned(pinOf("urn:change-saga:test:erd:jobs", "r1"))
+	revision := inventory.Find("urn:change-saga:test:erd:jobs").CurrentRevision
 	if revision == nil || revision.Visual == nil || revision.Diagram == nil || revision.Diagram.Elements[0].Icon != "lucide:database" {
 		t.Fatal("published ERD lost its structured icon source or visual")
 	}

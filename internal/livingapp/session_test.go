@@ -257,7 +257,7 @@ func addAcceptedStory(t *testing.T, root, id, criterion string) {
 func createDeliveryDesign(t *testing.T, root, storyID, criterionID string) {
 	t.Helper()
 	criterion, _ := livingid.Criterion("test", storyID, criterionID)
-	revision, _ := livingid.Revision("test", storyID, "r1")
+	revision := fixtureCurrentStoryPin(t, root, storyID)
 	design, _ := livingid.Design("test", livingid.DesignFragment, storyID+"-design")
 	designDir := filepath.Join(applayout.FeatureDir(root, fixtureFeature), "___design", storyID+"-design.fragment")
 	if err := os.MkdirAll(designDir, 0o755); err != nil {
@@ -333,7 +333,7 @@ func addVerifiedVerification(t *testing.T, root, storyID, criterionID string) st
 		Evidence: []coderef.Reference{{Commit: strings.Repeat("a", 40), Path: "checkout.go", Start: 1, End: 2, Digest: "sha256:" + strings.Repeat("b", 64)}}})
 	writeRecord("___verifications", saga.Verification{Version: saga.CurrentVersion, ID: id, Claim: id, Status: "verified", Method: "test", Summary: "It passed", CreatedAt: fixtureTime})
 	criterion, _ := livingid.Criterion("test", storyID, criterionID)
-	revision, _ := livingid.Revision("test", storyID, "r1")
+	revision := fixtureCurrentStoryPin(t, root, storyID)
 	verification := "urn:change-saga:test:verification:" + id
 	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{Feature: fixtureFeature, ID: "verifies-" + storyID, Type: requirements.RelationVerifies, From: verification, To: criterion, Rationale: "verified", ToRevision: revision, CreatedAt: fixtureTime, RequestID: "verifies-" + storyID}); err != nil {
 		t.Fatal(err)
@@ -361,4 +361,17 @@ func hasBlocker(values []readiness.Blocker, code string) bool {
 func errorHasCode(err error, code ErrorCode) bool {
 	var domainErr *Error
 	return errors.As(err, &domainErr) && domainErr.Code == code
+}
+
+func fixtureCurrentStoryPin(t *testing.T, root, id string) string {
+	t.Helper()
+	document, err := requirements.Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	story := document.FindStory(id)
+	if story == nil || story.CurrentRevision == nil {
+		t.Fatalf("missing fixture story %s", id)
+	}
+	return requirements.ContentPin("urn:change-saga:test:story:"+id, story.CurrentRevision.ID)
 }

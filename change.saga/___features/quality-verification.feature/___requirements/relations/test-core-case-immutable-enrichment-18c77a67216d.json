@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-case-immutable-enrichment-18c77a67216d",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment",
-  "scope": "self",
-  "rationale": "Steps check-immutable-enrichment define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:definitions-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:36.854144Z",
-  "request_id": "test-core-case-immutable-enrichment-18c77a67216d"
+  "from": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment",
+  "from_revision": "sha256:8db324105cd34d88f744c42ed347237fcb6f9a2372b57727421b5178d84a8164",
+  "id": "test-core-case-immutable-enrichment-18c77a67216d",
+  "rationale": "Steps check-immutable-enrichment define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-case-immutable-enrichment-18c77a67216d",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment",
+  "to_revision": "sha256:19c5b9e1aea31424ce435cd778db05e19775cf1ad520c2a1c67672c63dd3c342",
+  "type": "verifies",
+  "version": 5
 }

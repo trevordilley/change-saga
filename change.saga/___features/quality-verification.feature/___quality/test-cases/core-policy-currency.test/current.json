@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Keep stale policy obligations until deliberate supersession.",
+    "preconditions": [
+      "A separate criterion has a current policy requiring all three kinds and otherwise current covering cases."
+    ],
+    "steps": [
+      {
+        "action": "Change the criterion statement while preserving its identity; inspect the old policy, then append a policy pinned to the new revision that explicitly supersedes the old one.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:policy-currency"
+        ],
+        "expected_result": "The old policy is stale, all required kinds remain required and the criterion stays uncovered; the new policy restores current policy linkage.",
+        "id": "check-policy-currency"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-policy-currency",
+    "title": "Keep stale policy obligations until deliberate supersession"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-policy-currency"
+  }
+}

@@ -10,13 +10,14 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	jsonschema "github.com/santhosh-tekuri/jsonschema/v6"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
-func TestRemoveTransactionContentPreservesHistory(t *testing.T) {
+func TestRemoveCurrentSlidePreservesAssetsAndGitHistory(t *testing.T) {
 	t.Parallel()
 	for _, wholeDeck := range []bool{false, true} {
 		name := "slide"
@@ -64,6 +65,11 @@ func TestRemoveTransactionContentPreservesHistory(t *testing.T) {
 			if wholeDeck {
 				run, args = RemoveDeck, []string{"--deck", "implementation"}
 			}
+			savedCommit := commitCurrentTestDocumentation(t, root, "current slides before removal")
+			originalBytes, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
 			before := snapshotFiles(t, root)
 			dry, err := runContentJSON(t, run, append(append([]string{}, args...), "--dry-run", root)...)
 			if err != nil || !dry.DryRun || !reflect.DeepEqual(before, snapshotFiles(t, root)) {
@@ -85,12 +91,15 @@ func TestRemoveTransactionContentPreservesHistory(t *testing.T) {
 			if err := readStrictJSONPath(path, &removed); err != nil {
 				t.Fatal(err)
 			}
-			if len(removed.Revisions) != 3 || !reflect.DeepEqual(original.Revisions, removed.Revisions[:2]) {
-				t.Fatal("removal rewrote history")
+			if len(removed.Revisions) != 1 {
+				t.Fatal("secondary content history retained")
+			}
+			if got := committedCurrentTestFile(t, root, savedCommit, updated.Path); got != string(originalBytes) {
+				t.Fatal("Git lost the prior slide")
 			}
 			validateStoredSlideSchema(t, removed)
 			last, err := removed.CurrentRevision()
-			if err != nil || !last.Deleted || !reflect.DeepEqual(last.ParentSnapshots, []string{updated.Snapshot}) {
+			if err != nil || !last.Deleted || len(last.ParentSnapshots) != 0 {
 				t.Fatalf("removal event: %+v, %v", last, err)
 			}
 			for _, revision := range original.Revisions {
@@ -134,7 +143,7 @@ func TestRemoveTransactionContentPreservesHistory(t *testing.T) {
 func validateStoredSlideSchema(t *testing.T, record saga.SlideTransactionRecord) {
 	t.Helper()
 	compiler := jsonschema.NewCompiler()
-	for _, name := range []string{"v5/slide-transaction.schema.json", "v5/slide-transaction-request.schema.json", "v5/diagram.schema.json", "v4/slide.schema.json", "v4/item.schema.json", "v2/code.schema.json"} {
+	for _, name := range []string{"v5/slide-current.schema.json", "v5/slide-transaction-request.schema.json", "v5/diagram.schema.json", "v4/slide.schema.json", "v4/item.schema.json", "v2/code.schema.json"} {
 		data, err := os.ReadFile(filepath.Join("../../schema", name))
 		if err != nil {
 			t.Fatal(err)
@@ -147,7 +156,7 @@ func validateStoredSlideSchema(t *testing.T, record saga.SlideTransactionRecord)
 			t.Fatal(err)
 		}
 	}
-	schema, err := compiler.Compile("https://changesaga.dev/schema/v5/slide-transaction.schema.json")
+	schema, err := compiler.Compile("https://changesaga.dev/schema/v5/slide-current.schema.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -182,20 +191,10 @@ func TestRemoveTransactionDeckRollsBackOnConflictingSlide(t *testing.T) {
 	if err := readStrictJSONPath(path, &record); err != nil {
 		t.Fatal(err)
 	}
-	for _, id := range []string{"left", "right"} {
-		revision := record.Revisions[0]
-		revision.RequestID, revision.Slide.Title = id, id
-		revision.ParentSnapshots = []string{second.Snapshot}
-		revision.Snapshot, _ = saga.SlideRevisionSnapshot(revision)
-		record.Revisions = append(record.Revisions, revision)
-		record.Current = revision.Snapshot
-	}
-	if err := store.WriteJSON(path, record, false); err != nil {
-		t.Fatal(err)
-	}
+	writeLegacySlideConflictTestFixture(t, path, record, false)
 	before := snapshotFiles(t, root)
 	var output bytes.Buffer
-	if err := RemoveDeck(context.Background(), []string{"--deck", "implementation", root}, &output); err == nil || !strings.Contains(err.Error(), "reconcile") {
+	if err := RemoveDeck(context.Background(), []string{"--deck", "implementation", root}, &output); err == nil || (!strings.Contains(err.Error(), "legacy") && !strings.Contains(err.Error(), "conflict")) {
 		t.Fatalf("conflicting removal: %v", err)
 	}
 	if !reflect.DeepEqual(before, snapshotFiles(t, root)) {
@@ -203,15 +202,12 @@ func TestRemoveTransactionDeckRollsBackOnConflictingSlide(t *testing.T) {
 	}
 }
 
-func TestRemoveTransactionMergeExposesLiveHeadForReconcile(t *testing.T) {
+func TestLegacyRemovalCannotHideIndependentlyAuthoredLiveContent(t *testing.T) {
 	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
-	create := slideTransactionRequest(t, repo, base, commit, sagaID, "create", "create", "absent", "node-a")
-	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)
+	request := slideTransactionRequest(t, repo, base, commit, sagaID, "create", "create", "absent", "node-a")
+	created, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false)
 	if err != nil {
-		t.Fatal(err)
-	}
-	if err := RemoveSlide(context.Background(), []string{"--slide", "flow", root}, io.Discard); err != nil {
 		t.Fatal(err)
 	}
 	path := filepath.Join(root, created.Path)
@@ -219,30 +215,29 @@ func TestRemoveTransactionMergeExposesLiveHeadForReconcile(t *testing.T) {
 	if err := readStrictJSONPath(path, &record); err != nil {
 		t.Fatal(err)
 	}
-	live := record.Revisions[0]
-	live.ParentSnapshots = []string{created.Snapshot}
-	live.RequestID, live.Slide.Title = "concurrent-edit", "Concurrent edit"
-	live.Snapshot, _ = saga.SlideRevisionSnapshot(live)
-	record.Revisions = append(record.Revisions, live)
-	// Keep Current pointing to the deleted head, the dangerous merge case.
+	writeLegacySlideConflictTestFixture(t, path, record, true)
+	before := snapshotFiles(t, root)
+	if err := RemoveSlide(context.Background(), []string{"--slide", "flow", root}, io.Discard); err == nil {
+		t.Fatal("removal chose between competing legacy live/deleted values")
+	}
+	if !reflect.DeepEqual(before, snapshotFiles(t, root)) {
+		t.Fatal("failed removal discarded legacy content")
+	}
+	// Preserve the competing file in Git, then explicitly select complete live content.
+	commitCurrentTestDocumentation(t, root, "unresolved legacy slide branches")
+	selected := record.Revisions[0]
+	selected.Deleted = false
+	selected.Snapshot, err = saga.SlideContentDigest(selected)
+	if err != nil {
+		t.Fatal(err)
+	}
+	record.Revisions = []saga.SlideTransactionRevision{selected}
+	record.Current = selected.Snapshot
 	if err := store.WriteJSON(path, record, false); err != nil {
 		t.Fatal(err)
 	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid {
-		t.Fatalf("merged load: %v %+v", err, validation.Issues)
-	}
-	slide := findSlide(document, "flow")
-	if slide == nil || !slide.AuthoringConflict || slide.Title != live.Slide.Title {
-		t.Fatalf("removal hid a concurrent edit: %+v", slide)
-	}
-	request := slideTransactionRequest(t, repo, base, commit, sagaID, "resolve", "reconcile", "", "node-b")
-	request.ExpectedSnapshots = slide.AuthoringHeads
-	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false); err != nil {
-		t.Fatal(err)
-	}
 	if err := RemoveSlide(context.Background(), []string{"--slide", "flow", root}, io.Discard); err != nil {
-		t.Fatalf("remove reconciled slide: %v", err)
+		t.Fatalf("remove explicit selected content: %v", err)
 	}
 }
 
@@ -262,15 +257,57 @@ func TestRemoveTransactionValidationRejectsAlteredContent(t *testing.T) {
 	if err := readStrictJSONPath(path, &record); err != nil {
 		t.Fatal(err)
 	}
-	last := &record.Revisions[len(record.Revisions)-1]
-	last.Slide.Title = "Changed during deletion"
-	last.Snapshot, _ = saga.SlideRevisionSnapshot(*last)
-	record.Current = last.Snapshot
-	if err := store.WriteJSON(path, record, false); err != nil {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var wire map[string]any
+	if err = json.Unmarshal(raw, &wire); err != nil {
+		t.Fatal(err)
+	}
+	wire["content"].(map[string]any)["parent_snapshots"] = []string{created.Snapshot}
+	data, _ := json.Marshal(wire)
+	if err = os.WriteFile(path, data, 0644); err != nil {
 		t.Fatal(err)
 	}
 	_, validation, err := saga.Load(root)
 	if err != nil || validation.Valid {
 		t.Fatalf("invalid removal accepted: %v %+v", err, validation)
+	}
+}
+
+// Actual old bytes exercise ambiguity handling without asking current writers
+// to produce a graph or a second history store.
+func writeLegacySlideConflictTestFixture(t *testing.T, path string, record saga.SlideTransactionRecord, deleted bool) {
+	t.Helper()
+	root := record.Revisions[0]
+	root.Deleted = false
+	root.ParentSnapshots = nil
+	root.RequestID = "legacy-root"
+	root.CreatedAt = time.Date(2026, 8, 31, 19, 0, 0, 0, time.UTC)
+	root.Snapshot, _ = saga.SlideRevisionSnapshot(root)
+	revisions := []saga.SlideTransactionRevision{root}
+	chosen := ""
+	for _, id := range []string{"left", "right"} {
+		child := root
+		child.RequestID = id
+		child.ParentSnapshots = []string{root.Snapshot}
+		if deleted && id == "left" {
+			child.Deleted = true
+		} else {
+			child.Slide.Title = id
+		}
+		child.Snapshot, _ = saga.SlideRevisionSnapshot(child)
+		revisions = append(revisions, child)
+		if chosen == "" {
+			chosen = child.Snapshot
+		}
+	}
+	type legacy saga.SlideTransactionRecord
+	record.Version = 1
+	record.Revisions = revisions
+	record.Current = chosen
+	if err := store.WriteJSON(path, legacy(record), false); err != nil {
+		t.Fatal(err)
 	}
 }

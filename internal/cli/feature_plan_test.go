@@ -33,7 +33,7 @@ func TestRoadmapReusesFeatureIdentityAndContent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := Story(ctx, []string{"add", root, "--feature", "future", "--id", "future-story", "--revision", "r1", "--event", "proposed", "--title", "Use future capability", "--statement", "I can use the planned capability"}, &bytes.Buffer{}); err != nil {
+	if err := Story(ctx, []string{"add", root, "--feature", "future", "--id", "future-story", "--title", "Use future capability", "--statement", "I can use the planned capability"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	if err := FeatureTheme(ctx, []string{"add", root, "--id", "growth", "--title", "Growth", "--text", "Expand the product.", "--feature", "future"}, &bytes.Buffer{}); err != nil {

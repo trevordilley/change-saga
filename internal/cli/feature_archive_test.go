@@ -18,7 +18,7 @@ func TestFeatureArchiveKeepsRecordsAndRestoresStatus(t *testing.T) {
 	if err := Feature(ctx, []string{"add", "--id", "later", "--title", "Later", "--status", "planned", "--priority", "3", root}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
-	if err := Story(ctx, []string{"add", root, "--feature", "later", "--id", "later-story", "--revision", "r1", "--event", "proposed", "--title", "Use it later", "--statement", "I can use it later"}, &bytes.Buffer{}); err != nil {
+	if err := Story(ctx, []string{"add", root, "--feature", "later", "--id", "later-story", "--title", "Use it later", "--statement", "I can use it later"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	if err := Feature(ctx, []string{"remove", "--feature", "later", root}, &bytes.Buffer{}); err == nil {

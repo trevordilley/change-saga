@@ -1,0 +1,55 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each selector evaluates its recorded scope; the unowned-line difference remains an explicit unresolved product question.",
+    "preconditions": [
+      "Use two named features one/two with one owned changed line each, one unowned changed line, and health problems in both features.",
+      "Intent clarification pending: the current evaluator includes unowned lines in every feature. The planned feature check retains the recorded only-named-feature requirement and may expose this difference."
+    ],
+    "steps": [
+      {
+        "action": "Evaluate areas directly with ScopeApp, code targets item:a/item:b, one active story linked only from item:a, and no diff.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+        ],
+        "expected_result": "Implementation has no diff obligation, stories count two code targets with one covered, and design has one uncovered story.",
+        "id": "app"
+      },
+      {
+        "action": "Read check --against main.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+        ],
+        "expected_result": "Scope is change, based on the selected Git comparison.",
+        "id": "change"
+      },
+      {
+        "action": "Evaluate areas directly with ScopeChange, Feature one, owned atoms for one/two, an unowned atom, and health problems for each feature.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+        ],
+        "expected_result": "Only feature-one facts contribute to feature-one obligations and health; feature-two and unowned facts are not attributed to feature one.",
+        "id": "feature"
+      },
+      {
+        "action": "Run check with no scope flag, --against main and --feature one respectively on the corresponding authored fixture.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope"
+        ],
+        "expected_result": "No flags select app; --against selects the comparison; --feature one evaluates only feature-one facts.",
+        "id": "public-scope"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-scope",
+    "title": "Compare app, Git and feature scopes explicitly"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-scope"
+  }
+}

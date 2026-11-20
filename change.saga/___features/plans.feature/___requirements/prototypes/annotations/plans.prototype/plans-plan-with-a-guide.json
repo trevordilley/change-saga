@@ -1,20 +1,20 @@
 {
   "$schema": "https://changesaga.dev/schema/v3/prototype-annotation.schema.json",
-  "version": 3,
+  "created_at": "2026-11-02T05:45:40.791899Z",
   "id": "plans-plan-with-a-guide",
   "prototype": "urn:change-saga:change-saga:prototype:plans",
-  "target": "urn:change-saga:change-saga:story:plan-with-a-guide",
+  "prototype_revision": "sha256:a80842a9a5b29f20a40f086a96eb286e0b52ae96b6b400b61de50420997a20ac",
   "rationale": "Guide tab (#/plan/guide): a sketch of the wizard's conversation, ending with the Tasks it is not yet confident of.",
-  "prototype_revision": "urn:change-saga:change-saga:prototype:plans:revision:r1",
-  "story_revision": "urn:change-saga:change-saga:story:plan-with-a-guide:revision:r1",
   "selector": {
     "kind": "region",
     "region": {
-      "x": 0,
-      "y": 0,
+      "height": 1,
       "width": 1,
-      "height": 1
+      "x": 0,
+      "y": 0
     }
   },
-  "created_at": "2026-11-02T05:45:40.791899Z"
+  "story_revision": "sha256:95835fb6dfe4fa48901b0a909c1020d1cb79859d49838ed25dca18045b50a2f2",
+  "target": "urn:change-saga:change-saga:story:plan-with-a-guide",
+  "version": 3
 }

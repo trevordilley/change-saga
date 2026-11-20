@@ -1075,6 +1075,9 @@ func templateFuncs() template.FuncMap {
 }
 
 func (a *app) page(w http.ResponseWriter, r *http.Request) {
+	if rejectLegacyContentSelector(w, r) {
+		return
+	}
 	if value := r.URL.Query().Get("group"); validFeatureGrouping(value) && (r.URL.Path == "/features" || r.URL.Path == "/roadmap") {
 		http.SetCookie(w, &http.Cookie{Name: featureGroupingCookie(r.URL.Path == "/roadmap"), Value: value, Path: "/", SameSite: http.SameSiteLaxMode, HttpOnly: true})
 	}
@@ -1093,6 +1096,15 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	a.renderPage(w, r, data, "The review page could not be rendered.")
+}
+
+// An old saved link must never silently open today's replacement content.
+func rejectLegacyContentSelector(w http.ResponseWriter, r *http.Request) bool {
+	if r.URL.Query().Get("revision") != "" && (strings.HasPrefix(r.URL.Path, "/technical") || strings.HasPrefix(r.URL.Path, "/prototypes/")) {
+		http.Error(w, "Saga content revision selectors have been removed. Open the documentation at its Git commit to read historical content.", http.StatusGone)
+		return true
+	}
+	return false
 }
 
 // notAPage answers a boosted request, which htmx makes for a link it expects
@@ -1491,14 +1503,14 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	var board *whiteboardView
 	if inventoryErr == nil {
 		board = files.whiteboard(func() *whiteboardView {
-			if data.Technical != nil && data.Technical.DataModel != nil && r.URL.Query().Get("revision") == "" {
+			if data.Technical != nil && data.Technical.DataModel != nil && r.URL.Query().Get("content_digest") == "" {
 				return data.Technical.DataModel.Whiteboard
 			}
 			return a.makeWhiteboardView(inventory)
 		})
 		technicalBoardPresentation(data.Technical, inventory, board)
 		navBoard := board
-		if data.Technical != nil && data.Technical.DataModel != nil && r.URL.Query().Get("revision") != "" {
+		if data.Technical != nil && data.Technical.DataModel != nil && r.URL.Query().Get("content_digest") != "" {
 			navBoard = data.Technical.DataModel.Whiteboard
 		}
 		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil, navBoard)

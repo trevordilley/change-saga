@@ -132,7 +132,7 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 		if r.CurrentRevision == nil || r.CurrentLifecycle == nil {
 			summary.Unresolved++
 			task := inventoryTask(in, r.Target, "inventory_definition", "unresolved")
-			task.Because = []changeview.Cause{{Kind: "competing_heads", Detail: "the definition has competing revision or lifecycle heads; reconcile them explicitly with all parents"}}
+			task.Because = []changeview.Cause{{Kind: "competing_heads", Detail: "legacy definition or state is ambiguous; preserve every file in Git and explicitly select complete current content"}}
 			tasks = append(tasks, task)
 			continue
 		}

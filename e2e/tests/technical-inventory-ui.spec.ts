@@ -1,7 +1,7 @@
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
-import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
+import { currentRecordPin, git, runCLI, type SagaFixture } from "../support/fixture-builder.js";
 
 // Technical Design uses four whiteboard roles. Existing inventory directories
 // and exact definition URLs remain available for saved links and slide evidence;
@@ -22,17 +22,18 @@ function author(saga: SagaFixture) {
     return path;
   };
   for (const id of ["FlagClient", "FlagStore"]) run("component", "add", "--id", id, "--from", definition(id), "--repo", saga.sourceRepo, saga.sagaRoot);
-  const pins = ["FlagClient", "FlagStore"].map(id => ({ target: prefix + "component:" + id, revision: prefix + "component:" + id + ":revision:r1" }));
+  const pins = ["FlagClient", "FlagStore"].map(id => currentRecordPin(saga,"component",id));
   const system = definition("FeatureFlag", { components: pins, interactions: [{ id: "read", from: pins[0].target, to: pins[1].target, description: "Read a flag value from the shared store.", code }] });
   run("system", "add", "--id", "FeatureFlag", "--from", system, "--repo", saga.sourceRepo, saga.sagaRoot);
   run("add-deck", "--feature", "wave-one", "--id", "flag-contexts", "--objective", "A slide uses the shared flag System", saga.sagaRoot, "flags");
   run("add-slide", "--deck", "flag-contexts", "--id", "checkout-flag", "--title", "checkout-flag", "--intent", "explain", "--layout", "diagram", saga.sagaRoot, "checkout-flag");
-  run("add-item", "--slide", "checkout-flag", "--id", "shared", "--kind", "node", "--element-id", "slide-title", "--description", "Checkout reads the shared flag decision.", "--documentation", systemTarget, "--documentation-revision", systemTarget + ":revision:r1", saga.sagaRoot);
-  return { run, system };
+  run("add-item", "--slide", "checkout-flag", "--id", "shared", "--kind", "node", "--element-id", "slide-title", "--description", "Checkout reads the shared flag decision.", "--documentation", systemTarget, "--documentation-content-digest", currentRecordPin(saga,"system","FeatureFlag").revision, saga.sagaRoot);
+  git(saga.sagaRepo,"add",".");git(saga.sagaRepo,"commit","-m","Document shared flag system");
+  return { run, system, systemPin:currentRecordPin(saga,"system","FeatureFlag").revision };
 }
 
 test("Technical design lists shared definitions and traces a slide Item to its pinned page and back @critical", async ({ page, saga }) => {
-  const { run, system } = author(saga);
+  const { run, system, systemPin } = author(saga);
   await page.goto(saga.baseURL + "/");
   await waitForSettledSaga(page);
   const part = page.locator('[data-overview-part="Technical design"]');
@@ -63,7 +64,7 @@ test("Technical design lists shared definitions and traces a slide Item to its p
   await link.focus();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/technical\/system\/FeatureFlag$/);
-  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r1");
+  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", /^sha256:[0-9a-f]{64}$/);
   await expect(page.locator(".documentation-explanation")).toContainText("Read a flag value");
   const usage = page.locator("[data-technical-usages] [data-usage-item]");
   await expect(usage).toHaveText("shared");
@@ -77,32 +78,35 @@ test("Technical design lists shared definitions and traces a slide Item to its p
   await slide.locator(".landmark-menu [data-landmark-menu-toggle]").click();
   const open = slide.locator(".landmark-menu [data-documentation-target]");
   await open.click();
-  await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", systemTarget + ":revision:r1");
+  await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", systemPin);
   const usedBy = page.locator(".drawer-body details.documentation-usages");
   await usedBy.locator("summary").click();
   await expect(usedBy.locator("[data-usage-item]")).toHaveText("shared");
-  await expect(page.locator(".drawer-body [data-documentation-page]")).toHaveAttribute("href", "/technical/system/FeatureFlag?revision=r1");
+  await expect(page.locator(".drawer-body [data-documentation-page]")).toHaveAttribute("href", "/technical/system/FeatureFlag?" + new URLSearchParams({content_digest:systemPin}));
   await page.keyboard.press("Escape");
   await expect(page.locator(".diff-drawer")).not.toHaveClass(/open/);
   await expect(open).toBeFocused();
   expect(page.url()).toBe(slideURL);
 
-  // A revised definition leaves the saved pin readable and says so.
-  run("system", "revise", "--id", "FeatureFlag", "--revision", "r2", "--parent", systemTarget + ":revision:r1", "--from", system, "--repo", saga.sourceRepo, saga.sagaRoot);
-  await page.goto(saga.baseURL + "/technical/system/FeatureFlag?revision=r1");
+  // Git retains the committed source of the saved pin after a real edit.
+  const edited = JSON.parse(readFileSync(system,"utf8"));
+  edited.explanation = "Updated flag system explanation.";
+  writeFileSync(system,JSON.stringify(edited));
+  run("system", "revise", "--id", "FeatureFlag", "--from", system, "--repo", saga.sourceRepo, saga.sagaRoot);
+  await page.goto(saga.baseURL + "/technical/system/FeatureFlag?" + new URLSearchParams({content_digest:systemPin}));
   await expect(page.locator("[data-technical-pin-status]")).toHaveAttribute("data-technical-pin-status", "stale");
   await expect(page.locator("[data-technical-usage]")).toHaveAttribute("data-usage-status", "stale");
   await page.getByRole("link", { name: "Read the current definition" }).click();
-  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r2");
+  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", currentRecordPin(saga,"system","FeatureFlag").revision);
   await page.reload();
-  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r2");
+  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", currentRecordPin(saga,"system","FeatureFlag").revision);
   await page.goto(saga.baseURL + "/technical/systems");
   await expect(page.locator('[data-directory-row="FeatureFlag"]')).toContainText("1 not current");
 
   // Members open their own pinned pages.
-  await page.goto(saga.baseURL + "/technical/system/FeatureFlag?revision=r1");
+  await page.goto(saga.baseURL + "/technical/system/FeatureFlag?" + new URLSearchParams({content_digest:systemPin}));
   await page.locator(".documentation-members").getByRole("link", { name: "FlagStore" }).click();
-  await expect(page).toHaveURL(/\/technical\/component\/FlagStore\?revision=r1$/);
+  await expect(page).toHaveURL(saga.baseURL + "/technical/component/FlagStore?" + new URLSearchParams({content_digest:currentRecordPin(saga,"component","FlagStore").revision}));
 });
 
 test("Technical design stays readable on a 390px touch screen", async ({ browser, saga }) => {
@@ -121,7 +125,7 @@ test("Technical design stays readable on a 390px touch screen", async ({ browser
   await narrow.waitForLoadState("networkidle");
   await row.evaluate(element => element.scrollIntoView({ block: "center" }));
   await row.tap();
-  await expect(narrow.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r1");
+  await expect(narrow.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", /^sha256:[0-9a-f]{64}$/);
   expect(await narrow.evaluate(() => [window.innerWidth, document.documentElement.scrollWidth])).toEqual([390, 390]);
   await narrow.locator("[data-technical-usages] [data-usage-item]").tap();
   await waitForSettledSaga(narrow);
@@ -133,7 +137,7 @@ test("Technical design stays readable on a 390px touch screen", async ({ browser
   await narrow.locator('[data-technical-area="data-model"]').getByRole("link", { name: "ERD", exact: true }).tap();
   await expect(narrow).toHaveURL(/\/technical\/erd$/);
   await narrow.goto(saga.baseURL + "/technical/component/FlagStore");
-  await expect(narrow.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r1");
+  await expect(narrow.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", /^sha256:[0-9a-f]{64}$/);
   expect(await narrow.evaluate(() => [window.innerWidth, document.documentElement.scrollWidth])).toEqual([390, 390]);
   await context.close();
 });
@@ -162,11 +166,12 @@ test("Technical Design keeps four role links while legacy inventory pages retain
   await expect(sidebar.locator('a[href="/technical/erd"]')).toHaveAttribute("aria-current", "page");
 });
 
-test("old Technical design addresses keep working", async ({ page, saga }) => {
-  author(saga);
+test("stable Technical design addresses and exact content pins keep working", async ({ page, saga }) => {
+  const {systemPin}=author(saga);
+  expect((await page.request.get(saga.baseURL+"/technical/system/FeatureFlag?revision=r1")).status()).toBe(410);
   // Definition pages and saved pins kept their addresses.
-  await page.goto(saga.baseURL + "/technical/system/FeatureFlag?revision=r1");
-  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r1");
+  await page.goto(saga.baseURL + "/technical/system/FeatureFlag?" + new URLSearchParams({content_digest:systemPin}));
+  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", /^sha256:[0-9a-f]{64}$/);
   await page.locator(".requirements-breadcrumbs").getByRole("link", { name: "Systems" }).click();
   await expect(page).toHaveURL(/\/technical\/systems$/);
   // Legacy directory URLs remain directly readable without reviving their navigation.
@@ -175,9 +180,9 @@ test("old Technical design addresses keep working", async ({ page, saga }) => {
 
 });
 
-test("a missing definition or revision is a 404, never the latest definition", async ({ page, saga }) => {
+test("a missing definition or content digest is a 404, never the latest definition", async ({ page, saga }) => {
   author(saga);
-  for (const path of ["/technical/system/FeatureFlag?revision=r9", "/technical/system/Absent", "/technical/nonsense/FeatureFlag", "/technical/nonsense"]) {
+  for (const path of ["/technical/system/FeatureFlag?content_digest=sha256:"+"0".repeat(64), "/technical/system/Absent", "/technical/nonsense/FeatureFlag", "/technical/nonsense"]) {
     const response = await page.goto(saga.baseURL + path);
     expect(response?.status(), path).toBe(404);
   }
@@ -196,7 +201,7 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
     writeFileSync(path, typeof value === "string" ? value : JSON.stringify(value));
     return path;
   };
-  const pin = (kind: string, id: string, revision = "r1") => ({ target: prefix + kind + ":" + id, revision: prefix + kind + ":" + id + ":revision:" + revision });
+  const pin = (kind: string, id: string) => currentRecordPin(saga,kind,id);
   const evidence = (id: string, start: number, end: number, note: string) => ({ id, commit: "HEAD", path: "src/app.go", start, end, note });
   const add = (kind: string, id: string, definition: unknown, ...extra: string[]) =>
     run(kind, "add", "--id", id, "--from", json(kind + "-" + id + ".json", definition), "--repo", saga.sourceRepo, ...extra, saga.sagaRoot);
@@ -220,7 +225,7 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
   const system = pin("system", "Pipeline");
   const selections = json("selections.json", [{ id: "greet-only", path: [system, pin("component", "Store")], evidence: "greet", code: { path: "src/app.go", start: 4, end: 4, note: "Only the returned greeting matters here." } }]);
   run("add-item", "--slide", "greeting-store", "--id", "store", "--kind", "node", "--element-id", "slide-title", "--description", "The slide explains only the stored greeting.",
-    "--documentation", system.target, "--documentation-revision", system.revision, "--selections", selections, "--repo", saga.sourceRepo, saga.sagaRoot);
+    "--documentation", system.target, "--documentation-content-digest", system.revision, "--selections", selections, "--repo", saga.sourceRepo, saga.sagaRoot);
 
   // The ERD role opens the shared data-model page; canonical entity links live there.
   await page.goto(saga.baseURL + "/technical");
@@ -300,9 +305,9 @@ test("a large ERD drawing zooms and pans by toolbar, keyboard, mouse and touch",
     writeFileSync(path, typeof value === "string" ? value : JSON.stringify(value));
     return path;
   };
-  const job = { target: prefix + "data-entity:job", revision: prefix + "data-entity:job:revision:r1" };
   run("inventory", "adopt-format", "--format", "2", saga.sagaRoot);
   run("data-entity", "add", "--id", "job", "--from", json("job.json", { name: "PDF job", explanation: "Queued payload.", intent: "proposed", baseline: "none" }), "--repo", saga.sourceRepo, saga.sagaRoot);
+  const job = currentRecordPin(saga,"data-entity","job");
   const svg = json("large.svg", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1600" width="1600" height="1600"><rect width="1600" height="1600" fill="white"/><g id="job"><rect x="1300" y="1300" width="260" height="200" fill="white" stroke="black"/><text x="1320" y="1400" font-size="18">PDF job</text></g></svg>`);
   run("erd", "add", "--id", "application", "--from", json("erd.json", { name: "Application data", explanation: "Authored overview.", directory: [job], bindings: [{ id: "job", element: "job", entity: job }] }),
     "--visual", svg, "--repo", saga.sourceRepo, saga.sagaRoot);
@@ -396,7 +401,7 @@ test("Data model has shared prose and independent SQLite, Postgres and cross-sto
     writeFileSync(path, JSON.stringify(data));
     return path;
   };
-  const pin = (id: string) => ({ target: prefix + "data-entity:" + id, revision: prefix + "data-entity:" + id + ":revision:r1" });
+  const pin = (id: string) => currentRecordPin(saga,"data-entity",id);
   run("inventory", "adopt-format", "--format", "2", saga.sagaRoot);
   for (const [id, name] of [["local-edit", "Local edit"], ["cloud-record", "Cloud record"]]) {
     run("data-entity", "add", "--id", id, "--from", json(id, { name, explanation: "A proposed record in the example architecture.", intent: "proposed", baseline: "none" }), "--repo", saga.sourceRepo, saga.sagaRoot);
@@ -424,14 +429,14 @@ test("Data model has shared prose and independent SQLite, Postgres and cross-sto
   await expect(page.locator(".sidebar #nav-technical-erd a")).toHaveCount(0);
   await overview.getByRole("link", { name: "Open SQLite" }).click();
   await expect(page).toHaveURL(/\/technical\/erd\/sqlite$/);
-  await expect(page.locator("[data-erd-view]")).toHaveAttribute("data-erd-revision", "r1");
+  await expect(page.locator("[data-erd-view]")).toHaveAttribute("data-erd-revision", /^sha256-[0-9a-f]{64}$/);
   await expect(page.locator('[data-erd-directory-row$=":local-edit"]')).toBeVisible();
   await page.goto(saga.baseURL + '/technical/erd');
   await page.locator("[data-technical-erd-documents]").getByRole("link", { name: "Cross-store data flow", exact: true }).click();
   await expect(page).toHaveURL(/\/technical\/erd\/cross-store$/);
   await expect(page.locator("[data-erd-directory-row]")).toHaveCount(2);
-  await page.goto(saga.baseURL + "/technical/erd/sqlite?revision=r1");
-  await expect(page.locator("[data-erd-view]")).toHaveAttribute("data-erd-revision", "r1");
+  await page.goto(saga.baseURL + "/technical/erd/sqlite?"+new URLSearchParams({content_digest:currentRecordPin(saga,"erd","sqlite").revision}));
+  await expect(page.locator("[data-erd-view]")).toHaveAttribute("data-erd-revision", /^sha256-[0-9a-f]{64}$/);
   await page.goto(saga.baseURL + "/");
   await waitForSettledSaga(page);
   await expect(page.locator(".page-root")).not.toContainText("Offline SQLite edits synchronize to cloud Postgres.");

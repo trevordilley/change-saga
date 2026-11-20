@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -48,8 +49,11 @@ func ValidateDeprecationTarget(sagaID string, pin DeprecationTarget) error {
 		return err
 	}
 	if kind == "whiteboard" || isTechnicalDeprecationKind(kind) {
-		if pin.ContentDigest != "" {
-			return fmt.Errorf("revision target cannot carry a content digest")
+		if pin.ContentDigest != "" && deprecationDigest.MatchString(pin.ContentDigest) && pin.Revision == "" {
+			return nil
+		}
+		if deprecationDigest.MatchString(pin.Revision) {
+			return nil
 		}
 		prefix := pin.Target + ":revision:"
 		if !strings.HasPrefix(pin.Revision, prefix) || !livingid.ValidID(strings.TrimPrefix(pin.Revision, prefix)) {
@@ -107,9 +111,9 @@ func (r *DeprecationTargets) Observe(pin DeprecationTarget) DeprecationTargetHea
 		if len(heads) != 1 {
 			return DeprecationTargetHealth{Status: "conflicted", Reason: "whiteboard has competing revision heads"}
 		}
-		current.Revision = pin.Target + ":revision:" + heads[0]
+		current.Revision = technicalPin(pin.Target, heads[0])
 		if pin.Element != "" {
-			board, e := LoadResolvedWhiteboard(r.Root, r.SagaID, id, heads[0])
+			board, e := LoadResolvedWhiteboard(r.Root, r.SagaID, id, "")
 			if e != nil {
 				return DeprecationTargetHealth{Status: "unresolved", Reason: e.Error()}
 			}
@@ -160,6 +164,24 @@ func (r *DeprecationTargets) Observe(pin DeprecationTarget) DeprecationTargetHea
 			return DeprecationTargetHealth{Status: "conflicted", Reason: "content has competing authoring heads"}
 		}
 		current.ContentDigest = digest
+	}
+	// Both legacy pin field names describe the same exact current content.
+	// Normalize a legacy source only for comparison; observations never write.
+	if current.Revision != "" && (deprecationDigest.MatchString(pin.Revision) || pin.ContentDigest != "") {
+		if !deprecationDigest.MatchString(current.Revision) {
+			pins, e := currentrecord.AuditPins(r.Root)
+			if e != nil {
+				return DeprecationTargetHealth{Status: "unresolved", Reason: e.Error()}
+			}
+			digest, e := pins.Resolve(current.Revision)
+			if e != nil {
+				return DeprecationTargetHealth{Status: "unresolved", Reason: e.Error()}
+			}
+			current.Revision = digest
+		}
+		if pin.ContentDigest != "" {
+			current.ContentDigest, current.Revision = current.Revision, ""
+		}
 	}
 	result.Current = &current
 	if (pin.Revision != "" && pin.Revision != current.Revision) || (pin.ContentDigest != "" && pin.ContentDigest != current.ContentDigest) {

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "selected-areas",
+        "statement": "A check evaluates and returns only the requested implementation, stories, personas, design, quality, or health areas, in the order requested."
+      },
+      {
+        "id": "selected-scope",
+        "statement": "A check evaluates the whole app by default, a Git comparison when --against is supplied, and only the named feature when --feature is supplied."
+      },
+      {
+        "id": "result-codes",
+        "statement": "For a trustworthy report, a check exits 0 when every requested area is complete and exits 3 when any requested area has a gap; an untrustworthy report does not return a coverage-gap result."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer configuring change automation, I can check only the documentation coverage areas and scope my team requires so unrelated gaps do not decide the result.",
+    "story": "urn:change-saga:change-saga:story:scoped-coverage-check",
+    "title": "Check selected documentation coverage"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:scoped-coverage-check"
+  }
+}

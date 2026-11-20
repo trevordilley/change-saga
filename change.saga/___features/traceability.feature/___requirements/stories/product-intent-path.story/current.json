@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "current-paths",
+        "statement": "Current relations expose every available path from a story or criterion to its design and implementation evidence."
+      },
+      {
+        "id": "stale-paths",
+        "statement": "A changed relation endpoint makes the dependent link visibly stale."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:product-manager"
+    ],
+    "statement": "As a product manager, I can follow an accepted story through design and implementation so I can verify that product intent reached the application.",
+    "story": "urn:change-saga:change-saga:story:product-intent-path",
+    "title": "Follow product intent into the application"
+  },
+  "state": {
+    "reason": "Confirmed after the initial implementation investigation.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:product-intent-path"
+  }
+}

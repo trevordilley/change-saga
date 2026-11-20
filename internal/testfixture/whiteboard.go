@@ -47,7 +47,7 @@ func WriteERDWhiteboardFixture(ctx context.Context, root, checkout string) (map[
 		if err != nil {
 			return pins, fmt.Errorf("structured %s: %w", child.id, err)
 		}
-		pins[child.id] = saga.DocumentationLink{Target: result.URN, Revision: result.Created[0]}
+		pins[child.id] = saga.DocumentationLink{Target: result.URN, Revision: result.ContentDigest}
 	}
 	styles := diagram.DefaultStyles()
 	large := styles["normal"]

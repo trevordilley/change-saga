@@ -142,8 +142,16 @@
           "pattern": "^(urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:((fragment|deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127})|urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127})$"
         },
         "revision": {
-          "type": "string",
-          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
         },
         "content_digest": {
           "type": "string",

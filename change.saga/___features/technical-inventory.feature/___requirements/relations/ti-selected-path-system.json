@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-selected-path-system",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:system",
-  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
-  "scope": "self",
-  "rationale": "The existing r1 System pins canonical member Components. The proposed selection follows its record-store member without selecting the entire graph.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:00:54.146148Z",
-  "superseded_at": "2026-09-27T10:27:33.398779Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:system",
+  "id": "ti-selected-path-system",
+  "rationale": "The existing r1 System pins canonical member Components. The proposed selection follows its record-store member without selecting the entire graph.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:33.398779Z",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
+  "to_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+  "type": "explains",
+  "version": 5
 }

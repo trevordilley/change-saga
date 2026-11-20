@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "separate-areas",
+        "statement": "Status reports implementation, stories, personas, design, quality, and health as separate named areas with their covered and uncovered entries."
+      },
+      {
+        "id": "criterion-axis-reasons",
+        "statement": "For each accepted criterion, prototype, UX, UI, technical, quality, and implementation each resolve to linked, excluded, or gap, and every gap names its reasons."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer preparing a change for review, I can see each documentation coverage area and its exact gaps so I can complete the relevant documentation without reducing everything to one score.",
+    "story": "urn:change-saga:change-saga:story:documentation-gaps-visible",
+    "title": "See missing documentation by area"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:documentation-gaps-visible"
+  }
+}

@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:ab0bbb827c5e7980b5343cb668d413c619ae3e67645af79bfd297ab525398f91",
+      "end": 68,
+      "path": "internal/quality/definition_test.go",
+      "start": 27
+    }
+  ],
+  "created_at": "2026-10-16T23:23:49Z",
   "id": "check-immutable-enrichment-assertions",
-  "test_case": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment",
-  "test_revision": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment:revision:r1",
+  "request_id": "saga-evidence-core-case-immutable-enrichment-check-immutable-enrichment-assertions",
   "role": "test_implementation",
   "steps": [
     "check-immutable-enrichment"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/quality/definition_test.go",
-      "start": 27,
-      "end": 68,
-      "digest": "sha256:ab0bbb827c5e7980b5343cb668d413c619ae3e67645af79bfd297ab525398f91"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:49Z",
-  "request_id": "saga-evidence-core-case-immutable-enrichment-check-immutable-enrichment-assertions"
+  "test_case": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment",
+  "test_revision": "sha256:8db324105cd34d88f744c42ed347237fcb6f9a2372b57727421b5178d84a8164",
+  "verifications": [],
+  "version": 5
 }

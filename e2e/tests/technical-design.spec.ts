@@ -16,7 +16,7 @@ test("technical design links its approach, supporting pages and four whiteboards
     {id: "service", parent: "delivery", kind: "node", shape: "rect", label: "Delivery service", x: 100, y: 100, width: 300, height: 140, style: "normal"}
   ]}));
   for (const [id, name] of [["data-model", "Application ERD"], ["infrastructure", "Deployment infrastructure"], ["data-flows", "Application data flows"], ["codebase-map", "Codebase architecture"]]) {
-    run("whiteboard", "publish", "--id", id, "--revision", "r1", "--name", name, "--from", source);
+    run("whiteboard", "publish", "--id", id, "--name", name, "--from", source);
   }
   run("whiteboard", "assign-role", "--id", "codebase-map", "--role", "architecture", "--expect", "none");
   await page.goto(saga.baseURL + "/technical");

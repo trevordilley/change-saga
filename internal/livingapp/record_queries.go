@@ -32,7 +32,7 @@ func (s *session) personaRows(filters Filters) ([]PersonaRecord, error) {
 			state = string(persona.CurrentLifecycle.State)
 		}
 		rows = append(rows, PersonaRecord{
-			Persona: urn, ID: persona.Identity.ID, CreatedAt: persona.Identity.CreatedAt, State: state,
+			ContentDigest: s.currentContentPin(urn, persona.CurrentRevision), Persona: urn, ID: persona.Identity.ID, CreatedAt: persona.Identity.CreatedAt, State: state,
 			RevisionHeads: copyStrings(persona.RevisionHeads), LifecycleHeads: copyStrings(persona.LifecycleHeads),
 			CurrentRevision: persona.CurrentRevision, CurrentLifecycle: persona.CurrentLifecycle,
 			RevisionConflict: len(persona.RevisionHeads) != 1, LifecycleConflict: len(persona.LifecycleHeads) != 1,
@@ -293,7 +293,7 @@ func revisionStorySaga(storyURN string) string {
 func conflictedTermTouches(term *requirements.Term, subject string) bool {
 	heads := stringSet(term.RevisionHeads)
 	for _, revision := range term.Revisions {
-		urn := revision.Term + ":revision:" + revision.ID
+		urn := requirements.ContentPin(revision.Term, revision.ID)
 		if !heads[urn] {
 			continue
 		}

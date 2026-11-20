@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-erd-authored-composition-0cd1280c0098",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-erd-authored-composition",
-  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
-  "scope": "self",
-  "rationale": "Steps composition define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-erd-authored-composition:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:06:50.057326Z",
-  "request_id": "test-inventory-erd-authored-composition-0cd1280c0098"
+  "from": "urn:change-saga:change-saga:test-case:inventory-erd-authored-composition",
+  "from_revision": "sha256:875191468dfed03593f793eea5493b67d0a9afa63d3d96bf2f27a7d5bfd5a5c5",
+  "id": "test-inventory-erd-authored-composition-0cd1280c0098",
+  "rationale": "Steps composition define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-erd-authored-composition-0cd1280c0098",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+  "to_revision": "sha256:d0f98c335eecab015058b9df75d15c18ce81a532497a8e32083bf97fb90975bf",
+  "type": "verifies",
+  "version": 5
 }

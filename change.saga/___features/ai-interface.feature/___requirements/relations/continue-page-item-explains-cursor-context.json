@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "continue-page-item-explains-cursor-context",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:39:25.61807Z",
   "from": "urn:change-saga:change-saga:slide:cursor-state:item:continue-page",
-  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context",
-  "scope": "self",
+  "id": "continue-page-item-explains-cursor-context",
   "rationale": "The continuation path shows that a cursor resumes only the operation and normalized filters that issued it.",
-  "to_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:39:25.61807Z"
+  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context",
+  "to_revision": "sha256:563647473b06d2abf0d329a897d246df0285a5b3b99ffa2bf35da83969fd02a8",
+  "type": "explains",
+  "version": 5
 }

@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-decision-withdrawal-433457cbe1c1",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-decision-withdrawal",
-  "to": "urn:change-saga:change-saga:story:withdraw-review-decision:criterion:withdraw-current",
-  "scope": "self",
-  "rationale": "Steps approve, withdraw define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-decision-withdrawal:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:withdraw-review-decision:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:47.45285Z",
-  "request_id": "test-review-decision-withdrawal-433457cbe1c1"
+  "from": "urn:change-saga:change-saga:test-case:review-decision-withdrawal",
+  "from_revision": "sha256:a6416078e2d917e327a37742f9897c3a4ef8198fee113ff52d3ce79f058aa932",
+  "id": "test-review-decision-withdrawal-433457cbe1c1",
+  "rationale": "Steps approve, withdraw define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-decision-withdrawal-433457cbe1c1",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:withdraw-review-decision:criterion:withdraw-current",
+  "to_revision": "sha256:2acae21a211f5e1e741c30c8c5aafb14ed20ed03e4ebc6414b9e5931a245f024",
+  "type": "verifies",
+  "version": 5
 }

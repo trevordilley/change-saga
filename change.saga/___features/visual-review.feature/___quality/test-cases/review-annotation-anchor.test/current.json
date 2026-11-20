@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The mark appears only on greeting in the original relative position.",
+    "preconditions": [
+      "Save a rectangle on greeting in a review also containing theme."
+    ],
+    "steps": [
+      {
+        "action": "Switch from desktop to 390px viewport.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:anchored"
+        ],
+        "expected_result": "Annotation remains visible and its width relative to slide matches saved normalized width.",
+        "id": "resize-window"
+      },
+      {
+        "action": "Select theme, then return to greeting and reload.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:anchored"
+        ],
+        "expected_result": "The mark appears only on greeting in the original relative position.",
+        "id": "navigate"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-annotation-anchor",
+    "title": "Keep an annotation attached to its slide through resizing and navigation"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-annotation-anchor"
+  }
+}

@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:0ed03e36ab516797f0d87804983a0fa0e7194ec41824f6b218368dcd476de6d5",
+      "end": 52,
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 41
+    }
+  ],
+  "created_at": "2026-10-16T23:24:10Z",
   "id": "regression",
-  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-currency-regression",
-  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-currency-regression:revision:r1",
+  "request_id": "saga-evidence-contracts-reconcile-currency-regression-regression",
   "role": "test_implementation",
   "steps": [
     "regression"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/reconciliation_test.go",
-      "start": 41,
-      "end": 52,
-      "digest": "sha256:0ed03e36ab516797f0d87804983a0fa0e7194ec41824f6b218368dcd476de6d5"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:10Z",
-  "request_id": "saga-evidence-contracts-reconcile-currency-regression-regression"
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-currency-regression",
+  "test_revision": "sha256:1a3321c58ee83b21f7b2f6971082bb27cfbfd1f5612e14c43c5c214cee18e5bb",
+  "verifications": [],
+  "version": 5
 }

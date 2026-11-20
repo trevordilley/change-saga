@@ -64,12 +64,12 @@ func TestTechnicalDesignEssayAndFourWhiteboards(t *testing.T) {
 		if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", id, "r1", "", id, doc); err != nil {
 			t.Fatal(err)
 		}
-		status, body = technicalGet(t, mux, whiteboardHref(id, "r1"))
-		if status != 200 || !strings.Contains(body, `data-whiteboard-id="`+id+`"`) || !strings.Contains(body, `data-whiteboard-revision="r1"`) {
+		status, body = technicalGet(t, mux, whiteboardHref(id, ""))
+		if status != 200 || !strings.Contains(body, `data-whiteboard-id="`+id+`"`) || !strings.Contains(body, `data-whiteboard-content-digest="`+currentServerBoardPin(t, root, id)+`"`) {
 			t.Fatalf("published %s: %d", id, status)
 		}
 	}
-	for _, path := range []string{"/technical/pages/missing", "/technical/whiteboards/infrastructure?revision=missing"} {
+	for _, path := range []string{"/technical/pages/missing", "/technical/whiteboards/missing"} {
 		if status, _ := technicalGet(t, mux, path); status != 404 {
 			t.Errorf("%s: %d", path, status)
 		}

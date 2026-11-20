@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "collaboration-addresses-comments",
-  "type": "addresses",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-22T23:32:38.859435Z",
   "from": "urn:change-saga:change-saga:fragment:review-annotation-design",
-  "to": "urn:change-saga:change-saga:story:contextual-comments",
-  "scope": "self",
+  "from_content_digest": "sha256:a3241798cf476e3ff98990c681606b8910577d740b6645319dddfc59dbc6dfa4",
+  "id": "collaboration-addresses-comments",
   "rationale": "The review-side model anchors discussion to slides and semantic Items.",
-  "to_revision": "urn:change-saga:change-saga:story:contextual-comments:revision:r2",
-  "from_content_digest": "sha256:00c67e643f3df3d125df5c647cc5d0f187bd12eba57da146df3dc94821bfa311",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-22T23:32:38.859435Z"
+  "to": "urn:change-saga:change-saga:story:contextual-comments",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "type": "addresses",
+  "version": 5
 }

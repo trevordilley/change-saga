@@ -1,0 +1,54 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Enrich the same planned case with step implementation evidence.",
+    "preconditions": [
+      "A disposable Saga contains a planned feature, story and acceptance criterion; no test code or runs are required to author the case."
+    ],
+    "steps": [
+      {
+        "action": "Author a planned case with preconditions, ordered steps, expected outcomes and a criterion relation, without evidence or runs; open it through Roadmap.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:planned-definition"
+        ],
+        "expected_result": "The canonical case reader displays the planned stage, assertion outcome and criterion link without runs.",
+        "id": "check-planned-definition"
+      },
+      {
+        "action": "Append implementation evidence to the assertion step, leaving setup unmapped; inspect the evidence identity and follow the assertion evidence link.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:step-traceability"
+        ],
+        "expected_result": "The assertion names its canonical evidence and opens its evidence record; setup remains valid without links.",
+        "id": "check-step-traceability"
+      },
+      {
+        "action": "Promote the feature to built and open its same named case from the feature page.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:planned-definition"
+        ],
+        "expected_result": "The implemented case reader displays the implementation-linked definition.",
+        "id": "check-built-case-reader"
+      },
+      {
+        "action": "Compare the case identity and browser URL before and after implementation and promotion.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:planned-definition"
+        ],
+        "expected_result": "The case identity and canonical reader URL are unchanged.",
+        "id": "check-reader-identity"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment",
+    "title": "Enrich the same planned case with step implementation evidence"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment"
+  }
+}

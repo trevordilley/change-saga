@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The normal reader returns with B still active and its original slide position.",
+    "preconditions": [
+      "Select second slide B of a two-slide implementation deck; Item hotspots and documentation chrome are visible initially."
+    ],
+    "steps": [
+      {
+        "action": "Choose presentation mode.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:presentation"
+        ],
+        "expected_result": "B fills the presentation surface without documentation chrome or Item hotspots.",
+        "id": "enter"
+      },
+      {
+        "action": "Exit presentation with its control or Escape.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:presentation"
+        ],
+        "expected_result": "The normal reader returns with B still active and its original slide position.",
+        "id": "exit"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-presentation",
+    "title": "Present and exit while retaining the active slide"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-presentation"
+  }
+}

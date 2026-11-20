@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "revision-history",
+        "statement": "After a story edit is committed, Git-backed query history identifies the real commits and authors; the prior and current complete definitions can be inspected from those commits."
+      },
+      {
+        "id": "lifecycle-history",
+        "statement": "Committed state changes and their authored reasons remain inspectable through Git history; Saga stores only the current state and reason."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:product-manager"
+    ],
+    "statement": "As a product manager, I can inspect the complete evolution of a story's definition and lifecycle so I can understand decisions without losing earlier intent.",
+    "story": "urn:change-saga:change-saga:story:auditable-requirement-history",
+    "title": "Inspect requirement evolution"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:auditable-requirement-history"
+  }
+}

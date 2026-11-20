@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "freehand",
+        "statement": "A reviewer can draw freehand marks over a slide or diagram."
+      },
+      {
+        "id": "shapes",
+        "statement": "A reviewer can place and resize basic shapes over a slide or diagram."
+      },
+      {
+        "id": "anchored",
+        "statement": "Each mark remains associated with the slide or diagram it annotates."
+      },
+      {
+        "id": "visible-author",
+        "statement": "Other review participants can see the annotation and its author."
+      },
+      {
+        "id": "preserves-source",
+        "statement": "An annotation does not alter the underlying source visual."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer reviewing a change, I can annotate a specific part of a slide or diagram so my visual feedback is unambiguous.",
+    "story": "urn:change-saga:change-saga:story:visual-annotation",
+    "title": "Annotate a visual review"
+  },
+  "state": {
+    "reason": "Confirmed during the initial product interview.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:visual-annotation"
+  }
+}

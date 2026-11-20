@@ -14,7 +14,7 @@ import (
 )
 
 // Whiteboard manages complete technical-design documents using the shared
-// diagram grammar, source resolver and immutable revision store.
+// diagram grammar, exact source pins and editable current records.
 func Whiteboard(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
@@ -39,11 +39,9 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 	name := "whiteboard " + op
 	flags := commandFlags(name, commandUsage[name], out)
 	boardID := flags.String("id", "", "whiteboard document ID")
-	revision := flags.String("revision", "", "exact board revision; reads default to the unique current head")
 	focus := flags.String("focus", "", "frame or element instance path")
 	repo := flags.String("repo", "", "source checkout used to pin evidence on publish")
 	from := flags.String("from", "", "complete diagram.Document JSON file, or - for stdin")
-	parent := flags.String("parent", "", "observed current board revision ID, required on updates")
 	title := flags.String("name", "Whiteboard", "whiteboard title")
 	format := flags.String("format", "text", "text or json (describe)")
 	jsonOutput := flags.Bool("json", false, "machine-readable result")
@@ -65,8 +63,8 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 		return fmt.Errorf("whiteboards require a v5 Saga")
 	}
 	if op == "publish" {
-		if *from == "" || *revision == "" {
-			return fmt.Errorf("publishing a whiteboard requires --from and --revision")
+		if *from == "" {
+			return fmt.Errorf("publishing a whiteboard requires --from")
 		}
 		if *focus != "" {
 			return fmt.Errorf("publishing replaces the complete board; --focus is read-only")
@@ -82,21 +80,21 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 		if err := pinWhiteboardEvidence(ctx, firstNonEmpty(*repo, root), &doc); err != nil {
 			return err
 		}
-		value, err := requirements.PublishWhiteboard(ctx, root, manifest.ID, *boardID, *revision, *parent, *title, doc)
+		value, err := requirements.PublishWhiteboard(ctx, root, manifest.ID, *boardID, "", "", *title, doc)
 		if err != nil {
 			return err
 		}
 		return writeJSON(out, value)
 	}
-	if *from != "" || *parent != "" {
-		return fmt.Errorf("--from and --parent require whiteboard publish")
+	if *from != "" {
+		return fmt.Errorf("--from requires whiteboard publish")
 	}
-	if op == "check" && *revision == "" {
+	if op == "check" {
 		if err := requirements.ValidateWhiteboard(root, manifest.ID, *boardID); err != nil {
 			return err
 		}
 	}
-	value, err := requirements.LoadResolvedWhiteboard(root, manifest.ID, *boardID, *revision)
+	value, err := requirements.LoadResolvedWhiteboard(root, manifest.ID, *boardID, "")
 	if err != nil {
 		return err
 	}
@@ -107,7 +105,7 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 		return writeJSON(out, value.Revision.Document)
 	}
 	displayName := value.Revision.Name
-	if *revision == "" {
+	{
 		metadata, err := requirements.LoadWhiteboardMetadata(root, manifest.ID)
 		if err != nil {
 			return err
@@ -116,6 +114,10 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 			displayName = metadata.Boards[*boardID].Name
 		}
 	}
+	digest, err := requirements.WhiteboardContentDigest(value.Revision)
+	if err != nil {
+		return err
+	}
 	description, err := value.Composition.Describe(*focus)
 	if err != nil {
 		return err
@@ -123,9 +125,9 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 	if op == "check" {
 		warnings := whiteboardNoteWarnings(value.Revision.Document, manifest.Source.Repository)
 		if *jsonOutput || *format == "json" {
-			return writeJSON(out, map[string]any{"whiteboard": *boardID, "revision": value.Revision.ID, "valid": true, "warnings": warnings})
+			return writeJSON(out, map[string]any{"whiteboard": *boardID, "content_digest": digest, "valid": true, "warnings": warnings})
 		}
-		if _, err := fmt.Fprintf(out, "Whiteboard %s revision %s: valid\n", *boardID, value.Revision.ID); err != nil {
+		if _, err := fmt.Fprintf(out, "Whiteboard %s: valid\n", *boardID); err != nil {
 			return err
 		}
 		for _, warning := range warnings {
@@ -134,9 +136,9 @@ func whiteboardCommand(ctx context.Context, op string, args []string, out io.Wri
 		return nil
 	}
 	if op == "get" || *jsonOutput || *format == "json" {
-		return writeJSON(out, map[string]any{"whiteboard": *boardID, "revision": value.Revision.ID, "name": displayName, "diagram": description})
+		return writeJSON(out, map[string]any{"whiteboard": *boardID, "content_digest": digest, "name": displayName, "diagram": description})
 	}
-	fmt.Fprintf(out, "Whiteboard %s: %s (revision %s)\n", *boardID, displayName, value.Revision.ID)
+	fmt.Fprintf(out, "Whiteboard %s: %s\n", *boardID, displayName)
 	if description.Focus != "" {
 		fmt.Fprintf(out, "Focus: %s\n", description.Focus)
 	}

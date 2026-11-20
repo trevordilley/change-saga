@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-rollout-foundation",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:foundation",
-  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
-  "scope": "self",
-  "rationale": "Proposed design: The current inventory loader rejects kinds other than Components and Systems. Adding data entities needs explicit compatibility handling, not an assumed backward-compatible folder.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:15:05.141276Z",
-  "superseded_at": "2026-09-27T10:27:31.417877Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:foundation",
+  "id": "ti-rollout-foundation",
+  "rationale": "Proposed design: The current inventory loader rejects kinds other than Components and Systems. Adding data entities needs explicit compatibility handling, not an assumed backward-compatible folder.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:31.417877Z",
+  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+  "to_revision": "sha256:38376e153e063b30f56fe8950ce7e10c1e9dead4fd322189419312913a36cbfc",
+  "type": "explains",
+  "version": 5
 }

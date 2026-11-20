@@ -34,17 +34,17 @@ func deprecationWrite(ctx context.Context, op string, args []string, out io.Writ
 		subject = flags.String("deprecation", "", "canonical annotation URN")
 	}
 	if op != "set-state" {
-		revision = flags.String("revision", "r1", "new immutable revision ID")
+		revision = new(string)
 	}
 	if op != "revise" {
-		event = flags.String("event", "active", "new lifecycle event ID")
+		event = new(string)
 	}
 	reason := flags.String("reason", "", "authored reason; lifecycle changes require their own reason")
 	request := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "machine-readable result")
 	var parents stringList
 	if op != "add" {
-		flags.Var(&parents, "parent", "observed revision heads (revise) or event heads (set-state); repeatable")
+
 	}
 	var target, element, replacement, replacementElement, scope, repo, state *string
 	var refs stringList
@@ -72,7 +72,7 @@ func deprecationWrite(ctx context.Context, op string, args []string, out io.Writ
 	}
 	var result requirements.MutationResult
 	if op == "set-state" {
-		if *subject == "" || *state == "" || !flagWasSet(flags, "event") {
+		if *subject == "" || *state == "" {
 			return fmt.Errorf("set-state requires --deprecation, --state and a new --event")
 		}
 		result, err = requirements.SetDeprecationState(root, sagaID, requirements.SetDeprecationStateInput{Deprecation: *subject, ID: *event, Parents: parents, State: requirements.DeprecationState(*state), Reason: *reason, RequestID: *request})
@@ -83,7 +83,7 @@ func deprecationWrite(ctx context.Context, op string, args []string, out io.Writ
 		if op == "add" && (len(parents) > 0 || *subject != "") {
 			return fmt.Errorf("add takes --id, not --deprecation or --parent")
 		}
-		if op == "revise" && (!flagWasSet(flags, "revision") || *subject == "" || *id != "") {
+		if op == "revise" && (*subject == "" || *id != "") {
 			return fmt.Errorf("revise requires --deprecation and a new --revision")
 		}
 		targets := requirements.DeprecationTargets{Root: root, SagaID: sagaID}

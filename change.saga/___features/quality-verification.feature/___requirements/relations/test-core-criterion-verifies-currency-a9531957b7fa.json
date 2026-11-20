@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-criterion-verifies-currency-a9531957b7fa",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:criterion-pin",
-  "scope": "self",
-  "rationale": "Steps check-criterion-pin, check-conscious-repin define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:definitions-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:30.659847Z",
-  "request_id": "test-core-criterion-verifies-currency-a9531957b7fa"
+  "from": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency",
+  "from_revision": "sha256:5bc63f80d13fbb8e6e9a75b27f5b53e286329a33d164b770f58765394bcfe944",
+  "id": "test-core-criterion-verifies-currency-a9531957b7fa",
+  "rationale": "Steps check-criterion-pin, check-conscious-repin define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-criterion-verifies-currency-a9531957b7fa",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:criterion-pin",
+  "to_revision": "sha256:19c5b9e1aea31424ce435cd778db05e19775cf1ad520c2a1c67672c63dd3c342",
+  "type": "verifies",
+  "version": 5
 }

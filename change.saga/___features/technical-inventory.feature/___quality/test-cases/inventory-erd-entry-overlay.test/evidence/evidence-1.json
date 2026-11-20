@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:8729f7fca7d9ce48cc72d59d7736b228a7f563a2f63843c9e7bbd07afcfbde3c",
+      "end": 248,
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 241
+    }
+  ],
+  "created_at": "2026-10-16T23:23:50Z",
   "id": "evidence-1",
-  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay",
-  "test_revision": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay:revision:r1",
+  "request_id": "saga-evidence-inventory-erd-entry-overlay-evidence-1",
   "role": "test_implementation",
   "steps": [
     "open"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "e2e/tests/technical-inventory-ui.spec.ts",
-      "start": 241,
-      "end": 248,
-      "digest": "sha256:8729f7fca7d9ce48cc72d59d7736b228a7f563a2f63843c9e7bbd07afcfbde3c"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:50Z",
-  "request_id": "saga-evidence-inventory-erd-entry-overlay-evidence-1"
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-entry-overlay",
+  "test_revision": "sha256:2c1a7ee9c8c5e3ec05ec90319a8a90fc699802db1beb48eee5157aac1f5698d3",
+  "verifications": [],
+  "version": 5
 }

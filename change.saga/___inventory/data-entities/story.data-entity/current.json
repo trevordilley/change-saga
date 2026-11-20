@@ -1,0 +1,146 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:2d3e2771d3fc8fb7e20db75bc4f915d7c624579df11af6ed3061b7613df4b995",
+        "end": 41,
+        "id": "identity",
+        "note": "The immutable story identity.",
+        "path": "internal/requirements/model.go",
+        "start": 35
+      },
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:797e4b51331a3d1ebc83b6be64390e9704724c8b7ff453050f118b229470a8bc",
+        "end": 69,
+        "id": "revision",
+        "note": "A complete story revision; readers never inherit omitted values.",
+        "path": "internal/requirements/model.go",
+        "start": 48
+      },
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:42730760f7e073a33a8f8420ff4c095694d24addf5120e85dd9672ce22c9378b",
+        "end": 91,
+        "id": "event",
+        "note": "A story lifecycle event.",
+        "path": "internal/requirements/model.go",
+        "start": 81
+      }
+    ],
+    "delivery": {
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "A requirement with a stable identity, current authored title, statement, personas, citations and stable criteria, plus current product state and reason. Git retains earlier content, attribution and merge conflicts. Legacy ambiguous heads stop normalization without deleting content.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "note": "URN urn:change-saga:<saga>:story:<id>; unchanged when the story moves feature.",
+        "type": "string"
+      },
+      {
+        "id": "title",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "id": "statement",
+        "name": "statement",
+        "type": "string"
+      },
+      {
+        "id": "personas",
+        "keys": [
+          "foreign"
+        ],
+        "name": "personas",
+        "note": "Optional; each named persona must exist and be active when assigned.",
+        "type": "persona URNs"
+      },
+      {
+        "id": "state",
+        "name": "state",
+        "note": "Current product state and authored reason are stored with the current definition; Git retains earlier values.",
+        "type": "lifecycle state"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Story",
+    "record": "urn:change-saga:change-saga:data-entity:story",
+    "relationships": [
+      {
+        "cardinality": {
+          "destination": "1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:519497447e7c888a6a765929b1b510d490c8d66352cf650191f372b03f161008",
+            "end": 186,
+            "id": "in-feature-field",
+            "note": "Story.Feature is where the record lives, never its identity.",
+            "path": "internal/requirements/model.go",
+            "start": 182
+          }
+        ],
+        "destination": {
+          "revision": "sha256:2bac2b531b39078dc2c7ea67ff21b12bf728158f0dbb0add4c1d7ce44354c56c",
+          "target": "urn:change-saga:change-saga:data-entity:feature"
+        },
+        "explanation": "The feature directory holds the story; moving it changes only that directory, not its URN or pins.",
+        "id": "in-feature",
+        "intent": "implemented",
+        "label": "lives in",
+        "meaning": "association"
+      },
+      {
+        "cardinality": {
+          "destination": "0..many",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:05c8de2e7fca8d64e075681918396ccbc3a314a15dea8ef9f721aa60b919bd17",
+            "end": 64,
+            "id": "serves-field",
+            "note": "Revision.Personas.",
+            "path": "internal/requirements/model.go",
+            "start": 61
+          },
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:a9c9e88147196763f3c5bb57aafa0b86227db25552a75f4d3628a9cd21af4eeb",
+            "end": 625,
+            "id": "serves-check",
+            "note": "requirePersonas refuses unknown or retired personas.",
+            "path": "internal/requirements/mutation.go",
+            "start": 607
+          }
+        ],
+        "destination": {
+          "revision": "sha256:fa71b597e86c31c3cf15ddc69f73cd1d1cefdfbe50b8f5cb1dcff75a3f281c59",
+          "target": "urn:change-saga:change-saga:data-entity:persona"
+        },
+        "explanation": "A story revision may name the personas it serves; each must exist, and a retired persona is never newly assigned.",
+        "id": "serves",
+        "intent": "implemented",
+        "label": "serves",
+        "meaning": "association"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:story",
+    "state": "active"
+  }
+}

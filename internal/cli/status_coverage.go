@@ -278,7 +278,7 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 	for _, story := range living.Stories {
 		examined = append(examined, healthRecord{Resource: story.Story, Kind: "story", Feature: story.Feature})
 		if len(story.RevisionHeads) > 1 || len(story.LifecycleHeads) > 1 {
-			problems = append(problems, areas.Problem{Resource: story.Story, Kind: "story", Feature: story.Feature, Reason: "story has competing heads; reconcile them"})
+			problems = append(problems, areas.Problem{Resource: story.Story, Kind: "story", Feature: story.Feature, Reason: "legacy story content is ambiguous; explicitly select complete current content"})
 		}
 	}
 	for _, testCase := range living.Quality.TestCases {

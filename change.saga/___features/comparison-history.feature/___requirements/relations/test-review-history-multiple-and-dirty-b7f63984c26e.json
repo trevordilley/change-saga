@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-history-multiple-and-dirty-b7f63984c26e",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-history-multiple-and-dirty",
-  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:reopen-comparison",
-  "scope": "self",
-  "rationale": "Steps boundaries define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-history-multiple-and-dirty:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:record-change-history:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:36.820003Z",
-  "request_id": "test-review-history-multiple-and-dirty-b7f63984c26e"
+  "from": "urn:change-saga:change-saga:test-case:review-history-multiple-and-dirty",
+  "from_revision": "sha256:a5484fd799ac2a695019346677a7aee3a5c216071d0e1e22dd20cc4df8bfdbdf",
+  "id": "test-review-history-multiple-and-dirty-b7f63984c26e",
+  "rationale": "Steps boundaries define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-history-multiple-and-dirty-b7f63984c26e",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:reopen-comparison",
+  "to_revision": "sha256:cc5c106da8e7d428ea9e394e87143867bea8f592fc124600a5afab99bbb62453",
+  "type": "verifies",
+  "version": 5
 }

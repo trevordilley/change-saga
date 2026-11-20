@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "Ambiguous legacy heads are non-destructive errors; explicit Git resolution yields one current story.",
+    "preconditions": [
+      "Use merged checkout story revisions r2-a and r2-b descended from r1; each branch definition is complete and distinct."
+    ],
+    "steps": [
+      {
+        "action": "Run normalize on distinct r2-a and r2-b legacy heads.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:recover-competing-heads:criterion:all-heads-required"
+        ],
+        "expected_result": "Normalization identifies both heads and leaves both files unchanged.",
+        "id": "omit"
+      },
+      {
+        "action": "Preserve both branches in Git, combine their content explicitly, resolve the legacy head set, then normalize.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:recover-competing-heads:criterion:current-restored"
+        ],
+        "expected_result": "The resulting current.json contains the selected combined content without a new Saga revision graph.",
+        "id": "merge"
+      },
+      {
+        "action": "Query Git-backed history for the stable story and inspect the original commits.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:recover-competing-heads:criterion:current-restored"
+        ],
+        "expected_result": "Both authored branch values and the resolution commit remain inspectable through real Git.",
+        "id": "history"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-all-story-heads",
+    "title": "Preserve competing legacy story content before Git resolution"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-all-story-heads"
+  }
+}

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "domain-validation-explains-element-context",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:38:22.00052Z",
   "from": "urn:change-saga:change-saga:slide:mutation-guardrails:item:domain-validation",
-  "to": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
-  "scope": "self",
+  "id": "domain-validation-explains-element-context",
   "rationale": "Canonical target validation is the exact guard that rejects comments not attached to a known review slide or Item.",
-  "to_revision": "urn:change-saga:change-saga:story:contextual-comments:revision:r2",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:38:22.00052Z"
+  "to": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "type": "explains",
+  "version": 5
 }

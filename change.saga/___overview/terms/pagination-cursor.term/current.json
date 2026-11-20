@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "continuation token"
+    ],
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:7acd2f60249a73ba8f8de75517ed4670a83e6170afaf680c42d836eda594075d",
+        "end": 915,
+        "path": "internal/reviewapp/session.go",
+        "start": 901
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:c71e7f588bb0bb4f6eaa11ecde31a11ae316bc9537e8e2487018a9eb413a3a84",
+        "end": 958,
+        "path": "internal/reviewapp/session.go",
+        "start": 917
+      }
+    ],
+    "definition": "An opaque continuation token for the next page of one query. It binds the operation, normalized filter key, query snapshot, and next offset. The same token can be replayed for that unchanged query; malformed tokens or tokens used with a different operation or filter are rejected, and a changed snapshot returns a retryable stale-snapshot error. Its checksum detects corruption but is not an authorization credential.",
+    "name": "Pagination cursor",
+    "stories": [
+      "urn:change-saga:change-saga:story:bounded-query-pagination",
+      "urn:change-saga:change-saga:story:structured-ai-contract"
+    ],
+    "term": "urn:change-saga:change-saga:term:pagination-cursor"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:pagination-cursor"
+  }
+}

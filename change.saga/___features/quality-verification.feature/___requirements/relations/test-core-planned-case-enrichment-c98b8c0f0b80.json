@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-planned-case-enrichment-c98b8c0f0b80",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:planned-definition",
-  "scope": "self",
-  "rationale": "Steps check-planned-definition, check-built-case-reader, check-reader-identity define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:definitions-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:17:26.086669Z",
-  "request_id": "test-core-planned-case-enrichment-c98b8c0f0b80"
+  "from": "urn:change-saga:change-saga:test-case:core-planned-case-enrichment",
+  "from_revision": "sha256:502010b093ceb390e7b1697686369d0bcd70ff0b755a9dd4aa5dabb6451d505c",
+  "id": "test-core-planned-case-enrichment-c98b8c0f0b80",
+  "rationale": "Steps check-planned-definition, check-built-case-reader, check-reader-identity define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-planned-case-enrichment-c98b8c0f0b80",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:planned-definition",
+  "to_revision": "sha256:19c5b9e1aea31424ce435cd778db05e19775cf1ad520c2a1c67672c63dd3c342",
+  "type": "verifies",
+  "version": 5
 }

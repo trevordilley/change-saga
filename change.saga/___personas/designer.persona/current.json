@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "description": "Translates user stories into UX and UI designs that express their intent and feel. Needs clear requirements and evidence that implementation uses the resulting designs.",
+    "name": "Designer",
+    "persona": "urn:change-saga:change-saga:persona:designer"
+  },
+  "state": {
+    "persona": "urn:change-saga:change-saga:persona:designer",
+    "state": "active"
+  }
+}

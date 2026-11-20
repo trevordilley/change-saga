@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-policy-decisions-view-input",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-policy-decisions:item:view-input",
-  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
-  "scope": "self",
-  "rationale": "Implementation policy: A new historical pin request names an exact saved revision. Readability alone does not admit a new link or imply global currency.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:54:52.839887Z",
-  "superseded_at": "2026-09-27T10:27:26.08993Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-policy-decisions:item:view-input",
+  "id": "ti-policy-decisions-view-input",
+  "rationale": "Implementation policy: A new historical pin request names an exact saved revision. Readability alone does not admit a new link or imply global currency.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:26.08993Z",
+  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+  "to_revision": "sha256:38376e153e063b30f56fe8950ce7e10c1e9dead4fd322189419312913a36cbfc",
+  "type": "explains",
+  "version": 5
 }

@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-code-chain-impact-ae6462724637",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-code-chain-impact",
-  "to": "urn:change-saga:change-saga:story:change-impact-layers:criterion:affected-records",
-  "scope": "self",
-  "rationale": "Steps code, chain define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-code-chain-impact:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:change-impact-layers:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:32.618421Z",
-  "request_id": "test-review-code-chain-impact-ae6462724637"
+  "from": "urn:change-saga:change-saga:test-case:review-code-chain-impact",
+  "from_revision": "sha256:0ab1166971fe38aa335a6e59709cb43c5e0bb1577dc20cb74326262e2711027f",
+  "id": "test-review-code-chain-impact-ae6462724637",
+  "rationale": "Steps code, chain define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-code-chain-impact-ae6462724637",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:change-impact-layers:criterion:affected-records",
+  "to_revision": "sha256:9c765665c4915bda676f832460c98cf85df299e9fc8e81631add53d74ab418a6",
+  "type": "verifies",
+  "version": 5
 }

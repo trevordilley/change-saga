@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Retain immutable prototype source and detect package tampering.",
+    "preconditions": [
+      "A fresh Saga and an HTML source directory are available."
+    ],
+    "steps": [
+      {
+        "action": "Import the HTML, edit only the original source and reload; finally alter the packaged copy and reload.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:immutable-revision"
+        ],
+        "expected_result": "Source edits leave the stored revision loadable; package tampering produces a digest mismatch.",
+        "id": "check-immutable-revision"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-prototype-package",
+    "title": "Retain immutable prototype source and detect package tampering"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-prototype-package"
+  }
+}

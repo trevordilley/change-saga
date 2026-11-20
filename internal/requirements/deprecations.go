@@ -64,14 +64,15 @@ type DeprecationEvent struct {
 }
 
 type Deprecation struct {
+	current   bool
 	Identity  RecordIdentity        `json:"identity"`
-	Revisions []DeprecationRevision `json:"revisions"`
-	Events    []DeprecationEvent    `json:"events"`
+	Revisions []DeprecationRevision `json:"-"`
+	Events    []DeprecationEvent    `json:"-"`
 
-	RevisionHeads    []string             `json:"revision_heads"`
-	LifecycleHeads   []string             `json:"lifecycle_heads"`
-	CurrentRevision  *DeprecationRevision `json:"current_revision"`
-	CurrentLifecycle *DeprecationEvent    `json:"current_lifecycle"`
+	RevisionHeads    []string             `json:"-"`
+	LifecycleHeads   []string             `json:"-"`
+	CurrentRevision  *DeprecationRevision `json:"content"`
+	CurrentLifecycle *DeprecationEvent    `json:"state"`
 }
 
 // Active reports whether the deprecation's unique current lifecycle is active.
@@ -119,6 +120,22 @@ func loadDeprecations(document *Document) error {
 	}
 	for _, value := range packages {
 		deprecation := Deprecation{Identity: value.identity}
+		if value.current {
+			var content DeprecationRevision
+			var state DeprecationEvent
+			if err := projectCurrent(value.record, value.identity.CreatedAt, DeprecationRevisionSchemaURL, DeprecationEventSchemaURL, AppRecordVersion, &content, &state); err != nil {
+				return err
+			}
+			if err := validateDeprecationRevision(content, document.SagaID, value.id, content.ID); err != nil {
+				return err
+			}
+			if err := validateDeprecationEvent(state, document.SagaID, value.id, state.ID); err != nil {
+				return err
+			}
+			deprecation.current = true
+			deprecation.Revisions = []DeprecationRevision{content}
+			deprecation.Events = []DeprecationEvent{state}
+		}
 		for _, path := range value.revisions {
 			var revision DeprecationRevision
 			if err := readStrictJSON(path, &revision); err != nil {
@@ -238,6 +255,18 @@ func validateDeprecationEvent(value DeprecationEvent, sagaID, deprecationID, exp
 // resolveDeprecation computes the heads of both graphs. A deprecation starts active; it may
 // be withdrawn and later restored.
 func resolveDeprecation(deprecation *Deprecation, sagaID string) error {
+	if deprecation.current {
+		if len(deprecation.Revisions) == 0 || len(deprecation.Events) == 0 {
+			return fmt.Errorf("current record requires content and state")
+		}
+		deprecation.CurrentRevision = &deprecation.Revisions[len(deprecation.Revisions)-1]
+		deprecation.CurrentLifecycle = &deprecation.Events[len(deprecation.Events)-1]
+		pin, _ := appMemberURN(sagaID, "deprecation", deprecation.Identity.ID, "revision", deprecation.CurrentRevision.ID)
+		deprecation.RevisionHeads = []string{pin}
+		deprecation.LifecycleHeads = memberURNs(sagaID, "deprecation", deprecation.Identity.ID, "event", []string{deprecation.CurrentLifecycle.ID})
+		return nil
+	}
+
 	var problems validationErrors
 	id := deprecation.Identity.ID
 	revisions := make([]graphMember, 0, len(deprecation.Revisions))

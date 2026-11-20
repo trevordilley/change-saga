@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-deprecation-withdrawal-9660916c8b69",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal",
-  "to": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:withdrawal",
-  "scope": "self",
-  "rationale": "Steps withdraw, immutable define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:05.18542Z",
-  "request_id": "test-review-deprecation-withdrawal-9660916c8b69"
+  "from": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal",
+  "from_revision": "sha256:fbc07e2e3f90485c3ead25872e5f735db11e221a5704f4c01877078670e071f6",
+  "id": "test-review-deprecation-withdrawal-9660916c8b69",
+  "rationale": "Steps withdraw, immutable define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-deprecation-withdrawal-9660916c8b69",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:withdrawal",
+  "to_revision": "sha256:a4bf8405ffe4621abb8a80fb164fd0e65e6476985c16e36c09855f3ffda8340e",
+  "type": "verifies",
+  "version": 5
 }

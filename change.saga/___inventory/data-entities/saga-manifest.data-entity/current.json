@@ -1,0 +1,66 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:b9cf3fcb951d40fd2eb552b97b1b24b7822bf754d87fcd0181c35460f654d71b",
+        "end": 49,
+        "id": "manifest-type",
+        "note": "The saga.json record: identity, title and source.",
+        "path": "internal/saga/model.go",
+        "start": 43
+      },
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:d00e26a0f7e4294b61b6608a7c09271500e65741f05e1ef566fa623ee89f0da9",
+        "end": 163,
+        "id": "source-type",
+        "note": "Source names only the repository; the compared range is never stored.",
+        "path": "internal/saga/model.go",
+        "start": 158
+      }
+    ],
+    "delivery": {
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "saga.json at the Saga root: the stable Saga ID that every URN embeds and the one source repository the Saga documents. It deliberately stores no comparison, coverage or aggregate state.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "note": "Embedded in every URN as urn:change-saga:\u003cid\u003e:...",
+        "type": "string"
+      },
+      {
+        "id": "title",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "id": "repository",
+        "name": "source.repository",
+        "note": "Canonical repository identity; commands refuse a checkout from another origin.",
+        "type": "string"
+      },
+      {
+        "id": "version",
+        "name": "version",
+        "note": "5 for an app Saga.",
+        "type": "int"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Saga manifest",
+    "record": "urn:change-saga:change-saga:data-entity:saga-manifest"
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:saga-manifest",
+    "state": "active"
+  }
+}

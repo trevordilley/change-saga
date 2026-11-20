@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "One stale reference is pre-existing debt and no regression is attributed to the header change.",
+    "preconditions": [
+      "Use shopSaga; commit an undocumented queue behavior change on main, then branch and commit only an added header."
+    ],
+    "steps": [
+      {
+        "action": "Reconcile the header-only branch against main.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency"
+        ],
+        "expected_result": "One stale reference is pre-existing, with zero regressions.",
+        "id": "debt"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-baseline-debt",
+    "title": "Keep existing documentation debt separate from a new change"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-baseline-debt"
+  }
+}

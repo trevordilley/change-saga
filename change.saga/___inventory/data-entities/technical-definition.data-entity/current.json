@@ -1,0 +1,71 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+        "digest": "sha256:3823d38b3fcb082c422a8f22ee4a0abd5436a3d1181d16ecebe358258072aad0",
+        "end": 158,
+        "id": "definition",
+        "note": "The authored definition and its revision envelope.",
+        "path": "internal/requirements/inventory.go",
+        "start": 123
+      }
+    ],
+    "delivery": {
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "A Component, System, data entity or ERD in ___inventory/: a stable identity plus editable current definition and state. Exact code, members, relationships, intent and delivery pins retain their evidence meaning. Git owns earlier values.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "note": "URN urn:change-saga:<saga>:<kind>:<id>.",
+        "type": "string"
+      },
+      {
+        "id": "revision",
+        "name": "content digest",
+        "note": "Stable targets are paired with an exact authored-content digest. Legacy field names may still say revision; no stored revision graph exists.",
+        "type": "sha256"
+      },
+      {
+        "id": "kind",
+        "name": "kind",
+        "type": "component | system | data-entity | erd | erd-overlay"
+      },
+      {
+        "id": "intent",
+        "name": "intent",
+        "note": "Legacy revisions read as unspecified.",
+        "type": "proposed | implemented"
+      },
+      {
+        "id": "delivery",
+        "name": "delivery.commit",
+        "type": "commit"
+      }
+    ],
+    "holders": [
+      {
+        "component": {
+          "revision": "sha256:9e9c8329d933cb99f18e7f5dd99acb453f9db3e28977b337b8a73e690bdf675f",
+          "target": "urn:change-saga:change-saga:component:technical-record-store"
+        },
+        "role": "Loads legacy or current records and atomically replaces current content under the Saga lock; Git owns previous definitions."
+      }
+    ],
+    "intent": "implemented",
+    "name": "Technical definition",
+    "record": "urn:change-saga:change-saga:data-entity:technical-definition"
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:technical-definition",
+    "state": "active"
+  }
+}

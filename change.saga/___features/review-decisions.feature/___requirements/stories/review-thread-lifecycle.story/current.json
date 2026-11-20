@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "reply-context",
+        "statement": "A reply appears in the same thread and retains the root comment’s slide-or-item context."
+      },
+      {
+        "id": "resolve-reopen",
+        "statement": "A later thread action can resolve or reopen the thread, and the review’s open-thread count reflects the latest explicit state."
+      },
+      {
+        "id": "preserves-discussion",
+        "statement": "Resolving or reopening a thread leaves its earlier comments visible in order."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer reviewing a change, I can reply to, resolve, and reopen an anchored discussion so its outcome and full context remain visible.",
+    "story": "urn:change-saga:change-saga:story:review-thread-lifecycle",
+    "title": "Carry a review discussion to resolution"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:review-thread-lifecycle"
+  }
+}

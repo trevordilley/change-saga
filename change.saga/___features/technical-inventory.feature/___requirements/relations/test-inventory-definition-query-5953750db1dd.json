@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-definition-query-5953750db1dd",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-definition-query",
-  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
-  "scope": "self",
-  "rationale": "Steps code define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-definition-query:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:16.602287Z",
-  "request_id": "test-inventory-definition-query-5953750db1dd"
+  "from": "urn:change-saga:change-saga:test-case:inventory-definition-query",
+  "from_revision": "sha256:c490945c8bb5fde3674c546391e3e23a1f93334b002bd7ba80b081203f0cea76",
+  "id": "test-inventory-definition-query-5953750db1dd",
+  "rationale": "Steps code define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-definition-query-5953750db1dd",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
+  "to_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+  "type": "verifies",
+  "version": 5
 }

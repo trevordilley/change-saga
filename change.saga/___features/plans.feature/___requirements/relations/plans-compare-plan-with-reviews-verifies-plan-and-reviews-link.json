@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-compare-plan-with-reviews-verifies-plan-and-reviews-link",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:18:27.382392Z",
   "from": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews",
-  "to": "urn:change-saga:change-saga:story:compare-plan-with-reviews:criterion:plan-and-reviews-link",
-  "scope": "self",
+  "from_revision": "sha256:3ec214d06a91b652c8496349360f146de70ce4c0e238bb7d71079113f15879bc",
+  "id": "plans-compare-plan-with-reviews-verifies-plan-and-reviews-link",
   "rationale": "Step plan-and-reviews-link checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:compare-plan-with-reviews:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:18:27.382392Z"
+  "to": "urn:change-saga:change-saga:story:compare-plan-with-reviews:criterion:plan-and-reviews-link",
+  "to_revision": "sha256:b8b097b1b677d31d8d08f0afd525985944d71cb71c21a62dbd347edc2e96c9d5",
+  "type": "verifies",
+  "version": 5
 }

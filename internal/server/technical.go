@@ -56,13 +56,20 @@ var errTechnicalNotFound = errors.New("technical definition not found")
 func technicalHref(kind, id, revision string) string {
 	href := technicalPath + "/" + url.PathEscape(kind) + "/" + url.PathEscape(id)
 	if revision != "" {
-		href += "?" + url.Values{"revision": {revision}}.Encode()
+		href += "?" + url.Values{"content_digest": {revision}}.Encode()
 	}
 	return href
 }
 
 // technicalPinHref opens the page of an exact pin.
-func technicalPinHref(pin saga.DocumentationLink) string {
+func technicalPinHref(pin saga.DocumentationLink, inventories ...requirements.Inventory) string {
+	if len(inventories) > 0 {
+		canonical, err := inventories[0].CanonicalPin(pin)
+		if err != nil {
+			return ""
+		}
+		pin = canonical
+	}
 	kind, id, ok := technicalTargetParts(pin.Target)
 	if !ok {
 		return ""
@@ -214,9 +221,9 @@ func (usages technicalUsageIndex) itemCount(target string) (int, int) {
 }
 
 func (usages technicalUsageIndex) usage(use inventoryview.Use) technicalUsage {
-	usage := technicalUsage{Target: use.Item, Role: use.Role, Pin: use.Pin, PinHref: technicalPinHref(use.Pin), Status: use.Status, Edge: use.Edge}
+	usage := technicalUsage{Target: use.Item, Role: use.Role, Pin: use.Pin, PinHref: technicalPinHref(use.Pin, usages.inventory), Status: use.Status, Edge: use.Edge}
 	for _, hop := range use.Path[1:] {
-		usage.Via = append(usage.Via, traceLink{Title: entityName(usages.inventory, hop), Href: technicalPinHref(hop), Target: hop.Target})
+		usage.Via = append(usage.Via, traceLink{Title: entityName(usages.inventory, hop), Href: technicalPinHref(hop, usages.inventory), Target: hop.Target})
 	}
 	switch use.Role {
 	case inventoryview.RoleWhiteboardElement:
@@ -263,7 +270,7 @@ func (usages technicalUsageIndex) usage(use inventoryview.Use) technicalUsage {
 		}
 	default:
 		owner := saga.DocumentationLink{Target: use.Owner, Revision: use.OwnerRevision}
-		usage.Owner, usage.OwnerHref, usage.OwnerCurrent = entityName(usages.inventory, owner), technicalPinHref(owner), use.OwnerCurrent
+		usage.Owner, usage.OwnerHref, usage.OwnerCurrent = entityName(usages.inventory, owner), technicalPinHref(owner, usages.inventory), use.OwnerCurrent
 	}
 	return usage
 }
@@ -331,7 +338,7 @@ func technicalDirectory(id, title, lede, noun, nouns, command, action string) *d
 		Label: "Filter " + nouns, Noun: noun, Nouns: nouns,
 		Columns: []directoryColumn{
 			{Title: title[:len(title)-1]}, {Title: "Explanation", Wide: true},
-			{Title: "Intent"}, {Title: "Lifecycle"}, {Title: "Revision"},
+			{Title: "Intent"}, {Title: "Lifecycle"}, {Title: "Content digest"},
 			{Title: "Code references", Numeric: true}, {Title: "Used by Items", Numeric: true},
 		},
 		Empty:   "No " + nouns + " yet.",
@@ -376,15 +383,21 @@ func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUs
 			continue
 		}
 		name, explanation, codeCount := record.Identity.ID, "", 0
-		intent := gapCell("unknown — competing revisions")
-		revision := gapCell(strconv.Itoa(len(record.RevisionHeads)) + " competing revisions")
+		intent := gapCell("unknown — ambiguous legacy content")
+		revision := gapCell(strconv.Itoa(len(record.RevisionHeads)) + " competing legacy definitions")
 		if current := record.CurrentRevision; current != nil {
 			name, explanation, codeCount = current.Name, current.Explanation, len(current.Code)
 			intent = textCell(technicalIntent(current))
 			if intent.Text == "unspecified" {
 				intent = gapCell("unspecified")
 			}
-			revision = textCell(current.ID)
+			pin := requirements.ContentPin(record.Target, current.ID)
+			if strings.HasPrefix(pin, "sha256:") && len(pin) == 71 {
+				pin = pin[7:19]
+			} else {
+				pin = current.ID
+			}
+			revision = directoryCell{Text: pin, Href: technicalHref(record.Kind, record.Identity.ID, "")}
 		}
 		lifecycle := textCell(technicalLifecycle(record))
 		if record.CurrentLifecycle == nil {
@@ -524,12 +537,12 @@ func (a *app) technicalEntityPage(ctx context.Context, inventory requirements.In
 		// Competing heads and no pin: name them all and choose none.
 		return view, nil
 	}
-	revision := record.Revision(target + ":revision:" + revisionID)
+	revision := record.Revision(requirements.ContentPin(target, revisionID))
 	if revision == nil {
 		return nil, errTechnicalNotFound
 	}
-	pin := saga.DocumentationLink{Target: target, Revision: target + ":revision:" + revisionID}
-	view.Revision, view.Name, view.Intent = revisionID, revision.Name, technicalIntent(revision)
+	pin := saga.DocumentationLink{Target: target, Revision: requirements.ContentPin(target, revisionID)}
+	view.Revision, view.Name, view.Intent = pin.Revision, revision.Name, technicalIntent(revision)
 	view.PinStatus = inventory.LinkStatus(pin)
 	if kind == requirements.KindERD || kind == requirements.KindERDOverlay {
 		view.Intent = ""
@@ -570,17 +583,17 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 			found = found || id == route.id
 		}
 		if !found {
-			if design, ok := technicalDesignBoardOf(route.id); ok && query.Get("revision") == "" {
+			if design, ok := technicalDesignBoardOf(route.id); ok && query.Get("content_digest") == "" {
 				return &technicalPageView{Whiteboard: &whiteboardView{ID: design.ID, Name: design.Title, Href: whiteboardHref(design.ID, ""), Note: "This whiteboard has not been authored yet. " + design.Note}}, nil, nil
 			}
 			return nil, nil, errTechnicalNotFound
 		}
-		if query.Get("revision") != "" {
-			if _, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, route.id, query.Get("revision")); err != nil {
+		if query.Get("content_digest") != "" {
+			if _, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, route.id, query.Get("content_digest")); err != nil {
 				return nil, nil, errTechnicalNotFound
 			}
 		}
-		board := a.makeNamedWhiteboardView(inventory, route.id, query.Get("revision"))
+		board := a.makeNamedWhiteboardView(inventory, route.id, query.Get("content_digest"))
 		if board == nil {
 			return nil, nil, errTechnicalNotFound
 		}
@@ -610,7 +623,7 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 	if route.kind == "technical-area" {
 		view := a.technicalPage(inventory, usages, newness, route.id, query.Get("q"))
 		if view.DataModel != nil {
-			if revision := query.Get("revision"); revision != "" {
+			if revision := query.Get("content_digest"); revision != "" {
 				if board, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, "data-model", revision); err != nil || board == nil {
 					return nil, nil, errTechnicalNotFound
 				}
@@ -622,7 +635,7 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 		}
 		return view, nil, nil
 	}
-	entity, err := a.technicalEntityPage(ctx, inventory, usages, route.id, route.sub, query.Get("revision"))
+	entity, err := a.technicalEntityPage(ctx, inventory, usages, route.id, route.sub, query.Get("content_digest"))
 	if entity != nil && newness != nil {
 		entity.NewnessAgainst, entity.NewnessReason = newness.Against, newness.Reason
 		entity.Newness = newness.Of(inventory.Find(entity.Target))
@@ -657,7 +670,7 @@ func (a *app) technicalUsagesPage(w http.ResponseWriter, r *http.Request) {
 }
 
 const technicalTemplates = `
-{{define "technical-usages"}}<div class="technical-usages" data-technical-usages="{{.Target}}">{{if .Usages}}<p class="technical-usage-count">{{if .Incomplete}}At least {{end}}{{.Items}} {{if eq .Items 1}}slide Item uses{{else}}slide Items use{{end}} this definition{{if lt .Current .Items}}; {{.Current}} pin its current revision directly{{end}}. {{.Total}} declared {{if eq .Total 1}}use{{else}}uses{{end}} in all{{if .Incomplete}}; the reverse index stopped early, so these are lower bounds{{end}}.</p><ul class="trace-links technical-usage-list">{{range .Usages}}<li data-technical-usage="{{if .Target}}{{.Target}}{{else}}{{.Owner}}{{end}}" data-usage-role="{{.Role}}" data-usage-status="{{.Status}}">{{if .Context}}{{if .Href}}<a href="{{.Href}}" data-usage-item="{{.Target}}">{{.Item}}</a>{{else}}<span>{{.Item}}</span>{{end}} <small class="trace-kind">{{.Context}} Item</small><small class="trace-note">{{if .Feature}}<a href="{{.FeatureHref}}">{{.Feature}}</a> · {{end}}{{if .Review}}<a href="{{.ReviewHref}}">{{.Review}}</a> · {{end}}{{.Deck}} · {{.Slide}}</small>{{else}}<small class="trace-kind">{{roleTitle .Role}}</small> <a href="{{.OwnerHref}}">{{.Owner}}</a>{{if .Edge}} <small class="trace-note">{{.Edge}}</small>{{end}}{{if not .OwnerCurrent}} <small class="gap">an earlier revision of it</small>{{end}}{{end}}<small class="technical-pin">pins <a href="{{.PinHref}}"><code>{{.Pin.Revision}}</code></a>{{if ne .Status "current"}} · <span class="gap">{{.Status}}</span>{{end}}</small>{{if .Via}}<small class="technical-via">through {{range $i, $v := .Via}}{{if $i}} → {{end}}<a href="{{$v.Href}}">{{$v.Title}}</a>{{end}}</small>{{end}}{{if .Description}}<p class="trace-rationale">{{.Description}}</p>{{end}}</li>{{end}}</ul>{{if .Truncated}}<p class="gap" role="status">{{.Truncated}} more uses are not listed here.</p>{{end}}{{if .DepthCut}}<p class="term-empty">Owners further up are not listed here; open an owner to follow it.</p>{{end}}{{else}}<p class="term-empty">{{if .Incomplete}}The reverse index stopped before finding a use; this is unknown, not unused.{{else}}No declared use: no slide Item, System, holder, relationship or ERD pins this definition.{{end}}</p>{{end}}</div>{{end}}
+{{define "technical-usages"}}<div class="technical-usages" data-technical-usages="{{.Target}}">{{if .Usages}}<p class="technical-usage-count">{{if .Incomplete}}At least {{end}}{{.Items}} {{if eq .Items 1}}slide Item uses{{else}}slide Items use{{end}} this definition{{if lt .Current .Items}}; {{.Current}} pin its current content directly{{end}}. {{.Total}} declared {{if eq .Total 1}}use{{else}}uses{{end}} in all{{if .Incomplete}}; the reverse index stopped early, so these are lower bounds{{end}}.</p><ul class="trace-links technical-usage-list">{{range .Usages}}<li data-technical-usage="{{if .Target}}{{.Target}}{{else}}{{.Owner}}{{end}}" data-usage-role="{{.Role}}" data-usage-status="{{.Status}}">{{if .Context}}{{if .Href}}<a href="{{.Href}}" data-usage-item="{{.Target}}">{{.Item}}</a>{{else}}<span>{{.Item}}</span>{{end}} <small class="trace-kind">{{.Context}} Item</small><small class="trace-note">{{if .Feature}}<a href="{{.FeatureHref}}">{{.Feature}}</a> · {{end}}{{if .Review}}<a href="{{.ReviewHref}}">{{.Review}}</a> · {{end}}{{.Deck}} · {{.Slide}}</small>{{else}}<small class="trace-kind">{{roleTitle .Role}}</small> <a href="{{.OwnerHref}}">{{.Owner}}</a>{{if .Edge}} <small class="trace-note">{{.Edge}}</small>{{end}}{{if not .OwnerCurrent}} <small class="gap">earlier committed content</small>{{end}}{{end}}<small class="technical-pin">pins <a href="{{.PinHref}}"><code>{{.Pin.Revision}}</code></a>{{if ne .Status "current"}} · <span class="gap">{{.Status}}</span>{{end}}</small>{{if .Via}}<small class="technical-via">through {{range $i, $v := .Via}}{{if $i}} → {{end}}<a href="{{$v.Href}}">{{$v.Title}}</a>{{end}}</small>{{end}}{{if .Description}}<p class="trace-rationale">{{.Description}}</p>{{end}}</li>{{end}}</ul>{{if .Truncated}}<p class="gap" role="status">{{.Truncated}} more uses are not listed here.</p>{{end}}{{if .DepthCut}}<p class="term-empty">Owners further up are not listed here; open an owner to follow it.</p>{{end}}{{else}}<p class="term-empty">{{if .Incomplete}}The reverse index stopped before finding a use; this is unknown, not unused.{{else}}No declared use: no slide Item, System, holder, relationship or ERD pins this definition.{{end}}</p>{{end}}</div>{{end}}
 
 {{define "technical-newness"}}{{with .}}<p class="technical-newness" data-technical-newness="{{.Known}}">Compared against <code>{{.Against}}</code>: “new” means the identity did not exist at the comparison's base{{if not .Known}}. The base inventory is unknown: {{.Reason}}{{end}}.</p>{{end}}{{end}}
 
@@ -678,18 +691,18 @@ const technicalTemplates = `
 </section>{{end}}{{end}}
 
 {{define "technical-data-model-directory"}}<section class="app-page-section" data-technical-erd-documents><h2>ERD documents</h2>{{if .Documents}}{{template "trace-links" .Documents}}{{else}}<p class="app-empty">No ERD is authored yet. The data entities below remain readable without one.</p>{{end}}</section>
-{{if not (and .Whiteboard .Whiteboard.Visual)}}{{with .Single}}<section class="app-page-section" data-technical-single-erd><h2>{{.Name}}</h2><p class="app-lede">{{.Explanation}}</p><p class="documentation-page-link"><a href="/technical/erd/{{.ID}}">Revision {{.Revision}}, its history and where it is used</a></p>{{template "erd-view" .}}</section>{{end}}{{end}}
+{{if not (and .Whiteboard .Whiteboard.Visual)}}{{with .Single}}<section class="app-page-section" data-technical-single-erd><h2>{{.Name}}</h2><p class="app-lede">{{.Explanation}}</p><p class="documentation-page-link"><a href="/technical/erd/{{.ID}}">Read the definition and where it is used</a></p>{{template "erd-view" .}}</section>{{end}}{{end}}
 
-{{if .Overlays}}<section class="app-page-section" data-technical-erd-views><h2>Proposed changes</h2><p class="term-empty">Overlays propose changes over an exact ERD revision.</p>{{template "trace-links" .Overlays}}</section>{{end}}<section class="app-page-section" data-technical-entities><h2>All data entities</h2>{{template "directory" .Entities}}</section>{{end}}
+{{if .Overlays}}<section class="app-page-section" data-technical-erd-views><h2>Proposed changes</h2><p class="term-empty">Overlays propose changes over an exact ERD content digest.</p>{{template "trace-links" .Overlays}}</section>{{end}}<section class="app-page-section" data-technical-entities><h2>All data entities</h2>{{template "directory" .Entities}}</section>{{end}}
 
 {{define "technical-entity-page"}}<section class="app-page technical-entity-page{{if .ERD}} technical-erd-page{{end}}" data-technical-entity="{{.Target}}"{{if .Revision}} data-technical-revision="{{.Revision}}"{{end}}><nav class="requirements-breadcrumbs" aria-label="Definition breadcrumb"><a href="/">Project</a><span>/</span><a href="/technical">Technical design</a><span>/</span>{{with .Area.Segment}}<a href="/technical/{{.}}">{{$.Area.Title}}</a><span>/</span>{{end}}<strong>{{.Name}}</strong></nav>
-{{template "deprecation-target" .Target}}<header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="revision">Revision <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span>{{if not .ERD}}<span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span>{{end}}{{if .NewnessAgainst}}<span data-technical-fact="newness" data-newness="{{.Newness}}">Since {{.NewnessAgainst}}: {{if eq .Newness "unknown"}}<span class="gap" title="{{.NewnessReason}}">unknown</span>{{else}}{{.Newness}}{{end}}</span>{{end}}<span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>
-{{if and .Revision (ne .PinStatus "current")}}<p role="status" class="gap" data-technical-pin-status="{{.PinStatus}}">{{if .Requested}}You are reading saved revision <code>{{.Revision}}</code>. It is {{.PinStatus}}; nothing has been repinned.{{else}}This definition is {{.PinStatus}}.{{end}}{{if and .CurrentHref .Requested}} <a href="{{.CurrentHref}}">Read the current definition</a>{{end}}</p>{{end}}
-{{if gt (len .Heads) 1}}<div role="status" class="gap" data-technical-conflict><p>This definition has {{len .Heads}} competing revisions. None is chosen as current; reconciling them names every head.</p><ul>{{range .Heads}}<li><a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}><code>{{.ID}}</code></a></li>{{end}}</ul></div>{{end}}
+{{template "deprecation-target" .Target}}<header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="content-digest">Content digest <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span>{{if not .ERD}}<span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span>{{end}}{{if .NewnessAgainst}}<span data-technical-fact="newness" data-newness="{{.Newness}}">Since {{.NewnessAgainst}}: {{if eq .Newness "unknown"}}<span class="gap" title="{{.NewnessReason}}">unknown</span>{{else}}{{.Newness}}{{end}}</span>{{end}}<span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>
+{{if and .Revision (ne .PinStatus "current")}}<p role="status" class="gap" data-technical-pin-status="{{.PinStatus}}">{{if .Requested}}You are reading saved content <code>{{.Revision}}</code>. It is {{.PinStatus}}; its evidence pin is unchanged.{{else}}This definition is {{.PinStatus}}.{{end}}{{if and .CurrentHref .Requested}} <a href="{{.CurrentHref}}">Read the current definition</a>{{end}}</p>{{end}}
+{{if gt (len .Heads) 1}}<div role="status" class="gap" data-technical-conflict><p>This definition has {{len .Heads}} competing legacy definitions. No current content is selected. Preserve the source files in Git and explicitly combine or select their content before normalization.</p><ul>{{range .Heads}}<li><code>{{.ID}}</code></li>{{end}}</ul></div>{{end}}
 {{if .LifecycleNote}}<p class="term-state">{{.LifecycleNote}}</p>{{end}}</div></header>
 {{with .Definition}}{{template "documentation" .}}{{end}}{{with .ERD}}<p class="documentation-prose">{{.Explanation}}</p>{{template "erd-view" .}}{{end}}
 <section class="app-page-section" data-technical-used-by><h2>Used by</h2>{{template "technical-usages" .Usages}}</section>
-<section class="app-page-section" data-technical-history><h2>Revision history</h2><ul class="technical-history">{{range .History}}<li><a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}><code>{{.ID}}</code></a>{{if .Current}} <small>current</small>{{end}}{{if .Shown}} <small>shown</small>{{end}}</li>{{end}}</ul><p class="term-empty">Opening another revision reads it only; it changes no slide's pin.</p></section>
+
 </section>{{end}}
 `
 
@@ -700,9 +713,11 @@ const technicalStyles = `
 .technical-areas{margin-top:8px}
 .technical-areas .overview-part:target{outline:2px solid var(--accent);outline-offset:2px}
 .technical-facts{display:flex;flex-wrap:wrap;gap:4px 18px;margin:6px 0 0;color:var(--muted);font:13px var(--ui)}
-.technical-facts code{color:var(--ink)}
+.technical-facts code{color:var(--ink);overflow-wrap:anywhere}
+.technical-facts>span{min-width:0;overflow-wrap:anywhere}
 .technical-usage-list small{display:inline-block;margin-right:8px}
-.technical-pin code{font-size:11px}
+.technical-pin{max-width:100%;overflow-wrap:anywhere}
+.technical-pin code{font-size:11px;white-space:normal;overflow-wrap:anywhere}
 .technical-history{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
 .technical-entity-page [data-technical-conflict] ul{margin:4px 0 0}
 .technical-entity-page .documentation-members{list-style:none}

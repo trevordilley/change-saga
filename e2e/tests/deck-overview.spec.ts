@@ -211,7 +211,7 @@ test("one implementation citation offers both linked stories and exact code with
   const item = "urn:change-saga:wave-one:slide:technical-request:item:handler";
   const story = "urn:change-saga:wave-one:story:overview-request";
   cli(saga, "cover", "--repo", saga.sourceRepo, "--against", "main", "--target", item, "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "overview-handler", saga.sagaRoot);
-  cli(saga, "story", "add", "--feature", "wave-one", "--id", "overview-request", "--revision", "r1", "--event", "proposed", "--title", "Understand request intent", "--statement", "A reviewer can trace input validation.", "--criterion", "visible=Input validation is visible", saga.sagaRoot);
+  cli(saga, "story", "add", "--feature", "wave-one", "--id", "overview-request", "--title", "Understand request intent", "--statement", "A reviewer can trace input validation.", "--criterion", "visible=Input validation is visible", saga.sagaRoot);
   cli(saga, "relation", "add", "--feature", "wave-one", "--id", "overview-explains", "--type", "explains", "--from", item, "--to", story, "--rationale", "The handler checks input.", saga.sagaRoot);
   const report = join(saga.root, "technical-overview.json");
   writeFileSync(report, JSON.stringify({ body: "The [handler](annotation:handler) checks input.", annotations: [{ id: "handler", label: "Handler evidence", slide: "technical-request", item: "handler" }] }));

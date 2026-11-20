@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-slide-comment-6bee34e55d2a",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-slide-comment",
-  "to": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
-  "scope": "self",
-  "rationale": "Steps comment, reload define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-slide-comment:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:contextual-comments:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:49.116744Z",
-  "request_id": "test-review-slide-comment-6bee34e55d2a"
+  "from": "urn:change-saga:change-saga:test-case:review-slide-comment",
+  "from_revision": "sha256:13ef3d7b0de4effc446fbefa38b6171dde564cc5cc29c716fc8c90e8fe415d24",
+  "id": "test-review-slide-comment-6bee34e55d2a",
+  "rationale": "Steps comment, reload define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-slide-comment-6bee34e55d2a",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "type": "verifies",
+  "version": 5
 }

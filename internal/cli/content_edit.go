@@ -678,7 +678,7 @@ func ReviseItem(ctx context.Context, args []string, out io.Writer) error {
 	placement := flags.String("placement", "", "top, right, bottom, left, or overlay")
 	leader := flags.String("leader", "", "none, line, or arrow")
 	documentation := flags.String("documentation", "", "Component/System URN; empty clears the link with empty revision")
-	documentationRevision := flags.String("documentation-revision", "", "exact canonical definition revision URN")
+	documentationRevision := flags.String("documentation-content-digest", "", "exact canonical definition revision URN")
 	documentationView := flags.String("documentation-view", "", "saved Saga commit that admits a non-current pin; empty clears it")
 	selectionsFile := flags.String("selections", "", "JSON array replacing the Item's code selections; [] clears them")
 	repo := flags.String("repo", "", "source checkout for saved views and selections")
@@ -722,11 +722,11 @@ func ReviseItem(ctx context.Context, args []string, out io.Writer) error {
 					stringField(flags, "record", record, &manifest.Record),
 					intField(flags, "rank", &rank, &manifest.Rank),
 				}
-				if flagWasSet(flags, "documentation") || flagWasSet(flags, "documentation-revision") || flagWasSet(flags, "documentation-view") || flagWasSet(flags, "selections") {
+				if flagWasSet(flags, "documentation") || flagWasSet(flags, "documentation-content-digest") || flagWasSet(flags, "documentation-view") || flagWasSet(flags, "selections") {
 					pin, view, selections := manifest.Documentation, manifest.DocumentationView, manifest.Selections
-					if flagWasSet(flags, "documentation") || flagWasSet(flags, "documentation-revision") {
-						if !flagWasSet(flags, "documentation") || !flagWasSet(flags, "documentation-revision") {
-							return fmt.Errorf("provide both --documentation and --documentation-revision")
+					if flagWasSet(flags, "documentation") || flagWasSet(flags, "documentation-content-digest") {
+						if !flagWasSet(flags, "documentation") || !flagWasSet(flags, "documentation-content-digest") {
+							return fmt.Errorf("provide both --documentation and --documentation-content-digest")
 						}
 						pin = nil
 						if *documentation != "" || *documentationRevision != "" {

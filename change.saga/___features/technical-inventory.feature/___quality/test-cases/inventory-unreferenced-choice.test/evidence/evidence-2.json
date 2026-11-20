@@ -1,26 +1,26 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:4bd41b5397fe710c64a4c1a5d7858d81a10cec1e8102578eb4fe28d59ae934dc",
+      "end": 212,
+      "path": "internal/cli/reconciliation_inventory.go",
+      "start": 193
+    }
+  ],
+  "created_at": "2026-10-16T23:23:50Z",
   "id": "evidence-2",
-  "test_case": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice",
-  "test_revision": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice:revision:r1",
+  "request_id": "saga-evidence-inventory-unreferenced-choice-evidence-2",
   "role": "implementation_under_test",
   "steps": [
     "existing-choice",
     "context"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/reconciliation_inventory.go",
-      "start": 193,
-      "end": 212,
-      "digest": "sha256:4bd41b5397fe710c64a4c1a5d7858d81a10cec1e8102578eb4fe28d59ae934dc"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:50Z",
-  "request_id": "saga-evidence-inventory-unreferenced-choice-evidence-2"
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice",
+  "test_revision": "sha256:b7bbb9bce034207b2036b5495aa5b2d0e965ccd53d775c46b42cdfd33748a3da",
+  "verifications": [],
+  "version": 5
 }

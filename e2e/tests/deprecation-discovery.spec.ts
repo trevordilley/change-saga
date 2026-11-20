@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test, expect, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from '../support/test.js';
 import { runCLI } from '../support/fixture-builder.js';
@@ -13,7 +13,7 @@ test('deprecations stay compact, reveal on hover or focus, and open through page
     {id:'legacy',kind:'node',shape:'rect',label:'Legacy sharing',x:200,y:200,width:300,height:180,style:'normal'},
     {id:'current',kind:'node',shape:'rect',label:'Shared projects',x:650,y:200,width:300,height:180,style:'normal'}
   ]}));
-  run('whiteboard','publish','--id','data-model','--name','Sharing model','--revision','r1','--from',path,saga.sagaRoot);
+  run('whiteboard', 'publish', '--id', 'data-model', '--name', 'Sharing model', '--from', path, saga.sagaRoot);
   const target = 'urn:change-saga:wave-one:whiteboard:data-model';
   run('deprecation','add','--id','legacy-sharing','--scope','content','--target',target,'--element','legacy','--reason','Use Shared Projects for new sharing. Historical records remain readable.',saga.sagaRoot);
   run('deprecation','add','--id','board-context','--scope','code','--target',target,'--ref','HEAD:src/app.go#L1','--repo',saga.sourceRepo,'--reason','The legacy sharing entry point is retained only for compatibility.',saga.sagaRoot);
@@ -40,7 +40,7 @@ test('deprecations stay compact, reveal on hover or focus, and open through page
   const drawer = page.locator('.diff-drawer');
   await expect(drawer).toContainText('Use Shared Projects');
   await expect(drawer).toContainText('Content scope');
-  await expect(drawer).toContainText('Reading saved revision r1');
+  await expect(drawer).toContainText('Selected content digest '+await board.getAttribute('data-whiteboard-content-digest'));
   expect((await drawer.boundingBox())!.width).toBeLessThanOrEqual(440);
   await page.setViewportSize({width:390,height:844});
   expect((await drawer.boundingBox())!.width).toBeLessThan(390);
@@ -62,14 +62,17 @@ test('deprecations stay compact, reveal on hover or focus, and open through page
   await expect(page.getByText('No recorded deprecations match these filters.')).toBeVisible();
   await expectNoSeriousAccessibilityViolations(page, '.deprecation-directory');
   // Multiple assertions at one appearance share a marker; history never gets
-  // silently applied to a different revision's geometry.
+  // silently applied to a different content's geometry.
   run('deprecation','add','--id','second-warning','--scope','content','--target',target,'--element','legacy','--reason','Also replace the import path.',saga.sagaRoot);
   await page.goto(saga.baseURL + '/technical/erd');
   await expect(badge).toHaveText('Deprecations · 3');
   await expect(marker).toHaveCount(1); await expect(marker).toHaveText('2');
   await marker.click(); await expect(drawer.locator('li')).toHaveCount(2);
   await page.keyboard.press('Escape');
-  run('whiteboard','publish','--id','data-model','--name','Sharing model','--revision','r2','--parent','r1','--from',path,saga.sagaRoot);
+  const edited=JSON.parse(readFileSync(path,'utf8'));
+  edited.elements[0].label='Legacy sharing v2';
+  writeFileSync(path,JSON.stringify(edited));
+  run('whiteboard', 'publish', '--id', 'data-model', '--name', 'Sharing model', '--from', path, saga.sagaRoot);
   await page.reload(); await expect(badge).toHaveText('Deprecations · 3');
   await expect(marker).toHaveCount(0);
   await badge.click(); await drawer.getByRole('button', {name:'Use Shared Projects for new sharing. Historical records remain readable.',exact:true}).click();

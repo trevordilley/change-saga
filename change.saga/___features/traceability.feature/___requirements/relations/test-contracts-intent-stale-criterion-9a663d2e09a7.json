@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-contracts-intent-stale-criterion-9a663d2e09a7",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:contracts-intent-stale-criterion",
-  "to": "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths",
-  "scope": "self",
-  "rationale": "Steps stale define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:contracts-intent-stale-criterion:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:product-intent-path:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:23:05.552475Z",
-  "request_id": "test-contracts-intent-stale-criterion-9a663d2e09a7"
+  "from": "urn:change-saga:change-saga:test-case:contracts-intent-stale-criterion",
+  "from_revision": "sha256:2c391599660437ef95cfdeabb6c7132a1112007b18ce80cb4a2d77f86cfdb1f7",
+  "id": "test-contracts-intent-stale-criterion-9a663d2e09a7",
+  "rationale": "Steps stale define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-contracts-intent-stale-criterion-9a663d2e09a7",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths",
+  "to_revision": "sha256:536b431800e4a2023ee62ecacc12fcc24305cd29de9ab8c64a6e4aaadf1f21e1",
+  "type": "verifies",
+  "version": 5
 }

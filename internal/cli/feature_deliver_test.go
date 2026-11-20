@@ -90,10 +90,10 @@ func TestFeatureDeliverMovesTheRoadmapIntoItsRecipient(t *testing.T) {
 		"--step", `{"id":"find","action":"Search","expected_result":"Found"}`, "--expected-result", "Found").Resource
 	mustLiving(t, "relation add", relationCommand, "add", root, "--feature", "search", "--id", "find-check-verifies",
 		"--type", "verifies", "--from", testCase, "--to", criterion, "--rationale", "It checks finding.")
-	runPrototype(t, "add-html", root, "--feature", "search", "--id", "search-page", "--revision", "r1", "--title", "Search", "--source", newPrototypeSource(t, `<input id="query">`))
+	runPrototype(t, "add-html", root, "--feature", "search", "--id", "search-page", "--title", "Search", "--source", newPrototypeSource(t, `<input id="query">`))
 	runPrototype(t, "annotate", root, "--prototype", "urn:change-saga:batch:prototype:search-page", "--id", "query",
-		"--target", criterion, "--rationale", "Searching is prompt.", "--prototype-revision", "urn:change-saga:batch:prototype:search-page:revision:r1",
-		"--story-revision", story+":revision:r1", "--element-id", "query")
+		"--target", criterion, "--rationale", "Searching is prompt.", "--prototype-definition-digest", currentTestPin(t, root, "urn:change-saga:batch:prototype:search-page"),
+		"--story-content-digest", currentTestPin(t, root, story), "--element-id", "query")
 	if err := AddDeck(ctx, []string{"--feature", "search", "--id", "search-impl", "--objective", "Explain search.", root, "search-impl"}, &output); err != nil {
 		t.Fatal(err)
 	}

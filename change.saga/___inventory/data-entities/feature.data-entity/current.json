@@ -1,0 +1,83 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:ec86be9df06aac3471b3378fef70046ecb10679c07f0a4dc0049d0477538b773",
+        "end": 141,
+        "id": "manifest",
+        "note": "feature.json: the immutable identity of one product domain.",
+        "path": "internal/applayout/applayout.go",
+        "start": 132
+      }
+    ],
+    "delivery": {
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "A durable product domain: ___features/\u003cid\u003e.feature/feature.json is immutable, and the directory holds its stories, relations, design, implementation deck and quality records. No other URN names the feature, so records can move between features.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "note": "Also the directory name.",
+        "type": "string"
+      },
+      {
+        "id": "title",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "id": "description",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "id": "created_at",
+        "name": "created_at",
+        "type": "time"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Feature",
+    "record": "urn:change-saga:change-saga:data-entity:feature",
+    "relationships": [
+      {
+        "cardinality": {
+          "destination": "1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:e340712bb2ace4f5a191385634953374359de1806cda29abe335d2f55bd4fb1c",
+            "end": 76,
+            "id": "in-saga-load",
+            "note": "Features are read from the root and targeted with the manifest ID.",
+            "path": "internal/saga/app.go",
+            "start": 71
+          }
+        ],
+        "destination": {
+          "revision": "sha256:78ee5005a78a5523eb832609455fb08a7a11e41c80b288bfe23d582b2dc1d562",
+          "target": "urn:change-saga:change-saga:data-entity:saga-manifest"
+        },
+        "explanation": "Every feature directory sits under the Saga root's ___features and its URN is built from the manifest ID.",
+        "id": "in-saga",
+        "intent": "implemented",
+        "label": "belongs to",
+        "meaning": "association"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:feature",
+    "state": "active"
+  }
+}

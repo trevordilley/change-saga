@@ -1,0 +1,103 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+        "digest": "sha256:82d0dfbcb232c99d0f7cac45e7bea8c6451cede2ab15f0dc292c5dc99b0ead0f",
+        "end": 46,
+        "id": "report",
+        "note": "The read-only reconciliation report, led by its summary.",
+        "path": "internal/cli/reconciliation.go",
+        "start": 26
+      },
+      {
+        "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+        "digest": "sha256:415f328feb781aec6c87fc189b5ebc75f68266b9af9e214c46757ee90cefb51e",
+        "end": 58,
+        "id": "summary",
+        "note": "The summary: what the change made stale, with proposals, and queue counts by kind.",
+        "path": "internal/cli/reconciliation.go",
+        "start": 48
+      },
+      {
+        "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+        "digest": "sha256:4561c8268ba0b99a9d1b481da48f8aef71df19234c2cba60f0d32ceba1c5dd23",
+        "end": 113,
+        "id": "task",
+        "note": "One queue task with inspect and repair paths.",
+        "path": "internal/cli/reconciliation.go",
+        "start": 103
+      },
+      {
+        "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+        "digest": "sha256:ca15d6ff7e5f7ec65624bfb9c5cee2d316776f46d03a710d45d2ddf37df7cb9e",
+        "end": 468,
+        "id": "currency",
+        "note": "Every Saga code reference is resolved at the head, classified by debt, and a stale one carries its proposed range and accept repair.",
+        "path": "internal/cli/reconciliation.go",
+        "start": 397
+      }
+    ],
+    "delivery": {
+      "commit": "b5ee553e73574c289fe834ce7551563b422ad8b1",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "Derived on read, never stored: reconcile --against joins documentation coverage, HEAD currency of every code reference, inventory health and declared impact into an ordered queue of inspect/repair tasks, led by a summary of the references this change made stale, each with a proposed range from diff arithmetic. It records no decisions and mutates nothing; accepting a proposal is a separate, explicit repin --accept-proposed.",
+    "fields": [
+      {
+        "id": "summary",
+        "name": "summary",
+        "type": "stale_by_change · queue counts"
+      },
+      {
+        "id": "currency",
+        "name": "currency",
+        "type": "current · stale · debt · proposal"
+      },
+      {
+        "id": "coverage",
+        "name": "documentation_coverage",
+        "type": "areas"
+      },
+      {
+        "id": "queue",
+        "name": "queue[]",
+        "type": "resource · debt · repair"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Reconciliation queue",
+    "record": "urn:change-saga:change-saga:data-entity:reconciliation-queue",
+    "relationships": [
+      {
+        "code": [
+          {
+            "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+            "digest": "sha256:e37ab3b18eefcd934da98620fa246e16b8fd5dea72ec41311b0d5bb089e63aac",
+            "end": 338,
+            "id": "coverage",
+            "note": "The comparison and its coverage report feed documentation coverage.",
+            "path": "internal/cli/reconciliation.go",
+            "start": 330
+          }
+        ],
+        "destination": {
+          "revision": "sha256:8485f75eb197333e909b316a68707f685e5337ffb253e985211eaf617c4f2697",
+          "target": "urn:change-saga:change-saga:data-entity:coverage-report"
+        },
+        "explanation": "Documentation coverage of the comparison is computed first and carried into the reconciliation report.",
+        "flow": "destination_to_owner",
+        "id": "from-coverage",
+        "intent": "implemented",
+        "label": "extended into",
+        "meaning": "production"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:reconciliation-queue",
+    "state": "active"
+  }
+}

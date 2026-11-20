@@ -13,7 +13,6 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/quality"
-	"github.com/twentyideas/changesaga/internal/qualityid"
 )
 
 var qualityOperations = []string{
@@ -102,8 +101,8 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable test-case id")
 	testCase := registerTestCaseFlag(flags)
-	revision := flags.String("revision", "", "stable revision id")
-	event := flags.String("event", "", "stable id of the initial proposed lifecycle event")
+	revision := new(string)
+	event := new(string)
 	title := flags.String("title", "", "test-case title")
 	automation := flags.String("automation", "", "manual, automated, or hybrid")
 	expected := flags.String("expected-result", "", "overall expected result")
@@ -112,7 +111,7 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	var parents, kinds, preconditions, steps stringList
-	flags.Var(&parents, "parent", "current revision head URN; repeatable")
+
 	flags.Var(&kinds, "kind", "test kind: positive (valid behavior), negative (rejection/recovery), or edge (boundaries); repeat only for scenarios exercising multiple kinds")
 	flags.Var(&preconditions, "precondition", "ordered precondition; repeatable")
 	flags.Var(&steps, "step", `ordered step JSON {"id":ID,"action":TEXT,"expected_result":TEXT}; repeatable`)
@@ -166,7 +165,7 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 		}
 		return writeQualityMutation(out, name, []quality.MutationResult{result}, *jsonOutput)
 	}
-	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.Revision) == "" || len(request.Parents) == 0 || request.ID != "" || request.Event != "" {
+	if strings.TrimSpace(request.TestCase) == "" || request.ID != "" || request.Event != "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
 	}
 	if err := assertRecordFeature(root, *feature, request.TestCase); err != nil {
@@ -190,22 +189,16 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 // parent's immutable definition is the base. A reconciliation of several heads
 // has no single base, so it must state the complete definition.
 func singleParentDefinition(root, testCaseURN string, parents []string) (quality.Definition, error) {
-	if len(parents) != 1 {
-		return quality.Definition{}, nil
-	}
 	document, err := quality.Load(root)
 	if err != nil {
 		return quality.Definition{}, err
 	}
-	for _, testCase := range document.TestCases {
-		for _, revision := range testCase.Revisions {
-			urn, _ := qualityid.Revision(document.SagaID, testCase.Identity.ID, revision.ID)
-			if revision.TestCase == testCaseURN && urn == parents[0] {
-				return quality.DefinitionOf(revision), nil
-			}
+	for _, test := range document.TestCases {
+		if test.CurrentRevision != nil && test.CurrentRevision.TestCase == testCaseURN {
+			return quality.DefinitionOf(*test.CurrentRevision), nil
 		}
 	}
-	return quality.Definition{}, nil
+	return quality.Definition{}, fmt.Errorf("test case does not exist")
 }
 
 func requestDefinition(base quality.Definition, request qualityTestCaseRequest) quality.Definition {
@@ -244,7 +237,7 @@ func qualityTestCaseSetState(args []string, out io.Writer, stdin io.Reader) erro
 	name := "quality test-case set-state"
 	flags := commandFlags(name, commandUsage[name], out)
 	testCase := registerTestCaseFlag(flags)
-	event := flags.String("event", "", "stable lifecycle event id")
+	event := new(string)
 	state := flags.String("state", "", "proposed, active, deprecated, or retired")
 	reason := flags.String("reason", "", "why the lifecycle changed")
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
@@ -252,7 +245,7 @@ func qualityTestCaseSetState(args []string, out io.Writer, stdin io.Reader) erro
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	var parents stringList
-	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -274,7 +267,7 @@ func qualityTestCaseSetState(args []string, out io.Writer, stdin io.Reader) erro
 	if request.Event == "" {
 		request.Event = request.State
 	}
-	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.State) == "" || len(request.Parents) == 0 {
+	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.State) == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
 	}
 	if err := assertRecordFeature(flags.Arg(0), *feature, request.TestCase); err != nil {
@@ -308,7 +301,7 @@ func qualityPolicySet(args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable policy id; defaults to <story>.<criterion>.<story-revision>")
 	criterion := flags.String("criterion", "", "canonical criterion URN")
-	storyRevision := flags.String("story-revision", "", "exact story revision URN the policy applies to")
+	storyRevision := flags.String("story-content-digest", "", "exact story revision URN the policy applies to")
 	rationale := flags.String("rationale", "", "why these kinds apply and why any omitted kinds do not")
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
@@ -332,7 +325,7 @@ func qualityPolicySet(args []string, out io.Writer, stdin io.Reader) error {
 	}
 	overrideVisited(flags, map[string]func(){
 		"id": func() { request.ID = *id }, "criterion": func() { request.Criterion = *criterion },
-		"story-revision": func() { request.StoryRevision = *storyRevision }, "rationale": func() { request.Rationale = *rationale },
+		"story-content-digest": func() { request.StoryRevision = *storyRevision }, "rationale": func() { request.Rationale = *rationale },
 		"require": func() { request.RequiredKinds = coverageKinds(required) }, "supersedes": func() { request.Supersedes = supersedes },
 		"allow": func() { request.AllowedAutomation = automations(allowed) }, "request-id": func() { request.RequestID = *requestID },
 	})
@@ -393,7 +386,7 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable evidence id; defaults to the role name")
 	testCase := registerTestCaseFlag(flags)
-	testRevision := flags.String("test-revision", "", "test revision URN; defaults to the unique current head")
+	testRevision := flags.String("test-content-digest", "", "test revision URN; defaults to the unique current head")
 	role := flags.String("role", "", "test_implementation, implementation_under_test, or execution_artifact")
 	from := flags.String("from", "", "read one structured request from a JSON file, or - for stdin")
 	batch := flags.String("batch", "", "read a JSON array of requests from a file, or - for stdin; all or none are written")
@@ -453,7 +446,7 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	}
 	overrideVisited(flags, map[string]func(){
 		"id": func() { request.ID = *id }, "test": func() { request.TestCase = *testCase },
-		"test-case": func() { request.TestCase = *testCase }, "test-revision": func() { request.TestRevision = *testRevision },
+		"test-case": func() { request.TestCase = *testCase }, "test-content-digest": func() { request.TestRevision = *testRevision },
 		"step": func() { request.Steps = steps },
 		"role": func() { request.Role = *role }, "code": func() { request.Code = code },
 		"verification": func() { request.Verifications = verifications }, "citation": func() { request.Citations = citations },
@@ -495,7 +488,7 @@ func qualityRunRecord(args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable run id; defaults to a time-plus-random id")
 	testCase := registerTestCaseFlag(flags)
-	testRevision := flags.String("test-revision", "", "test revision URN that ran; defaults to the unique current head")
+	testRevision := flags.String("test-content-digest", "", "test revision URN that ran; defaults to the unique current head")
 	result := flags.String("result", "", "passed, failed, blocked, or skipped")
 	summary := flags.String("summary", "", "what ran and what was observed")
 	command := flags.String("command", "", "command that ran, if any; recorded, never executed")
@@ -525,7 +518,7 @@ func qualityRunRecord(args []string, out io.Writer, stdin io.Reader) error {
 	var parseErr error
 	overrideVisited(flags, map[string]func(){
 		"id": func() { request.ID = *id }, "test": func() { request.TestCase = *testCase },
-		"test-case": func() { request.TestCase = *testCase }, "test-revision": func() { request.TestRevision = *testRevision },
+		"test-case": func() { request.TestCase = *testCase }, "test-content-digest": func() { request.TestRevision = *testRevision },
 		"parent": func() { request.Parents = parents }, "result": func() { request.Result = *result },
 		"summary": func() { request.Summary = *summary }, "command": func() { request.Command = *command },
 		"evidence": func() { request.Evidence = evidence }, "request-id": func() { request.RequestID = *requestID },

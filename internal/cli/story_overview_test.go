@@ -47,23 +47,28 @@ func TestStoryOverviewSnapshotAuthoringAndQuery(t *testing.T) {
 		t.Fatal("story absent")
 		return requirements.Revision{}
 	}
-	run("add", "--feature", "core", "--id", "read", "--revision", "r1", "--event", "proposed", "--title", "Understand a change", "--statement", "As a reviewer I can understand a change", "--overview-source", source, "--criterion", "clear=The full explanation remains readable.", "--request-id", "add-read")
+	run("add", "--feature", "core", "--id", "read", "--title", "Understand a change", "--statement", "As a reviewer I can understand a change", "--overview-source", source, "--criterion", "clear=The full explanation remains readable.", "--request-id", "add-read")
 	if got := current(); got.Overview != prose || got.Title != "Understand a change" {
 		t.Fatalf("authored revision: %+v", got)
 	}
-	old, _ := json.Marshal(current())
-	run("revise", "--story", urn, "--revision", "r2", "--parent", urn+":revision:r1", "--title", "Understand the change")
+	currentPath := filepath.ToSlash(filepath.Join("___features", "core.feature", "___requirements", "stories", "read.story", "current.json"))
+	old, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(currentPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	committed := commitCurrentTestDocumentation(t, root, "Document original authored prose")
+	run("revise", "--story", urn, "--title", "Understand the change")
 	if got := current().Overview; got != prose {
 		t.Fatalf("title revise lost overview: %q", got)
 	}
-	if err := Criterion(ctx, []string{"add", root, "--story", urn, "--parent", urn + ":revision:r2", "--revision", "r3", "--id", "safe", "--statement", "Unsafe HTML never executes."}, &bytes.Buffer{}); err != nil {
+	if err := Criterion(ctx, []string{"add", root, "--story", urn, "--id", "safe", "--statement", "Unsafe HTML never executes."}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	if got := current().Overview; got != prose {
 		t.Fatalf("criterion add lost overview: %q", got)
 	}
 	t.Setenv("EDITOR", "true")
-	run("revise", "--story", urn, "--revision", "r4", "--parent", urn+":revision:r3", "--edit")
+	run("revise", "--story", urn, "--edit")
 	if current().Overview != prose {
 		t.Fatal("editor lost overview")
 	}
@@ -71,11 +76,11 @@ func TestStoryOverviewSnapshotAuthoringAndQuery(t *testing.T) {
 	if err := Query(ctx, []string{"requirements", "--saga", root, "--repo", repo, "--requirement", urn}, &output); err != nil || !strings.Contains(output.String(), `"overview"`) || !strings.Contains(output.String(), "Understand **why**") {
 		t.Fatalf("query: %v %s", err, &output)
 	}
-	run("revise", "--story", urn, "--revision", "r5", "--parent", urn+":revision:r4", "--overview", "", "--edit")
+	run("revise", "--story", urn, "--overview", "", "--edit")
 	if current().Overview != "" {
 		t.Fatal("explicit clear in editor was ignored")
 	}
-	if err := story(ctx, []string{"revise", root, "--story", urn, "--revision", "r6", "--parent", urn + ":revision:r5", "--overview-source", "-"}, &bytes.Buffer{}, strings.NewReader(prose)); err != nil {
+	if err := story(ctx, []string{"revise", root, "--story", urn, "--overview-source", "-"}, &bytes.Buffer{}, strings.NewReader(prose)); err != nil {
 		t.Fatal(err)
 	}
 	if current().Overview != prose {
@@ -94,22 +99,10 @@ func TestStoryOverviewSnapshotAuthoringAndQuery(t *testing.T) {
 	if current().Overview != "" {
 		t.Fatal("complete snapshot unexpectedly inherited")
 	}
-	doc, err := requirements.Load(root, sagaID)
-	if err != nil {
-		t.Fatal(err)
+	if saved := committedCurrentTestFile(t, root, committed, currentPath); strings.TrimSpace(saved) != strings.TrimSpace(string(old)) {
+		t.Fatal("committed authored prose changed")
 	}
-	for _, story := range doc.Stories {
-		if story.Identity.ID == "read" {
-			for _, rev := range story.Revisions {
-				if rev.ID == "r1" {
-					got, _ := json.Marshal(rev)
-					if !bytes.Equal(got, old) {
-						t.Fatal("old snapshot mutated")
-					}
-				}
-			}
-		}
-	}
+
 	// Mutually exclusive input sources are rejected before authoring.
 	for _, args := range [][]string{{"--overview", "", "--overview-source", source}, {"--from", "-", "--overview-source", "-"}} {
 		if err := story(ctx, append([]string{"revise", root}, args...), &bytes.Buffer{}, strings.NewReader("{}")); err == nil {

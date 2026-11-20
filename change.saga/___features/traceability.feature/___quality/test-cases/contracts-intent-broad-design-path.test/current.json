@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The design appears as broad and the path explicitly passes through the story.",
+    "preconditions": [
+      "Use traceability fixture cutoff with one design addresses relation to its whole story."
+    ],
+    "steps": [
+      {
+        "action": "Build trace rows for cutoff.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths"
+        ],
+        "expected_result": "Design appears in Design and BroadDesign and the path explicitly passes through the story.",
+        "id": "broad"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-broad-design-path",
+    "title": "Preserve the explicit story hop for broad design"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-broad-design-path"
+  }
+}

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"fmt"
 	"os/exec"
 	"path"
 	"sort"
@@ -47,9 +48,12 @@ func readCommits(ctx context.Context, repo, from, to string, paths ...string) ([
 	}
 	args := []string{"-C", repo, "log", "--reverse", "--no-renames", "--name-only", "--format=%x1e%H%x00%an <%ae>%x00%aI%x00%s%x00%b%x00", revision, "--"}
 	args = append(args, paths...)
-	output, err := exec.CommandContext(ctx, "git", args...).Output()
+	command := exec.CommandContext(ctx, "git", args...)
+	var stderr bytes.Buffer
+	command.Stderr = &stderr
+	output, err := command.Output()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("read record Git history: %w: %s", err, strings.TrimSpace(stderr.String()))
 	}
 	commits := []commitInfo{}
 	for _, record := range strings.Split(string(output), "\x1e") {

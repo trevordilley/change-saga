@@ -1,18 +1,18 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
-  "version": 5,
-  "id": "map-task-dependencies.dependencies-shown-both-ways.r1",
-  "criterion": "urn:change-saga:change-saga:story:map-task-dependencies:criterion:dependencies-shown-both-ways",
-  "story_revision": "urn:change-saga:change-saga:story:map-task-dependencies:revision:r1",
-  "required_kinds": [
-    "positive"
-  ],
   "allowed_automation": [
     "automated",
     "hybrid",
     "manual"
   ],
-  "supersedes": [],
+  "created_at": "2026-11-02T22:20:38Z",
+  "criterion": "urn:change-saga:change-saga:story:map-task-dependencies:criterion:dependencies-shown-both-ways",
+  "id": "map-task-dependencies.dependencies-shown-both-ways.r1",
   "rationale": "The linked test checks the behavior this criterion states, including any refusal it names. No separate edge or negative case is claimed beyond that.",
-  "created_at": "2026-11-02T22:20:38Z"
+  "required_kinds": [
+    "positive"
+  ],
+  "story_revision": "sha256:142d106f4bbddab1c9cb6c9ee92a54b7c1a89d5fb8c556cc88bdd30d8b35806b",
+  "supersedes": [],
+  "version": 5
 }

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "B can see the annotation and A's identity.",
+    "preconditions": [
+      "Participant A and B have distinct Git identities and access to the same committed review."
+    ],
+    "steps": [
+      {
+        "action": "As A, place a rectangle with a distinctive comment and commit the review feedback.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:visible-author"
+        ],
+        "expected_result": "The annotation is stored with review discussion context.",
+        "id": "author"
+      },
+      {
+        "action": "Open the committed review as B and inspect the annotation discussion.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:visible-author"
+        ],
+        "expected_result": "B can see the annotation and A's identity.",
+        "id": "reader"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-annotation-participant-author",
+    "title": "Show an annotation and its author to another participant"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-annotation-participant-author"
+  }
+}

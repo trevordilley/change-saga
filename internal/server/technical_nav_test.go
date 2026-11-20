@@ -71,11 +71,11 @@ func TestTechnicalDesignKeepsItsOldAddresses(t *testing.T) {
 	root, repo, _ := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	for path, crumb := range map[string]string{
-		"/technical/component/record-store?revision=r1": `<a href="/technical/components">Components</a>`,
-		"/technical/system/pdf-pipeline":                `<a href="/technical/systems">Systems</a>`,
-		"/technical/data-entity/pdf-job?revision=r1":    `<a href="/technical/erd">Data model</a>`,
-		"/technical/erd/application":                    `<a href="/technical/erd">Data model</a>`,
-		"/technical/erd-overlay/pdf-jobs":               `<a href="/technical/erd">Data model</a>`,
+		"/technical/component/record-store": `<a href="/technical/components">Components</a>`,
+		"/technical/system/pdf-pipeline":    `<a href="/technical/systems">Systems</a>`,
+		"/technical/data-entity/pdf-job":    `<a href="/technical/erd">Data model</a>`,
+		"/technical/erd/application":        `<a href="/technical/erd">Data model</a>`,
+		"/technical/erd-overlay/pdf-jobs":   `<a href="/technical/erd">Data model</a>`,
 	} {
 		status, body := technicalGet(t, mux, path)
 		if status != 200 || !strings.Contains(body, `<a href="/technical">Technical design</a><span>/</span>`+crumb) {

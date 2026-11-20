@@ -19,6 +19,10 @@ grow it into shared product knowledge, technical design, and implementation
 Plans as your team needs them. A local CLI and browser reader work with Git,
 without accounts or a hosted service.
 
+Git is the revision history. Edit current documentation in place; stable record
+and element identities keep links intact. Earlier wording, states, attribution,
+and merges belong to Git. See [current records and migration](docs/git-owned-history.md).
+
 Change Saga is experimental, and its format may change before 1.0.
 
 [Install](#install) · [Example Saga](#see-an-example-saga) ·
@@ -374,8 +378,8 @@ change-saga whiteboard check --id architecture change.saga
 ```
 
 When referenced code changes, the element becomes stale in the reader and in
-health checks. Reassess the explanation and publish a new parented revision;
-the previous revision keeps its original evidence. See the
+health checks. Reassess the explanation and publish the updated current board;
+Git retains previous content and its original evidence. See the
 [whiteboard guide](docs/whiteboards.md) and
 [ERD authoring guide](docs/erd-whiteboard-guide.md).
 
@@ -383,7 +387,7 @@ the previous revision keeps its original evidence. See the
 
 Agents can inspect a prototype's implementation alongside its recorded intent.
 `query prototype` reads its HTML in byte-range pages, with
-its files, revisions, and annotations. Repository-backed prototypes are read at
+its files, current content, and annotations. Repository-backed prototypes are read at
 their pinned commit; externally hosted prototypes return their URLs.
 
 ```sh
@@ -679,24 +683,24 @@ separate repository from the code.
 
 | Command | What it does |
 | --- | --- |
-| `story add` / `revise` | Create a story, or append a complete revision. |
+| `story add` / `revise` | Create a story, or replace its current content. |
 | `story set-state` / `withdraw` | Move a story through proposed, accepted, deferred, rejected or retired. |
 | `story move` / `consolidate` | Move a story to another feature, or merge a duplicate. |
 | `story remove` | Delete a story and the links that only pointed at it; lists what else lost coverage. |
-| `criterion add` / `revise` / `remove` | Change one acceptance criterion through a new story revision. |
+| `criterion add` / `revise` / `remove` | Edit one acceptance criterion in its current story. |
 | `citation add` / `remove` | Record a source that stories and evidence can cite, or delete one. |
 | `relation add` / `repin` / `supersede` / `status` | Typed, pinned links between records, such as a slide that addresses a criterion. |
 | `prototype add` | Add a prototype: an HTML file committed in the project. The Saga points at it rather than copying it. |
-| `prototype update` | Record a new version after the prototype's file changed. |
+| `prototype update` | Update current prototype content after its file changed. |
 | `prototype add-external` / `add-html` | Name a prototype hosted elsewhere, or copy one that doesn't live in the project into the Saga. |
-| `prototype revise` / `annotate` | Append a prototype revision, or pin part of it to a story or criterion. |
+| `prototype revise` / `annotate` | Edit current prototype content, or pin part of it to a story or criterion. |
 | `prototype remove` | Delete a prototype and its annotations. |
 
 ### Technical design and whiteboards
 
 | Command | What it does |
 | --- | --- |
-| `whiteboard publish` | Publish a complete whiteboard revision from a `board.json`. |
+| `whiteboard publish` | Replace current whiteboard content from a `board.json`. |
 | `whiteboard get` / `describe` / `check` / `list` | Read, describe, validate or list whiteboards. `--focus` selects one element. |
 | `whiteboard rename` / `assign-role` / `unassign-role` | Change a board's title or its ERD, Infrastructure, Data flows or Architecture role. |
 | `whiteboard archive` / `restore` | Hide a board from discovery, or bring it back, without losing history. |
@@ -711,7 +715,7 @@ entities, relationships, callouts and source evidence. Named boards open at
 the `data-model` board by convention:
 
 ```sh
-change-saga whiteboard publish --id data-model --revision r1 --from board.json change.saga
+change-saga whiteboard publish --id data-model --from board.json change.saga
 change-saga whiteboard describe --id data-model change.saga
 change-saga whiteboard check --id data-model change.saga
 ```
@@ -724,8 +728,8 @@ records the exact digest. Elements also support pinned `criterion_links`,
 shared slide action strip and drawer, including inventory-format-2 code selections.
 
 Changed code marks the element stale and reduces health. Reassess it, export
-with `whiteboard get`, and publish a new revision with `--parent CURRENT`;
-previous revisions retain their exact pins. `references`, `reconcile` and living
+with `whiteboard get`, and publish the updated current board;
+Git retains previous content and its exact pins. `references`, `reconcile` and living
 documented-code coverage include these references. Put code in `evidence`, not
 repository links in the note; `whiteboard check` reports such links as warnings.
 Composition `source` references still support ERDs and data entities; ERD imports

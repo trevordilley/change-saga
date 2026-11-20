@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "References and inherited implementation coverage create no review approval and unrelated changed code stays unexplained.",
+    "preconditions": [
+      "Disposable Saga has proposed System, Component and data entity plus a committed design and review with no verification, integration or approval records; capture their public histories."
+    ],
+    "steps": [
+      {
+        "action": "Record implemented successors with scoped resolvable evidence and explicit delivery commits.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal"
+        ],
+        "expected_result": "Proposal history is retained and selected intent changes only for the delivered revisions.",
+        "id": "implement"
+      },
+      {
+        "action": "Read quality, review and work histories before and after implementation; inspect code currency independently.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:implementation-not-approval",
+          "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal"
+        ],
+        "expected_result": "Implementation created no verification, integration or review approval; currency remains a separate fact.",
+        "id": "isolation"
+      },
+      {
+        "action": "Add canonical entity references and scoped selections to the delivery design/review, then inspect approval and unexplained changed code.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval"
+        ],
+        "expected_result": "References and inherited implementation coverage create no review approval and unrelated changed code stays unexplained.",
+        "id": "coverage"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-no-approval-side-effects",
+    "title": "Implementation and coverage do not grant approval"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-no-approval-side-effects"
+  }
+}

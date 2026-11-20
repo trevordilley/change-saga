@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io"
 	"io/fs"
 	"os"
@@ -187,7 +188,7 @@ func loadTestCases(document *Document, feature applayout.Feature, ids *applayout
 }
 
 func loadTestCasePackage(root, sagaID, dir, testCaseID string) (TestCase, error) {
-	entries, err := boundedReadDir(dir, 5)
+	entries, err := boundedReadDir(dir, 6)
 	if err != nil {
 		return TestCase{}, err
 	}
@@ -197,6 +198,10 @@ func loadTestCasePackage(root, sagaID, dir, testCaseID string) (TestCase, error)
 			return TestCase{}, fmt.Errorf("test case %q contains symlink %q", testCaseID, entry.Name())
 		}
 		switch entry.Name() {
+		case currentrecord.Name:
+			if !entry.Type().IsRegular() {
+				return TestCase{}, fmt.Errorf("current record must be regular")
+			}
 		case "test-case.json":
 			if !entry.Type().IsRegular() {
 				return TestCase{}, fmt.Errorf("test case %q identity must be a regular file", testCaseID)
@@ -225,11 +230,42 @@ func loadTestCasePackage(root, sagaID, dir, testCaseID string) (TestCase, error)
 	if err := validateIdentity(testCase.Identity, testCaseID); err != nil {
 		return TestCase{}, fmt.Errorf("%s: %w", relative(root, identityPath), err)
 	}
-	if testCase.Revisions, err = loadRevisions(root, sagaID, testCaseID, filepath.Join(dir, "revisions")); err != nil {
+	record, err := currentrecord.Read(dir)
+	if err != nil {
 		return TestCase{}, err
 	}
-	if testCase.Events, err = loadEvents(root, sagaID, testCaseID, filepath.Join(dir, "events")); err != nil {
-		return TestCase{}, err
+	if record != nil {
+		var content Revision
+		var state LifecycleEvent
+		digest, err := currentrecord.Digest(record.Content)
+		if err != nil {
+			return TestCase{}, err
+		}
+		content = Revision{Schema: RevisionSchemaURL, Version: Version, ID: "sha256-" + strings.TrimPrefix(digest, "sha256:"), Parents: []string{}, CreatedAt: testCase.Identity.CreatedAt}
+		state = LifecycleEvent{Schema: LifecycleEventSchemaURL, Version: Version, ID: "current", Parents: []string{}, CreatedAt: testCase.Identity.CreatedAt}
+		if err := currentrecord.Project(record.Content, &content); err != nil {
+			return TestCase{}, err
+		}
+		if err := currentrecord.Project(record.State, &state); err != nil {
+			return TestCase{}, err
+		}
+		if err := validateRevision(content, sagaID, testCaseID); err != nil {
+			return TestCase{}, err
+		}
+		if err := validateLifecycleEvent(state, sagaID, testCaseID); err != nil {
+			return TestCase{}, err
+		}
+		testCase.current = true
+		testCase.Revisions = []Revision{content}
+		testCase.Events = []LifecycleEvent{state}
+	} else {
+		if testCase.Revisions, err = loadRevisions(root, sagaID, testCaseID, filepath.Join(dir, "revisions")); err != nil {
+			return TestCase{}, err
+		}
+		if testCase.Events, err = loadEvents(root, sagaID, testCaseID, filepath.Join(dir, "events")); err != nil {
+			return TestCase{}, err
+		}
+
 	}
 	if testCase.Evidence, err = loadEvidence(root, sagaID, testCaseID, filepath.Join(dir, "evidence")); err != nil {
 		return TestCase{}, err

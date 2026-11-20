@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "pull-request review",
+      "PR review"
+    ],
+    "code": [
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:3d1a158507af292d421874757bcfa3c9f5f4f7aaa12703e7fe0655f0c99d4771",
+        "end": 30,
+        "path": "internal/saga/review.go",
+        "start": 19
+      },
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:860fed51c6f14a79bc659a9a050beb6d83024fa8bed51abcd25f420897ee5de5",
+        "end": 82,
+        "path": "internal/saga/review.go",
+        "start": 64
+      }
+    ],
+    "definition": "A pull request's change-specific slide deck, bound to its base and followed head until merge. Its Items explain changed code. Decisions belong to review slides; comments belong to review slides, Items, or code lines, with unowned code-line threads targeting the review itself. Feature implementation decks remain ordinary documentation.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Review",
+    "stories": [
+      "urn:change-saga:change-saga:story:contextual-comments",
+      "urn:change-saga:change-saga:story:review-decision"
+    ],
+    "term": "urn:change-saga:change-saga:term:review"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:review"
+  }
+}

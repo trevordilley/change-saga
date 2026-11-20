@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Identify the exact term revision affected by source changes.",
+    "preconditions": [
+      "A fresh term r1 links an exact source constant; change that constant without editing the current term."
+    ],
+    "steps": [
+      {
+        "action": "Before correcting the current term, inspect health for the stale defining-code reference.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:shared-product-language:criterion:code-currency"
+        ],
+        "expected_result": "The stale record identifies the exact affected term revision as well as the term identity.",
+        "id": "check-affected-term-revision"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-term-revision-health",
+    "title": "Identify the exact term revision affected by source changes"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-term-revision-health"
+  }
+}

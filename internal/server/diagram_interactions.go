@@ -148,9 +148,10 @@ const diagramInteractionsJavaScript = `
     function materialize(node) {
       const element = node.dataset.whiteboardElement;
       if (!element && (!node.dataset.documentationTarget || !node.dataset.documentationRevision)) return Promise.resolve('');
-      const query = new URLSearchParams({target:node.dataset.documentationTarget,revision:node.dataset.documentationRevision});
+      const query = new URLSearchParams({target:node.dataset.documentationTarget,content_digest:node.dataset.documentationRevision});
       if (node.dataset.sourceRelationship) query.set('relationship',node.dataset.sourceRelationship);
-      if (element) { query.delete('target'); query.delete('revision'); query.set('board',node.dataset.whiteboardBoard); query.set('revision',node.dataset.whiteboardRevision); query.set('element',element); }
+      if (element) { query.delete('target'); query.delete('content_digest'); query.set('board',node.dataset.whiteboardBoard); query.set('content_digest',node.dataset.whiteboardContentDigest); query.set('element',element); }
+      if (element && node.closest('[data-whiteboard-historical="true"]')) query.set('saved','1');
       const endpoint = element ? '/api/whiteboard-element?' : '/api/diagram-annotation?';
       const key = endpoint+query.toString();
       if (cache.has(key)) return Promise.resolve(cache.get(key));

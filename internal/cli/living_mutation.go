@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"regexp"
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -14,17 +15,18 @@ import (
 // writers. Domain packages decide what was created; the CLI only adds the
 // operation name and transport status.
 type livingMutationOutput struct {
-	OK           bool     `json:"ok"`
-	Operation    string   `json:"operation"`
-	Resource     string   `json:"resource,omitempty"`
-	Path         string   `json:"path,omitempty"`
-	Paths        []string `json:"paths,omitempty"`
-	Created      []string `json:"created"`
-	EventIDs     []string `json:"event_ids"`
-	CurrentHeads []string `json:"current_heads,omitempty"`
-	Reason       string   `json:"reason,omitempty"`
-	Replayed     bool     `json:"replayed"`
-	Error        *struct {
+	ContentDigest string   `json:"content_digest,omitempty"`
+	OK            bool     `json:"ok"`
+	Operation     string   `json:"operation"`
+	Resource      string   `json:"resource,omitempty"`
+	Path          string   `json:"path,omitempty"`
+	Paths         []string `json:"paths,omitempty"`
+	Created       []string `json:"created"`
+	EventIDs      []string `json:"event_ids"`
+	CurrentHeads  []string `json:"current_heads,omitempty"`
+	Reason        string   `json:"reason,omitempty"`
+	Replayed      bool     `json:"replayed"`
+	Error         *struct {
 		Code    string `json:"code"`
 		Message string `json:"message"`
 	} `json:"error,omitempty"`
@@ -55,6 +57,20 @@ func writeLivingMutation(out io.Writer, operation, resource, path string, create
 }
 
 func writeRequirementsMutation(out io.Writer, operation string, result requirements.MutationResult, eventIDs []string, jsonOutput bool) error {
+	for _, member := range []string{":revision:", ":event:"} {
+		if at := strings.Index(result.URN, member); at >= 0 {
+			result.URN = result.URN[:at]
+		}
+	}
+	memberPath := regexp.MustCompile(`/(revisions|events)/[^/]+\.json$`)
+	result.Path = memberPath.ReplaceAllString(result.Path, "/current.json")
+	for i, path := range result.Paths {
+		result.Paths[i] = memberPath.ReplaceAllString(path, "/current.json")
+	}
+	result.Created = []string{result.URN}
+	result.CurrentHeads = nil
+	eventIDs = nil
+
 	created := result.Created
 	if created == nil {
 		created = []string{result.URN}
@@ -72,8 +88,8 @@ func writeRequirementsMutation(out io.Writer, operation string, result requireme
 	}
 	if jsonOutput {
 		return writeJSON(out, livingMutationOutput{
-			OK: true, Operation: operation, Resource: result.URN, Path: result.Path,
-			Paths: paths, Created: created, EventIDs: eventIDs, CurrentHeads: heads,
+			OK: true, Operation: operation, Resource: result.URN, Path: result.Path, ContentDigest: result.ContentDigest,
+			Paths: paths, Created: created, EventIDs: eventIDs, CurrentHeads: nil,
 			Reason: result.Reason, Replayed: result.Replayed,
 		})
 	}

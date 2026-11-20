@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-definition-step-mapping-2b31d6d930bf",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-definition-step-mapping",
-  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
-  "scope": "self",
-  "rationale": "Steps check-specific-mapping define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-definition-step-mapping:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-readiness:revision:definitions-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:09.783834Z",
-  "request_id": "test-core-definition-step-mapping-2b31d6d930bf"
+  "from": "urn:change-saga:change-saga:test-case:core-definition-step-mapping",
+  "from_revision": "sha256:b4ed8c1602ffa7dd504eafe2841aa9617fe5f5bd545b5d358782b9add9df3d73",
+  "id": "test-core-definition-step-mapping-2b31d6d930bf",
+  "rationale": "Steps check-specific-mapping define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-definition-step-mapping-2b31d6d930bf",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
+  "to_revision": "sha256:fb63d3c4a518909efa665fad2040f4262b5337af696439e06596b64be39fea0a",
+  "type": "verifies",
+  "version": 5
 }

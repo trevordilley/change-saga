@@ -30,9 +30,9 @@ type prototypeQueryRecord struct {
 	Feature     string                  `json:"feature"`
 	Title       string                  `json:"title"`
 	State       string                  `json:"state"`
-	Revision    string                  `json:"revision"`
+	Revision    string                  `json:"content_digest"`
 	Current     bool                    `json:"current"`
-	Revisions   []string                `json:"revisions"`
+	Revisions   []string                `json:"-"`
 	Source      prototypes.Source       `json:"source"`
 	Files       []string                `json:"files"`
 	File        string                  `json:"file,omitempty"`
@@ -58,7 +58,7 @@ func queryPrototype(ctx context.Context, args []string, out io.Writer) error {
 	flags.SetOutput(io.Discard)
 	root := flags.String("saga", "", "Saga root")
 	selector := flags.String("prototype", "", "prototype ID or URN")
-	revisionID := flags.String("revision", "", "revision ID; defaults to the current one")
+	revisionID := new(string)
 	file := flags.String("file", "", "file within the prototype; defaults to its entrypoint")
 	repo := flags.String("repo", "", "code checkout when the Saga lives in a separate repository")
 	offset := flags.Int64("offset", 0, "content byte offset")
@@ -96,16 +96,17 @@ func queryPrototype(ctx context.Context, args []string, out io.Writer) error {
 		wanted = currentID
 	}
 	if wanted == "" {
-		return writeQueryFailure(out, &queryError{Code: "conflict", Message: "prototype has several current revisions; pass --revision", Details: map[string]any{"heads": prototype.RevisionHeads}})
+		return writeQueryFailure(out, &queryError{Code: "conflict", Message: "legacy prototype has competing content; preserve it in Git and combine the authored content explicitly", Details: map[string]any{"heads": prototype.RevisionHeads}})
 	}
 	revision := prototype.Revision(wanted)
 	if revision == nil {
 		return writeQueryFailure(out, &queryError{Code: "not_found", Message: "prototype revision does not exist"})
 	}
 	target, _ := prototypes.PrototypeURN(document.SagaID, id)
+	contentPin, _ := prototypes.RevisionURN(document.SagaID, id, revision.ID)
 	record := prototypeQueryRecord{
 		ID: id, Target: target, Feature: prototype.Feature, Title: revision.Title, State: string(revision.State),
-		Revision: revision.ID, Current: revision.ID == currentID, Source: revision.Source,
+		Revision: contentPin, Current: revision.ID == currentID, Source: revision.Source,
 		Revisions: []string{}, Files: []string{}, Annotations: []prototypes.Annotation{},
 	}
 	for _, value := range prototype.Revisions {

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Independent current-record edits merge normally; competing edits to the same file use Git conflicts.",
+    "preconditions": [
+      "Commit two independent current stories in an isolated Git repository, then create branches with independent edits and separate conflicting edits to one current file."
+    ],
+    "steps": [
+      {
+        "action": "Merge independent current-record edits on separate branches.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
+          "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts"
+        ],
+        "expected_result": "Each stable record retains its identity and authored content without a Saga revision graph.",
+        "id": "definitions"
+      },
+      {
+        "action": "Merge branches that change the same current state or content file.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
+          "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts"
+        ],
+        "expected_result": "Git exposes the conflict for explicit author resolution; Saga does not invent a head or select a timestamp winner.",
+        "id": "lifecycle"
+      },
+      {
+        "action": "Resolve the Git conflict deliberately, commit the complete current record, and inspect both branch commits.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned"
+        ],
+        "expected_result": "Both original branch values remain in Git, and the resolved current file is complete and valid.",
+        "id": "records"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts",
+    "title": "Merge independent current records and preserve Git conflicts"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts"
+  }
+}

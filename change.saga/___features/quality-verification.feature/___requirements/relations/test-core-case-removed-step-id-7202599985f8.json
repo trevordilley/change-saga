@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-case-removed-step-id-7202599985f8",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-case-removed-step-id",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment",
-  "scope": "self",
-  "rationale": "Steps check-step-id-reuse define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-case-removed-step-id:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:definitions-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:45.413967Z",
-  "request_id": "test-core-case-removed-step-id-7202599985f8"
+  "from": "urn:change-saga:change-saga:test-case:core-case-removed-step-id",
+  "from_revision": "sha256:b13a50e8472f58b4b913cb18d6ef4d580dda3ba4a1a13a061296939b25c2ee0f",
+  "id": "test-core-case-removed-step-id-7202599985f8",
+  "rationale": "Steps check-step-id-reuse define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-case-removed-step-id-7202599985f8",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment",
+  "to_revision": "sha256:19c5b9e1aea31424ce435cd778db05e19775cf1ad520c2a1c67672c63dd3c342",
+  "type": "verifies",
+  "version": 5
 }

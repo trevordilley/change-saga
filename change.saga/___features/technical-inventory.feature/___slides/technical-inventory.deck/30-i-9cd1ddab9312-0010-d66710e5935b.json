@@ -1,17 +1,17 @@
 {
+  "description": "A System pins Component revisions and explains directed interactions with exact evidence for each flow. Legacy System rules are unchanged; format-2 interactions carry their own intent.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:system:technical-documentation",
-    "revision": "urn:change-saga:change-saga:system:technical-documentation:revision:r4"
+    "revision": "sha256:c5554f3a80277c25cd45f9fc7ff93c95307330ec0f5c29316ed9d5448702e761",
+    "target": "urn:change-saga:change-saga:system:technical-documentation"
   },
-  "version": 4,
   "id": "system",
-  "slide": "technical-inventory-identity",
-  "rank": 10,
   "kind": "node",
   "label": "System",
-  "description": "A System pins Component revisions and explains directed interactions with exact evidence for each flow. Legacy System rules are unchanged; format-2 interactions carry their own intent.",
+  "rank": 10,
   "selector": {
-    "type": "element",
-    "element_id": "system"
-  }
+    "element_id": "system",
+    "type": "element"
+  },
+  "slide": "technical-inventory-identity",
+  "version": 4
 }

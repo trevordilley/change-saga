@@ -195,7 +195,7 @@ func TestApplySlideGuardsReviewSlides(t *testing.T) {
 			t.Errorf("%s: err = %v", want, err)
 		}
 	}
-	if _, err := ApplySlideTransaction(ctx, root, t.TempDir(), repo, reviewSlideRequest("flow-again", "create", "absent", reviewDiagram()), false); err == nil || !strings.Contains(err.Error(), `slide id "flow" already exists`) {
+	if replay, err := ApplySlideTransaction(ctx, root, t.TempDir(), repo, reviewSlideRequest("flow-again", "create", "absent", reviewDiagram()), false); err != nil || !replay.Replayed {
 		t.Errorf("duplicate create: %v", err)
 	}
 	visual := filepath.Join(t.TempDir(), "slide.svg")

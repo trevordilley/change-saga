@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:25fa2d8d73e28ac6e28922371064ad886ee5c2ec3e3a343f33436124ae6afaf1",
+      "end": 160,
+      "path": "internal/requirements/mutation.go",
+      "start": 149
+    }
+  ],
+  "created_at": "2026-10-16T23:24:10Z",
   "id": "exclusive-revisions",
-  "test_case": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts",
-  "test_revision": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts:revision:r1",
+  "request_id": "saga-evidence-contracts-parallel-partitioned-conflicts-exclusive-revisions",
   "role": "implementation_under_test",
   "steps": [
     "records"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/requirements/mutation.go",
-      "start": 149,
-      "end": 160,
-      "digest": "sha256:25fa2d8d73e28ac6e28922371064ad886ee5c2ec3e3a343f33436124ae6afaf1"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:10Z",
-  "request_id": "saga-evidence-contracts-parallel-partitioned-conflicts-exclusive-revisions"
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts",
+  "test_revision": "sha256:c448d4e2c232a6e86590a6f466da28d62d180947e75ebba3c519daca33e19030",
+  "verifications": [],
+  "version": 5
 }

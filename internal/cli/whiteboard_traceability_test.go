@@ -20,11 +20,11 @@ func TestWhiteboardTraceabilityIncludesCurrentNativeEvidence(t *testing.T) {
 	run(t, Init, "--repo", repo, "--repository", "https://example.test/acme/app.git", root)
 	run(t, Feature, "add", "--id", "core", "--title", "Core", root)
 	story := "urn:change-saga:board:story:value"
-	run(t, Story, "add", "--feature", "core", "--id", "value", "--revision", "r1", "--event", "proposed", "--title", "Read the value", "--statement", "The reader can inspect the value.", "--criterion", "exact=The value is explicit.", root)
-	run(t, Story, "set-state", "--story", story, "--event", "accepted", "--parent", story+":event:proposed", "--state", "accepted", "--reason", "Confirmed fixture intent.", root)
+	run(t, Story, "add", "--feature", "core", "--id", "value", "--title", "Read the value", "--statement", "The reader can inspect the value.", "--criterion", "exact=The value is explicit.", root)
+	run(t, Story, "set-state", "--story", story, "--state", "accepted", "--reason", "Confirmed fixture intent.", root)
 	ref := coderef.Reference{Commit: head, Path: "app.go", Start: 2, End: 2}
 	doc := diagram.Document{Version: 1, Width: 800, Height: 500, Elements: []diagram.Element{
-		{ID: "value", Kind: "node", Shape: "rect", Label: "Value", Style: "normal", Width: 240, Height: 100, Evidence: []coderef.Reference{ref}, CriterionLinks: []diagram.CriterionLink{{ID: "value-exact", Criterion: story + ":criterion:exact", StoryRevision: story + ":revision:r1", Rationale: "This native element explains the value."}}},
+		{ID: "value", Kind: "node", Shape: "rect", Label: "Value", Style: "normal", Width: 240, Height: 100, Evidence: []coderef.Reference{ref}, CriterionLinks: []diagram.CriterionLink{{ID: "value-exact", Criterion: story + ":criterion:exact", StoryRevision: currentTestPin(t, root, story), Rationale: "This native element explains the value."}}},
 		{ID: "unlinked", Kind: "node", Shape: "rect", Label: "Package", Style: "normal", X: 300, Width: 240, Height: 100, Evidence: []coderef.Reference{{Commit: head, Path: "app.go", Start: 1, End: 1}}},
 	}}
 	input := filepath.Join(t.TempDir(), "board.json")
@@ -32,10 +32,7 @@ func TestWhiteboardTraceabilityIncludesCurrentNativeEvidence(t *testing.T) {
 		t.Helper()
 		data, _ := json.Marshal(doc)
 		writeFile(t, input, string(data))
-		args := []string{"publish", "--id", "architecture", "--revision", revision, "--from", input, "--repo", repo}
-		if parent != "" {
-			args = append(args, "--parent", parent)
-		}
+		args := []string{"publish", "--id", "architecture", "--from", input, "--repo", repo}
 		run(t, Whiteboard, append(args, root)...)
 	}
 	query := func(extra ...string) livingapp.TraceabilityPage {

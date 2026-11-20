@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -33,11 +34,12 @@ func technicalFixture(t *testing.T) (root, repo string) {
 		}
 	}
 	system := requirements.TechnicalDefinition{Name: "Flags", Explanation: "Reads flags from the store.", Code: code,
-		Components:   []saga.DocumentationLink{{Target: reader, Revision: reader + ":revision:r1"}, {Target: store, Revision: store + ":revision:r1"}},
+		Components:   []saga.DocumentationLink{{Target: reader, Revision: currentServerPin(t, root, reader)}, {Target: store, Revision: currentServerPin(t, root, store)}},
 		Interactions: []requirements.Interaction{{ID: "read", From: reader, To: store, Description: "Reads a flag value.", Code: code}}}
 	if _, err := requirements.WriteTechnical(root, "test", "system", "flags", "r1", nil, system, true); err != nil {
 		t.Fatal(err)
 	}
+	commitServerDocumentation(t, root)
 	if _, err := requirements.WriteTechnical(root, "test", "component", "store", "r2", []string{store + ":revision:r1"}, requirements.TechnicalDefinition{Name: "FlagStore", Explanation: "The revised store.", Code: code}, false); err != nil {
 		t.Fatal(err)
 	}
@@ -107,23 +109,29 @@ func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T)
 func TestTechnicalEntityPageRendersExactPin(t *testing.T) {
 	t.Parallel()
 	root, repo := technicalFixture(t)
+	inventory, err := requirements.LoadInventory(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	oldPin := inventory.Find("urn:change-saga:test:system:flags").CurrentRevision.Components[1].Revision
+	newPin := currentServerPin(t, root, "urn:change-saga:test:component:store")
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/component/store")
-	if status != 200 || !strings.Contains(body, `data-technical-revision="r2"`) || !strings.Contains(body, "<h1>FlagStore</h1>") || strings.Contains(body, `data-technical-pin-status`) {
+	if status != 200 || !strings.Contains(body, `data-technical-revision="`+newPin+`"`) || !strings.Contains(body, "<h1>FlagStore</h1>") || strings.Contains(body, `data-technical-pin-status`) {
 		t.Fatalf("current definition: %d %s", status, body)
 	}
-	status, body = technicalGet(t, mux, "/technical/component/store?revision=r1")
-	for _, want := range []string{`data-technical-revision="r1"`, "<h1>Store</h1>", `data-technical-pin-status="stale"`, "nothing has been repinned", `href="/technical/component/store">Read the current definition`, "Exact declaration provenance."} {
+	status, body = technicalGet(t, mux, technicalHref("component", "store", oldPin))
+	for _, want := range []string{`data-technical-revision="` + oldPin + `"`, "<h1>Store</h1>", `data-technical-pin-status="stale"`, "its evidence pin is unchanged", `href="/technical/component/store">Read the current definition`, "Exact declaration provenance."} {
 		if status != 200 || !strings.Contains(body, want) {
 			t.Fatalf("saved revision lost %s: %d %s", want, status, body)
 		}
 	}
 	// A System's members open their own pinned pages, not the latest revision.
 	status, body = technicalGet(t, mux, "/technical/system/flags")
-	if status != 200 || !strings.Contains(body, `href="/technical/component/store?revision=r1"`) || strings.Contains(body, `data-documentation-target="urn:change-saga:test:component:store"`) {
+	if status != 200 || !strings.Contains(body, `href="`+technicalHref("component", "store", oldPin)+`"`) || strings.Contains(body, `data-documentation-target="urn:change-saga:test:component:store"`) {
 		t.Fatalf("system members: %d %s", status, body)
 	}
-	for _, path := range []string{"/technical/component/store?revision=missing", "/technical/component/absent", "/technical/entity/store"} {
+	for _, path := range []string{technicalHref("component", "store", "sha256:"+strings.Repeat("f", 64)), "/technical/component/absent", "/technical/entity/store"} {
 		if status, _ := technicalGet(t, mux, path); status != 404 {
 			t.Fatalf("%s: %d", path, status)
 		}
@@ -140,35 +148,36 @@ func TestTechnicalEntityPageRendersExactPin(t *testing.T) {
 func TestTechnicalEntityPageNamesCompetingHeads(t *testing.T) {
 	t.Parallel()
 	root, repo := technicalFixture(t)
-	// Simulate two branches that each revised r1 and then merged: a copy of
-	// r2 renamed r3 is a second head with the same parent. No writer is asked
-	// to choose a winner.
-	revisions := filepath.Join(root, "___inventory", "components", "store.component", "revisions")
-	data, err := os.ReadFile(filepath.Join(revisions, "r2.json"))
+	target := "urn:change-saga:test:component:store"
+	relative := requirements.TechnicalPath("component", "store")
+	legacyServerTestPackage(t, root, relative, "record", target, requirements.TechnicalSchema("component", "-revision"), requirements.TechnicalSchema("component", "-event"), 5, "r1", "active")
+	revisions := filepath.Join(root, relative, "revisions")
+	raw, err := os.ReadFile(filepath.Join(revisions, "r1.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	copied := strings.Replace(strings.Replace(string(data), `"id": "r2"`, `"id": "r3"`, 1), `"name": "FlagStore"`, `"name": "BranchStore"`, 1)
-	if copied == string(data) {
-		t.Fatalf("fixture revision layout changed: %s", data)
+	for _, id := range []string{"r2", "r3"} {
+		var value map[string]any
+		json.Unmarshal(raw, &value)
+		value["id"], value["parents"], value["name"] = id, []string{target + ":revision:r1"}, "Branch "+id
+		b, _ := json.Marshal(value)
+		writeServerFile(t, filepath.Join(revisions, id+".json"), string(b))
 	}
-	writeServerFile(t, filepath.Join(revisions, "r3.json"), copied)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/component/store")
-	if status != 200 || !strings.Contains(body, `data-technical-conflict`) || !strings.Contains(body, "None is chosen as current") || strings.Contains(body, "data-documentation-view") {
+	if status != 200 || !strings.Contains(body, `data-technical-conflict`) || !strings.Contains(body, "No current content is selected") || strings.Contains(body, "data-documentation-view") {
 		t.Fatalf("conflict: %d %s", status, body)
 	}
 	for _, head := range []string{"r2", "r3"} {
-		if !strings.Contains(body, `href="/technical/component/store?revision=`+head+`"`) {
+		if !strings.Contains(body, `<code>`+head+`</code>`) {
 			t.Fatalf("conflict hid head %s: %s", head, body)
 		}
 	}
-	status, body = technicalGet(t, mux, "/technical/component/store?revision=r3")
-	if status != 200 || !strings.Contains(body, `data-technical-pin-status="conflicted"`) || !strings.Contains(body, "<h1>BranchStore</h1>") {
-		t.Fatalf("conflicted pin: %d %s", status, body)
+	if status, _ := technicalGet(t, mux, "/technical/component/store?revision=r3"); status != 410 {
+		t.Fatal("legacy revision selector accepted", status)
 	}
 	status, body = technicalGet(t, mux, "/technical/components")
-	if status != 200 || !strings.Contains(body, "2 competing revisions") {
+	if status != 200 || !strings.Contains(body, "2 competing legacy definitions") {
 		t.Fatalf("directory hid the conflict: %s", body)
 	}
 }
@@ -177,7 +186,7 @@ func TestTechnicalUsagesFollowItemPins(t *testing.T) {
 	t.Parallel()
 	target := "urn:change-saga:test:component:store"
 	pin := func(revision string) *saga.DocumentationLink {
-		return &saga.DocumentationLink{Target: target, Revision: target + ":revision:" + revision}
+		return &saga.DocumentationLink{Target: target, Revision: "sha256:" + strings.Repeat(map[string]string{"r1": "a", "r2": "b"}[revision], 64)}
 	}
 	item := func(slide, id string, link *saga.DocumentationLink) *saga.Item {
 		return &saga.Item{ItemManifest: saga.ItemManifest{ID: id, Label: id, Documentation: link}, Target: "urn:change-saga:test:slide:" + slide + ":item:" + id}
@@ -192,14 +201,14 @@ func TestTechnicalUsagesFollowItemPins(t *testing.T) {
 	document := &saga.Saga{Section: &saga.Section{Target: "urn:change-saga:test"}, Decks: []*saga.Deck{deck}, Reviews: []*saga.Review{review},
 		Features: []*saga.Feature{{ID: "core", Title: "Core", Decks: []*saga.Deck{deck}}}}
 	inventory := requirements.Inventory{SagaID: "test", Records: []requirements.TechnicalRecord{{Kind: "component", Target: target,
-		Revisions:       []requirements.TechnicalRevision{{ID: "r1"}, {ID: "r2"}},
-		CurrentRevision: &requirements.TechnicalRevision{ID: "r2"}, CurrentLifecycle: &requirements.TechnicalEvent{State: "active"}}}}
+		Revisions:       []requirements.TechnicalRevision{{ID: "sha256-" + strings.Repeat("a", 64)}, {ID: "sha256-" + strings.Repeat("b", 64)}},
+		CurrentRevision: &requirements.TechnicalRevision{ID: "sha256-" + strings.Repeat("b", 64)}, CurrentLifecycle: &requirements.TechnicalEvent{State: "active"}}}}
 	view := indexTechnicalUsages(document, inventory).view(target)
 	if view.Total != 3 || view.Current != 2 || len(view.Usages) != 3 {
 		t.Fatalf("usages: %#v", view)
 	}
 	first := view.Usages[0]
-	if first.Status != "stale" || first.Feature != "Core" || first.Slide != "Reading flags" || first.PinHref != "/technical/component/store?revision=r1" {
+	if first.Status != "stale" || first.Feature != "Core" || first.Slide != "Reading flags" || first.PinHref != technicalPinHref(*pin("r1")) {
 		t.Fatalf("stale implementation usage: %#v", first)
 	}
 	last := view.Usages[2]

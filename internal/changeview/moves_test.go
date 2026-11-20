@@ -3,6 +3,9 @@ package changeview
 import (
 	"context"
 	"errors"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -199,5 +202,62 @@ func TestAReusedNameDoesNotInheritAnUnrelatedSagasPast(t *testing.T) {
 	}
 	if _, err := extract(context.Background(), location, old, t.TempDir()); !errors.Is(err, errAbsent) {
 		t.Fatalf("the unrelated Saga with the same name was extracted: %v", err)
+	}
+}
+
+func TestRecordHistoryIncludesDeletedLegacyMembersAcrossSagaMoves(t *testing.T) {
+	t.Parallel()
+	repo := t.TempDir()
+	moveGit(t, repo, "init", "-q", "-b", "main")
+	moveWrite(t, repo, "app.saga/saga.json", `{"id":"shop"}`)
+	moveWrite(t, repo, "app.saga/checkout.story/story.json", `{"id":"checkout"}`)
+	moveWrite(t, repo, "app.saga/checkout.story/revisions/first.json", "first")
+	moveCommit(t, repo, "Introduce the story")
+	moveWrite(t, repo, "app.saga/checkout.story/revisions/second.json", "second")
+	moveCommit(t, repo, "Edit legacy content")
+	moveGit(t, repo, "rm", "-q", "-r", "app.saga/checkout.story/revisions")
+	moveWrite(t, repo, "app.saga/checkout.story/current.json", "second")
+	moveCommit(t, repo, "Normalize current content")
+	moveGit(t, repo, "mv", "app.saga", "change.saga")
+	moveCommit(t, repo, "Move the Saga unchanged")
+	moveWrite(t, repo, "change.saga/checkout.story/current.json", "third")
+	moveCommit(t, repo, "Edit current content")
+	files := recordHistoryFiles([]string{"checkout.story/story.json", "checkout.story/current.json"})
+	commits, err := recordCommits(context.Background(), Location{Repo: repo, Path: "change.saga"}, files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := strings.Join(subjects(commits), " | "); got != "Introduce the story | Edit legacy content | Normalize current content | Edit current content" {
+		t.Fatalf("Git record history after normalization = %s", got)
+	}
+}
+
+func TestCurrentTechnicalAndWhiteboardHistoryUsesGit(t *testing.T) {
+	repo := t.TempDir()
+	moveGit(t, repo, "init", "-q", "-b", "main")
+	root := filepath.Join(repo, "app.saga")
+	moveWrite(t, repo, "app.saga/saga.json", `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/app.git"}}`)
+	definition := requirements.TechnicalDefinition{Name: "Store", Explanation: "First", Code: []requirements.Evidence{{Reference: coderef.Reference{Commit: strings.Repeat("a", 40), Path: "source.go", Start: 1, End: 1, Digest: "sha256:" + strings.Repeat("a", 64), Note: "Exact declaration"}}}}
+	if _, err := requirements.WriteTechnical(root, "test", "component", "store", "", nil, definition, true); err != nil {
+		t.Fatal(err)
+	}
+	board := diagram.Document{Version: 1, Width: 800, Height: 500, Elements: []diagram.Element{{ID: "owner", Kind: "node", Shape: "rect", Label: "First", X: 10, Y: 10, Width: 200, Height: 100, Style: "normal"}}}
+	if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "map", "", "", "Map", board); err != nil {
+		t.Fatal(err)
+	}
+	first := moveCommit(t, repo, "Introduce current documentation")
+	definition.Explanation, board.Elements[0].Label = "Edited", "Edited"
+	if _, err := requirements.WriteTechnical(root, "test", "component", "store", "", nil, definition, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "map", "", "", "Map", board); err != nil {
+		t.Fatal(err)
+	}
+	moveCommit(t, repo, "Edit current documentation")
+	for _, urn := range []string{"urn:change-saga:test:component:store", "urn:change-saga:test:whiteboard:map"} {
+		history, err := NodeHistory(context.Background(), root, urn)
+		if err != nil || len(history.Events) != 2 || history.Introduced == nil || history.Introduced.Head != first {
+			t.Fatalf("Git history for %s: %+v %v", urn, history, err)
+		}
 	}
 }

@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:11a0314efce48057298fbe2102b84408b8e9c494809739ad773113b574c1a765",
+      "end": 140,
+      "path": "internal/quality/mutation_test.go",
+      "start": 113
+    }
+  ],
+  "created_at": "2026-10-16T23:23:49Z",
   "id": "check-definition-head-guards-assertions",
-  "test_case": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads",
-  "test_revision": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads:revision:r1",
+  "request_id": "saga-evidence-core-case-conflicting-heads-check-definition-head-guards-assertions",
   "role": "test_implementation",
   "steps": [
     "check-definition-head-guards"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/quality/mutation_test.go",
-      "start": 113,
-      "end": 140,
-      "digest": "sha256:11a0314efce48057298fbe2102b84408b8e9c494809739ad773113b574c1a765"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:49Z",
-  "request_id": "saga-evidence-core-case-conflicting-heads-check-definition-head-guards-assertions"
+  "test_case": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads",
+  "test_revision": "sha256:fd85303de4747e40d12cbc86427223c4d0e5471678c158ad9007ed8bb115152c",
+  "verifications": [],
+  "version": 5
 }

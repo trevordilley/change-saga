@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:477dad6a46efbbbc3b5e7a8a90ccdfcba52b2d5b357419daff31a25e0288fefd",
+      "end": 74,
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 38
+    }
+  ],
+  "created_at": "2026-10-16T23:23:49Z",
   "id": "check-immutable-revision-assertions",
-  "test_case": "urn:change-saga:change-saga:test-case:core-prototype-package",
-  "test_revision": "urn:change-saga:change-saga:test-case:core-prototype-package:revision:r1",
+  "request_id": "saga-evidence-core-prototype-package-check-immutable-revision-assertions",
   "role": "test_implementation",
   "steps": [
     "check-immutable-revision"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/prototypes/prototypes_test.go",
-      "start": 38,
-      "end": 74,
-      "digest": "sha256:477dad6a46efbbbc3b5e7a8a90ccdfcba52b2d5b357419daff31a25e0288fefd"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:49Z",
-  "request_id": "saga-evidence-core-prototype-package-check-immutable-revision-assertions"
+  "test_case": "urn:change-saga:change-saga:test-case:core-prototype-package",
+  "test_revision": "sha256:3afd2ca7688514eb7579971996f0c60407fcbb715a323ebde5b27d18b4d36903",
+  "verifications": [],
+  "version": 5
 }

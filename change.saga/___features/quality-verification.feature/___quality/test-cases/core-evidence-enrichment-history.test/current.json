@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Retain evidence revision pins and enrichment history.",
+    "preconditions": [
+      "A separate case r1 has a stable assertion step; save original r1 bytes."
+    ],
+    "steps": [
+      {
+        "action": "Add evidence to r1, revise the assertion outcome to r2, then append evidence superseding the old record.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:evidence-provenance"
+        ],
+        "expected_result": "Initial evidence is pinned to r1; revision makes it stale; replacement evidence restores linked stage with two revisions and two evidence records, and original revision bytes remain unchanged.",
+        "id": "check-evidence-provenance"
+      },
+      {
+        "action": "Read public Quality and quality-runs output and compare the two evidence records with their authored values.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:evidence-provenance",
+          "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness"
+        ],
+        "expected_result": "Canonical evidence identity, role, exact code references, pinned test revision, stable step IDs and supersession edge are retained; outdated pins remain visible unchanged.",
+        "id": "check-exposed-provenance-fields"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history",
+    "title": "Retain evidence revision pins and enrichment history"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history"
+  }
+}

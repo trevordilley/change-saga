@@ -1,18 +1,18 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
-  "version": 5,
-  "id": "link-tasks-to-stories.follow-the-chain.r1",
-  "criterion": "urn:change-saga:change-saga:story:link-tasks-to-stories:criterion:follow-the-chain",
-  "story_revision": "urn:change-saga:change-saga:story:link-tasks-to-stories:revision:r1",
-  "required_kinds": [
-    "positive"
-  ],
   "allowed_automation": [
     "automated",
     "hybrid",
     "manual"
   ],
-  "supersedes": [],
+  "created_at": "2026-11-02T22:20:37Z",
+  "criterion": "urn:change-saga:change-saga:story:link-tasks-to-stories:criterion:follow-the-chain",
+  "id": "link-tasks-to-stories.follow-the-chain.r1",
   "rationale": "The linked test checks the behavior this criterion states, including any refusal it names. No separate edge or negative case is claimed beyond that.",
-  "created_at": "2026-11-02T22:20:37Z"
+  "required_kinds": [
+    "positive"
+  ],
+  "story_revision": "sha256:4b0ad0a46c136fa7ce5e1e840310267339c6f552f507f4e9800f65a8f748b52e",
+  "supersedes": [],
+  "version": 5
 }

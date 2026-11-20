@@ -1,0 +1,57 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "All defined steps retain exact context, report currency honestly and respect native element ownership.",
+    "preconditions": [
+      "Use committed fixture code, an accepted linked criterion and an inventory-format-2 selected subset."
+    ],
+    "steps": [
+      {
+        "action": "Change code while the saved reference still matches the comparison base.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+        ],
+        "expected_result": "The matching base does not hide HEAD staleness in references, health or reconciliation.",
+        "id": "base"
+      },
+      {
+        "action": "Change containing inventory evidence outside the selected bytes.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+        ],
+        "expected_result": "The saved subset stays unchanged while its owning whiteboard element remains stale and counts against health.",
+        "id": "subset"
+      },
+      {
+        "action": "Revise the linked criterion while code is unchanged, then explicitly publish the updated criterion pin.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+        ],
+        "expected_result": "The old criterion link is stale until the new complete board revision names the reassessed story revision.",
+        "id": "criterion"
+      },
+      {
+        "action": "Publish a successor, reopen the exact old revision through history, and list current references.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
+        ],
+        "expected_result": "History opens its original code; the shared reference list contains only the current head rather than duplicate historical evidence.",
+        "id": "history"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",
+    "title": "Keep comparison, subset and historical evidence boundaries visible"
+  },
+  "state": {
+    "reason": "The defined scenarios are implemented by the linked CLI, server and browser tests; this activates the definition without recording an execution verdict.",
+    "state": "active",
+    "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries"
+  }
+}

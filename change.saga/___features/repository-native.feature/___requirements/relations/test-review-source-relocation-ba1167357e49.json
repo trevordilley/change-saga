@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-source-relocation-ba1167357e49",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-source-relocation",
-  "to": "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout",
-  "scope": "self",
-  "rationale": "Steps companion, inside define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-source-relocation:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:source-checkout-context:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:06.303879Z",
-  "request_id": "test-review-source-relocation-ba1167357e49"
+  "from": "urn:change-saga:change-saga:test-case:review-source-relocation",
+  "from_revision": "sha256:ca88c2d820916c7645f5e2480123333f24ce4dbec11fe3351808b7368840ccfe",
+  "id": "test-review-source-relocation-ba1167357e49",
+  "rationale": "Steps companion, inside define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-source-relocation-ba1167357e49",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout",
+  "to_revision": "sha256:104ce8eaffb7f3683eeb597a98a4d243052b68649a3e70c8b66624df71aa7d2d",
+  "type": "verifies",
+  "version": 5
 }

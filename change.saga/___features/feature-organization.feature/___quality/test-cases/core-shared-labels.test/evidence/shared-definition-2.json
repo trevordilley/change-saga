@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:3f6178ed71dbc02c4a2bbf28e97a68a2a4fec6dedb70e7585798754e278dc4db",
+      "end": 39,
+      "path": "e2e/tests/feature-organization.spec.ts",
+      "start": 36
+    }
+  ],
+  "created_at": "2026-10-16T23:23:49Z",
   "id": "shared-definition-2",
-  "test_case": "urn:change-saga:change-saga:test-case:core-shared-labels",
-  "test_revision": "urn:change-saga:change-saga:test-case:core-shared-labels:revision:r1",
+  "request_id": "saga-evidence-core-shared-labels-shared-definition-2",
   "role": "test_implementation",
   "steps": [
     "check-shared-definition"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "e2e/tests/feature-organization.spec.ts",
-      "start": 36,
-      "end": 39,
-      "digest": "sha256:3f6178ed71dbc02c4a2bbf28e97a68a2a4fec6dedb70e7585798754e278dc4db"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:49Z",
-  "request_id": "saga-evidence-core-shared-labels-shared-definition-2"
+  "test_case": "urn:change-saga:change-saga:test-case:core-shared-labels",
+  "test_revision": "sha256:e4cd1e2f24c0dfa6a1a6a7d8fe34d678fcc3980a2793227dca6ac2abaf045f50",
+  "verifications": [],
+  "version": 5
 }

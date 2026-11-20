@@ -9,10 +9,6 @@ import (
 )
 
 type whiteboardDocumentView struct{ ID, Name, Href, Note, Role string }
-type whiteboardRevisionView struct {
-	ID, Href string
-	Shown    bool
-}
 
 func whiteboardHref(id, revision string) string {
 	href := technicalPath + "/whiteboards/" + url.PathEscape(id)
@@ -20,12 +16,15 @@ func whiteboardHref(id, revision string) string {
 		href = technicalPath + "/erd"
 	}
 	if revision != "" {
-		href += "?" + url.Values{"revision": {revision}}.Encode()
+		href += "?" + url.Values{"content_digest": {revision}}.Encode()
 	}
 	return href
 }
 
 func (a *app) namedWhiteboardPage(w http.ResponseWriter, r *http.Request) {
+	if rejectLegacyContentSelector(w, r) {
+		return
+	}
 	metadata := a.whiteboardMetadata()
 	if r.PathValue("board") == "data-model" && (r.URL.Query().Get("revision") != "" || metadata.Roles["erd"] == "data-model") {
 		destination := whiteboardHref("data-model", "")
@@ -77,19 +76,6 @@ func (a *app) whiteboardDocuments(sagaID string) ([]whiteboardDocumentView, erro
 func (files *sagaFiles) whiteboardDocuments(build func() ([]whiteboardDocumentView, error)) ([]whiteboardDocumentView, error) {
 	files.whiteboardDocumentsOnce.Do(func() { files.whiteboardDocumentViews, files.whiteboardDocumentsErr = build() })
 	return files.whiteboardDocumentViews, files.whiteboardDocumentsErr
-}
-
-func (a *app) whiteboardHistoryView(sagaID, id, shown string) []whiteboardRevisionView {
-	ids, err := requirements.ListWhiteboardRevisionIDs(a.root, sagaID, id)
-	if err != nil {
-		return nil
-	}
-	metadata, _ := requirements.LoadWhiteboardMetadata(a.root, sagaID)
-	history := make([]whiteboardRevisionView, 0, len(ids))
-	for _, revision := range ids {
-		history = append(history, whiteboardRevisionView{ID: revision, Href: whiteboardMetadataHref(metadata, id, revision), Shown: revision == shown})
-	}
-	return history
 }
 
 func whiteboardFocusHref(href, path string) string {

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-selected-path-path",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:path",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
-  "scope": "self",
-  "rationale": "Proposed: follow only declared pinned membership and selected evidence. Retain each identity and revision in provenance; do not replace missing or ambiguous paths silently.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:00:54.971543Z",
-  "superseded_at": "2026-09-27T10:27:32.601704Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:path",
+  "id": "ti-selected-path-path",
+  "rationale": "Proposed: follow only declared pinned membership and selected evidence. Retain each identity and revision in provenance; do not replace missing or ambiguous paths silently.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:32.601704Z",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "explains",
+  "version": 5
 }

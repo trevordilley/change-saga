@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-entity-progressive-detail-ee40dfe11be5",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-entity-progressive-detail",
-  "to": "urn:change-saga:change-saga:story:erd-entity-context:criterion:progressive-detail",
-  "scope": "self",
-  "rationale": "Steps feature define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-entity-progressive-detail:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:56.661017Z",
-  "request_id": "test-inventory-entity-progressive-detail-ee40dfe11be5"
+  "from": "urn:change-saga:change-saga:test-case:inventory-entity-progressive-detail",
+  "from_revision": "sha256:801a2127fc5b3c99307a9518a06308999da9dd690addfd67165a20fb6fb23ab6",
+  "id": "test-inventory-entity-progressive-detail-ee40dfe11be5",
+  "rationale": "Steps feature define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-entity-progressive-detail-ee40dfe11be5",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:erd-entity-context:criterion:progressive-detail",
+  "to_revision": "sha256:222a3e3f40dfa008a13c16d39a92e7913e9f231ba62822ab39a0109e5def66a8",
+  "type": "verifies",
+  "version": 5
 }

@@ -78,7 +78,7 @@ func TestRepinOntoThatFailsLeavesTheSagaUntouched(t *testing.T) {
 	t.Parallel()
 	root, repo, sagaID, landed := landRepinOntoFixture(t)
 	story := "urn:change-saga:" + sagaID + ":story:run"
-	mustRun(t, Story, "revise", "--feature", testFeature, "--story", story, "--revision", "r2", "--parent", story+":revision:r1",
+	mustRun(t, Story, "revise", "--feature", testFeature, "--story", story,
 		"--title", "Run safely", "--statement", "As a user I run the service again", "--criterion", "returns=Run returns without error", root)
 
 	plainPath := filepath.Join(root, saga.CodeDirName, "plain.json")

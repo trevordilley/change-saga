@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "comment-round-trip-explains-contextual-comments",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:comment-round-trip",
-  "to": "urn:change-saga:change-saga:story:contextual-comments",
-  "scope": "descendants",
-  "rationale": "The sequence traces a contextual comment from the review form through validation, append-only persistence, and the refreshed thread.",
-  "to_revision": "urn:change-saga:change-saga:story:contextual-comments:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-23T03:26:50.650415Z",
-  "superseded_at": "2026-09-23T16:38:35.360128Z"
+  "from": "urn:change-saga:change-saga:slide:comment-round-trip",
+  "id": "comment-round-trip-explains-contextual-comments",
+  "rationale": "The sequence traces a contextual comment from the review form through validation, append-only persistence, and the refreshed thread.",
+  "scope": "descendants",
+  "state": "superseded",
+  "superseded_at": "2026-09-23T16:38:35.360128Z",
+  "to": "urn:change-saga:change-saga:story:contextual-comments",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "type": "explains",
+  "version": 5
 }

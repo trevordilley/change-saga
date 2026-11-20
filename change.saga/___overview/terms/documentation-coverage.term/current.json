@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "0f51465d2a1c3899b0db04cf173e39fb5d116724",
+        "digest": "sha256:feabcde17d029cbf537ad4c850521fa6706d7238cb515636b6c9b0b753f2cf4c",
+        "end": 41,
+        "path": "internal/areas/areas.go",
+        "start": 20
+      },
+      {
+        "commit": "0f51465d2a1c3899b0db04cf173e39fb5d116724",
+        "digest": "sha256:8edafe32341f3223299c0d5dd4d578e64ee28e6a3f28d9964e24dd917bb05af7",
+        "end": 167,
+        "path": "internal/areas/areas.go",
+        "start": 136
+      }
+    ],
+    "definition": "A factual omission report across seven separate areas: the review (does the pull request's review deck explain every changed line?), then implementation, stories, personas, design, quality, and health. Each area shows what is in scope and what is covered or missing. Coverage helps authors find gaps; it does not decide whether a change is correct or approved.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Documentation coverage",
+    "stories": [
+      "urn:change-saga:change-saga:story:documentation-gaps-visible",
+      "urn:change-saga:change-saga:story:scoped-coverage-check"
+    ],
+    "term": "urn:change-saga:change-saga:term:documentation-coverage"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:documentation-coverage"
+  }
+}

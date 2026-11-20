@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "item-composer-explains-bidirectional-path",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:34:54.696821Z",
   "from": "urn:change-saga:change-saga:slide:traceability-query-runtime:item:criterion-composer",
-  "to": "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path",
-  "scope": "self",
+  "id": "item-composer-explains-bidirectional-path",
   "rationale": "Criterion composition returns the current design and implementation paths attached to each accepted criterion.",
-  "to_revision": "urn:change-saga:change-saga:story:design-usage-path:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:34:54.696821Z"
+  "to": "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path",
+  "to_revision": "sha256:a4c2bb8595fca3553e62e78fa00ebfe146008283bbef2cc5bbc3cafcbbc25d1c",
+  "type": "explains",
+  "version": 5
 }

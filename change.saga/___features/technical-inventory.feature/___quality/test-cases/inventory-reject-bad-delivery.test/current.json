@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative",
+      "edge"
+    ],
+    "expected_result": "Each is refused and the previous proposal remains readable.",
+    "preconditions": [
+      "Disposable format-2 Saga with proposed store r1 and exact store.go lines 4-6; capture its inventory before each refused operation."
+    ],
+    "steps": [
+      {
+        "action": "Attempt implemented r2 without delivery metadata, then with a parent that omits the current head.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition"
+        ],
+        "expected_result": "Both operations are refused.",
+        "id": "missing-delivery"
+      },
+      {
+        "action": "Attempt implementation using evidence changed at delivery, then a digest that does not match saved bytes.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition"
+        ],
+        "expected_result": "Stale delivery evidence and forged digest are refused; stale attempt leaves no partial writes.",
+        "id": "stale-digest"
+      },
+      {
+        "action": "Attempt implemented revisions with no code, an unavailable commit, and a nonexistent source range.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition"
+        ],
+        "expected_result": "Each is refused and the previous proposal remains readable.",
+        "id": "missing-evidence"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery",
+    "title": "Reject unsupported implementation assertions"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery"
+  }
+}

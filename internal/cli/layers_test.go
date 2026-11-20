@@ -42,7 +42,7 @@ func shopSaga(t *testing.T) (repo, root string) {
 		mustRun(t, Init, "--repo", repo, "--id", "shop", root)
 		mustRun(t, Feature, "add", "--id", "checkout", "--title", "Checkout", root)
 		mustRun(t, Persona, "add", "--id", "shopper", "--name", "Shopper", "--description", "Buys things", root)
-		mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
+		mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--title", "Pay", "--statement", "As a shopper I pay",
 			"--priority", "must", "--criterion", "charged=The card is charged once", "--persona", "urn:change-saga:shop:persona:shopper", root)
 		design := filepath.Join(dir, "design.md")
 		writeFile(t, design, "# Queue {#queue}\n\nJobs go to SQS.\n")
@@ -121,7 +121,7 @@ func TestStoryRevisionIsChangedWithBeforeAndAfter(t *testing.T) {
 	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "once")
-	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay", "--revision", "r2", "--parent", "urn:change-saga:shop:story:pay:revision:r1",
+	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay",
 		"--title", "Pay once", "--statement", "As a shopper I pay exactly once", "--priority", "must", "--criterion", "charged=The card is charged exactly once", root)
 
 	status, _ := statusLayers(t, root, "--against", "main")
@@ -312,13 +312,13 @@ func TestComparisonReasonsFollowAMovedSaga(t *testing.T) {
 	repo, root := shopSaga(t)
 	persona := "urn:change-saga:shop:persona:shopper"
 	git(t, repo, "checkout", "-b", "rename")
-	mustRun(t, Persona, "revise", "--persona", persona, "--revision", "r2", "--parent", persona+":revision:r1", "--name", "Shopper", "--description", "Buys things online", root)
+	mustRun(t, Persona, "revise", "--persona", persona, "--name", "Shopper", "--description", "Buys things online", root)
 	git(t, repo, "add", "-A")
 	git(t, repo, "commit", "-m", "Describe the shopper before the rename")
 	git(t, repo, "mv", "app.saga", "change.saga")
 	git(t, repo, "commit", "-m", "Rename the Saga to change.saga")
 	moved := filepath.Join(repo, "change.saga")
-	mustRun(t, Persona, "revise", "--persona", persona, "--revision", "r3", "--parent", persona+":revision:r2", "--name", "Shopper", "--description", "Buys things online, often", moved)
+	mustRun(t, Persona, "revise", "--persona", persona, "--name", "Shopper", "--description", "Buys things online, often", moved)
 	git(t, repo, "add", "-A")
 	git(t, repo, "commit", "-m", "Describe the shopper after the rename")
 
@@ -486,7 +486,7 @@ func TestCompanionSagaComparesThroughItsSyncCursor(t *testing.T) {
 	root := filepath.Join(docs, "app.saga")
 	mustRun(t, Init, "--repo", code, "--id", "shop", root)
 	mustRun(t, Feature, "add", "--id", "checkout", "--title", "Checkout", root)
-	mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
+	mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--title", "Pay", "--statement", "As a shopper I pay",
 		"--priority", "must", "--criterion", "charged=The card is charged once", root)
 	design := filepath.Join(t.TempDir(), "design.md")
 	writeFile(t, design, "# Queue {#queue}\n\nJobs go to SQS.\n")
@@ -504,7 +504,7 @@ func TestCompanionSagaComparesThroughItsSyncCursor(t *testing.T) {
 	git(t, code, "checkout", "-b", "retry")
 	writeFile(t, filepath.Join(code, "src", "queue.go"), "package shop\n\n// Enqueue sends a job.\nfunc Enqueue(job string) error {\n\treturn retry(3, func() error { return sqs.Send(job) })\n}\n")
 	git(t, code, "commit", "-am", "Retry enqueue")
-	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay", "--revision", "r2", "--parent", "urn:change-saga:shop:story:pay:revision:r1",
+	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay",
 		"--title", "Pay reliably", "--statement", "As a shopper my payment survives throttling", "--priority", "must", "--criterion", "charged=The card is charged once", root)
 	mustRun(t, Sync, "--repo", code, root)
 	git(t, docs, "add", "-A")

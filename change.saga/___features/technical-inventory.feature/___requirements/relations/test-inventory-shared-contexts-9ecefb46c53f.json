@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-shared-contexts-9ecefb46c53f",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-shared-contexts",
-  "to": "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:contextual-use",
-  "scope": "self",
-  "rationale": "Steps shared, two-decks define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-shared-contexts:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-compose-designs:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:51.220407Z",
-  "request_id": "test-inventory-shared-contexts-9ecefb46c53f"
+  "from": "urn:change-saga:change-saga:test-case:inventory-shared-contexts",
+  "from_revision": "sha256:7e26718e622809fcb1b1e6a4a666a2db937493e34c1a350bfc58d8e3ce27339d",
+  "id": "test-inventory-shared-contexts-9ecefb46c53f",
+  "rationale": "Steps shared, two-decks define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-shared-contexts-9ecefb46c53f",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:contextual-use",
+  "to_revision": "sha256:db0d0d128a449c99996482976f65fcc689e515a7b272ecf23e08ea4f10fff10e",
+  "type": "verifies",
+  "version": 5
 }

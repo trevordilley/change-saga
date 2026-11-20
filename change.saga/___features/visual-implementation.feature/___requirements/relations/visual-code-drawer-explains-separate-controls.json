@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "visual-code-drawer-explains-separate-controls",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:45:34.980506Z",
   "from": "urn:change-saga:change-saga:slide:reviewer-runtime:item:code-drawer",
-  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls",
-  "scope": "self",
+  "id": "visual-code-drawer-explains-separate-controls",
   "rationale": "The code drawer is the independent evidence destination selected by the Item Code control.",
-  "to_revision": "urn:change-saga:change-saga:story:diagram-element-intent:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:45:34.980506Z"
+  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls",
+  "to_revision": "sha256:9f72f94edae56e8fbd4f4d20ac9ad8557193dab69ec0cbe0162fb63ab2e7c2e4",
+  "type": "explains",
+  "version": 5
 }

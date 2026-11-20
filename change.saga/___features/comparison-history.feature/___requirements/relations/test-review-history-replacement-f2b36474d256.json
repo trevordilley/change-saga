@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-history-replacement-f2b36474d256",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-history-replacement",
-  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:commit-context",
-  "scope": "self",
-  "rationale": "Steps history define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-history-replacement:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:record-change-history:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:34.227538Z",
-  "request_id": "test-review-history-replacement-f2b36474d256"
+  "from": "urn:change-saga:change-saga:test-case:review-history-replacement",
+  "from_revision": "sha256:2b4c741f775562311e29358654f82f8126f3cf98bebae4f5236693ded15e7781",
+  "id": "test-review-history-replacement-f2b36474d256",
+  "rationale": "Steps history define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-history-replacement-f2b36474d256",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:commit-context",
+  "to_revision": "sha256:cc5c106da8e7d428ea9e394e87143867bea8f592fc124600a5afab99bbb62453",
+  "type": "verifies",
+  "version": 5
 }

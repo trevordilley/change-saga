@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -39,7 +40,12 @@ func TestWriteInventoryFixture(t *testing.T) {
 		t.Fatalf("fixture shape: format=%d records=%d", d.Format, len(d.Records))
 	}
 	store3 := d.Pinned(fixture.Pins["store-r3"])
-	if store3 == nil || store3.EffectiveIntent() != requirements.IntentImplemented || d.Pinned(fixture.Pins["store-r2"]).Baseline != fixture.Pins["store-r1"].Revision {
+	store2 := d.Pinned(fixture.Pins["store-r2"])
+	if store2 == nil {
+		found, err := currentrecord.FindGitContent(root, requirements.TechnicalPath("component", "record-store"), fixture.Pins["store-r2"].Revision)
+		t.Fatalf("missing historical proposed definition: %+v %v; pins=%+v", found, err, fixture.Pins)
+	}
+	if store3 == nil || store3.EffectiveIntent() != requirements.IntentImplemented || store2.Baseline != fixture.Pins["store-r1"].Revision {
 		t.Fatal("component succession not recorded")
 	}
 	composed, err := d.ComposeOverlay(d.Pinned(fixture.Pins["overlay"]))

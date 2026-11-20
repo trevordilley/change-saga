@@ -36,7 +36,7 @@ func newVerifyLoadingFixture(t *testing.T) (string, requirements.AddRelationInpu
 func verifyLoadingArgs(root string, input requirements.AddRelationInput) []string {
 	return []string{"add", root, "--feature", input.Feature, "--id", input.ID, "--type", string(input.Type),
 		"--from", input.From, "--to", input.To, "--rationale", input.Rationale,
-		"--from-revision", input.FromRevision, "--to-revision", input.ToRevision, "--request-id", "verify-load", "--json"}
+		"--from-definition-digest", input.FromRevision, "--to-definition-digest", input.ToRevision, "--request-id", "verify-load", "--json"}
 }
 
 // Do not parallelize tests that assert the process-wide full-load counter.
@@ -55,7 +55,8 @@ func TestVerifyLoadingOneFullLoadAndImmutableReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	story := strings.Split(input.To, ":criterion:")[0]
-	wantDefaults := []string{"from_revision to current head " + input.From + ":revision:r1", "to_revision to current head " + story + ":revision:r1"}
+	fromPin, toPin := currentTestPin(t, root, input.From), currentTestPin(t, root, story)
+	wantDefaults := []string{"from definition digest to current content " + currentTestPin(t, root, input.From), "to definition digest to current content " + currentTestPin(t, root, story)}
 	if !reflect.DeepEqual(added.DefaultedPins, wantDefaults) {
 		t.Fatalf("defaulted pins = %#v", added.DefaultedPins)
 	}
@@ -64,12 +65,13 @@ func TestVerifyLoadingOneFullLoadAndImmutableReplay(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := Story(context.Background(), []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1",
+	commitCurrentTestDocumentation(t, root, "confirmed requirement")
+	if err := Story(context.Background(), []string{"revise", root, "--story", story,
 		"--persona", testPersonaURN, "--title", "Checkout", "--statement", "As a buyer I check out", "--priority", "must",
 		"--criterion", "fast=A changed checkout criterion", "--json"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
-	input.FromRevision, input.ToRevision = input.From+":revision:r1", story+":revision:r1"
+	input.FromRevision, input.ToRevision = fromPin, toPin
 	output.Reset()
 	if err := Relation(context.Background(), verifyLoadingArgs(root, input), &output); err != nil {
 		t.Fatal(err)

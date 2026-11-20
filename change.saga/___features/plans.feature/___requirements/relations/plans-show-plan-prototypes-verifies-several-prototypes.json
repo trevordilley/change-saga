@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-show-plan-prototypes-verifies-several-prototypes",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:19:11.806602Z",
   "from": "urn:change-saga:change-saga:test-case:plans-show-plan-prototypes",
-  "to": "urn:change-saga:change-saga:story:show-plan-prototypes:criterion:several-prototypes",
-  "scope": "self",
+  "from_revision": "sha256:43e108993f5f4a87aab639a85c86497be032bc937d4c78c221895c0cedfad77b",
+  "id": "plans-show-plan-prototypes-verifies-several-prototypes",
   "rationale": "Step several-prototypes checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-show-plan-prototypes:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:show-plan-prototypes:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:19:11.806602Z"
+  "to": "urn:change-saga:change-saga:story:show-plan-prototypes:criterion:several-prototypes",
+  "to_revision": "sha256:646fa2783b4f683d7252d78ec64cb50c904ba1c2cd3d1453774fb2c3523b5d8c",
+  "type": "verifies",
+  "version": 5
 }

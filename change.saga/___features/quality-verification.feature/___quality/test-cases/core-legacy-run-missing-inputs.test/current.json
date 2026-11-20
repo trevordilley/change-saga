@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Reject missing inputs to legacy run history.",
+    "preconditions": [
+      "For each missing-test-revision and missing-evidence attempt, use a separate valid legacy fixture and save its public history and package paths."
+    ],
+    "steps": [
+      {
+        "action": "Attempt a legacy run with a nonexistent revision and then nonexistent evidence; inspect the directory and history after each rejection.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:existing-run-inputs"
+        ],
+        "expected_result": "Neither attempt creates a run.",
+        "id": "check-existing-run-inputs"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-legacy-run-missing-inputs",
+    "title": "Reject missing inputs to legacy run history"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-legacy-run-missing-inputs"
+  }
+}

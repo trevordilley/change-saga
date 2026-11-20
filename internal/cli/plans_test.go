@@ -20,7 +20,7 @@ const planStoryURN = "urn:change-saga:app:story:first-story"
 func newPlanFixture(t *testing.T) reviewFixture {
 	t.Helper()
 	fixture, _ := newEmptyReviewFixture(t)
-	run(t, Story, "add", "--feature", testFeature, "--id", "first-story", "--revision", "r1", "--event", "proposed",
+	run(t, Story, "add", "--feature", testFeature, "--id", "first-story",
 		"--title", "First story", "--statement", "As a user I can do the first thing", "--persona", personaURNFor("app"), fixture.root)
 	run(t, Plan, "create", "--id", "first", "--title", "First plan", fixture.root)
 	return fixture
@@ -378,7 +378,7 @@ func TestAPlanCrossesFeaturesAndFollowsAMovedStory(t *testing.T) {
 	t.Parallel()
 	root := newPlanFixture(t).root
 	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "search", "--title", "Search", "--status", "planned", "--augments", testFeature)
-	run(t, Story, "add", "--feature", "search", "--id", "second-story", "--revision", "r1", "--event", "proposed",
+	run(t, Story, "add", "--feature", "search", "--id", "second-story",
 		"--title", "Second story", "--statement", "As a user I can do the second thing", "--persona", personaURNFor("app"), root)
 	run(t, Task, "add", "--plan", "first", "--id", "one", "--title", "One", "--story", planStoryURN, root)
 	run(t, Task, "add", "--plan", "first", "--id", "two", "--title", "Two", "--story", "urn:change-saga:app:story:second-story", root)

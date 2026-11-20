@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -132,7 +133,7 @@ func Load(ctx context.Context, checkout, sagaRoot string, current saga.Manifest,
 	if err := extractTree(ctx, checkout, oid, path.Join(prefix, requirements.InventoryDir), filepath.Join(temp, requirements.InventoryDir)); err != nil {
 		return fail(InventoryInvalid, "%v", err)
 	}
-	inventory, err := requirements.LoadInventory(temp, manifest.ID)
+	inventory, err := requirements.LoadInventory(temp, manifest.ID, currentrecord.GitSource{Repository: top, SagaPath: rel, Commit: oid})
 	if err != nil {
 		return fail(InventoryInvalid, "inventory at %s: %v", oid, err)
 	}
@@ -145,7 +146,7 @@ func Load(ctx context.Context, checkout, sagaRoot string, current saga.Manifest,
 }
 
 // Facts projects the view's facts for one requested target, for AdmitPin.
-func (v View) Facts(target string) technicalpolicy.SavedView {
+func (v View) Facts(target string, requested ...string) technicalpolicy.SavedView {
 	facts := technicalpolicy.SavedView{Artifact: v.Artifact, SourceCommit: v.SourceCommit, Resolved: true, Definition: technicalpolicy.DefinitionMissing}
 	record := v.Inventory.Find(target)
 	if record == nil {
@@ -154,7 +155,11 @@ func (v View) Facts(target string) technicalpolicy.SavedView {
 	facts.Definition = technicalpolicy.DefinitionConflicted
 	if record.CurrentRevision != nil {
 		facts.Definition = technicalpolicy.DefinitionUnique
-		facts.Binding = technicalpolicy.Pin{Target: target, Revision: target + ":revision:" + record.CurrentRevision.ID}
+		pin := requirements.ContentPin(target, record.CurrentRevision.ID)
+		if len(requested) > 0 && currentrecord.ValidDigest(requested[0]) {
+			pin, _ = record.CurrentContentDigest()
+		}
+		facts.Binding = technicalpolicy.Pin{Target: target, Revision: pin}
 	}
 	facts.Lifecycle = technicalpolicy.LifecycleConflicted
 	if record.CurrentLifecycle != nil {
@@ -164,7 +169,7 @@ func (v View) Facts(target string) technicalpolicy.SavedView {
 }
 
 // GlobalHealth projects current global facts for one target.
-func GlobalHealth(d *requirements.Inventory, target string) technicalpolicy.GlobalHealth {
+func GlobalHealth(d *requirements.Inventory, target string, requested ...string) technicalpolicy.GlobalHealth {
 	health := technicalpolicy.GlobalHealth{Definition: technicalpolicy.DefinitionMissing}
 	record := d.Find(target)
 	if record == nil {
@@ -173,7 +178,11 @@ func GlobalHealth(d *requirements.Inventory, target string) technicalpolicy.Glob
 	health.Definition = technicalpolicy.DefinitionConflicted
 	if record.CurrentRevision != nil {
 		health.Definition = technicalpolicy.DefinitionUnique
-		health.Current = technicalpolicy.Pin{Target: target, Revision: target + ":revision:" + record.CurrentRevision.ID}
+		pin := requirements.ContentPin(target, record.CurrentRevision.ID)
+		if len(requested) > 0 && currentrecord.ValidDigest(requested[0]) {
+			pin, _ = record.CurrentContentDigest()
+		}
+		health.Current = technicalpolicy.Pin{Target: target, Revision: pin}
 	}
 	health.Lifecycle = technicalpolicy.LifecycleConflicted
 	if record.CurrentLifecycle != nil {

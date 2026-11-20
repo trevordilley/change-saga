@@ -1,17 +1,17 @@
 {
+  "description": "Item controls carry the Item URN in implementation and review decks; the drawer resolves that Item's selections and reports selected, containing and digest facts separately; the drawer label becomes Technical explanation.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:item-selection-drawer",
-    "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+    "revision": "sha256:3ff28c4a660474ea8772668146ea855ca324df07d8d34f6a9b38ac1decae2afc",
+    "target": "urn:change-saga:change-saga:component:item-selection-drawer"
   },
-  "version": 4,
   "id": "selections",
-  "slide": "ti-ui-review-trace",
-  "rank": 0,
   "kind": "node",
   "label": "Item to exact selection and back",
-  "description": "Item controls carry the Item URN in implementation and review decks; the drawer resolves that Item's selections and reports selected, containing and digest facts separately; the drawer label becomes Technical explanation.",
+  "rank": 0,
   "selector": {
-    "type": "element",
-    "element_id": "selections"
-  }
+    "element_id": "selections",
+    "type": "element"
+  },
+  "slide": "ti-ui-review-trace",
+  "version": 4
 }

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "72844c8c991ab545a05eeab2773577606e021279",
+        "digest": "sha256:51cdce7de445c968076ec61296cd6716876a7bafa03feea8f756f17835a09246",
+        "end": 157,
+        "id": "technical-selection-99",
+        "note": "Reads the Item as saved, refuses to show selections against a different pin, resolves each declared path and reports selected, containing and digest facts separately.",
+        "path": "internal/server/technical_selection.go",
+        "start": 99
+      }
+    ],
+    "delivery": {
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "When a definition opens from a slide Item, shows that Item's exact selections before the definition's complete code: declared path, selected lines at the observed head, containing-reference staleness and selected-byte integrity as separate facts, and unresolved reasons without substitution.",
+    "intent": "implemented",
+    "name": "Item selection drawer",
+    "record": "urn:change-saga:change-saga:component:item-selection-drawer"
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:component:item-selection-drawer",
+    "state": "active"
+  }
+}

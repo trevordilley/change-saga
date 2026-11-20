@@ -159,7 +159,6 @@ func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
 		{"persona-references", []string{"--persona", "user", "--cursor", "reference-page", "--limit", "13", "--conflict-cursor", "conflict-page", "--conflict-limit", "7"}, livingQuery{Operation: "persona-references", Filters: livingapp.Filters{Persona: "user"}, Cursor: "reference-page", Limit: 13, ConflictCursor: "conflict-page", ConflictLimit: 7}},
 		{"term-references", []string{"--term", "basket", "--cursor", "term-page", "--limit", "14", "--conflict-cursor", "term-conflicts", "--conflict-limit", "8"}, livingQuery{Operation: "term-references", Filters: livingapp.Filters{Term: "basket"}, Cursor: "term-page", Limit: 14, ConflictCursor: "term-conflicts", ConflictLimit: 8}},
 		{"requirements", []string{"--feature", "core", "--requirement", "story-1", "--state", "accepted", "--cursor", "c9", "--limit", "25"}, livingQuery{Operation: "requirements", Filters: livingapp.Filters{Feature: "core", Requirement: "story-1", State: "accepted"}, Cursor: "c9", Limit: 25}},
-		{"requirement-history", []string{"--requirement", "story-1", "--cursor", "c10", "--limit", "26"}, livingQuery{Operation: "requirement-history", Filters: livingapp.Filters{Requirement: "story-1"}, Cursor: "c10", Limit: 26}},
 		{"citations", []string{"--citation", "policy", "--requirement", "story-1", "--cursor", "c11", "--limit", "27"}, livingQuery{Operation: "citations", Filters: livingapp.Filters{Requirement: "story-1", Citation: "policy"}, Cursor: "c11", Limit: 27}},
 		{"relations", []string{"--relation", "rel-1", "--type", "explains", "--from", "urn:from", "--to", "urn:to", "--state", "current", "--cursor", "c12", "--limit", "28"}, livingQuery{Operation: "relations", Filters: livingapp.Filters{State: "current", Kind: "explains", Relation: "rel-1", From: "urn:from", To: "urn:to"}, Cursor: "c12", Limit: 28}},
 		{"traceability", []string{"--requirement", "story-1", "--criterion", "criterion-1", "--commit", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "--cursor", "c17", "--limit", "33"}, livingQuery{Operation: "traceability", Filters: livingapp.Filters{Requirement: "story-1", Kind: "criterion-1", Commit: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}, Cursor: "c17", Limit: 33}},
@@ -327,9 +326,9 @@ func TestQuerySchemaDescribesEveryResponseWithoutOpeningSession(t *testing.T) {
 		"overview": "data.coverage", "children": "data.children", "fragment": "data.content.data",
 		"fragment-diffs": "data.selectors", "diff-owners": "data.atoms",
 		"gaps": "data.gaps", "mappings": "data.mappings", "claims": "data.claims", "verifications": "data.verifications",
-		"context": "data.stories", "requirements": "data.requirements", "requirement-history": "data.events", "citations": "data.citations",
+		"context": "data.stories", "requirements": "data.requirements", "citations": "data.citations",
 		"relations": "data.relations", "traceability": "data.criteria",
-		"quality": "data.test_cases", "quality-history": "data.test_cases", "readiness": "data.requirements", "audit": "data.findings",
+		"quality": "data.test_cases", "quality-runs": "data.test_cases", "readiness": "data.requirements", "audit": "data.findings",
 	}
 	for operation, wantPath := range wantCountedPaths {
 		t.Run(operation, func(t *testing.T) {

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:93619530aebeb8f3bbe2fd1ace80c502ceba987dc1d162942bdd620a56ad4d45",
+        "end": 576,
+        "path": "internal/requirements/validate.go",
+        "start": 562
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:4c76f66dd02d2b2eb3b9e80c70a43a35ccc18a62c0f837006161f3bccac040be",
+        "end": 386,
+        "path": "internal/requirements/validate.go",
+        "start": 378
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:265bdf53fbff769be73f5fbc9b6cac578da5061b24d643473d784235d076a420",
+        "end": 142,
+        "path": "internal/requirements/mutation.go",
+        "start": 137
+      }
+    ],
+    "definition": "A leaf in the earlier Saga content-parent graph. This retired format term is used only to diagnose legacy ambiguity during normalization. Current records have no Saga heads; Git supplies branching, merging and history.",
+    "name": "Legacy Saga revision head",
+    "stories": [
+      "urn:change-saga:change-saga:story:recover-competing-heads"
+    ],
+    "term": "urn:change-saga:change-saga:term:revision-head"
+  },
+  "state": {
+    "state": "retired",
+    "term": "urn:change-saga:change-saga:term:revision-head",
+    "reason": "Git-owned current documentation supersedes internal Saga revision and lifecycle graphs; retain this stable term and its original evidence for legacy context."
+  }
+}

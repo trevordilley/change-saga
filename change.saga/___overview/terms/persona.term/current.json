@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:95dd7765764773fff9a8ce893249f4428424a88c2fcf53b285803a78b8acbaf6",
+        "end": 66,
+        "path": "internal/requirements/model.go",
+        "start": 61
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:3fc581cf77a244e8b46e6150dc2c5cbae0786c487d3f0f6ddf5cf7e71f967f65",
+        "end": 27,
+        "path": "internal/readiness/persona.go",
+        "start": 22
+      }
+    ],
+    "definition": "A named kind of person who receives value from the application and supplies the 'As a ...' perspective of a user story. Active personas are expected to be served by accepted stories; tools and agents that merely operate the application are not personas.",
+    "name": "Persona",
+    "stories": [
+      "urn:change-saga:change-saga:story:product-intent-path"
+    ],
+    "term": "urn:change-saga:change-saga:term:persona"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:persona"
+  }
+}

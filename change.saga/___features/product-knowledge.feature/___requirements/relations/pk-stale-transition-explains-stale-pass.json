@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "pk-stale-transition-explains-stale-pass",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:stale-pass-transition",
-  "to": "urn:change-saga:change-saga:story:criterion-evidence-confidence:criterion:stale-pass",
-  "scope": "self",
-  "rationale": "The transition enumerates the pin, evidence-reference, and repository conditions that make a historical pass non-current.",
-  "to_revision": "urn:change-saga:change-saga:story:criterion-evidence-confidence:revision:r1",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-23T16:41:24.654814Z",
-  "superseded_at": "2026-09-23T19:48:20.388165Z"
+  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:stale-pass-transition",
+  "id": "pk-stale-transition-explains-stale-pass",
+  "rationale": "The transition enumerates the pin, evidence-reference, and repository conditions that make a historical pass non-current.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-23T19:48:20.388165Z",
+  "to": "urn:change-saga:change-saga:story:criterion-evidence-confidence:criterion:stale-pass",
+  "to_revision": "sha256:53f7651cfffc10c19d9b15820cdf910152cf657abe5a5727f7b8d781557a726e",
+  "type": "explains",
+  "version": 5
 }

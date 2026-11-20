@@ -1,17 +1,17 @@
 {
+  "description": "Reviewer coverage evaluates Items' eligible inherited selections as the CLI does, labels those owners selected via the selection, and moves the derived snapshot format to v4.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:item-selection-drawer",
-    "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+    "revision": "sha256:3ff28c4a660474ea8772668146ea855ca324df07d8d34f6a9b38ac1decae2afc",
+    "target": "urn:change-saga:change-saga:component:item-selection-drawer"
   },
-  "version": 4,
   "id": "coverage",
-  "slide": "ti-ui-review-trace",
-  "rank": 10,
   "kind": "region",
   "label": "Inherited coverage, labelled",
-  "description": "Reviewer coverage evaluates Items' eligible inherited selections as the CLI does, labels those owners selected via the selection, and moves the derived snapshot format to v4.",
+  "rank": 10,
   "selector": {
-    "type": "element",
-    "element_id": "coverage"
-  }
+    "element_id": "coverage",
+    "type": "element"
+  },
+  "slide": "ti-ui-review-trace",
+  "version": 4
 }

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "pk-test-definition-explains-required-proof",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T19:49:16.098922Z",
   "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:test-definition",
-  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
-  "scope": "self",
+  "id": "pk-test-definition-explains-required-proof",
   "rationale": "The test-definition node shows the versioned coverage kinds, automation, steps, and expected result whose current revision is one required-proof gate.",
-  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-readiness:revision:r2",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T19:49:16.098922Z"
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
+  "to_revision": "sha256:814bbcd50c0df2e06bd1f1af5b6b140d4a783be78816b2fc77d2c4360aeb088b",
+  "type": "explains",
+  "version": 5
 }

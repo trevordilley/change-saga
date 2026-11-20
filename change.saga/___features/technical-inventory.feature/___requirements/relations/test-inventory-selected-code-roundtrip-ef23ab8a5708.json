@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-selected-code-roundtrip-ef23ab8a5708",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
-  "scope": "self",
-  "rationale": "Steps selected define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:04.997611Z",
-  "request_id": "test-inventory-selected-code-roundtrip-ef23ab8a5708"
+  "from": "urn:change-saga:change-saga:test-case:inventory-selected-code-roundtrip",
+  "from_revision": "sha256:bfb2c8a8be2dc8665da45ae81aa9ccb7b0165fd084bef37e4bed120d47bc04e3",
+  "id": "test-inventory-selected-code-roundtrip-ef23ab8a5708",
+  "rationale": "Steps selected define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-selected-code-roundtrip-ef23ab8a5708",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "verifies",
+  "version": 5
 }

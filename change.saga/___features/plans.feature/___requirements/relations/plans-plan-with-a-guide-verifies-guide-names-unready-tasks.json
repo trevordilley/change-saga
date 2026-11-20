@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-plan-with-a-guide-verifies-guide-names-unready-tasks",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:18:58.025645Z",
   "from": "urn:change-saga:change-saga:test-case:plans-plan-with-a-guide",
-  "to": "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-names-unready-tasks",
-  "scope": "self",
+  "from_revision": "sha256:e414d64d3346698e6a21782982695145c589a2a1e8e7209757571290b6a862b6",
+  "id": "plans-plan-with-a-guide-verifies-guide-names-unready-tasks",
   "rationale": "Step guide-names-unready-tasks checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-plan-with-a-guide:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:plan-with-a-guide:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:18:58.025645Z"
+  "to": "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-names-unready-tasks",
+  "to_revision": "sha256:95835fb6dfe4fa48901b0a909c1020d1cb79859d49838ed25dca18045b50a2f2",
+  "type": "verifies",
+  "version": 5
 }

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:e8b4ad489f6912a874571316d1f8c082fbb475262976992c74fda53243798ed2",
+        "end": 106,
+        "id": "record",
+        "note": "The approval record.",
+        "path": "internal/saga/review.go",
+        "start": 89
+      }
+    ],
+    "delivery": {
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "One reviewer's append-only decision on one review slide (approved, changes_requested or none), given at a pull request head commit with a digest of the slide. The latest per reviewer and slide is current; it goes out of date when the slide or its code changes.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "note": "Written with exclusive creation, so reviewers never conflict.",
+        "type": "time + random"
+      },
+      {
+        "id": "slide",
+        "keys": [
+          "foreign"
+        ],
+        "name": "slide",
+        "type": "review slide ID"
+      },
+      {
+        "id": "state",
+        "name": "state",
+        "type": "approved | changes_requested | none"
+      },
+      {
+        "id": "reviewer",
+        "name": "reviewer",
+        "type": "human or ai seat"
+      },
+      {
+        "id": "commit",
+        "name": "commit",
+        "type": "head commit"
+      },
+      {
+        "id": "slide_digest",
+        "name": "slide_digest",
+        "type": "sha256"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Review decision",
+    "record": "urn:change-saga:change-saga:data-entity:review-decision",
+    "relationships": [
+      {
+        "cardinality": {
+          "destination": "1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:dbadec84922227e9ca521499684825d2473e934800f2751a0ec336f9b2c7ecd5",
+            "end": 168,
+            "id": "in-review-field",
+            "note": "Review.Approvals.",
+            "path": "internal/saga/review.go",
+            "start": 168
+          }
+        ],
+        "destination": {
+          "revision": "sha256:88fa34be111a490d10abf70701d2b8bb72c68bbc0f1f5f11dac9af0adfcff56e",
+          "target": "urn:change-saga:change-saga:data-entity:review"
+        },
+        "explanation": "Decisions are files under their review's approvals directory.",
+        "id": "in-review",
+        "intent": "implemented",
+        "label": "decision in",
+        "meaning": "association"
+      },
+      {
+        "cardinality": {
+          "destination": "1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:da42ba35a240a267d02119ece0b8b7141fc51d2ed93a3e46637330f9dd05fb65",
+            "end": 96,
+            "id": "on-slide-field",
+            "note": "ReviewApproval.Slide.",
+            "path": "internal/saga/review.go",
+            "start": 96
+          }
+        ],
+        "destination": {
+          "revision": "sha256:ca75671011ee61dea7ac97136827251d904a7783a02fab2fd4610d05de2467a6",
+          "target": "urn:change-saga:change-saga:data-entity:slide"
+        },
+        "explanation": "Each decision names one slide of its review's deck.",
+        "id": "on-slide",
+        "intent": "implemented",
+        "label": "decides",
+        "meaning": "association"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:review-decision",
+    "state": "active"
+  }
+}

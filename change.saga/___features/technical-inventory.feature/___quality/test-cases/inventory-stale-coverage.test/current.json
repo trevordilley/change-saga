@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Two references become stale and only two lines remain covered; both stale entries are separately discoverable.",
+    "preconditions": [
+      "Use newInventoryQueryFixture with flags.go seven lines: System 3-5, store line 3, interaction line 5, later line 7, conflicting reader."
+    ],
+    "steps": [
+      {
+        "action": "Query inventory-coverage --path flags.go, uncovered ranges and unresolved state.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:separate-health",
+          "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:deduplicate"
+        ],
+        "expected_result": "Four unique lines covered, three uncovered, two overlaps and one unresolved owner; uncovered ranges have no owners.",
+        "id": "initial"
+      },
+      {
+        "action": "Commit a change to line 3 and repeat coverage and stale-state queries.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:separate-health"
+        ],
+        "expected_result": "Two references become stale and only two lines remain covered; both stale entries are separately discoverable.",
+        "id": "edit"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-stale-coverage",
+    "title": "Exclude stale and conflicting evidence from current coverage"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-stale-coverage"
+  }
+}

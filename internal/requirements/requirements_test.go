@@ -10,65 +10,59 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
 var testTime = time.Date(2026, 8, 31, 19, 0, 0, 0, time.UTC)
 
-func TestRevisionDAGPreservesMergeConflictUntilAllHeadsReconciled(t *testing.T) {
+func TestLegacyRevisionConflictRequiresExplicitContentSelection(t *testing.T) {
 	root := newSaga(t)
-	added, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "fast", Statement: "Checkout finishes quickly"}}))
-	if err != nil {
+	if _, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "fast", Statement: "Checkout finishes quickly"}})); err != nil {
 		t.Fatal(err)
 	}
-	if added.URN != "urn:change-saga:test:story:checkout" {
-		t.Fatalf("story URN = %q", added.URN)
+	dir := filepath.Join(root, storyPackagePath("core", "checkout"))
+	legacyPackageFixture(t, dir, "story", v5Story, RevisionSchemaURL, LifecycleEventSchemaURL, 3, "r1", "created")
+	type legacy Revision
+	for _, id := range []string{"branch-a", "branch-b"} {
+		value := Revision{Schema: RevisionSchemaURL, Version: 3, ID: id, Story: v5Story, Parents: []string{v5StoryR1}, Title: id, Statement: "As a buyer I check out", Personas: testPersonas, Priority: "high", Citations: []string{}, AcceptanceCriteria: []Criterion{{ID: "fast", Statement: id}}, CreatedAt: testTime}
+		if err := store.WriteJSON(filepath.Join(dir, "revisions", id+".json"), legacy(value), true); err != nil {
+			t.Fatal(err)
+		}
 	}
-	parent := "urn:change-saga:test:story:checkout:revision:r1"
-	story := "urn:change-saga:test:story:checkout"
-	_, err = ReviseStory(root, "test", ReviseStoryInput{Personas: testPersonas,
-		Story: story, ID: "r2-a", Parents: []string{parent}, Title: "Checkout A", Statement: "As a buyer, I check out", Priority: "high",
-		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes in two seconds"}}, CreatedAt: testTime.Add(time.Minute),
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// Simulate Git merging a concurrent branch. Both branch-local writers saw r1
-	// as the only head, so both children are valid and neither wins by timestamp.
-	concurrent := Revision{
-		Schema: RevisionSchemaURL, Version: Version, Personas: testPersonas, ID: "r2-b", Story: story, Parents: []string{parent},
-		Title: "Checkout B", Statement: "As a buyer, I can purchase", Priority: "critical", Citations: []string{},
-		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}}, CreatedAt: testTime.Add(2 * time.Minute),
-	}
-	path := filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "revisions", "r2-b.json")
-	if err := store.WriteJSON(path, concurrent, true); err != nil {
-		t.Fatal(err)
-	}
-
 	document, err := Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
-	loaded := document.Stories[0]
-	if !loaded.RevisionConflict() || loaded.CurrentRevision != nil || len(loaded.RevisionHeads) != 2 {
-		t.Fatalf("conflict projection = heads %v current %#v", loaded.RevisionHeads, loaded.CurrentRevision)
+	got := document.FindStory("checkout")
+	if !got.RevisionConflict() || got.CurrentRevision != nil || len(got.RevisionHeads) != 2 {
+		t.Fatalf("legacy ambiguity hidden: %#v", got)
 	}
-
-	_, err = ReviseStory(root, "test", ReviseStoryInput{Personas: testPersonas,
-		Story: story, ID: "r3", Parents: loaded.RevisionHeads, Title: "Reconciled checkout", Statement: "As a buyer, I purchase", Priority: "high",
-		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}}, CreatedAt: testTime.Add(3 * time.Minute),
-	})
-	if err != nil {
+	before, _ := os.ReadFile(filepath.Join(dir, "revisions/branch-a.json"))
+	if _, err := ReviseStory(root, "test", ReviseStoryInput{Story: v5Story, Title: "Choose for me"}); err == nil {
+		t.Fatal("writer chose competing legacy content")
+	}
+	after, _ := os.ReadFile(filepath.Join(dir, "revisions/branch-a.json"))
+	if string(before) != string(after) {
+		t.Fatal("failed upgrade lost content")
+	}
+	// Explicit reviewed selection publishes one complete current value before cleanup.
+	selected := got.Revisions[1]
+	if err := currentrecord.Write(dir, selected, got.CurrentLifecycle); err != nil {
+		t.Fatal(err)
+	}
+	if err := currentrecord.Normalize(root); err != nil {
 		t.Fatal(err)
 	}
 	document, err = Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
-	loaded = document.Stories[0]
-	if loaded.RevisionConflict() || loaded.CurrentRevision == nil || loaded.CurrentRevision.ID != "r3" {
-		t.Fatalf("reconciled projection = heads %v current %#v", loaded.RevisionHeads, loaded.CurrentRevision)
+	if got := document.FindStory("checkout"); got.RevisionConflict() || got.CurrentRevision.Title != selected.Title {
+		t.Fatalf("explicit selection failed: %#v", got)
+	}
+	if _, err := os.Stat(filepath.Join(dir, "revisions")); !os.IsNotExist(err) {
+		t.Fatal("obsolete history retained", err)
 	}
 }
 
@@ -92,8 +86,8 @@ func TestStoryCreationIsAtomicAndRequestReplayIsIdempotent(t *testing.T) {
 		t.Fatal(err)
 	}
 	second, err = AddStory(root, "test", input)
-	if err != nil || !second.Replayed {
-		t.Fatalf("story replay after later revision = %#v, %v", second, err)
+	if err == nil || !strings.Contains(err.Error(), "already exists") {
+		t.Fatalf("old creation payload overwrote later authored content: %#v, %v", second, err)
 	}
 
 	missingCitation := storyInput("invalid", "r1", "created", nil)
@@ -106,7 +100,7 @@ func TestStoryCreationIsAtomicAndRequestReplayIsIdempotent(t *testing.T) {
 	}
 }
 
-func TestRemovedCriterionIDCannotBeReused(t *testing.T) {
+func TestRestoredCriterionUsesCurrentContentWithoutAnIdentityHistoryLedger(t *testing.T) {
 	root := newSaga(t)
 	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "stable", Statement: "Original meaning"}}))
 	if err != nil {
@@ -125,12 +119,19 @@ func TestRemovedCriterionIDCannotBeReused(t *testing.T) {
 		Title: "Checkout", Statement: "Changed again", Priority: "high",
 		AcceptanceCriteria: []Criterion{{ID: "stable", Statement: "A different meaning"}}, CreatedAt: testTime.Add(2 * time.Minute),
 	})
-	if err == nil || !strings.Contains(err.Error(), "reuses removed criterion") {
-		t.Fatalf("reuse error = %v", err)
+	if err != nil {
+		t.Fatalf("restoring stable criterion identity failed: %v", err)
+	}
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := document.FindStory("checkout").CurrentRevision.AcceptanceCriteria; len(got) != 1 || got[0].ID != "stable" || got[0].Statement != "A different meaning" {
+		t.Fatalf("current criterion not restored: %#v", got)
 	}
 }
 
-func TestCriterionWrappersCreateCompleteRevisionsAndReturnCurrentHeads(t *testing.T) {
+func TestCriterionWrappersEditCompleteCurrentContentAndKeepStableIdentity(t *testing.T) {
 	root := newSaga(t)
 	input := storyInput("checkout", "r1", "created", []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}})
 	input.Title = "Checkout"
@@ -151,7 +152,7 @@ func TestCriterionWrappersCreateCompleteRevisionsAndReturnCurrentHeads(t *testin
 		t.Fatal(err)
 	}
 	r2 := story + ":revision:r2"
-	if added.URN != story+":criterion:audited" || !reflect.DeepEqual(added.Created, []string{r2}) || !reflect.DeepEqual(added.CurrentHeads, []string{r2}) {
+	if added.URN != story+":criterion:audited" || !reflect.DeepEqual(added.Created, []string{story + ":criterion:audited"}) || len(added.CurrentHeads) != 0 || !strings.HasSuffix(added.Path, "/current.json") {
 		t.Fatalf("add result = %#v", added)
 	}
 	document, err := Load(root, "test")
@@ -172,7 +173,7 @@ func TestCriterionWrappersCreateCompleteRevisionsAndReturnCurrentHeads(t *testin
 		t.Fatal(err)
 	}
 	r3 := story + ":revision:r3"
-	if revised.URN != criterion || !reflect.DeepEqual(revised.CurrentHeads, []string{r3}) {
+	if revised.URN != criterion || len(revised.CurrentHeads) != 0 || !strings.HasSuffix(revised.Path, "/current.json") {
 		t.Fatalf("revise result = %#v", revised)
 	}
 	removed, err := RemoveCriterion(root, "test", RemoveCriterionInput{
@@ -189,57 +190,41 @@ func TestCriterionWrappersCreateCompleteRevisionsAndReturnCurrentHeads(t *testin
 		Story: story, Parent: story + ":revision:r4", RevisionID: "r5",
 		Criterion: Criterion{ID: "audited", Statement: "Reuse the old identity"}, CreatedAt: testTime.Add(4 * time.Minute),
 	})
-	if err == nil || !strings.Contains(err.Error(), "cannot be reused") {
-		t.Fatalf("removed criterion reuse error = %v", err)
+	if err != nil {
+		t.Fatalf("restoring current criterion failed: %v", err)
 	}
 	if _, statErr := os.Stat(filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "revisions", "r5.json")); !os.IsNotExist(statErr) {
 		t.Fatalf("failed reuse wrote a revision: %v", statErr)
 	}
 }
 
-func TestCriterionWrappersRequireExplicitUniqueCurrentParentAndReplay(t *testing.T) {
+func TestCriterionWrappersRetryCurrentValuesWithoutAuthoringParents(t *testing.T) {
 	root := newSaga(t)
-	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "fast", Statement: "Fast"}}))
-	if err != nil {
+	if _, err := AddStory(root, "test", storyInput("checkout", "", "", []Criterion{{ID: "fast", Statement: "Fast"}})); err != nil {
 		t.Fatal(err)
 	}
-	story := "urn:change-saga:test:story:checkout"
-	r1 := story + ":revision:r1"
-	input := AddCriterionInput{
-		Story: story, Parent: r1, RevisionID: "r2", Criterion: Criterion{ID: "safe", Statement: "Safe"},
-		CreatedAt: testTime.Add(time.Minute), RequestID: "add-safe",
-	}
+	input := AddCriterionInput{Story: v5Story, Criterion: Criterion{ID: "safe", Statement: "Safe"}}
 	first, err := AddCriterion(root, "test", input)
 	if err != nil {
 		t.Fatal(err)
 	}
 	replay, err := AddCriterion(root, "test", input)
 	if err != nil || !replay.Replayed || replay.URN != first.URN {
-		t.Fatalf("criterion replay = %#v, %v", replay, err)
+		t.Fatalf("current criterion retry: %#v %v", replay, err)
 	}
-	_, err = AddCriterion(root, "test", AddCriterionInput{
-		Story: story, Parent: r1, RevisionID: "r3", Criterion: Criterion{ID: "clear", Statement: "Clear"},
-	})
-	if err == nil || !strings.Contains(err.Error(), "stale") {
-		t.Fatalf("stale parent error = %v", err)
+	input.Criterion.Statement = "Changed duplicate"
+	if _, err := AddCriterion(root, "test", input); err == nil {
+		t.Fatal("changed duplicate criterion creation accepted")
 	}
-
-	// A concurrent Git merge creates two heads. Criterion conveniences must not
-	// choose a winner; the general story revise command owns reconciliation.
-	concurrent := Revision{
-		Schema: RevisionSchemaURL, Version: Version, Personas: testPersonas, ID: "r2-other", Story: story, Parents: []string{r1},
-		Title: "Checkout", Statement: "The story", Priority: "high", Citations: []string{},
-		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Fast"}, {ID: "other", Statement: "Other"}}, CreatedAt: testTime.Add(2 * time.Minute),
-	}
-	path := filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "revisions", "r2-other.json")
-	if err := store.WriteJSON(path, concurrent, true); err != nil {
+	if _, err := AddCriterion(root, "test", AddCriterionInput{Story: v5Story, Criterion: Criterion{ID: "clear", Statement: "Clear"}}); err != nil {
 		t.Fatal(err)
 	}
-	_, err = RemoveCriterion(root, "test", RemoveCriterionInput{
-		Story: story, Criterion: story + ":criterion:fast", Parent: story + ":revision:r2", RevisionID: "r3", Reason: "No longer required",
-	})
-	if err == nil || !strings.Contains(err.Error(), "one current story revision head") {
-		t.Fatalf("multi-head error = %v", err)
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(document.FindStory("checkout").CurrentRevision.AcceptanceCriteria) != 3 {
+		t.Fatal("independent current criteria lost")
 	}
 }
 
@@ -262,50 +247,34 @@ func TestLifecycleIsAppendOnlyAndAcceptedRequiresCriteria(t *testing.T) {
 	}
 }
 
-func TestLifecycleMergeConflictRequiresEveryHead(t *testing.T) {
+func TestLegacyLifecycleConflictCannotBeResolvedByAnOrdinaryCurrentWrite(t *testing.T) {
 	root := newSaga(t)
-	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "works", Statement: "It works"}}))
-	if err != nil {
+	if _, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "works", Statement: "It works"}})); err != nil {
 		t.Fatal(err)
 	}
-	story := "urn:change-saga:test:story:checkout"
-	created := "urn:change-saga:test:story:checkout:event:created"
-	_, err = SetStoryState(root, "test", SetStoryStateInput{
-		Story: story, ID: "accepted", Parents: []string{created}, State: StateAccepted, CreatedAt: testTime.Add(time.Minute),
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	concurrent := LifecycleEvent{
-		Schema: LifecycleEventSchemaURL, Version: Version, ID: "rejected", Story: story, Parents: []string{created},
-		State: StateRejected, Reason: "A concurrent terminal decision", CreatedAt: testTime.Add(2 * time.Minute),
-	}
-	path := filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "events", "rejected.json")
-	if err := store.WriteJSON(path, concurrent, true); err != nil {
-		t.Fatal(err)
+	dir := filepath.Join(root, storyPackagePath("core", "checkout"))
+	legacyPackageFixture(t, dir, "story", v5Story, RevisionSchemaURL, LifecycleEventSchemaURL, 3, "r1", "created")
+	type legacy LifecycleEvent
+	for _, state := range []LifecycleState{StateAccepted, StateRejected} {
+		event := LifecycleEvent{Schema: LifecycleEventSchemaURL, Version: 3, ID: string(state), Story: v5Story, Parents: []string{v5Story + ":event:created"}, State: state, Reason: "An authored domain choice", CreatedAt: testTime}
+		if err := store.WriteJSON(filepath.Join(dir, "events", string(state)+".json"), legacy(event), true); err != nil {
+			t.Fatal(err)
+		}
 	}
 	document, err := Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
-	loaded := document.Stories[0]
-	if !loaded.LifecycleConflict() || loaded.CurrentLifecycle != nil {
-		t.Fatalf("lifecycle conflict projection = heads %v current %#v", loaded.LifecycleHeads, loaded.CurrentLifecycle)
+	if got := document.FindStory("checkout"); !got.LifecycleConflict() || got.CurrentLifecycle != nil {
+		t.Fatalf("legacy state ambiguity hidden: %#v", got)
 	}
-	_, err = SetStoryState(root, "test", SetStoryStateInput{
-		Story: story, ID: "reconciled", Parents: loaded.LifecycleHeads, State: StateAccepted,
-		Reason: "Reconcile both decisions", CreatedAt: testTime.Add(3 * time.Minute),
-	})
-	if err != nil {
-		t.Fatal(err)
+	if _, err := SetStoryState(root, "test", SetStoryStateInput{Story: v5Story, State: StateAccepted}); err == nil {
+		t.Fatal("current write silently chose competing legacy state")
 	}
-	document, err = Load(root, "test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	loaded = document.Stories[0]
-	if loaded.LifecycleConflict() || loaded.CurrentLifecycle == nil || loaded.CurrentLifecycle.ID != "reconciled" {
-		t.Fatalf("reconciled lifecycle = heads %v current %#v", loaded.LifecycleHeads, loaded.CurrentLifecycle)
+	for _, state := range []string{"accepted", "rejected"} {
+		if _, err := os.Stat(filepath.Join(dir, "events", state+".json")); err != nil {
+			t.Fatal("lost competing state", err)
+		}
 	}
 }
 
@@ -334,7 +303,7 @@ func TestTypedRelationPinsExposeStaleInputsAndSupersede(t *testing.T) {
 	}
 	design := "urn:change-saga:test:fragment:checkout-flow"
 	criterion := "urn:change-saga:test:story:checkout:criterion:fast"
-	revision := "urn:change-saga:test:story:checkout:revision:r1"
+	revision := currentFixtureStoryPin(t, root, v5Story)
 	digest := "sha256:" + strings.Repeat("a", 64)
 	result, err := AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "designs-fast", Type: RelationAddresses, From: design, To: criterion, Rationale: "The flow addresses latency.",
@@ -389,7 +358,7 @@ func TestExplainsRelationLinksItemToPinnedCriterion(t *testing.T) {
 	}
 	slide := "urn:change-saga:test:slide:checkout-flow:item:validated-state"
 	criterion := "urn:change-saga:test:story:checkout:criterion:safe"
-	revision := "urn:change-saga:test:story:checkout:revision:r1"
+	revision := currentFixtureStoryPin(t, root, v5Story)
 	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "checkout-flow-explains-safe", Type: RelationExplains, From: slide, To: criterion,
 		ToRevision: revision, Rationale: "The slide explains the acceptance path.", CreatedAt: testTime,
@@ -415,7 +384,7 @@ func TestRelationToRemovedCriterionIsStale(t *testing.T) {
 	_, err = AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "designs-fast", Type: RelationAddresses, From: design,
 		To: "urn:change-saga:test:story:checkout:criterion:fast", Rationale: "Designs latency.",
-		FromContentDigest: digest, ToRevision: "urn:change-saga:test:story:checkout:revision:r1", CreatedAt: testTime,
+		FromContentDigest: digest, ToRevision: currentFixtureStoryPin(t, root, v5Story), CreatedAt: testTime,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -443,7 +412,7 @@ func TestRelationTypeMatrixRejectsInvalidEndpoints(t *testing.T) {
 		ID: "invalid", Type: RelationAddresses,
 		From: "urn:change-saga:test:citation:one", To: "urn:change-saga:test:citation:two",
 		Rationale: "Wrong kinds", FromContentDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		ToRevision: "urn:change-saga:test:story:two:revision:r1", CreatedAt: testTime,
+		ToRevision: "sha256:" + strings.Repeat("b", 64), CreatedAt: testTime,
 	})
 	if err == nil || !strings.Contains(err.Error(), "addresses relation") {
 		t.Fatalf("invalid relation error = %v", err)

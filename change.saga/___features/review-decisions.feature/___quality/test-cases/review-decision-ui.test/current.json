@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "theme displays a changes_requested decision.",
+    "preconditions": [
+      "Open pr-1 with greeting and theme slides at a readable committed head, as a human reviewer."
+    ],
+    "steps": [
+      {
+        "action": "Choose Approve on greeting.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:approve"
+        ],
+        "expected_result": "greeting displays an approved decision.",
+        "id": "approve"
+      },
+      {
+        "action": "Select theme, enter Name the colour token, and choose Request changes.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:request-changes"
+        ],
+        "expected_result": "theme displays a changes_requested decision.",
+        "id": "changes"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-ui",
+    "title": "Record approval and a request for changes from their slide controls"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-ui"
+  }
+}

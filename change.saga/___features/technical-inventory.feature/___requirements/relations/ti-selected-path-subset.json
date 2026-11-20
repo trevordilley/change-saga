@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-selected-path-subset",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:subset",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
-  "scope": "self",
-  "rationale": "Proposed: select lines 14–40 within the saved 14–96 reference, with a digest of selected bytes. Linked code is the existing writer, not implementation of the proposed selection mechanism.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:00:55.743516Z",
-  "superseded_at": "2026-09-27T10:27:33.202862Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:subset",
+  "id": "ti-selected-path-subset",
+  "rationale": "Proposed: select lines 14–40 within the saved 14–96 reference, with a digest of selected bytes. Linked code is the existing writer, not implementation of the proposed selection mechanism.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:33.202862Z",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "explains",
+  "version": 5
 }

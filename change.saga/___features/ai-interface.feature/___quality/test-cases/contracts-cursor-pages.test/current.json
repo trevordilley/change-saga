@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "All two matching records are returned exactly once with coherent terminal metadata.",
+    "preconditions": [
+      "Use newServiceFixture with exactly two distinct children under urn:change-saga:query-test:saga; keep the snapshot unchanged."
+    ],
+    "steps": [
+      {
+        "action": "Read children of the Saga with limit 1.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:page-metadata"
+        ],
+        "expected_result": "total=2, returned=1, has_more=true, and next_cursor is non-null.",
+        "id": "first"
+      },
+      {
+        "action": "Read the same children using the returned cursor and limit 1.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:page-metadata",
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:complete-traversal"
+        ],
+        "expected_result": "total=2, returned=1, has_more=false, next_cursor=null, and the child identity differs from page one; returned totals sum to 2.",
+        "id": "last"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-pages",
+    "title": "Traverse two bounded child pages without duplicates"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-cursor-pages"
+  }
+}

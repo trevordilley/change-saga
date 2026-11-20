@@ -43,9 +43,10 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	if err := json.Unmarshal(output.Bytes(), &added); err != nil {
 		t.Fatal(err)
 	}
+	originalStoryPin := currentTestPin(t, root, story)
 	wantDefaults := []string{
-		"from_revision to current head " + testCase + ":revision:r1",
-		"to_revision to current head " + story + ":revision:r1",
+		"from definition digest to current content " + currentTestPin(t, root, testCase),
+		"to definition digest to current content " + currentTestPin(t, root, story),
 	}
 	if !added.OK || added.Resource != prefix+":relation:fast-verifies" || !reflect.DeepEqual(added.DefaultedPins, wantDefaults) {
 		t.Fatalf("relation add output = %s", output.String())
@@ -54,7 +55,7 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !bytes.Contains(record, []byte(requirements.V5RelationSchemaURL)) || !bytes.Contains(record, []byte(`"scope": "self"`)) {
+	if !bytes.Contains(record, []byte("https://changesaga.dev/schema/v5/relation-current.schema.json")) || !bytes.Contains(record, []byte(`"scope": "self"`)) {
 		t.Fatalf("relation record = %s", record)
 	}
 	assertValid(t, root)
@@ -78,7 +79,8 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	// Revising everything but the criterion carries the pin forward: the
 	// relation still asserts what it asserted, and the report says which
 	// revision a person actually confirmed.
-	if err := Story(ctx, []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1",
+	commitCurrentTestDocumentation(t, root, "confirmed requirement")
+	if err := Story(ctx, []string{"revise", root, "--story", story,
 		"--persona", testPersonaURN, "--title", "Checkout", "--statement", "As a buyer I can check out quickly", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--json"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
@@ -86,7 +88,7 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	got := status()
 	if !got.Current() || len(got.Reasons) != 0 || len(got.CarriedForward) != 1 ||
 		got.CarriedForward[0].Code != requirements.CarriedCriterionUnchanged ||
-		got.CarriedForward[0].Confirmed != story+":revision:r1" || got.CarriedForward[0].Current != story+":revision:r2" {
+		got.CarriedForward[0].Confirmed != originalStoryPin || got.CarriedForward[0].Current != currentTestPin(t, root, story) {
 		t.Fatalf("relation past an unrelated revision = %#v", got)
 	}
 	var carried bytes.Buffer
@@ -96,14 +98,15 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	}
 
 	// Reword the criterion and the signal fires, naming what moved.
-	if err := Story(ctx, []string{"revise", root, "--story", story, "--revision", "r3", "--parent", story + ":revision:r2",
+	commitCurrentTestDocumentation(t, root, "confirmed requirement")
+	if err := Story(ctx, []string{"revise", root, "--story", story,
 		"--persona", testPersonaURN, "--title", "Checkout", "--statement", "As a buyer I can check out quickly", "--priority", "must",
 		"--criterion", "fast=Checkout finishes in two seconds", "--json"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	got = status()
 	if got.Status != requirements.CurrencyStale || len(got.Reasons) != 1 || got.Reasons[0].Code != requirements.ReasonCriterionStatementChanged ||
-		got.Reasons[0].Pinned != story+":revision:r1" || !reflect.DeepEqual(got.Reasons[0].Current, []string{story + ":revision:r3"}) {
+		got.Reasons[0].Pinned != originalStoryPin || !reflect.DeepEqual(got.Reasons[0].Current, []string{currentTestPin(t, root, story)}) {
 		t.Fatalf("revised relation = %#v", got)
 	}
 	var text bytes.Buffer
@@ -126,7 +129,7 @@ func addCheckoutStory(t *testing.T, root, id string) error {
 	}
 	var output bytes.Buffer
 	err = Story(context.Background(), []string{
-		"add", root, "--feature", testFeature, "--persona", personaURNFor(manifest.ID), "--id", id, "--revision", "r1", "--event", "proposed",
+		"add", root, "--feature", testFeature, "--persona", personaURNFor(manifest.ID), "--id", id,
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--request-id", id + "-request", "--json",
 	}, &output)

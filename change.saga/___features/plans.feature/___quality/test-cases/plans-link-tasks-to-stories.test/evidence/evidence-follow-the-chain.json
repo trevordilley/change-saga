@@ -1,31 +1,31 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "digest": "sha256:a9c04aab30375e79608d33ba70998e36dafcadef97ae4a08961ca0c4a9b4326f",
+      "end": 179,
+      "path": "internal/server/plans_test.go",
+      "start": 137
+    },
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "digest": "sha256:9ad8976640ab13216a17436c285170c3e235c39511217e5d790af4361135f0a0",
+      "end": 116,
+      "path": "internal/server/plans_test.go",
+      "start": 91
+    }
+  ],
+  "created_at": "2026-11-02T22:18:47Z",
   "id": "evidence-follow-the-chain",
-  "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
-  "test_revision": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories:revision:r1",
   "role": "test_implementation",
   "steps": [
     "follow-the-chain"
   ],
-  "code": [
-    {
-      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
-      "path": "internal/server/plans_test.go",
-      "start": 137,
-      "end": 179,
-      "digest": "sha256:a9c04aab30375e79608d33ba70998e36dafcadef97ae4a08961ca0c4a9b4326f"
-    },
-    {
-      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
-      "path": "internal/server/plans_test.go",
-      "start": 91,
-      "end": 116,
-      "digest": "sha256:9ad8976640ab13216a17436c285170c3e235c39511217e5d790af4361135f0a0"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-11-02T22:18:47Z"
+  "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
+  "test_revision": "sha256:72a00fd5fa61f6d535a956c6da80c0ee532a370b00d08a6c36a63fb1e72dd6d3",
+  "verifications": [],
+  "version": 5
 }

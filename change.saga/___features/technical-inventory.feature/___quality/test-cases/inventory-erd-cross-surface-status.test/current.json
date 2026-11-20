@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "Exact source commit/path/range and evidence health are visible where evidence is recorded; missing or unavailable evidence is explicit; comparison newness and proposed/implemented intent remain separate and neither is inferred from code availability.",
+    "preconditions": [
+      "Disposable format-2 Saga using the PDF inventory fixture: implemented PDF report held by Record store, proposed JSON PDF job held by Job queue, report-to-job production relationship, application ERD, and pdf-jobs overlay; the reporting ERD also includes a job association with owner 0..many and destination unknown.",
+      "Record exact entity/relationship revision pins and a named baseline/head; include implemented report, code-free proposed job and proposed production edge."
+    ],
+    "steps": [
+      {
+        "action": "Read the same pins in ERD, directory, details and public inventory query, then inspect their relationships.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:consistent-state",
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status"
+        ],
+        "expected_result": "Each surface preserves each selected revision's explicit proposed/implemented state independently of relationship state.",
+        "id": "compare"
+      },
+      {
+        "action": "Repeat for System, Component and data entity references with missing evidence, changed source bytes and an unavailable source commit, retaining the same inventory revisions; inspect documentation code captions and query health.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:evidence-health",
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-distinction",
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding",
+          "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation"
+        ],
+        "expected_result": "Exact source commit/path/range and evidence health are visible where evidence is recorded; missing or unavailable evidence is explicit; comparison newness and proposed/implemented intent remain separate and neither is inferred from code availability.",
+        "id": "health"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-cross-surface-status",
+    "title": "Compare entity and relationship states across all reading surfaces"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-cross-surface-status"
+  }
+}

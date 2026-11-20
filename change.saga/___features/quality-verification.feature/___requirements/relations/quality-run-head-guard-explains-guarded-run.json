@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "quality-run-head-guard-explains-guarded-run",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:42:51.001537Z",
   "from": "urn:change-saga:change-saga:slide:run-record-sequence:item:graph-guard",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:guarded-run",
-  "scope": "self",
+  "id": "quality-run-head-guard-explains-guarded-run",
   "rationale": "The graph guard refuses an append unless the new run names every current run head, so competing and failed heads cannot be skipped.",
-  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:r4",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:42:51.001537Z"
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:guarded-run",
+  "to_revision": "sha256:455a28ea6a8e6f68728e527ca00944d223b3dfd88a35b519ea50e4d8c6f38668",
+  "type": "explains",
+  "version": 5
 }

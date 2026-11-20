@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-authored-erd-report",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:report",
-  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
-  "scope": "self",
-  "rationale": "Illustrative persisted entity showing selected identity, output and status fields. No existing Change Saga code is asserted.",
-  "to_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T22:40:12.291047Z",
-  "superseded_at": "2026-09-27T10:27:22.623371Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:report",
+  "id": "ti-authored-erd-report",
+  "rationale": "Illustrative persisted entity showing selected identity, output and status fields. No existing Change Saga code is asserted.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:22.623371Z",
+  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+  "to_revision": "sha256:d0f98c335eecab015058b9df75d15c18ce81a532497a8e32083bf97fb90975bf",
+  "type": "explains",
+  "version": 5
 }

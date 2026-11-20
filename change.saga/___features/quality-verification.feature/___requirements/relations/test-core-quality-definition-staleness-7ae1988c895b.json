@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-quality-definition-staleness-7ae1988c895b",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness",
-  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin",
-  "scope": "self",
-  "rationale": "Steps check-inert-command define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:quality-result-trust:revision:definitions-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:29.220698Z",
-  "request_id": "test-core-quality-definition-staleness-7ae1988c895b"
+  "from": "urn:change-saga:change-saga:test-case:core-quality-definition-staleness",
+  "from_revision": "sha256:ede4f6a3686aa899ae22343f11217a78c576367c811e4772082f217e8ece3f09",
+  "id": "test-core-quality-definition-staleness-7ae1988c895b",
+  "rationale": "Steps check-inert-command define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-quality-definition-staleness-7ae1988c895b",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin",
+  "to_revision": "sha256:c29c1f6f3790dc10de090212b289ac06d6fc20a2033ac1386fdc8d733acf8c0d",
+  "type": "verifies",
+  "version": 5
 }

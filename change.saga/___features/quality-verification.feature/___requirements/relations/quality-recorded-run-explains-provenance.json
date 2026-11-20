@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "quality-recorded-run-explains-provenance",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:40:47.192679Z",
   "from": "urn:change-saga:change-saga:slide:quality-trust-gaps:item:recorded-run",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:run-provenance",
-  "scope": "self",
+  "id": "quality-recorded-run-explains-provenance",
   "rationale": "The run-record Item enumerates the immutable result, command, source commit, and evidence facts persisted for a run.",
-  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:40:47.192679Z"
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:run-provenance",
+  "to_revision": "sha256:59ca817f9d77130a40a299ea26c8700962650875115f711e62a04b943b75a344",
+  "type": "explains",
+  "version": 5
 }

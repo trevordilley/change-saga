@@ -56,10 +56,9 @@ type diagramSlideState struct {
 	source   diagram.Document
 }
 
-// loadDiagramRevision reads the revision named by snapshot, or the current
-// revision when snapshot is empty. Reading an older revision keeps a retried
-// edit idempotent: the same operations on the same base reproduce the same
-// complete payload, which apply-slide replays instead of refusing.
+// loadDiagramRevision reads current content with an optional compare-and-swap
+// digest. A delta patch cannot replay against an older base after it changed;
+// the author must read the new content before applying another delta.
 func loadDiagramRevision(root, review, target, snapshot string) (diagramSlideState, error) {
 	document, _, err := saga.Load(root)
 	if err != nil {
@@ -96,7 +95,7 @@ func loadDiagramRevision(root, review, target, snapshot string) (diagramSlideSta
 		}
 		return diagramSlideState{review: owner, deck: deck, slide: slide, revision: revision, source: source}, nil
 	}
-	return diagramSlideState{}, fmt.Errorf("expected snapshot %s is not a revision of %s; read the current authoring_snapshot with `change-saga query diagram`", snapshot, slide.Target)
+	return diagramSlideState{}, fmt.Errorf("expected_snapshot mismatch: got %s, current is %s for %s; read the current authoring_snapshot with `change-saga query diagram`", snapshot, slide.AuthoringSnapshot, slide.Target)
 }
 
 // requestFromRevision rebuilds the complete apply-slide request that
@@ -130,7 +129,7 @@ func diagramEdit(ctx context.Context, args []string, out io.Writer) error {
 	target := flags.String("slide", "", "slide target whose diagram to edit")
 	review := flags.String("review", "", "the pull request review whose slide this is")
 	expected := flags.String("expected", "", "exact authoring snapshot the operations apply to")
-	requestID := flags.String("request-id", "", "idempotency key; retrying the same edit is a no-op")
+	requestID := flags.String("request-id", "", "optional legacy request label; --expected guards a delta against changed content")
 	from := flags.String("from", "", "JSON array of diagram operations, or - for standard input; [] re-renders unchanged source")
 	repo := flags.String("repo", "", "code checkout used to re-verify the slide's exact evidence digests")
 	dryRun := flags.Bool("dry-run", false, "validate and return the semantic diff without publishing")

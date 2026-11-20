@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:3a7bb6af2f2200e69deeab10b63d87649c9911571da6569485479a462a424ae3",
+      "end": 587,
+      "path": "internal/livingapp/status_test.go",
+      "start": 575
+    }
+  ],
+  "created_at": "2026-10-16T23:23:49Z",
   "id": "check-conflicting-run-coverage-assertions",
-  "test_case": "urn:change-saga:change-saga:test-case:core-quality-boundary",
-  "test_revision": "urn:change-saga:change-saga:test-case:core-quality-boundary:revision:r1",
+  "request_id": "saga-evidence-core-quality-boundary-check-conflicting-run-coverage-assertions",
   "role": "test_implementation",
   "steps": [
     "check-conflicting-run-coverage"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/livingapp/status_test.go",
-      "start": 575,
-      "end": 587,
-      "digest": "sha256:3a7bb6af2f2200e69deeab10b63d87649c9911571da6569485479a462a424ae3"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:49Z",
-  "request_id": "saga-evidence-core-quality-boundary-check-conflicting-run-coverage-assertions"
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-boundary",
+  "test_revision": "sha256:9eb212d92d5213c586472a7e553b1787c1bca6b5be55acb0905a0c6285bdc0e7",
+  "verifications": [],
+  "version": 5
 }

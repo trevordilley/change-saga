@@ -30,7 +30,7 @@ func removeDocumentationSlide(document *saga.Saga, deck *saga.Deck, slide *saga.
 		return err
 	}
 	if len(heads) != 1 || heads[0] != record.Current {
-		return fmt.Errorf("slide %s has divergent or non-current transaction heads; reconcile with apply-slide before removing it", slide.ID)
+		return fmt.Errorf("slide %s has competing legacy content; preserve the file in Git and explicitly select complete current content before removal", slide.ID)
 	}
 	previous, err := record.CurrentRevision()
 	if err != nil {
@@ -41,17 +41,17 @@ func removeDocumentationSlide(document *saga.Saga, deck *saga.Deck, slide *saga.
 	}
 	revision := *previous
 	revision.Deleted = true
-	revision.ParentSnapshots = []string{previous.Snapshot}
+	revision.ParentSnapshots = nil
 	// Identity depends on the parent rather than the clock, making retries and
 	// parallel branches that remove the same snapshot agree on the event.
 	revision.RequestID = "remove-" + strings.TrimPrefix(previous.Snapshot, "sha256:")
 	revision.CreatedAt = time.Now().UTC()
-	revision.Snapshot, err = saga.SlideRevisionSnapshot(revision)
+	revision.Snapshot, err = saga.SlideContentDigest(revision)
 	if err != nil {
 		return err
 	}
 	record.Current = revision.Snapshot
-	record.Revisions = append(record.Revisions, revision)
+	record.Revisions = []saga.SlideTransactionRevision{revision}
 	if len(record.Revisions) > saga.MaxSlideRevisions {
 		return fmt.Errorf("slide revision limit of %d reached", saga.MaxSlideRevisions)
 	}
@@ -61,6 +61,9 @@ func removeDocumentationSlide(document *saga.Saga, deck *saga.Deck, slide *saga.
 	}
 	if len(encoded) > saga.MaxSlideTransactionBytes {
 		return fmt.Errorf("slide transaction exceeds the %d-byte limit", saga.MaxSlideTransactionBytes)
+	}
+	if err := json.Unmarshal(encoded, &record); err != nil {
+		return err
 	}
 	validation := saga.ValidateSlideTransactionCandidate(document.Root, deck, record)
 	if !validation.Valid {

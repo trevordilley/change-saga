@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Source visual is byte-identical; feedback is stored separately.",
+    "preconditions": [
+      "Record the hash and byte length of a slide source visual before annotation."
+    ],
+    "steps": [
+      {
+        "action": "Create a freehand mark, rectangle and sticky note; resize a rectangle and save.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:preserves-source"
+        ],
+        "expected_result": "Annotations appear over the original visual.",
+        "id": "annotate"
+      },
+      {
+        "action": "Compare original source visual bytes/hash with the pre-annotation values.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:preserves-source"
+        ],
+        "expected_result": "Source visual is byte-identical; feedback is stored separately.",
+        "id": "compare"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-annotation-source-immutable",
+    "title": "Leave original visual bytes unchanged after annotation edits"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-annotation-source-immutable"
+  }
+}

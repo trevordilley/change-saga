@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:ac2253d8fcb814de7c77b7710c2fa5d02f982db59bae676ce71a2bbacc40cc31",
+      "end": 56,
+      "path": "internal/requirements/element_links_test.go",
+      "start": 50
+    }
+  ],
+  "created_at": "2026-10-16T23:24:08Z",
   "id": "evidence-2",
-  "test_case": "urn:change-saga:change-saga:test-case:review-item-only-intent",
-  "test_revision": "urn:change-saga:change-saga:test-case:review-item-only-intent:revision:r1",
+  "request_id": "saga-evidence-review-item-only-intent-evidence-2",
   "role": "test_implementation",
   "steps": [
     "accept"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/requirements/element_links_test.go",
-      "start": 50,
-      "end": 56,
-      "digest": "sha256:ac2253d8fcb814de7c77b7710c2fa5d02f982db59bae676ce71a2bbacc40cc31"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:08Z",
-  "request_id": "saga-evidence-review-item-only-intent-evidence-2"
+  "test_case": "urn:change-saga:change-saga:test-case:review-item-only-intent",
+  "test_revision": "sha256:812ee3000d05a34fe2e72422a30bcb59316aaa6df1068fca07a08a8743c428d5",
+  "verifications": [],
+  "version": 5
 }

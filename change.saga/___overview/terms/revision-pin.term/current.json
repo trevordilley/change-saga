@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+        "digest": "sha256:888a99c418d384539244b6371dcd57fb145dc5bafdfb9b686fa1536317ec5fb9",
+        "end": 414,
+        "path": "internal/requirements/currency.go",
+        "start": 407
+      },
+      {
+        "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+        "digest": "sha256:e0cb18bdb95fc1ad649f276b901916cc0d1b987c6cc393c4948c955972b99d88",
+        "end": 170,
+        "path": "internal/requirements/model.go",
+        "start": 155
+      }
+    ],
+    "definition": "The exact SHA-256 digest of authored endpoint content that a reference was confirmed against. Stable record identities identify its target; the digest preserves what the author read. Changed obligations remain stale until deliberately reassessed. Earlier content is resolved from real Git; an unavailable value never substitutes current content. Legacy field names may still say revision.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Content pin",
+    "stories": [
+      "urn:change-saga:change-saga:story:design-usage-path",
+      "urn:change-saga:change-saga:story:product-intent-path"
+    ],
+    "term": "urn:change-saga:change-saga:term:revision-pin"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:revision-pin"
+  }
+}

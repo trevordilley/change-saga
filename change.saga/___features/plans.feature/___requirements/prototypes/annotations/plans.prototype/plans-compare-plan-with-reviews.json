@@ -1,20 +1,20 @@
 {
   "$schema": "https://changesaga.dev/schema/v3/prototype-annotation.schema.json",
-  "version": 3,
+  "created_at": "2026-11-02T05:45:40.730987Z",
   "id": "plans-compare-plan-with-reviews",
   "prototype": "urn:change-saga:change-saga:prototype:plans",
-  "target": "urn:change-saga:change-saga:story:compare-plan-with-reviews",
+  "prototype_revision": "sha256:a80842a9a5b29f20a40f086a96eb286e0b52ae96b6b400b61de50420997a20ac",
   "rationale": "Plan vs Reviews tab (#/plan/compare): what the Plan said beside what its Reviews did.",
-  "prototype_revision": "urn:change-saga:change-saga:prototype:plans:revision:r1",
-  "story_revision": "urn:change-saga:change-saga:story:compare-plan-with-reviews:revision:r1",
   "selector": {
     "kind": "region",
     "region": {
-      "x": 0,
-      "y": 0,
+      "height": 1,
       "width": 1,
-      "height": 1
+      "x": 0,
+      "y": 0
     }
   },
-  "created_at": "2026-11-02T05:45:40.730987Z"
+  "story_revision": "sha256:b8b097b1b677d31d8d08f0afd525985944d71cb71c21a62dbd347edc2e96c9d5",
+  "target": "urn:change-saga:change-saga:story:compare-plan-with-reviews",
+  "version": 3
 }

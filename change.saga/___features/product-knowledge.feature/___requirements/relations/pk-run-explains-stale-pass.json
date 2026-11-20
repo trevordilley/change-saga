@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "pk-run-explains-stale-pass",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:immutable-run",
-  "to": "urn:change-saga:change-saga:story:criterion-evidence-confidence:criterion:stale-pass",
-  "scope": "self",
-  "rationale": "The immutable run records its test, evidence, source repository, and result so currency failures remain observable history.",
-  "to_revision": "urn:change-saga:change-saga:story:criterion-evidence-confidence:revision:r1",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-23T16:41:23.611719Z",
-  "superseded_at": "2026-09-23T19:48:20.24745Z"
+  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:immutable-run",
+  "id": "pk-run-explains-stale-pass",
+  "rationale": "The immutable run records its test, evidence, source repository, and result so currency failures remain observable history.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-23T19:48:20.24745Z",
+  "to": "urn:change-saga:change-saga:story:criterion-evidence-confidence:criterion:stale-pass",
+  "to_revision": "sha256:53f7651cfffc10c19d9b15820cdf910152cf657abe5a5727f7b8d781557a726e",
+  "type": "explains",
+  "version": 5
 }

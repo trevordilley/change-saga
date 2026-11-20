@@ -45,7 +45,7 @@ func WriteMultiERDFixture(ctx context.Context, root, checkout string) (map[strin
 		if err != nil {
 			return fmt.Errorf("%s %s: %w", kind, id, err)
 		}
-		pins[id] = saga.DocumentationLink{Target: result.URN, Revision: result.Created[0]}
+		pins[id] = saga.DocumentationLink{Target: result.URN, Revision: result.ContentDigest}
 		return nil
 	}
 	for _, record := range []struct{ id, name, explanation string }{{"sqlite-store", "Local SQLite", "Persists edits while the client is offline."}, {"postgres-store", "Cloud Postgres", "Persists shared records in the cloud."}} {

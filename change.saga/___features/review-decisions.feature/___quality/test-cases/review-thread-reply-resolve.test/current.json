@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The reply joins the root thread and retains its exact table/node context.",
+    "preconditions": [
+      "Use pr-7 table/node with no comments."
+    ],
+    "steps": [
+      {
+        "action": "Add a root comment asking Is there an index on status? and save its returned ID.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:reply-context"
+        ],
+        "expected_result": "The table report has one comment and one open thread.",
+        "id": "root"
+      },
+      {
+        "action": "Reply to that ID with Added in the migration and resolve.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:resolve-reopen"
+        ],
+        "expected_result": "The same slide has two comments and zero open threads.",
+        "id": "reply"
+      },
+      {
+        "action": "Inspect the resulting thread and each comment target.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:reply-context"
+        ],
+        "expected_result": "The reply joins the root thread and retains its exact table/node context.",
+        "id": "context"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-thread-reply-resolve",
+    "title": "Reply to an Item thread and resolve it"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-thread-reply-resolve"
+  }
+}

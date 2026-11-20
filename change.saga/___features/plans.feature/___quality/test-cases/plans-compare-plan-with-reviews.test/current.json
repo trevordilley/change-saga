@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Link two Reviews to a Plan, then open a linked Review.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:compare-plan-with-reviews:criterion:plan-and-reviews-link"
+        ],
+        "expected_result": "The Plan holds both, and the Review links back to its Plan.",
+        "id": "plan-and-reviews-link"
+      },
+      {
+        "action": "Open the comparison of a Plan with a Review that names one Task and has an unrelated slide.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:compare-plan-with-reviews:criterion:comparison-shows-differences"
+        ],
+        "expected_result": "The named Task shows the Review slide, the other reads Not delivered, and an unrelated slide is listed as not in the Plan.",
+        "id": "comparison-shows-differences"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews",
+    "title": "A Plan and its Reviews read side by side"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-compare-plan-with-reviews"
+  }
+}

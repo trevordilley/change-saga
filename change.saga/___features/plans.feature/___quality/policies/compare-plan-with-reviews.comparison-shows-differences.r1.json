@@ -1,18 +1,18 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
-  "version": 5,
-  "id": "compare-plan-with-reviews.comparison-shows-differences.r1",
-  "criterion": "urn:change-saga:change-saga:story:compare-plan-with-reviews:criterion:comparison-shows-differences",
-  "story_revision": "urn:change-saga:change-saga:story:compare-plan-with-reviews:revision:r1",
-  "required_kinds": [
-    "positive"
-  ],
   "allowed_automation": [
     "automated",
     "hybrid",
     "manual"
   ],
-  "supersedes": [],
+  "created_at": "2026-11-02T22:20:33Z",
+  "criterion": "urn:change-saga:change-saga:story:compare-plan-with-reviews:criterion:comparison-shows-differences",
+  "id": "compare-plan-with-reviews.comparison-shows-differences.r1",
   "rationale": "The linked test checks the behavior this criterion states, including any refusal it names. No separate edge or negative case is claimed beyond that.",
-  "created_at": "2026-11-02T22:20:33Z"
+  "required_kinds": [
+    "positive"
+  ],
+  "story_revision": "sha256:b8b097b1b677d31d8d08f0afd525985944d71cb71c21a62dbd347edc2e96c9d5",
+  "supersedes": [],
+  "version": 5
 }

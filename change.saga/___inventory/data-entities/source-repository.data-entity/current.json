@@ -1,0 +1,114 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "b5ee553e73574c289fe834ce7551563b422ad8b1",
+        "digest": "sha256:d16306a1c38c23573bca88da335a9e4b272fa5b9b25b3aaa8b2f3facbf9162a5",
+        "end": 63,
+        "id": "resolver",
+        "note": "The resolver reads commits and blobs from the repository and caches them per command.",
+        "path": "internal/coderesolve/resolve.go",
+        "start": 52
+      },
+      {
+        "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+        "digest": "sha256:c4af9b5eb4e5249fc76257dd719da1056396f8864f489108949f70f1d577642b",
+        "end": 370,
+        "id": "cat-file",
+        "note": "Objects are read with git cat-file --batch.",
+        "path": "internal/coderesolve/resolve.go",
+        "start": 356
+      }
+    ],
+    "delivery": {
+      "commit": "b5ee553e73574c289fe834ce7551563b422ad8b1",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "Persisted in Git, not in the Saga: the repository the Saga documents, its commits and the file bytes at each commit. Git history is the source of truth for code; the Saga stores only pins into it, and every read resolves those pins against real Git objects.",
+    "fields": [
+      {
+        "id": "repository",
+        "name": "repository",
+        "note": "Named once by saga.json source.repository.",
+        "type": "canonical URI"
+      },
+      {
+        "id": "commit",
+        "keys": [
+          "primary"
+        ],
+        "name": "commit",
+        "type": "full OID"
+      },
+      {
+        "id": "file",
+        "name": "path @ commit",
+        "note": "Read through git cat-file.",
+        "type": "file bytes"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Source repository and commits",
+    "record": "urn:change-saga:change-saga:data-entity:source-repository",
+    "relationships": [
+      {
+        "cardinality": {
+          "destination": "unknown",
+          "owner": "1"
+        },
+        "code": [
+          {
+            "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+            "digest": "sha256:d00e26a0f7e4294b61b6608a7c09271500e65741f05e1ef566fa623ee89f0da9",
+            "end": 163,
+            "id": "documented-by-field",
+            "note": "Source.Repository.",
+            "path": "internal/saga/model.go",
+            "start": 158
+          }
+        ],
+        "destination": {
+          "revision": "sha256:78ee5005a78a5523eb832609455fb08a7a11e41c80b288bfe23d582b2dc1d562",
+          "target": "urn:change-saga:change-saga:data-entity:saga-manifest"
+        },
+        "explanation": "saga.json names exactly one source repository; nothing in the code limits how many Sagas one repository may hold.",
+        "id": "documented-by",
+        "intent": "implemented",
+        "label": "documented by",
+        "meaning": "association"
+      },
+      {
+        "cardinality": {
+          "destination": "0..many",
+          "owner": "1"
+        },
+        "code": [
+          {
+            "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+            "digest": "sha256:1d1ba7162f52a05f625414390ddba3de04972e2691fe1f449ba240d7d41e5981",
+            "end": 31,
+            "id": "pinned-by-field",
+            "note": "Reference.Commit.",
+            "path": "internal/coderef/coderef.go",
+            "start": 28
+          }
+        ],
+        "destination": {
+          "revision": "sha256:c91052d855422ea6e712628299af5f3b60364dfa46e5f3dad235ec9adf478de4",
+          "target": "urn:change-saga:change-saga:data-entity:code-reference"
+        },
+        "explanation": "Every code reference pins one full commit of this repository; a commit may be pinned by any number of references.",
+        "id": "pinned-by",
+        "intent": "implemented",
+        "label": "pinned by",
+        "meaning": "association"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:source-repository",
+    "state": "active"
+  }
+}

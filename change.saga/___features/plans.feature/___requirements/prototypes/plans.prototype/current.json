@@ -1,0 +1,17 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "prototype": "urn:change-saga:change-saga:prototype:plans",
+    "source": {
+      "commit": "98473391d188d9237c9125192769eef2214fa4d8",
+      "entrypoint": "docs/prototypes/plans/index.html",
+      "kind": "repo",
+      "object": "0a38dc7125f4f330275991e9bedd65b39ce4d04c",
+      "root": "docs/prototypes/plans"
+    },
+    "state": "draft",
+    "styles": [],
+    "title": "Plans in the reader"
+  }
+}

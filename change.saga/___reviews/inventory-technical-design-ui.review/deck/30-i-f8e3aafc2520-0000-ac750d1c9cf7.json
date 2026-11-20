@@ -1,17 +1,17 @@
 {
+  "description": "The author's SVG is re-serialized from XML tokens with only static elements, presentation attributes and fragment links, ids namespaced; anything else refuses the drawing.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:authored-erd-view",
-    "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+    "revision": "sha256:428dcb8bcf4c043dd06f2fb57c5e5d3d19ca84d8e8ded83c4b0128324248c21f",
+    "target": "urn:change-saga:change-saga:component:authored-erd-view"
   },
-  "version": 4,
   "id": "allowlist",
-  "slide": "ti-ui-review-erd",
-  "rank": 0,
   "kind": "node",
   "label": "Allowlisted drawing",
-  "description": "The author's SVG is re-serialized from XML tokens with only static elements, presentation attributes and fragment links, ids namespaced; anything else refuses the drawing.",
+  "rank": 0,
   "selector": {
-    "type": "element",
-    "element_id": "allowlist"
-  }
+    "element_id": "allowlist",
+    "type": "element"
+  },
+  "slide": "ti-ui-review-erd",
+  "version": 4
 }

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "description": "Implements and reviews software changes, including large changes. Needs coherent visual reviews, traceability from code to product intent, reliable impact analysis, and structured context that also helps AI tools reason from low-level changes to high-level intent.",
+    "name": "Developer",
+    "persona": "urn:change-saga:change-saga:persona:developer"
+  },
+  "state": {
+    "persona": "urn:change-saga:change-saga:persona:developer",
+    "state": "active"
+  }
+}

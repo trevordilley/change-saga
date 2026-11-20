@@ -24,7 +24,7 @@ func TestDiagramAnnotationExactPinsAndLazyCode(t *testing.T) {
 	// A hover metadata request must work without reading a source checkout.
 	mux := newMux(&app{root: root, sourceDir: filepath.Join(t.TempDir(), "missing-checkout"), template: serverTemplate(t)})
 	request := func(pin saga.DocumentationLink, relationship, panel string) (int, string) {
-		return technicalGet(t, mux, "/api/diagram-annotation?"+url.Values{"target": {pin.Target}, "revision": {pin.Revision}, "relationship": {relationship}, "panel": {panel}}.Encode())
+		return technicalGet(t, mux, "/api/diagram-annotation?"+url.Values{"target": {pin.Target}, "content_digest": {pin.Revision}, "relationship": {relationship}, "panel": {panel}}.Encode())
 	}
 	status, body := request(pins["cloud-record"], "", "")
 	if status != 200 || !strings.Contains(body, `class="landmark-affordance"`) || !strings.Contains(body, `data-documentation-revision="`+pins["cloud-record"].Revision+`"`) {
@@ -42,7 +42,7 @@ func TestDiagramAnnotationExactPinsAndLazyCode(t *testing.T) {
 			t.Fatalf("missing relationship fell back to owner: %d", status)
 		}
 		absent := pins["cloud-record"]
-		absent.Revision = absent.Target + ":revision:missing"
+		absent.Revision = "sha256:" + strings.Repeat("f", 64)
 		if status, _ := request(absent, "", panel); status != 404 {
 			t.Fatalf("missing pin replaced: %d", status)
 		}
@@ -97,6 +97,8 @@ func TestDiagramAnnotationCodeRemainsLazyAndPinned(t *testing.T) {
 	if _, err := requirements.WriteTechnical(root, "test", "component", "store", "r1", nil, definition, true); err != nil {
 		t.Fatal(err)
 	}
+	originalPin := currentServerPin(t, root, target)
+	commitServerDocumentation(t, root)
 	definition.Name = "New store"
 	definition.Code[0].Reference.Note = "New evidence note."
 	if _, err := requirements.WriteTechnical(root, "test", "component", "store", "r2", []string{target + ":revision:r1"}, definition, false); err != nil {
@@ -104,7 +106,7 @@ func TestDiagramAnnotationCodeRemainsLazyAndPinned(t *testing.T) {
 	}
 	application := &app{root: root, sourceDir: filepath.Join(t.TempDir(), "missing-checkout"), template: serverTemplate(t)}
 	mux := newMux(application)
-	href := "/api/diagram-annotation?" + url.Values{"target": {target}, "revision": {target + ":revision:r1"}}.Encode()
+	href := "/api/diagram-annotation?" + url.Values{"target": {target}, "content_digest": {originalPin}}.Encode()
 	status, body := technicalGet(t, mux, href)
 	if status != 200 || !strings.Contains(body, "Original store") || !strings.Contains(body, "data-target-code-href") || strings.Contains(body, "Original saved evidence") || strings.Contains(body, "data-file-path") || strings.Contains(body, "New store") {
 		t.Fatalf("metadata resolved code or substituted current revision: %d %s", status, body)
@@ -144,7 +146,7 @@ func TestDiagramAnnotationERDScopeUsesExactMembersAndLazyCode(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return saga.DocumentationLink{Target: result.URN, Revision: result.Created[0]}
+		return saga.DocumentationLink{Target: result.URN, Revision: result.ContentDigest}
 	}
 	entity := inventory.Pinned(pins["report"]).TechnicalDefinition
 	entity.Code[0].Note = "Entity ownership note."
@@ -160,6 +162,7 @@ func TestDiagramAnnotationERDScopeUsesExactMembersAndLazyCode(t *testing.T) {
 	erd.Directory = []saga.DocumentationLink{report, pins["job-r2"]}
 	erd.Bindings[0].Entity = &report
 	scope := write(requirements.KindERD, "reporting", "grouped", pins["reporting"], erd)
+	commitServerDocumentation(t, root)
 	entity.Name = "Newer entity must not replace saved member"
 	entity.Code[0].Note = "Newer note must not leak"
 	write(requirements.KindDataEntity, "pdf-report", "after-grouped", report, entity)
@@ -168,7 +171,7 @@ func TestDiagramAnnotationERDScopeUsesExactMembersAndLazyCode(t *testing.T) {
 	t.Setenv("GIT_TRACE", trace)
 	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
 	mux := newMux(application)
-	href := "/api/diagram-annotation?" + url.Values{"target": {scope.Target}, "revision": {scope.Revision}}.Encode()
+	href := "/api/diagram-annotation?" + url.Values{"target": {scope.Target}, "content_digest": {scope.Revision}}.Encode()
 	status, body := technicalGet(t, mux, href)
 	if status != 200 || !strings.Contains(body, `Open 1 linked code references for ERD scope: Reporting data`) || !strings.Contains(body, "data-target-code-href") {
 		t.Fatalf("ERD metadata %d: %s", status, body)
@@ -202,7 +205,7 @@ func TestDiagramAnnotationERDScopeUsesExactMembersAndLazyCode(t *testing.T) {
 		t.Fatalf("ERD inherited a member relationship as its own: %d", status)
 	}
 	for _, panel := range []string{"", "code"} {
-		status, _ = technicalGet(t, mux, "/api/diagram-annotation?"+url.Values{"target": {scope.Target}, "revision": {scope.Target + ":revision:absent"}, "panel": {panel}}.Encode())
+		status, _ = technicalGet(t, mux, "/api/diagram-annotation?"+url.Values{"target": {scope.Target}, "content_digest": {"sha256:" + strings.Repeat("f", 64)}, "panel": {panel}}.Encode())
 		if status != 404 {
 			t.Fatalf("absent ERD revision substituted: %d", status)
 		}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "reverse-path",
+        "statement": "Looking up a current code location returns the persisted requirement and evidence paths that reach it."
+      },
+      {
+        "id": "blockers",
+        "statement": "A reverse path reports stale or conflicted links instead of presenting them as current."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect, I can begin with changed code and discover the affected requirements, designs, tests, and personas so I can understand the change's system-wide consequences.",
+    "story": "urn:change-saga:change-saga:story:reverse-impact",
+    "title": "Discover intent affected by code"
+  },
+  "state": {
+    "reason": "Confirmed after the initial implementation investigation.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:reverse-impact"
+  }
+}

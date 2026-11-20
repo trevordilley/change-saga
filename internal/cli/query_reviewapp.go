@@ -29,7 +29,7 @@ type slideQueryContent struct {
 	Items             []reviewapp.SemanticLandmark `json:"items"`
 	ReadingOrder      []string                     `json:"reading_order"`
 	AuthoringSnapshot string                       `json:"authoring_snapshot,omitempty"`
-	AuthoringHeads    []string                     `json:"authoring_heads,omitempty"`
+	AuthoringHeads    []string                     `json:"-"`
 	AuthoringConflict bool                         `json:"authoring_conflict,omitempty"`
 }
 
@@ -171,7 +171,7 @@ func queryPageFromLiving(page livingapp.Page) queryPageEnvelope {
 
 func isLivingQueryOperation(operation string) bool {
 	switch operation {
-	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "traceability", "quality", "quality-history", "readiness", "audit":
+	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "traceability", "quality", "quality-runs", "readiness", "audit":
 		return true
 	default:
 		return false

@@ -11,6 +11,20 @@ explain the change's architecture, so a person reviews the architecture
 instead of every line. Coverage makes the review trustworthy: every changed
 line is linked to the slide Item that explains it.
 
+## Git owns documentation history
+
+Edit current records in place and preserve stable record, criterion, step,
+diagram element, and Item identities. Do not invent Saga content revision IDs,
+parent lists, head reconciliation, or another content history store. Git owns
+versions, attribution, branches and merges. Keep actual review decisions and
+exact source commit/digest evidence. A stale source pin must remain stale until
+explicitly reassessed; never make old evidence appear current.
+
+Ordinary reads never persist legacy normalization. Writers normalize encountered
+legacy packages; `normalize PATH` is also available. Ambiguous legacy heads stop
+conversion with all authored files retained. Inspect and combine those files
+explicitly before retrying. Use `query history --node URN` for Git history.
+
 ## Review the big change, not every branch
 
 A review deck is for the change a person reviews as a whole: usually a large
@@ -226,11 +240,11 @@ These rules apply to every Change Saga task:
   show the user its summary; confirm before a removal that reaches beyond what
   they asked for. Then fix, or report, each listed adjustment. See
   "Deleting records" in [reorganizing existing content](references/reorganize.md).
-- Preserve history and uncertainty. Revisions and lifecycle events are
-  immutable; decisions, comments, claims, verification results, and merge
-  evidence are append-only. Preserve competing heads and reported conflicts;
-  never fabricate a winner. Reconcile only with explicit parents and the
-  user's supported intent.
+- Preserve authored identities and uncertainty. Edit current documentation in
+  place; Git owns earlier content, attribution, branches and merges. Keep actual
+  review decisions, comments, claims, verification results and merge evidence.
+  Ambiguous legacy content stops normalization; preserve every candidate and
+  combine it explicitly without selecting by timestamp.
 - Preserve provenance. Keep requirement citations, relation rationales and
   pins, review identity, source comparison identity, code-reference digests,
   and lifecycle reasons. Omit an identity you cannot verify rather than
@@ -254,9 +268,9 @@ whether something is deprecated. Page to completion, preserve conflicting heads
 and report stale/missing/provisional evidence. Absence means no recorded deprecation.
 Optional replacements never expand scope. Optional stories use normal pinned
 `relation add --type explains`; retain historical and retired story context.
-Correct through `deprecation revise` with all revision parents, or withdraw through
-`deprecation set-state --state withdrawn` with all event parents and a reason.
-Never delete content, rewrite immutable history, or invent stories for this task.
+Correct current content through `deprecation revise`, or withdraw through
+`deprecation set-state --state withdrawn` with a reason.
+Preserve stable targets, ordinary authored content and evidence; Git retains earlier values.
 Discover details with `deprecation --help` and `query schema deprecations`.
 
 ## Route the task
@@ -361,8 +375,7 @@ stale relation is repinned only after reading the new wording.
 The chain is persona -> story -> design or test -> exact code. The Saga is
 documentation, so requirements, designs, tests, and decks describe current
 intent rather than carrying review verdicts. This is not a waterfall:
-discovery may revise earlier records, but it does so with new immutable
-history rather than rewriting what was previously known.
+discovery edits current records, and Git records what changed and why.
 
 Technical Design includes an Architecture whiteboard alongside ERD, Infrastructure
 and Data flows. For codebase structure, patterns, state ownership and technology

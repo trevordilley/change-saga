@@ -75,11 +75,8 @@ func revisedStoryParent(root, sagaID string, request storyReviseRequest) (*requi
 		if story.Identity.ID != storyRef.ID {
 			continue
 		}
-		if len(story.RevisionHeads) != 1 || story.RevisionHeads[0] != request.Parents[0] {
-			return nil, fmt.Errorf("revision parents must name every current head (got %v, want %v)", request.Parents, story.RevisionHeads)
-		}
 		if story.CurrentRevision == nil {
-			return nil, fmt.Errorf("story %q does not have a unique current revision", storyRef.ID)
+			return nil, fmt.Errorf("story %q has competing legacy content; explicitly select complete current content before editing", storyRef.ID)
 		}
 		return story.CurrentRevision, nil
 	}
@@ -123,16 +120,13 @@ func inheritStoryRevision(root, sagaID string, request storyReviseRequest, given
 }
 
 func editStoryRevision(ctx context.Context, root, sagaID string, request storyReviseRequest) (storyReviseRequest, error) {
-	if len(request.Parents) != 1 {
-		return request, fmt.Errorf("story revise --edit requires exactly one explicit current parent; use structured --from to reconcile multiple heads")
-	}
 	current, err := revisedStoryParent(root, sagaID, request)
 	if err != nil {
 		return request, err
 	}
 	candidate := *current
 	candidate.ID = request.Revision
-	candidate.Parents = append([]string{}, request.Parents...)
+	candidate.Parents = []string{}
 	candidate.Personas = append([]string{}, current.Personas...)
 	candidate.Citations = append([]string{}, current.Citations...)
 	candidate.AcceptanceCriteria = append([]requirements.Criterion{}, current.AcceptanceCriteria...)
@@ -169,7 +163,7 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 	if err != nil {
 		return request, err
 	}
-	if edited.Schema != requirements.RevisionSchemaURL || edited.Version != requirements.Version || edited.ID != request.Revision || edited.Story != request.Story || len(edited.Parents) != 1 || edited.Parents[0] != request.Parents[0] || !edited.CreatedAt.Equal(candidate.CreatedAt) || edited.RequestID != candidate.RequestID {
+	if edited.Schema != requirements.RevisionSchemaURL || edited.Version != requirements.Version || edited.ID != request.Revision || edited.Story != request.Story || len(edited.Parents) != 0 || !edited.CreatedAt.Equal(candidate.CreatedAt) || edited.RequestID != candidate.RequestID {
 		return request, fmt.Errorf("story revise --edit may not change schema, version, story, revision id, parents, created_at, or request_id")
 	}
 	return storyReviseRequest{

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative",
+      "edge"
+    ],
+    "expected_result": "The union contributes 37 lines and overlap contributes no duplicate covered count.",
+    "preconditions": [
+      "Use inherited_test fixture with store selection 14-40; separately use format-2 PDF fixture to distinguish containing-evidence change outside selected lines from a selected-byte change."
+    ],
+    "steps": [
+      {
+        "action": "Commit an edit at store.go line 20 and reevaluate the selection and inherited coverage.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+        ],
+        "expected_result": "The selection reports selected-bytes stale, attaches nothing and contributes zero coverage.",
+        "id": "selected-drift"
+      },
+      {
+        "action": "At the original source head, supersede the pinned System r1 and resolve the saved selection.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+        ],
+        "expected_result": "The noncurrent path remains reportable and inherits nothing.",
+        "id": "stale-pin"
+      },
+      {
+        "action": "In a fresh fixture add two valid selections covering 14-40 and 30-50, then inspect total inherited coverage.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected"
+        ],
+        "expected_result": "The union contributes 37 lines and overlap contributes no duplicate covered count.",
+        "id": "overlap"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-inheritance-health",
+    "title": "Keep stale selections visible while excluding them from coverage"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-inheritance-health"
+  }
+}

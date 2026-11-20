@@ -1,0 +1,74 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:deda2ddd87c14cae1460ca53d24efe19450d5df9b59e4c106a6e4cbb30df0325",
+        "end": 46,
+        "id": "type",
+        "note": "Criterion: an ID and a statement.",
+        "path": "internal/requirements/model.go",
+        "start": 43
+      }
+    ],
+    "delivery": {
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "One pass/fail obligation inside a current story definition. It has no file of its own: its URN is the story URN plus :criterion:<id>, and relations and criterion links pin the current story definition that contained it.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "note": "Unique within its story; URN <story>:criterion:<id>.",
+        "type": "string"
+      },
+      {
+        "id": "statement",
+        "name": "statement",
+        "note": "A relation goes stale when this text changes.",
+        "type": "string"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Acceptance criterion",
+    "record": "urn:change-saga:change-saga:data-entity:criterion",
+    "relationships": [
+      {
+        "cardinality": {
+          "destination": "1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:727d9d370e5286a2cf7f83514ac5f7269ffa4d00bb4d2bf46ab1bf71ac3d48d3",
+            "end": 66,
+            "id": "of-story-field",
+            "note": "Revision.AcceptanceCriteria.",
+            "path": "internal/requirements/model.go",
+            "start": 66
+          }
+        ],
+        "destination": {
+          "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+          "target": "urn:change-saga:change-saga:data-entity:story"
+        },
+        "explanation": "A story revision carries its acceptance criteria; an accepted story needs at least one, a proposed story may have none.",
+        "id": "of-story",
+        "intent": "implemented",
+        "label": "criterion of",
+        "meaning": "association"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:criterion",
+    "state": "active"
+  }
+}

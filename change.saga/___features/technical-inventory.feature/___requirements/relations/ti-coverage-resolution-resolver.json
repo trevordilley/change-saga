@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-coverage-resolution-resolver",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-coverage-resolution:item:resolver",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
-  "scope": "self",
-  "rationale": "Proposed: resolve the saved path and selected bytes at the measured view. Bound traversal; expose missing or conflicting paths. Do not choose a revision winner or silently broaden scope.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:00:59.35394Z",
-  "superseded_at": "2026-09-27T10:27:23.809883Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-coverage-resolution:item:resolver",
+  "id": "ti-coverage-resolution-resolver",
+  "rationale": "Proposed: resolve the saved path and selected bytes at the measured view. Bound traversal; expose missing or conflicting paths. Do not choose a revision winner or silently broaden scope.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:23.809883Z",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "explains",
+  "version": 5
 }

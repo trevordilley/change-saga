@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "A, B, C and D remain visible in order with the original slide/Item context.",
+    "preconditions": [
+      "Create root comment A and reply B on one slide Item; resolve the thread with explicit action C."
+    ],
+    "steps": [
+      {
+        "action": "Inspect discussion after resolution.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:preserves-discussion"
+        ],
+        "expected_result": "A, B and C remain visible in chronological order and open-thread count is zero.",
+        "id": "resolved"
+      },
+      {
+        "action": "Append an explicit reopen action D to the same root thread.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:resolve-reopen"
+        ],
+        "expected_result": "The thread is open and its slide open-thread count becomes one.",
+        "id": "reopen"
+      },
+      {
+        "action": "Inspect the thread again.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:preserves-discussion",
+          "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:reply-context"
+        ],
+        "expected_result": "A, B, C and D remain visible in order with the original slide/Item context.",
+        "id": "history"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-thread-reopen-history",
+    "title": "Reopen a resolved thread without losing ordered discussion"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-thread-reopen-history"
+  }
+}

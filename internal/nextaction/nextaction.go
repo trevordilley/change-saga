@@ -259,33 +259,20 @@ func (b *builder) diagnostics() {
 
 func (b *builder) storyConflicts() {
 	for _, story := range b.status.Stories {
-		if len(story.RevisionHeads) > 1 {
-			b.add(Action{
-				ID: "conflict:" + story.Story + ":revision", Kind: KindQuestion, Category: CategoryConflict, Area: AreaHealth, Resource: story.Story,
-				Reason: "story has competing revision heads " + strings.Join(story.RevisionHeads, ", ") + "; heads are never resolved by timestamp",
-				Question: question("Which combination of these story revisions states what the story means now: "+strings.Join(story.RevisionHeads, ", ")+"?", NeedProductJudgment,
-					option("write the reconciled revision", "one complete revision whose parents are every current head",
-						b.invoke("story revise", append([]grammar.Value{grammar.V("story", story.Story)}, parents(story.RevisionHeads)...)...))),
-			})
-		}
-		if len(story.LifecycleHeads) > 1 {
-			b.add(Action{
-				ID: "conflict:" + story.Story + ":lifecycle", Kind: KindQuestion, Category: CategoryConflict, Area: AreaHealth, Resource: story.Story,
-				Reason: "story has competing lifecycle heads " + strings.Join(story.LifecycleHeads, ", "),
-				Question: question("What is the story's lifecycle state after these competing decisions: "+strings.Join(story.LifecycleHeads, ", ")+"?", NeedProductJudgment,
-					option("record the reconciled state", "one lifecycle event whose parents are every current head",
-						b.invoke("story set-state", append([]grammar.Value{grammar.V("story", story.Story)}, parents(story.LifecycleHeads)...)...))),
+		for _, legacy := range []struct {
+			kind  string
+			heads []string
+		}{{"revision", story.RevisionHeads}, {"lifecycle", story.LifecycleHeads}} {
+			if len(legacy.heads) < 2 {
+				continue
+			}
+			b.add(Action{ID: "conflict:" + story.Story + ":" + legacy.kind, Kind: KindQuestion, Category: CategoryConflict, Area: AreaHealth, Resource: story.Story,
+				Reason: "legacy story content or state is ambiguous: " + strings.Join(legacy.heads, ", ") + "; no candidate is chosen by timestamp",
+				Question: question("Which complete current story content and state preserve the authored intent?", NeedProductJudgment,
+					option("select complete current content explicitly", "Preserve every candidate in Git, inspect and combine the authored files, publish one complete current.json, then retry normalize. Ordinary edits cannot choose among legacy heads.")),
 			})
 		}
 	}
-}
-
-func parents(heads []string) []grammar.Value {
-	values := []grammar.Value{}
-	for _, head := range heads {
-		values = append(values, grammar.V("parent", head))
-	}
-	return values
 }
 
 // cells reports the criterion/axis cells that concern health: a conflicted
@@ -339,7 +326,7 @@ func (b *builder) conflictOptions(cell coverage.AxisCoverage) []Option {
 		}
 	}
 	if len(options) == 0 {
-		options = append(options, option("reconcile the competing heads", "record one head whose parents are every competing head; then re-evaluate"))
+		options = append(options, option("resolve legacy ambiguity explicitly", "preserve every candidate in Git and select complete current content before normalization; no reconciliation graph is created"))
 	}
 	return options
 }
@@ -355,7 +342,7 @@ func (b *builder) invalidOptions(cell coverage.AxisCoverage) []Option {
 	if cell.Exclusion != nil && cell.Exclusion.State == coverage.ExceptionInvalid {
 		info := b.crit[cell.Criterion]
 		options = append(options, option("record a corrected exception", "a complete, cited exception replaces the invalid one",
-			b.invoke("coverage-exception add", grammar.V("axis", string(cell.Axis)), grammar.V("criterion", cell.Criterion), grammar.V("story-revision", info.revision)),
+			b.invoke("coverage-exception add", grammar.V("axis", string(cell.Axis)), grammar.V("criterion", cell.Criterion), grammar.V("story-content-digest", info.revision)),
 			b.invoke("coverage-exception supersede", grammar.V("exception", cell.Exclusion.Exception.URN), grammar.V("with", ""))))
 	}
 	if len(options) == 0 {

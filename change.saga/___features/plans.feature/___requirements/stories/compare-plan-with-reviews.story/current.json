@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "plan-and-reviews-link",
+        "statement": "A Plan and the Reviews that implement it reference each other, and a Plan can have more than one."
+      },
+      {
+        "id": "comparison-shows-differences",
+        "statement": "The comparison shows the planned work beside what the Reviews delivered, identifying planned work that no Review delivered and delivered work the Plan did not include."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can see a Plan side by side with the Review or Reviews that implement it, so I can judge how what we did differs from what we said we would do.",
+    "story": "urn:change-saga:change-saga:story:compare-plan-with-reviews",
+    "title": "Compare what we said with what we did"
+  },
+  "state": {
+    "reason": "Verified against the code and tests on 2026-11-02. A Plan and its Reviews link both ways, and the comparison names what no Review delivered and what the Plan did not include.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:compare-plan-with-reviews"
+  }
+}

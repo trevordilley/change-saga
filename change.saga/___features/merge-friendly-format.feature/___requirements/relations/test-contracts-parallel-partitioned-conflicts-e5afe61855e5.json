@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-contracts-parallel-partitioned-conflicts-e5afe61855e5",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts",
-  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
-  "scope": "self",
-  "rationale": "Steps definitions, lifecycle, records define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:23:10.578047Z",
-  "request_id": "test-contracts-parallel-partitioned-conflicts-e5afe61855e5"
+  "from": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts",
+  "from_revision": "sha256:c448d4e2c232a6e86590a6f466da28d62d180947e75ebba3c519daca33e19030",
+  "id": "test-contracts-parallel-partitioned-conflicts-e5afe61855e5",
+  "rationale": "Steps definitions, lifecycle, records define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-contracts-parallel-partitioned-conflicts-e5afe61855e5",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
+  "to_revision": "sha256:411b3414158643d97b8e12ff86f1ec33920c9eb3d924e46ace5db3f30931701f",
+  "type": "verifies",
+  "version": 5
 }

@@ -3,6 +3,7 @@ package prototypes
 import (
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io"
 	"io/fs"
 	"os"
@@ -17,6 +18,9 @@ import (
 )
 
 func AddHTML(root, sagaID string, input AddHTMLInput) (MutationResult, error) {
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
 	created := mutationTime(input.CreatedAt)
 	identity := Identity{Schema: IdentitySchemaURL, Version: Version, ID: input.ID, CreatedAt: created, RequestID: input.RequestID}
 	if err := validateIdentity(identity, input.ID); err != nil {
@@ -57,14 +61,7 @@ func AddHTML(root, sagaID string, input AddHTMLInput) (MutationResult, error) {
 			if err := store.WriteJSON(filepath.Join(stage, "prototype.json"), identity, true); err != nil {
 				return err
 			}
-			revisions := filepath.Join(stage, "revisions")
-			if err := os.Mkdir(revisions, 0o755); err != nil {
-				return err
-			}
-			revisionPackage := filepath.Join(revisions, input.RevisionID+".revision")
-			if err := os.Mkdir(revisionPackage, 0o755); err != nil {
-				return err
-			}
+			revisionPackage := stage
 			htmlDir := filepath.Join(revisionPackage, "html")
 			if err := copyHTMLSource(input.SourcePath, htmlDir); err != nil {
 				return err
@@ -77,7 +74,14 @@ func AddHTML(root, sagaID string, input AddHTMLInput) (MutationResult, error) {
 			if err := validateRevision(revision, sagaID, input.ID); err != nil {
 				return err
 			}
-			return store.WriteJSON(filepath.Join(revisionPackage, "revision.json"), revision, true)
+			asset := filepath.Join(stage, "assets", strings.TrimPrefix(digest, "sha256:"))
+			if err := os.MkdirAll(asset, 0755); err != nil {
+				return err
+			}
+			if err := os.Rename(htmlDir, filepath.Join(asset, "html")); err != nil {
+				return err
+			}
+			return currentrecord.Write(stage, revision, nil)
 		})
 		if errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("prototype id %q already exists", input.ID)
@@ -88,7 +92,7 @@ func AddHTML(root, sagaID string, input AddHTMLInput) (MutationResult, error) {
 		result = MutationResult{URN: prototypeURN, Path: prototypePath(feature.ID, input.ID)}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // AddHTMLPrototype is an explicit-name alias for adapters that prefer the
@@ -98,6 +102,9 @@ func AddHTMLPrototype(root, sagaID string, input AddHTMLInput) (MutationResult, 
 }
 
 func AddExternal(root, sagaID string, input AddExternalInput) (MutationResult, error) {
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
 	created := mutationTime(input.CreatedAt)
 	identity := Identity{Schema: IdentitySchemaURL, Version: Version, ID: input.ID, CreatedAt: created, RequestID: input.RequestID}
 	if err := validateIdentity(identity, input.ID); err != nil {
@@ -123,6 +130,9 @@ func AddExternal(root, sagaID string, input AddExternalInput) (MutationResult, e
 // pinned like code evidence: its entrypoint, the package served beside it,
 // the commit, and the package's Git object at that commit.
 func AddRepo(root, sagaID string, input AddRepoInput) (MutationResult, error) {
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
 	created := mutationTime(input.CreatedAt)
 	identity := Identity{Schema: IdentitySchemaURL, Version: Version, ID: input.ID, CreatedAt: created, RequestID: input.RequestID}
 	if err := validateIdentity(identity, input.ID); err != nil {
@@ -170,15 +180,7 @@ func addRecordedPrototype(root, sagaID, requestedFeature string, identity Identi
 			if err := store.WriteJSON(filepath.Join(stage, "prototype.json"), identity, true); err != nil {
 				return err
 			}
-			revisions := filepath.Join(stage, "revisions")
-			if err := os.Mkdir(revisions, 0o755); err != nil {
-				return err
-			}
-			revisionPackage := filepath.Join(revisions, revision.ID+".revision")
-			if err := os.Mkdir(revisionPackage, 0o755); err != nil {
-				return err
-			}
-			return store.WriteJSON(filepath.Join(revisionPackage, "revision.json"), revision, true)
+			return currentrecord.Write(stage, revision, nil)
 		})
 		if errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("prototype id %q already exists", id)
@@ -189,87 +191,65 @@ func addRecordedPrototype(root, sagaID, requestedFeature string, identity Identi
 		result = MutationResult{URN: prototypeURN, Path: prototypePath(feature.ID, id)}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func AddExternalPrototype(root, sagaID string, input AddExternalInput) (MutationResult, error) {
 	return AddExternal(root, sagaID, input)
 }
 
-// Revise appends a complete revision. HTML revisions must provide a fresh
-// HTMLSourcePath; this prevents a mutable directory outside the Saga from
-// becoming an implicit part of the revision.
+// Revise replaces current authored content. Changed HTML must be supplied
+// explicitly so external directories never become implicit dependencies.
 func Revise(root, sagaID string, input ReviseInput) (MutationResult, error) {
-	prototypeID, err := parsePrototypeURN(input.Prototype, sagaID)
+	id, err := parsePrototypeURN(input.Prototype, sagaID)
 	if err != nil {
 		return MutationResult{}, err
 	}
-	created := mutationTime(input.CreatedAt)
-	revisionURN, err := RevisionURN(sagaID, prototypeID, input.ID)
-	if err != nil {
-		return MutationResult{}, err
-	}
-	var result MutationResult
+	result := MutationResult{URN: input.Prototype}
 	err = mutate(root, sagaID, func(doc *Document) error {
-		prototype := findPrototype(doc, prototypeID)
+		prototype := findPrototype(doc, id)
 		if prototype == nil {
-			return fmt.Errorf("prototype %q does not exist", prototypeID)
+			return fmt.Errorf("prototype %s does not exist", id)
 		}
-		for _, existing := range prototype.Revisions {
-			if existing.ID == input.ID {
-				if input.RequestID != "" && existing.RequestID == input.RequestID && revisionInputMatches(existing, input) {
-					result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Feature, prototypeID, input.ID), Replayed: true}
-					return nil
-				}
-				return fmt.Errorf("revision id %q already exists", input.ID)
-			}
-		}
-		if len(prototype.Revisions) >= MaxRevisionsPerPrototype {
-			return fmt.Errorf("revision limit of %d reached", MaxRevisionsPerPrototype)
-		}
-		if !sameSet(input.Parents, prototype.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", input.Parents, prototype.RevisionHeads)
-		}
-		final := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototype.Feature, prototypeID, input.ID)))
-		err := store.CommitDir(doc.Root, final, func(stage string) error {
-			source := cloneSource(input.Source)
-			if input.HTMLSourcePath != "" {
-				if source.Kind != "" && source.Kind != SourceHTML {
-					return fmt.Errorf("external revision cannot provide HTMLSourcePath")
-				}
-				htmlDir := filepath.Join(stage, "html")
-				if err := copyHTMLSource(input.HTMLSourcePath, htmlDir); err != nil {
-					return err
-				}
-				digest, err := digestTree(htmlDir)
-				if err != nil {
-					return err
-				}
-				source = Source{Kind: SourceHTML, Entrypoint: "html/index.html", ContentDigest: digest}
-			} else if source.Kind == SourceHTML {
-				return fmt.Errorf("html revision requires HTMLSourcePath")
-			}
-			revision := Revision{Schema: RevisionSchemaURL, Version: Version, ID: input.ID, Prototype: input.Prototype, Parents: copyStrings(input.Parents), Title: strings.TrimSpace(input.Title), State: input.State, Source: source, Styles: copyStyles(input.Styles), CreatedAt: created, RequestID: input.RequestID}
-			if err := validateRevision(revision, sagaID, prototypeID); err != nil {
+		dir := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(prototype.Feature, id)))
+		source := cloneSource(input.Source)
+		if input.HTMLSourcePath != "" {
+			digest, err := publishHTML(dir, input.HTMLSourcePath)
+			if err != nil {
 				return err
 			}
-			candidate := *prototype
-			candidate.Revisions = append(append([]Revision{}, prototype.Revisions...), revision)
-			if err := validateRevisionGraph(&candidate, sagaID); err != nil {
-				return err
+			source = Source{Kind: SourceHTML, Entrypoint: "html/index.html", ContentDigest: digest}
+		} else if source.Kind == SourceHTML {
+			if prototype.CurrentRevision == nil || source.ContentDigest != prototype.CurrentRevision.Source.ContentDigest {
+				return fmt.Errorf("changed HTML requires HTMLSourcePath")
 			}
-			return store.WriteJSON(filepath.Join(stage, "revision.json"), revision, true)
-		})
-		if errors.Is(err, fs.ErrExist) {
-			return fmt.Errorf("revision id %q already exists", input.ID)
 		}
-		if err != nil {
+		content := Revision{Schema: RevisionSchemaURL, Version: Version, ID: "current", Prototype: input.Prototype, Parents: []string{}, Title: strings.TrimSpace(input.Title), State: input.State, Source: source, Styles: copyStyles(input.Styles), CreatedAt: mutationTime(input.CreatedAt)}
+		if err := validateRevision(content, sagaID, id); err != nil {
 			return err
 		}
-		result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Feature, prototypeID, input.ID)}
+		if prototype.CurrentRevision != nil {
+			before, err := currentrecord.Digest(*prototype.CurrentRevision)
+			if err != nil {
+				return err
+			}
+			after, err := currentrecord.Digest(content)
+			if err != nil {
+				return err
+			}
+			if before == after {
+				result.Path = prototypePath(prototype.Feature, id) + "/current.json"
+				result.Replayed = true
+				return nil
+			}
+		}
+		if err := currentrecord.Write(dir, content, nil); err != nil {
+			return err
+		}
+		result.Path = prototypePath(prototype.Feature, id) + "/current.json"
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func RevisePrototype(root, sagaID string, input ReviseInput) (MutationResult, error) {
@@ -277,6 +257,10 @@ func RevisePrototype(root, sagaID string, input ReviseInput) (MutationResult, er
 }
 
 func AddAnnotation(root, sagaID string, input AddAnnotationInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
+
 	prototypeID, err := parsePrototypeURN(input.Prototype, sagaID)
 	if err != nil {
 		return MutationResult{}, err
@@ -321,16 +305,18 @@ func AddAnnotation(root, sagaID string, input AddAnnotationInput) (MutationResul
 		result = MutationResult{URN: urn, Path: annotationPath(featureID, prototypeID, input.ID)}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func Annotate(root, sagaID string, input AddAnnotationInput) (MutationResult, error) {
 	return AddAnnotation(root, sagaID, input)
 }
 
-// AddStyle appends a revision that pins one validated repository stylesheet.
-// The prior immutable HTML tree is copied into the new revision package.
+// AddStyle updates the current definition with one validated stylesheet pin.
 func AddStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
 	prototypeID, err := parsePrototypeURN(input.Prototype, sagaID)
 	if err != nil {
 		return MutationResult{}, err
@@ -345,7 +331,6 @@ func AddStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) 
 	if err := p.err(); err != nil {
 		return MutationResult{}, err
 	}
-	created := mutationTime(input.CreatedAt)
 	revisionURN, err := RevisionURN(sagaID, prototypeID, input.ID)
 	if err != nil {
 		return MutationResult{}, err
@@ -366,33 +351,12 @@ func AddStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) 
 		if prototype == nil {
 			return fmt.Errorf("prototype %q does not exist", prototypeID)
 		}
-		for _, existing := range prototype.Revisions {
-			if existing.ID != input.ID {
-				continue
-			}
-			if input.RequestID != "" && existing.RequestID == input.RequestID {
-				for _, storedStyle := range existing.Styles {
-					if reflect.DeepEqual(storedStyle, style) {
-						result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Feature, prototypeID, input.ID), Replayed: true}
-						return nil
-					}
-				}
-			}
-			return fmt.Errorf("revision id %q already exists", input.ID)
-		}
 		if prototype.CurrentRevision == nil {
 			return fmt.Errorf("prototype %q has conflicting revision heads", prototypeID)
 		}
 		current := *prototype.CurrentRevision
 		if current.Source.Kind != SourceHTML {
 			return fmt.Errorf("repository styles are allowed only for html prototypes")
-		}
-		parents := input.Parents
-		if len(parents) == 0 {
-			parents = copyStrings(prototype.RevisionHeads)
-		}
-		if !sameSet(parents, prototype.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head")
 		}
 		styles := copyStyles(current.Styles)
 		replaced := false
@@ -406,30 +370,20 @@ func AddStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) 
 		if !replaced {
 			styles = append(styles, style)
 		}
-		final := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototype.Feature, prototypeID, input.ID)))
-		err = store.CommitDir(doc.Root, final, func(stage string) error {
-			priorHTML := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototype.Feature, prototypeID, current.ID)), "html")
-			if err := copyHTMLSource(priorHTML, filepath.Join(stage, "html")); err != nil {
-				return err
-			}
-			revision := Revision{Schema: RevisionSchemaURL, Version: Version, ID: input.ID, Prototype: input.Prototype, Parents: copyStrings(parents), Title: current.Title, State: current.State, Source: current.Source, Styles: styles, CreatedAt: created, RequestID: input.RequestID}
-			if err := validateRevision(revision, sagaID, prototypeID); err != nil {
-				return err
-			}
-			candidate := *prototype
-			candidate.Revisions = append(append([]Revision{}, prototype.Revisions...), revision)
-			if err := validateRevisionGraph(&candidate, sagaID); err != nil {
-				return err
-			}
-			return store.WriteJSON(filepath.Join(stage, "revision.json"), revision, true)
-		})
+		if reflect.DeepEqual(current.Styles, styles) {
+			result = MutationResult{URN: input.Prototype, Path: prototypePath(prototype.Feature, prototypeID) + "/current.json", Replayed: true}
+			return nil
+		}
+		current.Styles = styles
+		dir := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(prototype.Feature, prototypeID)))
+		err = currentrecord.Write(dir, current, nil)
 		if err != nil {
 			return err
 		}
 		result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Feature, prototypeID, input.ID)}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func AddRepositoryStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) {
@@ -445,6 +399,9 @@ func mutate(root, sagaID string, operation func(*Document) error) error {
 		return fmt.Errorf("cannot mutate prototypes: %w", err)
 	}
 	return store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		if err := currentrecord.Normalize(root); err != nil {
+			return err
+		}
 		doc, err := Load(root, sagaID)
 		if err != nil {
 			return fmt.Errorf("cannot mutate prototypes after locking: %w", err)
@@ -601,6 +558,9 @@ func copyStyles(values []StyleSource) []StyleSource {
 	return result
 }
 func equalPrototypeCreation(existing Prototype, identity Identity, revision Revision) bool {
+	if existing.current && existing.CurrentRevision != nil {
+		return currentrecord.Equal(*existing.CurrentRevision, revision)
+	}
 	identity.CreatedAt = existing.Identity.CreatedAt
 	if !reflect.DeepEqual(identity, existing.Identity) {
 		return false

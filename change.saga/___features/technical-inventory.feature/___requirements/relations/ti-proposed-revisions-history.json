@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-proposed-revisions-history",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-proposed-revisions:item:history",
-  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
-  "scope": "self",
-  "rationale": "The arrows show proposed authoring transitions, not existing software behavior. Preserve prior definitions and do not silently repin saved slides.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T22:40:17.32112Z",
-  "superseded_at": "2026-09-27T10:27:26.943985Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-proposed-revisions:item:history",
+  "id": "ti-proposed-revisions-history",
+  "rationale": "The arrows show proposed authoring transitions, not existing software behavior. Preserve prior definitions and do not silently repin saved slides.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:26.943985Z",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+  "to_revision": "sha256:c77327374a3046a5074f428c7d2c645f1a49e71b45b7091454650221e91e68cf",
+  "type": "explains",
+  "version": 5
 }

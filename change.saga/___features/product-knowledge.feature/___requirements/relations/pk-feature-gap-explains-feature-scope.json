@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "pk-feature-gap-explains-feature-scope",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:41:26.16798Z",
   "from": "urn:change-saga:change-saga:slide:product-knowledge-ownership:item:feature-ownership-gap",
-  "to": "urn:change-saga:change-saga:story:requirements-feature-scope:criterion:feature-in-query",
-  "scope": "self",
+  "id": "pk-feature-gap-explains-feature-scope",
   "rationale": "The callout identifies the proposed outcome as missing: requirement rows currently omit the owning feature.",
-  "to_revision": "urn:change-saga:change-saga:story:requirements-feature-scope:revision:r2",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:41:26.16798Z"
+  "to": "urn:change-saga:change-saga:story:requirements-feature-scope:criterion:feature-in-query",
+  "to_revision": "sha256:5b6198e9c3465167f7e7d8c318b7c813399ddc20a6013ad837192b8b7c90a9e1",
+  "type": "explains",
+  "version": 5
 }

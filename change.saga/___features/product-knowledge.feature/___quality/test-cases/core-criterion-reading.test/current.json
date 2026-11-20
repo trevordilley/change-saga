@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "Read complete criterion intent with safe authored context.",
+    "preconditions": [
+      "A criterion has a short title, full statement and Markdown containing emphasis, a script tag and a javascript link."
+    ],
+    "steps": [
+      {
+        "action": "Open the story and dedicated criterion pages.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-authored-criterion-context:criterion:full-statement"
+        ],
+        "expected_result": "Both retain the full criterion statement alongside its authored short title.",
+        "id": "check-full-statement"
+      },
+      {
+        "action": "Inspect the rendered Markdown and attempt the unsafe link/script payloads.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-authored-criterion-context:criterion:safe-prose"
+        ],
+        "expected_result": "Emphasis renders; script elements and javascript links do not.",
+        "id": "check-safe-prose"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-criterion-reading",
+    "title": "Read complete criterion intent with safe authored context"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-criterion-reading"
+  }
+}

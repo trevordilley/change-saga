@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-bounded-deck-navigation-14c67b3488fe",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation",
-  "to": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
-  "scope": "self",
-  "rationale": "Steps thumbnail, next, other-deck, previous-anchor define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:19.896054Z",
-  "request_id": "test-review-bounded-deck-navigation-14c67b3488fe"
+  "from": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation",
+  "from_revision": "sha256:8f6eb48666aa3d1d5ebc0acf68daed1101db2f1361733ea49c0b6d6ea7d8f769",
+  "id": "test-review-bounded-deck-navigation-14c67b3488fe",
+  "rationale": "Steps thumbnail, next, other-deck, previous-anchor define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-bounded-deck-navigation-14c67b3488fe",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+  "to_revision": "sha256:488cbfea8d21d935f35d33c706b9acfeef110f878114f9f02646ad2b79e2afad",
+  "type": "verifies",
+  "version": 5
 }

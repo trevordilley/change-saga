@@ -1,0 +1,70 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Promote a planned feature without recreating its knowledge.",
+    "preconditions": [
+      "A fresh planned feature has an Essay, story with criterion, label, milestone, associated design and prototype; save its identity, URL and all knowledge links before any promotion."
+    ],
+    "steps": [
+      {
+        "action": "Before promotion, open the feature Essay and story through ordinary reading links.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:planning-context"
+        ],
+        "expected_result": "The planned feature URL exposes its Essay, subtext, milestone and story navigation.",
+        "id": "check-planning-context"
+      },
+      {
+        "action": "Before promotion, follow the planned feature criterion and associated design links.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:planning-context"
+        ],
+        "expected_result": "The planned feature uses the same ordinary reader surfaces and associated design context as built features.",
+        "id": "check-planned-design-context"
+      },
+      {
+        "action": "Confirm the feature is in Roadmap and absent from Features; promote it to built exactly once and inspect both collections.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:separate-views"
+        ],
+        "expected_result": "The feature moves from Roadmap to Features.",
+        "id": "check-separate-views"
+      },
+      {
+        "action": "After that single promotion, compare saved identity bytes and revisit the original URL, Essay, story and milestone.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:stable-identity"
+        ],
+        "expected_result": "Identity bytes, URL, Essay, story and milestone remain intact.",
+        "id": "check-stable-identity"
+      },
+      {
+        "action": "Compare the saved label membership, design and prototype links after promotion.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:stable-identity"
+        ],
+        "expected_result": "Labels, design and prototype remain attached to the same feature.",
+        "id": "check-additional-preservation"
+      },
+      {
+        "action": "Open the criterion and associated design after promotion and compare with the planned views.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-and-deliver-one-feature:criterion:planning-context"
+        ],
+        "expected_result": "The ordinary reader retains the same authored intent and associated design.",
+        "id": "check-built-design-context"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-feature-lifecycle",
+    "title": "Promote a planned feature without recreating its knowledge"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-feature-lifecycle"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "reviewer seat"
+    ],
+    "code": [
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:a567bece3e0d6185a82956bed3abfc76b284af60e216197f220885a55cb9e999",
+        "end": 334,
+        "path": "internal/saga/model.go",
+        "start": 324
+      },
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:7f9ce08f703f0a0e5e9d2e3228bebcf1338e7165597d2944cc0c1ff96c8480ab",
+        "end": 26,
+        "path": "internal/saga/reviews.go",
+        "start": 8
+      },
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:9f05fe6db62a4a72fa1ae0385256cc4ea4ffaac57fbd5763e6c4447bf9da7bd2",
+        "end": 304,
+        "path": "internal/reviewstate/reviewstate.go",
+        "start": 292
+      }
+    ],
+    "definition": "The declared human-or-AI seat attached to a review action, paired with the Git-derived author who recorded it. A human seat carries no AI fields; an AI seat requires its own stable name, agent, and exact model so direct and delegated actions remain distinct.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Reviewer identity",
+    "stories": [
+      "urn:change-saga:change-saga:story:delegated-ai-attribution",
+      "urn:change-saga:change-saga:story:review-decision"
+    ],
+    "term": "urn:change-saga:change-saga:term:reviewer-identity"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:reviewer-identity"
+  }
+}

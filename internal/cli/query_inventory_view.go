@@ -12,6 +12,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -42,8 +43,8 @@ type inventoryUnresolved struct {
 	Target     string                      `json:"target"`
 	Kind       string                      `json:"kind,omitempty"`
 	Reasons    []string                    `json:"reasons"`
-	Heads      []string                    `json:"revision_heads"`
-	Lifecycle  []string                    `json:"lifecycle_heads"`
+	Heads      []string                    `json:"-"`
+	Lifecycle  []string                    `json:"-"`
 	Selected   []inventoryview.SelectedPin `json:"selected"`
 	ScopePaths []inventoryview.ScopePath   `json:"scope_paths,omitempty"`
 }
@@ -343,7 +344,7 @@ type inventoryUsesData struct {
 
 type inventoryUsesSubject struct {
 	Target   string `json:"target"`
-	Revision string `json:"revision,omitempty"`
+	Revision string `json:"content_digest,omitempty"`
 	Kind     string `json:"kind"`
 	Exists   bool   `json:"exists"`
 }
@@ -365,7 +366,7 @@ func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error
 	root := flags.String("saga", "", "Saga root")
 	target := flags.String("target", "", "canonical technical URN")
 	flags.String("repo", "", "accepted for uniformity; declared uses read no source")
-	revision := flags.String("revision", "", "exact revision URN")
+	revision := flags.String("content-digest", "", "exact saved content digest")
 	depth := flags.Int("depth", 0, "additional declared owner hops")
 	var roles stringList
 	flags.Var(&roles, "role", "implementation_item, review_item, whiteboard_element or system_member; repeatable")
@@ -397,8 +398,8 @@ func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error
 	if err := inventoryQueryTarget(manifest.ID, *target); err != nil {
 		return fail("invalid_argument", err)
 	}
-	if *revision != "" && !strings.HasPrefix(*revision, *target+":revision:") {
-		return fail("invalid_argument", fmt.Errorf("--revision must be a revision URN of --target"))
+	if *revision != "" && !currentrecord.ValidDigest(*revision) {
+		return fail("invalid_argument", fmt.Errorf("--content-digest must be an exact SHA-256 content digest"))
 	}
 	changes := gitdiff.ChangeSet{}
 	snapshot, err := reviewapp.Snapshot(ctx, *root, changes)

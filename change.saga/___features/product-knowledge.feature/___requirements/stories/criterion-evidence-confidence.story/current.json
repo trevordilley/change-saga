@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "distinct-states",
+        "statement": "Quality status distinguishes covered, not_run, failed, stale, missing, and excluded states."
+      },
+      {
+        "id": "stale-pass",
+        "statement": "A passed run is not current when its test revision changes, referenced evidence is no longer current, an evidence code reference is stale, or the source repository differs."
+      },
+      {
+        "id": "progress-not-proof",
+        "statement": "Completing a work item does not make its criterion delivery-ready without a current passing verification or integrated immutable evidence."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:product-manager"
+    ],
+    "statement": "As a product manager deciding whether work is ready, I can distinguish current passing evidence from failed, missing, excluded, or stale evidence so progress is not mistaken for delivery proof.",
+    "story": "urn:change-saga:change-saga:story:criterion-evidence-confidence",
+    "title": "Trust current criterion evidence"
+  },
+  "state": {
+    "reason": "Retired as duplicate: criterion-quality-readiness owns evidence state and current proof outcomes, while track-work-delivery:done-is-not-delivery owns the progress-versus-delivery boundary.",
+    "state": "retired",
+    "story": "urn:change-saga:change-saga:story:criterion-evidence-confidence"
+  }
+}

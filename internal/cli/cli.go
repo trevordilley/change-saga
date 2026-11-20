@@ -21,6 +21,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/areas"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/gitexec"
@@ -159,7 +160,7 @@ var commandUsage = map[string]string{
 	"prototype add-html":            "change-saga prototype add-html --feature ID --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
 	"prototype add-external":        "change-saga prototype add-external --feature ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
 	"prototype revise":              "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
-	"prototype annotate":            "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
+	"prototype annotate":            "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-content-digest URN (--prototype-definition-digest URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
 	"story":                         "change-saga story <add|revise|set-state|move|withdraw|consolidate|remove> [flags] <saga>",
 	"story remove":                  "change-saga story remove --story URN [--dry-run] [--json] <saga>",
 	"story add":                     "change-saga story add --feature ID --id ID --revision ID --event ID --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
@@ -176,7 +177,7 @@ var commandUsage = map[string]string{
 	"citation add":                  "change-saga citation add --feature ID --id ID --kind KIND --title TEXT --reference LOCATOR [flags] <saga>",
 	"relation":                      "change-saga relation <add|repin|supersede|status> [flags] <saga>",
 	"relation add":                  "change-saga relation add --feature ID --id ID --type TYPE --from URN --to URN --rationale TEXT [--scope self|descendants] [flags] <saga>",
-	"relation repin":                "change-saga relation repin --relation URN --rationale TEXT [--id ID] [--to-revision URN] [--from-revision URN] [--to-content-digest DIGEST] [--from-content-digest DIGEST] [--feature ID] [--request-id ID] [--json] <saga>",
+	"relation repin":                "change-saga relation repin --relation URN --rationale TEXT [--to-definition-digest DIGEST] [--from-definition-digest DIGEST] [--to-content-digest DIGEST] [--from-content-digest DIGEST] [--feature ID] [--json] <saga>",
 	"relation supersede":            "change-saga relation supersede --relation URN [--feature ID] [--request-id ID] [--json] <saga>",
 	"relation status":               "change-saga relation status [--relation URN] [--json] <saga>",
 	"design":                        "change-saga design <operation> [flags] <saga>",
@@ -193,11 +194,11 @@ var commandUsage = map[string]string{
 	"quality test-case revise":      "change-saga quality test-case revise --test URN --parent REVISION... --revision ID [definition flags] [--from FILE|-] [flags] <saga>",
 	"quality test-case set-state":   "change-saga quality test-case set-state --test URN --parent EVENT... --state STATE [--event ID] [--reason TEXT] [flags] <saga>",
 	"quality policy":                "change-saga quality policy set [flags] <saga>",
-	"quality policy set":            "change-saga quality policy set --feature ID --criterion URN --story-revision URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
+	"quality policy set":            "change-saga quality policy set --feature ID --criterion URN --story-content-digest URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
 	"quality evidence":              "change-saga quality evidence add [flags] <saga>",
-	"quality evidence add":          "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-revision URN] [--step ID...] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
+	"quality evidence add":          "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-content-digest URN] [--step ID...] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
 	"quality run":                   "change-saga quality run record [flags] <saga>",
-	"quality run record":            "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
+	"quality run record":            "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-content-digest URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
 	"deck":                          "change-saga deck overview [flags] <saga>",
 	"deck overview":                 "change-saga deck overview (--deck TARGET | --review ID | --plan ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
 	"add-deck":                      "change-saga add-deck (--feature ID [--role ux] | --role onboarding | --feature-theme ID) [flags] <saga> <name>",
@@ -402,11 +403,11 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 var commandDescription = map[string]string{
 	"setup-ci":                    "Print a CI and review-ownership setup guide for a coding agent or maintainer.\nDefault: changes only under root change.saga invoke no CI and have no CODEOWNERS.\nExplains exclusions and optional checks or product, architecture and quality owners,\nincluding provider limits. Does not modify files or host settings.",
 	"review test-plan":            "Follow the named review's changed code to affected stories and select their automated tests. Returns test code, recorded commands, selection reasons, and mapping gaps without executing tests. Exit 3 means the plan is partial; --json includes a deduplicated commands list.",
-	"component":                   "Define an identifiable unit of logic with exact pinned code. Use add or revise --from with a complete technical-definition JSON document; immutable revisions preserve history.",
-	"system":                      "Define a reusable interaction diagram with pinned Components, directed data flow, and exact scoped code. Implementation Items link a specific revision without inheriting coverage.",
-	"data-entity":                 "Define a logical payload or persisted record: curated fields and keys, holding Components, and owned association/production relationships. Requires inventory format 2; every revision states proposed or implemented intent.",
+	"component":                   "Define an identifiable unit of logic with exact pinned code. Add a stable identity or revise current technical-definition content in place; Git records earlier values.",
+	"system":                      "Define a reusable interaction diagram with pinned Components, directed data flow, and exact scoped code. Implementation Items pin its exact content digest without inheriting coverage.",
+	"data-entity":                 "Define a logical payload or persisted record: curated fields, holding Components, and owned relationships. Requires inventory format 2; current content states proposed or implemented intent.",
 	"erd":                         "Author the application ERD: an offline SVG visual, its directory of data-entity pins, and element bindings. Requires inventory format 2.",
-	"erd-overlay":                 "Propose data-model changes against an exact ERD revision without rewriting it: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
+	"erd-overlay":                 "Propose data-model changes against an exact ERD content digest: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
 	"inventory":                   "Adopt inventory format 2 explicitly. Existing records are not rewritten; legacy revisions read as unspecified intent. Older change-saga versions then refuse the inventory instead of dropping content.",
 	"init":                        "Create the repository's Saga: the saga.json manifest and a reviewer README. With no\npath it creates change.saga in the --repo directory (by default the current\ndirectory), identified and titled after the repository's origin remote (or, without\none, its top-level directory). The recommended idiom is one Saga per repository; a\nmonorepo documents each app as features of it. Another Saga never blocks init, which\nonly notes it. Then start with a review of the branch or pull request (review create):\nits deck explains the change's architecture and covers every changed line. That is the\nbest way to learn the tool, and a Saga of reviews alone is complete; personas,\nstories, features, design, and living documentation are there if the team ever\nwants them. To document existing\ncode instead, observe HEAD with status and reference the code each Item explains.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for growing the app's Saga into\nliving documentation through a product interview and evidence gathering, for a team that wants\nliving documentation beyond its reviews; not the first step. The command does not modify the\nrepository. It grows a Saga that holds only reviews; if the Saga already holds living\ndocumentation, it stops and recommends normal authoring unless --overhaul explicitly\nrequests a major documentation rebuild.",
@@ -428,32 +429,32 @@ var commandDescription = map[string]string{
 	"term remove":                 "Delete a term. Records that existed only to link to it are deleted with it; Git keeps the history.\nAnything with content of its own that referenced it is listed with how to adjust it, and\nstatus and check --covers health report it until you do.",
 	"term set-state":              "Retire a term the project no longer uses, or restore it. It stays as history.",
 	"persona remove":              "Delete a persona. Records that existed only to link to it are deleted with it; Git keeps the history.\nAnything with content of its own that referenced it is listed with how to adjust it, and\nstatus and check --covers health report it until you do.",
-	"persona":                     "Author the people the app serves. A persona is someone who gets value from the\napp, the \"As a ...\" of a user story; a tool, agent, or system that operates the\napp is not one, however much of the work it does. Personas are optional living\nrecords: a story revision may name the personas it serves, and status reports\neach active persona no accepted story serves as a coverage gap. Nothing blocks\non personas.",
+	"persona":                     "Author the people the app serves. A persona is someone who gets value from the\napp, the \"As a ...\" of a user story; a tool, agent, or system that operates the\napp is not one, however much of the work it does. Personas are optional living\nrecords: a current story may name the personas it serves, and status reports\neach active persona no accepted story serves as a coverage gap. Nothing blocks\non personas.",
 	"persona add":                 "Add an active persona: a person or role who gets value from the app, the one a\nuser story is written for. Good: \"Shop owner: runs the store and needs the\nweek's orders in one place.\" Bad: \"Coding agent\" -- it operates the app on\nsomeone else's behalf, so it is a way of working, not someone served.",
 	"persona revise":              "Append a complete persona revision: its name and description. Keep the persona a\nperson who gets value from the app, never a tool, agent, or system that operates\nit: you would write \"As a shop owner, I can ...\", never \"As a coding agent, I\ncan ...\". Retire one that turns out not to be a persona with `persona\nset-state`; it stays as history.",
 	"flag remove":                 "Delete a feature flag. Records that existed only to link to it are deleted with it; Git keeps the history.\nAnything with content of its own that referenced it is listed with how to adjust it, and\nstatus and check --covers health report it until you do.",
 	"flag":                        "Author feature flags that gate stories or whole features. A gated story can be\nimplemented but not enabled; status reports it that way.",
-	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
+	"prototype":                   "Author current interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
 	"prototype add-html":          "Copy an HTML prototype into the Saga, for one that does not live in the project. Each\nrevision is a full copy, so later edits outside the Saga never change it. Prefer prototype add.",
 	"prototype add":               "Add a prototype: an HTML file in the project, committed with the code. Nothing is copied;\nthe Saga points at the file and the folder beside it (--root) as of a commit. Commit the file\nfirst. When it changes, the reviewer shows the prototype as stale until prototype update.",
 	"prototype update":            "Record a new version of a prototype added with prototype add, after its file changed and was\ncommitted. It keeps the path, title, and state unless you change them.",
 	"prototype add-external":      "Add a prototype that lives outside the Saga. A plain --url is a reference; an --embed-url\nrenders inline only with explicit provider, origin, sandbox, and permission allowlisting.",
-	"prototype revise":            "Append a complete immutable prototype revision. Name every current head; an html\nrevision requires a fresh --source so no mutable directory becomes part of the revision.",
+	"prototype revise":            "Replace current prototype documentation and explicit source pins. Copied HTML remains content-addressed.",
 	"prototype remove":            "Delete a prototype and its annotations. Records that existed only to link to it are deleted with it; Git keeps the history.\nAnything with content of its own that referenced it is listed with how to adjust it, and\nstatus and check --covers health report it until you do.",
 	"prototype annotate":          "Pin one part of a prototype to the story or criterion it means, with a rationale and an\nelement, text, region, or provider selector. A prototype may stay unlinked while exploration\ncontinues; it simply cannot contribute to readiness until a current annotation connects it.",
-	"quality":                     "Define how requirements are verified, with ordered cases and optional implementation evidence.\nPlanned cases need no code or execution result; legacy runs are retained only as history.",
+	"quality":                     "Define verification with ordered cases and optional implementation evidence. Planned cases need no code or execution result. Recorded test executions are separate factual evidence.",
 	"quality test-case":           "Define test cases with ordered steps, lifecycle them, and revise them as the behavior they\nverify evolves.",
 	"quality test-case add":       "Add a test case: immutable identity, a complete first revision with ordered steps and declared\npositive/negative/edge kinds, and a proposed lifecycle root. Link it to criteria with verifies\nrelations; an unlinked test is an orphan and cannot satisfy coverage.",
 	"quality test-case revise":    "Append a complete immutable revision. Name every current head; with one parent, omitted\nfields are inherited, while reconciling several heads requires the complete definition. Step IDs\nremoved earlier cannot be reused. Evidence and verifies relations retain their historical pins.",
 	"quality test-case remove":    "Delete a test case, its evidence, and the relations that named it. Records that existed only to link to it are deleted with it; Git keeps the history.\nAnything with content of its own that referenced it is listed with how to adjust it, and\nstatus and check --covers health report it until you do.",
 	"quality test-case set-state": "Append a proposed, active, deprecated, or retired lifecycle event. Name every current head;\nnaming several heads reconciles a conflict. Lifecycle is not a run result.",
-	"quality policy":              "Declare which coverage kinds a criterion requires at an exact story revision.",
+	"quality policy":              "Declare required coverage kinds for one criterion at an exact story content digest.",
 	"quality policy set":          "Record an immutable policy for one criterion and story revision. Without a policy,\npositive, negative, and edge are required. Explain omitted kinds in the rationale.\nSupersede every current head for the same pin so exactly one remains.",
-	"quality evidence":            "Map a test revision and optional stable step IDs to exact test code or implementation under test.",
+	"quality evidence":            "Map an exact test-definition content digest and stable step IDs to test code or implementation under test.",
 	"quality evidence add":        "Record immutable evidence. test_implementation code references join global changed-source\naccounting; implementation_under_test references name the code the test exercises. Repeat\n--step to map specific actions/assertions. Legacy execution_artifact records remain supported\nwithout affecting coverage or readiness. --batch validates the whole set before the first write.",
 	"quality run":                 "Deprecated compatibility writer for immutable execution history.",
 	"quality run record":          "Append an immutable legacy run pinned to a test revision, code commit (--commit, default HEAD\nof --repo), and evidence. Name every current run head. Results never affect Quality coverage,\nreadiness, or the definition reader. Recorded commands are inert and never executed.",
-	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified. An accepted story must have at least one\nindependent pass/fail criterion. Add the narrowest obligation supported by confirmed\nintent; never invent broader behavior merely to make a lifecycle transition valid.",
+	"story":                       "Create and edit current user stories, acceptance criteria, state, and reason. Stories may lead, follow, or evolve alongside prototypes; cite their source. An accepted story needs at least one independent pass/fail criterion. Add the narrowest obligation supported by confirmed intent. Git records earlier values.",
 	"feature deliver":             "Deliver a Roadmap feature into the existing feature it augments: move its stories, prototypes, test cases, citations, relations, and decks there with their URNs unchanged,\nthen delete the Roadmap feature. The recipient's overview is marked for revision until feature set-overview rewrites it.",
 	"feature set-overview":        "Write detailed authored Markdown in the feature report without changing feature.json.\nUse headings for description, purpose, rationale, and boundaries; Git retains prior prose.",
 	"story add":                   "Use Title for the short value and Statement for the full authored need: As a <persona> I can <value>.\nUse --overview or --overview-source for detailed Markdown purpose, rationale and boundaries.\nAdd a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one. A proposed story\nmay remain without criteria while its behavior is unknown; do not invent them.",
@@ -462,7 +463,7 @@ var commandDescription = map[string]string{
 	"story remove":                "Delete a story and its acceptance criteria. Records that exist only to link to it\n(relations, prototype annotations, quality policies, coverage exceptions) are deleted with\nit; Git keeps the history. Slides, test cases, terms, flags, and onboarding Items that\nreferenced it are listed with how to adjust them, and status reports them until you do.",
 	"story withdraw":              "Withdraw a proposed or deferred story by appending an explicit rejected lifecycle\nevent with a reason. Accepted intent cannot be withdrawn through this convenience.",
 	"story consolidate":           "Preview, then deliberately consolidate one duplicate story into a canonical existing\nstory. Every current duplicate criterion requires an exact mapping. Applying appends an\nhonest rejected (or accepted-to-retired) lifecycle event and replaces only affected\nrelations while preserving their prior records as superseded history.",
-	"criterion":                   "Add, revise, or remove one acceptance criterion by creating a complete immutable\nstory revision from an explicit current parent head. Each criterion is one independent,\nobservable pass/fail obligation, no broader than the confirmed story requires.",
+	"criterion":                   "Edit one acceptance criterion in the current story while preserving stable criterion identities. Each criterion is one independent,\nobservable pass/fail obligation, no broader than the confirmed story requires.",
 	"criterion add":               "Add one explicitly identified, independent pass/fail criterion. Use the narrowest\nobligation supported by confirmed intent. Historical criterion IDs are never reusable,\nincluding after removal.",
 	"criterion revise":            "Revise one criterion's statement, title, or Markdown overview without changing its\nstable identity. Omitted fields are preserved; empty title or overview clears it.\nUse --edit to inspect the complete proposed story revision in $EDITOR.",
 	"criterion remove":            "Remove one criterion through a complete story revision. The required reason is\nreturned as commit guidance; no mutable tombstone is stored.",
@@ -471,7 +472,7 @@ var commandDescription = map[string]string{
 	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.\n--feature only chooses where the citation is stored: its URN names no feature, so a\nstory in any feature may cite it.",
 	"relation":                    "Create, re-affirm, explicitly supersede, or check the currency of pinned traceability relations.",
 	"relation add":                "Link stories and criteria to design, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits. Test cases may verify criteria,\nscope is self unless a Deck/Slide source declares descendants, and each omitted required\nrevision pin defaults to the endpoint's unique current head (reported as it is pinned).",
-	"relation repin":              "Say that one relation still holds, and advance its pins to the heads it is behind.\nThe relation keeps its id, its rationale, and every revision anyone read it against: the\nconfirmation is appended beside it and the relation record itself is never rewritten. Use it\nwhen a criterion was reworded and you have read the new wording; a revision that left the\ncriterion alone carries its pin forward on its own and asks nothing.",
+	"relation repin":              "Say that one relation still holds, and advance its pins to the heads it is behind.\nEdit the current relation pins and reassessment rationale in place; Git retains prior values. Use it\nwhen a criterion was reworded and you have read the new wording; a revision that left the\ncriterion alone carries its pin forward on its own and asks nothing.",
 	"relation supersede":          "Retire one relation without erasing it. Add its corrected replacement separately;\na pivot is represented by normal requirement, design, plan, and relation revisions.",
 	"relation status":             "Report each relation as current, stale, conflicted, invalid, or superseded by comparing\nits persisted revision and digest pins with current heads. Only a current relation counts\nas coverage; every other status lists concrete reasons.",
 	"design":                      "Develop technical-design chapters, sections, and fragments that trace to user\nstories and acceptance criteria. Design may evolve alongside prototypes and requirements;\nits addressable packages are partitioned for parallel authoring and clean merges.",
@@ -486,11 +487,11 @@ var commandDescription = map[string]string{
 	"add-deck":                    "Add an implementation deck. The implementation decks appear in the Saga's Technical\nsection; split the delivered change into decks only where a concern warrants its own review.",
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"apply-slide":                 "Publish one complete implementation or review slide from structured JSON: its visual asset or a\n\"diagram\" source the CLI renders to SVG, semantic Items and selectors, exact code evidence,\nand pinned Item-level criterion links. With --review (or \"review\" in the request) the slide\ngoes to that pull request review's deck; its Items carry no evidence and are covered after\npublishing with cover --changed-lines. --dry-run returns the same semantic diff without\npublishing; updates require the current snapshot. --print-current SLIDE prints the slide's\ncomplete current request (expected_snapshot and a fresh request_id filled in) to edit and\napply, so changing one field never means rebuilding the slide. SLIDE is an ID, target, or\nrecord path; an ID slides of several decks share must be given as its target, and a review\nslide's ID needs --review. An update identical to the current revision publishes nothing and\nreports the slide unchanged.",
-	"whiteboard":                  "Publish and inspect technical-design documents; assign existing boards to navigation roles, rename, archive, and restore without changing identity or content history. Source updates publish a complete immutable revision with the current revision as parent.",
-	"whiteboard publish":          "Publish a complete diagram.Document from JSON. Sources pin exact revisions; updates require the current board revision ID as --parent.",
-	"whiteboard get":              "Return the complete diagram source, or a focused instance description with --focus. Use --revision to read history.",
+	"whiteboard":                  "Publish and inspect current technical-design documents; assign roles, rename, archive, and restore while preserving identity. Reassess exact source pins when content changes; Git owns history.",
+	"whiteboard publish":          "Replace the current diagram.Document from JSON. Sources pin stable targets and exact content digests.",
+	"whiteboard get":              "Return current diagram source or a focused appearance with --focus. Use Git for history.",
 	"whiteboard describe":         "Describe the document or a focused instance path with source pins, transformed geometry and connection context. Use --format json for structured output.",
-	"whiteboard check":            "Validate whiteboard history and the current composition, or one exact revision with --revision.",
+	"whiteboard check":            "Validate current whiteboard content and resolve its exact source pins.",
 	"diagram":                     "Edit and check diagram-sourced slides of implementation and review decks. A diagram is an\nordered list of explicitly positioned nodes, edges, text, groups, and graphics; the CLI\nrenders it to the slide's SVG. Read any slide compactly with `change-saga diagram describe`;\nname a review slide by its URN or with --review.",
 	"diagram edit":                "Apply a JSON array of operations (add, update, move, remove, style, align, distribute,\ncanvas) to a slide's diagram at an exact snapshot and republish it through apply-slide,\nkeeping its Items, evidence, and criterion links. Nothing moves unless named: moving a\nnode leaves its edges where they are. [] re-renders the unchanged source.",
 	"diagram describe":            "Read one slide compactly: its takeaway, Items in reading order with their first code\nreferences (path:start-end, old side marked, and note; the rest counted) and criterion-link\ncounts, and, for a diagram-sourced slide, its groups, nodes, edges, and\ncontainment in document order. Geometry, styling, decorative elements, and asset bytes are\nomitted, so the view cannot rebuild the drawing. Text by default; --format json for tools.",
@@ -529,9 +530,9 @@ whole batch is resolved before anything is written, and a failing record leaves 
 untouched.`,
 	"remove-coverage":  "Delete one exact coverage record named by query mappings or fragment-diffs.",
 	"revise-deck":      "Correct a deck's title, objective, or rank in place. Its identity and slides are\nunchanged. Repeating a revise is a no-op reported as replayed.",
-	"remove-deck":      "Remove a deck and its content from active design. Complete-slide history and\nassets are retained with removal events. Dangling relations are listed.",
+	"remove-deck":      "Remove a deck and its content from active design. Git retains earlier slide content; ordinary assets are retained. Dangling relations are listed.",
 	"revise-slide":     "Correct a slide's title, section, intent, layout, takeaway, or rank in place;\nset-slide-content replaces its visual. Its identity and Items are unchanged.",
-	"remove-slide":     "Remove a slide and its Items from active design, preserving complete-slide\nhistory. --expected-snapshot guards against a newer edit. Review slides stay protected.",
+	"remove-slide":     "Remove a slide and its Items from active design, with history in Git. --expected-snapshot guards against a newer edit. Review slides stay protected.",
 	"revise-item":      "Correct an Item's label, description, kind, selector, callout fields, record, or\nrank in place. Its identity and code evidence are unchanged.",
 	"remove-item":      "Delete an Item and its code evidence, and drop it from its slide's reading order.\nA callout about the Item must be revised or removed first.",
 	"revise-chapter":   "Correct a chapter's title or display order in place. Its identity and content are\nunchanged.",
@@ -1384,7 +1385,7 @@ func Spec(args []string, out io.Writer) error {
 	if *jsonOutput {
 		whiteboardDiagram := diagram.Contract()
 		whiteboardDiagram["request_field"] = "complete diagram.Document supplied via whiteboard publish --id ID --from FILE|-"
-		whiteboardDiagram["storage"] = "document inside an immutable " + requirements.WhiteboardDir + "/<board-id>/revisions/<revision-id>.json revision"
+		whiteboardDiagram["storage"] = "editable document inside " + requirements.WhiteboardDir + "/<board-id>/current.json"
 		return writeJSON(out, map[string]any{
 			"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
 			"hierarchy":            []string{"overview", "chapter", "section", "fragment"},
@@ -1402,27 +1403,27 @@ func Spec(args []string, out io.Writer) error {
 			},
 			"technical_inventory": map[string]any{"root": requirements.InventoryDir, "kinds": TechnicalKinds, "format_kinds": map[string]int{"component": 1, "system": 1, requirements.KindDataEntity: 2, requirements.KindERD: 2, requirements.KindERDOverlay: 2},
 				"format":       map[string]any{"marker": requirements.InventoryDir + "/" + requirements.InventoryFormatName, "current": requirements.CurrentInventoryFormat, "absent": 1, "adopt": "inventory adopt-format --format 2 PATH (explicit; no automatic migration)", "older_readers": "refuse the marker, new directories and Item fields rather than drop content"},
-				"authoring":    "component|system|data-entity|erd|erd-overlay add|revise --id ID --from FILE --revision ID [--parent URN] [--delivery REV | --visual SVG] PATH; set-state --event ID --state active|retired --reason TEXT --parent URN",
-				"intent":       map[string]any{"values": []string{requirements.IntentProposed, requirements.IntentImplemented}, "legacy": requirements.IntentUnspecified, "proposed": "requires baseline: an implemented ancestor revision URN or \"none\"; code optional", "implemented": "requires delivery {repository, commit} and 1-64 references valid at their commit and current at delivery", "edges": "each interaction/relationship has its own intent; an implemented edge needs implemented endpoints; nothing cascades"},
-				"evidence_ids": "format-2 references carry an id unique across the revision; selections name (revision pin, evidence id)",
+				"authoring":    "component|system|data-entity|erd|erd-overlay add|revise --id ID --from FILE [--delivery REV | --visual SVG] PATH; set-state --id ID --state active|retired --reason TEXT PATH",
+				"intent":       map[string]any{"values": []string{requirements.IntentProposed, requirements.IntentImplemented}, "legacy": requirements.IntentUnspecified, "proposed": "requires baseline: an implemented content digest available in Git or \"none\"; code optional", "implemented": "requires delivery {repository, commit} and 1-64 references valid at their commit and current at delivery", "edges": "each interaction/relationship has its own intent; an implemented edge needs implemented endpoints; nothing cascades"},
+				"evidence_ids": "format-2 references carry stable evidence ids; selections name a content digest and evidence id",
 				"bounds":       map[string]int{"references_per_owner": requirements.MaxEvidencePerOwner, "relationships": requirements.MaxRelationships, "fields": requirements.MaxEntityFields, "holders": requirements.MaxEntityHolders, "erd_directory": requirements.MaxERDDirectory, "erd_bindings": requirements.MaxERDBindings, "overlay_pins": requirements.MaxOverlayPins, "visual_bytes": requirements.MaxVisualBytes, "item_selections": saga.MaxItemSelections, "selection_path": saga.MaxSelectionPath},
-				"item_link":    "documentation: {target: Component-System-or-data-entity-URN, revision: Revision-URN}; optional documentation_view: full commit of a saved Saga view admitting a non-current pin; optional selections: [{id, path: [pins from documentation], evidence: id, code: subset reference}]",
-				"coverage":     "only direct Item code; documentation never transfers coverage; selections are explicit inputs to inventory-aware coverage consumers", "history": "immutable identity, complete revisions and lifecycle events; all heads explicit"},
+				"item_link":    "documentation: {target: Component-System-or-data-entity-URN, revision: sha256-content-digest}; optional documentation_view: full commit of a saved Saga view admitting a non-current pin; optional selections: [{id, path: [pins from documentation], evidence: id, code: subset reference}]",
+				"coverage":     "only direct Item code; documentation never transfers coverage; selections are explicit inputs to inventory-aware coverage consumers", "history": "editable current content and state; Git owns history"},
 			"whiteboards": map[string]any{
-				"purpose":          "spatial technical-design documents using the shared diagram grammar",
-				"identity":         "--id selects a named document, not a diagram type; --focus selects an appearance within it",
-				"root":             requirements.WhiteboardDir,
-				"storage":          requirements.WhiteboardDir + "/<board-id>/revisions/<revision-id>.json",
-				"schema":           requirements.WhiteboardSchemaURL,
-				"revision_version": 1,
-				"diagram_source":   whiteboardDiagram,
-				"diagram_scope":    "shared grammar; operations describe slide editing, not whiteboard transactions; whiteboards use renderer reveal steps for focused Replay and support only the commands listed here",
+				"purpose":        "spatial technical-design documents using the shared diagram grammar",
+				"identity":       "--id selects a named document, not a diagram type; --focus selects an appearance within it",
+				"root":           requirements.WhiteboardDir,
+				"storage":        requirements.WhiteboardDir + "/<board-id>/current.json",
+				"schema":         currentrecord.Schema,
+				"record_version": 1,
+				"diagram_source": whiteboardDiagram,
+				"diagram_scope":  "shared grammar; operations describe slide editing, not whiteboard transactions; whiteboards use renderer reveal steps for focused Replay and support only the commands listed here",
 				"history": map[string]string{
-					"revisions": "immutable complete diagram snapshots; identical retries are idempotent",
-					"parent":    "first publication has no parent; updates require the observed unique current board revision ID as --parent",
-					"reads":     "default reads require the unique current head and reject conflicting heads; --revision selects exact history, never a fallback",
+					"revisions": "one editable current document; identical content is idempotent",
+					"parent":    "no Saga parent graph; Git owns branching and merging",
+					"reads":     "reads never persist normalization; historical versions come from Git commits",
 				},
-				"source_pins": "depicted ERDs and data entities pin exact target and revision URNs; optional element or owned relationship selector; sources never follow newer revisions",
+				"source_pins": "depicted sources name stable targets and exact content digests; optional element or owned relationship selector; stale pins never follow current content",
 				"commands": map[string]string{
 					"publish":       commandUsage["whiteboard publish"],
 					"get":           commandUsage["whiteboard get"],
@@ -1438,11 +1439,11 @@ func Spec(args []string, out io.Writer) error {
 				"presentation": map[string]any{
 					"storage":     requirements.WhiteboardDir + "/.metadata.json",
 					"roles":       []string{"erd", "infrastructure", "data-flows", "architecture"},
-					"identity":    "role, display name, and archival are independent of immutable source revisions and stable board identity",
+					"identity":    "role, display name, and archival are independent of current content and stable board identity",
 					"concurrency": "assign-role checks --expect; --move additionally requires --expected-snapshot from whiteboard list; all metadata writes accept an optional expected snapshot",
 					"removal":     "archive removes ordinary discovery only; assigned boards must first be unassigned or replaced; restore preserves all historical links",
 				},
-				"focus": "--focus selects a frame or element instance path for reads; publish always appends a complete board snapshot",
+				"focus": "--focus selects an appearance for reads; publish replaces current content",
 				"compatibility": map[string]string{
 					"absent":        "the subtree is optional; v5 Sagas without it remain valid",
 					"older_readers": "reject an adopted ___whiteboards subtree rather than silently ignore it",
@@ -1493,7 +1494,7 @@ func Spec(args []string, out io.Writer) error {
 				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
 				"content":        "one self-contained visual file sharing its slide manifest stem",
 				"diagram_source": diagram.Contract(),
-				"removal":        "remove-slide appends a deleted revision with one current parent; remove-deck retains transaction bundles with deleted: true. Historical revisions and assets remain; active projections exclude removed content. Upgrade older readers before use.",
+				"removal":        "remove-slide edits current removal state; Git owns the earlier content; ordinary assets and actual review facts are retained",
 				"visual_forms": map[string]string{
 					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
 					"data-flow": "directed inputs, transformations, storage, and outputs", "sequence": "participants, time, calls, responses, and exceptional returns",
@@ -2211,11 +2212,9 @@ self-contained SVG, image, or HTML file sharing its manifest stem. Deck
 evidence may target only Items.
 
 remove-slide and remove-deck also remove apply-slide content from active design.
-Slide removal appends a deleted revision; deck removal retains transaction
-bundles with a deleted marker. Historical revisions and assets remain intact.
-Use remove-slide --expected-snapshot to refuse a newer edit, and reconcile
-divergent heads first. Review slides stay protected. Upgrade older readers
-before using deletion markers; existing documents need no migration.
+Slide removal edits current removal state; deck removal updates the current deck.
+Git stores their historical content. An expected snapshot is an optional content
+concurrency check. Actual review decisions and evidence remain domain facts.
 
 Slides may add front: authored summary bullets; fallback is takeaway then Item
 labels. The existing entrypoint is Back, with the same Items and evidence.
@@ -2308,34 +2307,24 @@ Append-only ___verifications/<id>.json records mark them unverified, verified,
 failed, or inconclusive and preserve the method and reproducible command. Claim
 evidence never contributes to coverage. Git history supplies attribution.
 
-Components identify meaningful units of logic with exact pinned code. Systems
-model their interactions and data flow with pinned Component revisions and
-exact interaction evidence. They live under ___inventory and have immutable
-identity, revisions and lifecycle events. Use component/system add|revise|set-state
-and query inventory. Implementation/review Item documentation links pin {target,
-revision}; they never transfer code coverage. Existing Item.record role rules
-remain unchanged. Stale pins and history stay inspectable; no autoapproval or
-automatic repinning occurs.
+Components and Systems store stable identities with editable current content
+and state under ___inventory. Semantic source links name a stable target and an
+exact content digest. Source commit/range pins remain real code evidence.
+Technical definitions never transfer code coverage to a slide automatically.
 
-Technical designs use named whiteboard documents, identified by --id rather
-than a diagram kind. The optional v5 subtree stores immutable complete diagrams
-in ___whiteboards/<board-id>/revisions/<revision-id>.json (revision version 1).
-Each document has its own history; the layout and schema require whiteboard
-content. Whiteboards share the implementation deck's diagram source grammar and
-renderer. ERD, infrastructure and system design are authoring guidance, not types.
-Publish with whiteboard publish --id ID --revision REVISION [--parent REVISION]
-[--name TITLE] --from FILE|- <saga>. First publication has no parent; updates
-require the observed unique current revision of that document as --parent.
-Identical retries are idempotent. Existing source adapters pin exact ERD or
-data-entity target/revision URNs, optionally an element or owned relationship;
-they never follow newer revisions. Component/system source pins are not yet
-supported. Read with whiteboard get|describe|check --id ID [--revision REVISION]
-[--focus PATH] <saga>. Default reads require the unique current head; --revision
-selects exact history without fallback. Focus names an element instance path.
-Describe supports --format text|json; check supports --json. Focus is read-only;
-publish appends a complete document snapshot. Whiteboard edit transactions are
-not supported. Older readers reject an adopted ___whiteboards subtree; its
-absence remains valid and requires no migration.
+Git is the revision history. Stories, personas, terms, flags, deprecations,
+prototypes, inventory and test definitions use current.json, with authored
+content and current state. Whiteboards use ___whiteboards/<id>/current.json
+containing name and document. Existing identity files keep stable URNs.
+There are no content revision IDs, parent/head graphs or Saga reconciliation.
+Use add for new identities and revise/set-state/publish to edit current values.
+Whiteboards use whiteboard publish --id ID --from FILE|- PATH and get|describe|
+check --id ID [--focus PATH] PATH. Their diagram grammar and renderer are shared
+with slides. Historical versions are read from Git; query history --node URN
+reports their actual commits. Normal reads never write normalization. Writers
+and normalize PATH convert exact legacy pins before discarding old graph files;
+ambiguous legacy content is retained for explicit resolution. Older readers must
+upgrade before consuming the current-record and version-2 complete-slide layouts.
 
 The Saga is documentation. Stories, designs, test cases, and decks carry no
 approvals and no comments. A pull request's review is where a change is

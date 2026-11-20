@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "No current approval remains for this seat, thumbnail is none, and history retains approved followed by none.",
+    "preconditions": [
+      "Open pr-1 as a human reviewer with no prior decision on greeting."
+    ],
+    "steps": [
+      {
+        "action": "Approve greeting and reload.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:withdraw-review-decision:criterion:withdraw-current"
+        ],
+        "expected_result": "The approval remains visible.",
+        "id": "approve"
+      },
+      {
+        "action": "Choose Withdraw approval.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:withdraw-review-decision:criterion:withdraw-current"
+        ],
+        "expected_result": "No current approval remains for this seat, thumbnail is none, and history retains approved followed by none.",
+        "id": "withdraw"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-withdrawal",
+    "title": "Withdraw the current seat decision and preserve its history"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-withdrawal"
+  }
+}

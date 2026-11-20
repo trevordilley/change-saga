@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "named",
+        "overview": "ERD, Infrastructure and Data flows are document conventions rather than separate diagram engines.",
+        "statement": "Publishing one named whiteboard leaves the current content of its siblings unchanged.",
+        "title": "Independent documents"
+      },
+      {
+        "id": "history",
+        "overview": "Its original source pins are retained; missing historical content remains unresolved instead of substituting a newer definition.",
+        "statement": "Previously committed whiteboard content remains inspectable through real Git history after current content changes.",
+        "title": "Exact historical view"
+      },
+      {
+        "id": "parent",
+        "overview": "Reread current content before another relative edit; complete publications replace the current board under the writer lock.",
+        "statement": "A relative diagram edit with a stale base digest is rejected before applying the edit.",
+        "title": "Concurrent update guard"
+      },
+      {
+        "id": "focus",
+        "overview": "Repeated appearances retain distinct paths even when they refer to the same source identity.",
+        "statement": "A reader can focus a section or element by its instance path within the named whiteboard.",
+        "title": "Section focus"
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:reading-design-implementation"
+    ],
+    "overview": "A named board is an independent current document built with the shared diagram grammar. Sections provide local reading context, and explicit connections explain how areas relate. Publication replaces complete current content atomically; relative edits require a current digest. Git retains earlier committed content, original evidence pins, attribution and merge history. This code-derived story remains proposed; implementation evidence is not a product acceptance decision.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can focus a named whiteboard and reopen exact content from a Git commit so I can inspect a design in its original context.",
+    "story": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history",
+    "title": "Inspect a design without losing its history"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history"
+  }
+}

@@ -1,9 +1,11 @@
 package saga
 
 import (
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"unicode/utf8"
@@ -345,7 +347,7 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 	}
 
 	knownRecord := func(name string) bool {
-		contentRecord := allowedAssets[name] || flatDeckName.MatchString(name) || flatSlideName.MatchString(name) ||
+		contentRecord := allowedAssets[name] || regexp.MustCompile(`^24-a-[0-9a-f]{52}\.[a-z0-9]+$`).MatchString(name) || flatDeckName.MatchString(name) || flatSlideName.MatchString(name) ||
 			flatItemName.MatchString(name) || flatEvidenceName.MatchString(name) || flatSlideTransactionName.MatchString(name)
 		return contentRecord || strings.HasPrefix(name, ".change-saga-stage-") || strings.HasPrefix(name, ".change-saga-write-")
 	}
@@ -686,6 +688,10 @@ var DocumentationKinds = []string{"component", "system", "data-entity"}
 func ValidPinOfKinds(sagaID string, link DocumentationLink, kinds ...string) bool {
 	if !validRecordOfKinds(sagaID, link.Target, kinds) {
 		return false
+	}
+	if strings.HasPrefix(link.Revision, "sha256:") && len(link.Revision) == 71 {
+		_, err := hex.DecodeString(strings.TrimPrefix(link.Revision, "sha256:"))
+		return err == nil
 	}
 	prefix := link.Target + ":revision:"
 	id := strings.TrimPrefix(link.Revision, prefix)

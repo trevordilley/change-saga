@@ -1,7 +1,8 @@
 # Deprecation annotations
 
-A deprecation is an authored assertion with its own stable identity, immutable
-revisions and lifecycle events. It does not edit or remove the content it names.
+A deprecation is an authored assertion with a stable identity, editable current
+content, and current active/withdrawn state. Git records earlier values.
+It does not edit or remove the content it names.
 Use it to record why something should no longer be used, with an optional
 replacement. It is independent of feature flags, technical-record retirement,
 review verdicts and changed-line coverage.
@@ -26,7 +27,7 @@ landmarks; decks, slides and Items (including review-scoped records); and
 Components, Systems, data entities, ERDs and ERD overlays. Named whiteboards
 use `urn:change-saga:SAGA:whiteboard:BOARD`. For a native or repeated whiteboard
 appearance, add `--element PATH` using the path returned by `whiteboard describe`.
-That path is local to the pinned board revision. To deprecate a reusable depicted
+That path is local to the pinned board content. To deprecate a reusable depicted
 entity everywhere it is shown, name its technical identity instead.
 
 Targets are **self-scoped**: no containment, story, documentation or replacement
@@ -37,7 +38,7 @@ annotations for depicted source identities with their original pins.
 ## Author through the CLI
 
 First discover identities with normal queries or `whiteboard describe`.
-The writer pins the target's unique current revision or authored-content digest.
+The writer pins the target's exact current content digest.
 It refuses missing or conflicted targets. It never rewrites the target.
 
 ```sh
@@ -55,9 +56,9 @@ change-saga deprecation add --id legacy-parser \
 Use `--repo PATH` when code lives in a separate checkout. Replacement links are
 optional, independently pinned and checked for stale/missing/conflicted state.
 For whiteboard replacement appearances, use `--replacement-element PATH`.
-`--request-id ID` supports exact retries; `--json` returns created URNs and heads.
-A source change may require a fresh revision rather than replaying an earlier
-request against a different automatically selected target pin.
+Complete content retries compare current values; there is no request replay
+ledger. `--json` returns stable URNs and current digests. A source change may
+require an intentional edit because the target pin has changed.
 
 Stories are optional. Link an existing story or criterion with the normal
 relation writer and traverse it with the normal relation query:
@@ -72,9 +73,9 @@ change-saga query relations --saga change.saga \
   --from urn:change-saga:APP:deprecation:legacy-parser
 ```
 
-The relation pins both revisions. An explicit historical story pin is allowed;
-a story does not need to be active. Changed wording, competing heads, removed
-criteria and retired stories remain visible. Do not invent a story just to make
+The relation pins exact endpoint content. An explicit historical story digest
+is allowed; a story does not need to be active. Changed wording, unresolved
+legacy conflicts, removed criteria and retired stories remain visible. Do not invent a story just to make
 an annotation, and do not delete a story to withdraw one.
 
 ## Discover and inspect
@@ -85,7 +86,8 @@ change-saga query deprecations --saga change.saga
 change-saga query deprecations --saga change.saga --target TARGET_URN
 change-saga query deprecations --saga change.saga --ref 'HEAD:src/parser.go#L45'
 change-saga query deprecations --saga change.saga --story STORY_ID
-change-saga query deprecations --saga change.saga --deprecation legacy-parser --history
+change-saga query deprecations --saga change.saga --deprecation legacy-parser
+change-saga query history --saga change.saga --node urn:change-saga:APP:deprecation:legacy-parser
 ```
 
 The default includes active, withdrawn and conflicted records. Use `--state`
@@ -94,10 +96,10 @@ assertions. Follow `page.next_cursor` until `page.has_more` is false and keep on
 snapshot. `--scope content|code` filters the authored scope. `--head REV` selects
 the source view for evidence health; `--ref` uses its own explicit commit.
 
-Each row includes identity, current heads and lifecycle, every competing head's
-assertion, authored target pins and health, optional replacement health, exact
-code evidence/provenance and story relation currency/lifecycle. `--history`
-requires one annotation and includes all immutable revisions and events.
+Each row includes identity, current assertion and state, authored target pins
+and health, optional replacement health, exact code evidence/provenance and
+story relation currency/state. Legacy competing heads remain an explicit
+conflict. `query history` reads earlier content from Git commits.
 
 In a code query, `deprecated_code` names explicit code-scope evidence;
 `related_code` and `related_target_code` never assert deprecation. The latter
@@ -112,7 +114,7 @@ No rows means **no recorded deprecation**, not proof of non-deprecation.
 Global and target discovery work without a source checkout and report that code
 was not inspected. Code-focused queries fail explicitly when source inspection
 is unavailable. `references` also lists active, unconflicted deprecation evidence;
-use `deprecation revise`, not in-place repinning, to correct it.
+use `deprecation revise` to replace the current assertion and its pins.
 
 Readers show a compact **Deprecations · N** badge beside content. Hover or focus
 previews the reason; clicking opens the shared details drawer. Full scope,
@@ -125,7 +127,7 @@ A page's Deprecations link lists its records, including content farther down the
 page. The **Deprecations** project destination searches the whole Saga, filters
 by content/code scope and active/withdrawn/conflicted state, and pages through
 50 records at a time. Entries link to affected content; appearance links retain
-the authored board revision. Withdrawn and competing assertions remain discoverable.
+the authored board content digest. Withdrawn and competing assertions remain discoverable.
 
 The reader is read-only. Historical content is still available; annotation pins
 and current-target health are reported separately. Hidden slides do not fetch
@@ -134,30 +136,29 @@ continues to enumerate the complete set for agents.
 
 ## Correct or withdraw an assertion
 
-`revise` appends a complete replacement assertion; explicitly repeat the desired
-scope, target, reason, code and optional replacement. Omitting optional values
-removes them from the new snapshot only. Supply **every** observed revision head
-with `--parent`; multiple parents explicitly reconcile a merge conflict.
+`revise` replaces the current assertion; explicitly repeat the desired scope,
+target, reason, code and optional replacement. Omitted optional values are
+removed from current content. Preserve stable identities and resolve concurrent
+file edits with Git. Ambiguous legacy heads require explicit resolution before
+normalization; no timestamp or current-source match selects a winner.
 
 ```sh
 change-saga deprecation revise \
   --deprecation urn:change-saga:APP:deprecation:legacy-parser \
-  --revision r2 --parent urn:change-saga:APP:deprecation:legacy-parser:revision:r1 \
   --target urn:change-saga:APP:slide:parsing:item:legacy --scope content \
   --reason 'Correction: only the explanation is obsolete.' change.saga
 
 change-saga deprecation set-state \
   --deprecation urn:change-saga:APP:deprecation:legacy-parser \
-  --event withdrawn --parent urn:change-saga:APP:deprecation:legacy-parser:event:active \
   --state withdrawn --reason 'This was a mistaken deprecation.' change.saga
 ```
 
-Lifecycle parents are event URNs, not revision URNs. Restoration uses a new event
-with `--state active`, all current event parents and an authored reason. Neither
-operation deletes history or changes historical code/story links. A corrected
-revision does not silently restore a withdrawn annotation.
+Restoration edits current state with `--state active` and an authored reason.
+Git retains previous assertions and state. Correcting content does not silently
+restore a withdrawn annotation or refresh independent evidence links.
 
-`change-saga validate` checks strict schemas and history graphs. Missing or changed
-targets after authoring are query health, not a reason to erase the annotation.
-Older readers may reject the new `___deprecations` reserved root or deprecation
-relation endpoints and must be upgraded before reading these records.
+`change-saga validate` checks current records and validates legacy graphs when
+encountered. Missing or changed targets are query health, not a reason to erase
+the annotation. Reads never persist normalization. Writes normalize encountered
+legacy packages, preserving exact evidence pins before deleting old metadata.
+Upgrade readers first; see [Git-owned history](git-owned-history.md).

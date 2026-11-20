@@ -194,9 +194,9 @@ type StoryStatus struct {
 	Personas        []string          `json:"personas"`
 	GatedBy         []string          `json:"gated_by"`
 	Availability    string            `json:"availability"`
-	RevisionHeads   []string          `json:"revision_heads"`
-	LifecycleHeads  []string          `json:"lifecycle_heads"`
-	CurrentRevision string            `json:"current_revision,omitempty"`
+	RevisionHeads   []string          `json:"-"`
+	LifecycleHeads  []string          `json:"-"`
+	CurrentRevision string            `json:"content,omitempty"`
 	Criteria        []CriterionStatus `json:"criteria"`
 }
 
@@ -213,8 +213,8 @@ type PrototypeStatus struct {
 	Feature         string   `json:"feature"`
 	State           string   `json:"state"`
 	Retained        bool     `json:"retained"`
-	RevisionHeads   []string `json:"revision_heads"`
-	CurrentRevision string   `json:"current_revision,omitempty"`
+	RevisionHeads   []string `json:"-"`
+	CurrentRevision string   `json:"content,omitempty"`
 	CurrentLinks    []string `json:"current_links"`
 	StaleLinks      []string `json:"stale_links"`
 }
@@ -271,8 +271,8 @@ type TestCaseStatus struct {
 	Title           string           `json:"title,omitempty"`
 	Definition      string           `json:"definition"`
 	Lifecycle       string           `json:"lifecycle"`
-	RevisionHeads   []string         `json:"revision_heads"`
-	CurrentRevision string           `json:"current_revision,omitempty"`
+	RevisionHeads   []string         `json:"-"`
+	CurrentRevision string           `json:"content,omitempty"`
 	Kinds           []string         `json:"kinds"`
 	Automation      string           `json:"automation,omitempty"`
 	Verifies        []VerifiesLink   `json:"verifies"`

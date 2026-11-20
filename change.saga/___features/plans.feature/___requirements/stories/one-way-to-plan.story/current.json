@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "one-grammar",
+        "statement": "change-saga plan and change-saga task are the only commands that plan work."
+      },
+      {
+        "id": "no-old-records",
+        "statement": "A Saga has no ___workplan directory, and the reader and queries read Plans and Tasks."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can plan work in one way, so nobody has to choose between two overlapping task systems.",
+    "story": "urn:change-saga:change-saga:story:one-way-to-plan",
+    "title": "Plan work in one way"
+  },
+  "state": {
+    "reason": "Verified against the code and tests on 2026-11-02. plan and task are the only planning commands, ___workplan is refused, and readiness reads Tasks.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:one-way-to-plan"
+  }
+}

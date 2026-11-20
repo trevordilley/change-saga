@@ -14,7 +14,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/livingid"
-	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -259,22 +258,21 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
 		t.Fatalf("unlinked embedded evidence was not exposed: err=%v\n%s", err, traceOutput.String())
 	}
-	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--persona", personaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed", "--title", "Checkout", "--statement", "As a buyer I can complete checkout", "--priority", "high", "--criterion", "safe=Checkout preserves the validated state", "--criterion", "fast=Checkout does not add a retry delay", root}, &output); err != nil {
+	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--persona", personaURN, "--id", "checkout", "--title", "Checkout", "--statement", "As a buyer I can complete checkout", "--priority", "high", "--criterion", "safe=Checkout preserves the validated state", "--criterion", "fast=Checkout does not add a retry delay", root}, &output); err != nil {
 		t.Fatalf("add linked story: %v", err)
 	}
 	storyURN, _ := livingid.Story("decks", "checkout")
 	criterionURN, _ := livingid.Criterion("decks", "checkout", "safe")
 	secondCriterionURN, _ := livingid.Criterion("decks", "checkout", "fast")
-	revisionURN, _ := livingid.Revision("decks", "checkout", "r1")
-	proposedURN, _ := requirements.StoryEventURN("decks", "checkout", "proposed")
-	if err := Relation(context.Background(), []string{"add", "--feature", testFeature, "--id", "flow-explains-checkout", "--type", "explains", "--from", item.Target, "--to", storyURN, "--to-revision", revisionURN, "--rationale", "The visual implementation element demonstrates this user story.", root}, &output); err != nil {
+	revisionURN := currentTestPin(t, root, storyURN)
+	if err := Relation(context.Background(), []string{"add", "--feature", testFeature, "--id", "flow-explains-checkout", "--type", "explains", "--from", item.Target, "--to", storyURN, "--to-definition-digest", revisionURN, "--rationale", "The visual implementation element demonstrates this user story.", root}, &output); err != nil {
 		t.Fatalf("link Item to story: %v", err)
 	}
 	traceOutput.Reset()
 	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
 		t.Fatalf("evidence linked only to an unaccepted story was incorrectly closed: err=%v\n%s", err, traceOutput.String())
 	}
-	if err := Story(context.Background(), []string{"set-state", "--story", storyURN, "--event", "accepted", "--parent", proposedURN, "--state", "accepted", root}, &output); err != nil {
+	if err := Story(context.Background(), []string{"set-state", "--story", storyURN, "--state", "accepted", root}, &output); err != nil {
 		t.Fatalf("accept linked story: %v", err)
 	}
 	traceOutput.Reset()

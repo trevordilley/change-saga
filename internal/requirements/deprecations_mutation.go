@@ -3,6 +3,7 @@ package requirements
 import (
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"path/filepath"
 	"reflect"
@@ -10,7 +11,6 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
-	"github.com/twentyideas/changesaga/internal/store"
 )
 
 // DeprecationDefinition is the complete content of one deprecation revision.
@@ -57,6 +57,16 @@ func deprecationRevision(urn, id string, parents []string, definition Deprecatio
 // AddDeprecation publishes a deprecation's identity, first revision, and active event
 // atomically.
 func AddDeprecation(root, sagaID string, input AddDeprecationInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
+
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
+	if input.EventID == "" {
+		input.EventID = "current"
+	}
 	createdAt := mutationTime(input.CreatedAt)
 	urn, err := DeprecationURN(sagaID, input.ID)
 	if err != nil {
@@ -83,17 +93,8 @@ func AddDeprecation(root, sagaID string, input AddDeprecationInput) (MutationRes
 	err = mutate(root, sagaID, func(document *Document) error {
 		if existing := document.FindDeprecation(input.ID); existing != nil {
 			identity.CreatedAt, revision.CreatedAt, event.CreatedAt = existing.Identity.CreatedAt, existing.Identity.CreatedAt, existing.Identity.CreatedAt
-			// Files are sorted by ID, not chronology. A later correction or
-			// withdrawal must not prevent replaying the original creation.
-			revisionMatches, eventMatches := false, false
-			for _, old := range existing.Revisions {
-				revisionMatches = revisionMatches || reflect.DeepEqual(old, revision)
-			}
-			for _, old := range existing.Events {
-				eventMatches = eventMatches || reflect.DeepEqual(old, event)
-			}
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID &&
-				reflect.DeepEqual(existing.Identity, identity) && revisionMatches && eventMatches {
+			if existing.CurrentRevision != nil && existing.CurrentLifecycle != nil &&
+				currentrecord.Equal(*existing.CurrentRevision, revision) && currentrecord.Equal(*existing.CurrentLifecycle, event) {
 				result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...), Replayed: true}
 				return nil
 			}
@@ -115,12 +116,20 @@ func AddDeprecation(root, sagaID string, input AddDeprecationInput) (MutationRes
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: []string{revisionURN, eventURN}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // ReviseDeprecation appends a complete deprecation revision. Its parents must name every
 // current revision head, so several parents reconcile competing heads.
 func ReviseDeprecation(root, sagaID string, input ReviseDeprecationInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
+
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParseDeprecationURN(sagaID, input.Deprecation)
 	if err != nil {
 		return MutationResult{}, err
@@ -149,9 +158,6 @@ func ReviseDeprecation(root, sagaID string, input ReviseDeprecationInput) (Mutat
 			}
 			return fmt.Errorf("revision id %q already exists", input.ID)
 		}
-		if !sameSet(revision.Parents, deprecation.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", revision.Parents, deprecation.RevisionHeads)
-		}
 		if err := ValidateDeprecationPins(document.Root, document.SagaID, revision); err != nil {
 			return err
 		}
@@ -160,17 +166,21 @@ func ReviseDeprecation(root, sagaID string, input ReviseDeprecationInput) (Mutat
 		if err := resolveDeprecation(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), revision, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), revision); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // SetDeprecationState retires or restores a deprecation.
 func SetDeprecationState(root, sagaID string, input SetDeprecationStateInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParseDeprecationURN(sagaID, input.Deprecation)
 	if err != nil {
 		return MutationResult{}, err
@@ -188,31 +198,20 @@ func SetDeprecationState(root, sagaID string, input SetDeprecationStateInput) (M
 		if deprecation == nil {
 			return fmt.Errorf("deprecation %q does not exist", id)
 		}
-		for _, existing := range deprecation.Events {
-			if existing.ID != input.ID {
-				continue
-			}
-			wanted := event
-			wanted.CreatedAt = existing.CreatedAt
-			if input.RequestID != "" && existing.RequestID == input.RequestID && reflect.DeepEqual(existing, wanted) {
-				result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: copyStrings(deprecation.LifecycleHeads), Replayed: true}
-				return nil
-			}
-			return fmt.Errorf("lifecycle event id %q already exists", input.ID)
-		}
-		if !sameSet(event.Parents, deprecation.LifecycleHeads) {
-			return fmt.Errorf("lifecycle parents must name every current head (got %v, want %v)", event.Parents, deprecation.LifecycleHeads)
+		if deprecation.CurrentLifecycle != nil && deprecation.CurrentLifecycle.State == event.State && deprecation.CurrentLifecycle.Reason == event.Reason {
+			result = MutationResult{URN: urn, Path: path, Replayed: true}
+			return nil
 		}
 		candidate := *deprecation
 		candidate.Events = append(append([]DeprecationEvent{}, deprecation.Events...), event)
 		if err := resolveDeprecation(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), event, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), event); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }

@@ -194,8 +194,12 @@ func TestDiagramEditRepublishesTargetedChanges(t *testing.T) {
 		t.Fatalf("items, evidence, and criterion links must carry over: %#v", slide.Items)
 	}
 	retry, err := runDiagram(t, move, append([]string{}, args...)...)
-	if err != nil || !strings.Contains(retry, `"replayed": true`) {
-		t.Fatalf("retry must replay: %v\n%s", err, retry)
+	if err == nil || !strings.Contains(err.Error(), "expected_snapshot mismatch") {
+		t.Fatalf("repeating a delta against an old base must refuse: %v\n%s", err, retry)
+	}
+	afterRetry, retryValidation, retryErr := saga.Load(root)
+	if retryErr != nil || !retryValidation.Valid || afterRetry.Decks[0].Slides[0].AuthoringSnapshot != result.Snapshot {
+		t.Fatal("a repeated delta changed the current document")
 	}
 	if _, err := runDiagram(t, `[{"op":"move","id":"store","dx":1}]`, "edit", "--slide", "flow", "--expected", created.Snapshot, "--request-id", "stale-move", "--from", "OPS", "--repo", repo, root); err == nil || !strings.Contains(err.Error(), "expected_snapshot mismatch") {
 		t.Fatalf("stale edit error = %v", err)

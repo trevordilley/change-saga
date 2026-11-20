@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:02845a5c5c843c2dcce4c55d645713889165ae5bec7baaadf6f7a3f888e510e4",
+      "end": 617,
+      "path": "internal/requirements/mutation.go",
+      "start": 607
+    }
+  ],
+  "created_at": "2026-10-16T23:24:10Z",
   "id": "locked-mutation",
-  "test_case": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers",
-  "test_revision": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers:revision:r1",
+  "request_id": "saga-evidence-contracts-serialized-lock-writers-locked-mutation",
   "role": "implementation_under_test",
   "steps": [
     "public"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/requirements/mutation.go",
-      "start": 607,
-      "end": 617,
-      "digest": "sha256:02845a5c5c843c2dcce4c55d645713889165ae5bec7baaadf6f7a3f888e510e4"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:10Z",
-  "request_id": "saga-evidence-contracts-serialized-lock-writers-locked-mutation"
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-serialized-lock-writers",
+  "test_revision": "sha256:a2d2f197f1231a495c30db5fdd17205a0a70141a3051639bb946222e92a81e43",
+  "verifications": [],
+  "version": 5
 }

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Reconciliation at the saved base reports no stale currency despite the newer working checkout.",
+    "preconditions": [
+      "Use shopSaga; save its base commit, then branch and commit changed queue behavior."
+    ],
+    "steps": [
+      {
+        "action": "Reconcile with --head set to the saved original base commit.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency"
+        ],
+        "expected_result": "Currency at that selected Git snapshot is not stale.",
+        "id": "head"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-selected-head",
+    "title": "Resolve living currency at the explicitly selected head"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-selected-head"
+  }
+}

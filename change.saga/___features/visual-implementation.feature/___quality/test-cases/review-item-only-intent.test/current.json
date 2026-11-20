@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "Both Item relations are accepted.",
+    "preconditions": [
+      "Use the valid v5 Saga fixture with a story criterion, a deck, a slide and a node Item."
+    ],
+    "steps": [
+      {
+        "action": "Attempt explains and addresses links from the whole deck and whole slide to the whole story.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:item-only"
+        ],
+        "expected_result": "Each operation rejects with slide Item guidance and no relation is written.",
+        "id": "reject"
+      },
+      {
+        "action": "Create explains and addresses links from the node Item to the criterion.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:item-only"
+        ],
+        "expected_result": "Both Item relations are accepted.",
+        "id": "accept"
+      },
+      {
+        "action": "In a disposable valid fixture, hold each story or criterion target constant and attempt explains/addresses links from deck, slide and Item sources.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:item-only"
+        ],
+        "expected_result": "For either target and relation kind, deck and slide sources are rejected; exact Item sources are accepted.",
+        "id": "same-target-matrix"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-item-only-intent",
+    "title": "Reject broad visual intent links and accept exact Item links"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-item-only-intent"
+  }
+}

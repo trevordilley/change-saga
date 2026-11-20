@@ -37,7 +37,7 @@ func TestMoveSlidePreservesIdentityEvidenceAndRank(t *testing.T) {
 	root := contentSaga(t)
 	hierarchyStep(t, Feature, "add", "--id", "destination", "--title", "Destination", root)
 	hierarchyStep(t, AddDeck, "--feature", "destination", "--objective", "Second deck", root, "second")
-	hierarchyStep(t, Story, "add", "--feature", testFeature, "--id", "handle", "--revision", "r1", "--event", "proposed", "--title", "Handle", "--statement", "As a user I want requests handled so that I am served", "--priority", "must", root)
+	hierarchyStep(t, Story, "add", "--feature", testFeature, "--id", "handle", "--title", "Handle", "--statement", "As a user I want requests handled so that I am served", "--priority", "must", root)
 	hierarchyStep(t, Relation, "add", "--feature", testFeature, "--id", "flow-explains-handle", "--type", "explains", "--from", "urn:change-saga:batch:slide:flow:item:handler", "--to", "urn:change-saga:batch:story:handle", "--rationale", "The handler shows it.", root)
 	before := snapshotFiles(t, root)
 	original := findSlide(hierarchyDocument(t, root), "flow")
@@ -264,7 +264,7 @@ func TestMoveDeckPreservesTransactionHistoryAndSupportsRemoval(t *testing.T) {
 	if err := readStrictJSONPath(filepath.Join(deck.Directory, filepath.Base(first.Path)), &history); err != nil {
 		t.Fatal(err)
 	}
-	if len(history.Revisions) != 3 || !history.Revisions[2].Deleted {
+	if len(history.Revisions) != 1 || !history.Revisions[0].Deleted {
 		t.Fatalf("moved deck removal lost history: %+v", history)
 	}
 }

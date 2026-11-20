@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:440768ab2aac24c33fbf1e1f72783c60205fafed57e3b61b93c0d673a09b621f",
+      "end": 365,
+      "path": "internal/cli/query_test.go",
+      "start": 340
+    }
+  ],
+  "created_at": "2026-10-16T23:24:10Z",
   "id": "pagination-schema",
-  "test_case": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery",
-  "test_revision": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery:revision:r1",
+  "request_id": "saga-evidence-contracts-query-operation-discovery-pagination-schema",
   "role": "test_implementation",
   "steps": [
     "paths"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/query_test.go",
-      "start": 340,
-      "end": 365,
-      "digest": "sha256:440768ab2aac24c33fbf1e1f72783c60205fafed57e3b61b93c0d673a09b621f"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:10Z",
-  "request_id": "saga-evidence-contracts-query-operation-discovery-pagination-schema"
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-query-operation-discovery",
+  "test_revision": "sha256:661cb6ed2fed617823fc5c8263defc33d217efa82ce12e55f85b5e4cf455d906",
+  "verifications": [],
+  "version": 5
 }

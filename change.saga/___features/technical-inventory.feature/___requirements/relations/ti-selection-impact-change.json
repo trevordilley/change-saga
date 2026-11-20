@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-selection-impact-change",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:change",
-  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
-  "scope": "self",
-  "rationale": "Compare named baseline and head. Retain existing debt, newly stale references and unknown baseline cases as distinct states.",
-  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:01:03.723505Z",
-  "superseded_at": "2026-09-27T10:27:33.599349Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:change",
+  "id": "ti-selection-impact-change",
+  "rationale": "Compare named baseline and head. Retain existing debt, newly stale references and unknown baseline cases as distinct states.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:33.599349Z",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+  "to_revision": "sha256:eb4ef03bbf195b5139e220be46e4d49c341a6d645e8d535056bb7f0414016faf",
+  "type": "explains",
+  "version": 5
 }

@@ -38,6 +38,12 @@ func TestPrototypePageFramesTheAppAndServesItSandboxed(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+	document, err := prototypes.Load(root, "shop")
+	if err != nil {
+		t.Fatal(err)
+	}
+	prototype := document.Find("checkout")
+	currentID := prototype.CurrentRevision.ID
 	get := func(path string) *httptest.ResponseRecorder {
 		t.Helper()
 		recorder := httptest.NewRecorder()
@@ -51,9 +57,8 @@ func TestPrototypePageFramesTheAppAndServesItSandboxed(t *testing.T) {
 	}
 	html := page.Body.String()
 	for _, want := range []string{
-		`<iframe class="prototype-frame" sandbox="allow-scripts" src="/p/checkout/r2/html/index.html"`,
-		`href="/p/checkout/r2/html/index.html" target="_blank" rel="noopener" data-prototype-open`,
-		`href="/prototypes/checkout?revision=r1"`,
+		`<iframe class="prototype-frame" sandbox="allow-scripts" src="` + prototypeFileHref("checkout", currentID, "html/index.html") + `"`,
+		`href="` + prototypeFileHref("checkout", currentID, "html/index.html") + `" target="_blank" rel="noopener" data-prototype-open`,
 		`<h1>Checkout v2</h1>`,
 		// The sidebar row now opens the page.
 		`href="/prototypes/checkout"`,
@@ -62,21 +67,17 @@ func TestPrototypePageFramesTheAppAndServesItSandboxed(t *testing.T) {
 			t.Fatalf("prototype page is missing %s", want)
 		}
 	}
-	if older := get("/prototypes/checkout?revision=r1").Body.String(); !strings.Contains(older, `src="/p/checkout/r1/html/index.html"`) {
-		t.Fatal("?revision= must frame the named revision")
+	if get("/prototypes/checkout?revision=r1").Code != http.StatusGone || get("/prototypes/missing").Code != http.StatusNotFound {
+		t.Fatal("legacy selectors must refuse explicitly; missing identities are not found")
 	}
-	if get("/prototypes/checkout?revision=r9").Code != http.StatusNotFound || get("/prototypes/missing").Code != http.StatusNotFound {
-		t.Fatal("an unknown prototype or revision must be not found")
-	}
-
-	file := get("/p/checkout/r1/html/index.html")
-	if file.Code != http.StatusOK || !strings.Contains(file.Body.String(), ">Pay<") {
-		t.Fatalf("GET r1 entrypoint = %d: %s", file.Code, file.Body.String())
+	file := get(prototypeFileHref("checkout", currentID, "html/index.html"))
+	if file.Code != http.StatusOK || !strings.Contains(file.Body.String(), ">Pay now<") {
+		t.Fatalf("current prototype content: %d %s", file.Code, file.Body.String())
 	}
 	if policy := file.Header().Get("Content-Security-Policy"); !strings.HasPrefix(policy, "sandbox allow-scripts;") || !strings.Contains(policy, "connect-src 'none'") {
 		t.Fatalf("prototype files must load on an opaque sandboxed origin: %q", policy)
 	}
-	if asset := get("/p/checkout/r2/html/assets/app.css"); asset.Code != http.StatusOK || !strings.Contains(asset.Header().Get("Content-Type"), "text/css") {
+	if asset := get(prototypeFileHref("checkout", currentID, "html/assets/app.css")); asset.Code != http.StatusOK || !strings.Contains(asset.Header().Get("Content-Type"), "text/css") {
 		t.Fatalf("relative asset = %d %q", asset.Code, asset.Header().Get("Content-Type"))
 	}
 	for _, escape := range []string{"/p/checkout/r1/revision.json", "/p/checkout/r1/html/../revision.json", "/p/checkout/r1/html/%2e%2e/revision.json"} {
@@ -115,14 +116,19 @@ func TestRepoPrototypeIsServedAsPinnedAndShowsWhenStale(t *testing.T) {
 		newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)}).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		return recorder
 	}
+	document, err := prototypes.Load(root, "shop")
+	if err != nil {
+		t.Fatal(err)
+	}
+	currentID := document.Find("sidebar").CurrentRevision.ID
 	html := get("/prototypes/sidebar").Body.String()
-	if !strings.Contains(html, `src="/p/sidebar/r1/index.html"`) || !strings.Contains(html, `<code>prototypes/sidebar/index.html</code>`) || strings.Contains(html, "data-prototype-stale") {
+	if !strings.Contains(html, `src="`+prototypeFileHref("sidebar", currentID, "index.html")+`"`) || !strings.Contains(html, `<code>prototypes/sidebar/index.html</code>`) || strings.Contains(html, "data-prototype-stale") {
 		t.Fatalf("fresh repo prototype page:\n%s", html)
 	}
-	if asset := get("/p/sidebar/r1/app.css"); asset.Code != http.StatusOK || asset.Body.String() != `h1{color:red}` || !strings.HasPrefix(asset.Header().Get("Content-Security-Policy"), "sandbox allow-scripts;") {
+	if asset := get(prototypeFileHref("sidebar", currentID, "app.css")); asset.Code != http.StatusOK || asset.Body.String() != `h1{color:red}` || !strings.HasPrefix(asset.Header().Get("Content-Security-Policy"), "sandbox allow-scripts;") {
 		t.Fatalf("pinned asset = %d %q %q", asset.Code, asset.Body.String(), asset.Header().Get("Content-Security-Policy"))
 	}
-	if get("/p/sidebar/r1/../../README.md").Code == http.StatusOK || get("/p/sidebar/r1/missing.css").Code != http.StatusNotFound {
+	if get("/p/sidebar/r1/../../README.md").Code == http.StatusOK || get(prototypeFileHref("sidebar", currentID, "missing.css")).Code != http.StatusNotFound {
 		t.Fatal("only the pinned package's files may be served")
 	}
 
@@ -131,7 +137,7 @@ func TestRepoPrototypeIsServedAsPinnedAndShowsWhenStale(t *testing.T) {
 	if html := get("/prototypes/sidebar").Body.String(); !strings.Contains(html, "data-prototype-stale") || !strings.Contains(html, "prototype update") {
 		t.Fatal("a changed repo prototype must say it is stale and how to record the change")
 	}
-	if asset := get("/p/sidebar/r1/app.css").Body.String(); asset != `h1{color:red}` {
+	if asset := get(prototypeFileHref("sidebar", currentID, "app.css")).Body.String(); asset != `h1{color:red}` {
 		t.Fatalf("the revision must keep serving what it pinned, got %q", asset)
 	}
 }

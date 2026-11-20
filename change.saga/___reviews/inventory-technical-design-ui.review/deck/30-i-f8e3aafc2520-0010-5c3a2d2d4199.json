@@ -1,17 +1,17 @@
 {
+  "description": "Binds drawn elements to pins, lists every directory entity as drawn or not drawn, draws declared relationship notation, composes overlays over their exact baseline, and shows entity structure and holders.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:authored-erd-view",
-    "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+    "revision": "sha256:428dcb8bcf4c043dd06f2fb57c5e5d3d19ca84d8e8ded83c4b0128324248c21f",
+    "target": "urn:change-saga:change-saga:component:authored-erd-view"
   },
-  "version": 4,
   "id": "renderer",
-  "slide": "ti-ui-review-erd",
-  "rank": 10,
   "kind": "node",
   "label": "ERD view and entity detail",
-  "description": "Binds drawn elements to pins, lists every directory entity as drawn or not drawn, draws declared relationship notation, composes overlays over their exact baseline, and shows entity structure and holders.",
+  "rank": 10,
   "selector": {
-    "type": "element",
-    "element_id": "renderer"
-  }
+    "element_id": "renderer",
+    "type": "element"
+  },
+  "slide": "ti-ui-review-erd",
+  "version": 4
 }

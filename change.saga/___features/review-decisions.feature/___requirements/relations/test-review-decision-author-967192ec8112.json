@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-decision-author-967192ec8112",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-decision-author",
-  "to": "urn:change-saga:change-saga:story:review-decision:criterion:identifies-author",
-  "scope": "self",
-  "rationale": "Steps other, visible define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-decision-author:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:39.489573Z",
-  "request_id": "test-review-decision-author-967192ec8112"
+  "from": "urn:change-saga:change-saga:test-case:review-decision-author",
+  "from_revision": "sha256:6c9109fa8e32629d04a6a591a06f11803379ffa0e6258f2ac6a7782921d7922f",
+  "id": "test-review-decision-author-967192ec8112",
+  "rationale": "Steps other, visible define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-decision-author-967192ec8112",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:identifies-author",
+  "to_revision": "sha256:121d2c551ffdaa7a8268f1daa8cc5c348d63ec76d3b1f1a7284a5ff66c363456",
+  "type": "verifies",
+  "version": 5
 }

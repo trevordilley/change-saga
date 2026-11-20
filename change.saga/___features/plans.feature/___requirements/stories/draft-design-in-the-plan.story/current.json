@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "design-in-plan",
+        "statement": "A Plan's deck and essay can hold the technical design for its change before any of that code exists."
+      },
+      {
+        "id": "tasks-carry-out-design",
+        "statement": "A Plan's slides can reference the Tasks that carry out the design they describe."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect, I can draft the technical design for a change in its Plan, and break it into the Tasks that carry it out, so the design and the work to do it stay in one place.",
+    "story": "urn:change-saga:change-saga:story:draft-design-in-the-plan",
+    "title": "Draft the technical design in the Plan"
+  },
+  "state": {
+    "reason": "Verified against the code and tests on 2026-11-02. A Plan's essay and slides hold design before code exists, and slides name their Tasks.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:draft-design-in-the-plan"
+  }
+}

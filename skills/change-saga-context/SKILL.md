@@ -10,6 +10,11 @@ what the product should do, how the system fits together, and where the relevant
 code lives. Read the smallest useful slice, then continue the user's work.
 Reading context does not start a documentation project.
 
+Current records are editable documentation. Git owns versions, attribution,
+branches, and merges; Saga has no separate content revision graph. Read-only
+queries do not persist legacy normalization. Treat an unresolved old pin as
+unresolved, and never substitute current content for historical evidence.
+
 ## When to look
 
 - Before planning or implementing a feature, read its existing stories,
@@ -55,10 +60,10 @@ grepping, or globbing metadata files.
 | What behavior is required, and for whom? | `query requirements` and `query personas` for the relevant identities |
 | What does this term or component mean? | `query terms` or `query inventory` |
 | How does this part work? | `change-saga diagram describe --slide TARGET PATH`, or `query fragment` for design prose |
-| How does this technical design fit together? | Read the technical-design approach essay and supporting pages, then `change-saga whiteboard describe --id ID --format json PATH` for `data-model`, `infrastructure`, and `data-flows`; add `--focus INSTANCE_PATH` for a section and `--revision REVISION` for saved history |
+| How does this technical design fit together? | Read the technical-design approach essay and supporting pages, then `change-saga whiteboard describe --id ID --format json PATH` for `data-model`, `infrastructure`, and `data-flows`; add `--focus INSTANCE_PATH` for a section and use `query history --node URN` or a real Git commit view for saved history |
 | What intent and evidence relate to this code? | `query traceability --ref LOCATION`; discover its supported location format from help |
 | Which automated tests should run for a review? | `change-saga review test-plan --review ID --json PATH` returns tests, recorded commands, affected stories and gaps |
-| Why did the documented intent change? | `query requirement-history`, `query citations`, or `query history` for the selected record |
+| Why did the documented intent change? | `query citations` for provenance and `query history --node URN` for actual Git commits touching the selected record |
 
 Supply `--saga PATH` to queries. Use returned IDs and URNs instead of guessing
 them. Start directly with a known feature or record; an overview is only needed

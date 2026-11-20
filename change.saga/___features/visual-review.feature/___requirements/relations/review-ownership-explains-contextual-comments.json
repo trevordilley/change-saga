@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "review-ownership-explains-contextual-comments",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T03:26:50.577188Z",
   "from": "urn:change-saga:change-saga:slide:review-ownership:item:locked-writer",
-  "to": "urn:change-saga:change-saga:story:contextual-comments",
-  "scope": "self",
+  "id": "review-ownership-explains-contextual-comments",
   "rationale": "The locked writer Item explains the persisted implementation behind comments attached to a review slide or Item.",
-  "to_revision": "urn:change-saga:change-saga:story:contextual-comments:revision:r2",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T03:26:50.577188Z"
+  "to": "urn:change-saga:change-saga:story:contextual-comments",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "type": "explains",
+  "version": 5
 }

@@ -1,7 +1,7 @@
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
-import { runCLI } from "../support/fixture-builder.js";
+import { currentRecordPin, git, runCLI } from "../support/fixture-builder.js";
 
 test("shared System opens saved Components and code without losing a slide @critical", async ({ page, saga, browser }) => {
   const run = (...args: string[]) => {
@@ -16,14 +16,14 @@ test("shared System opens saved Components and code without losing a slide @crit
     return path;
   };
   for (const id of ["FlagClient", "FlagStore"]) run("component", "add", "--id", id, "--from", definition(id), "--repo", saga.sourceRepo, saga.sagaRoot);
-  const pins = ["FlagClient", "FlagStore"].map(id => ({ target: prefix + "component:" + id, revision: prefix + "component:" + id + ":revision:r1" }));
+  const pins = ["FlagClient", "FlagStore"].map(id => currentRecordPin(saga,"component",id));
   const target = prefix + "system:FeatureFlag";
   const path = definition("FeatureFlag", { components: pins, interactions: [{ id: "read", from: pins[0].target, to: pins[1].target, description: "Read a flag value from the shared store.", code }] });
   run("system", "add", "--id", "FeatureFlag", "--from", path, "--repo", saga.sourceRepo, saga.sagaRoot);
   run("add-deck", "--feature", "wave-one", "--id", "flag-contexts", "--objective", "Two contexts share one flag System", saga.sagaRoot, "flags");
   for (const id of ["checkout-flag", "search-flag"]) {
     run("add-slide", "--deck", "flag-contexts", "--id", id, "--title", id, "--intent", "explain", "--layout", "diagram", saga.sagaRoot, id);
-    run("add-item", "--slide", id, "--id", "shared", "--kind", "node", "--element-id", "slide-title", "--description", "This feature uses the shared flag decision.", "--documentation", target, "--documentation-revision", target + ":revision:r1", saga.sagaRoot);
+    run("add-item", "--slide", id, "--id", "shared", "--kind", "node", "--element-id", "slide-title", "--description", "This feature uses the shared flag decision.", "--documentation", target, "--documentation-content-digest", currentRecordPin(saga,"system","FeatureFlag").revision, saga.sagaRoot);
   }
   const inventoryRequests: string[] = [];
   page.on("request", request => { if (request.url().includes("/api/documentation")) inventoryRequests.push(request.url()); });
@@ -49,11 +49,14 @@ test("shared System opens saved Components and code without losing a slide @crit
     await expect(open).toBeFocused();
     expect(new URL(page.url()).hash).toBe(hash);
   }
-  // A revised definition warns on the old slide and still opens its saved pin.
-  run("system", "revise", "--id", "FeatureFlag", "--revision", "r2", "--parent", target + ":revision:r1", "--from", path, "--repo", saga.sourceRepo, saga.sagaRoot);
+  const oldPin=currentRecordPin(saga,"system","FeatureFlag").revision;
+  git(saga.sagaRepo,"add",".");git(saga.sagaRepo,"commit","-m","Document original shared system");
+  const edited=JSON.parse(readFileSync(path,"utf8"));edited.explanation="Updated shared system.";writeFileSync(path,JSON.stringify(edited));
+  // A revised definition warns on the old slide and still opens its Git pin.
+  run("system", "revise", "--id", "FeatureFlag", "--from", path, "--repo", saga.sourceRepo, saga.sagaRoot);
   await page.locator('[data-deck-slide]:visible .landmark-menu [data-documentation-target]').click();
   await expect(page.locator('[data-documentation-status]')).toHaveText(/stale/);
-  await expect(page.locator('[data-documentation-view]')).toHaveAttribute('data-documentation-pin', target + ':revision:r1');
+  await expect(page.locator('[data-documentation-view]')).toHaveAttribute('data-documentation-pin', oldPin);
   await page.keyboard.press('Escape');
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const narrow = await context.newPage();

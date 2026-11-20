@@ -46,7 +46,7 @@ func TestInventoryPublic(t *testing.T) {
 		}
 	}
 	system := define("FeatureFlag")
-	system["components"] = []saga.DocumentationLink{{Target: urn + "component:store", Revision: urn + "component:store:revision:r1"}, {Target: urn + "component:reader", Revision: urn + "component:reader:revision:r1"}}
+	system["components"] = []saga.DocumentationLink{{Target: urn + "component:store", Revision: currentTestPin(t, root, urn+"component:store")}, {Target: urn + "component:reader", Revision: currentTestPin(t, root, urn+"component:reader")}}
 	system["interactions"] = []map[string]any{{"id": "read", "from": urn + "component:reader", "to": urn + "component:store", "description": "Reads the current flag state.", "code": code}}
 	if err := run("system", "add", "feature-flag", system); err != nil {
 		t.Fatal(err)
@@ -59,12 +59,12 @@ func TestInventoryPublic(t *testing.T) {
 		t.Fatal("duplicate identity overwritten")
 	}
 	bad := define("Bad graph")
-	bad["components"] = []saga.DocumentationLink{{Target: urn + "component:store", Revision: urn + "component:store:revision:r1"}, {Target: urn + "component:store", Revision: urn + "component:store:revision:r1"}}
+	bad["components"] = []saga.DocumentationLink{{Target: urn + "component:store", Revision: currentTestPin(t, root, urn+"component:store")}, {Target: urn + "component:store", Revision: currentTestPin(t, root, urn+"component:store")}}
 	bad["interactions"] = system["interactions"]
 	if err := run("system", "add", "bad", bad); err == nil {
 		t.Fatal("duplicate System component accepted")
 	}
-	bad["components"] = []saga.DocumentationLink{{Target: urn + "component:store", Revision: urn + "component:store:revision:r1"}, {Target: urn + "component:missing", Revision: urn + "component:missing:revision:r1"}}
+	bad["components"] = []saga.DocumentationLink{{Target: urn + "component:store", Revision: currentTestPin(t, root, urn+"component:store")}, {Target: urn + "component:missing", Revision: urn + "component:missing:revision:r1"}}
 	bad["interactions"] = []map[string]any{{"id": "read", "from": urn + "component:store", "to": urn + "component:missing", "description": "missing", "code": code}}
 	if err := run("system", "add", "bad", bad); err == nil {
 		t.Fatal("missing System component accepted")
@@ -77,7 +77,7 @@ func TestInventoryPublic(t *testing.T) {
 	if len(records) != 3 {
 		t.Fatalf("inventory count: %d", len(records))
 	}
-	first := records[0].(map[string]any)["current_revision"].(map[string]any)["code"].([]any)[0].(map[string]any)
+	first := records[0].(map[string]any)["content"].(map[string]any)["code"].([]any)[0].(map[string]any)
 	if first["commit"] != commit || !strings.HasPrefix(first["digest"].(string), "sha256:") {
 		t.Fatalf("evidence not pinned: %v", first)
 	}
@@ -89,7 +89,7 @@ func TestInventoryPublic(t *testing.T) {
 		if err := AddSlide(ctx, []string{"--deck", "flags", "--intent", "explain", "--layout", "diagram", root, slide}, &output); err != nil {
 			t.Fatal(err)
 		}
-		if err := AddItem(ctx, []string{"--slide", slide, "--kind", "node", "--element-id", "slide-title", "--description", "Reuses the shared flag decision.", "--documentation", target, "--documentation-revision", target + ":revision:r1", root}, &output); err != nil {
+		if err := AddItem(ctx, []string{"--slide", slide, "--kind", "node", "--element-id", "slide-title", "--description", "Reuses the shared flag decision.", "--documentation", target, "--documentation-content-digest", currentTestPin(t, root, target), root}, &output); err != nil {
 			t.Fatal(err)
 		}
 		selected := queryData(t, "slide", "--saga", root, "--repo", repo, "--target", urn+"slide:"+slide)
@@ -112,18 +112,19 @@ func TestInventoryPublic(t *testing.T) {
 			}
 		}
 	}
-	if err := run("component", "revise", "store", define("FlagStore"), "--revision", "r2", "--parent", urn+"component:store:revision:r1"); err != nil {
+	commitCurrentTestDocumentation(t, root, "original inventory")
+	if err := run("component", "revise", "store", define("FlagStore")); err != nil {
 		t.Fatal(err)
 	}
-	sys := query("--target", target, "--history")["records"].([]any)[0].(map[string]any)
+	sys := query("--target", target)["records"].([]any)[0].(map[string]any)
 	if sys["links"].([]any)[0].(map[string]any)["status"] != "stale" {
 		t.Fatalf("stale member pin was hidden: %v", sys)
 	}
 	if err := run("system", "add", "stale-system", system); err == nil {
 		t.Fatal("new System revision accepted stale Component")
 	}
-	system["components"].([]saga.DocumentationLink)[0].Revision = urn + "component:store:revision:r2"
-	if err := run("system", "revise", "feature-flag", system, "--revision", "r2", "--parent", target+":revision:r1"); err != nil {
+	system["components"].([]saga.DocumentationLink)[0].Revision = currentTestPin(t, root, urn+"component:store")
+	if err := run("system", "revise", "feature-flag", system); err != nil {
 		t.Fatal(err)
 	}
 	output.Reset()
@@ -141,14 +142,14 @@ func TestInventoryPublic(t *testing.T) {
 		t.Fatal("changed evidence not stale")
 	}
 	output.Reset()
-	if err := Technical(ctx, "component", []string{"set-state", "--id", "store", "--event", "retired", "--state", "retired", "--reason", "Replaced by runtime config", "--parent", urn + "component:store:event:active", "--json", root}, &output); err != nil {
+	if err := Technical(ctx, "component", []string{"set-state", "--id", "store", "--state", "retired", "--reason", "Replaced by runtime config", "--json", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	d, err := requirements.LoadInventory(root, "atomic")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if d.LinkStatus(saga.DocumentationLink{Target: urn + "component:store", Revision: urn + "component:store:revision:r2"}) != "retired" {
+	if d.LinkStatus(saga.DocumentationLink{Target: urn + "component:store", Revision: currentTestPin(t, root, urn+"component:store")}) != "retired" {
 		t.Fatal("retired pin hidden")
 	}
 }
@@ -197,7 +198,7 @@ func TestInventoryTransaction(t *testing.T) {
 	if _, err := requirements.WriteTechnical(root, id, "component", "worker", "r1", nil, def, true); err != nil {
 		t.Fatal(err)
 	}
-	request.Items[0].Documentation = &saga.DocumentationLink{Target: target, Revision: target + ":revision:r1"}
+	request.Items[0].Documentation = &saga.DocumentationLink{Target: target, Revision: currentTestPin(t, root, target)}
 	created, err := ApplySlideTransaction(ctx, root, base, repo, request, false)
 	if err != nil {
 		t.Fatal(err)
@@ -210,8 +211,9 @@ func TestInventoryTransaction(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	commitCurrentTestDocumentation(t, root, "original worker definition")
 	def.Explanation = "Runs the service safely; failures propagate to the caller."
-	if _, err := requirements.WriteTechnical(root, id, "component", "worker", "r2", []string{target + ":revision:r1"}, def, false); err != nil {
+	if _, err := requirements.WriteTechnical(root, id, "component", "worker", "r2", []string{currentTestPin(t, root, target)}, def, false); err != nil {
 		t.Fatal(err)
 	}
 	doc, _, err = saga.Load(root)
@@ -240,7 +242,7 @@ func TestInventoryTransaction(t *testing.T) {
 	}
 	update.RequestID = "repinned"
 	update.ExpectedSnapshot = updated.Snapshot
-	update.Items[0].Documentation = &saga.DocumentationLink{Target: target, Revision: target + ":revision:r2"}
+	update.Items[0].Documentation = &saga.DocumentationLink{Target: target, Revision: currentTestPin(t, root, target)}
 	repinned, err := ApplySlideTransaction(ctx, root, base, repo, update, false)
 	if err != nil {
 		t.Fatal(err)

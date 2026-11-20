@@ -106,9 +106,9 @@ func (a *app) itemSelections(ctx context.Context, inventory requirements.Invento
 	item := findItem(document, itemTarget)
 	if item == nil {
 		parts := strings.Split(itemTarget, ":")
-		if len(parts) == 9 && parts[0] == "urn" && parts[1] == "change-saga" && parts[2] == document.Manifest.ID && parts[3] == "whiteboard" && parts[5] == "revision" && parts[7] == "element" {
-			if revision, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, parts[4], parts[6]); err == nil && revision != nil {
-				if e, ok := revision.Document.Element(parts[8]); ok {
+		if len(parts) == 7 && parts[0] == "urn" && parts[1] == "change-saga" && parts[2] == document.Manifest.ID && parts[3] == "whiteboard" && parts[5] == "element" {
+			if revision, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, parts[4], ""); err == nil && revision != nil {
+				if e, ok := revision.Document.Element(parts[6]); ok {
 					item = requirements.WhiteboardItem(document.Manifest.ID, parts[4], *revision, e)
 				}
 			}
@@ -136,7 +136,7 @@ func (a *app) itemSelections(ctx context.Context, inventory requirements.Invento
 		sv := selectionView{ID: selection.ID, Evidence: selection.Evidence}
 		for _, hop := range selection.Path {
 			kind, _, _ := technicalTargetParts(hop.Target)
-			sv.Hops = append(sv.Hops, selectionHopView{Name: entityName(inventory, hop), Kind: technicalKindTitle(kind), Href: technicalPinHref(hop), Status: inventory.LinkStatus(hop)})
+			sv.Hops = append(sv.Hops, selectionHopView{Name: entityName(inventory, hop), Kind: technicalKindTitle(kind), Href: technicalPinHref(hop, inventory), Status: inventory.LinkStatus(hop)})
 		}
 		resolution, err := inventory.ResolveSelection(pin, selection)
 		var problem *requirements.SelectionError

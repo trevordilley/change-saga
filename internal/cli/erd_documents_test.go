@@ -15,7 +15,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/testfixture"
 )
 
-func TestMultipleERDDocumentsOverviewQueriesAndImmutableHistory(t *testing.T) {
+func TestMultipleERDDocumentsOverviewQueriesAndGitHistory(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
 	repo, _ := sourceRepo(t, map[string]string{"README.md": "app\n"})
@@ -52,7 +52,7 @@ func TestMultipleERDDocumentsOverviewQueriesAndImmutableHistory(t *testing.T) {
 	}
 	old := inventory.Pinned(pins["sqlite"])
 	dir := filepath.Join(root, requirements.TechnicalPath("erd", "sqlite"))
-	revisionFile := filepath.Join(dir, "revisions", "r1.json")
+	revisionFile := filepath.Join(dir, "current.json")
 	oldRevision, err := os.ReadFile(revisionFile)
 	if err != nil {
 		t.Fatal(err)
@@ -61,6 +61,7 @@ func TestMultipleERDDocumentsOverviewQueriesAndImmutableHistory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	commit := commitCurrentTestDocumentation(t, root, "original ERD documents")
 	if err := Overview(ctx, []string{"set-data-model", "--text", "Updated shared context.", root}, &output); err != nil {
 		t.Fatal(err)
 	}
@@ -71,20 +72,20 @@ func TestMultipleERDDocumentsOverviewQueriesAndImmutableHistory(t *testing.T) {
 	if err := os.WriteFile(path, body, 0600); err != nil {
 		t.Fatal(err)
 	}
-	if err := Technical(ctx, "erd", []string{"revise", "--id", "sqlite", "--revision", "r2", "--parent", pins["sqlite"].Revision, "--from", path, "--visual", filepath.Join(dir, old.Visual.Path), "--repo", repo, root}, &output); err != nil {
+	if err := Technical(ctx, "erd", []string{"revise", "--id", "sqlite", "--from", path, "--visual", filepath.Join(dir, old.Visual.Path), "--repo", repo, root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	data, page, _ = inventoryEnvelope(t, "inventory", "--saga", root, "--target", pins["sqlite"].Target, "--history")
+	data, page, _ = inventoryEnvelope(t, "inventory", "--saga", root, "--target", pins["sqlite"].Target)
 	if data == nil || page["total"] != float64(1) {
 		t.Fatalf("history: %v %v", data, page)
 	}
 	serialized, _ = json.Marshal(data)
-	if !strings.Contains(string(serialized), "Local SQLite revised") || !strings.Contains(string(serialized), `"id":"r1"`) {
+	if !strings.Contains(string(serialized), "Local SQLite revised") || !strings.Contains(string(serialized), `"content_digest":"sha256:`) {
 		t.Fatalf("history: %s", serialized)
 	}
 	afterRevision, _ := os.ReadFile(revisionFile)
 	afterSVG, _ := os.ReadFile(filepath.Join(dir, old.Visual.Path))
-	if !bytes.Equal(oldRevision, afterRevision) || !bytes.Equal(oldSVG, afterSVG) {
+	if bytes.Equal(oldRevision, afterRevision) || !bytes.Equal(oldSVG, afterSVG) || committedCurrentTestFile(t, root, commit, requirements.TechnicalPath("erd", "sqlite")+"/current.json") != string(oldRevision) {
 		t.Fatal("overview or revision rewrote immutable ERD history")
 	}
 	inventory, err = requirements.LoadInventory(root, "atomic")

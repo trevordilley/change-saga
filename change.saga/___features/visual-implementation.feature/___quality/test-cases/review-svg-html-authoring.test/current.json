@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The HTML slide and its asset exist in a valid deck.",
+    "preconditions": [
+      "Use valid Saga with implementation deck and known source repository."
+    ],
+    "steps": [
+      {
+        "action": "Add the default SVG change-overview slide.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media"
+        ],
+        "expected_result": "The SVG slide is accepted.",
+        "id": "svg"
+      },
+      {
+        "action": "Add interactive-comparison with text/html content and an addressable decision element; load and validate the deck.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media"
+        ],
+        "expected_result": "The HTML slide and its asset exist in a valid deck.",
+        "id": "html"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-svg-html-authoring",
+    "title": "Accept SVG and HTML implementation slides"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-svg-html-authoring"
+  }
+}

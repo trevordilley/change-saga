@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-successor-roadmap-71ba08dba180",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-successor-roadmap",
-  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:remaining-roadmap",
-  "scope": "self",
-  "rationale": "Steps implemented, successor define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-successor-roadmap:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:44.51672Z",
-  "request_id": "test-inventory-successor-roadmap-71ba08dba180"
+  "from": "urn:change-saga:change-saga:test-case:inventory-successor-roadmap",
+  "from_revision": "sha256:6ed82a9b0b708e676341824d7603bf3e0bb8dc3b6eb0b4fca3000e6e3f6d4c99",
+  "id": "test-inventory-successor-roadmap-71ba08dba180",
+  "rationale": "Steps implemented, successor define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-successor-roadmap-71ba08dba180",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:remaining-roadmap",
+  "to_revision": "sha256:c77327374a3046a5074f428c7d2c645f1a49e71b45b7091454650221e91e68cf",
+  "type": "verifies",
+  "version": 5
 }

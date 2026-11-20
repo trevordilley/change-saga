@@ -151,6 +151,7 @@ func (evaluator *RelationEvaluator) Evaluate(relation Relation, inputs StaleInpu
 
 // currencyHeads is the merged view of current heads a relation is judged by.
 type currencyHeads struct {
+	history    *storyCurrencyHistory
 	sagaID     string
 	inputs     StaleInputs
 	revisions  map[string]string
@@ -200,7 +201,7 @@ func (heads currencyHeads) withInputs(inputs StaleInputs) currencyHeads {
 // documentHeads is the heads the document's own stories and criteria carry,
 // before any supplied inputs.
 func documentHeads(document Document) currencyHeads {
-	heads := currencyHeads{sagaID: document.SagaID, revisions: map[string]string{}, conflicted: map[string][]string{}, removed: map[string]bool{}, statements: map[string]map[string]string{}, obligations: map[string]map[string]string{}}
+	heads := currencyHeads{history: newStoryCurrencyHistory(document), sagaID: document.SagaID, revisions: map[string]string{}, conflicted: map[string][]string{}, removed: map[string]bool{}, statements: map[string]map[string]string{}, obligations: map[string]map[string]string{}}
 	for _, dep := range document.Deprecations {
 		urn, _ := DeprecationURN(document.SagaID, dep.Identity.ID)
 		if len(dep.RevisionHeads) == 1 {
@@ -307,7 +308,7 @@ func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
 		}
 		if heads.inputs.Missing[pin.endpoint] || heads.storyMissing(pin.endpoint) {
 			add(ReasonEndpointMissing, "endpoint is missing", "")
-		} else if heads.removed[pin.endpoint] {
+		} else if heads.removed[pin.endpoint] || heads.criterionMissing(pin.endpoint) {
 			add(ReasonCriterionRemoved, "criterion is absent from the current revision", pin.revision)
 		} else if parsed, err := parseEndpoint(pin.endpoint); err == nil && parsed.Kind == endpointTestCase {
 			// A test case lives outside this domain; its currency is unknown
@@ -359,9 +360,23 @@ func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
 // worth something only when it fires on a call somebody has to make.
 func (heads currencyHeads) revisionChange(endpoint, pinned, current string) string {
 	if byRevision := heads.statements[endpoint]; byRevision != nil {
+		if _, known := byRevision[pinned]; !known {
+			if historical := heads.history.pinned(endpoint, pinned); historical != nil {
+				for _, criterion := range historical.AcceptanceCriteria {
+					if strings.HasSuffix(endpoint, ":criterion:"+criterion.ID) {
+						return compareAcross(map[string]string{pinned: criterionObligation(criterion), current: byRevision[current]}, pinned, current, CarriedCriterionUnchanged, ReasonCriterionStatementChanged)
+					}
+				}
+			}
+		}
 		return compareAcross(byRevision, pinned, current, CarriedCriterionUnchanged, ReasonCriterionStatementChanged)
 	}
 	if byRevision := heads.obligations[endpoint]; byRevision != nil {
+		if _, known := byRevision[pinned]; !known {
+			if historical := heads.history.pinned(endpoint, pinned); historical != nil {
+				return compareAcross(map[string]string{pinned: obligationOf(*historical), current: byRevision[current]}, pinned, current, CarriedStoryObligationUnchanged, ReasonStoryObligationChanged)
+			}
+		}
 		return compareAcross(byRevision, pinned, current, CarriedStoryObligationUnchanged, ReasonStoryObligationChanged)
 	}
 	return ReasonRevisionChanged

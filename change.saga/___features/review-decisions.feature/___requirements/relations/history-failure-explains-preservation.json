@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "history-failure-explains-preservation",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T03:33:22.999256Z",
   "from": "urn:change-saga:change-saga:slide:decision-failure-boundaries:item:history-failure",
-  "to": "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history",
-  "scope": "self",
+  "id": "history-failure-explains-preservation",
   "rationale": "The frozen-review branch keeps landed decisions as read-only history and refuses new mutations.",
-  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T03:33:22.999256Z"
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history",
+  "to_revision": "sha256:121d2c551ffdaa7a8268f1daa8cc5c348d63ec76d3b1f1a7284a5ff66c363456",
+  "type": "explains",
+  "version": 5
 }

@@ -5,13 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
-	"os"
 	"path/filepath"
-	"reflect"
 	"slices"
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -21,8 +20,9 @@ const WhiteboardDir = "___whiteboards"
 const MaxWhiteboards = 10_000
 const WhiteboardSchemaURL = "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json"
 
-// WhiteboardRevision is an immutable, complete composition snapshot. Parents
-// are board revision IDs, while embedded source references use exact URN pins.
+// Compatibility projections retain legacy Go type names for readers. Current
+// documentation is stored in one editable current.json; identity stays stable,
+// and Git supplies earlier values. Legacy graphs are read only for migration.
 type WhiteboardRevision struct {
 	Schema    string           `json:"$schema"`
 	Version   int              `json:"version"`
@@ -37,6 +37,12 @@ type ResolvedWhiteboard struct {
 	Revision    WhiteboardRevision   `json:"revision"`
 	Composition *diagram.Composition `json:"-"`
 	SVG         []byte               `json:"-"`
+}
+
+// WhiteboardContentDigest names authored content, including exact nested pins,
+// independently of the legacy storage identity used by a compatibility reader.
+func WhiteboardContentDigest(value WhiteboardRevision) (string, error) {
+	return currentrecord.Digest(value)
 }
 
 // ListWhiteboardIDs lists named documents without loading their revision histories.
@@ -91,6 +97,34 @@ func whiteboardHistory(root, sagaID, boardID string) (map[string]WhiteboardRevis
 		}
 	}
 	dir := filepath.Join(root, WhiteboardDir, boardID)
+	current, err := currentrecord.Read(dir)
+	if err != nil {
+		return nil, nil, err
+	}
+	if current != nil {
+		var value WhiteboardRevision
+		value.Schema = WhiteboardSchemaURL
+		value.Version = 1
+		value.Parents = []string{}
+		if err := currentrecord.Project(current.Content, &value); err != nil {
+			return nil, nil, err
+		}
+		digest, err := currentrecord.Digest(current.Content)
+		if err != nil {
+			return nil, nil, err
+		}
+		value.ID = "sha256-" + strings.TrimPrefix(digest, "sha256:")
+		if value.Name == "" {
+			return nil, nil, fmt.Errorf("whiteboard name is required")
+		}
+		if err := value.Document.Validate(); err != nil {
+			return nil, nil, err
+		}
+		if err := validateWhiteboardItems(sagaID, value.Document); err != nil {
+			return nil, nil, err
+		}
+		return map[string]WhiteboardRevision{value.ID: value}, []string{value.ID}, nil
+	}
 	present, err := realDirectory(filepath.Join(dir, "revisions"))
 	if err != nil {
 		return nil, nil, err
@@ -211,9 +245,48 @@ func ListWhiteboardRevisionIDs(root, sagaID, boardID string) ([]string, error) {
 	}
 }
 
-// LoadWhiteboard selects an exact revision or the unique head. Missing optional
-// board storage returns nil,nil. An explicit revision never falls back to head.
+// LoadWhiteboard reads selected current content. An optional content digest
+// verifies that value or retrieves the exact bytes from real Git history. Old
+// internal revision selectors are rejected, and missing evidence never falls
+// back to current content. Ordinary reads do not persist normalization.
 func LoadWhiteboard(root, sagaID, boardID, revision string) (*WhiteboardRevision, error) {
+	if currentrecord.ValidDigest(revision) {
+		current, err := LoadWhiteboard(root, sagaID, boardID, "")
+		if err != nil {
+			return nil, err
+		}
+		if current != nil {
+			digest, err := currentrecord.Digest(*current)
+			if err != nil {
+				return nil, err
+			}
+			if digest == revision {
+				return current, nil
+			}
+		}
+		saved, err := currentrecord.FindGitContent(root, filepath.Join(WhiteboardDir, boardID), revision)
+		if err != nil {
+			return nil, err
+		}
+		value := WhiteboardRevision{Schema: WhiteboardSchemaURL, Version: 1, ID: "sha256-" + strings.TrimPrefix(revision, "sha256:"), Parents: []string{}}
+		if err := currentrecord.Project(saved.Content, &value); err != nil {
+			return nil, err
+		}
+		if strings.TrimSpace(value.Name) == "" {
+			return nil, fmt.Errorf("historical whiteboard name is missing")
+		}
+		if err := value.Document.Validate(); err != nil {
+			return nil, err
+		}
+		if err := validateWhiteboardItems(sagaID, value.Document); err != nil {
+			return nil, err
+		}
+		return &value, nil
+	}
+	if revision != "" && !strings.HasPrefix(revision, "sha256-") {
+		return nil, fmt.Errorf("Saga revision selectors have been removed; inspect the record at a Git commit instead")
+	}
+
 	revisions, heads, err := whiteboardHistory(root, sagaID, boardID)
 	if err != nil {
 		return nil, err
@@ -231,84 +304,90 @@ func LoadWhiteboard(root, sagaID, boardID, revision string) (*WhiteboardRevision
 	if !ok {
 		return nil, fmt.Errorf("whiteboard revision %q does not exist", revision)
 	}
+	if !strings.HasPrefix(v.ID, "sha256-") {
+		if err := currentrecord.NormalizeValue(root, &v); err != nil {
+			return nil, err
+		}
+	}
 	return &v, nil
 }
 
-// PublishWhiteboard validates every source before appending a complete snapshot.
-// Updating requires the observed current parent; child revisions never advance
-// implicitly. Retrying identical content is idempotent.
+// PublishWhiteboard edits the current document in place. The revision and
+// parent parameters are accepted only for source compatibility with older Go
+// callers; authors no longer supply or reconcile content revision identities.
 func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, parent, name string, document diagram.Document) (*WhiteboardRevision, error) {
-	if err := validateWhiteboardItems(sagaID, document); err != nil {
-		return nil, err
+	if !livingid.ValidID(sagaID) || !livingid.ValidID(boardID) {
+		return nil, fmt.Errorf("whiteboard requires stable Saga and board identities")
 	}
-	v := WhiteboardRevision{Schema: WhiteboardSchemaURL, Version: 1, ID: revision, Parents: []string{}, Name: name, Document: document, CreatedAt: mutationTime(time.Time{})}
-	if parent != "" {
-		v.Parents = []string{parent}
-	}
-	if err := validateWhiteboardRevision(v, revision); err != nil {
-		return nil, err
-	}
+	var result *WhiteboardRevision
 	err := store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		revisions, heads, err := whiteboardHistory(root, sagaID, boardID)
+		// Inspect the old document before any mutation. Competing heads cannot be
+		// hidden by publishing a replacement value.
+		old, err := LoadWhiteboard(root, sagaID, boardID, "")
 		if err != nil {
 			return err
 		}
-		if old, ok := revisions[revision]; ok {
-			v.CreatedAt = old.CreatedAt
-			if reflect.DeepEqual(v, old) {
-				return nil
-			}
-			return fmt.Errorf("whiteboard revision %s already exists with different content", revision)
+		pins, err := currentrecord.AuditPins(root)
+		if err != nil {
+			return err
 		}
-		if len(revisions) >= MaxRevisionsPerStory {
-			return fmt.Errorf("whiteboard revision limit reached")
+		data, err := json.Marshal(document)
+		if err != nil {
+			return err
 		}
-		if len(revisions) == 0 && parent != "" || len(revisions) > 0 && (len(heads) != 1 || parent != heads[0]) {
-			return fmt.Errorf("whiteboard parent must name the current head: %v", heads)
+		data, err = pins.Normalize(data)
+		if err != nil {
+			return err
+		}
+		if err := json.Unmarshal(data, &document); err != nil {
+			return err
+		}
+		if err := validateWhiteboardItems(sagaID, document); err != nil {
+			return err
+		}
+		value := WhiteboardRevision{Schema: WhiteboardSchemaURL, Version: 1, ID: "current", Parents: []string{}, Name: name, Document: document, CreatedAt: mutationTime(time.Time{})}
+		if err := validateWhiteboardRevision(value, "current"); err != nil {
+			return err
 		}
 		if err := validateWhiteboardItemPins(root, sagaID, boardID, document); err != nil {
 			return err
 		}
-		if _, err := resolveWhiteboard(root, sagaID, v); err != nil {
+		if _, err := resolveWhiteboard(root, sagaID, value); err != nil {
 			return err
 		}
-		if len(revisions) == 0 {
+		dir := filepath.Join(root, WhiteboardDir, boardID)
+		if old == nil {
 			ids, err := ListWhiteboardIDs(root)
 			if err != nil {
 				return err
 			}
 			if len(ids) >= MaxWhiteboards {
-				return fmt.Errorf("whiteboard document limit of %d reached", MaxWhiteboards)
+				return fmt.Errorf("whiteboard document limit reached")
 			}
-			boardRoot := filepath.Join(root, WhiteboardDir)
-			present, err := realDirectory(boardRoot)
-			if err != nil {
+			if _, err := store.EnsureDirWithin(root, filepath.Join(root, WhiteboardDir)); err != nil {
 				return err
 			}
-			// Atomically expose the first root or a complete new board inside an
-			// existing root. Failed publications never leave an empty board or
-			// replace any sibling's immutable history.
-			final, relative := filepath.Join(boardRoot, boardID), "revisions"
-			if !present {
-				final, relative = boardRoot, filepath.Join(boardID, "revisions")
+			if err := store.CommitDir(root, dir, func(stage string) error { return currentrecord.Write(stage, value, nil) }); err != nil {
+				return err
 			}
-			return store.CommitDir(root, final, func(stage string) error {
-				dir := filepath.Join(stage, relative)
-				if err := os.MkdirAll(dir, 0755); err != nil {
-					return err
-				}
-				return store.WriteJSON(filepath.Join(dir, revision+".json"), v, true)
-			})
+		} else {
+			if err := pins.PersistReferences(); err != nil {
+				return err
+			}
+			if err := currentrecord.Write(dir, value, nil); err != nil {
+				return err
+			}
+			if err := currentrecord.Cleanup(dir, "revisions"); err != nil {
+				return err
+			}
 		}
-		return store.WriteJSON(filepath.Join(root, WhiteboardDir, boardID, "revisions", revision+".json"), v, true)
+		result, err = LoadWhiteboard(root, sagaID, boardID, "")
+		return err
 	})
-	if err != nil {
-		return nil, err
-	}
-	return &v, nil
+	return result, err
 }
 
 func LoadResolvedWhiteboard(root, sagaID, boardID, revision string) (*ResolvedWhiteboard, error) {
@@ -356,22 +435,14 @@ func ValidateWhiteboards(root, sagaID string) error {
 	return nil
 }
 
-// ValidateWhiteboard validates one document's complete history and exact source
-// pins. A missing optional document is valid, including beside existing boards.
+// ValidateWhiteboard validates selected current content and its exact source
+// pins. Legacy parent structure is checked before selection; historical source
+// versions belong to Git. A missing optional document is valid.
 func ValidateWhiteboard(root, sagaID, boardID string) error {
-	revisions, heads, err := whiteboardHistory(root, sagaID, boardID)
-	if err != nil {
+	value, err := LoadWhiteboard(root, sagaID, boardID, "")
+	if err != nil || value == nil {
 		return err
 	}
-	if len(revisions) > 0 && len(heads) != 1 {
-		return fmt.Errorf("whiteboard has conflicting revision heads: %v", heads)
-	}
-	ids := mapKeys(revisions)
-	slices.Sort(ids)
-	for _, id := range ids {
-		if _, err := resolveWhiteboard(root, sagaID, revisions[id]); err != nil {
-			return fmt.Errorf("whiteboard revision %s: %w", id, err)
-		}
-	}
-	return nil
+	_, err = resolveWhiteboard(root, sagaID, *value)
+	return err
 }

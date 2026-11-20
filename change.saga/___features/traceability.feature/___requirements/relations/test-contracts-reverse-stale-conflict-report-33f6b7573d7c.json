@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-contracts-reverse-stale-conflict-report-33f6b7573d7c",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report",
-  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:blockers",
-  "scope": "self",
-  "rationale": "Steps stale-filter, blockers define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:23:30.190645Z",
-  "request_id": "test-contracts-reverse-stale-conflict-report-33f6b7573d7c"
+  "from": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report",
+  "from_revision": "sha256:7b2e79da5ac7b1ca8384737740f7496ecdf300391d3b6acdb60b6851fe6d91fc",
+  "id": "test-contracts-reverse-stale-conflict-report-33f6b7573d7c",
+  "rationale": "Steps stale-filter, blockers define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-contracts-reverse-stale-conflict-report-33f6b7573d7c",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:blockers",
+  "to_revision": "sha256:6f9602129de42db65f97980600da438d3adb5fad79d92128bcd4f000e5cb1b73",
+  "type": "verifies",
+  "version": 5
 }

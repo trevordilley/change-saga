@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-thread-reopen-history-70b853750380",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-thread-reopen-history",
-  "to": "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:reply-context",
-  "scope": "self",
-  "rationale": "Steps history define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-thread-reopen-history:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:review-thread-lifecycle:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:52.587905Z",
-  "request_id": "test-review-thread-reopen-history-70b853750380"
+  "from": "urn:change-saga:change-saga:test-case:review-thread-reopen-history",
+  "from_revision": "sha256:38c88bf266b2906850ba5ad3e0b9dd59c35afeda5342c946b46c9d898011a770",
+  "id": "test-review-thread-reopen-history-70b853750380",
+  "rationale": "Steps history define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-thread-reopen-history-70b853750380",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:reply-context",
+  "to_revision": "sha256:dcca775e43ced59141f005a07c6704b2a696734354604a0c0fd4b05df5bd7497",
+  "type": "verifies",
+  "version": 5
 }

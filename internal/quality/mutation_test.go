@@ -9,6 +9,8 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
+	"github.com/twentyideas/changesaga/internal/qualityid"
 )
 
 const deadlineURN = "urn:change-saga:checkout:test-case:deadline"
@@ -59,8 +61,7 @@ func TestAddTestCaseCreatesLoadablePackageAndReplays(t *testing.T) {
 	result := addDeadline(t, root)
 	wantPaths := []string{
 		"___features/core.feature/___quality/test-cases/deadline.test",
-		"___features/core.feature/___quality/test-cases/deadline.test/revisions/r1.json",
-		"___features/core.feature/___quality/test-cases/deadline.test/events/proposed.json",
+		"___features/core.feature/___quality/test-cases/deadline.test/current.json",
 	}
 	if result.URN != deadlineURN || !reflect.DeepEqual(result.Paths, wantPaths) || result.Replayed {
 		t.Fatalf("result = %#v", result)
@@ -107,62 +108,71 @@ func TestInvalidFirstWriteLeavesQualityUnadopted(t *testing.T) {
 	}
 }
 
-func TestReviseRequiresEveryHeadAndReconcilesConcurrentEdits(t *testing.T) {
-	root := newQualitySaga(t, false)
-	addDeadline(t, root)
-	r1 := deadlineURN + ":revision:r1"
-	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r2", Parents: []string{}, Definition: deadlineDefinition()}); err == nil {
-		t.Fatal("revision without parents was accepted")
+func TestCurrentEditsRefuseAmbiguousLegacyDefinitionsBeforeCleanup(t *testing.T) {
+	root := newQualitySaga(t, true)
+	writeValidTestCase(t, root, "deadline")
+	dir := testPackage(root, "deadline")
+	left := revisionFrom("left", []string{revisionURN("r1")}, "First branch")
+	right := revisionFrom("right", []string{revisionURN("r1")}, "Independent branch")
+	writeJSON(t, filepath.Join(dir, "revisions", "left.json"), left)
+	writeJSON(t, filepath.Join(dir, "revisions", "right.json"), right)
+	before := snapshotPaths(t, root)
+	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, Definition: deadlineDefinition()}); err == nil || !strings.Contains(err.Error(), "competing") {
+		t.Fatalf("ambiguous legacy upgrade: %v", err)
 	}
-	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r2", Parents: []string{r1}, Definition: deadlineDefinition()}); err != nil {
+	if after := snapshotPaths(t, root); !reflect.DeepEqual(before, after) {
+		t.Fatal("ambiguous definitions were changed or deleted")
+	}
+	// An explicit author combines the independent intent at one atomic current
+	// publication. This is legacy resolution, not a new Saga revision graph.
+	merged := revisionFrom("combined", nil, "Combined branch intent")
+	merged.Preconditions = []string{"First branch intent", "Independent branch intent"}
+	if err := currentrecord.Write(dir, merged, eventFrom("active", nil, StateActive)); err != nil {
 		t.Fatal(err)
 	}
-	// A concurrent branch also revised r1; Git merges both files.
-	concurrent := revisionFrom("r2b", []string{r1}, "Concurrent edit")
-	writeJSON(t, filepath.Join(testPackage(root, "deadline"), "revisions", "r2b.json"), concurrent)
-	testCase := loadDeadline(t, root)
-	if !testCase.RevisionConflict() || testCase.CurrentRevision != nil {
-		t.Fatalf("concurrent heads were not a conflict: %v", testCase.RevisionHeads)
-	}
-	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r3", Parents: []string{deadlineURN + ":revision:r2"}, Definition: deadlineDefinition()}); err == nil || !strings.Contains(err.Error(), "every current head") {
-		t.Fatalf("stale single parent error = %v", err)
-	}
-	result, err := ReviseTestCase(root, ReviseTestCaseInput{
-		TestCase: deadlineURN, RevisionID: "r3", Parents: testCase.RevisionHeads, Definition: deadlineDefinition(), RequestID: "reconcile",
-	})
-	if err != nil {
+	if err := currentrecord.Normalize(root); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(result.CurrentHeads, []string{deadlineURN + ":revision:r3"}) {
-		t.Fatalf("heads = %v", result.CurrentHeads)
+	definition := Definition{Title: merged.Title, CoverageKinds: merged.CoverageKinds, Automation: merged.Automation, Preconditions: merged.Preconditions, Steps: merged.Steps, ExpectedResult: merged.ExpectedResult}
+	definition.ExpectedResult = "The combined outcome"
+	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, Definition: definition}); err != nil {
+		t.Fatal(err)
 	}
-	if testCase = loadDeadline(t, root); testCase.RevisionConflict() || testCase.CurrentRevision.ID != "r3" {
-		t.Fatalf("reconciliation projection = %v", testCase.RevisionHeads)
+	loaded := loadDeadline(t, root)
+	if loaded.CurrentRevision.ExpectedResult != definition.ExpectedResult || !reflect.DeepEqual(loaded.CurrentRevision.Preconditions, merged.Preconditions) {
+		t.Fatal("explicitly combined authored intent was lost")
 	}
-	replay, err := ReviseTestCase(root, ReviseTestCaseInput{
-		TestCase: deadlineURN, RevisionID: "r3", Parents: []string{deadlineURN + ":revision:r2", deadlineURN + ":revision:r2b"}, Definition: deadlineDefinition(), RequestID: "reconcile",
-	})
-	if err != nil || !replay.Replayed {
-		t.Fatalf("revision replay = %#v, %v", replay, err)
+	if _, err := os.Stat(filepath.Join(dir, "revisions")); !os.IsNotExist(err) {
+		t.Fatal("obsolete definitions were retained after explicit current publication")
+	}
+	if len(loaded.Evidence) == 0 || len(loaded.Runs) == 0 {
+		t.Fatal("actual evidence or execution facts were deleted")
 	}
 }
 
-func TestReviseRejectsRemovedStepReuse(t *testing.T) {
+func TestCurrentStepEditCannotInheritHistoricalEvidence(t *testing.T) {
 	root := newQualitySaga(t, false)
 	addDeadline(t, root)
-	withoutInspect := deadlineDefinition()
-	withoutInspect.Steps = withoutInspect.Steps[:1]
-	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r2", Parents: []string{deadlineURN + ":revision:r1"}, Definition: withoutInspect}); err != nil {
+	if _, err := AddEvidence(root, AddEvidenceInput{ID: "inspect-code", TestCase: deadlineURN, Role: EvidenceTestImplementation, Steps: []string{"inspect"}, Code: []coderef.Reference{currentSelector(t, "inspect_test.go")}}); err != nil {
 		t.Fatal(err)
 	}
-	reused := deadlineDefinition()
-	reused.Steps[1].Action = "A different action."
-	before := snapshotPaths(t, root)
-	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r3", Parents: []string{deadlineURN + ":revision:r2"}, Definition: reused}); err == nil || !strings.Contains(err.Error(), "reuses removed step") {
-		t.Fatalf("step reuse error = %v", err)
+	originalPin := loadDeadline(t, root).Evidence[0].TestRevision
+	withoutInspect := deadlineDefinition()
+	withoutInspect.Steps = withoutInspect.Steps[:1]
+	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, Definition: withoutInspect}); err != nil {
+		t.Fatal(err)
 	}
-	if after := snapshotPaths(t, root); !reflect.DeepEqual(before, after) {
-		t.Fatal("rejected revision changed files")
+	reintroduced := deadlineDefinition()
+	reintroduced.Steps[1].Action = "Inspect a different observable outcome"
+	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, Definition: reintroduced}); err != nil {
+		t.Fatal(err)
+	}
+	loaded := loadDeadline(t, root)
+	if len(loaded.Evidence) != 1 || loaded.Evidence[0].TestRevision != originalPin || loaded.Evidence[0].Current {
+		t.Fatalf("historical evidence silently attached to changed step: %+v", loaded.Evidence)
+	}
+	if loaded.CurrentRevision.Steps[1].ID != "inspect" {
+		t.Fatal("authored step identity changed")
 	}
 }
 
@@ -173,7 +183,7 @@ func TestLifecycleTransitionsAndActivationRules(t *testing.T) {
 	if _, err := SetTestCaseState(root, SetTestCaseStateInput{TestCase: deadlineURN, EventID: "active", Parents: []string{proposed}, State: StateActive}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := SetTestCaseState(root, SetTestCaseStateInput{TestCase: deadlineURN, EventID: "back", Parents: []string{deadlineURN + ":event:active"}, State: StateProposed}); err == nil || !strings.Contains(err.Error(), "cannot transition") {
+	if _, err := SetTestCaseState(root, SetTestCaseStateInput{TestCase: deadlineURN, EventID: "back", Parents: []string{deadlineURN + ":event:active"}, State: StateProposed}); err == nil || !strings.Contains(err.Error(), "cannot change test state") {
 		t.Fatalf("active -> proposed error = %v", err)
 	}
 	if _, err := SetTestCaseState(root, SetTestCaseStateInput{TestCase: deadlineURN, EventID: "retired", Parents: []string{deadlineURN + ":event:active"}, State: StateRetired, Reason: "Behavior removed."}); err != nil {
@@ -299,6 +309,7 @@ func TestRunsAreImmutableEventsAndFailuresStayVisible(t *testing.T) {
 	// A concurrent manual run on another branch also followed ci-1; Git merges both.
 	concurrent := runFrom("manual-1", nil, RunFailed)
 	concurrent.Evidence = []string{evidence.URN}
+	concurrent.TestRevision, _ = qualityid.Revision("checkout", "deadline", loadDeadline(t, root).CurrentRevision.ID)
 	concurrent.Parents = []string{failed.URN}
 	writeJSON(t, filepath.Join(testPackage(root, "deadline"), "runs", "manual-1.json"), concurrent)
 	if testCase = loadDeadline(t, root); !testCase.RunConflict() || testCase.CurrentRun != nil {
@@ -338,7 +349,9 @@ func TestRevisingATestMakesItsPassingRunStale(t *testing.T) {
 	if loadDeadline(t, root).CurrentRun == nil {
 		t.Fatal("fresh pass is not current")
 	}
-	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, RevisionID: "r2", Parents: []string{deadlineURN + ":revision:r1"}, Definition: deadlineDefinition()}); err != nil {
+	changed := deadlineDefinition()
+	changed.ExpectedResult = "A newly agreed observable outcome"
+	if _, err := ReviseTestCase(root, ReviseTestCaseInput{TestCase: deadlineURN, Definition: changed}); err != nil {
 		t.Fatal(err)
 	}
 	testCase := loadDeadline(t, root)
@@ -357,7 +370,7 @@ func TestRevisingATestMakesItsPassingRunStale(t *testing.T) {
 func TestPolicySetKeepsOneHeadPerCriterionRevision(t *testing.T) {
 	root := newQualitySaga(t, false)
 	criterion := "urn:change-saga:checkout:story:refund:criterion:cutoff"
-	storyRevision := "urn:change-saga:checkout:story:refund:revision:r1"
+	storyRevision := "sha256:" + strings.Repeat("c", 64)
 	first, err := SetPolicy(root, SetPolicyInput{Feature: "core",
 		Criterion: criterion, StoryRevision: storyRevision, RequiredKinds: []CoverageKind{CoverageEdge, CoveragePositive},
 		AllowedAutomation: []Automation{AutomationManual, AutomationAutomated}, Rationale: "Boundary risk.", RequestID: "policy-1",
@@ -365,7 +378,7 @@ func TestPolicySetKeepsOneHeadPerCriterionRevision(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if first.URN != "urn:change-saga:checkout:quality-policy:refund.cutoff.r1" || first.Path != "___features/core.feature/___quality/policies/refund.cutoff.r1.json" {
+	if first.URN != "urn:change-saga:checkout:quality-policy:policy" || first.Path != "___features/core.feature/___quality/policies/policy.json" {
 		t.Fatalf("default policy = %#v", first)
 	}
 	replay, err := SetPolicy(root, SetPolicyInput{Feature: "core",
@@ -382,14 +395,14 @@ func TestPolicySetKeepsOneHeadPerCriterionRevision(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if second.URN != "urn:change-saga:checkout:quality-policy:refund.cutoff.r1-2" {
+	if second.URN != "urn:change-saga:checkout:quality-policy:policy-2" {
 		t.Fatalf("second default id = %s", second.URN)
 	}
 	document, err := Load(root)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(document.PolicySets) != 1 || document.PolicySets[0].Current == nil || document.PolicySets[0].Current.ID != "refund.cutoff.r1-2" {
+	if len(document.PolicySets) != 1 || document.PolicySets[0].Current == nil || document.PolicySets[0].Current.ID != "policy-2" {
 		t.Fatalf("policy sets = %#v", document.PolicySets)
 	}
 	if kinds := document.PolicySets[0].Current.RequiredKinds; !reflect.DeepEqual(kinds, []CoverageKind{CoveragePositive, CoverageNegative, CoverageEdge}) {

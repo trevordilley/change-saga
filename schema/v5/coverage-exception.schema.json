@@ -4,39 +4,102 @@
   "title": "Change Saga v5 coverage exception",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "version", "id", "axis", "criterion", "story_revision", "rationale", "citations", "supersedes", "created_at"],
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "axis",
+    "criterion",
+    "story_revision",
+    "rationale",
+    "citations",
+    "supersedes",
+    "created_at"
+  ],
   "properties": {
-    "$schema": { "const": "https://changesaga.dev/schema/v5/coverage-exception.schema.json" },
-    "version": { "const": 5 },
-    "id": { "$ref": "#/$defs/id" },
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/coverage-exception.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
     "axis": {
       "description": "The one coverage axis the exception excludes. The six canonical axes are the whole vocabulary.",
-      "enum": ["implementation", "prototype", "quality", "technical", "ui", "ux"]
+      "enum": [
+        "implementation",
+        "prototype",
+        "quality",
+        "technical",
+        "ui",
+        "ux"
+      ]
     },
-    "criterion": { "$ref": "#/$defs/criterion_urn" },
-    "story_revision": { "$ref": "#/$defs/story_revision_urn" },
-    "rationale": { "type": "string", "minLength": 1 },
+    "criterion": {
+      "$ref": "#/$defs/criterion_urn"
+    },
+    "story_revision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/story_revision_urn"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
     "citations": {
       "type": "array",
       "minItems": 1,
       "maxItems": 20000,
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/citation_urn" }
+      "items": {
+        "$ref": "#/$defs/citation_urn"
+      }
     },
     "supersedes": {
       "type": "array",
       "maxItems": 10000,
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/exception_urn" }
+      "items": {
+        "$ref": "#/$defs/exception_urn"
+      }
     },
-    "created_at": { "type": "string", "format": "date-time" },
-    "request_id": { "$ref": "#/$defs/id" }
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_id": {
+      "$ref": "#/$defs/id"
+    }
   },
   "$defs": {
-    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "criterion_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "story_revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "citation_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "exception_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:coverage-exception:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" }
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "criterion_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "story_revision_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "citation_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "exception_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:coverage-exception:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    }
   }
 }

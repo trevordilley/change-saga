@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-rollout-conflicts",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:conflicts",
-  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
-  "scope": "self",
-  "rationale": "Proposed design: Expose all competing heads and require explicit reconciliation parents. Saved pins stay readable without implying currentness; preserving them is not approval or evidence of conflict resolution.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:15:04.870604Z",
-  "superseded_at": "2026-09-27T10:27:31.023051Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:conflicts",
+  "id": "ti-rollout-conflicts",
+  "rationale": "Proposed design: Expose all competing heads and require explicit reconciliation parents. Saved pins stay readable without implying currentness; preserving them is not approval or evidence of conflict resolution.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:31.023051Z",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+  "to_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+  "type": "explains",
+  "version": 5
 }

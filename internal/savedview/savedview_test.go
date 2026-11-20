@@ -11,6 +11,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -166,5 +168,46 @@ func TestLoadReadsARenamedSagaWhereItWasAtTheView(t *testing.T) {
 	view, err := Load(ctx, repo, root, current, before)
 	if err != nil || view.Commit != before || view.Artifact != "git:"+before+":app.saga" {
 		t.Fatalf("view from before the rename: %+v %v", view, err)
+	}
+}
+
+func TestCurrentSavedViewResolvesHistoricalPinFromOriginalGit(t *testing.T) {
+	ctx := context.Background()
+	repo := t.TempDir()
+	runGit(t, repo, "init", "-q", "-b", "main")
+	root := filepath.Join(repo, "app.saga")
+	writeManifest(t, root, "app", repository)
+	definition := requirements.TechnicalDefinition{Name: "Original", Explanation: "Original definition", Code: []requirements.Evidence{{Reference: coderef.Reference{Commit: strings.Repeat("a", 40), Path: "source.go", Start: 1, End: 1, Digest: "sha256:" + strings.Repeat("a", 64), Note: "Exact source"}}}}
+	first, err := requirements.WriteTechnical(root, "app", "component", "store", "", nil, definition, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	original := commitAll(t, repo, "Original definition")
+	definition.Name, definition.Explanation = "Current", "Current definition"
+	second, err := requirements.WriteTechnical(root, "app", "component", "store", "", nil, definition, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	latest := commitAll(t, repo, "Current definition")
+	manifest, _ := saga.ReadManifest(root)
+	view, err := Load(ctx, repo, root, manifest, latest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Load has already removed its temporary extraction. Exact historical
+	// resolution must use the original Git objects, without a Saga archive.
+	historical := view.Inventory.Pinned(saga.DocumentationLink{Target: first.URN, Revision: first.ContentDigest})
+	if historical == nil || historical.Name != "Original" {
+		t.Fatalf("historical content after extraction cleanup: %+v", historical)
+	}
+	if got := view.Facts(first.URN, second.ContentDigest).Binding.Revision; got != second.ContentDigest {
+		t.Fatalf("current saved-view binding: %s", got)
+	}
+	oldView, err := Load(ctx, repo, root, manifest, original)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if oldView.Inventory.Pinned(saga.DocumentationLink{Target: second.URN, Revision: second.ContentDigest}) != nil {
+		t.Fatal("old saved view resolved content from a future commit")
 	}
 }

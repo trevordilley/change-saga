@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "pk-reconcile-explains-atomic-write",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T03:30:39.767708Z",
   "from": "urn:change-saga:change-saga:slide:story-lifecycle-runtime:item:reconcile-transition",
-  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:atomic",
-  "scope": "self",
+  "id": "pk-reconcile-explains-atomic-write",
   "rationale": "The reconcile transition validates every head before publishing the complete successor record.",
-  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T03:30:39.767708Z"
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:atomic",
+  "to_revision": "sha256:411b3414158643d97b8e12ff86f1ec33920c9eb3d924e46ace5db3f30931701f",
+  "type": "explains",
+  "version": 5
 }

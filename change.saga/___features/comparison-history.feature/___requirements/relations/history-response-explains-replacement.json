@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "history-response-explains-replacement",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:39:40.312129Z",
   "from": "urn:change-saga:change-saga:slide:record-history-sequence:item:history-response",
-  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:replacement-context",
-  "scope": "self",
+  "id": "history-response-explains-replacement",
   "rationale": "The response names the prior record when replacement pairing is determined.",
-  "to_revision": "urn:change-saga:change-saga:story:record-change-history:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:39:40.312129Z"
+  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:replacement-context",
+  "to_revision": "sha256:cc5c106da8e7d428ea9e394e87143867bea8f592fc124600a5afab99bbb62453",
+  "type": "explains",
+  "version": 5
 }

@@ -82,7 +82,7 @@ type Report struct {
 	Heuristic        string            `json:"heuristic"`
 	Refs             []Provenance      `json:"refs"`
 	Collisions       []Collision       `json:"stable_id_collisions"`
-	CompetingHeads   []CompetingHeads  `json:"competing_heads"`
+	CompetingHeads   []CompetingHeads  `json:"-"`
 	IntentCandidates []IntentCandidate `json:"overlapping_intent_candidates"`
 }
 
@@ -349,31 +349,11 @@ func analyze(snapshots []snapshot) Report {
 		story requirements.Story
 		at    Provenance
 	}
-	byID := map[string][]locatedStory{}
 	var all []locatedStory
 	for _, value := range snapshots {
 		for _, story := range value.Document.Stories {
 			located := locatedStory{story: story, at: value.Provenance}
-			byID[story.Identity.ID] = append(byID[story.Identity.ID], located)
 			all = append(all, located)
-		}
-	}
-	for id, values := range byID {
-		if len(values) < 2 {
-			continue
-		}
-		revisions, lifecycle := map[string][]string{}, map[string][]string{}
-		uniqueRevisions, uniqueLifecycle := map[string]bool{}, map[string]bool{}
-		var provenance []Provenance
-		for _, value := range values {
-			revisions[value.at.Ref] = sorted(value.story.RevisionHeads)
-			lifecycle[value.at.Ref] = sorted(value.story.LifecycleHeads)
-			uniqueRevisions[strings.Join(revisions[value.at.Ref], "\x00")] = true
-			uniqueLifecycle[strings.Join(lifecycle[value.at.Ref], "\x00")] = true
-			provenance = append(provenance, value.at)
-		}
-		if len(uniqueRevisions) > 1 || len(uniqueLifecycle) > 1 {
-			report.CompetingHeads = append(report.CompetingHeads, CompetingHeads{Story: id, RevisionHeads: revisions, LifecycleHeads: lifecycle, Provenance: provenance, Explanation: "the refs expose different current revision or lifecycle heads; no head is selected automatically"})
 		}
 	}
 	for left := 0; left < len(all); left++ {

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Uncertain reverse links remain visible as uncertainty.",
+    "preconditions": [
+      "Start from a current reverse path. In separate fixtures change the pinned evidence bytes, change design content, and merge competing story/relationship heads."
+    ],
+    "steps": [
+      {
+        "action": "Resolve the changed code reference using a locator that returns current=false.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reverse-impact:criterion:blockers"
+        ],
+        "expected_result": "The stale reference does not match as current.",
+        "id": "stale-filter"
+      },
+      {
+        "action": "Query traceability from the affected code location in each fixture and inspect relations/conflicts.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reverse-impact:criterion:blockers"
+        ],
+        "expected_result": "Stale/conflicted links are visible with their reasons or explicit blocker context, never presented as current paths.",
+        "id": "blockers"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report",
+    "title": "Show stale and conflicted reverse links without current claims"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reverse-stale-conflict-report"
+  }
+}

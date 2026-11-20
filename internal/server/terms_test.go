@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -155,6 +156,24 @@ func TestTermPagesDistinguishObservedGapsUnknownsAndRevisionConflicts(t *testing
 		TermDefinition: requirements.TermDefinition{Name: "Review annotation", Definition: "A proposed competing meaning.", DefinitionMaturity: requirements.DefinitionMaturityProposed, ImplementationEvidence: requirements.ImplementationEvidencePartial}}); err != nil {
 		t.Fatal(err)
 	}
+	relative := "___overview/terms/review-annotation.term"
+	legacyServerTestPackage(t, root, relative, "term", termURN, requirements.TermRevisionSchemaURL, requirements.TermEventSchemaURL, 5, "r1", "active")
+	raw, err := os.ReadFile(filepath.Join(root, relative, "revisions/r1.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var branch map[string]any
+	if err = json.Unmarshal(raw, &branch); err != nil {
+		t.Fatal(err)
+	}
+	branch["id"], branch["parents"] = "r2", []string{termURN + ":revision:r1"}
+	child, err := json.MarshalIndent(branch, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(filepath.Join(root, relative, "revisions/r2.json"), child, 0644); err != nil {
+		t.Fatal(err)
+	}
 	r2Path := filepath.Join(root, "___overview", "terms", "review-annotation.term", "revisions", "r2.json")
 	data, err := os.ReadFile(r2Path)
 	if err != nil {
@@ -168,7 +187,7 @@ func TestTermPagesDistinguishObservedGapsUnknownsAndRevisionConflicts(t *testing
 		t.Fatal(err)
 	}
 	conflict := termPage(t, root, repo, "/terms/review-annotation")
-	for _, want := range []string{"Conflicting term revisions", "unknown — not assessed", "competing revision heads must be reconciled", "No current definition is available"} {
+	for _, want := range []string{"Ambiguous legacy term content", "unknown — not assessed", "legacy content is ambiguous", "No current definition is available"} {
 		if !strings.Contains(conflict, want) {
 			t.Fatalf("conflicted term is missing %q:\n%s", want, conflict)
 		}

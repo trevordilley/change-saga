@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "immutable-revision",
+        "statement": "After a local prototype revision is created, changing the original source directory does not change the stored revision."
+      },
+      {
+        "id": "pinned-annotation",
+        "statement": "An annotation can record a selector, prototype revision, and story revision before either endpoint resolves."
+      },
+      {
+        "id": "visible-currency",
+        "statement": "Composition reports an annotation as current, stale, or unresolved, and a changed endpoint never silently retargets it."
+      },
+      {
+        "id": "trusted-external-origin",
+        "statement": "An external prototype is embeddable only when its URL origin exactly matches an explicit allowlist entry."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:designer"
+    ],
+    "statement": "As a designer, I can connect feedback on a specific prototype element to the exact story revision it explores so later changes stay visible instead of silently moving the feedback.",
+    "story": "urn:change-saga:change-saga:story:prototype-feedback-context",
+    "title": "Review a prototype against product intent"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:prototype-feedback-context"
+  }
+}

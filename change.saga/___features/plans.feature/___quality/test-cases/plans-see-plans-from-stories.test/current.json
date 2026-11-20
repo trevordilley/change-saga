@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Open a feature whose story a Task names, with an unrelated Plan present.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:feature-shows-plans"
+        ],
+        "expected_result": "It lists the one Plan.",
+        "id": "feature-shows-plans"
+      },
+      {
+        "action": "Add only Tasks naming a story, then open the pages.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:worked-out-from-links"
+        ],
+        "expected_result": "The lists follow with nothing else authored.",
+        "id": "worked-out-from-links"
+      },
+      {
+        "action": "Deliver the Roadmap feature holding the story, then list Plans of the receiving feature.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:survives-delivery"
+        ],
+        "expected_result": "The Task keeps its story, and the receiving feature lists the Plan.",
+        "id": "survives-delivery"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-see-plans-from-stories",
+    "title": "Features list the Plans touching them"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-see-plans-from-stories"
+  }
+}

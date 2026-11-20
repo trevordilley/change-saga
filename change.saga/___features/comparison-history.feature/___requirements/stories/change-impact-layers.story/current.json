@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "changed-records",
+        "statement": "A comparison lists directly edited Saga records as added, revised, or retired, and a revised record includes its before and after representations."
+      },
+      {
+        "id": "affected-records",
+        "statement": "The comparison lists unedited affected records separately and states whether each is affected by changed code, a changed revision pin, or a traceability-chain dependency."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect assessing a change, I can distinguish Saga records the change edited from unedited records it may invalidate so I can review both direct and propagated consequences.",
+    "story": "urn:change-saga:change-saga:story:change-impact-layers",
+    "title": "Separate authored changes from downstream impact"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:change-impact-layers"
+  }
+}

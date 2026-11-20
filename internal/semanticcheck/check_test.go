@@ -77,8 +77,8 @@ func TestCheckReportsRisksWithProvenanceAndDoesNotTouchGit(t *testing.T) {
 	if !report.ReadOnly || len(report.Refs) != 2 || len(report.Collisions) != 1 || report.Collisions[0].ID != "collision" {
 		t.Fatalf("collision report = %#v", report)
 	}
-	if len(report.CompetingHeads) == 0 || report.CompetingHeads[0].Story != "common" {
-		t.Fatalf("competing heads = %#v", report.CompetingHeads)
+	if len(report.CompetingHeads) != 0 {
+		t.Fatalf("content edits created a second conflict-reconciliation workflow: %+v", report.CompetingHeads)
 	}
 	foundOverlap := false
 	for _, candidate := range report.IntentCandidates {

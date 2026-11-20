@@ -139,7 +139,7 @@ func Build(document *saga.Saga, inventory *requirements.Inventory) *Index {
 	}
 	for _, r := range inventory.Records {
 		for _, rev := range r.Revisions {
-			pin := r.Target + ":revision:" + rev.ID
+			pin := requirements.ContentPin(r.Target, rev.ID)
 			current := r.CurrentRevision != nil && r.CurrentRevision.ID == rev.ID
 			owned := func(role, edge string, p Pin) {
 				add(Use{Role: role, Owner: r.Target, OwnerRevision: pin, OwnerCurrent: current, Edge: edge, Pin: p})
@@ -307,7 +307,7 @@ func (ix *Index) Status(p Pin) string {
 		return "conflicted"
 	case r.CurrentLifecycle.State == "retired":
 		return "retired"
-	case r.Target+":revision:"+r.CurrentRevision.ID != p.Revision:
+	case requirements.ContentPin(r.Target, r.CurrentRevision.ID) != p.Revision:
 		return "stale"
 	}
 	return "current"

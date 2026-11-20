@@ -153,7 +153,7 @@ func (ix *Index) Select(target string, scoped []Pin) ([]SelectedPin, []string) {
 		if len(reasons) > 0 {
 			return selected, reasons
 		}
-		p := Pin{Target: target, Revision: target + ":revision:" + r.CurrentRevision.ID}
+		p := Pin{Target: target, Revision: requirements.ContentPin(target, r.CurrentRevision.ID)}
 		return append(selected, SelectedPin{Pin: p, Status: ix.Status(p), Intent: RevisionIntent(r.CurrentRevision)}), reasons
 	}
 	for _, p := range scoped {

@@ -1,5 +1,10 @@
 # Whiteboard validation
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Validated on 2026-10-13 on `feature/erd-whiteboard`, using isolated implementation
 worktrees followed by manager integration and independent review. Local previews
 use copied Sagas; source repositories are read-only. A final SHA-256 comparison
