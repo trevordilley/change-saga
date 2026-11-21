@@ -32,6 +32,59 @@ func addServerTask(t *testing.T, root, plan, id, story string, unblocks ...strin
 	}
 }
 
+func TestPlanOverviewResolvesImagesBeforeRendering(t *testing.T) {
+	deck := overviewFixture()
+	deck.Target = saga.PlanDeckTarget("demo", "tides", "technical")
+	slide := deck.Slides[0]
+	slide.Target = saga.PlanSlideTarget("demo", "tides", slide.ID)
+	deck.Overview = &saga.DeckOverview{Body: "![By ID](slide:flow)\n\n![By URN](slide:" + slide.Target + ")\n\n`![Literal](slide:flow)`\n\n![Missing](slide:missing)\n\n![Foreign](slide:" + saga.PlanSlideTarget("demo", "other", "flow") + ")"}
+	view := planOverview(&saga.Plan{PlanManifest: saga.PlanManifest{ID: "tides"}, Deck: deck})
+	body := string(view.Body)
+	if strings.Count(body, `src="/plans/tides/visual/flow"`) != 2 || strings.Contains(body, `src="/f/`) {
+		t.Fatalf("Plan essay images use the wrong owner's route: %s", body)
+	}
+	if strings.Count(body, "Unavailable essay visual.") != 2 || strings.Count(body, "<img ") != 2 || !strings.Contains(body, "![Literal](slide:flow)") {
+		t.Fatalf("missing, foreign or literal images were resolved incorrectly: %s", body)
+	}
+}
+
+func TestPlanEssayImagesLoadFromTheirOwnDeck(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	sagaID := serverSagaID(t, fixture.root)
+	for _, id := range []string{"first", "second"} {
+		addServerPlan(t, fixture.root, id)
+		deckTarget := saga.PlanDeckTarget(sagaID, id, id)
+		slideTarget := saga.PlanSlideTarget(sagaID, id, "shared")
+		deckDir := filepath.Join(saga.PlanDir(fixture.root, id), saga.PlanDeckDir)
+		slideName, _ := saga.FlatSlideFilename(deckTarget, slideTarget, 0)
+		asset, _ := saga.FlatSlideAssetFilename(slideName, ".svg")
+		writeServerJSON(t, filepath.Join(deckDir, slideName), saga.SlideManifest{Version: saga.DeckRecordVersion, ID: "shared", DeckID: id, Title: "Shared ID", Intent: "explain", Layout: "diagram", MediaType: "image/svg+xml", Entrypoint: asset, Takeaway: "Each Plan owns its visual."})
+		writeServerFile(t, filepath.Join(deckDir, asset), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><text x="10" y="30">Image for `+id+`</text></svg>`)
+		deckName, _ := saga.FlatDeckFilename(deckTarget, 0)
+		writeServerJSON(t, filepath.Join(deckDir, deckName), saga.DeckManifest{Version: saga.DeckRecordVersion, ID: id, Title: "Plan " + id, Role: saga.DeckRolePlan, Objective: "Explain the work.", Overview: &saga.DeckOverview{Body: "![By ID](slide:shared)\n\n![By URN](slide:" + slideTarget + ")"}})
+	}
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	for _, id := range []string{"first", "second"} {
+		page := getPage(t, handler, "/plans/"+id).Body.String()
+		path := "/plans/" + id + "/visual/shared"
+		if strings.Count(page, `src="`+path+`"`) != 2 {
+			t.Fatalf("Plan %s did not emit its own image URLs: %s", id, page)
+		}
+		visual := getPage(t, handler, path)
+		if visual.Code != http.StatusOK || !strings.HasPrefix(visual.Header().Get("Content-Type"), "image/svg+xml") || !strings.Contains(visual.Body.String(), "Image for "+id) {
+			t.Fatalf("Plan %s image did not load: %d %s", id, visual.Code, visual.Body.String())
+		}
+	}
+	for _, path := range []string{"/plans/missing/visual/shared", "/plans/first/visual/missing"} {
+		response := httptest.NewRecorder()
+		handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, path, nil))
+		if response.Code != http.StatusNotFound {
+			t.Fatalf("missing visual %s returned %d", path, response.Code)
+		}
+	}
+}
+
 func TestCheckpointGatesAppearOnTheBoardAndInTheirReview(t *testing.T) {
 	fixture := newServerReviewFixture(t)
 	addServerPlan(t, fixture.root, "first")

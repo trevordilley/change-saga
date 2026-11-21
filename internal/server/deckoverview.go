@@ -45,16 +45,24 @@ func slideFront(meta *saga.SlideManifest, labels []string) []string {
 }
 
 func makeDeckOverview(deck *saga.Deck, reviewID ...string) *deckOverviewView {
+	return makeDeckOverviewWithVisualURL(deck, func(slide *saga.Slide) string {
+		if len(reviewID) > 0 {
+			return reviewHref(reviewID[0]) + "/visual/" + url.PathEscape(slide.ID)
+		}
+		return "/f/" + url.PathEscape(slide.ID) + "/" + strings.Join(pathEscapeParts(slide.Entrypoint), "/")
+	})
+}
+
+// Select the owning deck's visual routes before rendering its Markdown. Updating
+// Visuals after rendering leaves already emitted image URLs pointing elsewhere.
+func makeDeckOverviewWithVisualURL(deck *saga.Deck, visualURL func(*saga.Slide) string) *deckOverviewView {
 	if deck == nil {
 		return nil
 	}
 	view := &deckOverviewView{Target: deck.Target, Title: deck.Title, DOMID: "overview-" + domID(deck.Target), Objective: deck.Objective, Generated: deck.Overview == nil, Visuals: map[string]string{}}
 	for _, slide := range deck.Slides {
 		if strings.HasPrefix(slide.MediaType, "image/") {
-			asset := "/f/" + url.PathEscape(slide.ID) + "/" + strings.Join(pathEscapeParts(slide.Entrypoint), "/")
-			if len(reviewID) > 0 {
-				asset = reviewHref(reviewID[0]) + "/visual/" + url.PathEscape(slide.ID)
-			}
+			asset := visualURL(slide)
 			view.Visuals[slide.ID], view.Visuals[slide.Target] = asset, asset
 		}
 		view.Slides = append(view.Slides, overviewSlideView{Title: slide.Title, Anchor: domID(slide.Target), Bullets: slide.FrontBullets()})

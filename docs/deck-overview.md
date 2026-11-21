@@ -122,6 +122,11 @@ brief point"]` inside `slide`; the existing diagram or asset remains the Back.
 for an API or library usage example, with an `example` Item retaining exact
 evidence; see [code examples](code-examples.md).
 
+Plan essays use this same syntax: `![Boundary](slide:access-boundary)` resolves
+inside that Plan's deck. A full same-Plan slide URN also works, for example
+`![Boundary](slide:urn:change-saga:APP:plan:PLAN:slide:access-boundary)`.
+The reader resolves the Plan's visual route before rendering the essay.
+
 ## Viewed is personal reading progress
 
 The **Viewed** checkbox is an explicit, reversible reading marker. A default local reader profile makes it a one-click action; optional profile

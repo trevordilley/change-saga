@@ -104,7 +104,7 @@ test("a Task's page shows it selected on the board, within its chain", async ({ 
   await expect(page.locator('.diff-drawer.open [data-plan-node-detail="read-tides"]')).toBeVisible();
 });
 
-test("a Plan opens on its essay, and a slide's Tasks appear in a slide-out", async ({ page, saga }) => {
+test("a Plan opens on its essay, and a slide's Tasks appear in a slide-out", async ({ page, saga }, testInfo) => {
   run(saga, "plan", "create", "--id", "tides", "--title", "Plan the tides");
   run(saga, "task", "add", "--plan", "tides", "--id", "read-tides", "--title", "Read the tide table",
     "--story", "urn:change-saga:wave-one:story:read-the-tide");
@@ -122,10 +122,23 @@ test("a Plan opens on its essay, and a slide's Tasks appear in a slide-out", asy
   writeFileSync(request, JSON.stringify(slide));
   run(saga, "apply-slide", "--from", request);
 
+  const overview = join(saga.tempDir, "plan-overview.json");
+  writeFileSync(overview, JSON.stringify({
+    body: "![Plan by ID](slide:the-work)\n\n![Plan by URN](slide:urn:change-saga:wave-one:plan:tides:slide:the-work)\n\n[The work](annotation:work)",
+    annotations: [{ id: "work", label: "The work", slide: "the-work" }],
+  }));
+  run(saga, "deck", "overview", "--plan", "tides", "--file", overview);
+
   await page.goto(`${saga.baseURL}/plans/tides`);
   await waitForSettledSaga(page);
   await expect(page.locator("[data-plan-deck] [data-deck-viewer]")).toHaveAttribute("data-deck-face", "overview");
   await expect(page.locator("[data-plan-deck] .slide-thumbnail-list")).toContainText("First phase");
+  for (const alt of ["Plan by ID", "Plan by URN"]) {
+    const image = page.getByAltText(alt, { exact: true });
+    await expect(image).toHaveAttribute("src", "/plans/tides/visual/the-work");
+    await expect.poll(() => image.evaluate((node) => (node as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  }
+  await page.screenshot({ path: testInfo.outputPath("inline-plan-images.png"), fullPage: true });
 
   await page.locator("[data-plan-deck] [data-slide-thumbnail]").click();
   await page.locator('[data-plan-drawer^="plan-tasks-"]').click();

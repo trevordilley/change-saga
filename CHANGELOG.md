@@ -45,6 +45,10 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- Inline `slide:` images in Plan essays now resolve to the Plan's own visual
+  routes. Previously the essay retained generic fragment URLs, causing broken
+  images even though the Plan's visual endpoint worked.
+
 - Downloadable example archives use a separately authored current-record Saga
   that validates and opens without a checkout. The full repository Saga retains
   its historical Git pins and remains available through a clone.

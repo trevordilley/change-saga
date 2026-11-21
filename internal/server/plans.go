@@ -372,17 +372,9 @@ func (a *app) planTasksPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func planOverview(plan *saga.Plan) *deckOverviewView {
-	overview := makeDeckOverview(plan.Deck)
-	if overview == nil {
-		return nil
-	}
-	for _, slide := range plan.Deck.Slides {
-		if strings.HasPrefix(slide.MediaType, "image/") {
-			asset := planHref(plan.ID) + "/visual/" + url.PathEscape(slide.ID)
-			overview.Visuals[slide.ID], overview.Visuals[slide.Target] = asset, asset
-		}
-	}
-	return overview
+	return makeDeckOverviewWithVisualURL(plan.Deck, func(slide *saga.Slide) string {
+		return planHref(plan.ID) + "/visual/" + url.PathEscape(slide.ID)
+	})
 }
 
 func planSlides(plan *saga.Plan, stories planStories, ready *planReadiness) []planDeckSlide {
