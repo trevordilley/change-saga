@@ -67,9 +67,9 @@ kept consistent on the Plan and its deck; omitted fields and checkpoints remain
 unchanged. Add `--dry-run --json` to inspect the proposed paths and fields.
 Use `story revise --story URN --title TEXT --statement TEXT PATH` for story
 wording, or `--overview-source FILE` for its detailed overview. Omitted fields
-are preserved. An already current story is edited without normalizing other
-packages; an unrelated legacy conflict stays unresolved. A legacy target still
-requires the safe normalization described below.
+are preserved. In `story revise`, an already current target is edited without
+normalizing other packages; an unrelated legacy conflict stays unresolved. A
+legacy target still requires the safe normalization described below.
 
 A semantic reference consists of a stable target and an exact content digest.
 Existing pin field names such as `revision`, `story_revision`, and `test_revision`
@@ -109,10 +109,14 @@ remnants, so interrupted cleanup never reapplies old pins. Other current records
 also take precedence over legacy remnants. Authors can inspect a checkout without
 unexpectedly changing it.
 
-A requirements, inventory, prototype, or test-definition write normalizes legacy
-record packages encountered in its Saga under the existing writer lock. The
-optional `change-saga normalize PATH` performs the same operation explicitly.
-Normalization is deterministic and idempotent:
+Existing requirements, inventory, prototype and test-definition writer paths
+retain their Saga-wide normalization behavior under the writer lock, with one
+exception: `story revise` skips normalization when its selected target already
+has current content and state. A legacy story target still enters Saga-wide
+normalization, so an unrelated legacy conflict or missing pin source can still
+block that migration. `plan set` does not normalize record packages. The optional
+`change-saga normalize PATH` performs normalization explicitly. Normalization is
+deterministic and idempotent:
 
 1. Inspect legacy parent relationships and require one unambiguous selected
    current content and state. No timestamp selects an authored value.
