@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/mutation.go",
+      "start": 546,
+      "end": 603,
+      "digest": "sha256:7f64e3f212e99b4f7e6c1c4c3da78836984fdb394d93de504cddb18aa53309b8",
+      "note": "Defines the isolated quality-domain boundary and its validate-lock-reload mutation discipline."
+    }
+  ]
+}

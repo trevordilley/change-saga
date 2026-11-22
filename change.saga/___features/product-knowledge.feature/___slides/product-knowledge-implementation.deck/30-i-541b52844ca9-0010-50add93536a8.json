@@ -4,8 +4,8 @@
   "slide": "story-lifecycle-runtime",
   "rank": 10,
   "kind": "region",
-  "label": "Lifecycle DAG",
-  "description": "Proposed, accepted, deferred, rejected, and retired events form a separate append-only graph from story meaning.",
+  "label": "Current product state",
+  "description": "Proposed, accepted, deferred, rejected and retired describe product intent. State and reason edit the current record and obey allowed transitions.",
   "selector": {
     "type": "element",
     "element_id": "lifecycle-graph"

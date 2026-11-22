@@ -1,14 +1,14 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T03:22:39.616546Z",
-  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design",
-  "from_content_digest": "sha256:51a66321d2e79e9cff3e9c99030c3bbde682d8c3cff1b805140f0b98c44f13cd",
+  "version": 5,
   "id": "approach-addresses-deprecations",
-  "rationale": "The trust-boundary section explains exact scope, replacement limits and uncertainty.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope",
-  "to_revision": "sha256:a4bf8405ffe4621abb8a80fb164fd0e65e6476985c16e36c09855f3ffda8340e",
   "type": "addresses",
-  "version": 5
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design",
+  "to": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope",
+  "scope": "self",
+  "rationale": "The trust-boundary section preserves explicit content/code scope, replacement limits and unresolved evidence; current withdrawal state does not erase the assertion or its Git history.",
+  "to_revision": "sha256:f1bb000d5cadc2f689a0e7d301093e6986d3009e68ed5ff2d3f1e3734d13b48f",
+  "from_content_digest": "sha256:22805cf1d71e073759734bad355bcbeefe3e2b97c587e7623cd7c02e80002442",
+  "state": "active",
+  "created_at": "2026-10-16T03:22:39.616546Z"
 }

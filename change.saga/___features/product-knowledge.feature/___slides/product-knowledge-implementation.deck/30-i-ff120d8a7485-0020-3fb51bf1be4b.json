@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "edge",
   "label": "Pinned annotation edge",
-  "description": "An annotation persists a selector plus prototype and story-revision pins, even before either endpoint can be resolved.",
+  "description": "An annotation preserves its selector and exact prototype/story content digests, even while endpoints are unavailable.",
   "selector": {
     "type": "element",
     "element_id": "pinned-annotation"

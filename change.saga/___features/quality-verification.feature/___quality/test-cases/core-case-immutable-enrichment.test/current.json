@@ -6,18 +6,18 @@
     "coverage_kinds": [
       "positive"
     ],
-    "expected_result": "Enrich a case without rewriting its definition.",
+    "expected_result": "Evidence enrichment leaves current definition bytes and stable identity unchanged; an actual definition edit stales the old evidence.",
     "preconditions": [
-      "A separate planned case r1 has stable step IDs; save its identity and original revision bytes."
+      "A planned case has stable step IDs. Save its identity, current.json bytes and current content digest before adding evidence."
     ],
     "steps": [
       {
-        "action": "Add implementation evidence, revise the expected outcome to r2, and append superseding evidence.",
+        "id": "check-immutable-enrichment",
+        "action": "Add implementation evidence, edit the expected outcome in the current definition, then append evidence explicitly superseding the old record.",
+        "expected_result": "Evidence addition leaves definition bytes unchanged. The content edit replaces current.json and stales old evidence; supersession restores current linkage while retaining both factual evidence records and one current definition.",
         "criteria": [
           "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment"
-        ],
-        "expected_result": "Evidence addition preserves the existing r1 revision; old evidence becomes stale after r2, both revisions and evidence records remain, and original r1 bytes stay unchanged.",
-        "id": "check-immutable-enrichment"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment",

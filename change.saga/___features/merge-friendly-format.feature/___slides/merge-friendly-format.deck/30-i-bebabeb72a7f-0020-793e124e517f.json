@@ -4,8 +4,8 @@
   "slide": "partitioned-storage",
   "rank": 20,
   "kind": "node",
-  "label": "Explicit conflict projection",
-  "description": "Preserves competing heads for reconciliation rather than selecting a winner by time.",
+  "label": "Git history and conflicts",
+  "description": "Git stores committed versions and normal same-file merge conflicts. Legacy normalization refuses competing candidates without choosing a winner or discarding authored content.",
   "selector": {
     "type": "element",
     "element_id": "git"

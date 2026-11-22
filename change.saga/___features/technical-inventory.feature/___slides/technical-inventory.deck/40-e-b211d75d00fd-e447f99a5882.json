@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "skills/change-saga/references/query.md",
+      "start": 222,
+      "end": 227,
+      "digest": "sha256:6b31c95ea5d3a5c166c2f4e820e60e5084d47e45a447de00fdf45fa618e492ca",
+      "note": "The query reference documents the dedicated inventory read and its filters."
+    }
+  ]
+}

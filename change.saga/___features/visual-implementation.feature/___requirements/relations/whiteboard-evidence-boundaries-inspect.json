@@ -1,14 +1,14 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-11-02T22:11:07.320327Z",
-  "from": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",
-  "from_revision": "sha256:fd6ba59c531c708021cb7281add6f75c7c87da1c3649c60e4f356437ca003dd6",
+  "version": 5,
   "id": "whiteboard-evidence-boundaries-inspect",
-  "rationale": "The explicitly mapped edge steps exercise this whiteboard element obligation.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
-  "to_revision": "sha256:bfcecfc71d7cd39cd14b705081d5152b12e37a82acfeae0cbcf399f0dd8d581f",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",
+  "to": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
+  "scope": "self",
+  "rationale": "Reassessed Keep comparison, subset and historical evidence boundaries visible. Steps criterion, history check: The old criterion link remains stale until explicit reassessment. Publication replaces current board content without silently refreshing other pins.; Historical inspection opens the exact original code. Current references attribute only active board content and do not duplicate historical Git evidence. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:d43751ffce903a539a6d39ce1e50240c6e39eac69eb21829f8103bf9b6abd12d",
+  "to_revision": "sha256:334806517d80b7139f2de7b61a49fbebdf39f5f7802d281fa366dd7daadf119a",
+  "state": "active",
+  "created_at": "2026-11-02T22:11:07.320327Z"
 }

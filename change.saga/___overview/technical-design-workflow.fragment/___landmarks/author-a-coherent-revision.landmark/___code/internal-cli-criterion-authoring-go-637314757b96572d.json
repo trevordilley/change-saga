@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/cli/criterion_authoring.go",
+      "start": 135,
+      "end": 155,
+      "digest": "sha256:dc6122d1c5c9293fc8f9e1b4a0d1a0947d9014d80f8a03eb330bd58522599f50",
+      "note": "The public criterion command distinguishes omitted prose from explicit values and validates authored changes."
+    }
+  ]
+}

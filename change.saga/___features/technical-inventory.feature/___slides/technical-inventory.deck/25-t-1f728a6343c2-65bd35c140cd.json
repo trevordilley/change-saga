@@ -1,216 +1,216 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/slide-current.schema.json",
+  "version": 2,
+  "deck": "technical-inventory",
+  "slide": "ti-query-impl-uses",
   "content": {
     "asset": "24-a-8155b2c50ce8452a9a30a9126ac8a626fe9551c39442155e0260.svg",
     "asset_digest": "sha256:8155b2c50ce8452a9a30a9126ac8a626fe9551c39442155e0260b7f67754a86e",
     "items": [
       {
-        "criterion_links": [
-          {
-            "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses",
-            "id": "index-inventory-documentation-and-usages-reverse-uses",
-            "rationale": "Uses identify the feature, deck, slide and referencing Item for each implementation-deck use.",
-            "story_revision": "sha256:9a86a80c0861db55fec8b5a34a3d0363dc2a8310e948b081264a2a497077a1fa"
-          },
-          {
-            "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:code-and-usages",
-            "id": "index-erd-entity-context-code-and-usages",
-            "rationale": "An entity's uses include the feature implementation decks, slides and Items that pin it.",
-            "story_revision": "sha256:222a3e3f40dfa008a13c16d39a92e7913e9f231ba62822ab39a0109e5def66a8"
-          }
-        ],
-        "evidence": [
-          {
-            "references": [
-              {
-                "commit": "423bd2b758081a0d7b0410bba82de6c6064a37bf",
-                "digest": "sha256:2e9438b752a38b3a940e3914d7aa6f78b6b980fc533e6bbc9ae7cec1e337b2aa",
-                "end": 194,
-                "note": "Use roles, the declared-links index, indexed pin status and use counts.",
-                "path": "internal/inventoryview/uses.go",
-                "start": 1
-              }
-            ],
-            "version": 2
-          },
-          {
-            "references": [
-              {
-                "commit": "423bd2b758081a0d7b0410bba82de6c6064a37bf",
-                "digest": "sha256:fae25c7416738c4f07d8f0e43ee42cabf271a35b94ee28ea92de09e52d42d34b",
-                "end": 314,
-                "note": "Use roles, the declared-links index, indexed pin status and use counts.",
-                "path": "internal/inventoryview/uses.go",
-                "start": 270
-              }
-            ],
-            "version": 2
-          }
-        ],
         "item": {
-          "description": "Build indexes implementation and review Item documentation pins, System members, data-entity holders, relationship destinations and ERD directory and overlay pins; nothing is inferred from prose or code.",
           "documentation": {
-            "revision": "sha256:53e5f7f2d4c0d1528382dbed021f79f088ffa1de450c167dfa812faad6e21d7b",
-            "target": "urn:change-saga:change-saga:component:inventory-read-projection"
+            "target": "urn:change-saga:change-saga:component:inventory-read-projection",
+            "revision": "sha256:53e5f7f2d4c0d1528382dbed021f79f088ffa1de450c167dfa812faad6e21d7b"
           },
+          "version": 4,
           "id": "index",
+          "slide": "ti-query-impl-uses",
+          "rank": 10,
           "kind": "node",
           "label": "Declared links index",
-          "rank": 10,
+          "description": "Build indexes implementation and review Item documentation pins, System members, data-entity holders, relationship destinations and ERD directory and overlay pins; nothing is inferred from prose or code.",
           "selector": {
-            "element_id": "index",
-            "type": "element"
-          },
-          "slide": "ti-query-impl-uses",
-          "version": 4
-        }
-      },
-      {
-        "criterion_links": [
-          {
-            "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
-            "id": "traverse-inventory-query-technical-context-transitive-navigation",
-            "rationale": "From a System or member, the declared path to each using Item is returned.",
-            "story_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2"
+            "type": "element",
+            "element_id": "index"
           }
-        ],
+        },
         "evidence": [
           {
+            "version": 2,
+            "references": [
+              {
+                "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+                "path": "internal/inventoryview/uses.go",
+                "start": 1,
+                "end": 194,
+                "digest": "sha256:94d87b41a72a9166a829e14930e0ffceea8292b1c2fe976c2e146d8fe24d2604",
+                "note": "Use roles, the declared-links index, indexed pin status and use counts."
+              }
+            ]
+          },
+          {
+            "version": 2,
+            "references": [
+              {
+                "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+                "path": "internal/inventoryview/uses.go",
+                "start": 270,
+                "end": 314,
+                "digest": "sha256:5a51ba70d10bbf6100bb1ad5016b282594ec265390e6101a998d790e3bc4df9b",
+                "note": "Use roles, the declared-links index, indexed pin status and use counts."
+              }
+            ]
+          }
+        ],
+        "criterion_links": [
+          {
+            "id": "index-inventory-documentation-and-usages-reverse-uses",
+            "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses",
+            "story_revision": "sha256:9a86a80c0861db55fec8b5a34a3d0363dc2a8310e948b081264a2a497077a1fa",
+            "rationale": "Uses identify the feature, deck, slide and referencing Item for each implementation-deck use."
+          },
+          {
+            "id": "index-erd-entity-context-code-and-usages",
+            "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:code-and-usages",
+            "story_revision": "sha256:222a3e3f40dfa008a13c16d39a92e7913e9f231ba62822ab39a0109e5def66a8",
+            "rationale": "An entity's uses include the feature implementation decks, slides and Items that pin it."
+          }
+        ]
+      },
+      {
+        "item": {
+          "version": 4,
+          "id": "traverse",
+          "slide": "ti-query-impl-uses",
+          "rank": 20,
+          "kind": "node",
+          "label": "Current owners only",
+          "description": "Upward traversal follows declared current owner content. Exact saved pins remain distinct; historical ownership is never inferred as a current use.",
+          "selector": {
+            "type": "element",
+            "element_id": "traverse"
+          }
+        },
+        "evidence": [
+          {
+            "version": 2,
             "references": [
               {
                 "commit": "423bd2b758081a0d7b0410bba82de6c6064a37bf",
-                "digest": "sha256:1f09e7e8e688d2e0058cd8f95055abb465e0c50f3691b4d6495865088e08bac2",
-                "end": 269,
-                "note": "Upward traversal through current owner revisions with depth, cycle and budget cuts.",
                 "path": "internal/inventoryview/uses.go",
-                "start": 218
+                "start": 218,
+                "end": 269,
+                "digest": "sha256:1f09e7e8e688d2e0058cd8f95055abb465e0c50f3691b4d6495865088e08bac2",
+                "note": "Upward traversal through current owner revisions with depth, cycle and budget cuts."
               }
-            ],
-            "version": 2
+            ]
           }
         ],
-        "item": {
-          "description": "Upward traversal follows current owner revisions; a superseded owner revision is listed with owner_current false but does not make its old users users of the member.",
-          "id": "traverse",
-          "kind": "node",
-          "label": "Current owners only",
-          "rank": 20,
-          "selector": {
-            "element_id": "traverse",
-            "type": "element"
-          },
-          "slide": "ti-query-impl-uses",
-          "version": 4
-        }
-      },
-      {
         "criterion_links": [
           {
-            "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
-            "id": "completeness-inventory-query-technical-context-truthful-results",
-            "rationale": "Bounded traversal reports where it stopped rather than presenting a partial graph as complete.",
-            "story_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2"
+            "id": "traverse-inventory-query-technical-context-transitive-navigation",
+            "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation",
+            "story_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+            "rationale": "From a System or member, the declared path to each using Item is returned."
           }
-        ],
+        ]
+      },
+      {
+        "item": {
+          "version": 4,
+          "id": "completeness",
+          "slide": "ti-query-impl-uses",
+          "rank": 30,
+          "kind": "node",
+          "label": "Explicit completeness",
+          "description": "Every page reports depth_cut, cycle_cut and truncated; complete is true only when none occurred, so an empty page is not presented as no uses.",
+          "selector": {
+            "type": "element",
+            "element_id": "completeness"
+          }
+        },
         "evidence": [
           {
+            "version": 2,
             "references": [
               {
                 "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:eeb11962dddec70246780e17550ded7f28ef5d4d1fba46d8551ab12402a32cda",
-                "end": 210,
-                "note": "Paging keeps exact totals and the completeness flags.",
                 "path": "internal/inventoryview/uses.go",
-                "start": 188
+                "start": 188,
+                "end": 210,
+                "digest": "sha256:eeb11962dddec70246780e17550ded7f28ef5d4d1fba46d8551ab12402a32cda",
+                "note": "Paging keeps exact totals and the completeness flags."
               }
-            ],
-            "version": 2
+            ]
           }
         ],
-        "item": {
-          "description": "Every page reports depth_cut, cycle_cut and truncated; complete is true only when none occurred, so an empty page is not presented as no uses.",
-          "id": "completeness",
-          "kind": "node",
-          "label": "Explicit completeness",
-          "rank": 30,
-          "selector": {
-            "element_id": "completeness",
-            "type": "element"
-          },
-          "slide": "ti-query-impl-uses",
-          "version": 4
-        }
-      },
-      {
         "criterion_links": [
           {
-            "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:usage-navigation",
-            "id": "query-inventory-query-technical-context-usage-navigation",
-            "rationale": "Queries expose implementation-deck usages and their originating Items.",
-            "story_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2"
-          },
-          {
-            "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:navigate-usage",
-            "id": "query-inventory-documentation-and-usages-navigate-usage",
-            "rationale": "Each use carries the slide and Item target to open, not only the feature.",
-            "story_revision": "sha256:9a86a80c0861db55fec8b5a34a3d0363dc2a8310e948b081264a2a497077a1fa"
+            "id": "completeness-inventory-query-technical-context-truthful-results",
+            "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+            "story_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+            "rationale": "Bounded traversal reports where it stopped rather than presenting a partial graph as complete."
           }
-        ],
-        "evidence": [
-          {
-            "references": [
-              {
-                "commit": "423bd2b758081a0d7b0410bba82de6c6064a37bf",
-                "digest": "sha256:e509802e179b375679dceeeda2042b68b8de40ed0465dd3076b64acaa5420f2f",
-                "end": 454,
-                "note": "query inventory-uses and canonical target validation for every inventory kind.",
-                "path": "internal/cli/query_inventory_view.go",
-                "start": 337
-              }
-            ],
-            "version": 2
-          }
-        ],
+        ]
+      },
+      {
         "item": {
-          "description": "The public operation pages uses by role and depth with the Item, slide, deck and feature URNs needed to open the referencing slide.",
           "documentation": {
-            "revision": "sha256:e1bcecb1b5fad35e4e120936ccb1744416eb118eaa88d54b584bb8fe89de3705",
-            "target": "urn:change-saga:change-saga:component:inventory-read-queries"
+            "target": "urn:change-saga:change-saga:component:inventory-read-queries",
+            "revision": "sha256:e1bcecb1b5fad35e4e120936ccb1744416eb118eaa88d54b584bb8fe89de3705"
           },
+          "version": 4,
           "id": "query",
+          "slide": "ti-query-impl-uses",
+          "rank": 40,
           "kind": "node",
           "label": "query inventory-uses",
-          "rank": 40,
+          "description": "The public operation pages uses by role and depth with the Item, slide, deck and feature URNs needed to open the referencing slide.",
           "selector": {
-            "element_id": "query",
-            "type": "element"
+            "type": "element",
+            "element_id": "query"
+          }
+        },
+        "evidence": [
+          {
+            "version": 2,
+            "references": [
+              {
+                "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+                "path": "internal/cli/query_inventory_view.go",
+                "start": 338,
+                "end": 455,
+                "digest": "sha256:300af7afe895213946f61bccd95be96c9ec1e57d918675f68c6abc0d2b74b38c",
+                "note": "query inventory-uses and canonical target validation for every inventory kind."
+              }
+            ]
+          }
+        ],
+        "criterion_links": [
+          {
+            "id": "query-inventory-query-technical-context-usage-navigation",
+            "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:usage-navigation",
+            "story_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+            "rationale": "Queries expose implementation-deck usages and their originating Items."
           },
-          "slide": "ti-query-impl-uses",
-          "version": 4
-        }
+          {
+            "id": "query-inventory-documentation-and-usages-navigate-usage",
+            "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:navigate-usage",
+            "story_revision": "sha256:9a86a80c0861db55fec8b5a34a3d0363dc2a8310e948b081264a2a497077a1fa",
+            "rationale": "Each use carries the slide and Item target to open, not only the feature."
+          }
+        ]
       }
     ],
     "slide": {
-      "deck": "technical-inventory",
-      "entrypoint": "24-a-8155b2c50ce8452a9a30a9126ac8a626fe9551c39442155e0260.svg",
+      "version": 4,
       "id": "ti-query-impl-uses",
+      "deck": "technical-inventory",
+      "title": "Implemented: declared reverse uses",
+      "rank": 201,
+      "section": "Implemented reads and coverage",
       "intent": "explain",
       "layout": "diagram",
       "media_type": "image/svg+xml",
-      "rank": 201,
+      "entrypoint": "24-a-8155b2c50ce8452a9a30a9126ac8a626fe9551c39442155e0260.svg",
+      "takeaway": "Reverse uses follow declared links through current owner revisions and report depth, cycle and budget cuts instead of implying no other uses.",
       "reading_order": [
         "index",
         "traverse",
         "completeness",
         "query"
-      ],
-      "section": "Implemented reads and coverage",
-      "takeaway": "Reverse uses follow declared links through current owner revisions and report depth, cycle and budget cuts instead of implying no other uses.",
-      "title": "Implemented: declared reverse uses",
-      "version": 4
+      ]
     }
-  },
-  "deck": "technical-inventory",
-  "slide": "ti-query-impl-uses",
-  "version": 2
+  }
 }

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/currentrecord/record.go",
+      "start": 188,
+      "end": 238,
+      "digest": "sha256:b36dd0d82a3906c4258f88da2a64067c13aaeff6ec408ebf7c898ed908f3d80c",
+      "note": "Legacy selection refuses competing leaves without choosing by time or discarding authored candidates."
+    }
+  ]
+}

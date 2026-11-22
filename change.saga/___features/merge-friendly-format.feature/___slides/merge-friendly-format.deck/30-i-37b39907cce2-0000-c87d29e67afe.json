@@ -4,8 +4,8 @@
   "slide": "story-mutation-sequence",
   "rank": 0,
   "kind": "node",
-  "label": "Normalized request",
-  "description": "The CLI builds a complete add or revise request from flags, structured JSON, or inherited single-parent fields.",
+  "label": "Complete authored request",
+  "description": "Flags inherit omitted current story fields; structured input supplies complete content. Neither path authors Saga revision IDs or parent lists.",
   "selector": {
     "type": "element",
     "element_id": "cli-request"

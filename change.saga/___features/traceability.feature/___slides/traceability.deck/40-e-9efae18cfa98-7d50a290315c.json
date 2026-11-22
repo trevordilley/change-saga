@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/relation_carry_forward_test.go",
+      "start": 15,
+      "end": 59,
+      "digest": "sha256:34924d3f4c6a0e385efe0c22f300e706e1f3d2949db5be77f4d5c464ea6c549a",
+      "note": "Reproduces an unrelated story revision and verifies the criterion relation remains current with an auditable carry-forward."
+    }
+  ]
+}

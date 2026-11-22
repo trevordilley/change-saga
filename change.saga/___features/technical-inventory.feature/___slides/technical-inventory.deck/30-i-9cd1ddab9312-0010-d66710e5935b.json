@@ -1,17 +1,17 @@
 {
-  "description": "A System pins Component revisions and explains directed interactions with exact evidence for each flow. Legacy System rules are unchanged; format-2 interactions carry their own intent.",
   "documentation": {
-    "revision": "sha256:c5554f3a80277c25cd45f9fc7ff93c95307330ec0f5c29316ed9d5448702e761",
-    "target": "urn:change-saga:change-saga:system:technical-documentation"
+    "target": "urn:change-saga:change-saga:system:technical-documentation",
+    "revision": "sha256:c5554f3a80277c25cd45f9fc7ff93c95307330ec0f5c29316ed9d5448702e761"
   },
+  "version": 4,
   "id": "system",
+  "slide": "technical-inventory-identity",
+  "rank": 10,
   "kind": "node",
   "label": "System",
-  "rank": 10,
+  "description": "A System pins exact Component content and explains directed interactions with their own evidence and intent. A digest identifies content, not a Saga parent graph.",
   "selector": {
-    "element_id": "system",
-    "type": "element"
-  },
-  "slide": "technical-inventory-identity",
-  "version": 4
+    "type": "element",
+    "element_id": "system"
+  }
 }

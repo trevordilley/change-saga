@@ -5,7 +5,7 @@
   "rank": 30,
   "kind": "node",
   "label": "Scoped evidence",
-  "description": "The canonical link never supplies the Item evidence or changes its content digest when the definition advances.",
+  "description": "A bare canonical link grants no code coverage. Explicit selections own only their exact declared subset; newer definitions never silently replace saved pins.",
   "selector": {
     "type": "element",
     "element_id": "scope"

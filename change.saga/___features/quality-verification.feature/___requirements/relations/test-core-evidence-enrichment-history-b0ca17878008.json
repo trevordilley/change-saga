@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:19:34.091275Z",
-  "from": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history",
-  "from_revision": "sha256:4f47ed05dc557faa434042d6de589b85dae95d1bb80fda368d673ead2300033f",
+  "version": 5,
   "id": "test-core-evidence-enrichment-history-b0ca17878008",
-  "rationale": "Steps check-evidence-provenance, check-exposed-provenance-fields define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-core-evidence-enrichment-history-b0ca17878008",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:evidence-provenance",
-  "to_revision": "sha256:19c5b9e1aea31424ce435cd778db05e19775cf1ad520c2a1c67672c63dd3c342",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:evidence-provenance",
+  "scope": "self",
+  "rationale": "Reassessed Retain exact evidence pins across current definition edits. Steps check-evidence-provenance, check-exposed-provenance-fields check: Enrichment leaves definition bytes unchanged; a definition edit makes the original pin stale. Replacement evidence restores current linkage without rewriting either factual evidence record or creating a second definition history store.; Canonical identity, role, exact code, pinned test content digest, stable step IDs and supersession edges remain exact. Runs are exposed only as historical metadata. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:74939ac78dd5cfdfa6715a467a4910daa4870e4c9eed3370065c421826f3a53f",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:34.091275Z",
+  "request_id": "test-core-evidence-enrichment-history-b0ca17878008"
 }

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/terms_mutation.go",
+      "start": 87,
+      "end": 146,
+      "digest": "sha256:4084f0b8007b63857fb2732f346dfdcb624521465ecb8eddce518e1043045dbb",
+      "note": "Defines and atomically publishes a current living term with aliases, intent links and exact defining-code pins."
+    }
+  ]
+}

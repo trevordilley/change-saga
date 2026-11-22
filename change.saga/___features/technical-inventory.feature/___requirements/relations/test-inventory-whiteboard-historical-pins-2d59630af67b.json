@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:21:12.747543Z",
-  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-historical-pins",
-  "from_revision": "sha256:b069906ac794f2603fd6ac2e41ddb90eccae6d4edee7e4e0ddbb76bf43c40c9c",
+  "version": 5,
   "id": "test-inventory-whiteboard-historical-pins-2d59630af67b",
-  "rationale": "Steps child, history define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-inventory-whiteboard-historical-pins-2d59630af67b",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:history",
-  "to_revision": "sha256:0fb0937c3f8389662d322b20055d2ed0f28ee83203c5ad7ebabd1946fee36ba7",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-historical-pins",
+  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:history",
+  "scope": "self",
+  "rationale": "Reassessed Reopen an exact historical board after newer publication. Steps child, history check: The board retains its exact child pin and never follows newer content implicitly.; The saved original SVG and exact child pins are reproduced. Missing Git objects remain unresolved; no Saga history sidecar or current-content substitution is used. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:35fce8b89f24047bb9d2b09cf6bf33f9e67157322a522f1c636e0006cde615e7",
+  "to_revision": "sha256:0c5e2eefaaa558f75c09e874cfcc55f7d934e4accfd4380c5977f61f41721cd4",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:12.747543Z",
+  "request_id": "test-inventory-whiteboard-historical-pins-2d59630af67b"
 }

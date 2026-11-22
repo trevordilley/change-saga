@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal",
+  "test_revision": "sha256:cfa07e078c7c36b329f6a0a1c59ea45aef063745394451cf47edcafd696565e5",
+  "role": "test_implementation",
+  "steps": [
+    "withdraw",
+    "immutable"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/deprecations_test.go",
+      "start": 118,
+      "end": 134,
+      "digest": "sha256:1e24bcb889e5a2002fbeab132068fb99741ab2f66f46754ca097455d372d2e53"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal:evidence:evidence-1"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-evidence-1-current-20261122"
+}

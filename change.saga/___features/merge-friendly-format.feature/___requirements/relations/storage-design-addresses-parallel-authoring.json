@@ -1,14 +1,14 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-22T23:32:38.827821Z",
-  "from": "urn:change-saga:change-saga:fragment:partitioned-storage-design",
-  "from_content_digest": "sha256:1d36858e96479001085f89767ff50ff08c971b203f85feafef185e642995700e",
+  "version": 5,
   "id": "storage-design-addresses-parallel-authoring",
-  "rationale": "Partitioned immutable records and atomic local publication support parallel authorship without silent overwrite.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:parallel-authoring",
-  "to_revision": "sha256:411b3414158643d97b8e12ff86f1ec33920c9eb3d924e46ace5db3f30931701f",
   "type": "addresses",
-  "version": 5
+  "from": "urn:change-saga:change-saga:fragment:partitioned-storage-design",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "self",
+  "rationale": "The design partitions stable identities and current files, distinguishes actual evidence/review facts and explains bounded locks, atomic local publication, normal Git conflicts and safe legacy conversion.",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "from_content_digest": "sha256:bb7d655c76af08db19e66aff7690e476548249fcb0218daf5f098d044cec1c5a",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.827821Z"
 }

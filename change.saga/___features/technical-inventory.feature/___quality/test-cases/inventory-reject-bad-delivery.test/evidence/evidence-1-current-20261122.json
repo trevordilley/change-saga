@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery",
+  "test_revision": "sha256:e863f21757c444ba58d324fa1c53a74418cffee248b0940fa8e354bb744adaf7",
+  "role": "test_implementation",
+  "steps": [
+    "missing-delivery"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/inventory_lifecycle_test.go",
+      "start": 129,
+      "end": 137,
+      "digest": "sha256:86ead1239f18b2e977974c53bd54047588afb96743f6700f7f837f77a4567c47"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:inventory-reject-bad-delivery:evidence:evidence-1"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-evidence-1-current-20261122"
+}

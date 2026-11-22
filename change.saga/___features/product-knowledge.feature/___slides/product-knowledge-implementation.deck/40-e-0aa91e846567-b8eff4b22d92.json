@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 151,
+      "end": 173,
+      "digest": "sha256:7ca62207bbe04bd843f309afaddd8e3209489953df154bd42f9631a9269744c5",
+      "note": "Classifies missing, conflicted, incompatible, or moved endpoints as explicit stale reasons and gaps without retargeting."
+    }
+  ]
+}

@@ -4,8 +4,8 @@
   "slide": "revision-conflict-state",
   "rank": 40,
   "kind": "transition",
-  "label": "Reconcile every head",
-  "description": "A new complete revision must name the full current head set as parents.",
+  "label": "Explicit content resolution",
+  "description": "Preserve candidates in Git, explicitly combine their intent, then publish/select complete current content before normalization. No new Saga parent graph is authored.",
   "selector": {
     "type": "element",
     "element_id": "reconcile-all-heads"

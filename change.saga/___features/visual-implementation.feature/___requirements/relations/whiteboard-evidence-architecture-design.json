@@ -1,14 +1,14 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-11-02T22:13:46.383809Z",
-  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-architecture",
-  "from_content_digest": "sha256:f618dd695d94e1baf678429ae4ea259d72faf1136bfc6347cd33839289e867ca",
+  "version": 5,
   "id": "whiteboard-evidence-architecture-design",
-  "rationale": "The Architecture notes explain native element metadata, exact drawer context, stale-code reassessment, immutable publication and living documented-code ownership for this story.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:whiteboard-element-evidence",
-  "to_revision": "sha256:bfcecfc71d7cd39cd14b705081d5152b12e37a82acfeae0cbcf399f0dd8d581f",
   "type": "addresses",
-  "version": 5
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-architecture",
+  "to": "urn:change-saga:change-saga:story:whiteboard-element-evidence",
+  "scope": "self",
+  "rationale": "The Architecture notes explain native element ownership, current-page digest conflicts, explicit saved Git context, deliberate current-pin reassessment and independent review coverage.",
+  "to_revision": "sha256:334806517d80b7139f2de7b61a49fbebdf39f5f7802d281fa366dd7daadf119a",
+  "from_content_digest": "sha256:e7dbb2772887941a7020087dc5d7f926813af050476d6e52012a5456c2d6a168",
+  "state": "active",
+  "created_at": "2026-11-02T22:13:46.383809Z"
 }

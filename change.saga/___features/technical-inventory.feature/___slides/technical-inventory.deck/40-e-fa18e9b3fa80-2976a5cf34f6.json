@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "schema/v5/system-event.schema.json",
+      "start": 1,
+      "end": 52,
+      "digest": "sha256:d6a059e7f4fed3c5a278c0210df17080f5d067f89db85b6bafecd64c1c238d61",
+      "note": "The current technical state records active/retired intent and reason, with earlier committed values retained by Git."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/inventory.go",
+      "start": 19,
+      "end": 172,
+      "digest": "sha256:13be616d54e8da569ea1a4e9d5e7bbeec695387ef7c83971bfec40b46ac54340",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    }
+  ]
+}

@@ -4,8 +4,8 @@
   "slide": "prototype-annotation-runtime",
   "rank": 10,
   "kind": "node",
-  "label": "Immutable prototype package",
-  "description": "Local HTML is copied into a revision package and protected by a tree digest; later changes to the source directory do not alter it.",
+  "label": "Content-addressed HTML",
+  "description": "HTML is copied to a digest-addressed asset tree while the prototype definition lives in current.json. Later edits to the original source directory do not alter the stored asset.",
   "selector": {
     "type": "element",
     "element_id": "immutable-package"

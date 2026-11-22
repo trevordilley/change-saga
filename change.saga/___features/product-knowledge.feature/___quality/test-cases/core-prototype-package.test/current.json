@@ -12,12 +12,12 @@
     ],
     "steps": [
       {
-        "action": "Import the HTML, edit only the original source and reload; finally alter the packaged copy and reload.",
+        "id": "check-immutable-revision",
+        "action": "Import the HTML into the current prototype and its content-addressed assets, edit only the original source directory, then tamper with the stored asset.",
+        "expected_result": "Original source edits leave the stored current prototype and asset bytes unchanged; tampering with the content-addressed asset produces a digest mismatch.",
         "criteria": [
           "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:immutable-revision"
-        ],
-        "expected_result": "Source edits leave the stored revision loadable; package tampering produces a digest mismatch.",
-        "id": "check-immutable-revision"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:core-prototype-package",

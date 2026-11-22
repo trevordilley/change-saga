@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 250,
+      "end": 279,
+      "digest": "sha256:aeacbd0a6020a17918b175a24575da427c949874aca3ff842d15921f3026fe6b",
+      "note": "Competing legacy lifecycle states remain visible; an ordinary current write refuses to choose and leaves both files intact."
+    }
+  ]
+}

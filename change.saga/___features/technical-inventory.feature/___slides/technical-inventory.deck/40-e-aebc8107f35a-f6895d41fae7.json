@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 1,
+      "end": 240,
+      "digest": "sha256:c6ae32277ac2642e81660a0bfa3d29b75a6ad92d54abf0273081932741de2a17",
+      "note": "A Component identifies a meaningful logic/transformation unit with exact pinned code and its own explanation."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/requirements/model.go",
+      "start": 35,
+      "end": 75,
+      "digest": "sha256:878b852e64245b893f698450cb7aa5139d6442618ec7ffc81461ce27e4c400ce",
+      "note": "Defines requirements-domain identities, complete story revisions, typed pinned relations, and the aggregate document."
+    }
+  ]
+}

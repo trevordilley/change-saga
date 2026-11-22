@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:22:29.3516Z",
-  "from": "urn:change-saga:change-saga:test-case:contracts-history-complete-snapshots",
-  "from_revision": "sha256:22a039fb8f3567e64e7af7b94437b53f450e5564e5d17d723345357f23b96323",
+  "version": 5,
   "id": "test-contracts-history-complete-snapshots-740d75bdcb6f",
-  "rationale": "Steps revise define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-contracts-history-complete-snapshots-740d75bdcb6f",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:auditable-requirement-history:criterion:revision-history",
-  "to_revision": "sha256:17cce291e2e69ed95c88aefad53b32ac341d7da56e1ff6eb7a5cc6f5969c9530",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:contracts-history-complete-snapshots",
+  "to": "urn:change-saga:change-saga:story:auditable-requirement-history:criterion:revision-history",
+  "scope": "self",
+  "rationale": "Reassessed Read earlier story content and state from real Git commits. Steps revise check: History identifies the actual commits and authors; each committed tree contains its exact complete definition. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:e7caa612cf9d9264bdf1d3876dd18846d589c1ad497c5d1858817003cc02fd0f",
+  "to_revision": "sha256:fd2d5b1c30d554efd998743e7264e8d4cbde6f85e5b174c884e458a90e004c80",
+  "state": "active",
+  "created_at": "2026-10-16T23:22:29.3516Z",
+  "request_id": "test-contracts-history-complete-snapshots-740d75bdcb6f"
 }

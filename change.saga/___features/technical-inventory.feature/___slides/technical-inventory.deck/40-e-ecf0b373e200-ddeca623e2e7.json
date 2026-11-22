@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/inventory.go",
+      "start": 271,
+      "end": 349,
+      "digest": "sha256:c75862d21db66ca29d1a919a561bfe1add7f42bcf890f6af755bc78c56fa14d5",
+      "note": "New pins are admitted through technicalpolicy.AdmitPin (current by default, or an exact saved-view binding); validation reports missing and noncurrent pins, unresolved selections and format-2 Item content without the marker."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:review-companion-source-delta",
+  "test_revision": "sha256:d5487e49c2aa27334df54ee7fe8498f619066bbecda14abb98d038c28b60551c",
+  "role": "test_implementation",
+  "steps": [
+    "compare"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/layers_test.go",
+      "start": 504,
+      "end": 516,
+      "digest": "sha256:71909e07c32c1fdcf625afa5c237c4a6e8aa6e9a724cc80db0d7856f34742715"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/layers_test.go",
+      "start": 524,
+      "end": 531,
+      "digest": "sha256:95a8fbae334a2ee00940b9f2df3ca351c981a3955e5ce2d0065c979aaa742448"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:review-companion-source-delta:evidence:evidence-1"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-evidence-1-current-20261122"
+}

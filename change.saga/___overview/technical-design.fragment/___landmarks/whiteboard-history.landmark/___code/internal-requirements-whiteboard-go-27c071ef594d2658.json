@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/whiteboard.go",
+      "start": 321,
+      "end": 399,
+      "digest": "sha256:a668d9ffe4f54f18579b088a902912eda8cbe955fb8afb8ba4c422742e7f6648",
+      "note": "Complete current whiteboard publication validates exact source pins under the lock; legacy cleanup follows pin persistence, with ambiguous inputs first preserved in Git."
+    }
+  ]
+}

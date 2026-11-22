@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-step-id-reuse-assertions-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:core-case-removed-step-id",
+  "test_revision": "sha256:21b52c64eea95b429efea4a5b6649cbc9a765b83d586a30896a4674370fd0eb2",
+  "role": "test_implementation",
+  "steps": [
+    "check-step-id-reuse"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/quality/mutation_test.go",
+      "start": 153,
+      "end": 176,
+      "digest": "sha256:4c038ec1c5b7260648454b3c29208d70510a2f0c2f83805fab2391ea4ce99c17"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-case-removed-step-id:evidence:check-step-id-reuse-assertions"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-check-step-id-reuse-assertions-current-20261122"
+}

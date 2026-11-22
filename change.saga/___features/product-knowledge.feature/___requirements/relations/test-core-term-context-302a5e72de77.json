@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:17:00.333503Z",
-  "from": "urn:change-saga:change-saga:test-case:core-term-context",
-  "from_revision": "sha256:764cd72211ab3418fa6e45d7459da3c52f7fb1cdd08ad9f66a19f19b29322f69",
+  "version": 5,
   "id": "test-core-term-context-302a5e72de77",
-  "rationale": "Steps check-code-currency define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-core-term-context-302a5e72de77",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:shared-product-language:criterion:code-currency",
-  "to_revision": "sha256:938089282e2a373870d8170380a32ac3d322b60649abde28e5c82c1a61d96d66",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:core-term-context",
+  "to": "urn:change-saga:change-saga:story:shared-product-language:criterion:code-currency",
+  "scope": "self",
+  "rationale": "Reassessed Keep terms tied to definitions, intent and source. Steps check-code-currency check: The changed source pin is stale and names its stable term owner; the explicit edit restores current linkage without changing the independent semantic axes. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:686216c268c6f3e93a5170f85484f0f268c8fd188839e685f689556f6245aec9",
+  "to_revision": "sha256:938089282e2a373870d8170380a32ac3d322b60649abde28e5c82c1a61d96d66",
+  "state": "active",
+  "created_at": "2026-10-16T23:17:00.333503Z",
+  "request_id": "test-core-term-context-302a5e72de77"
 }

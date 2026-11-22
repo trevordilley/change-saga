@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/prototypes/mutation.go",
+      "start": 20,
+      "end": 54,
+      "digest": "sha256:f17bc161dbc61e462adbf8f60864b53e8ee1b527560b219b43bdef61a6be9cee",
+      "note": "Separates prototype creation from annotation creation while keeping each mutation validated and replay-safe."
+    }
+  ]
+}

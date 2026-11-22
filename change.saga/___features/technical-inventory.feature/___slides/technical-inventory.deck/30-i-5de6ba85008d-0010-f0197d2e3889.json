@@ -4,8 +4,8 @@
   "slide": "technical-inventory-history",
   "rank": 10,
   "kind": "node",
-  "label": "Append under lock",
-  "description": "Publication creates one complete record atomically or appends a revision; a conflicting duplicate identity is refused.",
+  "label": "Publish under lock",
+  "description": "A new identity is staged atomically. Existing definitions replace current content; identical content replays without a second revision graph.",
   "selector": {
     "type": "element",
     "element_id": "append"

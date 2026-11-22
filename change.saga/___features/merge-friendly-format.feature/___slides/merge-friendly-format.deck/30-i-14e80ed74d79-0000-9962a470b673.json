@@ -4,8 +4,8 @@
   "slide": "revision-conflict-state",
   "rank": 0,
   "kind": "node",
-  "label": "Unique current head",
-  "description": "Exactly one revision head is projected as the current revision.",
+  "label": "Legacy selected content",
+  "description": "A single legacy leaf can be projected for a compatibility read. Current publications contain one editable complete value.",
   "selector": {
     "type": "element",
     "element_id": "unique-head"

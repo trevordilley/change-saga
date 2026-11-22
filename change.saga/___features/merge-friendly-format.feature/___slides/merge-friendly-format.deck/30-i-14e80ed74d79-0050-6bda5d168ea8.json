@@ -4,8 +4,8 @@
   "slide": "revision-conflict-state",
   "rank": 50,
   "kind": "node",
-  "label": "Current restored",
-  "description": "The reconciliation child becomes the only graph head and therefore the new current revision.",
+  "label": "One current publication",
+  "description": "Normalization produces current.json only after exact pin conversion is prepared; obsolete sources are cleaned after publication. Git retains committed earlier content.",
   "selector": {
     "type": "element",
     "element_id": "restored-current"

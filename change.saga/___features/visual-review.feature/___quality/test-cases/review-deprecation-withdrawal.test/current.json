@@ -6,30 +6,30 @@
     "coverage_kinds": [
       "positive"
     ],
-    "expected_result": "The original revision bytes are unchanged.",
+    "expected_result": "Withdrawal edits current state and reason, preserving assertion content and actual Git history.",
     "preconditions": [
-      "Create code-scoped deprecation code with one r1 revision and active event."
+      "Create a code-scoped deprecation with exact code evidence, then commit its current assertion and active state in a real Git repository."
     ],
     "steps": [
       {
-        "action": "Append withdrawal with explicit active event parent and query history.",
+        "id": "withdraw",
+        "action": "Set the deprecation withdrawn with an authored reason, then inspect current public output and Git history.",
+        "expected_result": "Current state is withdrawn, its code-scoped assertion and related intent remain present, and committed earlier state is available from Git.",
         "criteria": [
           "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:withdrawal"
-        ],
-        "expected_result": "State is withdrawn; history contains both lifecycle events and the original revision.",
-        "id": "withdraw"
+        ]
       },
       {
-        "action": "Compare the original assertion before and after withdrawal in the repository fixture.",
+        "id": "immutable",
+        "action": "Compare assertion content before and after withdrawal and inspect the original Git commit.",
+        "expected_result": "Assertion content is unchanged; only current withdrawal state/reason changes. The original committed record remains available through Git.",
         "criteria": [
           "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:withdrawal"
-        ],
-        "expected_result": "The original revision bytes are unchanged.",
-        "id": "immutable"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal",
-    "title": "Withdraw an assertion while preserving its original revision"
+    "title": "Withdraw current guidance while preserving its assertion"
   },
   "state": {
     "state": "proposed",

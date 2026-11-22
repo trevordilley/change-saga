@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/quality.go",
+      "start": 472,
+      "end": 505,
+      "digest": "sha256:e077a0c45c2a1a813f38361335426e372b28e65c4702fec6317f9cd5a11ac496",
+      "note": "Models the complete caller-provided run request, including claimed result, summary, command, source, and evidence."
+    }
+  ]
+}

@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "node",
   "label": "Feature-free URN",
-  "description": "Logical record identity omits feature membership so references survive moves between feature directories.",
+  "description": "Logical story identity omits feature membership; moving storage changes its holder, not its stable URN or exact evidence pins.",
   "selector": {
     "type": "element",
     "element_id": "stable-urn"

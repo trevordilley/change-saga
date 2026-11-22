@@ -4,8 +4,8 @@
   "slide": "pinned-graph",
   "rank": 0,
   "kind": "node",
-  "label": "Requirement revisions",
-  "description": "Stable stories and criteria evolve through immutable complete revisions.",
+  "label": "Current requirements",
+  "description": "Stable stories and criteria have editable current content and state; Git retains committed earlier definitions. Exact digest pins record what supporting evidence assessed.",
   "selector": {
     "type": "element",
     "element_id": "requirement"

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/prototypes/mutation.go",
+      "start": 59,
+      "end": 84,
+      "digest": "sha256:feaeb45b6dcc03869a0e5386523c14ff5897e2c4ebca3648179f609e961e74a1",
+      "note": "Content-addressed copied HTML assets remain independent of later changes to their original source, and tampering is detected."
+    }
+  ]
+}

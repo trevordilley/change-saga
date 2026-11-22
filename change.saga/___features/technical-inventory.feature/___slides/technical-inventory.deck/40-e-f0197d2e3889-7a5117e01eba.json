@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 90,
+      "end": 252,
+      "digest": "sha256:a93c95709c9214130bf0aad8196937d47d4a9e04fef5984a202a37c52e3b657d",
+      "note": "Technical writes stage new identities and atomically replace current content; equal values replay without authoring parents."
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-23T16:40:46.874305Z",
-  "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:verifies-path",
+  "version": 5,
   "id": "quality-verifies-path-explains-criterion-pin",
-  "rationale": "The verifies-path Item shows the exact criterion-revision pin and its visible stale or conflicted state.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:criterion-pin",
-  "to_revision": "sha256:59ca817f9d77130a40a299ea26c8700962650875115f711e62a04b943b75a344",
   "type": "explains",
-  "version": 5
+  "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:verifies-path",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:criterion-pin",
+  "scope": "self",
+  "rationale": "The verifies path connects a stable case and an exact criterion content pin; changed obligations remain stale until deliberate reassessment.",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:46.874305Z"
 }

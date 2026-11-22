@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/mutation_test.go",
+      "start": 111,
+      "end": 149,
+      "digest": "sha256:3f3a2f8001098d5a588e35fc36fd63f215095b1ebbd5397ef4f2cb14727efa5f",
+      "note": "Ambiguous legacy definitions refuse normalization without deleting authored candidates or actual evidence/run facts."
+    }
+  ]
+}

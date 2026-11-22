@@ -4,8 +4,8 @@
   "slide": "vocabulary-runtime",
   "rank": 10,
   "kind": "node",
-  "label": "Versioned term record",
-  "description": "A term revision stores name, definition, aliases, linked stories and records, and commit-pinned defining code.",
+  "label": "Current term record",
+  "description": "A current term stores name, definition, aliases, intent links and exact defining-code pins. Maturity and evidence availability remain independent; Git records earlier content.",
   "selector": {
     "type": "element",
     "element_id": "term-record"

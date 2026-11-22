@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 459,
+      "end": 503,
+      "digest": "sha256:50060920ecb4bcd3bdc4e6262abfa1627b872e12d81f2ca7dddddd827cb6bca6",
+      "note": "The current technical state records active/retired intent and reason, with earlier committed values retained by Git."
+    }
+  ]
+}

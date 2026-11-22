@@ -4,8 +4,8 @@
   "slide": "pinned-graph",
   "rank": 10,
   "kind": "edge",
-  "label": "Pinned relations",
-  "description": "Typed edges pin mutable endpoints and derive explicit currency.",
+  "label": "Exact content pins",
+  "description": "Typed edges preserve exact endpoint content digests. Changed obligations remain stale until explicit reassessment; a current value never substitutes for an unavailable historical pin.",
   "selector": {
     "type": "element",
     "element_id": "relations"

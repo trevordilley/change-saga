@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent",
+  "test_revision": "sha256:e6b8f41d83a4237d59f9f4459ba0b1e625ee293f0c1583c7a38e818d38cdf007",
+  "role": "test_implementation",
+  "steps": [
+    "reject"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/diagram_slide_test.go",
+      "start": 171,
+      "end": 205,
+      "digest": "sha256:3f1fc9227f411e971bcb1c4e3995b388fee93c91c4a9def2cfe67be3d63c8ac8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent:evidence:evidence-1"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-evidence-1-current-20261122"
+}

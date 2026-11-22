@@ -1,13 +1,13 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-23T16:39:26.50624Z",
-  "from": "urn:change-saga:change-saga:slide:partitioned-storage:item:record",
+  "version": 5,
   "id": "record-history-explains-lifecycle-history",
-  "rationale": "This Item explains the separate immutable lifecycle-event records that keep earlier state decisions inspectable.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:auditable-requirement-history:criterion:lifecycle-history",
-  "to_revision": "sha256:17cce291e2e69ed95c88aefad53b32ac341d7da56e1ff6eb7a5cc6f5969c9530",
   "type": "explains",
-  "version": 5
+  "from": "urn:change-saga:change-saga:slide:partitioned-storage:item:record",
+  "to": "urn:change-saga:change-saga:story:auditable-requirement-history:criterion:lifecycle-history",
+  "scope": "self",
+  "rationale": "Current state and reason live with the stable record; earlier committed state and reason are read from Git rather than a second lifecycle history store.",
+  "to_revision": "sha256:fd2d5b1c30d554efd998743e7264e8d4cbde6f85e5b174c884e458a90e004c80",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:26.50624Z"
 }

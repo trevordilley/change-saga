@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/diagram.go",
+      "start": 62,
+      "end": 99,
+      "digest": "sha256:ef4c10f8c5c24f6499d2975313263c374981d81e5c6d1dc329c78ea05ef8c866",
+      "note": "Relative edits to diagram-sourced slides reject an old expected content digest before applying their delta; complete story edits have no parent guard."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/inventory.go",
+      "start": 566,
+      "end": 636,
+      "digest": "sha256:4c8b025d884ffa0874b7f01b89fb7bace4e85c31e8224c7dcb008b084e639d89",
+      "note": "Current content and strict legacy ambiguity are distinct; exact digests preserve current, stale, retired, missing and conflicted status."
+    }
+  ]
+}

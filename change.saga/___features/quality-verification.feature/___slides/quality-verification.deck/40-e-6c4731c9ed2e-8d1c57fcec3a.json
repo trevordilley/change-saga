@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 178,
+      "end": 232,
+      "digest": "sha256:5841cb05a8b1c2ba2fb70ec02340009278ad2c1a7df3b781d1d61023198de150",
+      "note": "Resolves one policy head for the current story revision, retains stale required kinds conservatively, and tests explicit supersession."
+    }
+  ]
+}

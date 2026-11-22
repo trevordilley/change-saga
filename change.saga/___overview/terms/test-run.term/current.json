@@ -5,24 +5,24 @@
     "code": [
       {
         "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
-        "digest": "sha256:45b4df06339115adfbe8f28a6d49e400cf2943b99730bd31657fd96d00356b48",
-        "end": 176,
         "path": "internal/quality/model.go",
-        "start": 150
+        "start": 150,
+        "end": 176,
+        "digest": "sha256:45b4df06339115adfbe8f28a6d49e400cf2943b99730bd31657fd96d00356b48"
       },
       {
-        "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
-        "digest": "sha256:cb273c75bef3fc192220965f88fdf4eddaa13acf82e1f291204319f5cac5c872",
-        "end": 484,
+        "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
         "path": "internal/quality/mutation.go",
-        "start": 466
+        "start": 478,
+        "end": 500,
+        "digest": "sha256:33a37d2f59402ec7451589d30478e031a9bc5d5dedff0d26a6aca0fd7e65060e"
       },
       {
         "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
-        "digest": "sha256:5629cfccbdcff0a9679507ea0431c8eee00e5608aff8001410a1c14b4011e537",
+        "path": "internal/quality/mutation.go",
+        "start": 503,
         "end": 513,
-        "path": "internal/quality/mutation.go",
-        "start": 503
+        "digest": "sha256:5629cfccbdcff0a9679507ea0431c8eee00e5608aff8001410a1c14b4011e537"
       }
     ],
     "definition": "A legacy immutable execution event retained for compatibility and history, recording caller-supplied outcome, time, source repository and commit, optional command and evidence. New events preserve every current run head. Change Saga neither executes the command nor uses these results for current Quality, definition coverage or delivery readiness.",

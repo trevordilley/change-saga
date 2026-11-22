@@ -4,8 +4,8 @@
   "slide": "technical-inventory-verification",
   "rank": 30,
   "kind": "node",
-  "label": "Disposable proof",
-  "description": "The public CLI fixture demonstrates shared identity across checkout and search. Full Chromium was45/46; full server race timed out in an existing dogfood test.",
+  "label": "Original validation report",
+  "description": "The initial inventory delivery report recorded Chromium 45/46 and a server race timeout. These are retained historical observations; current release validation is reported separately.",
   "selector": {
     "type": "element",
     "element_id": "demo"

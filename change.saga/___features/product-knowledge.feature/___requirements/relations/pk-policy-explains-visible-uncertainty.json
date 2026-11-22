@@ -1,13 +1,13 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-23T19:49:49.449869Z",
-  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:policy-branch",
+  "version": 5,
   "id": "pk-policy-explains-visible-uncertainty",
-  "rationale": "The policy branch reports each required coverage kind as satisfied, missing, or explicitly excluded with context.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty",
-  "to_revision": "sha256:814bbcd50c0df2e06bd1f1af5b6b140d4a783be78816b2fc77d2c4360aeb088b",
   "type": "explains",
-  "version": 5
+  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:policy-branch",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty",
+  "scope": "self",
+  "rationale": "The policy branch exposes required, missing and explicitly excluded kinds with authored context; it does not turn execution results into definition coverage.",
+  "to_revision": "sha256:fb63d3c4a518909efa665fad2040f4262b5337af696439e06596b64be39fea0a",
+  "state": "active",
+  "created_at": "2026-09-23T19:49:49.449869Z"
 }

@@ -4,8 +4,8 @@
   "slide": "quality-state-graphs",
   "rank": 10,
   "kind": "region",
-  "label": "Definition revision DAG",
-  "description": "Complete test definitions append as revisions; concurrent children create competing heads until a successor names them all.",
+  "label": "Current definition",
+  "description": "One current.json contains complete definition and state. Independent records merge separately; edits to the same file use normal Git conflicts.",
   "selector": {
     "type": "element",
     "element_id": "revision-dag"

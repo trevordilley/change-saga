@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/currency.go",
+      "start": 114,
+      "end": 262,
+      "digest": "sha256:e1748b43321b6f3bb0171d67d7df3e2214286c7539de86c76bf7fc196394ff6d",
+      "note": "Evaluates exact endpoint content and criterion obligations, carrying unchanged obligations explicitly without refreshing old pins."
+    }
+  ]
+}

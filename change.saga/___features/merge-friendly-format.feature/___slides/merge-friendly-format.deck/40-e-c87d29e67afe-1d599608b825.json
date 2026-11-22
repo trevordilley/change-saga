@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/living_requirements.go",
+      "start": 279,
+      "end": 304,
+      "digest": "sha256:8d64900166f54bf3ea8ba91f3ef81868a1785be271dcc7049a399709b1383378",
+      "note": "Builds story revise content from the current definition and explicit supplied fields before calling the domain writer."
+    }
+  ]
+}

@@ -12,12 +12,12 @@
     ],
     "steps": [
       {
-        "action": "Attempt to append an accepted event to that criterion-free story.",
+        "id": "check-acceptance-requires-criterion",
+        "action": "Attempt to set the criterion-free current story accepted.",
+        "expected_result": "The request fails before publishing accepted state, and the current proposed story remains unchanged.",
         "criteria": [
           "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:acceptance-requires-criterion"
-        ],
-        "expected_result": "The request fails and no accepted event is written.",
-        "id": "check-acceptance-requires-criterion"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection",

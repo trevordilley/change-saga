@@ -4,8 +4,8 @@
   "slide": "story-lifecycle-runtime",
   "rank": 0,
   "kind": "region",
-  "label": "Definition DAG",
-  "description": "Every story revision is a complete immutable snapshot; concurrent children remain competing heads until one revision names all heads.",
+  "label": "Current story definition",
+  "description": "Complete content is edited in place under a stable identity. Git retains committed earlier definitions; current writers do not append Saga revisions.",
   "selector": {
     "type": "element",
     "element_id": "definition-graph"

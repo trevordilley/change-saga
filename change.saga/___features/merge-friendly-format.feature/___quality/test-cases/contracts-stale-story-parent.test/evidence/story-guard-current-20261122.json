@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "story-guard-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent",
+  "test_revision": "sha256:cf4bac6a4a5f6a60d7103f2c542505edc5c7689ccc39efe3557acfafa1b2b3e2",
+  "role": "implementation_under_test",
+  "steps": [
+    "full-revision"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/diagram.go",
+      "start": 62,
+      "end": 99,
+      "digest": "sha256:ef4c10f8c5c24f6499d2975313263c374981d81e5c6d1dc329c78ea05ef8c866"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-stale-story-parent:evidence:story-guard"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-story-guard-current-20261122"
+}

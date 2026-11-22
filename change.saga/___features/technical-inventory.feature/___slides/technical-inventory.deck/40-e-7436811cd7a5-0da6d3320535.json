@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/server/appjs.go",
+      "start": 2035,
+      "end": 2035,
+      "digest": "sha256:dba3db0ea8bef3ba939365b64f6569e264d59f1d0b5d6a0fdc23aba5aa611805",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    }
+  ]
+}

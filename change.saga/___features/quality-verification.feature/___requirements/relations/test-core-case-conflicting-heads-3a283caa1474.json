@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:19:39.472876Z",
-  "from": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads",
-  "from_revision": "sha256:fd85303de4747e40d12cbc86427223c4d0e5471678c158ad9007ed8bb115152c",
+  "version": 5,
   "id": "test-core-case-conflicting-heads-3a283caa1474",
-  "rationale": "Steps check-definition-head-guards define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-core-case-conflicting-heads-3a283caa1474",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment",
-  "to_revision": "sha256:19c5b9e1aea31424ce435cd778db05e19775cf1ad520c2a1c67672c63dd3c342",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment",
+  "scope": "self",
+  "rationale": "The negative legacy-ambiguity scenario protects the enrichment preservation boundary: refusal retains authored candidates and factual evidence, and explicit combined publication retains actual evidence/run facts. Ordinary current enrichment and step reintroduction are checked by their separate cases. This relation claims verification intent, not execution.",
+  "from_revision": "sha256:4d3c8f70963f21a7c9a07c48995d86016847e3eb66108002c5022ffbe18210f2",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:39.472876Z",
+  "request_id": "test-core-case-conflicting-heads-3a283caa1474"
 }

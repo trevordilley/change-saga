@@ -5,13 +5,13 @@
   "rank": 60,
   "kind": "callout",
   "label": "Feature-scoped requirements",
-  "description": "Requirement rows expose the story Feature value, and requirement and traceability queries filter by owning feature without changing app-global resource identity.",
+  "description": "Requirement rows expose the owning feature, and requirement/traceability filters use that value without changing app-global stable identity.",
   "selector": {
     "type": "element",
     "element_id": "feature-ownership-gap"
   },
   "about": "query-contract",
-  "body": "Missing: requirement rows do not return owning feature.",
+  "body": "Feature ownership is metadata; moving a story does not change its URN.",
   "placement": "bottom",
   "leader": "line"
 }

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/prototypes/mutation.go",
+      "start": 259,
+      "end": 308,
+      "digest": "sha256:6a2ffe6041a127ef3af486a0b3f79b2602f06ec9101878a967f3076b7c3364f9",
+      "note": "Persists the selector and exact prototype/story pins that make one prototype state addressable before composition."
+    }
+  ]
+}

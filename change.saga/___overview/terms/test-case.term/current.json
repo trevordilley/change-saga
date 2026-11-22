@@ -5,20 +5,22 @@
     "code": [
       {
         "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
-        "digest": "sha256:e30602aaefc2465eb2fda52bdfcd7a171d277398cb5d323d7cd5cf7481e8b848",
-        "end": 97,
         "path": "internal/quality/model.go",
-        "start": 82
+        "start": 82,
+        "end": 97,
+        "digest": "sha256:e30602aaefc2465eb2fda52bdfcd7a171d277398cb5d323d7cd5cf7481e8b848"
       },
       {
-        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
-        "digest": "sha256:c1c16a6378e052da7cc2c857599b762d70edeb1ce86944d201a217044857b2a9",
-        "end": 215,
+        "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
         "path": "internal/quality/model.go",
-        "start": 192
+        "start": 198,
+        "end": 222,
+        "digest": "sha256:089052edc0011a473bcbe2ca1fb067a6cfd871dc12a7e8f8d5493a69ebe4449b"
       }
     ],
     "definition": "A feature-owned current definition of how to verify an acceptance criterion: intent, coverage kinds, automation level, preconditions, ordered steps and expected result, together with current active/proposed state. Git records earlier definitions and state. Actual implementation evidence and recorded executions remain distinct facts; a definition is not an execution verdict.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
     "name": "test case",
     "stories": [
       "urn:change-saga:change-saga:story:record-test-proof",

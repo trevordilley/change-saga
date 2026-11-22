@@ -12,28 +12,28 @@
     ],
     "steps": [
       {
-        "action": "Request element actions without a content digest, then with an unavailable saved digest.",
+        "id": "exact",
+        "action": "Request a current-board element action without a content digest, then with a valid digest that no longer matches the opened page.",
+        "expected_result": "The requests return 400 and 409 respectively. A stale current page must reload instead of opening replacement evidence; explicit historical reads are a separate saved context.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect"
-        ],
-        "expected_result": "Requests return 400 and 404 respectively; missing historical context never substitutes current content.",
-        "id": "exact"
+        ]
       },
       {
-        "action": "Submit a relative diagram edit using an outdated base content digest.",
+        "id": "parent",
+        "action": "Use the shared diagram edit path on a diagram-sourced slide and submit a relative move against an outdated content digest.",
+        "expected_result": "The delta is rejected before application. Complete whiteboard publish remains a full replacement, not a relative edit endpoint.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
-        ],
-        "expected_result": "The edit is rejected before applying its delta; reread current content before retrying.",
-        "id": "parent"
+        ]
       },
       {
+        "id": "selection",
         "action": "Attempt to publish a selection whose evidence ID is absent from its saved definition.",
+        "expected_result": "Publication fails instead of accepting an undeclared evidence selector for coverage.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
-        ],
-        "expected_result": "Publication fails instead of accepting an undeclared evidence selector for coverage.",
-        "id": "selection"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections",

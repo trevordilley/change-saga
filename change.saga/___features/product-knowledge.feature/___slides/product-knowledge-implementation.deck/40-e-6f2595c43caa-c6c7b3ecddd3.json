@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/mutation.go",
+      "start": 120,
+      "end": 198,
+      "digest": "sha256:fa416a37240d7b3662f982f7724cf46faaec5c3e4b8f0723ca793822fb848006",
+      "note": "Creates a complete current test definition and proposed state under a stable test-case identity."
+    }
+  ]
+}

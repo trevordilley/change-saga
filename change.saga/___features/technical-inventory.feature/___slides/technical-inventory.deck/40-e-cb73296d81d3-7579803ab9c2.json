@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/server/inventory.go",
+      "start": 1,
+      "end": 195,
+      "digest": "sha256:5b5a397ffdb294dd61886daea5824cbe24c0dc3fce0d2fd8791429980a6bf1f8",
+      "note": "The endpoint loads the requested saved definition and generates its directed Component diagram with explicit noncurrent status."
+    }
+  ]
+}

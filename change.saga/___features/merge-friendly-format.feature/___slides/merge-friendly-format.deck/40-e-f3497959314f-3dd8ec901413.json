@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/load.go",
+      "start": 197,
+      "end": 270,
+      "digest": "sha256:e6153db4edaedb3decf695b420545132649e6094b5b2cbda9c9846f47b605846",
+      "note": "Reads stable story identity and current content/state first, retaining a strict legacy compatibility path."
+    }
+  ]
+}

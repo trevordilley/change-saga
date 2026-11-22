@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:20:37.401005Z",
-  "from": "urn:change-saga:change-saga:test-case:inventory-implementation-history",
-  "from_revision": "sha256:2013991c7f936a28106d0f4d2189b26faab293d844f98ce5b00820cde4992f5b",
+  "version": 5,
   "id": "test-inventory-implementation-history-90532362c41f",
-  "rationale": "Steps implement define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-inventory-implementation-history-90532362c41f",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
-  "to_revision": "sha256:c77327374a3046a5074f428c7d2c645f1a49e71b45b7091454650221e91e68cf",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:inventory-implementation-history",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+  "scope": "self",
+  "rationale": "Reassessed Record implementation while preserving the committed proposal. Steps implement check: Equal content replays. Current content records delivery repository/commit and pinned evidence; the original proposal remains available from its real Git commit. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:251fb9004a8b0a692b2155cc372574f4ad1591329b8d9954a87df80ab026e951",
+  "to_revision": "sha256:c77327374a3046a5074f428c7d2c645f1a49e71b45b7091454650221e91e68cf",
+  "state": "active",
+  "created_at": "2026-10-16T23:20:37.401005Z",
+  "request_id": "test-inventory-implementation-history-90532362c41f"
 }

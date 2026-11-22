@@ -1,1 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc"><title id="title">Merge-friendly Saga storage</title><desc id="desc">Partitioned immutable records are published atomically and merged through Git with explicit conflicts.</desc><rect width="1280" height="720" fill="#f6f4ef"/><text x="70" y="78" font-family="system-ui" font-size="38" font-weight="700" fill="#17233b">Partition locally; reconcile explicitly</text><g font-family="system-ui"><rect id="record" x="70" y="190" width="300" height="260" rx="24" fill="#dce8ff" stroke="#315ca8" stroke-width="3"/><text x="105" y="250" font-size="26" font-weight="700">Independent records</text><text x="105" y="300" font-size="21">revision · event · relation</text><text x="105" y="338" font-size="21">stable identity</text><rect id="writer" x="490" y="190" width="300" height="260" rx="24" fill="#e5f5ea" stroke="#2f7a4f" stroke-width="3"/><text x="525" y="250" font-size="28" font-weight="700">Atomic writer</text><text x="525" y="300" font-size="21">bounded lock</text><text x="525" y="338" font-size="21">stage → publish</text><rect id="git" x="910" y="190" width="300" height="260" rx="24" fill="#fff0d8" stroke="#a86516" stroke-width="3"/><text x="945" y="250" font-size="28" font-weight="700">Git merge</text><text x="945" y="300" font-size="21">parallel authors</text><text x="945" y="338" font-size="21">explicit competing heads</text><path d="M370 320H490M790 320H910" stroke="#17233b" stroke-width="6" marker-end="url(#arrow)"/><text x="70" y="565" font-size="24" fill="#4b5563">A failed local mutation exposes no partial destination.</text></g><defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#17233b"/></marker></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Current records, checked writes and Git history</title><desc id="desc">Separate records reduce overlap. Current content edits locally; Git preserves committed versions and exposes branch conflicts.</desc>
+<rect width="1280" height="720" fill="#f4f7fc"/>
+<style>text{font-family:Arial,sans-serif;fill:#18253b}</style>
+<text x="48" y="64" font-size="31" font-weight="700">Current records, checked writes and Git history</text>
+<text x="48" y="108" font-size="19">Separate records reduce overlap. Current content edits locally; Git preserves committed versions and exposes</text>
+<text x="48" y="134" font-size="19">branch conflicts.</text>
+<g id="record"><rect x="48" y="190" width="384" height="330" rx="14" fill="white" stroke="#b9c8dc" stroke-width="2"/><text x="68" y="232" font-size="22" font-weight="700">Independent current records</text>
+<text x="68" y="278" font-size="18">Stable identities and one</text>
+<text x="68" y="306" font-size="18">current.json keep independently</text>
+<text x="68" y="334" font-size="18">authored records separate. Git</text>
+<text x="68" y="362" font-size="18">retains committed earlier definitions</text>
+<text x="68" y="390" font-size="18">and state; factual evidence and</text>
+<text x="68" y="418" font-size="18">review decisions remain distinct.</text>
+</g>
+<g id="writer"><rect x="448" y="190" width="384" height="330" rx="14" fill="white" stroke="#b9c8dc" stroke-width="2"/><text x="468" y="232" font-size="22" font-weight="700">Checked local publication</text>
+<text x="468" y="278" font-size="18">A bounded lock serializes cooperating</text>
+<text x="468" y="306" font-size="18">writers. Individual files and new</text>
+<text x="468" y="334" font-size="18">entity directories publish</text>
+<text x="468" y="362" font-size="18">atomically; multi-file batches</text>
+<text x="468" y="390" font-size="18">attempt rollback but are not globally</text>
+<text x="468" y="418" font-size="18">crash-atomic.</text>
+</g>
+<g id="git"><rect x="848" y="190" width="384" height="330" rx="14" fill="white" stroke="#b9c8dc" stroke-width="2"/><text x="868" y="232" font-size="22" font-weight="700">Git history and conflicts</text>
+<text x="868" y="278" font-size="18">Git stores committed versions and</text>
+<text x="868" y="306" font-size="18">normal same-file merge conflicts.</text>
+<text x="868" y="334" font-size="18">Legacy normalization refuses</text>
+<text x="868" y="362" font-size="18">competing candidates without choosing</text>
+<text x="868" y="390" font-size="18">a winner or discarding authored</text>
+<text x="868" y="418" font-size="18">content.</text>
+</g>
+<text x="48" y="605" font-size="20">Exact pins must resolve before legacy cleanup. Missing Git history stays unresolved.</text>
+<text x="48" y="665" font-size="16">Stable identities · current content · actual evidence facts · real Git history</text>
+</svg>

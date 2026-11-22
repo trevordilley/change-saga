@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-4-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-definition-query",
+  "test_revision": "sha256:d855c2d9d14e7f0d2e336d989f75959ee250d7d972607d649f048c5505248c02",
+  "role": "implementation_under_test",
+  "steps": [
+    "code",
+    "link",
+    "drift"
+  ],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 280,
+      "end": 326,
+      "digest": "sha256:21f651e3adef83e5090a9270882bd0d0c88b99556edd4f460cb5818b4d822d92"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:inventory-definition-query:evidence:evidence-4"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-evidence-4-current-20261122"
+}

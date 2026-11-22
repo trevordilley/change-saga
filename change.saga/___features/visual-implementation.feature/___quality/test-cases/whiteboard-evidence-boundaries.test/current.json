@@ -12,38 +12,38 @@
     ],
     "steps": [
       {
+        "id": "base",
         "action": "Change code while the saved reference still matches the comparison base.",
-        "criteria": [
-          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
-        ],
         "expected_result": "The matching base does not hide HEAD staleness in references, health or reconciliation.",
-        "id": "base"
-      },
-      {
-        "action": "Change containing inventory evidence outside the selected bytes.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
-        ],
-        "expected_result": "The saved subset stays unchanged while its owning whiteboard element remains stale and counts against health.",
-        "id": "subset"
+        ]
       },
       {
-        "action": "Revise the linked criterion while code is unchanged, then explicitly publish the updated criterion pin.",
+        "id": "subset",
+        "action": "Change containing inventory evidence outside the selected bytes.",
+        "expected_result": "The saved subset stays unchanged while its owning whiteboard element remains stale and counts against health.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+        ]
+      },
+      {
+        "id": "criterion",
+        "action": "Change the linked criterion while code stays unchanged, then deliberately publish reassessed exact criterion pins in the current board.",
+        "expected_result": "The old criterion link remains stale until explicit reassessment. Publication replaces current board content without silently refreshing other pins.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
-        ],
-        "expected_result": "The old criterion link is stale until the new complete board revision names the reassessed story revision.",
-        "id": "criterion"
+        ]
       },
       {
-        "action": "Publish a successor, reopen the exact old revision through history, and list current references.",
+        "id": "history",
+        "action": "Commit the original board and evidence, publish changed current content, reopen the saved original digest from Git, and list current references.",
+        "expected_result": "Historical inspection opens the exact original code. Current references attribute only active board content and do not duplicate historical Git evidence.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
-        ],
-        "expected_result": "History opens its original code; the shared reference list contains only the current head rather than duplicate historical evidence.",
-        "id": "history"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-boundaries",

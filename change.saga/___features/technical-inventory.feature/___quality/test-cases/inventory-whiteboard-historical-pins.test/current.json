@@ -8,24 +8,24 @@
     ],
     "expected_result": "Historical b1 renders identical SVG to its original content and its original source pins remain intact.",
     "preconditions": [
-      "Disposable board erd b1 pins jobs ERD r1 with Original detail; retain its rendered SVG and exact child pins."
+      "Publish an original current board with exact child content pins, save its SVG and content digest, and commit the Saga to a real Git repository."
     ],
     "steps": [
       {
-        "action": "Revise jobs to r2 with New detail and reload unchanged board b1.",
+        "id": "child",
+        "action": "Edit the child ERD definition without changing the board source pins, then reload the saved board.",
+        "expected_result": "The board retains its exact child pin and never follows newer content implicitly.",
         "criteria": [
           "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:history"
-        ],
-        "expected_result": "The existing board does not follow the newer child revision.",
-        "id": "child"
+        ]
       },
       {
-        "action": "Publish board b2 using jobs r2, then resolve exact b1.",
+        "id": "history",
+        "action": "Publish updated current board content, then resolve the original board by its saved content digest from Git.",
+        "expected_result": "The saved original SVG and exact child pins are reproduced. Missing Git objects remain unresolved; no Saga history sidecar or current-content substitution is used.",
         "criteria": [
           "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:history"
-        ],
-        "expected_result": "Historical b1 renders identical SVG to its original content and its original source pins remain intact.",
-        "id": "history"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-historical-pins",

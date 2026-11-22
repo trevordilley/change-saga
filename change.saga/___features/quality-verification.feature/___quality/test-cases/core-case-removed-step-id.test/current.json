@@ -6,22 +6,22 @@
     "coverage_kinds": [
       "negative"
     ],
-    "expected_result": "Refuse reuse of a removed step ID.",
+    "expected_result": "A changed or reintroduced step keeps its authored identity without silently acquiring old implementation evidence.",
     "preconditions": [
-      "A separate case r1 contains step inspect; append r2 removing inspect and save package paths."
+      "A current case contains inspect and immutable evidence pinned to its original definition."
     ],
     "steps": [
       {
-        "action": "Attempt r3 reusing inspect for a different action.",
+        "id": "check-step-id-reuse",
+        "action": "Remove inspect from the current definition, then reintroduce the same stable ID with a different observable action.",
+        "expected_result": "The content edit succeeds, the stable step ID remains inspect, and the original evidence retains its old digest and is not current for the changed step.",
         "criteria": [
           "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment"
-        ],
-        "expected_result": "The request is refused for removed-step reuse and no package paths change.",
-        "id": "check-step-id-reuse"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:core-case-removed-step-id",
-    "title": "Refuse reuse of a removed step ID"
+    "title": "Reintroduced steps do not inherit historical evidence"
   },
   "state": {
     "state": "proposed",

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/mutation.go",
+      "start": 103,
+      "end": 160,
+      "digest": "sha256:5ce283a521708e7c523c7e4079cd21d9a7ba62fd140cc65dfda1d52aae0e99dd",
+      "note": "Story revise validates complete content and publishes a current record without authoring Saga parent IDs."
+    }
+  ]
+}

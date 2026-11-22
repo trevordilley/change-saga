@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/applayout/applayout.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:4445a2cef9a25810d3622972565d927dbe24eff185acf4564748b2e020896820",
+      "note": "Strict current and legacy technical packages load independently, with bounded file, JSON and structural validation."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/model.go",
+      "start": 206,
+      "end": 218,
+      "digest": "sha256:b0886d704de63523f7a77c3c78bd7ebbfee6c69fb3a52184fb7869bf23efb31d",
+      "note": "Requirements owns stable story identities, current definitions/state, typed pinned relations and the aggregate read model."
+    }
+  ]
+}

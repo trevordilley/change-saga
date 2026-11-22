@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:23:32.370787Z",
-  "from": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent",
-  "from_revision": "sha256:bb23762948aa86a545158c948148ae7eafeea21f4c98aabead3f52a42cf40df2",
+  "version": 5,
   "id": "test-contracts-stale-story-parent-9cfee002e27a",
-  "rationale": "Steps reject, full-revision define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-contracts-stale-story-parent-9cfee002e27a",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:stale-parent-rejected",
-  "to_revision": "sha256:400fc157c0b8f7bce2ee2bef1632c0ab67a9d0fce9d90ad157b7d0ab2ae0b11d",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent",
+  "to": "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:stale-parent-rejected",
+  "scope": "self",
+  "rationale": "Reassessed Reject a relative edit from an outdated content digest. Steps reject, full-revision check: The command returns expected_snapshot mismatch and the already published current content is unchanged.; The stale request is rejected before the delta applies. The author must use the current content digest. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:cf4bac6a4a5f6a60d7103f2c542505edc5c7689ccc39efe3557acfafa1b2b3e2",
+  "to_revision": "sha256:c8f473062154dfe6f9d87178a816b9664c86585260032086056e0820b13ad87f",
+  "state": "active",
+  "created_at": "2026-10-16T23:23:32.370787Z",
+  "request_id": "test-contracts-stale-story-parent-9cfee002e27a"
 }

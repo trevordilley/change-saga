@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/saga/slides.go",
+      "start": 442,
+      "end": 447,
+      "digest": "sha256:0e4bd76b03393673000014b39b54ec24e07060df1d1b009d301484a481549d0c",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    }
+  ]
+}

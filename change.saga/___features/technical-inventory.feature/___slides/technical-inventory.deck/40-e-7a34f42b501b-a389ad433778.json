@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 605,
+      "end": 629,
+      "digest": "sha256:3b2e9d1f4547a391bbc6a2b40b1b121a215efcb50c13f0f015164b438c561068",
+      "note": "The documentation link admits an exact content digest or a strict legacy member pin, independently of Item code evidence."
+    }
+  ]
+}

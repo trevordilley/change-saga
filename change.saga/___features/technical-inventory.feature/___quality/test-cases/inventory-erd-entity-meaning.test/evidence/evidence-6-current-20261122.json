@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-6-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-entity-meaning",
+  "test_revision": "sha256:e2423964888bfd634e2f290f8dc4c840ebe96cca7a017efd9addc24f977c322a",
+  "role": "implementation_under_test",
+  "steps": [
+    "record",
+    "payload",
+    "relations"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/server/technical_erd.go",
+      "start": 71,
+      "end": 95,
+      "digest": "sha256:17a8d07677960b5db62925e115e03805d0b7f3ce9c77fddb963b39eaa8988a17"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:inventory-erd-entity-meaning:evidence:evidence-6"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-evidence-6-current-20261122"
+}

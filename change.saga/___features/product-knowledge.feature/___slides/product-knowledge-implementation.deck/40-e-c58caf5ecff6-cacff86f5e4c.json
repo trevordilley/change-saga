@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/model.go",
+      "start": 180,
+      "end": 232,
+      "digest": "sha256:443bd591cfb0422283e4417fbd228716ab23f06d888215acefdaf372fd999cbc",
+      "note": "Pins required coverage kinds to a criterion revision and requires explicit supersession of every current policy head."
+    }
+  ]
+}

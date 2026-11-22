@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/story_revise_inheritance_test.go",
+      "start": 138,
+      "end": 187,
+      "digest": "sha256:169d292a74ea248b12a0127d5507435d74a78eb9f5bc86e4be0880db68ec7b3c",
+      "note": "Story convenience edits refuse ambiguous legacy content and preserve the competing authored file."
+    }
+  ]
+}

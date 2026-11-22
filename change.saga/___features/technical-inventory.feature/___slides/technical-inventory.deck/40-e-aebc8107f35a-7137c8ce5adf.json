@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/inventory.go",
+      "start": 1,
+      "end": 163,
+      "digest": "sha256:25c37da8553783f81d919c26ce5fdeb6dee90d0a093328d3af3c687009ce1cc2",
+      "note": "A Component identifies a meaningful logic/transformation unit with exact pinned code and its own explanation."
+    }
+  ]
+}

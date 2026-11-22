@@ -4,8 +4,8 @@
   "slide": "revision-conflict-state",
   "rank": 10,
   "kind": "transition",
-  "label": "Concurrent children",
-  "description": "Two branch-local revisions may each descend from the same previously current parent.",
+  "label": "Legacy branch candidates",
+  "description": "Legacy packages may contain independently authored branch definitions; the compatibility loader retains all candidates.",
   "selector": {
     "type": "element",
     "element_id": "concurrent-fork"
