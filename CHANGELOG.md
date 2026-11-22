@@ -50,6 +50,8 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- Reconciliation suggests current-content authoring commands instead of removed
+  whiteboard parent/revision flags or slide-head reconciliation.
 - `story revise` edits an already current story without normalizing unrelated
   legacy packages. Independent legacy conflicts remain untouched; strict
   requirements decoding and safe normalization for legacy targets are retained.
