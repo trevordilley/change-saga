@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "SPEC.md",
+      "start": 277,
+      "end": 323,
+      "digest": "sha256:0e31fe37551aef09bb44ffb9d354c6764be55eed66547bcc838402a96632ebe4",
+      "note": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries."
+    }
+  ]
+}

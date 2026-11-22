@@ -4,8 +4,8 @@
   "slide": "technical-inventory-history",
   "rank": 30,
   "kind": "node",
-  "label": "Active ↔ retired",
-  "description": "Lifecycle events append a reason and all observed parent heads without deleting historical definitions.",
+  "label": "Current active or retired state",
+  "description": "State and authored retirement reason edit the current record. Git retains committed earlier definitions and state.",
   "selector": {
     "type": "element",
     "element_id": "lifecycle"

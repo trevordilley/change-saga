@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-immutable-enrichment-assertions-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment",
+  "test_revision": "sha256:d49f2ccc6e85be68eb24c1dcc8eb86dddd1bc0f1804946cfd3cd46321f629f16",
+  "role": "test_implementation",
+  "steps": [
+    "check-immutable-enrichment"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/quality/definition_test.go",
+      "start": 29,
+      "end": 70,
+      "digest": "sha256:8f94d83a1a86461beed5c3cbb89ce6ee374160c93d838f74b7cefa993723a63c"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-case-immutable-enrichment:evidence:check-immutable-enrichment-assertions"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-check-immutable-enrichment-assertions-current-20261122"
+}

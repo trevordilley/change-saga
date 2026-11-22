@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "schema/v5/documentation-link.schema.json",
+      "start": 1,
+      "end": 28,
+      "digest": "sha256:f9a18bb9842170cbeb45df6c29abd603213716bce578984faa103889d25ea34b",
+      "note": "An Item links exact canonical technical content independently of record and evidence fields."
+    }
+  ]
+}

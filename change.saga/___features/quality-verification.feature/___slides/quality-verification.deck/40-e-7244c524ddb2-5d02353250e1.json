@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/validate.go",
+      "start": 317,
+      "end": 335,
+      "digest": "sha256:9d8f76a11564dd097249fbd23ba2f693df4a74082c8d8ab2bd6a2ad47f345607",
+      "note": "The current-record path projects one complete definition and current state, distinct from the legacy graph path."
+    }
+  ]
+}

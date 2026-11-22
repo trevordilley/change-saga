@@ -1,362 +1,368 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/slide-current.schema.json",
+  "version": 2,
+  "deck": "visual-implementation",
+  "slide": "review-slide-transaction",
   "content": {
-    "asset": "24-a-c4de51e87de967f3f79ed292b3236cbe49a9a91b48a4a152fafe.svg",
-    "asset_digest": "sha256:c4de51e87de967f3f79ed292b3236cbe49a9a91b48a4a152fafed1719b3f321c",
+    "asset": "24-a-400b4e6a977abcd39dc3a3b29b597a371903acabfdeebb5cb867.svg",
+    "asset_digest": "sha256:400b4e6a977abcd39dc3a3b29b597a371903acabfdeebb5cb867092ddb6344b6",
     "diagram": {
-      "renderer": "change-saga-diagram/2",
       "source": "24-a-2e9956c75a2f04b715af35b9be1645b64ec8304b65df539180d7.json",
-      "source_digest": "sha256:2e9956c75a2f04b715af35b9be1645b64ec8304b65df539180d7b2d25e73fda3"
+      "source_digest": "sha256:2e9956c75a2f04b715af35b9be1645b64ec8304b65df539180d7b2d25e73fda3",
+      "renderer": "change-saga-diagram/2"
     },
     "items": [
       {
-        "criterion_links": [
-          {
-            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
-            "id": "review-transaction-route-visual-technical-explanation-media",
-            "rationale": "A review slide publishes a diagram source rendered to SVG, or an asset, through the same transaction as a deck slide.",
-            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b"
+        "item": {
+          "version": 4,
+          "id": "review-transaction-route",
+          "slide": "review-slide-transaction",
+          "rank": 0,
+          "kind": "node",
+          "label": "apply-slide --review uses the slide transaction",
+          "description": "The review deck comes from --review, the request's review field, or the deck URN. Merged reviews and mismatched decks are refused, and publication follows the same lock, idempotency and snapshot rules.",
+          "selector": {
+            "type": "element",
+            "element_id": "review-transaction-route"
           }
-        ],
+        },
         "evidence": [
           {
+            "version": 2,
             "references": [
               {
                 "commit": "b79861c36ab42f5a93c84d78dad28dcbcfdc9bd8",
-                "digest": "sha256:4e76bfa52e4288db95986dfb2e78fe684f92f33e6166c4d989597562cc2d4149",
-                "end": 242,
-                "note": "Routing a request to a review deck.",
                 "path": "internal/cli/slide_transaction.go",
-                "start": 190
+                "start": 190,
+                "end": 242,
+                "digest": "sha256:4e76bfa52e4288db95986dfb2e78fe684f92f33e6166c4d989597562cc2d4149",
+                "note": "Routing a request to a review deck."
               },
               {
                 "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
-                "digest": "sha256:e7924c3424180003f3a8c55876cb512ec152a67d8e269d551a2285f8548c8107",
-                "end": 655,
-                "note": "Routing a request to a review deck.",
                 "path": "internal/cli/slide_transaction.go",
-                "start": 564
+                "start": 564,
+                "end": 655,
+                "digest": "sha256:e7924c3424180003f3a8c55876cb512ec152a67d8e269d551a2285f8548c8107",
+                "note": "Routing a request to a review deck."
               },
               {
                 "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:64120dce3b22880a2b6dd4ff38ad1fe04597e62bf3a0556b74849b66ca9e2c0a",
-                "end": 594,
-                "note": "Routing a request to a review deck.",
                 "path": "internal/cli/reviews.go",
-                "start": 582
+                "start": 582,
+                "end": 594,
+                "digest": "sha256:64120dce3b22880a2b6dd4ff38ad1fe04597e62bf3a0556b74849b66ca9e2c0a",
+                "note": "Routing a request to a review deck."
               }
-            ],
-            "version": 2
+            ]
           },
           {
+            "version": 2,
             "references": [
               {
                 "commit": "d25115c2acdaba3b071c48e3239f480b0a187733",
-                "digest": "sha256:5bf0b7e4135e7d5cf4db5610d523fd16397360c2786446618da65177e49833b1",
-                "end": 164,
-                "note": "Publish, cover, and an edit that keeps coverage.",
                 "path": "internal/cli/review_diagram_slide_test.go",
-                "start": 55
+                "start": 55,
+                "end": 164,
+                "digest": "sha256:5bf0b7e4135e7d5cf4db5610d523fd16397360c2786446618da65177e49833b1",
+                "note": "Publish, cover, and an edit that keeps coverage."
               }
-            ],
-            "version": 2
+            ]
           }
         ],
-        "item": {
-          "description": "The review deck comes from --review, the request's review field, or the deck URN. Merged reviews and mismatched decks are refused, and publication follows the same lock, idempotency and snapshot rules.",
-          "id": "review-transaction-route",
-          "kind": "node",
-          "label": "apply-slide --review uses the slide transaction",
-          "rank": 0,
-          "selector": {
-            "element_id": "review-transaction-route",
-            "type": "element"
-          },
-          "slide": "review-slide-transaction",
-          "version": 4
-        }
-      },
-      {
         "criterion_links": [
           {
-            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
-            "id": "no-evidence-on-review-items-visual-technical-explanation-evidence",
-            "rationale": "A review Item's code comes only from cover, pinned to the review's own range.",
-            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b"
+            "id": "review-transaction-route-visual-technical-explanation-media",
+            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+            "rationale": "A review slide publishes a diagram source rendered to SVG, or an asset, through the same transaction as a deck slide."
           }
-        ],
-        "evidence": [
-          {
-            "references": [
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:d4c9ef60cdf40431408d3870669a5746607e2acbb881fc514ba0a00b8c3189d1",
-                "end": 533,
-                "note": "The review and implementation Item checks.",
-                "path": "internal/cli/slide_transaction.go",
-                "start": 524
-              },
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:a04cda301ab4781a97d55446059bb79218312bef56f0f6d7cf295a2642131bc3",
-                "end": 603,
-                "note": "The review and implementation Item checks.",
-                "path": "internal/cli/slide_transaction.go",
-                "start": 575
-              }
-            ],
-            "version": 2
-          },
-          {
-            "references": [
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:a11f530c8c23bf71859232dbc3be333c4c46ffcb311b295bdeb154f8263fc596",
-                "end": 232,
-                "note": "The review slide guards.",
-                "path": "internal/cli/review_diagram_slide_test.go",
-                "start": 166
-              }
-            ],
-            "version": 2
-          }
-        ],
+        ]
+      },
+      {
         "item": {
-          "description": "A review Item that carries evidence or criterion links is refused, with a pointer to cover --target ITEM --changed-lines; implementation Items still need exact evidence and carry no record.",
+          "version": 4,
           "id": "no-evidence-on-review-items",
+          "slide": "review-slide-transaction",
+          "rank": 10,
           "kind": "statement",
           "label": "Review Items carry no evidence or criterion links",
-          "rank": 10,
+          "description": "A review Item that carries evidence or criterion links is refused, with a pointer to cover --target ITEM --changed-lines; implementation Items still need exact evidence and carry no record.",
           "selector": {
-            "element_id": "no-evidence-on-review-items",
-            "type": "element"
-          },
-          "slide": "review-slide-transaction",
-          "version": 4
-        }
-      },
-      {
-        "criterion_links": [
-          {
-            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
-            "id": "cover-survives-revisions-visual-technical-explanation-evidence",
-            "rationale": "cover's pinned references stay attached to the review Item across every slide revision.",
-            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b"
+            "type": "element",
+            "element_id": "no-evidence-on-review-items"
           }
-        ],
+        },
         "evidence": [
           {
+            "version": 2,
             "references": [
               {
                 "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:6ec8d3cd37cdd219f1d42df07a641092dfbe36c844203ad5fa83bd8cea332b5e",
-                "end": 124,
-                "note": "Flat records attaching to review transaction Items.",
-                "path": "internal/saga/slides.go",
-                "start": 121
-              },
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:7d99c98d810cd69a0501e089320c25d7981c38616348a57ea898400fc157d145",
-                "end": 227,
-                "note": "Flat records attaching to review transaction Items.",
-                "path": "internal/saga/slides.go",
-                "start": 214
-              },
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:1d169584977aac6d10f874112ea465929d6d62219e77633d7548e886c6d64ba3",
-                "end": 332,
-                "note": "Flat records attaching to review transaction Items.",
-                "path": "internal/saga/slides.go",
-                "start": 305
-              },
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:07ffbf255303cc603fcec0dc5ad2de52d2beccc740180af62abcd910dbc0c1e7",
-                "end": 152,
-                "note": "Flat records attaching to review transaction Items.",
-                "path": "internal/saga/slide_transaction.go",
-                "start": 122
-              }
-            ],
-            "version": 2
-          }
-        ],
-        "item": {
-          "description": "The loader lets flat cover records attach to review transaction Items, so coverage survives every revision and a migration from a hand-written slide; the migrated snapshot drops a review Item's evidence.",
-          "id": "cover-survives-revisions",
-          "kind": "node",
-          "label": "Cover records stay attached across revisions",
-          "rank": 20,
-          "selector": {
-            "element_id": "cover-survives-revisions",
-            "type": "element"
-          },
-          "slide": "review-slide-transaction",
-          "version": 4
-        }
-      },
-      {
-        "criterion_links": [
-          {
-            "criterion": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
-            "id": "keep-referenced-items-contextual-comments-element-context",
-            "rationale": "An Item a comment is attached to cannot be dropped or renamed, so the comment keeps its slide context.",
-            "story_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0"
-          }
-        ],
-        "evidence": [
-          {
-            "references": [
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:4fd036174a12e1d37bd5bb4ea9bbf7839846c1873f573bbf6b15411204add947",
-                "end": 573,
-                "note": "admitReviewItems.",
                 "path": "internal/cli/slide_transaction.go",
-                "start": 535
+                "start": 524,
+                "end": 533,
+                "digest": "sha256:d4c9ef60cdf40431408d3870669a5746607e2acbb881fc514ba0a00b8c3189d1",
+                "note": "The review and implementation Item checks."
+              },
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/cli/slide_transaction.go",
+                "start": 575,
+                "end": 603,
+                "digest": "sha256:a04cda301ab4781a97d55446059bb79218312bef56f0f6d7cf295a2642131bc3",
+                "note": "The review and implementation Item checks."
               }
-            ],
-            "version": 2
+            ]
+          },
+          {
+            "version": 2,
+            "references": [
+              {
+                "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+                "path": "internal/cli/review_diagram_slide_test.go",
+                "start": 166,
+                "end": 232,
+                "digest": "sha256:35fa57a32ecac951d545a1ecb74542c5b7aafa4f29a943603e40073c7140e820",
+                "note": "The review slide guards."
+              }
+            ]
           }
         ],
+        "criterion_links": [
+          {
+            "id": "no-evidence-on-review-items-visual-technical-explanation-evidence",
+            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
+            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+            "rationale": "A review Item's code comes only from cover, pinned to the review's own range."
+          }
+        ]
+      },
+      {
         "item": {
-          "description": "admitReviewItems refuses an update that drops or renames an Item still named by a coverage record or a review comment, since either would be left pointing at nothing.",
+          "version": 4,
+          "id": "cover-survives-revisions",
+          "slide": "review-slide-transaction",
+          "rank": 20,
+          "kind": "node",
+          "label": "Cover survives content edits",
+          "description": "Flat cover records attach to stable review Items across current content edits and migration from a hand-written slide. Current review payloads do not contain Item evidence.",
+          "selector": {
+            "type": "element",
+            "element_id": "cover-survives-revisions"
+          }
+        },
+        "evidence": [
+          {
+            "version": 2,
+            "references": [
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/saga/slides.go",
+                "start": 121,
+                "end": 124,
+                "digest": "sha256:6ec8d3cd37cdd219f1d42df07a641092dfbe36c844203ad5fa83bd8cea332b5e",
+                "note": "Flat records attaching to review transaction Items."
+              },
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/saga/slides.go",
+                "start": 214,
+                "end": 227,
+                "digest": "sha256:7d99c98d810cd69a0501e089320c25d7981c38616348a57ea898400fc157d145",
+                "note": "Flat records attaching to review transaction Items."
+              },
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/saga/slides.go",
+                "start": 305,
+                "end": 332,
+                "digest": "sha256:1d169584977aac6d10f874112ea465929d6d62219e77633d7548e886c6d64ba3",
+                "note": "Flat records attaching to review transaction Items."
+              },
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/saga/slide_transaction.go",
+                "start": 122,
+                "end": 152,
+                "digest": "sha256:07ffbf255303cc603fcec0dc5ad2de52d2beccc740180af62abcd910dbc0c1e7",
+                "note": "Flat records attaching to review transaction Items."
+              }
+            ]
+          }
+        ],
+        "criterion_links": [
+          {
+            "id": "cover-survives-revisions-visual-technical-explanation-evidence",
+            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
+            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+            "rationale": "cover's pinned references stay attached to the review Item across every slide revision."
+          }
+        ]
+      },
+      {
+        "item": {
+          "version": 4,
           "id": "keep-referenced-items",
+          "slide": "review-slide-transaction",
+          "rank": 30,
           "kind": "risk",
           "label": "Covered or commented Items cannot be removed",
-          "rank": 30,
+          "description": "admitReviewItems refuses an update that drops or renames an Item still named by a coverage record or a review comment, since either would be left pointing at nothing.",
           "selector": {
-            "element_id": "keep-referenced-items",
-            "type": "element"
-          },
-          "slide": "review-slide-transaction",
-          "version": 4
-        }
-      },
-      {
-        "criterion_links": [
-          {
-            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
-            "id": "review-diagram-commands-visual-technical-explanation-media",
-            "rationale": "A review slide's diagram is edited and checked against its source like any diagram-sourced slide.",
-            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b"
+            "type": "element",
+            "element_id": "keep-referenced-items"
           }
-        ],
+        },
         "evidence": [
           {
+            "version": 2,
             "references": [
               {
-                "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
-                "digest": "sha256:697646c1e3f77d99eac41d32146f505fcacd9442858865dd6603b7fef03fd551",
-                "end": 125,
-                "note": "Finding and editing a review slide; check of merged reviews.",
-                "path": "internal/cli/diagram.go",
-                "start": 59
-              },
-              {
-                "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
-                "digest": "sha256:68dd5c592bafd4d103542eb00a7c982f0682458711e56965c01c4ce7be8e3089",
-                "end": 308,
-                "note": "Finding and editing a review slide; check of merged reviews.",
-                "path": "internal/cli/diagram.go",
-                "start": 254
-              },
-              {
                 "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:2460dc3bd44ddd5552dbd6b90e4dbb19b5ffc01909417379ad5a8de12b5b496d",
-                "end": 446,
-                "note": "Finding and editing a review slide; check of merged reviews.",
-                "path": "internal/cli/content_edit.go",
-                "start": 419
+                "path": "internal/cli/slide_transaction.go",
+                "start": 535,
+                "end": 573,
+                "digest": "sha256:4fd036174a12e1d37bd5bb4ea9bbf7839846c1873f573bbf6b15411204add947",
+                "note": "admitReviewItems."
               }
-            ],
-            "version": 2
+            ]
           }
         ],
+        "criterion_links": [
+          {
+            "id": "keep-referenced-items-contextual-comments-element-context",
+            "criterion": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
+            "story_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+            "rationale": "An Item a comment is attached to cannot be dropped or renamed, so the comment keeps its slide context."
+          }
+        ]
+      },
+      {
         "item": {
-          "description": "Review slides resolve by URN or --review; edit rebuilds the complete request from the revision, keeping the review, and check reports a merged review's stale slides as history.",
+          "version": 4,
           "id": "review-diagram-commands",
-          "kind": "node",
-          "label": "diagram edit, describe and check take --review",
-          "rank": 40,
-          "selector": {
-            "element_id": "review-diagram-commands",
-            "type": "element"
-          },
           "slide": "review-slide-transaction",
-          "version": 4
-        }
-      },
-      {
-        "criterion_links": [
-          {
-            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
-            "id": "visual-qa-review-visual-technical-explanation-media",
-            "rationale": "Review slides are rendered and checked at both sizes as the reviewer shows them.",
-            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b"
+          "rank": 40,
+          "kind": "node",
+          "label": "Diagram commands take --review",
+          "description": "Review slides resolve by URN or --review. Relative edits check the current digest before applying; merged review slides are inspected as history.",
+          "selector": {
+            "type": "element",
+            "element_id": "review-diagram-commands"
           }
-        ],
+        },
         "evidence": [
           {
+            "version": 2,
             "references": [
               {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:8e1a2c5fddcd625324666a5e2c7b89eae20ad689b6455a0d6e75a5a5533663af",
-                "end": 291,
-                "note": "Selecting and rendering review slides.",
-                "path": "internal/visualqa/visualqa.go",
-                "start": 266
+                "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+                "path": "internal/cli/diagram.go",
+                "start": 59,
+                "end": 124,
+                "digest": "sha256:1feb8a39377109d4a7a85e8975c8ab1baf4b72ced4f49f510b130fb09957dfb8",
+                "note": "Finding and editing a review slide; check of merged reviews."
+              },
+              {
+                "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+                "path": "internal/cli/diagram.go",
+                "start": 254,
+                "end": 308,
+                "digest": "sha256:68dd5c592bafd4d103542eb00a7c982f0682458711e56965c01c4ce7be8e3089",
+                "note": "Finding and editing a review slide; check of merged reviews."
               },
               {
                 "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:1c25845397b74652adf172cb849598f124cb39cc147d9be05d60a66708867468",
-                "end": 40,
-                "note": "Selecting and rendering review slides.",
-                "path": "internal/cli/visual_qa.go",
-                "start": 20
+                "path": "internal/cli/content_edit.go",
+                "start": 419,
+                "end": 446,
+                "digest": "sha256:2460dc3bd44ddd5552dbd6b90e4dbb19b5ffc01909417379ad5a8de12b5b496d",
+                "note": "Finding and editing a review slide; check of merged reviews."
               }
-            ],
-            "version": 2
-          },
-          {
-            "references": [
-              {
-                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
-                "digest": "sha256:be59f2b56c5d5b966257df5997e2b9bce96df3782f30014a3899c69cd956eb1a",
-                "end": 210,
-                "note": "Review slide selection.",
-                "path": "internal/visualqa/visualqa_test.go",
-                "start": 193
-              }
-            ],
-            "version": 2
+            ]
           }
         ],
+        "criterion_links": [
+          {
+            "id": "review-diagram-commands-visual-technical-explanation-media",
+            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+            "rationale": "A review slide's diagram is edited and checked against its source like any diagram-sourced slide."
+          }
+        ]
+      },
+      {
         "item": {
-          "description": "Selects the review deck's slides, refuses --feature and a foreign deck, and renders each through /reviews/\u003cid\u003e/visual/\u003cslide\u003e as the reviewer shows it.",
+          "version": 4,
           "id": "visual-qa-review",
+          "slide": "review-slide-transaction",
+          "rank": 50,
           "kind": "node",
           "label": "visual-qa --review renders in the review viewer",
-          "rank": 50,
+          "description": "Selects the review deck's slides, refuses --feature and a foreign deck, and renders each through /reviews/\u003cid\u003e/visual/\u003cslide\u003e as the reviewer shows it.",
           "selector": {
-            "element_id": "visual-qa-review",
-            "type": "element"
+            "type": "element",
+            "element_id": "visual-qa-review"
+          }
+        },
+        "evidence": [
+          {
+            "version": 2,
+            "references": [
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/visualqa/visualqa.go",
+                "start": 266,
+                "end": 291,
+                "digest": "sha256:8e1a2c5fddcd625324666a5e2c7b89eae20ad689b6455a0d6e75a5a5533663af",
+                "note": "Selecting and rendering review slides."
+              },
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/cli/visual_qa.go",
+                "start": 20,
+                "end": 40,
+                "digest": "sha256:1c25845397b74652adf172cb849598f124cb39cc147d9be05d60a66708867468",
+                "note": "Selecting and rendering review slides."
+              }
+            ]
           },
-          "slide": "review-slide-transaction",
-          "version": 4
-        }
+          {
+            "version": 2,
+            "references": [
+              {
+                "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                "path": "internal/visualqa/visualqa_test.go",
+                "start": 193,
+                "end": 210,
+                "digest": "sha256:be59f2b56c5d5b966257df5997e2b9bce96df3782f30014a3899c69cd956eb1a",
+                "note": "Review slide selection."
+              }
+            ]
+          }
+        ],
+        "criterion_links": [
+          {
+            "id": "visual-qa-review-visual-technical-explanation-media",
+            "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+            "story_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+            "rationale": "Review slides are rendered and checked at both sizes as the reviewer shows them."
+          }
+        ]
       }
     ],
     "slide": {
-      "deck": "visual-implementation",
-      "entrypoint": "24-a-c4de51e87de967f3f79ed292b3236cbe49a9a91b48a4a152fafe.svg",
+      "version": 4,
       "id": "review-slide-transaction",
+      "deck": "visual-implementation",
+      "title": "Review slides publish through the same transaction",
+      "rank": 80,
       "intent": "explain",
       "layout": "diagram",
       "media_type": "image/svg+xml",
-      "rank": 80,
+      "entrypoint": "24-a-400b4e6a977abcd39dc3a3b29b597a371903acabfdeebb5cb867.svg",
+      "takeaway": "apply-slide --review publishes complete current slide content. Cover stays attached to stable Items; actual review facts remain separate.",
       "reading_order": [
         "review-transaction-route",
         "no-evidence-on-review-items",
@@ -364,13 +370,7 @@
         "keep-referenced-items",
         "review-diagram-commands",
         "visual-qa-review"
-      ],
-      "takeaway": "apply-slide --review publishes review slides like deck slides; their Items get code only from cover, which stays attached across revisions.",
-      "title": "Review slides publish through the same transaction",
-      "version": 4
+      ]
     }
-  },
-  "deck": "visual-implementation",
-  "slide": "review-slide-transaction",
-  "version": 2
+  }
 }

@@ -4,8 +4,8 @@
   "slide": "quality-state-graphs",
   "rank": 30,
   "kind": "region",
-  "label": "Legacy run history",
-  "description": "Legacy runs remain immutable historical records with explicit parent heads. Their result literals never affect current Quality or readiness.",
+  "label": "Actual run history",
+  "description": "Compatibility runs remain immutable facts with explicit parent heads; conflicts and result literals remain historical, outside definition coverage.",
   "selector": {
     "type": "element",
     "element_id": "run-dag"

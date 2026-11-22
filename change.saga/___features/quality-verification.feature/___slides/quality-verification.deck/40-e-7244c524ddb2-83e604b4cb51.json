@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/definition_test.go",
+      "start": 29,
+      "end": 70,
+      "digest": "sha256:8f94d83a1a86461beed5c3cbb89ce6ee374160c93d838f74b7cefa993723a63c",
+      "note": "Adding evidence preserves current content; editing content stales older evidence and explicit supersession maps the new definition."
+    }
+  ]
+}

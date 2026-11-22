@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-guarded-run-assertions-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:core-legacy-run-head-guards",
+  "test_revision": "sha256:9e7a97a22f2ecb1e6461e63848a28c61df322abe3efb4f2a5d78971378039e6c",
+  "role": "test_implementation",
+  "steps": [
+    "check-guarded-run"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/quality/mutation_test.go",
+      "start": 292,
+      "end": 328,
+      "digest": "sha256:5272a17424732ab93782112e83353d217c754f4d1eb48aa71332095c15b7e19c"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-legacy-run-head-guards:evidence:check-guarded-run-assertions"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-check-guarded-run-assertions-current-20261122"
+}

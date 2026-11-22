@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "docs/component-system-inventory.md",
+      "start": 1,
+      "end": 54,
+      "digest": "sha256:f764a9fcac208531f5f8f759bf896b70ff8cbae8b13a09ef15d12a9bbada5e92",
+      "note": "Defines the public authoring/query contract, compatibility and migration behavior, exact evidence boundaries, reproducible preview, verification results and deferred integration surfaces."
+    }
+  ]
+}

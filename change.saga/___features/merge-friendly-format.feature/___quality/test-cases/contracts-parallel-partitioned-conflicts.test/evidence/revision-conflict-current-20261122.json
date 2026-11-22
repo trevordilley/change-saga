@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "revision-conflict-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts",
+  "test_revision": "sha256:e54170e6a0a5e5ac0aebf3e4b72e6b695c78ace4104754437ce11c0dbc5cd14d",
+  "role": "implementation_under_test",
+  "steps": [
+    "definitions"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/currentrecord/record.go",
+      "start": 134,
+      "end": 155,
+      "digest": "sha256:84d7885882bebe51ff97e945f40afa0b1813119ab8965891c7aa38fc70577cc8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-parallel-partitioned-conflicts:evidence:revision-conflict"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-revision-conflict-current-20261122"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/cli/inventory_test.go",
+      "start": 156,
+      "end": 172,
+      "digest": "sha256:d49d8ac25d45f875b0ea3428fa44b39640f3329557dc8b392855020860969bc5",
+      "note": "Model and CLI checks cover current records, exact saved Git content, duplicate/missing targets, evidence drift and snapshot pagination."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/query.go",
+      "start": 245,
+      "end": 251,
+      "digest": "sha256:ed8c38dc173764f50bb60fc816316ed977097070f7abb458ed2260528eb6dbb7",
+      "note": "The bounded current inventory query exposes member and code health without eager review-shell loading; query history is a separate Git-backed operation."
+    }
+  ]
+}

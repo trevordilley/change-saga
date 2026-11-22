@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 49,
+      "end": 65,
+      "digest": "sha256:557d6703b9bf0a94bbc6a273dd550cde28a5ec3fe773796dba3d68f956216ebd",
+      "note": "The explicitly chosen content becomes the single current value before obsolete legacy revision files are removed."
+    }
+  ]
+}

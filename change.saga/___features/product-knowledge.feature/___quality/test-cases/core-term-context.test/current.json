@@ -12,20 +12,20 @@
     ],
     "steps": [
       {
+        "id": "check-term-context",
         "action": "Query the term and inspect its reading page and references.",
+        "expected_result": "Name, definition, aliases, related stories/records and defining code are discoverable.",
         "criteria": [
           "urn:change-saga:change-saga:story:shared-product-language:criterion:term-context"
-        ],
-        "expected_result": "Name, definition, aliases, related stories/records and defining code are discoverable.",
-        "id": "check-term-context"
+        ]
       },
       {
-        "action": "Rename the defining constant, query term health, and then edit the current term with deliberately reassessed code pins.",
+        "id": "check-code-currency",
+        "action": "Rename the defining constant, query term health, and edit the current term with deliberately reassessed defining-code references.",
+        "expected_result": "The changed source pin is stale and names its stable term owner; the explicit edit restores current linkage without changing the independent semantic axes.",
         "criteria": [
           "urn:change-saga:change-saga:story:shared-product-language:criterion:code-currency"
-        ],
-        "expected_result": "The changed reference is stale and names its owner; the new revision restores current linkage without altering semantic maturity.",
-        "id": "check-code-currency"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:core-term-context",

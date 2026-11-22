@@ -4,8 +4,8 @@
   "slide": "quality-state-graphs",
   "rank": 20,
   "kind": "region",
-  "label": "Evidence supersession DAG",
-  "description": "Evidence remains current only when unsuperseded and pinned to the unique current test revision.",
+  "label": "Evidence supersession",
+  "description": "Evidence records remain immutable and explicitly supersede earlier records. An eligible head must pin the current definition digest.",
   "selector": {
     "type": "element",
     "element_id": "evidence-dag"

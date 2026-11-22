@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/requirements/load.go",
+      "start": 197,
+      "end": 270,
+      "digest": "sha256:e6153db4edaedb3decf695b420545132649e6094b5b2cbda9c9846f47b605846",
+      "note": "The story loader reads one current content/state record under a stable identity, with an explicit separate legacy compatibility path."
+    }
+  ]
+}

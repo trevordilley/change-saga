@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/requirements/inventory_json.go",
+      "start": 1,
+      "end": 81,
+      "digest": "sha256:108112a794374247e26baeed7c06351362167131757a87833fd17976b0f9f96c",
+      "note": "Strict current and legacy technical packages load independently, with bounded file, JSON and structural validation."
+    }
+  ]
+}

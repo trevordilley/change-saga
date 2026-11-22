@@ -4,8 +4,8 @@
   "slide": "quality-evidence-runtime",
   "rank": 0,
   "kind": "node",
-  "label": "Test definition revision",
-  "description": "A complete definition records coverage kinds, automation, preconditions, stable ordered steps and expected outcomes; step criteria refine case-level verifies relations.",
+  "label": "Current test definition",
+  "description": "One current definition records kinds, automation, preconditions, stable ordered steps and expected outcomes. Step criteria refine case-level verifies relations; Git retains older definitions.",
   "selector": {
     "type": "element",
     "element_id": "test-definition"

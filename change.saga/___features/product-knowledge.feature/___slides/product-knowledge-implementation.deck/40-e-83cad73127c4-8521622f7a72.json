@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 110,
+      "end": 148,
+      "digest": "sha256:6f26a9d1e3ac35e2ac252754651dd7da547aa8fa81f5ae4107a9c3bb4bc06bfd",
+      "note": "Joins prototype annotations to requirement heads and proves one current edge projects in both navigation directions."
+    }
+  ]
+}

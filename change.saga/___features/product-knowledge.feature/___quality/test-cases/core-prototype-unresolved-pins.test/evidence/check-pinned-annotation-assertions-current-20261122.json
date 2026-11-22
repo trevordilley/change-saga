@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-pinned-annotation-assertions-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:core-prototype-unresolved-pins",
+  "test_revision": "sha256:4a688ee8843c2c45db20829bff062a1b4dbad4afa34ab58112309c28c51b086e",
+  "role": "test_implementation",
+  "steps": [
+    "check-pinned-annotation"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 110,
+      "end": 133,
+      "digest": "sha256:4cfb61b58a1f25fcb24bdc2af8d71530bacbfb35d3d9a4c79cd5289a862e33eb"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 127,
+      "end": 139,
+      "digest": "sha256:024f331af961a2a5737d7e6e972262b4e27cfa1613d91e91625a7f95e8e6d0c3"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-prototype-unresolved-pins:evidence:check-pinned-annotation-assertions"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-check-pinned-annotation-assertions-current-20261122"
+}

@@ -5,27 +5,27 @@
     "code": [
       {
         "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
-        "digest": "sha256:cf0567202a9b856614999a211e6e133a375593104c36def03c979afbb4ab1ba2",
+        "path": "internal/prototypes/model.go",
+        "start": 40,
         "end": 75,
-        "path": "internal/prototypes/model.go",
-        "start": 40
+        "digest": "sha256:cf0567202a9b856614999a211e6e133a375593104c36def03c979afbb4ab1ba2"
       },
       {
         "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
-        "digest": "sha256:248327511f42a679deedd1f20ed6bdc5e4457bd589a2b607a989da1efd62bd6b",
+        "path": "internal/prototypes/model.go",
+        "start": 99,
         "end": 113,
-        "path": "internal/prototypes/model.go",
-        "start": 99
+        "digest": "sha256:248327511f42a679deedd1f20ed6bdc5e4457bd589a2b607a989da1efd62bd6b"
       },
       {
-        "commit": "bff1a105a9f272b2a5c5ca31b6e773a1fe9539e0",
-        "digest": "sha256:c3375330489fbf56d60b31e63462d8e22176a5c9d06d4e5952b0a5390b057339",
-        "end": 168,
+        "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
         "path": "internal/prototypes/model.go",
-        "start": 140
+        "start": 140,
+        "end": 169,
+        "digest": "sha256:7046f3e6642a28c9bbdcd0bbc316cd959641f22abc8d411c790140dbdac4ed2e"
       }
     ],
-    "definition": "A revisioned representation of an intended experience used for design feedback before or alongside implementation. Each revision is a complete snapshot backed by immutable local HTML, files pinned at a commit in the source repository, or an explicit external source, and annotations pin a specific prototype revision to a story or criterion.",
+    "definition": "A current representation of an intended experience used for design feedback before or alongside implementation. Its source is content-addressed local HTML, files pinned at a real source commit, or an explicit external source. Annotations preserve exact prototype and story content pins; Git retains earlier definitions and assets are not a Saga revision graph.",
     "definition_maturity": "unknown",
     "implementation_evidence": "unknown",
     "name": "Prototype",

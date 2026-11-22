@@ -1,13 +1,13 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-23T16:40:46.334435Z",
-  "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:definition-gate",
+  "version": 5,
   "id": "quality-definition-gate-explains-required-proof",
-  "rationale": "The definition gate supplies the active test, declared coverage kind, and allowed automation conditions of current proof.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
-  "to_revision": "sha256:814bbcd50c0df2e06bd1f1af5b6b140d4a783be78816b2fc77d2c4360aeb088b",
   "type": "explains",
-  "version": 5
+  "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:definition-gate",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
+  "scope": "self",
+  "rationale": "A proposed or active case with the required kind, ordered steps and allowed automation supplies a usable definition; execution outcomes are not admission conditions.",
+  "to_revision": "sha256:fb63d3c4a518909efa665fad2040f4262b5337af696439e06596b64be39fea0a",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:46.334435Z"
 }

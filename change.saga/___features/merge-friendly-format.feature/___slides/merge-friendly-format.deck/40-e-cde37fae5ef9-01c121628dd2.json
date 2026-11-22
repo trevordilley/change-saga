@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/story_authoring.go",
+      "start": 64,
+      "end": 83,
+      "digest": "sha256:a520faa267fb1c1833479e765c16685e7ba836ba5672eb204145e2c7de5ffd27",
+      "note": "Current-field inheritance refuses a missing unique legacy definition rather than choosing a branch."
+    }
+  ]
+}

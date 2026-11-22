@@ -4,8 +4,8 @@
   "slide": "partitioned-storage",
   "rank": 10,
   "kind": "node",
-  "label": "Atomic mutation",
-  "description": "Stages complete entities and serializes supported writers without adding lock artifacts.",
+  "label": "Checked local publication",
+  "description": "A bounded lock serializes cooperating writers. Individual files and new entity directories publish atomically; multi-file batches attempt rollback but are not globally crash-atomic.",
   "selector": {
     "type": "element",
     "element_id": "writer"

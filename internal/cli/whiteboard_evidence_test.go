@@ -112,6 +112,9 @@ func TestWhiteboardEvidenceCurrencyAndReassessment(t *testing.T) {
 	found := false
 	for _, task := range report.Queue {
 		if strings.Contains(task.Resource, ":whiteboard:") && strings.Contains(task.Guidance, "whiteboard publish") {
+			if strings.Contains(task.Guidance, "--parent") || strings.Contains(task.Guidance, "--revision") || !strings.Contains(task.Guidance, "--from <complete-document> <saga>") || !strings.Contains(task.Guidance, "Git retains") {
+				t.Fatalf("repair must describe the supported current-content publication: %s", task.Guidance)
+			}
 			found = true
 		}
 	}

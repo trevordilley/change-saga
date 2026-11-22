@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/requirements/model.go",
+      "start": 51,
+      "end": 75,
+      "digest": "sha256:7908ed5edc73f97fe25676f6a65defa0d54cc0d76a9b1ce363e086909b776a1b",
+      "note": "Implements complete immutable revisions and proves concurrent definition heads remain unresolved until explicitly reconciled."
+    }
+  ]
+}

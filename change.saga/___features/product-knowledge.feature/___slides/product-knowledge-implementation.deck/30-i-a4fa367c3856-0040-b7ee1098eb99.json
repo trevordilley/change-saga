@@ -4,14 +4,14 @@
   "slide": "vocabulary-runtime",
   "rank": 40,
   "kind": "callout",
-  "label": "Rename stales the term",
-  "description": "Changing a defining declaration makes the pinned bytes stale and identifies the exact term revision that needs attention.",
+  "label": "Changed defining code",
+  "description": "A changed defining declaration stales its exact source reference and identifies the stable term that needs reassessment.",
   "selector": {
     "type": "element",
     "element_id": "rename-failure"
   },
   "about": "head-resolution",
-  "body": "A rename is stale history, not an inferred new term.",
+  "body": "Source drift requires reassessment; it does not infer new terminology.",
   "placement": "bottom",
   "leader": "arrow"
 }

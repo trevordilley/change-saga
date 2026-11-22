@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:review-item-only-intent",
+  "test_revision": "sha256:812ee3000d05a34fe2e72422a30bcb59316aaa6df1068fca07a08a8743c428d5",
+  "role": "test_implementation",
+  "steps": [
+    "reject"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/requirements/element_links_test.go",
+      "start": 12,
+      "end": 25,
+      "digest": "sha256:9dfc4bbe0cb455401b4272b1c9104c9180d58d289ef002c1b93806798a3ac821"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:review-item-only-intent:evidence:evidence-1"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-evidence-1-current-20261122"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/mutation.go",
+      "start": 796,
+      "end": 855,
+      "digest": "sha256:efb20d045f30dcbda69d71ad756d5b824a701dcbd8820c3e6811b2fba75c7eda",
+      "note": "Bounds the quality filesystem, rejects unsafe JSON and symlinks, and rolls back partially created immutable records."
+    }
+  ]
+}

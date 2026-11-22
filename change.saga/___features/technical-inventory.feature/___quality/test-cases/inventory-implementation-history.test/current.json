@@ -8,38 +8,38 @@
     ],
     "expected_result": "Slide retains exact r3; historical baseline admission requires an explicit saved view.",
     "preconditions": [
-      "Disposable format-2 Saga has proposed Record store r1 and source store.go lines 4-6; retain exact source delivery commit."
+      "Use a format-2 code-free proposal; retain the original exact content in a real Git commit, and likewise commit the implemented value before proposing a successor."
     ],
     "steps": [
       {
-        "action": "Revise store to implemented r2 with parent r1, save evidence at lines 4-6 and delivery commit; retry the identical command.",
+        "id": "implement",
+        "action": "Edit current store content to implemented with exact evidence at lines 4-6 and a delivery commit; retry the identical command. Compare the committed original proposal.",
+        "expected_result": "Equal content replays. Current content records delivery repository/commit and pinned evidence; the original proposal remains available from its real Git commit.",
         "criteria": [
           "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
           "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
           "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal"
-        ],
-        "expected_result": "The retry is idempotent; r2 records delivery repository/commit and pinned evidence; r1 remains proposed.",
-        "id": "implement"
+        ]
       },
       {
-        "action": "Propose r3 under the same identity, first using proposed r1 as baseline, then implemented r2.",
+        "id": "successor",
+        "action": "Propose successor content under the same stable identity, first with the original proposed digest as baseline, then with the committed implemented digest.",
+        "expected_result": "The proposed baseline is refused; the exact implemented baseline is accepted without authoring a Saga parent graph.",
         "criteria": [
           "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor"
-        ],
-        "expected_result": "The proposed baseline is refused and r2 is accepted as the retained implemented baseline.",
-        "id": "successor"
+        ]
       },
       {
-        "action": "Pin current r3 from a slide and query the slide; attempt stale r2 without a saved view.",
+        "id": "pin",
+        "action": "Pin the intended current successor digest from a slide and query it. Attempt an older implemented digest without its required saved view.",
+        "expected_result": "The slide retains the selected exact content digest; historical admission requires explicit saved Git context and never substitutes current content.",
         "criteria": [
           "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor"
-        ],
-        "expected_result": "Slide retains exact r3; historical baseline admission requires an explicit saved view.",
-        "id": "pin"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:inventory-implementation-history",
-    "title": "Record implementation while preserving the proposed definition"
+    "title": "Record implementation while preserving the committed proposal"
   },
   "state": {
     "state": "proposed",

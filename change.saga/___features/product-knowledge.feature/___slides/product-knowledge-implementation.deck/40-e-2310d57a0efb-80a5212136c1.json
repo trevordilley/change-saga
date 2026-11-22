@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/quality/model.go",
+      "start": 130,
+      "end": 178,
+      "digest": "sha256:2b2874b6b4b8c4807a99ca9bc5b2dcc81ad7a0f9456787d05f153d92a571a97a",
+      "note": "Prototype and quality domains own separate current definitions and immutable annotation/evidence/run facts with their exact pins."
+    }
+  ]
+}

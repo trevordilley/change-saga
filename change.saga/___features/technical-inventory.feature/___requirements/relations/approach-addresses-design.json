@@ -1,14 +1,14 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T03:22:26.417389Z",
-  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design",
-  "from_content_digest": "sha256:51a66321d2e79e9cff3e9c99030c3bbde682d8c3cff1b805140f0b98c44f13cd",
+  "version": 5,
   "id": "approach-addresses-design",
-  "rationale": "The application approach explains the essay and three-board design in the local runtime.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:read-application-technical-design",
-  "to_revision": "sha256:7d4b17a9f5392660df775ec20a65b9ad14360d4704bd844948dbec4f3bc57999",
   "type": "addresses",
-  "version": 5
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design",
+  "to": "urn:change-saga:change-saga:story:read-application-technical-design",
+  "scope": "self",
+  "rationale": "The approach separates intent, design, implementation and review, and links the ERD, Infrastructure and Data flows views; Architecture supplies additional codebase context.",
+  "to_revision": "sha256:7d4b17a9f5392660df775ec20a65b9ad14360d4704bd844948dbec4f3bc57999",
+  "from_content_digest": "sha256:22805cf1d71e073759734bad355bcbeefe3e2b97c587e7623cd7c02e80002442",
+  "state": "active",
+  "created_at": "2026-10-16T03:22:26.417389Z"
 }

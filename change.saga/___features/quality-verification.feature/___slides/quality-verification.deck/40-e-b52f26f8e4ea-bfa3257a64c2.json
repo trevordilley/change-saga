@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/quality/load.go",
+      "start": 388,
+      "end": 433,
+      "digest": "sha256:94c614c32d3824c3675a391c7047b4ab1c60ad6a1f9ba2f6d25dbbb44b3fa095",
+      "note": "Bounds the quality filesystem, rejects unsafe JSON and symlinks, and rolls back partially created immutable records."
+    }
+  ]
+}

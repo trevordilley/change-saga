@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/mutation.go",
+      "start": 126,
+      "end": 150,
+      "digest": "sha256:bb0924a11f6b209807f45150656df93393582fb7e317b1ce2ee891e3ae74ce47",
+      "note": "The current target must exist and all referenced citations/personas and candidate content validate before publication; no parent-set guard is used."
+    }
+  ]
+}

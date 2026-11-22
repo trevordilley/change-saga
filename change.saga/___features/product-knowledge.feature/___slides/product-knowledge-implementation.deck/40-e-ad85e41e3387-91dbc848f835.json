@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/currency.go",
+      "start": 282,
+      "end": 351,
+      "digest": "sha256:b885206b3f31243bef2d06ba68f384e473a6b85ff346a2137678e8c2e70b8151",
+      "note": "Judges relation pins by criterion meaning, carries unchanged criteria forward, and stales reworded obligations."
+    }
+  ]
+}

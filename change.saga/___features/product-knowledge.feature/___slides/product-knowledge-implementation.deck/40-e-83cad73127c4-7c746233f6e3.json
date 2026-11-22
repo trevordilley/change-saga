@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/prototypes/coverage.go",
+      "start": 5,
+      "end": 18,
+      "digest": "sha256:76f26d6527b78ae131fb3ec59b9fc00fff55d213629595448b29206e4463fa87",
+      "note": "Joins prototype annotations to requirement heads and proves one current edge projects in both navigation directions."
+    }
+  ]
+}

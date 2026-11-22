@@ -4,8 +4,8 @@
   "slide": "technical-inventory-history",
   "rank": 20,
   "kind": "node",
-  "label": "Resolve current heads",
-  "description": "Graph resolution preserves all competing heads; link status distinguishes current, stale, retired, conflicted and missing.",
+  "label": "Resolve exact content",
+  "description": "Current, stale, retired, missing and ambiguous legacy pins remain distinct. An older exact digest may resolve from Git; missing source never substitutes current content.",
   "selector": {
     "type": "element",
     "element_id": "heads"

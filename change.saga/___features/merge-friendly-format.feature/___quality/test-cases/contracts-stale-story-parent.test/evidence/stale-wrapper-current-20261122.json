@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "stale-wrapper-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-stale-story-parent",
+  "test_revision": "sha256:cf4bac6a4a5f6a60d7103f2c542505edc5c7689ccc39efe3557acfafa1b2b3e2",
+  "role": "test_implementation",
+  "steps": [
+    "reject"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/diagram_slide_test.go",
+      "start": 171,
+      "end": 205,
+      "digest": "sha256:3f1fc9227f411e971bcb1c4e3995b388fee93c91c4a9def2cfe67be3d63c8ac8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:contracts-stale-story-parent:evidence:stale-wrapper"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-stale-wrapper-current-20261122"
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-criterion-pin-assertions-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency",
+  "test_revision": "sha256:5bc63f80d13fbb8e6e9a75b27f5b53e286329a33d164b770f58765394bcfe944",
+  "role": "test_implementation",
+  "steps": [
+    "check-criterion-pin"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/relation_currency_test.go",
+      "start": 100,
+      "end": 114,
+      "digest": "sha256:5c1bcc7036951fb421100f3b2df0ec2d9d42e857db3b5deafa47b197a6b48cfd"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-criterion-verifies-currency:evidence:check-criterion-pin-assertions"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-check-criterion-pin-assertions-current-20261122"
+}

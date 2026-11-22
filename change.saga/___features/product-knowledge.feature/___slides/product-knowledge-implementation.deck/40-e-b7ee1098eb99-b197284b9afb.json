@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/terms_test.go",
+      "start": 35,
+      "end": 103,
+      "digest": "sha256:40328d4f91dd3140b6df5266d7dba7df0b41263b32d5a084f7bfd50f18c95c1f",
+      "note": "Changing defining source stales the stable term; an explicitly reassessed current term pin restores currency."
+    }
+  ]
+}

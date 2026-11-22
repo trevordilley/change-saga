@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/changeview/history.go",
+      "start": 93,
+      "end": 128,
+      "digest": "sha256:d9819c4f82ff9d58a0b49758e8d323bf25eafa3235c2d4d2287843ba59d11ddd",
+      "note": "Reads commits touching the record files, detects uncommitted state, derives introduction and replacement identity, and assembles ordered events."
+    }
+  ]
+}

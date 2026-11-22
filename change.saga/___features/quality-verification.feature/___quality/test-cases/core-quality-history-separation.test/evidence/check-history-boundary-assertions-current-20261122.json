@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-history-boundary-assertions-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:core-quality-history-separation",
+  "test_revision": "sha256:d240d728009fdf70171bd280ae47d2f6e0f4903e543a4d92123bcfcf93bfff64",
+  "role": "test_implementation",
+  "steps": [
+    "check-history-boundary"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/livingapp/quality_queries_test.go",
+      "start": 21,
+      "end": 35,
+      "digest": "sha256:abf012dde9c48f33747e2b6ad5736b562a55774a756985450be78e29c32bb45b"
+    },
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "e2e/tests/quality-definitions.spec.ts",
+      "start": 64,
+      "end": 67,
+      "digest": "sha256:f74a9c93dd3fe65cb962279fbc99b4f71b267338cac5b89b51bc68d12c5176d4"
+    },
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "path": "e2e/tests/quality-definitions.spec.ts",
+      "start": 62,
+      "end": 63,
+      "digest": "sha256:f932b85b91870644bd9aa5494bfb16e661efff1b099dcf2c19e96c478c12d21a"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-quality-history-separation:evidence:check-history-boundary-assertions"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-check-history-boundary-assertions-current-20261122"
+}

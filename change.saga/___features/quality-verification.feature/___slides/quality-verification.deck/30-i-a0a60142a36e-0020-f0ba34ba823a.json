@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "region",
   "label": "Isolated quality domain",
-  "description": "The quality package owns strict loading, validation, append-only mutation, and current-head projection without depending on the central CLI or server.",
+  "description": "The quality package owns strict loading and validation, editable current definitions/state and immutable evidence/run facts. It depends on neither central CLI nor server.",
   "selector": {
     "type": "element",
     "element_id": "quality-domain"

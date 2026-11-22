@@ -2,7 +2,7 @@
   "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
   "version": 1,
   "content": {
-    "automation": "automated",
+    "automation": "hybrid",
     "coverage_kinds": [
       "positive"
     ],
@@ -12,20 +12,20 @@
     ],
     "steps": [
       {
+        "id": "publish",
         "action": "Publish updated complete data-model content and reload each named board.",
+        "expected_result": "Only data-model current content changes; sibling contents and identities remain unchanged.",
         "criteria": [
           "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:named"
-        ],
-        "expected_result": "Only data-model current content changes; sibling contents and identities remain unchanged.",
-        "id": "publish"
+        ]
       },
       {
+        "id": "sibling",
         "action": "Compare sibling current bytes and inspect the original committed board content through Git.",
+        "expected_result": "Sibling bytes are unchanged and historical Git content retains its original pins.",
         "criteria": [
           "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:named"
-        ],
-        "expected_result": "Sibling bytes are unchanged and historical Git content retains its original pins.",
-        "id": "sibling"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-independent-history",

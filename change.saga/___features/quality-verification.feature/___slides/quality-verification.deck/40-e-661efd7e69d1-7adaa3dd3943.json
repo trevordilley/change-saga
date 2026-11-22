@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/mutation_test.go",
+      "start": 285,
+      "end": 336,
+      "digest": "sha256:54e6c6238d0582b1e510bf821fc193db4f9044cf506adc8a9931a9cb2df4fb27",
+      "note": "Projects immutable run heads, withholds current state on conflicts, and preserves failures after explicit reconciliation."
+    }
+  ]
+}

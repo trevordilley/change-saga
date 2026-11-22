@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "check-run-provenance-assertions-current-20261122",
+  "test_case": "urn:change-saga:change-saga:test-case:core-legacy-history-compatibility",
+  "test_revision": "sha256:d9093a81731e00a1e998ef5aaf8a7872e01552b36b33212203fe7dba17d01836",
+  "role": "test_implementation",
+  "steps": [
+    "check-run-provenance"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/livingapp/quality_queries_test.go",
+      "start": 29,
+      "end": 35,
+      "digest": "sha256:f178ef9bdc346bc98c694beecb7356c7893158ddc26ae33a89a2a530e2b303c2"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:core-legacy-history-compatibility:evidence:check-run-provenance-assertions"
+  ],
+  "created_at": "2026-11-22T18:26:49Z",
+  "request_id": "reassess-check-run-provenance-assertions-current-20261122"
+}

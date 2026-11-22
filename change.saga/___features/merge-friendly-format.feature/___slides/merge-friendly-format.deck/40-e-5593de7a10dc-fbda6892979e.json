@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/mutation.go",
+      "start": 103,
+      "end": 118,
+      "digest": "sha256:a1d643a2b0ba2f4b4e7362cea67697eaaa4594d541402801122f5ad5aa37059a",
+      "note": "Malformed story identity or invalid complete content is refused before entering publication; this is not a story-parent guard."
+    }
+  ]
+}

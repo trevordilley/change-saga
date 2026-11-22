@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/cli/content_edit.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:7ed115f74756c19008f46d89ffd95712ce6b3cb14450e1644358ef661421898a",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    }
+  ]
+}

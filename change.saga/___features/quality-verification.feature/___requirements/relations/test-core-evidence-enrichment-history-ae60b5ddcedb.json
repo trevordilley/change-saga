@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:19:31.741275Z",
-  "from": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history",
-  "from_revision": "sha256:4f47ed05dc557faa434042d6de589b85dae95d1bb80fda368d673ead2300033f",
+  "version": 5,
   "id": "test-core-evidence-enrichment-history-ae60b5ddcedb",
-  "rationale": "Steps check-exposed-provenance-fields define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-core-evidence-enrichment-history-ae60b5ddcedb",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness",
-  "to_revision": "sha256:c29c1f6f3790dc10de090212b289ac06d6fc20a2033ac1386fdc8d733acf8c0d",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history",
+  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:observed-source-freshness",
+  "scope": "self",
+  "rationale": "Reassessed Retain exact evidence pins across current definition edits. Steps check-exposed-provenance-fields check: Canonical identity, role, exact code, pinned test content digest, stable step IDs and supersession edges remain exact. Runs are exposed only as historical metadata. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:74939ac78dd5cfdfa6715a467a4910daa4870e4c9eed3370065c421826f3a53f",
+  "to_revision": "sha256:c29c1f6f3790dc10de090212b289ac06d6fc20a2033ac1386fdc8d733acf8c0d",
+  "state": "active",
+  "created_at": "2026-10-16T23:19:31.741275Z",
+  "request_id": "test-core-evidence-enrichment-history-ae60b5ddcedb"
 }

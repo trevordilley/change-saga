@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/model.go",
+      "start": 188,
+      "end": 204,
+      "digest": "sha256:346e8cab84c7871b58ca48aff1370b64f2abadf0a52205a26e8979f993ce9d50",
+      "note": "Story URNs are app-global and independent of their physical feature holder."
+    }
+  ]
+}

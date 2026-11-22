@@ -1,13 +1,13 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-23T16:39:26.07158Z",
-  "from": "urn:change-saga:change-saga:slide:revision-conflict-state:item:explicit-conflict",
+  "version": 5,
   "id": "explicit-conflict-explains-conflicts",
-  "rationale": "This Item shows that every competing head remains visible while the current revision is intentionally unset.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts",
-  "to_revision": "sha256:411b3414158643d97b8e12ff86f1ec33920c9eb3d924e46ace5db3f30931701f",
   "type": "explains",
-  "version": 5
+  "from": "urn:change-saga:change-saga:slide:revision-conflict-state:item:explicit-conflict",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts",
+  "scope": "self",
+  "rationale": "The Item distinguishes ordinary Git conflicts on current files from a legacy loader exposing competing candidates without synthesizing a winner.",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:26.07158Z"
 }

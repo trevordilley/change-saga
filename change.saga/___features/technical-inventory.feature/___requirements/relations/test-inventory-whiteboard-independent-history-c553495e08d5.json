@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:21:11.349766Z",
-  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-independent-history",
-  "from_revision": "sha256:029c3a45133ad8b31c3a34a83119010b22e16f50c3633e74d01a3ecf4e485446",
+  "version": 5,
   "id": "test-inventory-whiteboard-independent-history-c553495e08d5",
-  "rationale": "Steps publish, sibling define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-inventory-whiteboard-independent-history-c553495e08d5",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:named",
-  "to_revision": "sha256:0fb0937c3f8389662d322b20055d2ed0f28ee83203c5ad7ebabd1946fee36ba7",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-independent-history",
+  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:named",
+  "scope": "self",
+  "rationale": "Reassessed Publish named whiteboards without changing their siblings. Steps publish, sibling check: Only data-model current content changes; sibling contents and identities remain unchanged.; Sibling bytes are unchanged and historical Git content retains its original pins. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:4ad9dccc32aa427ff59333b4f308d2f32786895651a5dbc32d349d0f32c302db",
+  "to_revision": "sha256:0c5e2eefaaa558f75c09e874cfcc55f7d934e4accfd4380c5977f61f41721cd4",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:11.349766Z",
+  "request_id": "test-inventory-whiteboard-independent-history-c553495e08d5"
 }

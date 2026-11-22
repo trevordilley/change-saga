@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/requirements/inventory.go",
+      "start": 566,
+      "end": 579,
+      "digest": "sha256:b5d84906c04541c3ee63bff2021a01ed56019ccda0cac1c22e59435cbc51dd00",
+      "note": "The current technical path projects one definition and one state; legacy graph projection is a separate compatibility branch."
+    }
+  ]
+}

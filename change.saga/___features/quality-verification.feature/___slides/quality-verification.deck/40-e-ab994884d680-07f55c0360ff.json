@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/mutation.go",
+      "start": 478,
+      "end": 542,
+      "digest": "sha256:190088b1181834764075e687a10624a0632401df150a62f54264ddeed80cf7e5",
+      "note": "Requires every current run head, preserves failed history, refuses overwrite, and tests explicit conflict reconciliation."
+    }
+  ]
+}

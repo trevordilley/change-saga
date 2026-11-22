@@ -3,847 +3,847 @@
   "version": 1,
   "content": {
     "document": {
-      "elements": [
-        {
-          "color": "blue",
-          "height": 840,
-          "id": "codebase",
-          "kind": "group",
-          "label": "01 / One durable model, several ways to read it",
-          "shape": "section",
-          "style": "boundary",
-          "width": 1580,
-          "x": 30,
-          "y": 25
-        },
-        {
-          "height": 65,
-          "id": "codebase-thesis",
-          "kind": "text",
-          "label": "Go domain libraries own meaning; the CLI and HTTP reader compose them.",
-          "parent": "codebase",
-          "style": "title",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 45
-        },
-        {
-          "height": 90,
-          "id": "codebase-guide",
-          "kind": "text",
-          "label": "Follow dependency arrows downward. Blue = entry points · purple = semantics · green = durable boundary. Focus the next sections for mergeability, caching and presentation.",
-          "parent": "codebase",
-          "style": "body",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 120
-        },
-        {
-          "height": 130,
-          "id": "codebase-cli",
-          "kind": "node",
-          "label": "CLI authoring + query\nTyped requests, validation and bounded JSON",
-          "parent": "codebase",
-          "shape": "rect",
-          "style": "blue-node",
-          "width": 660,
-          "wrap": true,
-          "x": 40,
-          "y": 235
-        },
-        {
-          "height": 130,
-          "id": "codebase-http",
-          "kind": "node",
-          "label": "Loopback HTTP reader\nHTML pages, review actions and evidence endpoints",
-          "parent": "codebase",
-          "shape": "rect",
-          "style": "blue-node",
-          "width": 660,
-          "wrap": true,
-          "x": 850,
-          "y": 235
-        },
-        {
-          "height": 130,
-          "id": "codebase-domain",
-          "kind": "node",
-          "label": "Domain libraries\nrequirements · quality · saga · semanticgraph · coverage",
-          "parent": "codebase",
-          "shape": "rect",
-          "style": "purple-node",
-          "width": 930,
-          "wrap": true,
-          "x": 320,
-          "y": 435
-        },
-        {
-          "height": 130,
-          "id": "codebase-persistence",
-          "kind": "node",
-          "label": "Publication boundary\nstore locks + atomic file/directory publication",
-          "parent": "codebase",
-          "shape": "rect",
-          "style": "green-node",
-          "width": 660,
-          "wrap": true,
-          "x": 40,
-          "y": 640
-        },
-        {
-          "height": 130,
-          "id": "codebase-source",
-          "kind": "node",
-          "label": "Source interpretation\ngitexec / gitdiff + coderesolve",
-          "parent": "codebase",
-          "shape": "rect",
-          "style": "green-node",
-          "width": 660,
-          "wrap": true,
-          "x": 850,
-          "y": 640
-        },
-        {
-          "from": "codebase/codebase-cli",
-          "head": "arrow",
-          "id": "cli-domain",
-          "kind": "connection",
-          "label": "calls typed operations",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 467.5,
-            "y": 403
-          },
-          "style": "primary",
-          "to": "codebase/codebase-domain",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "codebase/codebase-http",
-          "head": "arrow",
-          "id": "http-domain",
-          "kind": "connection",
-          "label": "builds reading projections",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 872.5,
-            "y": 403
-          },
-          "style": "primary",
-          "to": "codebase/codebase-domain",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "codebase/codebase-domain",
-          "head": "arrow",
-          "id": "domain-store",
-          "kind": "connection",
-          "label": "publishes authored records",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 467.5,
-            "y": 605.5
-          },
-          "style": "primary",
-          "to": "codebase/codebase-persistence",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "codebase/codebase-domain",
-          "head": "arrow",
-          "id": "domain-source",
-          "kind": "connection",
-          "label": "resolves pinned code",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 872.5,
-            "y": 605.5
-          },
-          "style": "primary",
-          "to": "codebase/codebase-source",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "height": 95,
-          "id": "locator",
-          "kind": "text",
-          "label": "Start here, then focus: 02 Mergeable history · 03 Cache validity · 04 Shared presentation. Technology choices and supporting evidence are in the linked Architecture notes.",
-          "style": "small",
-          "width": 1500,
-          "wrap": true,
-          "x": 55,
-          "y": 900
-        },
-        {
-          "color": "green",
-          "height": 840,
-          "id": "mergeability",
-          "kind": "group",
-          "label": "02 / Keep parallel edits small; keep disagreement visible",
-          "shape": "section",
-          "style": "boundary",
-          "width": 1580,
-          "x": 30,
-          "y": 1040
-        },
-        {
-          "height": 65,
-          "id": "mergeability-thesis",
-          "kind": "text",
-          "label": "Independent records merge; competing definitions still require a decision.",
-          "parent": "mergeability",
-          "style": "title",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 45
-        },
-        {
-          "height": 85,
-          "id": "mergeability-context",
-          "kind": "text",
-          "label": "Stable identities connect references across moves. Current content and state are editable records. Git owns earlier versions; actual review decisions remain separate facts.",
-          "parent": "mergeability",
-          "style": "body",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 120
-        },
-        {
-          "height": 130,
-          "id": "mergeability-base",
-          "kind": "node",
-          "label": "Shared story identity\nDefinition r1 is the common parent",
-          "parent": "mergeability",
-          "shape": "rect",
-          "style": "green-node",
-          "width": 410,
-          "wrap": true,
-          "x": 70,
-          "y": 245
-        },
-        {
-          "height": 130,
-          "id": "mergeability-author-a",
-          "kind": "node",
-          "label": "Author A\nNew definition r2 → parent r1",
-          "parent": "mergeability",
-          "shape": "rect",
-          "style": "blue-node",
-          "width": 410,
-          "wrap": true,
-          "x": 620,
-          "y": 225
-        },
-        {
-          "height": 130,
-          "id": "mergeability-author-b",
-          "kind": "node",
-          "label": "Author B\nNew definition r3 → parent r1",
-          "parent": "mergeability",
-          "shape": "rect",
-          "style": "purple-node",
-          "width": 410,
-          "wrap": true,
-          "x": 620,
-          "y": 470
-        },
-        {
-          "height": 190,
-          "id": "mergeability-read",
-          "kind": "node",
-          "label": "After Git combines the files\nTwo definition heads remain visible",
-          "parent": "mergeability",
-          "shape": "rect",
-          "style": "yellow-node",
-          "width": 370,
-          "wrap": true,
-          "x": 1140,
-          "y": 345
-        },
-        {
-          "from": "mergeability/mergeability-base",
-          "head": "arrow",
-          "id": "branch-a",
-          "kind": "connection",
-          "label": "new file",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 440,
-            "y": 1318
-          },
-          "style": "primary",
-          "to": "mergeability/mergeability-author-a",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "mergeability/mergeability-base",
-          "head": "arrow",
-          "id": "branch-b",
-          "kind": "connection",
-          "label": "new file",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 440,
-            "y": 1440.5
-          },
-          "style": "primary",
-          "to": "mergeability/mergeability-author-b",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "mergeability/mergeability-author-a",
-          "head": "arrow",
-          "id": "merge-a",
-          "kind": "connection",
-          "label": "r2",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 965,
-            "y": 1383
-          },
-          "style": "primary",
-          "to": "mergeability/mergeability-read",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "mergeability/mergeability-author-b",
-          "head": "arrow",
-          "id": "merge-b",
-          "kind": "connection",
-          "label": "r3",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 965,
-            "y": 1505.5
-          },
-          "style": "primary",
-          "to": "mergeability/mergeability-read",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "height": 65,
-          "id": "mergeability-limit",
-          "kind": "text",
-          "label": "Merge-friendly is not conflict-free. The reader does not silently choose the newest timestamp. A deliberate revision reconciles the observed parents.",
-          "parent": "mergeability",
-          "style": "body",
-          "width": 1460,
-          "wrap": true,
-          "x": 45,
-          "y": 670
-        },
-        {
-          "height": 65,
-          "id": "mergeability-write-limit",
-          "kind": "text",
-          "label": "Cooperating local writers take locks. File publication is atomic; multi-file batches attempt rollback and are not crash-atomic. Git merging is a separate boundary.",
-          "parent": "mergeability",
-          "style": "small",
-          "width": 1460,
-          "wrap": true,
-          "x": 45,
-          "y": 755
-        },
-        {
-          "color": "yellow",
-          "height": 840,
-          "id": "cache-validity",
-          "kind": "group",
-          "label": "03 / Reuse only the work whose inputs still match",
-          "shape": "section",
-          "style": "boundary",
-          "width": 1580,
-          "x": 30,
-          "y": 1960
-        },
-        {
-          "height": 65,
-          "id": "cache-validity-thesis",
-          "kind": "text",
-          "label": "Different questions need different cache keys—not one global TTL.",
-          "parent": "cache-validity",
-          "style": "title",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 45
-        },
-        {
-          "height": 85,
-          "id": "cache-validity-context",
-          "kind": "text",
-          "label": "One freshness check feeds several projections. Derived generations live outside the Saga, so rebuilding does not create authored Git changes.",
-          "parent": "cache-validity",
-          "style": "body",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 120
-        },
-        {
-          "height": 120,
-          "id": "cache-validity-freshness",
-          "kind": "node",
-          "label": "Freshness check\nSaga fingerprints + source context",
-          "parent": "cache-validity",
-          "shape": "rect",
-          "style": "blue-node",
-          "width": 600,
-          "wrap": true,
-          "x": 490,
-          "y": 230
-        },
-        {
-          "height": 165,
-          "id": "cache-validity-docs",
-          "kind": "node",
-          "label": "Documentation generation\nKey: documentation fingerprint\nLazy parts built with sync.Once",
-          "parent": "cache-validity",
-          "shape": "rect",
-          "style": "green-node",
-          "width": 470,
-          "wrap": true,
-          "x": 35,
-          "y": 465
-        },
-        {
-          "height": 165,
-          "id": "cache-validity-review",
-          "kind": "node",
-          "label": "Review coverage\nKey: commit range + repository +\nGit attributes + Item evidence",
-          "parent": "cache-validity",
-          "shape": "rect",
-          "style": "purple-node",
-          "width": 470,
-          "wrap": true,
-          "x": 555,
-          "y": 465
-        },
-        {
-          "height": 165,
-          "id": "cache-validity-disk",
-          "kind": "node",
-          "label": "Persistent derived generation\nKey: Saga location + tree + source\nStage, then publish by rename",
-          "parent": "cache-validity",
-          "shape": "rect",
-          "style": "yellow-node",
-          "width": 470,
-          "wrap": true,
-          "x": 1075,
-          "y": 465
-        },
-        {
-          "from": "cache-validity/cache-validity-freshness",
-          "head": "arrow",
-          "id": "docs-key",
-          "kind": "connection",
-          "label": "same documentation",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 420,
-            "y": 2356.75
-          },
-          "style": "primary",
-          "to": "cache-validity/cache-validity-docs",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "cache-validity/cache-validity-freshness",
-          "head": "arrow",
-          "id": "review-key",
-          "kind": "connection",
-          "label": "same coverage inputs",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 680,
-            "y": 2356.75
-          },
-          "style": "primary",
-          "to": "cache-validity/cache-validity-review",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "cache-validity/cache-validity-freshness",
-          "head": "arrow",
-          "id": "disk-key",
-          "kind": "connection",
-          "label": "exact source identity",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 940,
-            "y": 2356.75
-          },
-          "style": "primary",
-          "to": "cache-validity/cache-validity-disk",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "height": 65,
-          "id": "cache-validity-invalid",
-          "kind": "text",
-          "label": "Changed inputs → new key → rebuild. Unpinnable WORKTREE input is excluded from persistent reuse; failed/provisional coverage is not retained as a stable answer.",
-          "parent": "cache-validity",
-          "style": "body",
-          "width": 1470,
-          "wrap": true,
-          "x": 45,
-          "y": 675
-        },
-        {
-          "height": 65,
-          "id": "cache-validity-cost",
-          "kind": "text",
-          "label": "Browser work has another boundary: /decks loads only when opened. First open still renders all deck markup; deferred work reduces ordinary navigation cost, not every cost.",
-          "parent": "cache-validity",
-          "style": "small",
-          "width": 1470,
-          "wrap": true,
-          "x": 45,
-          "y": 755
-        },
-        {
-          "color": "purple",
-          "height": 840,
-          "id": "presentation",
-          "kind": "group",
-          "label": "04 / Share rendering mechanisms; retain different meanings",
-          "shape": "section",
-          "style": "boundary",
-          "width": 1580,
-          "x": 30,
-          "y": 2880
-        },
-        {
-          "height": 65,
-          "id": "presentation-thesis",
-          "kind": "text",
-          "label": "Three presentation families share primitives without sharing ownership rules.",
-          "parent": "presentation",
-          "style": "title",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 45
-        },
-        {
-          "height": 85,
-          "id": "presentation-context",
-          "kind": "text",
-          "label": "Stories and acceptance criteria use Essay framing. Slides own stable Items and code evidence. Whiteboards provide spatial context and independent revisions.",
-          "parent": "presentation",
-          "style": "body",
-          "width": 1480,
-          "wrap": true,
-          "x": 35,
-          "y": 120
-        },
-        {
-          "height": 150,
-          "id": "presentation-essays",
-          "kind": "node",
-          "label": "Essays\nTitle · subtext · abstract · body\nShared safe Markdown engine",
-          "parent": "presentation",
-          "shape": "rect",
-          "style": "blue-node",
-          "width": 470,
-          "wrap": true,
-          "x": 35,
-          "y": 250
-        },
-        {
-          "height": 150,
-          "id": "presentation-slides",
-          "kind": "node",
-          "label": "Slide decks\nFront + visual + stable Items\nFeature or review ownership",
-          "parent": "presentation",
-          "shape": "rect",
-          "style": "purple-node",
-          "width": 470,
-          "wrap": true,
-          "x": 555,
-          "y": 250
-        },
-        {
-          "criterion_links": [
-            {
-              "criterion": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
-              "id": "wb-evidence-inspect-20261102",
-              "rationale": "This element explains exact native evidence and its separate code, story, record and definition actions.",
-              "story_revision": "sha256:bfcecfc71d7cd39cd14b705081d5152b12e37a82acfeae0cbcf399f0dd8d581f"
-            },
-            {
-              "criterion": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency",
-              "id": "wb-evidence-currency-20261102",
-              "rationale": "The pinned reader and reconciliation code expose changed evidence and require a new reassessed board revision.",
-              "story_revision": "sha256:bfcecfc71d7cd39cd14b705081d5152b12e37a82acfeae0cbcf399f0dd8d581f"
-            }
-          ],
-          "evidence": [
-            {
-              "commit": "9ffb9bec3505218593bfd28a54d796d829d0b3ac",
-              "digest": "sha256:32fcb4e2c31ee916f4972eb024dda9d03d8ef74676166bbc7f291dd05a2a2ce2",
-              "end": 25,
-              "note": "A native whiteboard element projects its own stable evidence and semantic links without creating a slide.",
-              "path": "internal/requirements/whiteboard_items.go",
-              "start": 11
-            },
-            {
-              "commit": "9ffb9bec3505218593bfd28a54d796d829d0b3ac",
-              "digest": "sha256:3818eabcf99092c798c3f8a7efe87f6568cbe60687ea55e9356be73711c4df9d",
-              "end": 170,
-              "note": "The code action loads this exact saved board revision and renders pinned code and selections in the shared drawer.",
-              "path": "internal/server/whiteboard_elements.go",
-              "start": 133
-            },
-            {
-              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
-              "digest": "sha256:de08f4a7f4d55e2b269d1d62825d6cacea715b2cc66c7364e450f696dc6eb638",
-              "end": 105,
-              "note": "Native evidence marks the displayed element stale when its referenced code or selected evidence loses currency.",
-              "path": "internal/server/whiteboard_elements.go",
-              "start": 25
-            },
-            {
-              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
-              "digest": "sha256:4171e5c90b2ed1a22ce25bde1221e3209ff881ab6a75ac1ec4eaccbf67dc717b",
-              "end": 284,
-              "note": "HEAD currency takes precedence over a matching comparison base for living whiteboard evidence.",
-              "path": "internal/coverage/coverage.go",
-              "start": 270
-            },
-            {
-              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
-              "digest": "sha256:8c6c381afff970dff5fa6ef45ba2feb6396fb2726785789aa5f8366252b1f852",
-              "end": 609,
-              "note": "Reconciliation directs a stale whiteboard element to explicit reassessment and parented publication.",
-              "path": "internal/cli/reconciliation.go",
-              "start": 605
-            }
-          ],
-          "height": 150,
-          "id": "presentation-boards",
-          "kind": "node",
-          "label": "Whiteboards\nNested sections + focus paths\nIndependent document history",
-          "note": "Native elements own exact code evidence and optional criterion, record and documentation links. Code opens in the shared drawer at its saved pin. A code change marks the element stale and reduces health; reassess its meaning and edit the current complete document. Git retains earlier committed content and its original pins.",
-          "parent": "presentation",
-          "record": "urn:change-saga:change-saga:feature:visual-implementation",
-          "shape": "rect",
-          "style": "green-node",
-          "width": 470,
-          "wrap": true,
-          "x": 1075,
-          "y": 250
-        },
-        {
-          "evidence": [
-            {
-              "commit": "9ffb9bec3505218593bfd28a54d796d829d0b3ac",
-              "digest": "sha256:ca0e65209333d5657d6ad67c72e4c6304d1c3f2c1d81dec97314e01d4e332e7c",
-              "end": 167,
-              "note": "Evidence and semantic links are optional metadata; code is still literal code-block text and geometry stays authored.",
-              "path": "internal/diagram/model.go",
-              "start": 151
-            }
-          ],
-          "height": 120,
-          "id": "presentation-diagram",
-          "kind": "node",
-          "label": "Shared diagram grammar + deterministic SVG renderer\nGroups, geometry, semantic color, connections and notes",
-          "parent": "presentation",
-          "shape": "rect",
-          "style": "purple-node",
-          "width": 990,
-          "wrap": true,
-          "x": 555,
-          "y": 505
-        },
-        {
-          "from": "presentation/presentation-slides",
-          "head": "arrow",
-          "id": "slides-render",
-          "kind": "connection",
-          "label": "structured visual",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 810,
-            "y": 3303
-          },
-          "style": "primary",
-          "to": "presentation/presentation-diagram",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "from": "presentation/presentation-boards",
-          "head": "arrow",
-          "id": "boards-render",
-          "kind": "connection",
-          "label": "same grammar",
-          "label_box": {
-            "height": 44,
-            "width": 280,
-            "x": 1070,
-            "y": 3303
-          },
-          "style": "primary",
-          "to": "presentation/presentation-diagram",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "height": 65,
-          "id": "presentation-state",
-          "kind": "text",
-          "label": "The server owns rendered HTML. htmx swaps the page inside a persistent shell; plain JavaScript owns viewer interaction. URL state and page-scoped cleanup keep navigation coherent.",
-          "parent": "presentation",
-          "style": "body",
-          "width": 1470,
-          "wrap": true,
-          "x": 45,
-          "y": 670
-        },
-        {
-          "criterion_links": [
-            {
-              "criterion": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage",
-              "id": "wb-evidence-coverage-20261102",
-              "rationale": "This boundary distinguishes living element code ownership from imported definition ownership and independent review coverage.",
-              "story_revision": "sha256:bfcecfc71d7cd39cd14b705081d5152b12e37a82acfeae0cbcf399f0dd8d581f"
-            }
-          ],
-          "evidence": [
-            {
-              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
-              "digest": "sha256:733b663224fb53f83212bbb022f9b11b0c21d44ec5a12dbf1f51e51c62bbbe46",
-              "end": 60,
-              "note": "Only current nonarchived board heads project stable native element owners; old revisions remain inspectable.",
-              "path": "internal/requirements/whiteboard_items.go",
-              "start": 27
-            },
-            {
-              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
-              "digest": "sha256:57856f39e8426f9a9513fc4c91826df4cbcf26fd3a6f1ba0b383754ef9c8d30b",
-              "end": 362,
-              "note": "The shared documented-code walker visits native whiteboard evidence.",
-              "path": "internal/coverage/coverage.go",
-              "start": 356
-            },
-            {
-              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
-              "digest": "sha256:af96a99fa8bf92af45390c4d5de39325f6dde467107c5fa136b16d5f49f1de01",
-              "end": 63,
-              "note": "The shared reference inventory includes native direct evidence and exact selected code with element ownership.",
-              "path": "internal/cli/references.go",
-              "start": 45
-            },
-            {
-              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
-              "digest": "sha256:55dc7ea160cba3e1e161a942db87cf27ba45716e4af0a9a348ee775a625a864a",
-              "end": 34,
-              "note": "Story-to-code and reverse-code queries include current native evidence and selected ranges without creating a slide identity.",
-              "path": "internal/livingapp/whiteboard_evidence.go",
-              "start": 9
-            }
-          ],
-          "height": 65,
-          "id": "presentation-boundary",
-          "kind": "text",
-          "label": "Element evidence contributes living documented-code coverage. Imported source pins retain their original ownership; a review deck independently explains its change.",
-          "parent": "presentation",
-          "style": "small",
-          "width": 1470,
-          "wrap": true,
-          "x": 45,
-          "y": 755
-        }
-      ],
+      "version": 1,
+      "width": 1640,
       "height": 3760,
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "width": 1640,
+        "height": 1020
+      },
       "styles": {
         "blue-node": {
           "fill": "@diagram-blue-tint",
-          "font_size": 25,
-          "ink": "@diagram-blue-ink",
           "stroke": "@diagram-blue-accent",
-          "stroke_width": 2
+          "ink": "@diagram-blue-ink",
+          "stroke_width": 2,
+          "font_size": 25
         },
         "body": {
           "fill": "none",
-          "font_size": 26,
-          "ink": "@diagram-normal-ink",
           "stroke": "none",
-          "stroke_width": 1
+          "ink": "@diagram-normal-ink",
+          "stroke_width": 1,
+          "font_size": 26
         },
         "green-node": {
           "fill": "@diagram-green-tint",
-          "font_size": 25,
-          "ink": "@diagram-green-ink",
           "stroke": "@diagram-green-accent",
-          "stroke_width": 2
+          "ink": "@diagram-green-ink",
+          "stroke_width": 2,
+          "font_size": 25
         },
         "normal": {
           "fill": "@diagram-normal-fill",
-          "font_size": 25,
-          "ink": "@diagram-normal-ink",
           "stroke": "@diagram-normal-stroke",
-          "stroke_width": 2
+          "ink": "@diagram-normal-ink",
+          "stroke_width": 2,
+          "font_size": 25
         },
         "purple-node": {
           "fill": "@diagram-purple-tint",
-          "font_size": 25,
-          "ink": "@diagram-purple-ink",
           "stroke": "@diagram-purple-accent",
-          "stroke_width": 2
+          "ink": "@diagram-purple-ink",
+          "stroke_width": 2,
+          "font_size": 25
         },
         "small": {
           "fill": "none",
-          "font_size": 23,
-          "ink": "@diagram-secondary-ink",
           "stroke": "none",
-          "stroke_width": 1
+          "ink": "@diagram-secondary-ink",
+          "stroke_width": 1,
+          "font_size": 23
         },
         "yellow-node": {
           "fill": "@diagram-yellow-tint",
-          "font_size": 25,
-          "ink": "@diagram-yellow-ink",
           "stroke": "@diagram-yellow-accent",
-          "stroke_width": 2
+          "ink": "@diagram-yellow-ink",
+          "stroke_width": 2,
+          "font_size": 25
         }
       },
-      "version": 1,
-      "viewport": {
-        "height": 1020,
-        "width": 1640,
-        "x": 0,
-        "y": 0
-      },
-      "width": 1640
+      "elements": [
+        {
+          "id": "codebase",
+          "kind": "group",
+          "shape": "section",
+          "label": "01 / One durable model, several ways to read it",
+          "x": 30,
+          "y": 25,
+          "width": 1580,
+          "height": 840,
+          "style": "boundary",
+          "color": "blue"
+        },
+        {
+          "id": "codebase-thesis",
+          "kind": "text",
+          "label": "Go domain libraries own meaning; the CLI and HTTP reader compose them.",
+          "x": 35,
+          "y": 45,
+          "width": 1480,
+          "height": 65,
+          "parent": "codebase",
+          "style": "title",
+          "wrap": true
+        },
+        {
+          "id": "codebase-guide",
+          "kind": "text",
+          "label": "Follow dependency arrows downward. Blue = entry points · purple = semantics · green = durable boundary. Focus the next sections for mergeability, caching and presentation.",
+          "x": 35,
+          "y": 120,
+          "width": 1480,
+          "height": 90,
+          "parent": "codebase",
+          "style": "body",
+          "wrap": true
+        },
+        {
+          "id": "codebase-cli",
+          "kind": "node",
+          "shape": "rect",
+          "label": "CLI authoring + query\nTyped requests, validation and bounded JSON",
+          "x": 40,
+          "y": 235,
+          "width": 660,
+          "height": 130,
+          "parent": "codebase",
+          "style": "blue-node",
+          "wrap": true
+        },
+        {
+          "id": "codebase-http",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Loopback HTTP reader\nHTML pages, review actions and evidence endpoints",
+          "x": 850,
+          "y": 235,
+          "width": 660,
+          "height": 130,
+          "parent": "codebase",
+          "style": "blue-node",
+          "wrap": true
+        },
+        {
+          "id": "codebase-domain",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Domain libraries\nrequirements · quality · saga · semanticgraph · coverage",
+          "x": 320,
+          "y": 435,
+          "width": 930,
+          "height": 130,
+          "parent": "codebase",
+          "style": "purple-node",
+          "wrap": true
+        },
+        {
+          "id": "codebase-persistence",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Publication boundary\nstore locks + atomic file/directory publication",
+          "x": 40,
+          "y": 640,
+          "width": 660,
+          "height": 130,
+          "parent": "codebase",
+          "style": "green-node",
+          "wrap": true
+        },
+        {
+          "id": "codebase-source",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Source interpretation\ngitexec / gitdiff + coderesolve",
+          "x": 850,
+          "y": 640,
+          "width": 660,
+          "height": 130,
+          "parent": "codebase",
+          "style": "green-node",
+          "wrap": true
+        },
+        {
+          "id": "cli-domain",
+          "kind": "connection",
+          "label": "calls typed operations",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "codebase/codebase-cli",
+          "to": "codebase/codebase-domain",
+          "head": "arrow",
+          "label_box": {
+            "x": 467.5,
+            "y": 403,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "http-domain",
+          "kind": "connection",
+          "label": "builds reading projections",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "codebase/codebase-http",
+          "to": "codebase/codebase-domain",
+          "head": "arrow",
+          "label_box": {
+            "x": 872.5,
+            "y": 403,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "domain-store",
+          "kind": "connection",
+          "label": "publishes authored records",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "codebase/codebase-domain",
+          "to": "codebase/codebase-persistence",
+          "head": "arrow",
+          "label_box": {
+            "x": 467.5,
+            "y": 605.5,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "domain-source",
+          "kind": "connection",
+          "label": "resolves pinned code",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "codebase/codebase-domain",
+          "to": "codebase/codebase-source",
+          "head": "arrow",
+          "label_box": {
+            "x": 872.5,
+            "y": 605.5,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "locator",
+          "kind": "text",
+          "label": "Start here, then focus: 02 Mergeable history · 03 Cache validity · 04 Shared presentation. Technology choices and supporting evidence are in the linked Architecture notes.",
+          "x": 55,
+          "y": 900,
+          "width": 1500,
+          "height": 95,
+          "style": "small",
+          "wrap": true
+        },
+        {
+          "id": "mergeability",
+          "kind": "group",
+          "shape": "section",
+          "label": "02 / Keep parallel edits small; keep disagreement visible",
+          "x": 30,
+          "y": 1040,
+          "width": 1580,
+          "height": 840,
+          "style": "boundary",
+          "color": "green"
+        },
+        {
+          "id": "mergeability-thesis",
+          "kind": "text",
+          "label": "Independent records merge; competing definitions still require a decision.",
+          "x": 35,
+          "y": 45,
+          "width": 1480,
+          "height": 65,
+          "parent": "mergeability",
+          "style": "title",
+          "wrap": true
+        },
+        {
+          "id": "mergeability-context",
+          "kind": "text",
+          "label": "Stable identities connect references across moves. Current content and state are editable records. Git owns earlier versions; actual review decisions remain separate facts.",
+          "x": 35,
+          "y": 120,
+          "width": 1480,
+          "height": 85,
+          "parent": "mergeability",
+          "style": "body",
+          "wrap": true
+        },
+        {
+          "id": "mergeability-base",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Shared story identity\nDefinition r1 is the common parent",
+          "x": 70,
+          "y": 245,
+          "width": 410,
+          "height": 130,
+          "parent": "mergeability",
+          "style": "green-node",
+          "wrap": true
+        },
+        {
+          "id": "mergeability-author-a",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Author A\nNew definition r2 → parent r1",
+          "x": 620,
+          "y": 225,
+          "width": 410,
+          "height": 130,
+          "parent": "mergeability",
+          "style": "blue-node",
+          "wrap": true
+        },
+        {
+          "id": "mergeability-author-b",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Author B\nNew definition r3 → parent r1",
+          "x": 620,
+          "y": 470,
+          "width": 410,
+          "height": 130,
+          "parent": "mergeability",
+          "style": "purple-node",
+          "wrap": true
+        },
+        {
+          "id": "mergeability-read",
+          "kind": "node",
+          "shape": "rect",
+          "label": "After Git combines the files\nTwo definition heads remain visible",
+          "x": 1140,
+          "y": 345,
+          "width": 370,
+          "height": 190,
+          "parent": "mergeability",
+          "style": "yellow-node",
+          "wrap": true
+        },
+        {
+          "id": "branch-a",
+          "kind": "connection",
+          "label": "new file",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "mergeability/mergeability-base",
+          "to": "mergeability/mergeability-author-a",
+          "head": "arrow",
+          "label_box": {
+            "x": 440,
+            "y": 1318,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "branch-b",
+          "kind": "connection",
+          "label": "new file",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "mergeability/mergeability-base",
+          "to": "mergeability/mergeability-author-b",
+          "head": "arrow",
+          "label_box": {
+            "x": 440,
+            "y": 1440.5,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "merge-a",
+          "kind": "connection",
+          "label": "r2",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "mergeability/mergeability-author-a",
+          "to": "mergeability/mergeability-read",
+          "head": "arrow",
+          "label_box": {
+            "x": 965,
+            "y": 1383,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "merge-b",
+          "kind": "connection",
+          "label": "r3",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "mergeability/mergeability-author-b",
+          "to": "mergeability/mergeability-read",
+          "head": "arrow",
+          "label_box": {
+            "x": 965,
+            "y": 1505.5,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "mergeability-limit",
+          "kind": "text",
+          "label": "Merge-friendly is not conflict-free. The reader does not silently choose the newest timestamp. A deliberate revision reconciles the observed parents.",
+          "x": 45,
+          "y": 670,
+          "width": 1460,
+          "height": 65,
+          "parent": "mergeability",
+          "style": "body",
+          "wrap": true
+        },
+        {
+          "id": "mergeability-write-limit",
+          "kind": "text",
+          "label": "Cooperating local writers take locks. File publication is atomic; multi-file batches attempt rollback and are not crash-atomic. Git merging is a separate boundary.",
+          "x": 45,
+          "y": 755,
+          "width": 1460,
+          "height": 65,
+          "parent": "mergeability",
+          "style": "small",
+          "wrap": true
+        },
+        {
+          "id": "cache-validity",
+          "kind": "group",
+          "shape": "section",
+          "label": "03 / Reuse only the work whose inputs still match",
+          "x": 30,
+          "y": 1960,
+          "width": 1580,
+          "height": 840,
+          "style": "boundary",
+          "color": "yellow"
+        },
+        {
+          "id": "cache-validity-thesis",
+          "kind": "text",
+          "label": "Different questions need different cache keys—not one global TTL.",
+          "x": 35,
+          "y": 45,
+          "width": 1480,
+          "height": 65,
+          "parent": "cache-validity",
+          "style": "title",
+          "wrap": true
+        },
+        {
+          "id": "cache-validity-context",
+          "kind": "text",
+          "label": "One freshness check feeds several projections. Derived generations live outside the Saga, so rebuilding does not create authored Git changes.",
+          "x": 35,
+          "y": 120,
+          "width": 1480,
+          "height": 85,
+          "parent": "cache-validity",
+          "style": "body",
+          "wrap": true
+        },
+        {
+          "id": "cache-validity-freshness",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Freshness check\nSaga fingerprints + source context",
+          "x": 490,
+          "y": 230,
+          "width": 600,
+          "height": 120,
+          "parent": "cache-validity",
+          "style": "blue-node",
+          "wrap": true
+        },
+        {
+          "id": "cache-validity-docs",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Documentation generation\nKey: documentation fingerprint\nLazy parts built with sync.Once",
+          "x": 35,
+          "y": 465,
+          "width": 470,
+          "height": 165,
+          "parent": "cache-validity",
+          "style": "green-node",
+          "wrap": true
+        },
+        {
+          "id": "cache-validity-review",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Review coverage\nKey: commit range + repository +\nGit attributes + Item evidence",
+          "x": 555,
+          "y": 465,
+          "width": 470,
+          "height": 165,
+          "parent": "cache-validity",
+          "style": "purple-node",
+          "wrap": true
+        },
+        {
+          "id": "cache-validity-disk",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Persistent derived generation\nKey: Saga location + tree + source\nStage, then publish by rename",
+          "x": 1075,
+          "y": 465,
+          "width": 470,
+          "height": 165,
+          "parent": "cache-validity",
+          "style": "yellow-node",
+          "wrap": true
+        },
+        {
+          "id": "docs-key",
+          "kind": "connection",
+          "label": "same documentation",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "cache-validity/cache-validity-freshness",
+          "to": "cache-validity/cache-validity-docs",
+          "head": "arrow",
+          "label_box": {
+            "x": 420,
+            "y": 2356.75,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "review-key",
+          "kind": "connection",
+          "label": "same coverage inputs",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "cache-validity/cache-validity-freshness",
+          "to": "cache-validity/cache-validity-review",
+          "head": "arrow",
+          "label_box": {
+            "x": 680,
+            "y": 2356.75,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "disk-key",
+          "kind": "connection",
+          "label": "exact source identity",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "cache-validity/cache-validity-freshness",
+          "to": "cache-validity/cache-validity-disk",
+          "head": "arrow",
+          "label_box": {
+            "x": 940,
+            "y": 2356.75,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "cache-validity-invalid",
+          "kind": "text",
+          "label": "Changed inputs → new key → rebuild. Unpinnable WORKTREE input is excluded from persistent reuse; failed/provisional coverage is not retained as a stable answer.",
+          "x": 45,
+          "y": 675,
+          "width": 1470,
+          "height": 65,
+          "parent": "cache-validity",
+          "style": "body",
+          "wrap": true
+        },
+        {
+          "id": "cache-validity-cost",
+          "kind": "text",
+          "label": "Browser work has another boundary: /decks loads only when opened. First open still renders all deck markup; deferred work reduces ordinary navigation cost, not every cost.",
+          "x": 45,
+          "y": 755,
+          "width": 1470,
+          "height": 65,
+          "parent": "cache-validity",
+          "style": "small",
+          "wrap": true
+        },
+        {
+          "id": "presentation",
+          "kind": "group",
+          "shape": "section",
+          "label": "04 / Share rendering mechanisms; retain different meanings",
+          "x": 30,
+          "y": 2880,
+          "width": 1580,
+          "height": 840,
+          "style": "boundary",
+          "color": "purple"
+        },
+        {
+          "id": "presentation-thesis",
+          "kind": "text",
+          "label": "Three presentation families share primitives without sharing ownership rules.",
+          "x": 35,
+          "y": 45,
+          "width": 1480,
+          "height": 65,
+          "parent": "presentation",
+          "style": "title",
+          "wrap": true
+        },
+        {
+          "id": "presentation-context",
+          "kind": "text",
+          "label": "Stories and acceptance criteria use Essay framing. Slides own stable Items and code evidence. Whiteboards provide spatial context and independent revisions.",
+          "x": 35,
+          "y": 120,
+          "width": 1480,
+          "height": 85,
+          "parent": "presentation",
+          "style": "body",
+          "wrap": true
+        },
+        {
+          "id": "presentation-essays",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Essays\nTitle · subtext · abstract · body\nShared safe Markdown engine",
+          "x": 35,
+          "y": 250,
+          "width": 470,
+          "height": 150,
+          "parent": "presentation",
+          "style": "blue-node",
+          "wrap": true
+        },
+        {
+          "id": "presentation-slides",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Slide decks\nFront + visual + stable Items\nFeature or review ownership",
+          "x": 555,
+          "y": 250,
+          "width": 470,
+          "height": 150,
+          "parent": "presentation",
+          "style": "purple-node",
+          "wrap": true
+        },
+        {
+          "id": "presentation-boards",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Whiteboards\nNested sections + focus paths\nCurrent documents + Git history",
+          "note": "Native elements own exact code evidence and optional criterion, record and documentation links. Current-page actions require the observed content digest; a stale page returns a conflict. An explicitly opened saved Git view can inspect its original evidence. Reassess changed meaning and publish the complete current document; Git retains earlier committed content and pins.",
+          "x": 1075,
+          "y": 250,
+          "width": 470,
+          "height": 150,
+          "parent": "presentation",
+          "style": "green-node",
+          "wrap": true,
+          "evidence": [
+            {
+              "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+              "path": "internal/requirements/whiteboard_items.go",
+              "start": 11,
+              "end": 25,
+              "digest": "sha256:0277791441cceaade95a890fce02901c81cbca9a14ef6c06225d0b648a09ba27",
+              "note": "A native whiteboard element projects its own stable evidence and semantic links without creating a slide."
+            },
+            {
+              "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+              "path": "internal/server/whiteboard_elements.go",
+              "start": 131,
+              "end": 176,
+              "digest": "sha256:5d5e11f5b2720c427ab752d16b6d430762ae54279de8033be52e861126879880",
+              "note": "Current-page actions reject missing/invalid digests (400) and stale content (409); explicit saved views may read exact Git content, with unavailable content reported (404)."
+            },
+            {
+              "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+              "path": "internal/server/whiteboard_elements.go",
+              "start": 26,
+              "end": 106,
+              "digest": "sha256:c1017ed5cbd1e1a424a3e99bbc2d58f0c4a8eecf78471ac6acdb2ba578853617",
+              "note": "Native evidence marks the displayed element stale when its referenced code or selected evidence loses currency."
+            },
+            {
+              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
+              "path": "internal/coverage/coverage.go",
+              "start": 270,
+              "end": 284,
+              "digest": "sha256:4171e5c90b2ed1a22ce25bde1221e3209ff881ab6a75ac1ec4eaccbf67dc717b",
+              "note": "HEAD currency takes precedence over a matching comparison base for living whiteboard evidence."
+            },
+            {
+              "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+              "path": "internal/cli/reconciliation.go",
+              "start": 605,
+              "end": 609,
+              "digest": "sha256:63160d53a752e6f3e95f42d4cb7d9fc00d30b73e7cfbf364338f559ecf7496f9",
+              "note": "Reconciliation requires explicit reassessment and complete current whiteboard publication; Git preserves earlier committed content and original pins."
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "wb-evidence-inspect-20261102",
+              "criterion": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect",
+              "story_revision": "sha256:334806517d80b7139f2de7b61a49fbebdf39f5f7802d281fa366dd7daadf119a",
+              "rationale": "The native element declares exact code, criterion and record actions; current-page digest checks and explicit saved Git context preserve the evidence being inspected."
+            },
+            {
+              "id": "wb-evidence-currency-20261102",
+              "criterion": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency",
+              "story_revision": "sha256:334806517d80b7139f2de7b61a49fbebdf39f5f7802d281fa366dd7daadf119a",
+              "rationale": "The current reader exposes changed native evidence and requires explicit reassessment of current explanation and exact pins; Git retains committed earlier content."
+            }
+          ],
+          "record": "urn:change-saga:change-saga:feature:visual-implementation"
+        },
+        {
+          "id": "presentation-diagram",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Shared diagram grammar + deterministic SVG renderer\nGroups, geometry, semantic color, connections and notes",
+          "x": 555,
+          "y": 505,
+          "width": 990,
+          "height": 120,
+          "parent": "presentation",
+          "style": "purple-node",
+          "wrap": true,
+          "evidence": [
+            {
+              "commit": "9ffb9bec3505218593bfd28a54d796d829d0b3ac",
+              "path": "internal/diagram/model.go",
+              "start": 151,
+              "end": 167,
+              "digest": "sha256:ca0e65209333d5657d6ad67c72e4c6304d1c3f2c1d81dec97314e01d4e332e7c",
+              "note": "Evidence and semantic links are optional metadata; code is still literal code-block text and geometry stays authored."
+            }
+          ]
+        },
+        {
+          "id": "slides-render",
+          "kind": "connection",
+          "label": "structured visual",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "presentation/presentation-slides",
+          "to": "presentation/presentation-diagram",
+          "head": "arrow",
+          "label_box": {
+            "x": 810,
+            "y": 3303,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "boards-render",
+          "kind": "connection",
+          "label": "same grammar",
+          "x": 0,
+          "y": 0,
+          "style": "primary",
+          "from": "presentation/presentation-boards",
+          "to": "presentation/presentation-diagram",
+          "head": "arrow",
+          "label_box": {
+            "x": 1070,
+            "y": 3303,
+            "width": 280,
+            "height": 44
+          }
+        },
+        {
+          "id": "presentation-state",
+          "kind": "text",
+          "label": "The server owns rendered HTML. htmx swaps the page inside a persistent shell; plain JavaScript owns viewer interaction. URL state and page-scoped cleanup keep navigation coherent.",
+          "x": 45,
+          "y": 670,
+          "width": 1470,
+          "height": 65,
+          "parent": "presentation",
+          "style": "body",
+          "wrap": true
+        },
+        {
+          "id": "presentation-boundary",
+          "kind": "text",
+          "label": "Element evidence contributes living documented-code coverage. Imported source pins retain their original ownership; a review deck independently explains its change.",
+          "x": 45,
+          "y": 755,
+          "width": 1470,
+          "height": 65,
+          "parent": "presentation",
+          "style": "small",
+          "wrap": true,
+          "evidence": [
+            {
+              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
+              "path": "internal/requirements/whiteboard_items.go",
+              "start": 27,
+              "end": 60,
+              "digest": "sha256:733b663224fb53f83212bbb022f9b11b0c21d44ec5a12dbf1f51e51c62bbbe46",
+              "note": "Only current nonarchived board heads project stable native element owners; old revisions remain inspectable."
+            },
+            {
+              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
+              "path": "internal/coverage/coverage.go",
+              "start": 356,
+              "end": 362,
+              "digest": "sha256:57856f39e8426f9a9513fc4c91826df4cbcf26fd3a6f1ba0b383754ef9c8d30b",
+              "note": "The shared documented-code walker visits native whiteboard evidence."
+            },
+            {
+              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
+              "path": "internal/cli/references.go",
+              "start": 45,
+              "end": 63,
+              "digest": "sha256:af96a99fa8bf92af45390c4d5de39325f6dde467107c5fa136b16d5f49f1de01",
+              "note": "The shared reference inventory includes native direct evidence and exact selected code with element ownership."
+            },
+            {
+              "commit": "cc4dbcb4e526d13e7e36c9c822c03946f2335fce",
+              "path": "internal/livingapp/whiteboard_evidence.go",
+              "start": 9,
+              "end": 34,
+              "digest": "sha256:55dc7ea160cba3e1e161a942db87cf27ba45716e4af0a9a348ee775a625a864a",
+              "note": "Story-to-code and reverse-code queries include current native evidence and selected ranges without creating a slide identity."
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "wb-evidence-coverage-20261102",
+              "criterion": "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage",
+              "story_revision": "sha256:334806517d80b7139f2de7b61a49fbebdf39f5f7802d281fa366dd7daadf119a",
+              "rationale": "This boundary attributes direct and eligible selected code only to the active native element; imported bare definitions and historical Git content add no inherited review coverage."
+            }
+          ]
+        }
+      ]
     },
     "name": "How Change Saga fits together"
   }

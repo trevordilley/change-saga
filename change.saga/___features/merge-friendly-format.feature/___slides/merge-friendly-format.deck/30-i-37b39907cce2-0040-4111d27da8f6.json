@@ -4,8 +4,8 @@
   "slide": "story-mutation-sequence",
   "rank": 40,
   "kind": "node",
-  "label": "Immutable append",
-  "description": "A validated revision is created exclusively so an existing record cannot be replaced.",
+  "label": "Atomic current replacement",
+  "description": "A validated current content/state value replaces current.json atomically. The identity and unedited state remain stable; Git records earlier committed bytes.",
   "selector": {
     "type": "element",
     "element_id": "atomic-publish"

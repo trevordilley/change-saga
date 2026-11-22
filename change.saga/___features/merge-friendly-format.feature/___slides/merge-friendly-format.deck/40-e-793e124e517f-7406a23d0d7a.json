@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/currentrecord/git.go",
+      "start": 16,
+      "end": 67,
+      "digest": "sha256:4c8f6126b9f11423a8a8a3579c2d8aee9a774ed8b6928f01a085eb3f5defef73",
+      "note": "Historical content comes from actual bounded Git commits and exact digest matching, never a Saga content-history store."
+    }
+  ]
+}

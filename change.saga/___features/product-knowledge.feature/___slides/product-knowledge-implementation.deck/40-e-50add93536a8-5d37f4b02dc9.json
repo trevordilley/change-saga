@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/mutation.go",
+      "start": 377,
+      "end": 423,
+      "digest": "sha256:187e95da02a7fae2adb736b1ab08326aff33ae3db0f5827ad1982e113e9a2eed",
+      "note": "State changes validate transitions and replace the current state member, rather than appending Saga lifecycle history."
+    }
+  ]
+}

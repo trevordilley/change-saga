@@ -1,15 +1,15 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-10-16T23:21:13.704389Z",
-  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent",
-  "from_revision": "sha256:95a16c2ca2bb34e9fc6b9a71a3add69aa4403836c69c40ca6127f484186bd0ac",
+  "version": 5,
   "id": "test-inventory-whiteboard-stale-parent-56885de3665b",
-  "rationale": "Steps reject define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "request_id": "test-inventory-whiteboard-stale-parent-56885de3665b",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:parent",
-  "to_revision": "sha256:0fb0937c3f8389662d322b20055d2ed0f28ee83203c5ad7ebabd1946fee36ba7",
   "type": "verifies",
-  "version": 5
+  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent",
+  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:parent",
+  "scope": "self",
+  "rationale": "Reassessed Separate complete whiteboard publication from relative diagram edits. Steps reject check: The delta is rejected before applying twice, the published slide stays unchanged, and no whiteboard is implicitly republished or assigned a parent graph. This maps authored verification intent, not an execution or delivery result.",
+  "from_revision": "sha256:e6b8f41d83a4237d59f9f4459ba0b1e625ee293f0c1583c7a38e818d38cdf007",
+  "to_revision": "sha256:0c5e2eefaaa558f75c09e874cfcc55f7d934e4accfd4380c5977f61f41721cd4",
+  "state": "active",
+  "created_at": "2026-10-16T23:21:13.704389Z",
+  "request_id": "test-inventory-whiteboard-stale-parent-56885de3665b"
 }

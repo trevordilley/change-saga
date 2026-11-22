@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/app_mutation.go",
+      "start": 409,
+      "end": 446,
+      "digest": "sha256:c41f1786185e047b476430da180efc486f5c89a64c114b1c06316ac55f299959",
+      "note": "Moves the physical story package between feature directories while returning the unchanged story URN."
+    }
+  ]
+}

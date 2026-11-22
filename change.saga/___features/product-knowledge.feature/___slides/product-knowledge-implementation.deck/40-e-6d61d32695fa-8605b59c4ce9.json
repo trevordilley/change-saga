@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/prototypes/load.go",
+      "start": 261,
+      "end": 266,
+      "digest": "sha256:d4df106bc382a0d0ae156a5ad5840f19ad98927ac57d48f9326171d289b1d09a",
+      "note": "Copies HTML into an immutable revision package, verifies its digest on load, and proves source edits cannot mutate it."
+    }
+  ]
+}

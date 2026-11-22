@@ -4,8 +4,8 @@
   "slide": "revision-conflict-state",
   "rank": 30,
   "kind": "risk",
-  "label": "Inheritance disabled",
-  "description": "The convenience revise path cannot choose between competing parents or inherit a partial reconciliation.",
+  "label": "No implicit inheritance",
+  "description": "Convenience story edits refuse ambiguous legacy content instead of inheriting fields from an arbitrary candidate.",
   "selector": {
     "type": "element",
     "element_id": "shortcut-blocked"

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/prototypes/coverage.go",
+      "start": 74,
+      "end": 103,
+      "digest": "sha256:e048cd52f4f97a1076261f61ac9ecaa716461376d2493248d29c41024a93796c",
+      "note": "Classifies missing, conflicted, incompatible, or moved endpoints as explicit stale reasons and gaps without retargeting."
+    }
+  ]
+}

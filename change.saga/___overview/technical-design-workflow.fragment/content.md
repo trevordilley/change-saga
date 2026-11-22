@@ -1,6 +1,6 @@
 # Authoring and review workflow {#authoring-and-review-workflow}
 
-Use `bin/change-saga` built from the current source tree for this repository's authoring. The [Data flows board](/technical/whiteboards/data-flows) distinguishes the write pipeline from the read and comparison pipelines.
+Use a verified build compatible with the whole Saga format for this repository's authoring. Run `change-saga doctor --json` to identify the resolved executable, build and supported capabilities before relying on Plan layout alone. The [Data flows board](/technical/whiteboards/data-flows) distinguishes the write pipeline from the read and comparison pipelines.
 
 ## Start from the reader's question {#start-from-the-reader-s-question}
 
@@ -8,11 +8,11 @@ Use `query overview` and `query context --feature ID` to discover existing ident
 
 Product prose explains purpose and observable outcomes. The Technical design essay explains the general approach and links to the ERD, Infrastructure and Data flows boards. Feature implementation decks explain mechanisms through semantic Items and exact source evidence. Review decks explain the transition someone is being asked to review.
 
-## Author a coherent revision {#author-a-coherent-revision}
+## Author coherent current content {#author-a-coherent-revision}
 
 Use `overview set-technical-design` for the approach or a supporting page, `feature set-overview` for a feature, and `story revise` or `criterion revise` for existing Product records. A criterion's title is a short label; its full statement remains the pass/fail obligation. Its overview explains rationale, examples and boundaries. Changes to that content can stale related evidence, so never treat copyediting as an automatic evidence approval.
 
-Use `whiteboard publish --id ID --revision REV --parent PARENT --from FILE` for a subsequent complete board publication. The CLI checks geometry, source references and parentage before storage. A whiteboard source reference is not review coverage. Put exact code evidence on the explanatory target that owns it.
+Use `whiteboard publish --id ID --from FILE change.saga` for a complete current board publication. The CLI checks geometry and source references under the writer lock before storage. Relative `diagram edit` operations on diagram-sourced slides require the expected current content digest; whiteboard publication is a complete replacement, not a relative-edit API. A whiteboard source reference is not review coverage. Put exact code evidence on the explanatory target that owns it.
 
 ## Verify and hand off {#verify-and-hand-off}
 

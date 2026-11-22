@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "evidence-1-current-20261122-final",
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-implementation-history",
+  "test_revision": "sha256:251fb9004a8b0a692b2155cc372574f4ad1591329b8d9954a87df80ab026e951",
+  "role": "test_implementation",
+  "steps": [
+    "implement"
+  ],
+  "code": [
+    {
+      "commit": "bbd0521f35689a6bd90d7fba4c3c7b8346b0060e",
+      "path": "internal/cli/inventory_lifecycle_test.go",
+      "start": 135,
+      "end": 149,
+      "digest": "sha256:e6d408ba997e6b68dace33c592c8ee1c00e1ac4357a735b07379640897ce27c7"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:change-saga:test-case:inventory-implementation-history:evidence:evidence-1-current-20261122"
+  ],
+  "created_at": "2026-11-22T18:46:26Z"
+}

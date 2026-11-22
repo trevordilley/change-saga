@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/cli/quality.go",
+      "start": 486,
+      "end": 505,
+      "digest": "sha256:95b6540fe87c7512b00645a60355a9e8432b7f45db2aae96b0b1ce933dee4bdc",
+      "note": "Defines run recording as caller-supplied result, summary, command, source, and evidence fields; execution is outside this adapter."
+    }
+  ]
+}

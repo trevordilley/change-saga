@@ -8,26 +8,26 @@
     ],
     "expected_result": "Resolve an annotation authored before its endpoints.",
     "preconditions": [
-      "A fresh Saga has neither the referenced prototype nor story revision."
+      "An annotation can be authored before its referenced prototype or story content is available; use known exact intended content digests."
     ],
     "steps": [
       {
-        "action": "Author an element annotation pinned to prototype r1 and story s1; load/compose it, then create those exact endpoints and compose again.",
+        "id": "check-pinned-annotation",
+        "action": "Author the selector and exact content pins, compose with missing endpoints, then make those exact endpoint values available and compose again.",
+        "expected_result": "The unresolved annotation remains loadable with explicit gaps. Exact matching content resolves the same edge in both navigation directions.",
         "criteria": [
           "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:pinned-annotation",
           "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:visible-currency"
-        ],
-        "expected_result": "The unresolved annotation remains loadable with two gaps; resolution makes it current, linked and covered with bidirectional annotation identity.",
-        "id": "check-pinned-annotation"
+        ]
       },
       {
-        "action": "Read the annotation record and compare its prototype revision, story revision and element selector with the authored values.",
+        "id": "check-annotation-pin-fields",
+        "action": "Compare the public annotation prototype/story content pins and selector with the authored values.",
+        "expected_result": "All explicit pins and selector values remain exact; no newer endpoint content is substituted.",
         "criteria": [
           "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:pinned-annotation",
           "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:visible-currency"
-        ],
-        "expected_result": "All explicit pins and selector values are retained exactly.",
-        "id": "check-annotation-pin-fields"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:core-prototype-unresolved-pins",

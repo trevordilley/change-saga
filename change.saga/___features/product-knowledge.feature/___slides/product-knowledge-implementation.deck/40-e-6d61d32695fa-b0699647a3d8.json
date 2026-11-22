@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 38,
+      "end": 79,
+      "digest": "sha256:cefc30159c76ee89bc6259df38726dfcf52187e3032208c12716790813aedc80",
+      "note": "Content-addressed copied HTML assets remain independent of later changes to their original source, and tampering is detected."
+    }
+  ]
+}

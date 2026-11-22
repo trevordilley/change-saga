@@ -1,32 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-<rect width="1280" height="720" fill="#f6f8fa"/>
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#245d8c"/></marker></defs>
-<text x="60" y="55" font-family="Arial,sans-serif" font-size="18" fill="#486173">TECHNICAL INVENTORY · IMPLEMENTATION</text>
-<text x="60" y="111" font-family="Arial,sans-serif" font-size="38" fill="#142638">History preserves the version you explained</text>
-<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" fill="#486173">Append revisions and lifecycle events; keep every head explicit and retain saved pins.</text>
-<g id="read"><rect x="60" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
-<text x="78" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Load bounded records</text>
-<text x="78" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Strict JSON and real files</text>
-<text x="78" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">Identity + immutable history</text>
-<path d="M390 300H850" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+<title id="title">Current definitions retain exact Git-backed pins</title><desc id="desc">Edit current definition/state under one identity; preserve exact saved digests and retrieve earlier committed content from Git.</desc>
+<style>text{font-family:Arial,sans-serif;fill:#18253b}.card{fill:#fff;stroke:#b9c8dc;stroke-width:2}.label{font-size:21px;font-weight:700}.detail{font-size:17px}.eyebrow{font-size:13px;font-weight:700;fill:#34629b}</style>
+<rect width="1280" height="760" fill="#f4f7fc"/>
+<text x="48" y="55" font-size="31" font-weight="700">Current definitions retain exact Git-backed pins</text>
+<text x="48" y="91" font-size="18">Edit current definition/state under one identity; preserve exact saved digests and retrieve earlier committed</text>
+<text x="48" y="115" font-size="18">content from Git.</text>
+<g id="read"><rect class="card" x="48" y="158" width="580" height="154" rx="12"/>
+<text class="eyebrow" x="68" y="183">01</text><text class="label" x="68" y="211">Load bounded records</text>
+<text class="detail" x="68" y="238">The loader reads strict current records and legacy compatibility</text>
+<text class="detail" x="68" y="258">data separately; unsafe packages, malformed content and</text>
+<text class="detail" x="68" y="278">unresolved ambiguity remain explicit.</text>
 </g>
-<g id="append"><rect x="850" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
-<text x="868" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Append under lock</text>
-<text x="868" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Atomic creation; exact retries</text>
-<text x="868" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">Explicit observed parents</text>
-<path d="M1015 365V410H225V455" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+<g id="append"><rect class="card" x="652" y="158" width="580" height="154" rx="12"/>
+<text class="eyebrow" x="672" y="183">02</text><text class="label" x="672" y="211">Publish under lock</text>
+<text class="detail" x="672" y="238">A new identity is staged atomically. Existing definitions</text>
+<text class="detail" x="672" y="258">replace current content; identical content replays without a</text>
+<text class="detail" x="672" y="278">second revision graph.</text>
 </g>
-<g id="heads"><rect x="60" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
-<text x="78" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Resolve current heads</text>
-<text x="78" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">One head: current definition</text>
-<text x="78" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">Multiple heads: visible conflict</text>
+<g id="heads"><rect class="card" x="48" y="332" width="580" height="154" rx="12"/>
+<text class="eyebrow" x="68" y="357">03</text><text class="label" x="68" y="385">Resolve exact content</text>
+<text class="detail" x="68" y="412">Current, stale, retired, missing and ambiguous legacy pins</text>
+<text class="detail" x="68" y="432">remain distinct. An older exact digest may resolve from Git;</text>
+<text class="detail" x="68" y="452">missing source never substitutes current content.</text>
 </g>
-<g id="lifecycle"><rect x="850" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
-<text x="868" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Active ↔ retired</text>
-<text x="868" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">Reason + parent event required</text>
-<text x="868" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">Definitions remain readable</text>
-<path d="M850 520H390" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+<g id="lifecycle"><rect class="card" x="652" y="332" width="580" height="154" rx="12"/>
+<text class="eyebrow" x="672" y="357">04</text><text class="label" x="672" y="385">Current active or retired state</text>
+<text class="detail" x="672" y="412">State and authored retirement reason edit the current record.</text>
+<text class="detail" x="672" y="432">Git retains committed earlier definitions and state.</text>
 </g>
-<text x="445" y="406" font-family="Arial,sans-serif" font-size="21" fill="#486173">immutable history</text>
-<text x="60" y="683" font-family="Arial,sans-serif" font-size="20" fill="#486173">Saved definitions never silently repin slides or approve reviews.</text>
+<text x="48" y="735" font-size="15">Stable identities · exact evidence pins · Git-owned committed history</text>
 </svg>

@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "region",
   "label": "Prototype and quality owners",
-  "description": "Prototype packages and quality records retain independent schemas, histories, and validation boundaries.",
+  "description": "Prototype and quality packages keep separate schemas and validation. Current definitions are editable; factual annotations, evidence supersession and actual recorded runs retain their provenance.",
   "selector": {
     "type": "element",
     "element_id": "prototype-quality-owners"

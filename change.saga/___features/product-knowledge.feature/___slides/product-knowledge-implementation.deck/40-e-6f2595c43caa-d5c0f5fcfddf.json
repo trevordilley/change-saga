@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+      "path": "internal/quality/model.go",
+      "start": 76,
+      "end": 99,
+      "digest": "sha256:9c1d6c9254b02f82d924ce1798b491abfca81b2a66eef190fda23fca1bd8f186",
+      "note": "Defines and atomically creates a complete ordered test-case revision and proposed lifecycle head."
+    }
+  ]
+}

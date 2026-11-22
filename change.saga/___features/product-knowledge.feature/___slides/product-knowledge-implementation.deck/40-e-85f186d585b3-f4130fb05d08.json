@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/livingapp/types.go",
+      "start": 240,
+      "end": 252,
+      "digest": "sha256:9c6ade66304c2b9c4b811d90a6174ca36d415240bca484a8243c69d365dd280d",
+      "note": "Requirements retain their owning feature and support feature-scoped enumeration without changing stable identity."
+    }
+  ]
+}

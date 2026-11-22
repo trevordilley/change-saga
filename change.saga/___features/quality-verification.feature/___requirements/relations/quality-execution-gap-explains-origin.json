@@ -1,13 +1,13 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-23T16:40:48.42645Z",
-  "from": "urn:change-saga:change-saga:slide:quality-trust-gaps:item:execution-gap",
+  "version": 5,
   "id": "quality-execution-gap-explains-origin",
-  "rationale": "This gap Item documents that the proposed execution-origin distinction is absent today: the CLI records a caller-supplied result and captures no execution output.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin",
-  "to_revision": "sha256:4e4ee0c439690351c47a6fa591aeb0ed12a022f4703120fd3fec188a2627aa97",
   "type": "explains",
-  "version": 5
+  "from": "urn:change-saga:change-saga:slide:quality-trust-gaps:item:execution-gap",
+  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin",
+  "scope": "self",
+  "rationale": "The execution boundary explains that recorded command text is not executed by Saga. Current Quality and delivery projections ignore legacy results, which remain inspectable historical facts.",
+  "to_revision": "sha256:c29c1f6f3790dc10de090212b289ac06d6fc20a2033ac1386fdc8d733acf8c0d",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:48.42645Z"
 }

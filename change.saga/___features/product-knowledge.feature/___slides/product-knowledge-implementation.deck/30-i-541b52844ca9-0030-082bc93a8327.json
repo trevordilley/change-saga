@@ -4,8 +4,8 @@
   "slide": "story-lifecycle-runtime",
   "rank": 30,
   "kind": "transition",
-  "label": "Reconcile every head",
-  "description": "A valid successor explicitly names the full set of current heads, preserving both branches in history.",
+  "label": "Resolve content in Git",
+  "description": "Combine conflicting branch intent explicitly with Git, preserving earlier commits. Legacy normalization refuses ambiguity; it never asks current authors for Saga parent IDs.",
   "selector": {
     "type": "element",
     "element_id": "reconcile-transition"

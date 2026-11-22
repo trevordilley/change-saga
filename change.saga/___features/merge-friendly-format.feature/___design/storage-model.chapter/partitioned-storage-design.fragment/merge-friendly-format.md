@@ -1,5 +1,5 @@
 # Merge-friendly storage model {#merge-friendly-storage-model}
 
-The Saga is partitioned by durable feature and resource identity. Revisions, lifecycle events, relations, test evidence, and review events are independent records rather than edits to one shared document. Competing heads survive a Git merge as an explicit conflict that the domain loader reports.
+The Saga is partitioned by durable feature and resource identity. Stories, test definitions, technical records and whiteboards have stable identities and editable current content. Independent records use separate packages; concurrent edits to one current file use normal Git merge conflicts. Git alone owns content history. Immutable test evidence, run results and actual review decisions remain factual records with their original exact pins.
 
-Supported writers serialize local mutation, stage complete entities, and publish files atomically. This prevents partial local writes while retaining ordinary Git as the cross-workspace merge and audit layer.
+Supported writers serialize cooperating local mutations with a bounded lock. Individual files and staged new directories publish atomically. Multi-file batches attempt rollback after failure but are not globally reader-atomic or crash-atomic. Writers persist legacy conversion when they encounter it; already-current story edits avoid unrelated legacy packages. Conversion resolves every required exact pin before deleting any legacy source. Ambiguous legacy heads stop conversion with all authored files retained for explicit reassessment.

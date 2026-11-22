@@ -4,8 +4,8 @@
   "slide": "story-mutation-sequence",
   "rank": 30,
   "kind": "node",
-  "label": "Current-head guard",
-  "description": "After locking and reloading, the mutation requires the submitted parents to equal every current graph head.",
+  "label": "Validate current target",
+  "description": "After locking, the writer validates current content, lifecycle constraints and referenced personas/citations. An already-current story skips unrelated legacy normalization.",
   "selector": {
     "type": "element",
     "element_id": "head-validation"

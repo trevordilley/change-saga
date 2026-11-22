@@ -1,13 +1,13 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
-  "created_at": "2026-09-23T16:42:51.183103Z",
-  "from": "urn:change-saga:change-saga:slide:run-record-sequence:item:lock-refresh",
+  "version": 5,
   "id": "quality-lock-refresh-explains-existing-inputs",
-  "rationale": "The mutation validates the referenced revision and evidence, then reloads under lock before any run record is written.",
-  "scope": "self",
-  "state": "active",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:existing-run-inputs",
-  "to_revision": "sha256:455a28ea6a8e6f68728e527ca00944d223b3dfd88a35b519ea50e4d8c6f38668",
   "type": "explains",
-  "version": 5
+  "from": "urn:change-saga:change-saga:slide:run-record-sequence:item:lock-refresh",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:existing-run-inputs",
+  "scope": "self",
+  "rationale": "The deprecated run writer reloads validated inputs under the lock and refuses missing test/evidence references before appending a factual run; this compatibility path supplies no current definition coverage.",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "state": "active",
+  "created_at": "2026-09-23T16:42:51.183103Z"
 }

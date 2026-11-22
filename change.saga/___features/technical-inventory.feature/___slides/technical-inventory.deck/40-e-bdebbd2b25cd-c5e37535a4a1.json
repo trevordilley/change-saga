@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/saga/slides.go",
+      "start": 675,
+      "end": 699,
+      "digest": "sha256:d0b1211ee38969be6f2ad752eef7944e26db29e242bd572c463acec5b7551537",
+      "note": "An Item links exact canonical technical content independently of record and evidence fields."
+    }
+  ]
+}

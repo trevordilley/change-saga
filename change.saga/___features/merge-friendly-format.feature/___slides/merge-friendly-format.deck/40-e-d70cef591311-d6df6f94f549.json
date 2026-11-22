@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/mutation.go",
+      "start": 624,
+      "end": 648,
+      "digest": "sha256:94da622442f6bee9f66a367e877e920a699a1f22068d5117f37259a97b32f6a5",
+      "note": "An already-current story loads under the Saga lock and edits locally; legacy targets take the full pin-preserving normalization path."
+    }
+  ]
+}

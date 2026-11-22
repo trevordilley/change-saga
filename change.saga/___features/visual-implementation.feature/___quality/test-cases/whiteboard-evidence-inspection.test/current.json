@@ -12,28 +12,28 @@
     ],
     "steps": [
       {
+        "id": "actions",
         "action": "Click Technical design and Architecture, select the element, then open Code, Story, Definition and Record in light and dark.",
+        "expected_result": "Each action opens its corresponding saved code, criterion, exact definition/selection or record page.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect"
-        ],
-        "expected_result": "Each action opens its corresponding saved code, criterion, exact definition/selection or record page.",
-        "id": "actions"
+        ]
       },
       {
-        "action": "Change referenced code, observe stale reader/status/health/reconcile, then publish new exact pins with the observed parent.",
+        "id": "reassess",
+        "action": "Commit the original board; change referenced code, observe stale reader/status/health/reconcile, then publish a complete board with consciously reassessed exact pins.",
+        "expected_result": "Current evidence becomes current only after reassessment; previously committed board content retains its original evidence in Git.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
-        ],
-        "expected_result": "The old element is stale; the new revision becomes current, and the old revision retains its evidence.",
-        "id": "reassess"
+        ]
       },
       {
+        "id": "owners",
         "action": "List direct and selected references, inspect documented code and inventory uses.",
+        "expected_result": "Direct evidence and eligible selected code belong to the stable native element; references and reverse uses include that element.",
         "criteria": [
           "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
-        ],
-        "expected_result": "Direct evidence and eligible selected code belong to the stable native element; references and reverse uses include that element.",
-        "id": "owners"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-inspection",

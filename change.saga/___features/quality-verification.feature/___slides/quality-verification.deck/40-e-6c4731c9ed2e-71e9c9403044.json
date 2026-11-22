@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/mutation_test.go",
+      "start": 370,
+      "end": 411,
+      "digest": "sha256:aa954bd84e908fa61b719592ad1078303b8b024239719758bd38471dbb6c1f6c",
+      "note": "Resolves one policy head for the current story revision, retains stale required kinds conservatively, and tests explicit supersession."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 1,
+      "end": 398,
+      "digest": "sha256:f81cd53761bcbf34af8496579dbe62a756c996b1e6836671b8f4555793b44767",
+      "note": "A System pins exact Component content and explains directed interactions with explicit evidence."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/changeview/history.go",
+      "start": 62,
+      "end": 92,
+      "digest": "sha256:9c7fdfdba7f12a2eba26b7081e32e9c3b535f506b449b824fe583c0cebc8bc34",
+      "note": "Validates and inventories the current Saga, resolves the requested record, and expands its owned files into repository-relative history paths."
+    }
+  ]
+}

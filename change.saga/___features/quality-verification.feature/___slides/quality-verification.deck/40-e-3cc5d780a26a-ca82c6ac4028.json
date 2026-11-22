@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/quality/validate.go",
+      "start": 423,
+      "end": 499,
+      "digest": "sha256:54d19e2f6d4ce78adb676c74ecd39def1471d7f4748f7878a78e4dbd78cfcd1f",
+      "note": "Computes evidence supersession heads and marks evidence current only when it is unsuperseded and pinned to the current test revision."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 179,
+      "end": 233,
+      "digest": "sha256:62e6a1392f5e2db2b886f936e48e00ad906c134716930c28887c01aeff6878cc",
+      "note": "Pins required coverage kinds to a criterion revision and requires explicit supersession of every current policy head."
+    }
+  ]
+}

@@ -8,24 +8,24 @@
     ],
     "expected_result": "The unedited relation is affected with a changed-pin cause.",
     "preconditions": [
-      "Use shop Saga with pay revision r1 and design-pay relation pinned to r1; main contains that baseline."
+      "Commit a story and a design relation pinned to its original exact content digest as the comparison baseline."
     ],
     "steps": [
       {
-        "action": "Revise pay to r2 with changed charged criterion and inspect status against main.",
+        "id": "revision",
+        "action": "Edit the current story and its charged criterion, commit it, and inspect status against the baseline.",
+        "expected_result": "The story is revised with before/after prose from the two real Git trees.",
         "criteria": [
           "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records"
-        ],
-        "expected_result": "pay is revised with before and after text showing the old and new criterion.",
-        "id": "revision"
+        ]
       },
       {
-        "action": "Inspect Affected for design-pay without changing that relation.",
+        "id": "pin",
+        "action": "Inspect Affected for the unchanged design relation.",
+        "expected_result": "The relation retains its original digest and is affected by the changed obligation; no replacement pin is inferred.",
         "criteria": [
           "urn:change-saga:change-saga:story:change-impact-layers:criterion:affected-records"
-        ],
-        "expected_result": "The unedited relation is affected with a changed-pin cause.",
-        "id": "pin"
+        ]
       }
     ],
     "test_case": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin",

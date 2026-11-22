@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "c7d82e986ae2053f70fa858e751bb1b3b5c20b8d",
+      "path": "internal/requirements/mutation.go",
+      "start": 151,
+      "end": 160,
+      "digest": "sha256:44d6cd03dd25c6762b8cf91e373c9ec196f0d2939238099125ae9d2b86120034",
+      "note": "The domain publishes current content through WriteMember, preserving the stable identity and current state."
+    }
+  ]
+}
