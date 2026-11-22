@@ -31,6 +31,9 @@ tool, and what they have to do about it.
 
 ### Added
 
+- `plan set --title TEXT --objective TEXT` edits an open Plan's displayed scope,
+  keeping the Plan and deck title consistent. Omitted fields and checkpoints
+  remain unchanged; `--dry-run --json` previews the edit.
 - `doctor [--json] [PATH]` reports the executing binary, SHA256, build metadata
   and separate phased Plan authoring/query, checkpoint and whole-Saga layout
   capabilities. With a Saga path it validates all record families without writes.
@@ -45,6 +48,9 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- `story revise` edits an already current story without normalizing unrelated
+  legacy packages. Independent legacy conflicts remain untouched; strict
+  requirements decoding and safe normalization for legacy targets are retained.
 - Inline `slide:` images in Plan essays now resolve to the Plan's own visual
   routes. Previously the essay retained generic fragment URLs, causing broken
   images even though the Plan's visual endpoint worked.

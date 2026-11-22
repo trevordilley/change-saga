@@ -119,7 +119,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 	}
 	revisionID, _ := revisionURN(sagaID, storyRef.ID, revision.ID)
 	var result MutationResult
-	err = mutate(root, sagaID, func(document *Document) error {
+	err = mutateStoryContent(root, sagaID, storyRef.ID, func(document *Document) error {
 		story := findStory(document, storyRef.ID)
 		if story == nil {
 			return fmt.Errorf("story %q does not exist", storyRef.ID)
@@ -616,6 +616,33 @@ func mutate(root, sagaID string, operation func(*Document) error) error {
 		document, err := Load(root, sagaID)
 		if err != nil {
 			return fmt.Errorf("cannot mutate requirements after locking: %w", err)
+		}
+		return operation(&document)
+	})
+}
+
+// An existing current story needs no format migration. Keep its content edit
+// local instead of making unrelated legacy packages migrate (and potentially
+// choose a conflicting value) as a side effect. Legacy targets still take the
+// full, pin-preserving normalization path before anything is replaced.
+func mutateStoryContent(root, sagaID, storyID string, operation func(*Document) error) error {
+	return store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		document, err := Load(root, sagaID)
+		if err != nil {
+			return fmt.Errorf("cannot mutate requirements: %w", err)
+		}
+		story := findStory(&document, storyID)
+		if story == nil {
+			return fmt.Errorf("story %q does not exist", storyID)
+		}
+		if !story.current {
+			if err := currentrecord.Normalize(root); err != nil {
+				return fmt.Errorf("legacy story %q requires normalization before editing: %w", storyID, err)
+			}
+			document, err = Load(root, sagaID)
+			if err != nil {
+				return fmt.Errorf("cannot mutate requirements after normalization: %w", err)
+			}
 		}
 		return operation(&document)
 	})

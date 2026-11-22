@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"slices"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -462,20 +464,64 @@ func planDeliver(ctx context.Context, args []string, out io.Writer) error {
 
 func planSet(_ context.Context, args []string, out io.Writer) error {
 	name := "plan set"
-	flags := commandFlags(name, commandUsage[name], out)
+	flags, dryRun, jsonOutput := contentEditFlags(name, out)
 	plan := flags.String("plan", "", "plan id or URN")
+	title := flags.String("title", "", "Plan and deck display title; stable identities are preserved")
+	objective := flags.String("objective", "", "what the Plan's deck explains, in 1 to 240 characters")
 	passer := flags.String("checkpoint-passer", "", "who passes the Plan's checkpoints: person, or agent, which passes them unless what it found is surprising or urgent")
-	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *plan, *passer); err != nil {
+	if err := requireLivingArgs(flags, *plan); err != nil {
 		return err
 	}
-	if err := planstore.SetCheckpointPasser(flags.Arg(0), planIDOf(*plan), *passer); err != nil {
-		return err
+	hasTitle, hasObjective, hasPasser := flagWasSet(flags, "title"), flagWasSet(flags, "objective"), flagWasSet(flags, "checkpoint-passer")
+	if !hasTitle && !hasObjective && !hasPasser {
+		return fmt.Errorf("provide --title, --objective, or --checkpoint-passer")
 	}
-	return writePlanChange(out, name, flags.Arg(0), planIDOf(*plan), *jsonOutput)
+	*title, *objective = strings.TrimSpace(*title), strings.TrimSpace(*objective)
+	if hasTitle && *title == "" {
+		return fmt.Errorf("--title must not be empty")
+	}
+	if hasObjective && (*objective == "" || utf8.RuneCountInString(*objective) > 240) {
+		return fmt.Errorf("--objective must contain 1 to 240 characters")
+	}
+	return runContentEdit(contentEditRequest{operation: name, root: flags.Arg(0), dryRun: *dryRun, json: *jsonOutput,
+		apply: func(document *saga.Saga, edit *contentEdit, result *contentEditOutput) error {
+			found := document.FindPlan(planIDOf(*plan))
+			if found == nil || (strings.HasPrefix(*plan, "urn:") && *plan != found.Target) {
+				return fmt.Errorf("--plan must identify an existing Plan in this Saga")
+			}
+			if found.Delivered() {
+				return fmt.Errorf("plan %q was delivered and no longer changes; write a new Plan for further work", found.ID)
+			}
+			if found.Deck == nil {
+				return fmt.Errorf("plan %q has no editable deck", found.ID)
+			}
+			result.Resource = found.Target
+			manifest, deck := found.PlanManifest, found.Deck.DeckManifest
+			result.Changed = applyFieldChanges([]fieldChange{
+				{name: "title", set: hasTitle, changed: manifest.Title != *title || deck.Title != *title, apply: func() { manifest.Title, deck.Title = *title, *title }},
+				stringField(flags, "objective", objective, &deck.Objective),
+				stringField(flags, "checkpoint-passer", passer, &manifest.CheckpointPasser),
+			})
+			if err := saga.ValidatePlanManifest(manifest); err != nil {
+				return err
+			}
+			if len(result.Changed) == 0 {
+				result.Replayed = true
+				return nil
+			}
+			if manifest.Title != found.Title || manifest.CheckpointPasser != found.CheckpointPasser {
+				if err := edit.writeJSON(filepath.Join(found.Directory, saga.PlanManifestName), manifest); err != nil {
+					return err
+				}
+			}
+			if deck.Title != found.Deck.Title || deck.Objective != found.Deck.Objective {
+				return edit.writeJSON(filepath.Join(document.Root, filepath.FromSlash(found.Deck.Path)), deck)
+			}
+			return nil
+		}}, out)
 }
 
 func planPass(ctx context.Context, args []string, out io.Writer) error {

@@ -26,6 +26,44 @@ reviewed migration; changing field names is not a supported conversion.
 The current reader supports native checkpoints, rejects unknown fields inside
 them, and adds a specific recovery hint for incompatible legacy waves.
 
+## Edit scope without replacing identities
+
+Use `plan set` to update an open Plan's title and deck objective. A title edit
+updates both the Plan record and its deck; omitted fields, Tasks, phases,
+checkpoint expectations and passes stay unchanged. The objective must contain
+1 to 240 characters. Delivered Plans remain immutable.
+
+```sh
+change-saga plan set --plan PLAN_ID --title "Revised scope" \
+  --objective "Explain the approved operational access boundary." --dry-run --json PATH
+change-saga plan set --plan PLAN_ID --title "Revised scope" \
+  --objective "Explain the approved operational access boundary." PATH
+```
+
+`--checkpoint-passer person|agent` remains a separate optional flag. Changing
+display text does not change that authority. `--json` reports the changed fields
+and paths; `--dry-run` writes nothing. A failed edit restores any files written
+by the operation. Git retains committed earlier content.
+
+Story wording already has an edit command; it does not require new revision IDs:
+
+```sh
+change-saga story revise --story urn:change-saga:SAGA:story:STORY_ID \
+  --title "Revised story title" --statement "As a user, I can ..." PATH
+change-saga story revise --story urn:change-saga:SAGA:story:STORY_ID \
+  --overview-source revised-story.md PATH
+```
+
+Omitted story fields retain their current values, including criteria, personas
+and citations. A structured `--from` supplies complete content instead. Editing
+an already current story no longer normalizes unrelated legacy packages, so an
+independent legacy whiteboard fork does not block that edit or get resolved as
+a side effect. The requirements domain still loads strictly and validates the
+authored story and its references. Unknown fields and invalid requirements
+remain errors. A legacy target still requires pin-preserving normalization;
+competing legacy values or missing pin sources continue to block it explicitly.
+This is not a bypass for unresolved target content or malformed JSON.
+
 ## Diagnose the actual invocation
 
 Ask the person seeing the failure to run these in the **same shell/environment**

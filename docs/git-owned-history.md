@@ -61,6 +61,16 @@ publish` to edit its current data. Content revision IDs and lifecycle event IDs
 are not authoring inputs. Saga does not reconcile content heads after Git
 merges. Resolve the authored files with Git's normal tools.
 
+`plan set --plan ID --title TEXT --objective TEXT PATH` edits an open Plan's
+display title and deck objective without replacing its identity. The title is
+kept consistent on the Plan and its deck; omitted fields and checkpoints remain
+unchanged. Add `--dry-run --json` to inspect the proposed paths and fields.
+Use `story revise --story URN --title TEXT --statement TEXT PATH` for story
+wording, or `--overview-source FILE` for its detailed overview. Omitted fields
+are preserved. An already current story is edited without normalizing other
+packages; an unrelated legacy conflict stays unresolved. A legacy target still
+requires the safe normalization described below.
+
 A semantic reference consists of a stable target and an exact content digest.
 Existing pin field names such as `revision`, `story_revision`, and `test_revision`
 remain decoder compatibility names, but normalized values are `sha256:<hex>`,

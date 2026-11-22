@@ -58,6 +58,14 @@ change-saga plan expect --plan ID --checkpoint SECURITY --id approved --statemen
 change-saga plan checkpoint --plan ID --checkpoint SECURITY change.saga
 ```
 
+Keep the Plan's displayed scope current with `plan set --plan ID --title TEXT
+--objective TEXT PATH`. Title updates both the Plan and its deck. Omitted fields
+and checkpoints are preserved; `--dry-run --json` previews changes. Delivered
+Plans cannot change. Story wording uses `story revise --story URN --title TEXT
+--statement TEXT PATH`; omitted criteria, personas and citations are retained.
+An already current story edit does not normalize unrelated legacy packages;
+legacy targets still require safe normalization and explicit conflict resolution.
+
 The default passer is a person. `plan set --checkpoint-passer agent` explicitly
 permits agent passes; the agent still stops for a person when the report raises
 something surprising. `plan pass --checkpoint PHASE --plan ID --by NAME --reason
