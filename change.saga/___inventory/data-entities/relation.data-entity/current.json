@@ -1,0 +1,164 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+        "digest": "sha256:e92f0d6f0aa74b75f8897732811863d568a7357b4849f41c72d9ce13756a2f5a",
+        "end": 169,
+        "id": "record",
+        "note": "The persisted relation and its pins.",
+        "path": "internal/requirements/model.go",
+        "start": 149
+      }
+    ],
+    "delivery": {
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "A typed, pinned traceability edge in a feature's ___requirements/relations (explains, implements, verifies, refines, ...). It pins the story revision it was read against and goes stale when the pinned text changes; repins are separate append-only records.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "id": "type",
+        "name": "type",
+        "type": "explains | implements | verifies | ..."
+      },
+      {
+        "id": "from",
+        "keys": [
+          "foreign"
+        ],
+        "name": "from",
+        "note": "Often an Item; may be a deck, slide, design or test case.",
+        "type": "URN"
+      },
+      {
+        "id": "to",
+        "keys": [
+          "foreign"
+        ],
+        "name": "to",
+        "note": "Often a story or criterion.",
+        "type": "URN"
+      },
+      {
+        "id": "to_revision",
+        "keys": [
+          "foreign"
+        ],
+        "name": "to_revision",
+        "type": "story revision URN"
+      },
+      {
+        "id": "state",
+        "name": "state",
+        "type": "active | superseded"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Relation",
+    "record": "urn:change-saga:change-saga:data-entity:relation",
+    "relationships": [
+      {
+        "cardinality": {
+          "destination": "0..1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+            "digest": "sha256:eed42731e53cd705edef1e364fea40227ad622a07218b7d94b5d10ee10eca800",
+            "end": 157,
+            "id": "from-field",
+            "note": "Relation.From.",
+            "path": "internal/requirements/model.go",
+            "start": 157
+          }
+        ],
+        "destination": {
+          "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+          "target": "urn:change-saga:change-saga:data-entity:item"
+        },
+        "explanation": "When an Item explains an obligation, the relation's from endpoint is that Item; other relations start at decks, slides, designs or test cases.",
+        "id": "from-item",
+        "intent": "implemented",
+        "label": "from",
+        "meaning": "association"
+      },
+      {
+        "cardinality": {
+          "destination": "0..1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+            "digest": "sha256:f924602298bf51920de774f7e043a6e3da4294c717d63206c334e4e9c9df36a6",
+            "end": 158,
+            "id": "to-story-field",
+            "note": "Relation.To.",
+            "path": "internal/requirements/model.go",
+            "start": 158
+          },
+          {
+            "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+            "digest": "sha256:42ed9f32cb2c69835ab524e7dd506e8f6a91b5bdf95cfdaed8153e8706b8c0d6",
+            "end": 162,
+            "id": "to-story-pin",
+            "note": "FromRevision and ToRevision pins.",
+            "path": "internal/requirements/model.go",
+            "start": 161
+          }
+        ],
+        "destination": {
+          "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+          "target": "urn:change-saga:change-saga:data-entity:story"
+        },
+        "explanation": "A relation may target a whole story, pinning the revision it relied on.",
+        "id": "to-story",
+        "intent": "implemented",
+        "label": "to",
+        "meaning": "association"
+      },
+      {
+        "cardinality": {
+          "destination": "0..1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+            "digest": "sha256:f924602298bf51920de774f7e043a6e3da4294c717d63206c334e4e9c9df36a6",
+            "end": 158,
+            "id": "to-criterion-field",
+            "note": "Relation.To names the criterion URN.",
+            "path": "internal/requirements/model.go",
+            "start": 158
+          }
+        ],
+        "destination": {
+          "revision": "sha256:a388a8323328ff5201714ec4896f62b7f1f37d0a2116677fc5c93d1d1b9da380",
+          "target": "urn:change-saga:change-saga:data-entity:criterion"
+        },
+        "explanation": "The narrower form targets one acceptance criterion inside a pinned story revision.",
+        "id": "to-criterion",
+        "intent": "implemented",
+        "label": "to",
+        "meaning": "association"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:relation",
+    "state": "active"
+  }
+}

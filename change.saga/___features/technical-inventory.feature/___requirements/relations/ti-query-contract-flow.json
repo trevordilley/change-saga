@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-query-contract-flow",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-query-contract:item:flow",
-  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
-  "scope": "self",
-  "rationale": "Proposed design: Fix context, filter, page and explicitly expand. The derived index supplies declared paths, not inferred prose matches or an unbounded transitive graph.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:15:02.460673Z",
-  "superseded_at": "2026-09-27T10:27:28.370861Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-query-contract:item:flow",
+  "id": "ti-query-contract-flow",
+  "rationale": "Proposed design: Fix context, filter, page and explicitly expand. The derived index supplies declared paths, not inferred prose matches or an unbounded transitive graph.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:28.370861Z",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+  "to_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+  "type": "explains",
+  "version": 5
 }

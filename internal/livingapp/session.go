@@ -10,11 +10,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -25,6 +27,8 @@ import (
 )
 
 type session struct {
+	pinMu        sync.Mutex
+	pins         *currentrecord.Pins
 	snapshot     string
 	requirements requirements.Document
 	saga         *saga.Saga
@@ -154,7 +158,7 @@ func (s *session) Query(_ context.Context, query Query) (Result, error) {
 	var rows any
 	var key string
 	switch query.Operation {
-	case "quality", "quality-history":
+	case "quality", "quality-runs":
 		return s.qualityResult(query)
 	case "personas":
 		values, err := s.personaRows(query.Filters)
@@ -168,11 +172,7 @@ func (s *session) Query(_ context.Context, query Query) (Result, error) {
 		values := s.requirementRows(query.Filters)
 		rows, key = values, "requirements"
 	case "requirement-history":
-		values, err := s.historyRows(query.Filters)
-		if err != nil {
-			return Result{}, err
-		}
-		rows, key = values, "events"
+		return Result{}, appError(CodeInvalidArgument, "Content history belongs to Git; use query history --node URN", false, nil, nil)
 	case "citations":
 		values := s.citationRows(query.Filters)
 		rows, key = values, "citations"

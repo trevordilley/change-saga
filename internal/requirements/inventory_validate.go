@@ -226,7 +226,7 @@ func validateIntentRevision(v TechnicalRevision, kind, urn, sagaID string) error
 		if v.Baseline == "" {
 			return fmt.Errorf("a proposed revision requires baseline: an implemented revision URN of this record or %q", BaselineNone)
 		}
-		if v.Baseline != BaselineNone {
+		if v.Baseline != BaselineNone && !contentDigestPattern.MatchString(v.Baseline) {
 			id := strings.TrimPrefix(v.Baseline, urn+":revision:")
 			if id == v.Baseline || !livingid.ValidID(id) || id == v.ID {
 				return fmt.Errorf("baseline must be %q or another revision URN of %s", BaselineNone, urn)

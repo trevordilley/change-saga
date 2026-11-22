@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "explanation",
+        "statement": "The entity's documentation presents its high-level description and linked code with reference currency visible."
+      },
+      {
+        "id": "reverse-uses",
+        "statement": "The entity exposes its implementation-deck usages, identifying the feature, deck, slide, and specific referencing Item."
+      },
+      {
+        "id": "navigate-usage",
+        "statement": "Following a reported usage opens the referencing slide and Item rather than only the feature overview."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+      "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect",
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As an Architect or Developer, I can open a System, Component, or data entity's detailed explanation, inspect its code references, and find the implementation decks and Items that use it so I understand both the shared entity and its feature contexts.",
+    "story": "urn:change-saga:change-saga:story:inventory-documentation-and-usages",
+    "title": "Understand a technical entity and its uses"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:inventory-documentation-and-usages"
+  }
+}

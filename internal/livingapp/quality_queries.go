@@ -10,13 +10,14 @@ import (
 // QualityRecord exposes definitions and canonical trace references, never run outcomes.
 // Definition is derived from recorded evidence pins; source-code currency is in status.
 type QualityRecord struct {
+	ContentDigest  string                  `json:"content_digest,omitempty"`
 	TestCase       string                  `json:"test_case"`
 	Feature        string                  `json:"feature"`
 	Definition     string                  `json:"definition"`
-	RevisionHeads  []string                `json:"revision_heads"`
-	LifecycleHeads []string                `json:"lifecycle_heads"`
-	Revision       *quality.Revision       `json:"revision,omitempty"`
-	Lifecycle      *quality.LifecycleEvent `json:"lifecycle,omitempty"`
+	RevisionHeads  []string                `json:"-"`
+	LifecycleHeads []string                `json:"-"`
+	Revision       *quality.Revision       `json:"content,omitempty"`
+	Lifecycle      *quality.LifecycleEvent `json:"state,omitempty"`
 	Verifies       []VerifiesLink          `json:"verifies"`
 	Steps          []TestStepStatus        `json:"steps"`
 	Evidence       []QualityEvidenceRecord `json:"evidence"`
@@ -33,11 +34,11 @@ func (s *session) qualityResult(query Query) (Result, error) {
 		if !resourceMatches(query.Filters.TestCase, test.Identity.ID, urn) {
 			continue
 		}
-		if query.Operation == "quality-history" {
-			rows = append(rows, map[string]any{"test_case": urn, "feature": test.Feature, "revisions": test.Revisions, "events": test.Events, "evidence": test.Evidence, "legacy_runs": test.Runs})
+		if query.Operation == "quality-runs" {
+			rows = append(rows, map[string]any{"test_case": urn, "feature": test.Feature, "evidence": test.Evidence, "legacy_runs": test.Runs})
 			continue
 		}
-		row := QualityRecord{TestCase: urn, Feature: test.Feature, Definition: quality.DefinitionStage(test), RevisionHeads: copyStrings(test.RevisionHeads), LifecycleHeads: copyStrings(test.LifecycleHeads), Revision: test.CurrentRevision, Lifecycle: test.CurrentLifecycle, Verifies: []VerifiesLink{}, Evidence: []QualityEvidenceRecord{}}
+		row := QualityRecord{ContentDigest: s.currentContentPin(urn, test.CurrentRevision), TestCase: urn, Feature: test.Feature, Definition: quality.DefinitionStage(test), RevisionHeads: copyStrings(test.RevisionHeads), LifecycleHeads: copyStrings(test.LifecycleHeads), Revision: test.CurrentRevision, Lifecycle: test.CurrentLifecycle, Verifies: []VerifiesLink{}, Evidence: []QualityEvidenceRecord{}}
 		for index, relation := range s.requirements.Relations {
 			if relation.From != urn || relation.Type != requirements.RelationVerifies || relation.State != requirements.RelationActive {
 				continue

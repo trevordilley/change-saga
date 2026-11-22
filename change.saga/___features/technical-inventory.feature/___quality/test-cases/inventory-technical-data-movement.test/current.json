@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The board explains the different boundaries and does not imply read-only actions persist application changes.",
+    "preconditions": [
+      "Use authored Data flows board with separate authoring, reading and review paths; reviewer has corresponding source handlers, persistence writes and failure branches available."
+    ],
+    "steps": [
+      {
+        "action": "Follow each directed labeled path from input through services and transformations to stores.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:flows"
+        ],
+        "expected_result": "Arrows and labels explain the order and meaning of movement through key services, transformations and stores.",
+        "id": "paths"
+      },
+      {
+        "action": "Compare authoring, reading and review persistence and failure boundaries against implementation.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:flows"
+        ],
+        "expected_result": "The board explains the different boundaries and does not imply read-only actions persist application changes.",
+        "id": "boundaries"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-data-movement",
+    "title": "Follow directed labeled application flows"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-data-movement"
+  }
+}

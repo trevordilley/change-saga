@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "companion cursor"
+    ],
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:3b04d3d9403db265316ba2d22b10594219916fee66ccd4e3137e37a68746568e",
+        "end": 28,
+        "path": "internal/saga/cursor.go",
+        "start": 13
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:71276540b53747440b554b1125bbbda042e857bdf59fa35ab72962c42b042366",
+        "end": 28,
+        "path": "internal/cli/sync.go",
+        "start": 24
+      }
+    ],
+    "definition": "The full source commit recorded by a companion Saga as the version of the source repository its current documentation describes. It is advanced explicitly when companion documentation changes; an in-repository Saga has no cursor because its own Git commit supplies the source version.",
+    "name": "Sync cursor",
+    "stories": [
+      "urn:change-saga:change-saga:story:source-or-companion"
+    ],
+    "term": "urn:change-saga:change-saga:term:sync-cursor"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:sync-cursor"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "b5ee553e73574c289fe834ce7551563b422ad8b1",
+        "digest": "sha256:05c4c20425062f3b87d4689bc8f1cc40e5c46b12df00901be0f10c4f8117431a",
+        "end": 115,
+        "id": "inventory-28",
+        "note": "Parses complete author JSON, checks source identity, resolves delivery and visual inputs once, and publishes one explicit revision or lifecycle event.",
+        "path": "internal/cli/inventory.go",
+        "start": 31
+      },
+      {
+        "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+        "digest": "sha256:454b4f4781964edd5a1b0f3d3b520f9c995d505d4026af37a49f84c852c42440",
+        "end": 168,
+        "id": "inventory-134",
+        "note": "Turns every owner's references into exact source commit/digest references, keeping evidence IDs.",
+        "path": "internal/cli/inventory.go",
+        "start": 134
+      }
+    ],
+    "delivery": {
+      "commit": "b5ee553e73574c289fe834ce7551563b422ad8b1",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "Turns complete author JSON into exact source commit/digest references, checks source identity, and publishes one explicit revision or lifecycle event. It also resolves a --delivery commit and a --visual SVG once before publication.",
+    "intent": "implemented",
+    "name": "Technical record author",
+    "record": "urn:change-saga:change-saga:component:technical-record-author"
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:component:technical-record-author",
+    "state": "active"
+  }
+}

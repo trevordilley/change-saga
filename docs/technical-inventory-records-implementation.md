@@ -1,5 +1,9 @@
 # Technical inventory: records and authoring implementation
 
+> Historical implementation report. Its parent/head checks, revision-ID examples,
+> and content-history workflows are superseded by [Git-owned history](git-owned-history.md).
+> Use current digests and edit current definitions in place.
+
 Status: implemented on `feature/inventory-records-authoring-claude`. This note
 covers the canonical record model, format gate and public writers only. Query,
 path/coverage/reconcile projections and the renderer/ERD UI are owned by the
@@ -13,16 +17,16 @@ contract is the "Technical inventory format 2" section of [SPEC.md](../SPEC.md).
 ```sh
 change-saga inventory adopt-format --format 2 change.saga             # explicit, once
 change-saga component add --id store --from proposed.json change.saga # intent: proposed, baseline: none
-change-saga component revise --id store --revision r2 \
+change-saga component revise --id store \
   --parent urn:…:component:store:revision:r1 \
   --from implemented.json --delivery HEAD change.saga                 # evidence checked at delivery
 change-saga data-entity add --id pdf-report --from report.json --delivery HEAD change.saga
 change-saga erd add --id application --from erd.json --visual erd.svg change.saga
 change-saga erd-overlay add --id pdf-jobs --from overlay.json --visual overlay.svg change.saga
 change-saga add-item --slide S --kind node --element-id n --description … \
-  --documentation urn:…:system:x --documentation-revision urn:…:system:x:revision:r1 \
+  --documentation urn:…:system:x --documentation-content-digest urn:…:system:x:revision:r1 \
   --selections selections.json change.saga                            # exact subset through the System
-change-saga add-item … --documentation-revision urn:…:component:store:revision:r1 \
+change-saga add-item … --documentation-content-digest urn:…:component:store:revision:r1 \
   --documentation-view <saved commit> change.saga                     # historical pin, explicit view
 ```
 

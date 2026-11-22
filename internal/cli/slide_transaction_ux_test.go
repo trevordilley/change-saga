@@ -17,12 +17,12 @@ func TestUXDeckPublishesADiagramSlideWithNoCode(t *testing.T) {
 	root := fixture.root
 	run(t, AddDeck, "--feature", testFeature, "--role", "ux", "--id", "flows", "--objective", "Walk the flow.", root, "flows")
 	run(t, AddDeck, "--feature", testFeature, "--id", "impl", "--objective", "Explain.", root, "impl")
-	run(t, Story, "add", "--feature", testFeature, "--id", "walk", "--revision", "r1", "--event", "proposed",
+	run(t, Story, "add", "--feature", testFeature, "--id", "walk",
 		"--title", "Walk the flow", "--statement", "As a user I walk the flow", "--criterion", "steps=The flow has steps", "--persona", personaURNFor("app"), root)
 	request := func(deck, id string) SlideTransactionRequest {
 		slide := planSlideRequest("")
 		slide.Plan, slide.Deck, slide.RequestID, slide.Slide.ID = "", deck, id, id
-		slide.Items[0].CriterionLinks = []saga.CriterionLink{{ID: id + "-explains-steps", Criterion: "urn:change-saga:app:story:walk:criterion:steps", StoryRevision: "urn:change-saga:app:story:walk:revision:r1", Rationale: "It walks the flow."}}
+		slide.Items[0].CriterionLinks = []saga.CriterionLink{{ID: id + "-explains-steps", Criterion: "urn:change-saga:app:story:walk:criterion:steps", StoryRevision: currentTestPin(t, root, "urn:change-saga:app:story:walk"), Rationale: "It walks the flow."}}
 		return slide
 	}
 	ctx := context.Background()

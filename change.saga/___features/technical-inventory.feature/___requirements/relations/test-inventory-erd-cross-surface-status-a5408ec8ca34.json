@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-erd-cross-surface-status-a5408ec8ca34",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-erd-cross-surface-status",
-  "to": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
-  "scope": "self",
-  "rationale": "Steps health define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-erd-cross-surface-status:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:09:11.588689Z",
-  "request_id": "test-inventory-erd-cross-surface-status-a5408ec8ca34"
+  "from": "urn:change-saga:change-saga:test-case:inventory-erd-cross-surface-status",
+  "from_revision": "sha256:e4e9f886423e019afdf5d1d6d2170ce64ac6bce5f5087558470840794bfed69e",
+  "id": "test-inventory-erd-cross-surface-status-a5408ec8ca34",
+  "rationale": "Steps health define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-erd-cross-surface-status-a5408ec8ca34",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
+  "to_revision": "sha256:9a86a80c0861db55fec8b5a34a3d0363dc2a8310e948b081264a2a497077a1fa",
+  "type": "verifies",
+  "version": 5
 }

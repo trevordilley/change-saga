@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-story-acceptance-24939e3aa1c0",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-story-acceptance",
-  "to": "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:draft-without-criteria",
-  "scope": "self",
-  "rationale": "Steps check-draft-without-criteria define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-story-acceptance:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:product-intent-lifecycle:revision:reading-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:16:53.565617Z",
-  "request_id": "test-core-story-acceptance-24939e3aa1c0"
+  "from": "urn:change-saga:change-saga:test-case:core-story-acceptance",
+  "from_revision": "sha256:fdbe1bcd373c0f3451acb48d3247af94f1c0ccbb5b65ebb6d0c8056b93e2eeba",
+  "id": "test-core-story-acceptance-24939e3aa1c0",
+  "rationale": "Steps check-draft-without-criteria define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-story-acceptance-24939e3aa1c0",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:draft-without-criteria",
+  "to_revision": "sha256:df3c9365755fe07dff8102603ec74e7c441760c6b177ff553a35e9fc4ef5e096",
+  "type": "verifies",
+  "version": 5
 }

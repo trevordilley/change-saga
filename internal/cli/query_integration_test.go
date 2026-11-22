@@ -89,7 +89,7 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 		{name: "traceability-not-adopted", args: []string{"traceability"}},
 		{name: "readiness-not-adopted", args: []string{"readiness"}},
 		{name: "quality-not-adopted", args: []string{"quality"}},
-		{name: "quality-history-not-adopted", args: []string{"quality-history"}},
+		{name: "quality-runs-not-adopted", args: []string{"quality-runs"}},
 	}
 	for _, testCase := range tests {
 		t.Run(testCase.name, func(t *testing.T) {

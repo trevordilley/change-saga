@@ -53,10 +53,10 @@ type TermStatus struct {
 	Records                []string                            `json:"records"`
 	Code                   []TermCode                          `json:"code"`
 	Stale                  bool                                `json:"stale"`
-	RevisionHeads          []string                            `json:"revision_heads"`
-	LifecycleHeads         []string                            `json:"lifecycle_heads"`
-	CurrentRevision        string                              `json:"current_revision,omitempty"`
-	LifecycleHead          string                              `json:"lifecycle_head,omitempty"`
+	RevisionHeads          []string                            `json:"-"`
+	LifecycleHeads         []string                            `json:"-"`
+	CurrentRevision        string                              `json:"content_pin,omitempty"`
+	LifecycleHead          string                              `json:"-"`
 	RevisionConflict       bool                                `json:"revision_conflict"`
 	LifecycleConflict      bool                                `json:"lifecycle_conflict"`
 }

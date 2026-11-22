@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-story-acceptance-rejection-3698b367ccce",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection",
-  "to": "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:acceptance-requires-criterion",
-  "scope": "self",
-  "rationale": "Steps check-acceptance-requires-criterion define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:product-intent-lifecycle:revision:reading-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:18:49.714028Z",
-  "request_id": "test-core-story-acceptance-rejection-3698b367ccce"
+  "from": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection",
+  "from_revision": "sha256:ebda0b4e5a796ed55c13fdde8dc635a7cf79b685ea3fc078a395709431e11e6a",
+  "id": "test-core-story-acceptance-rejection-3698b367ccce",
+  "rationale": "Steps check-acceptance-requires-criterion define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-story-acceptance-rejection-3698b367ccce",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:acceptance-requires-criterion",
+  "to_revision": "sha256:df3c9365755fe07dff8102603ec74e7c441760c6b177ff553a35e9fc4ef5e096",
+  "type": "verifies",
+  "version": 5
 }

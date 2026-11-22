@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:760187dc09ceba8e5604d4940eeced2b5b196d1ef7115267a474e8742dbc093b",
+      "end": 155,
+      "path": "internal/cli/query_inventory_coverage.go",
+      "start": 149
+    }
+  ],
+  "created_at": "2026-10-16T23:23:50Z",
   "id": "evidence-2",
-  "test_case": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage",
-  "test_revision": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage:revision:r1",
+  "request_id": "saga-evidence-inventory-bounded-coverage-evidence-2",
   "role": "implementation_under_test",
   "steps": [
     "public"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/query_inventory_coverage.go",
-      "start": 149,
-      "end": 155,
-      "digest": "sha256:760187dc09ceba8e5604d4940eeced2b5b196d1ef7115267a474e8742dbc093b"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:50Z",
-  "request_id": "saga-evidence-inventory-bounded-coverage-evidence-2"
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage",
+  "test_revision": "sha256:bf076ba85f7a8e01380c3a485d0115568c6757bbcf79468ac9dacea6f25544ef",
+  "verifications": [],
+  "version": 5
 }

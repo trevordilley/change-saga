@@ -3,6 +3,7 @@ package prototypes
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 )
@@ -30,6 +31,18 @@ func (p Prototype) Revision(id string) *Revision {
 // RevisionDir is the on-disk <id>.revision package of one revision. An html
 // revision's files live beneath it, at the paths its Source names.
 func (d Document) RevisionDir(p Prototype, revisionID string) (string, error) {
+	if p.current {
+		for _, feature := range d.Features {
+			if feature.ID == p.Feature {
+				dir := filepath.Join(feature.Dir, applayout.RequirementsDir, "prototypes", p.Identity.ID+".prototype")
+				if p.CurrentRevision != nil && p.CurrentRevision.Source.Kind == SourceHTML {
+					return filepath.Join(dir, "assets", strings.TrimPrefix(p.CurrentRevision.Source.ContentDigest, "sha256:")), nil
+				}
+				return dir, nil
+			}
+		}
+	}
+
 	for _, feature := range d.Features {
 		if feature.ID == p.Feature {
 			return filepath.Join(feature.Dir, applayout.RequirementsDir, "prototypes", p.Identity.ID+".prototype", "revisions", revisionID+".revision"), nil

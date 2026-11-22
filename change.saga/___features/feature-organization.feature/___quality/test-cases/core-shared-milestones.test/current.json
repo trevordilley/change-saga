@@ -1,0 +1,54 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Keep milestone identity through sharing, renaming and clearing.",
+    "preconditions": [
+      "A disposable Saga has two features and a shared Launch milestone."
+    ],
+    "steps": [
+      {
+        "action": "In a separate fresh feature, omit milestone assignment.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:optional-shared-target"
+        ],
+        "expected_result": "The feature has no milestone reference.",
+        "id": "check-unassigned-target"
+      },
+      {
+        "action": "Assign both features to the shared Launch milestone.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:optional-shared-target"
+        ],
+        "expected_result": "Both plans reference the shared milestone and store no copied display name.",
+        "id": "check-optional-shared-target"
+      },
+      {
+        "action": "Snapshot feature plans, rename Launch to Summer launch, and read both features.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:rename-once"
+        ],
+        "expected_result": "Both display Summer launch and their stored milestone references are unchanged.",
+        "id": "check-rename-once"
+      },
+      {
+        "action": "Change only priority, inspect the milestone, then explicitly clear it.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:preserve-or-clear"
+        ],
+        "expected_result": "Omission preserves the existing milestone reference; explicit empty removes it.",
+        "id": "check-preserve-or-clear"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-shared-milestones",
+    "title": "Keep milestone identity through sharing, renaming and clearing"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-shared-milestones"
+  }
+}

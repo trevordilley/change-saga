@@ -271,8 +271,8 @@ func personaAdd(_ context.Context, args []string, out io.Writer) error {
 	name := "persona add"
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable persona id")
-	revision := flags.String("revision", "r1", "initial revision id")
-	event := flags.String("event", "active", "initial active-event id")
+	revision := new(string)
+	event := new(string)
 	personaName := flags.String("name", "", "persona name")
 	description := flags.String("description", "", "who this person is and what value they get from the app")
 	requestID := flags.String("request-id", "", "idempotency key")
@@ -280,7 +280,7 @@ func personaAdd(_ context.Context, args []string, out io.Writer) error {
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *id, *revision, *event, *personaName, *description); err != nil {
+	if err := requireLivingArgs(flags, *id, *personaName, *description); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -301,17 +301,17 @@ func personaRevise(_ context.Context, args []string, out io.Writer) error {
 	name := "persona revise"
 	flags := commandFlags(name, commandUsage[name], out)
 	persona := flags.String("persona", "", "canonical persona URN")
-	revision := flags.String("revision", "", "new revision id")
+	revision := new(string)
 	personaName := flags.String("name", "", "complete revised name")
 	description := flags.String("description", "", "complete revised description; keep it a person who gets value from the app")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents stringList
-	flags.Var(&parents, "parent", "current revision head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *persona, *revision, *personaName, *description); err != nil {
+	if err := requireLivingArgs(flags, *persona, *personaName, *description); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -332,17 +332,17 @@ func personaSetState(_ context.Context, args []string, out io.Writer) error {
 	name := "persona set-state"
 	flags := commandFlags(name, commandUsage[name], out)
 	persona := flags.String("persona", "", "canonical persona URN")
-	event := flags.String("event", "", "new lifecycle event id")
+	event := new(string)
 	state := flags.String("state", "", "active or retired")
 	reason := flags.String("reason", "", "why the lifecycle changed")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents stringList
-	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *persona, *event, *state); err != nil {
+	if err := requireLivingArgs(flags, *persona, *state); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -389,8 +389,8 @@ func flagAdd(_ context.Context, args []string, out io.Writer) error {
 	name := "flag add"
 	flags := commandFlags(name, commandUsage[name], out)
 	id := flags.String("id", "", "stable flag id")
-	revision := flags.String("revision", "r1", "initial revision id")
-	event := flags.String("event", "", "initial lifecycle event id; defaults to the initial state")
+	revision := new(string)
+	event := new(string)
 	description := flags.String("description", "", "what the flag gates and why")
 	state := flags.String("state", "off", "initial state: off or on")
 	requestID := flags.String("request-id", "", "idempotency key")
@@ -428,17 +428,17 @@ func flagRevise(_ context.Context, args []string, out io.Writer) error {
 	name := "flag revise"
 	flags := commandFlags(name, commandUsage[name], out)
 	flagURN := flags.String("flag", "", "canonical flag URN")
-	revision := flags.String("revision", "", "new revision id")
+	revision := new(string)
 	description := flags.String("description", "", "complete revised description")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents, targets stringList
-	flags.Var(&parents, "parent", "current revision head URN; repeatable")
+
 	flags.Var(&targets, "target", "complete set of story or feature URNs the flag gates; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *flagURN, *revision, *description); err != nil {
+	if err := requireLivingArgs(flags, *flagURN, *description); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
@@ -459,17 +459,17 @@ func flagSetState(_ context.Context, args []string, out io.Writer) error {
 	name := "flag set-state"
 	flags := commandFlags(name, commandUsage[name], out)
 	flagURN := flags.String("flag", "", "canonical flag URN")
-	event := flags.String("event", "", "new lifecycle event id")
+	event := new(string)
 	state := flags.String("state", "", "off, on, or retired")
 	reason := flags.String("reason", "", "why the flag changed")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents stringList
-	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *flagURN, *event, *state); err != nil {
+	if err := requireLivingArgs(flags, *flagURN, *state); err != nil {
 		return err
 	}
 	root := flags.Arg(0)

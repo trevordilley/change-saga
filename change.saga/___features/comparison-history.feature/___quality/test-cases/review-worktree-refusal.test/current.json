@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "It tells the author to commit the work and compare HEAD.",
+    "preconditions": [
+      "A valid source repository contains main and a committed head."
+    ],
+    "steps": [
+      {
+        "action": "Request a comparison with head WORKTREE.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:comparison-context:criterion:committed-head-only"
+        ],
+        "expected_result": "The operation is rejected as unsupported.",
+        "id": "reject"
+      },
+      {
+        "action": "Read the rejection diagnostic.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:comparison-context:criterion:committed-head-only"
+        ],
+        "expected_result": "It tells the author to commit the work and compare HEAD.",
+        "id": "guidance"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-worktree-refusal",
+    "title": "Reject WORKTREE and explain how to compare committed work"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-worktree-refusal"
+  }
+}

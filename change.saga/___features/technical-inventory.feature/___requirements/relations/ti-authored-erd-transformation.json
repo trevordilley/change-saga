@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-authored-erd-transformation",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:transformation",
-  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
-  "scope": "self",
-  "rationale": "Dashed directed edge means logical production, not a foreign key. Cardinality is unspecified here; real associations must use explicit ER notation with declared cardinalities rather than invented values.",
-  "to_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T22:40:12.65649Z",
-  "superseded_at": "2026-09-27T10:27:22.819268Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:transformation",
+  "id": "ti-authored-erd-transformation",
+  "rationale": "Dashed directed edge means logical production, not a foreign key. Cardinality is unspecified here; real associations must use explicit ER notation with declared cardinalities rather than invented values.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:22.819268Z",
+  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+  "to_revision": "sha256:d0f98c335eecab015058b9df75d15c18ce81a532497a8e32083bf97fb90975bf",
+  "type": "explains",
+  "version": 5
 }

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Unknown is shown explicitly rather than represented as one or many.",
+    "preconditions": [
+      "Composition fixture connects left/record to right/record with tail zero-or-many and head only-one, pinned to the declared association."
+    ],
+    "steps": [
+      {
+        "action": "Render both detail and overview modes and inspect marker endpoints.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:relationships"
+        ],
+        "expected_result": "Both modes preserve start/tail and end/head markers for optional-many owner and one destination.",
+        "id": "render"
+      },
+      {
+        "action": "Describe the focused left/record instance.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:relationships"
+        ],
+        "expected_result": "The incident relationship retains exact endpoints, tail/head multiplicity and source pin.",
+        "id": "focus"
+      },
+      {
+        "action": "View an association whose destination cardinality is unknown.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:relationships"
+        ],
+        "expected_result": "Unknown is shown explicitly rather than represented as one or many.",
+        "id": "unknown"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-cardinality",
+    "title": "Preserve one, many and optional association endpoints"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-cardinality"
+  }
+}

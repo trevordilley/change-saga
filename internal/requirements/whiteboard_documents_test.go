@@ -12,10 +12,11 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
-func TestWhiteboardNamedDocumentsHaveIndependentHistories(t *testing.T) {
+func TestWhiteboardNamedDocumentsHaveIndependentCurrentContent(t *testing.T) {
 	root, pin, _ := whiteboardFixture(t)
 	doc := boardDocument(pin)
 	ctx := context.Background()
@@ -28,7 +29,7 @@ func TestWhiteboardNamedDocumentsHaveIndependentHistories(t *testing.T) {
 	if err != nil || !reflect.DeepEqual(ids, []string{"Architecture.v2", "data-model", "zeta"}) {
 		t.Fatalf("named boards = %v, %v", ids, err)
 	}
-	sibling := filepath.Join(root, WhiteboardDir, "zeta", "revisions", "r1.json")
+	sibling := filepath.Join(root, WhiteboardDir, "zeta", currentrecord.Name)
 	before, err := os.ReadFile(sibling)
 	if err != nil {
 		t.Fatal(err)
@@ -38,11 +39,11 @@ func TestWhiteboardNamedDocumentsHaveIndependentHistories(t *testing.T) {
 	}
 	for _, id := range ids {
 		v, err := LoadWhiteboard(root, "test", id, "")
-		want := "r1"
+		want := id
 		if id == "data-model" {
-			want = "r2"
+			want = "Updated model"
 		}
-		if err != nil || v == nil || v.ID != want {
+		if err != nil || v == nil || v.Name != want {
 			t.Fatalf("%s head = %+v, %v", id, v, err)
 		}
 		if err := ValidateWhiteboard(root, "test", id); err != nil {
@@ -60,18 +61,13 @@ func TestWhiteboardNamedDocumentsHaveIndependentHistories(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	for _, update := range []struct{ board, revision, parent string }{
-		{"missing", "r1", "r1"}, // A sibling revision is not this board's parent.
-		{"zeta", "r3", "r2"},
-		{"data-model", "r3", "r1"},
-	} {
-		if _, err := PublishWhiteboard(ctx, root, "test", update.board, update.revision, update.parent, "Invalid", doc); err == nil {
-			t.Fatalf("accepted invalid parent: %+v", update)
-		}
+	if _, err := PublishWhiteboard(ctx, root, "test", "../invalid", "", "", "Invalid", doc); err == nil {
+		t.Fatal("invalid stable board identity accepted")
 	}
-	if _, err := os.Stat(filepath.Join(root, WhiteboardDir, "missing")); !os.IsNotExist(err) {
-		t.Fatalf("failed first publication left a board: %v", err)
+	if _, err := PublishWhiteboard(ctx, root, "test", "zeta", "ignored", "unknown", "zeta", doc); err != nil {
+		t.Fatalf("obsolete parent controlled current authoring: %v", err)
 	}
+
 	invalidDoc := boardDocument(pin)
 	invalidDoc.Elements[1].Source.Revision = pin.Target + ":revision:missing"
 	if _, err := PublishWhiteboard(ctx, root, "test", "bad-source", "r1", "", "Invalid source", invalidDoc); err == nil {
@@ -194,24 +190,35 @@ func TestWhiteboardNamedStorageRejectsMalformedDirectories(t *testing.T) {
 	}
 }
 
-func TestWhiteboardValidationChecksHistoricalPinsForSelectedDocument(t *testing.T) {
+func TestWhiteboardValidationUsesSelectedContentAndDropsObsoleteSourceHistory(t *testing.T) {
 	root, pin, _ := whiteboardFixture(t)
-	v, err := PublishWhiteboard(context.Background(), root, "test", "architecture", "r1", "", "Architecture", boardDocument(pin))
+	v, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "architecture", "r1", "", "Architecture", boardDocument(pin))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := PublishWhiteboard(context.Background(), root, "test", "architecture", "r2", "r1", "Architecture", boardDocument(pin)); err != nil {
+	if _, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "architecture", "r2", "r1", "Architecture", boardDocument(pin)); err != nil {
 		t.Fatal(err)
 	}
 	v.Document.Elements[1].Source.Revision = pin.Target + ":revision:missing"
-	if err := store.WriteJSON(filepath.Join(root, WhiteboardDir, "architecture", "revisions", "r1.json"), v, false); err != nil {
+	if err := store.WriteJSON(filepath.Join(root, WhiteboardDir, "architecture", "revisions", "r1.json"), structLegacyWhiteboard(*v), false); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := LoadResolvedWhiteboard(root, "test", "architecture", "r2"); err != nil {
+	if _, err := LoadResolvedWhiteboard(root, "test", "architecture", ""); err != nil {
 		t.Fatal(err)
 	}
-	if err := ValidateWhiteboard(root, "test", "architecture"); err == nil {
-		t.Fatal("selected validation ignored historical source pin")
+	if err := ValidateWhiteboard(root, "test", "architecture"); err != nil {
+		t.Fatalf("an obsolete source pin blocked current validation: %v", err)
+	}
+	commitCurrencyFixture(t, root)
+	if err := currentrecord.Normalize(root); err != nil {
+		t.Fatal(err)
+	}
+	selected, err := LoadResolvedWhiteboard(root, "test", "architecture", "")
+	if err != nil || selected == nil || selected.Revision.Document.Elements[1].Source.Revision != pin.Revision {
+		t.Fatalf("migration changed the selected exact source: %+v %v", selected, err)
+	}
+	if _, err := os.Stat(filepath.Join(root, WhiteboardDir, "architecture", "revisions")); !os.IsNotExist(err) {
+		t.Fatal("obsolete source history was retained beside current content")
 	}
 }
 
@@ -292,13 +299,9 @@ func TestWhiteboardReadersIgnoreIncompletePublicationStage(t *testing.T) {
 	go func() {
 		result <- store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
 			return store.CommitDir(root, filepath.Join(root, WhiteboardDir, "next"), func(stage string) error {
-				revisions := filepath.Join(stage, "revisions")
-				if err := os.Mkdir(revisions, 0755); err != nil {
-					return err
-				}
 				close(entered)
 				<-release // Readers see an actual, incomplete CommitDir stage.
-				return store.WriteJSON(filepath.Join(revisions, "r1.json"), next, true)
+				return currentrecord.Write(stage, next, nil)
 			})
 		})
 	}()
@@ -334,38 +337,41 @@ func TestWhiteboardReadersIgnoreIncompletePublicationStage(t *testing.T) {
 	}
 }
 
-func TestWhiteboardReadersIgnoreIncompleteRevisionWrite(t *testing.T) {
+func TestWhiteboardReadersKeepAtomicCurrentPublication(t *testing.T) {
 	root, pin, _ := whiteboardFixture(t)
-	original, err := PublishWhiteboard(context.Background(), root, "test", "board", "r1", "", "Original", boardDocument(pin))
+	original, err := PublishWhiteboard(context.Background(), root, "test", "board", "", "", "Original", boardDocument(pin))
 	if err != nil {
 		t.Fatal(err)
 	}
 	next := *original
-	next.ID, next.Parents, next.Name = "r2", []string{"r1"}, "Updated"
-	revisions := filepath.Join(root, WhiteboardDir, "board", "revisions")
-	// Pause the same temporary-file/hard-link protocol used by store.WriteFile
-	// after writing only a JSON prefix. A reader must never parse this file.
-	temp, err := os.CreateTemp(revisions, ".change-saga-write-*")
+	next.Name = "Updated"
+	content, err := currentrecord.Content(next)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := json.Marshal(currentrecord.Record{Schema: currentrecord.Schema, Version: 1, Content: content})
+	if err != nil {
+		t.Fatal(err)
+	}
+	dir := filepath.Join(root, WhiteboardDir, "board")
+	temp, err := os.CreateTemp(dir, ".change-saga-write-*")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer temp.Close()
 	defer os.Remove(temp.Name())
-	data, err := json.Marshal(next)
-	if err != nil {
-		t.Fatal(err)
-	}
 	if _, err := temp.Write(data[:len(data)/2]); err != nil {
 		t.Fatal(err)
 	}
 	if err := ValidateWhiteboards(root, "test"); err != nil {
-		t.Fatalf("partial write broke validation: %v", err)
+		t.Fatalf("partial write broke current validation: %v", err)
 	}
-	if board, err := LoadResolvedWhiteboard(root, "test", "board", ""); err != nil || board == nil || board.Revision.ID != "r1" {
-		t.Fatalf("partial write changed visible head: %+v, %v", board, err)
+	if board, err := LoadResolvedWhiteboard(root, "test", "board", ""); err != nil || board == nil || board.Revision.Name != "Original" {
+		t.Fatalf("partial write became visible: %+v %v", board, err)
 	}
-	if _, err := LoadWhiteboard(root, "test", "board", "r2"); err == nil {
-		t.Fatal("uncommitted revision became visible")
+	nextDigest, _ := WhiteboardContentDigest(next)
+	if _, err := LoadWhiteboard(root, "test", "board", nextDigest); err == nil {
+		t.Fatal("unpublished content became visible")
 	}
 	if _, err := temp.Write(data[len(data)/2:]); err != nil {
 		t.Fatal(err)
@@ -376,15 +382,14 @@ func TestWhiteboardReadersIgnoreIncompleteRevisionWrite(t *testing.T) {
 	if err := temp.Close(); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Link(temp.Name(), filepath.Join(revisions, "r2.json")); err != nil {
+	if err := os.Rename(temp.Name(), filepath.Join(dir, currentrecord.Name)); err != nil {
 		t.Fatal(err)
 	}
-	// The temp can briefly coexist with its complete published hard link.
 	if err := ValidateWhiteboards(root, "test"); err != nil {
 		t.Fatal(err)
 	}
-	if board, err := LoadResolvedWhiteboard(root, "test", "board", ""); err != nil || board == nil || board.Revision.ID != "r2" {
-		t.Fatalf("committed revision unreadable: %+v, %v", board, err)
+	if board, err := LoadResolvedWhiteboard(root, "test", "board", ""); err != nil || board == nil || board.Revision.Name != "Updated" {
+		t.Fatalf("published content unreadable: %+v %v", board, err)
 	}
 }
 
@@ -392,7 +397,7 @@ func TestWhiteboardRevisionDiscoveryRejectsTemporaryImpostors(t *testing.T) {
 	for _, kind := range []string{"directory", "symlink", "unrelated-file", "only-temporary"} {
 		t.Run(kind, func(t *testing.T) {
 			root, pin, _ := whiteboardFixture(t)
-			if _, err := PublishWhiteboard(context.Background(), root, "test", "board", "r1", "", "Board", boardDocument(pin)); err != nil {
+			if _, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "board", "r1", "", "Board", boardDocument(pin)); err != nil {
 				t.Fatal(err)
 			}
 			revisions := filepath.Join(root, WhiteboardDir, "board", "revisions")
@@ -450,12 +455,12 @@ func TestWhiteboardRevisionIDsFollowOneSelectedHistory(t *testing.T) {
 	root, pin, _ := whiteboardFixture(t)
 	parent := ""
 	for _, id := range []string{"r1", "r10", "r2"} {
-		if _, err := PublishWhiteboard(context.Background(), root, "test", "planning", id, parent, "Planning", boardDocument(pin)); err != nil {
+		if _, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "planning", id, parent, "Planning", boardDocument(pin)); err != nil {
 			t.Fatal(err)
 		}
 		parent = id
 	}
-	if _, err := PublishWhiteboard(context.Background(), root, "test", "other", "r99", "", "Other", boardDocument(pin)); err != nil {
+	if _, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "other", "r99", "", "Other", boardDocument(pin)); err != nil {
 		t.Fatal(err)
 	}
 	for _, test := range []struct {
@@ -472,7 +477,7 @@ func TestWhiteboardRevisionIDsFollowOneSelectedHistory(t *testing.T) {
 	}
 	// Listing validates saved documents and parent links without resolving the
 	// inventory pins or rendering compositions, just like an unresolved read.
-	if err := os.Remove(filepath.Join(root, TechnicalPath(KindERD, "jobs"), "revisions", "r1.json")); err != nil {
+	if err := os.Remove(filepath.Join(root, TechnicalPath(KindERD, "jobs"), currentrecord.Name)); err != nil {
 		t.Fatal(err)
 	}
 	if ids, err := ListWhiteboardRevisionIDs(root, "test", "planning"); err != nil || len(ids) != 3 {
@@ -484,11 +489,11 @@ func TestWhiteboardRevisionIDsRejectInvalidOrConflictingHistory(t *testing.T) {
 	for _, problem := range []string{"missing-parent", "second-root", "conflicting-heads", "malformed-revision"} {
 		t.Run(problem, func(t *testing.T) {
 			root, pin, _ := whiteboardFixture(t)
-			first, err := PublishWhiteboard(context.Background(), root, "test", "planning", "r1", "", "Planning", boardDocument(pin))
+			first, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "planning", "r1", "", "Planning", boardDocument(pin))
 			if err != nil {
 				t.Fatal(err)
 			}
-			if _, err := PublishWhiteboard(context.Background(), root, "test", "planning", "r2", "r1", "Planning", boardDocument(pin)); err != nil {
+			if _, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "planning", "r2", "r1", "Planning", boardDocument(pin)); err != nil {
 				t.Fatal(err)
 			}
 			bad := *first
@@ -501,7 +506,7 @@ func TestWhiteboardRevisionIDsRejectInvalidOrConflictingHistory(t *testing.T) {
 			case "malformed-revision":
 				bad.Version = 99
 			}
-			if err := store.WriteJSON(filepath.Join(root, WhiteboardDir, "planning", "revisions", "bad.json"), bad, true); err != nil {
+			if err := store.WriteJSON(filepath.Join(root, WhiteboardDir, "planning", "revisions", "bad.json"), structLegacyWhiteboard(bad), true); err != nil {
 				t.Fatal(err)
 			}
 			if ids, err := ListWhiteboardRevisionIDs(root, "test", "planning"); err == nil || ids != nil {

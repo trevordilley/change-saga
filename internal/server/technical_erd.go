@@ -71,8 +71,8 @@ func entityName(inventory requirements.Inventory, pin saga.DocumentationLink) st
 func makeRelationshipView(inventory requirements.Inventory, owner saga.DocumentationLink, edge requirements.Relationship, direction string) relationshipView {
 	view := relationshipView{
 		ID: edge.ID, Meaning: edge.Meaning, Label: edge.Label, Explanation: edge.Explanation, Intent: edge.Intent, Direction: direction,
-		OwnerPin: owner, OwnerName: entityName(inventory, owner), OwnerHref: technicalPinHref(owner), OwnerStatus: inventory.LinkStatus(owner),
-		DestinationName: entityName(inventory, edge.Destination), DestinationHref: technicalPinHref(edge.Destination), DestinationStatus: inventory.LinkStatus(edge.Destination),
+		OwnerPin: owner, OwnerName: entityName(inventory, owner), OwnerHref: technicalPinHref(owner, inventory), OwnerStatus: inventory.LinkStatus(owner),
+		DestinationName: entityName(inventory, edge.Destination), DestinationHref: technicalPinHref(edge.Destination, inventory), DestinationStatus: inventory.LinkStatus(edge.Destination),
 		Flow: edge.Flow, Evidence: len(edge.Code),
 	}
 	if view.Intent == "" {
@@ -158,7 +158,7 @@ func dataEntityDetail(inventory requirements.Inventory, view *documentationView,
 		view.Fields = append(view.Fields, entityFieldView{Name: field.Name, Type: field.Type, Keys: field.Keys, Note: field.Note})
 	}
 	for _, holder := range revision.Holders {
-		view.Holders = append(view.Holders, entityHolderView{Name: entityName(inventory, holder.Component), Role: holder.Role, Href: technicalPinHref(holder.Component), Status: inventory.LinkStatus(holder.Component), Pin: holder.Component})
+		view.Holders = append(view.Holders, entityHolderView{Name: entityName(inventory, holder.Component), Role: holder.Role, Href: technicalPinHref(holder.Component, inventory), Status: inventory.LinkStatus(holder.Component), Pin: holder.Component})
 	}
 	for _, edge := range revision.Relationships {
 		view.Relationships = append(view.Relationships, makeRelationshipView(inventory, pin, edge, "outgoing"))
@@ -170,7 +170,7 @@ func dataEntityDetail(inventory requirements.Inventory, view *documentationView,
 		if record.Kind != requirements.KindDataEntity || record.CurrentRevision == nil || record.Target == pin.Target {
 			continue
 		}
-		owner := saga.DocumentationLink{Target: record.Target, Revision: record.Target + ":revision:" + record.CurrentRevision.ID}
+		owner := saga.DocumentationLink{Target: record.Target, Revision: requirements.ContentPin(record.Target, record.CurrentRevision.ID)}
 		for _, edge := range record.CurrentRevision.Relationships {
 			if edge.Destination.Target == pin.Target {
 				incoming := makeRelationshipView(inventory, owner, edge, "incoming")
@@ -260,7 +260,7 @@ func (a *app) makeERDViewWithPrefix(inventory requirements.Inventory, record *re
 	structuredVisual := revision.Diagram != nil
 	baselinePins := map[string]saga.DocumentationLink{}
 	if record.Kind == requirements.KindERDOverlay && revision.ERD != nil {
-		view.BaselineName, view.BaselineHref = entityName(inventory, *revision.ERD), technicalPinHref(*revision.ERD)
+		view.BaselineName, view.BaselineHref = entityName(inventory, *revision.ERD), technicalPinHref(*revision.ERD, inventory)
 		if revision.Feature != "" {
 			parts := strings.Split(revision.Feature, ":")
 			view.Feature, view.FeatureHref = parts[len(parts)-1], featureHref(parts[len(parts)-1])
@@ -336,7 +336,7 @@ func (a *app) makeERDViewWithPrefix(inventory requirements.Inventory, record *re
 		removed[removal.Target] = removal.Explanation
 	}
 	for _, pin := range directory {
-		row := erdDirectoryRow{Pin: pin, Name: entityName(inventory, pin), Href: technicalPinHref(pin), Status: inventory.LinkStatus(pin), Elements: elements[pin.Revision]}
+		row := erdDirectoryRow{Pin: pin, Name: entityName(inventory, pin), Href: technicalPinHref(pin, inventory), Status: inventory.LinkStatus(pin), Elements: elements[pin.Revision]}
 		pinned := inventory.Pinned(pin)
 		if pinned == nil {
 			row.Missing, row.Intent = true, "unknown"
@@ -375,7 +375,7 @@ func (a *app) makeERDViewWithPrefix(inventory requirements.Inventory, record *re
 		row := erdDirectoryRow{Pin: saga.DocumentationLink{Target: removal.Target}, Change: "removes", ChangeNote: removal.Explanation, Status: "removed by overlay"}
 		row.Name = removal.Target
 		if base, ok := baselinePins[removal.Target]; ok {
-			row.Pin, row.Name, row.Href = base, entityName(inventory, base), technicalPinHref(base)
+			row.Pin, row.Name, row.Href = base, entityName(inventory, base), technicalPinHref(base, inventory)
 			row.Elements = elements[base.Revision]
 		}
 		view.Directory = append(view.Directory, row)

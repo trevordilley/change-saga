@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Refuse composition with an invalid domain.",
+    "preconditions": [
+      "For each requirements, prototypes and quality variant, use a separate disposable Saga containing otherwise valid records."
+    ],
+    "steps": [
+      {
+        "action": "In separate disposable copies, introduce an invalid record in requirements, prototypes and quality, then open the composed reader/query.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:independent-product-knowledge:criterion:validated-composition"
+        ],
+        "expected_result": "Each invalid domain prevents a partial composed result; the error identifies the invalid input.",
+        "id": "check-validated-composition"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-invalid-domain-composition",
+    "title": "Refuse composition with an invalid domain"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-invalid-domain-composition"
+  }
+}

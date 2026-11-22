@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-revised-record-and-pin-0a6f3e59d94d",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin",
-  "to": "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records",
-  "scope": "self",
-  "rationale": "Steps revision define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:change-impact-layers:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:31.283809Z",
-  "request_id": "test-review-revised-record-and-pin-0a6f3e59d94d"
+  "from": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin",
+  "from_revision": "sha256:b4725adb4c50521c16531877d1827ae77cc55505ecc45e512595f2f3219a8649",
+  "id": "test-review-revised-record-and-pin-0a6f3e59d94d",
+  "rationale": "Steps revision define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-revised-record-and-pin-0a6f3e59d94d",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records",
+  "to_revision": "sha256:9c765665c4915bda676f832460c98cf85df299e9fc8e81631add53d74ab418a6",
+  "type": "verifies",
+  "version": 5
 }

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "story"
+    ],
+    "code": [
+      {
+        "commit": "f4f602334d96f47625b4d907aec058d421b1003e",
+        "digest": "sha256:7908ed5edc73f97fe25676f6a65defa0d54cc0d76a9b1ce363e086909b776a1b",
+        "end": 75,
+        "path": "internal/requirements/model.go",
+        "start": 51
+      },
+      {
+        "commit": "b4487b8cf1e306ec1bf3be16a6dbe921d4f61b88",
+        "digest": "sha256:95603ec76960dc8d72830d5ac0ea101dbd0761fd268425e5caaa32dc102f552e",
+        "end": 203,
+        "path": "internal/requirements/model.go",
+        "start": 188
+      }
+    ],
+    "definition": "A durable statement of product value from a persona's perspective. Its complete definition evolves through revisions, while its commitment state evolves separately through lifecycle events; it is product intent, not a delivery task or pull request.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "User story",
+    "stories": [
+      "urn:change-saga:change-saga:story:product-intent-lifecycle",
+      "urn:change-saga:change-saga:story:auditable-requirement-history"
+    ],
+    "term": "urn:change-saga:change-saga:term:user-story"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:user-story"
+  }
+}

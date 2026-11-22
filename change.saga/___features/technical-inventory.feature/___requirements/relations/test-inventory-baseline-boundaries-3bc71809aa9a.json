@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-baseline-boundaries-3bc71809aa9a",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries",
-  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
-  "scope": "self",
-  "rationale": "Steps conflicts define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:59.834893Z",
-  "request_id": "test-inventory-baseline-boundaries-3bc71809aa9a"
+  "from": "urn:change-saga:change-saga:test-case:inventory-baseline-boundaries",
+  "from_revision": "sha256:09e3b691ad04b96f60f44be17768b8004516b7f40869abfa8afee0c9052cdcd3",
+  "id": "test-inventory-baseline-boundaries-3bc71809aa9a",
+  "rationale": "Steps conflicts define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-baseline-boundaries-3bc71809aa9a",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+  "to_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+  "type": "verifies",
+  "version": 5
 }

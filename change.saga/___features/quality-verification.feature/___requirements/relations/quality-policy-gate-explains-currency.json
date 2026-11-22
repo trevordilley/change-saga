@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "quality-policy-gate-explains-currency",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:40:48.178028Z",
   "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:policy-gate",
-  "to": "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:policy-currency",
-  "scope": "self",
+  "id": "quality-policy-gate-explains-currency",
   "rationale": "The policy gate keeps stale policy kinds required and the criterion uncovered until policy is repinned to the current story revision.",
-  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-policy:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:40:48.178028Z"
+  "to": "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:policy-currency",
+  "to_revision": "sha256:8f4baade22e113bd25189d44be52c2401ab50eb6b1b207eb055a43fbb989918e",
+  "type": "explains",
+  "version": 5
 }

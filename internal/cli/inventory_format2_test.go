@@ -46,7 +46,7 @@ func TestInventoryFormatTwoReadsCoverageAndReconcile(t *testing.T) {
 		}
 		output.Reset()
 		if err := AddItem(ctx, []string{"--slide", "pipeline", "--id", id, "--kind", "node", "--element-id", "slide-title", "--description", "Explains " + id + ".",
-			"--documentation", p[doc].Target, "--documentation-revision", p[doc].Revision, "--selections", file, "--repo", repo, root}, &output); err != nil {
+			"--documentation", p[doc].Target, "--documentation-content-digest", p[doc].Revision, "--selections", file, "--repo", repo, root}, &output); err != nil {
 			t.Fatalf("add-item %s: %v %s", id, err, output.String())
 		}
 	}

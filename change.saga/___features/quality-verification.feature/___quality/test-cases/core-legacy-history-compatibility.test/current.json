@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "Retain immutable legacy run metadata without reviving execution gates.",
+    "preconditions": [
+      "A disposable legacy fixture has a case, implementation evidence and an existing run head; no command is executed from metadata."
+    ],
+    "steps": [
+      {
+        "action": "Read the explicit history query for the fixture with a legacy passed run.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:run-provenance"
+        ],
+        "expected_result": "The history output contains legacy_runs and its passed result literal.",
+        "id": "check-run-provenance"
+      },
+      {
+        "action": "Compare archived public history records with the originally authored run values.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:run-provenance"
+        ],
+        "expected_result": "Identity, revision, result literal, summary, command text, execution time, source identity, parent heads and evidence references remain exact historical metadata.",
+        "id": "check-all-run-fields"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-legacy-history-compatibility",
+    "title": "Retain immutable legacy run metadata without reviving execution gates"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-legacy-history-compatibility"
+  }
+}

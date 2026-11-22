@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-whiteboard-instance-focus-deac13bcd7c5",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-instance-focus",
-  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:focus",
-  "scope": "self",
-  "rationale": "Steps instances, section define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-whiteboard-instance-focus:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:14.428722Z",
-  "request_id": "test-inventory-whiteboard-instance-focus-deac13bcd7c5"
+  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-instance-focus",
+  "from_revision": "sha256:0919343e046335af455878e1e692feac1c7ca282f1a91b8a56476076c8269057",
+  "id": "test-inventory-whiteboard-instance-focus-deac13bcd7c5",
+  "rationale": "Steps instances, section define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-whiteboard-instance-focus-deac13bcd7c5",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:focus",
+  "to_revision": "sha256:0fb0937c3f8389662d322b20055d2ed0f28ee83203c5ad7ebabd1946fee36ba7",
+  "type": "verifies",
+  "version": 5
 }

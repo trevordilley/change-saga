@@ -36,17 +36,19 @@ func TestAddingAPersonaToAStoryStalesNothingAndSaysWhatItCarried(t *testing.T) {
 			t.Fatalf("%s: %v\n%s", name, err, output.String())
 		}
 	}
-	mustRun("accept", Story(ctx, []string{"set-state", root, "--story", story, "--event", "accepted",
-		"--parent", story + ":event:proposed", "--state", "accepted", "--json"}, &output))
+	mustRun("accept", Story(ctx, []string{"set-state", root, "--story", story,
+		"--state", "accepted", "--json"}, &output))
 	runQuality(t, "", "test-case", "add", root, "--feature", testFeature, "--id", "fast", "--title", "Fast checkout", "--kind", "positive",
 		"--automation", "automated", "--step", `{"id":"s1","action":"Check out","expected_result":"Done"}`, "--expected-result", "Done")
 	mustRun("relation add", Relation(ctx, []string{"add", root, "--feature", testFeature, "--id", "fast-verifies", "--type", "verifies",
 		"--from", testCase, "--to", story + ":criterion:fast", "--rationale", "Exercises the fast path.", "--json"}, &output))
 
+	oldPin := currentTestPin(t, root, story)
+	commitCurrentTestDocumentation(t, root, "confirmed criterion")
 	// Exactly the repro: one more persona, every criterion byte-identical.
-	mustRun("add persona", Persona(ctx, []string{"add", root, "--id", "newcomer", "--revision", "r1", "--event", "active",
+	mustRun("add persona", Persona(ctx, []string{"add", root, "--id", "newcomer",
 		"--name", "Newcomer", "--description", "Reads the app for the first time", "--json"}, &output))
-	mustRun("story revise", Story(ctx, []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1",
+	mustRun("story revise", Story(ctx, []string{"revise", root, "--story", story,
 		"--persona", personaURNFor(document.SagaID), "--persona", prefix + ":persona:newcomer",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--json"}, &output))
@@ -80,7 +82,7 @@ func TestAddingAPersonaToAStoryStalesNothingAndSaysWhatItCarried(t *testing.T) {
 	}
 	if len(status.CarriedForward) != 1 || status.CarriedForward[0].Record != relation ||
 		status.CarriedForward[0].Code != "criterion_unchanged" ||
-		status.CarriedForward[0].Confirmed != story+":revision:r1" || status.CarriedForward[0].Current != story+":revision:r2" {
+		status.CarriedForward[0].Confirmed != oldPin || status.CarriedForward[0].Current != currentTestPin(t, root, story) {
 		t.Fatalf("status says which pin it carried and from where: %#v", status.CarriedForward)
 	}
 
@@ -89,7 +91,7 @@ func TestAddingAPersonaToAStoryStalesNothingAndSaysWhatItCarried(t *testing.T) {
 	output.Reset()
 	_ = Status(ctx, []string{"--against", "main", "--repo", repo, root}, &output)
 	if !strings.Contains(output.String(), "Carried-forward pins: 1 relations still hold, and were not re-confirmed by anyone") ||
-		!strings.Contains(output.String(), "confirmed at "+story+":revision:r1, carried to "+story+":revision:r2") {
+		!strings.Contains(output.String(), "confirmed at "+oldPin+", carried to "+currentTestPin(t, root, story)) {
 		t.Fatalf("status text = %s", output.String())
 	}
 }

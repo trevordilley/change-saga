@@ -1,18 +1,18 @@
 {
+  "description": "/technical now names the ERD, Systems and Components areas with counts, or the command that starts an empty one, and renders no directory.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:technical-design-page",
-    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+    "revision": "sha256:6732de30ae7320cdc20bc73836543806833a3aa8dcbadd0d4bb9c0e8cbe34cb1",
+    "target": "urn:change-saga:change-saga:component:technical-design-page"
   },
-  "version": 4,
   "id": "landing",
-  "slide": "tdsp-review-pages",
-  "rank": 10,
   "kind": "node",
   "label": "Landing page",
-  "description": "/technical now names the ERD, Systems and Components areas with counts, or the command that starts an empty one, and renders no directory.",
+  "rank": 10,
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-areas",
   "selector": {
-    "type": "element",
-    "element_id": "landing"
+    "element_id": "landing",
+    "type": "element"
   },
-  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-areas"
+  "slide": "tdsp-review-pages",
+  "version": 4
 }

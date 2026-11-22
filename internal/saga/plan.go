@@ -1,6 +1,8 @@
 package saga
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -53,7 +55,83 @@ const (
 type PlanPhase struct {
 	ID    string `json:"id"`
 	Title string `json:"title"`
+	// Checkpoint makes the phase a checkpoint: it holds no Tasks and covers every
+	// Task since the previous checkpoint. That stretch is reviewed together, and
+	// the work after it waits until it passes.
+	Checkpoint *PlanCheckpoint `json:"checkpoint,omitempty"`
 }
+
+// A null checkpoint must not silently turn a review gate into an ordinary phase.
+// Keep unknown-field rejection inside this custom decoder as well.
+func (phase *PlanPhase) UnmarshalJSON(data []byte) error {
+	type plain PlanPhase
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode((*plain)(phase)); err != nil {
+		return err
+	}
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(data, &fields); err != nil {
+		return err
+	}
+	if checkpoint, found := fields["checkpoint"]; found && bytes.Equal(bytes.TrimSpace(checkpoint), []byte("null")) {
+		return fmt.Errorf("checkpoint must be an object, not null")
+	}
+	return nil
+}
+
+// PlanCheckpoint is what a checkpoint phase records.
+type PlanCheckpoint struct {
+	// Expectations are what must be true by the time the checkpoint is reached:
+	// invariants and characteristics of the work, not user stories. A pass confirms
+	// each.
+	Expectations []CheckpointExpectation `json:"expectations,omitempty"`
+	// Review is the id of the review of the checkpoint's work.
+	Review string `json:"review,omitempty"`
+	// Passed records that the checkpoint passed, so the work after it may start.
+	Passed *CheckpointPass `json:"passed,omitempty"`
+}
+
+// CheckpointExpectation is one thing that must be true by a checkpoint.
+type CheckpointExpectation struct {
+	ID        string `json:"id"`
+	Statement string `json:"statement"`
+}
+
+// MetExpectation says how a pass showed an expectation held.
+type MetExpectation struct {
+	Expectation string `json:"expectation"`
+	How         string `json:"how"`
+}
+
+// CheckpointPass says who passed a checkpoint, when, and why.
+type CheckpointPass struct {
+	At time.Time `json:"at"`
+	By string    `json:"by"`
+	// Agent says an agent passed it, under the rule of whoever invoked the Plan.
+	Agent  bool   `json:"agent,omitempty"`
+	Reason string `json:"reason"`
+	// ToCome is the work after the checkpoint when it passed, so a later reader
+	// sees how the Plan changed since.
+	ToCome []PlannedTask `json:"to_come,omitempty"`
+	// Base is the commit the checkpoint's review started from when it passed, so a
+	// later checkpoint's review can be widened back to it.
+	Base string `json:"base,omitempty"`
+	// Met says how each of the checkpoint's expectations was shown to hold.
+	Met []MetExpectation `json:"met,omitempty"`
+}
+
+// PlannedTask is where a Task stood in the Plan at a moment.
+type PlannedTask struct {
+	Task  string `json:"task"`
+	Phase string `json:"phase"`
+}
+
+// Who may pass a Plan's checkpoints. A person is the default.
+const (
+	CheckpointPasserPerson = "person"
+	CheckpointPasserAgent  = "agent"
+)
 
 // PlanManifest is plan.json.
 type PlanManifest struct {
@@ -67,6 +145,9 @@ type PlanManifest struct {
 	Prototypes []string `json:"prototypes,omitempty"`
 	// Reviews are the ids of the pull request reviews that implement the Plan.
 	Reviews []string `json:"reviews,omitempty"`
+	// CheckpointPasser is who passes its checkpoints: a person, or an agent unless
+	// what it found is surprising or urgent. Empty means a person.
+	CheckpointPasser string `json:"checkpoint_passer,omitempty"`
 	// DeliveredAt records that an author marked the Plan delivered. A delivered
 	// Plan is hidden by default, as a merged review is, and refuses edits.
 	DeliveredAt *time.Time `json:"delivered_at,omitempty"`
@@ -243,8 +324,124 @@ func ValidatePlanManifest(manifest PlanManifest) error {
 			return fmt.Errorf("phase %q appears more than once", phase.ID)
 		}
 		phases[phase.ID] = true
+		if checkpoint := phase.Checkpoint; checkpoint != nil {
+			if checkpoint.Review != "" && !ValidID(checkpoint.Review) {
+				return fmt.Errorf("checkpoint %q names a review that is not a stable id", phase.ID)
+			}
+			if pass := checkpoint.Passed; pass != nil && (pass.At.IsZero() || strings.TrimSpace(pass.By) == "" || strings.TrimSpace(pass.Reason) == "") {
+				return fmt.Errorf("checkpoint %q was passed without saying when, by whom, and why", phase.ID)
+			}
+			expected := map[string]bool{}
+			for _, expectation := range checkpoint.Expectations {
+				if !ValidID(expectation.ID) || strings.TrimSpace(expectation.Statement) == "" {
+					return fmt.Errorf("checkpoint %q has an expectation without a stable id and a statement", phase.ID)
+				}
+				if expected[expectation.ID] {
+					return fmt.Errorf("checkpoint %q states expectation %q more than once", phase.ID, expectation.ID)
+				}
+				expected[expectation.ID] = true
+			}
+			if pass := checkpoint.Passed; pass != nil {
+				for _, met := range pass.Met {
+					if !expected[met.Expectation] || strings.TrimSpace(met.How) == "" {
+						return fmt.Errorf("checkpoint %q records expectation %q as met without stating it or saying how", phase.ID, met.Expectation)
+					}
+				}
+			}
+		}
+	}
+	switch manifest.CheckpointPasser {
+	case "", CheckpointPasserPerson, CheckpointPasserAgent:
+	default:
+		return fmt.Errorf("checkpoint_passer must be %s or %s", CheckpointPasserPerson, CheckpointPasserAgent)
 	}
 	return nil
+}
+
+// IsCheckpoint says the phase is a checkpoint.
+func (phase PlanPhase) IsCheckpoint() bool { return phase.Checkpoint != nil }
+
+// CheckpointPassed says the phase is a checkpoint that has passed.
+func (phase PlanPhase) CheckpointPassed() bool {
+	return phase.Checkpoint != nil && phase.Checkpoint.Passed != nil
+}
+
+// CheckpointScope is the Tasks a checkpoint covers: those in the phases after the
+// previous checkpoint and before it. A Task with no phase is in no checkpoint.
+func CheckpointScope(phases []PlanPhase, tasks []TaskManifest, checkpointID string) []TaskManifest {
+	covered := map[string]bool{}
+	pending := []string{}
+	found := false
+	for _, phase := range phases {
+		if phase.IsCheckpoint() {
+			if phase.ID == checkpointID {
+				for _, id := range pending {
+					covered[id] = true
+				}
+				found = true
+				break
+			}
+			pending = pending[:0]
+			continue
+		}
+		pending = append(pending, phase.ID)
+	}
+	scope := []TaskManifest{}
+	if !found {
+		return scope
+	}
+	for _, task := range tasks {
+		if covered[task.Phase] {
+			scope = append(scope, task)
+		}
+	}
+	return scope
+}
+
+// TasksReadyNow is TasksReady less what a checkpoint holds, with what each held
+// Task is waiting for, by the checkpoint's title.
+func TasksReadyNow(phases []PlanPhase, tasks []TaskManifest) ([]TaskManifest, map[string]string) {
+	holds := CheckpointHolds(phases, tasks)
+	titles := map[string]string{}
+	for _, phase := range phases {
+		titles[phase.ID] = phase.Title
+	}
+	held := make(map[string]string, len(holds))
+	for task, checkpoint := range holds {
+		held[task] = titles[checkpoint]
+	}
+	ready := []TaskManifest{}
+	for _, task := range TasksReady(tasks) {
+		if held[task.ID] == "" {
+			ready = append(ready, task)
+		}
+	}
+	return ready, held
+}
+
+// CheckpointHolds names, for each Task waiting behind a checkpoint that has not
+// passed, the first such checkpoint. Work after it should not start until it does.
+func CheckpointHolds(phases []PlanPhase, tasks []TaskManifest) map[string]string {
+	holder := map[string]string{}
+	blocking := ""
+	for _, phase := range phases {
+		if phase.IsCheckpoint() {
+			if blocking == "" && !phase.CheckpointPassed() {
+				blocking = phase.ID
+			}
+			continue
+		}
+		if blocking != "" {
+			holder[phase.ID] = blocking
+		}
+	}
+	holds := map[string]string{}
+	for _, task := range tasks {
+		if checkpoint := holder[task.Phase]; checkpoint != "" {
+			holds[task.ID] = checkpoint
+		}
+	}
+	return holds
 }
 
 // ValidateTaskManifest checks one task.json on its own: everything except how
@@ -298,9 +495,11 @@ func PlanTaskProblems(phases []PlanPhase, tasks []TaskManifest) []TaskProblem {
 	}
 	phaseIDs := make(map[string]bool, len(phases))
 	phaseOrder := make(map[string]int, len(phases))
+	checkpoints := map[string]bool{}
 	for index, phase := range phases {
 		phaseIDs[phase.ID] = true
 		phaseOrder[phase.ID] = index
+		checkpoints[phase.ID] = phase.IsCheckpoint()
 	}
 	taskPhase := make(map[string]string, len(tasks))
 	for _, task := range tasks {
@@ -310,6 +509,9 @@ func PlanTaskProblems(phases []PlanPhase, tasks []TaskManifest) []TaskProblem {
 	for _, task := range tasks {
 		if task.Phase != "" && !phaseIDs[task.Phase] {
 			problems = append(problems, TaskProblem{task.ID, fmt.Sprintf("phase %q is not a phase of this Plan", task.Phase)})
+		}
+		if checkpoints[task.Phase] {
+			problems = append(problems, TaskProblem{task.ID, fmt.Sprintf("phase %q is a checkpoint, which holds no tasks: put the task in a phase before or after it", task.Phase)})
 		}
 		seen := map[string]bool{}
 		for _, dependency := range task.DependsOn {
@@ -489,7 +691,7 @@ func loadPlan(root, dir, id string, manifest Manifest, options loadOptions, vali
 	rel := relativePath(root, dir)
 	manifestPath := filepath.Join(dir, PlanManifestName)
 	var value PlanManifest
-	if err := readJSON(manifestPath, &value); err != nil {
+	if err := readPlanJSON(manifestPath, &value); err != nil {
 		addIssue(validation, "error", relativePath(root, manifestPath), err.Error())
 		return nil, nil
 	}
@@ -568,7 +770,7 @@ func loadPlan(root, dir, id string, manifest Manifest, options loadOptions, vali
 func loadTask(root, dir, id string, plan *Plan, manifest Manifest, validation *Validation) *Task {
 	manifestPath := filepath.Join(dir, TaskManifestName)
 	var value TaskManifest
-	if err := readJSON(manifestPath, &value); err != nil {
+	if err := readPlanJSON(manifestPath, &value); err != nil {
 		addIssue(validation, "error", relativePath(root, manifestPath), err.Error())
 		return nil
 	}
@@ -599,6 +801,22 @@ func loadTask(root, dir, id string, plan *Plan, manifest Manifest, validation *V
 		}
 	}
 	return task
+}
+
+// readPlanJSON keeps strict decoding and adds a recovery path for known
+// incompatible wave layouts. Native checkpoint fields are decoded strictly,
+// including their nested fields, by the ordinary Plan model.
+func readPlanJSON(path string, dst any) error {
+	err := readJSON(path, dst)
+	if err == nil {
+		return nil
+	}
+	for _, field := range []string{"waves", "wave"} {
+		if strings.Contains(err.Error(), `json: unknown field "`+field+`"`) {
+			return fmt.Errorf("%w; this build uses phased Plans, not legacy wave/work-item layouts. Preserve the original data and arrange an explicit migration; see docs/plan-cli-compatibility.md", err)
+		}
+	}
+	return err
 }
 
 // validatePlanItemRecords checks that a slide Item naming a Task names one of

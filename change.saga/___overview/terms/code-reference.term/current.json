@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:8624348a8bb7b90692615e74c106bdc2f79a81e69d4311894d4dbafecb8f062b",
+        "end": 51,
+        "path": "internal/coderef/coderef.go",
+        "start": 24
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:0c3eff46af6b77201d2417c688f049c6674a720b90fcc03fc75b6d840c1818d9",
+        "end": 111,
+        "path": "internal/coderesolve/resolve.go",
+        "start": 96
+      }
+    ],
+    "definition": "A persisted pointer to a repository path and optional inclusive line range at a full Git commit, plus a SHA-256 digest of the exact selected bytes. It lets evidence follow content-preserving moves while detecting edits. Unlike a relation, it connects a documentation target to source code.",
+    "name": "Code reference",
+    "stories": [
+      "urn:change-saga:change-saga:story:visual-technical-explanation",
+      "urn:change-saga:change-saga:story:reverse-impact"
+    ],
+    "term": "urn:change-saga:change-saga:term:code-reference"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:code-reference"
+  }
+}

@@ -8,8 +8,7 @@ test("project destinations stay visible, and a term links its code and stories b
 
   // A story names the term, so the term and the story reach each other.
   const story = runCLI(saga, [
-    "story", "add", "--feature", "wave-one", "--id", "greet-by-name", "--revision", "r1", "--event", "proposed",
-    "--title", "Greet a caller by name", "--statement", "As a caller, I am greeted by my name.", "--priority", "must", saga.sagaRoot
+    "story", "add", "--feature", "wave-one", "--id", "greet-by-name", "--title", "Greet a caller by name", "--statement", "As a caller, I am greeted by my name.", "--priority", "must", saga.sagaRoot
   ]);
   expect(story.status, story.stderr).toBe(0);
   const head = runCLI(saga, ["query", "terms", "--saga", saga.sagaRoot, "--repo", saga.sourceRepo, "--term", "greeting"]);
@@ -17,9 +16,7 @@ test("project destinations stay visible, and a term links its code and stories b
   const current = JSON.parse(head.stdout).data.terms[0];
   const code = current.code[0].head;
   const revise = runCLI(saga, [
-    "term", "revise", "--repo", saga.sourceRepo, "--term", current.term, "--revision", "r2", "--parent", current.revision_heads[0],
-    "--name", "Greeting", "--alias", "salutation", "--definition", current.definition, "--story", "greet-by-name",
-    "--ref", `${code.commit}:${code.path}#L${code.start}-L${code.end}`, saga.sagaRoot
+    "term", "revise", "--repo", saga.sourceRepo, "--term", current.term, "--name", "Greeting", "--alias", "salutation", "--definition", current.definition, "--story", "greet-by-name", "--ref", `${code.commit}:${code.path}#L${code.start}-L${code.end}`, saga.sagaRoot
   ]);
   expect(revise.status, revise.stderr).toBe(0);
   await page.reload();

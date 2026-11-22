@@ -1,5 +1,10 @@
 # Technical inventory: implementation design deck
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Status: proposed design, not an implemented feature. The primary artifact is
 the **Proposed technical design** section of the existing `technical-inventory`
 implementation deck in `app.saga`. The user explicitly chose to develop the

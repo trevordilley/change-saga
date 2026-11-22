@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:f027f46f6094d450c4e022d2f74652985981ac50618c99554d233b966fdd3018",
+      "end": 139,
+      "path": "internal/store/store_test.go",
+      "start": 121
+    }
+  ],
+  "created_at": "2026-10-16T23:24:10Z",
   "id": "directory-failure",
-  "test_case": "urn:change-saga:change-saga:test-case:contracts-atomic-entity-directory",
-  "test_revision": "urn:change-saga:change-saga:test-case:contracts-atomic-entity-directory:revision:r1",
+  "request_id": "saga-evidence-contracts-atomic-entity-directory-directory-failure",
   "role": "test_implementation",
   "steps": [
     "failure"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/store/store_test.go",
-      "start": 121,
-      "end": 139,
-      "digest": "sha256:f027f46f6094d450c4e022d2f74652985981ac50618c99554d233b966fdd3018"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:10Z",
-  "request_id": "saga-evidence-contracts-atomic-entity-directory-directory-failure"
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-atomic-entity-directory",
+  "test_revision": "sha256:c64240ed558da12f8813f38f1bc2e25dc826703bc8e92974a888ba6847b1d2fa",
+  "verifications": [],
+  "version": 5
 }

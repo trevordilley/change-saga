@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Require an exact allowlisted external embed origin.",
+    "preconditions": [
+      "A separate fresh Saga can author external prototypes with distinct IDs for each attempt."
+    ],
+    "steps": [
+      {
+        "action": "Create an external link and exact-allowlist embed; separately attempt an embed with another origin and one without an allowlist.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:prototype-feedback-context:criterion:trusted-external-origin"
+        ],
+        "expected_result": "The external link and exact-origin embed are valid; mismatched and missing allowlists are rejected.",
+        "id": "check-trusted-external-origin"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-prototype-external-origins",
+    "title": "Require an exact allowlisted external embed origin"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-prototype-external-origins"
+  }
+}

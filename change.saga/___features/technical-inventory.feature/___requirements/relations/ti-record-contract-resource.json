@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-record-contract-resource",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-record-contract:item:resource",
-  "to": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
-  "scope": "self",
-  "rationale": "Proposed design: Pin a canonical Component describing the queue, database or other holding resource separately from the entity stored or carried there.",
-  "to_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:14:58.827656Z",
-  "superseded_at": "2026-09-27T10:27:30.420443Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-record-contract:item:resource",
+  "id": "ti-record-contract-resource",
+  "rationale": "Proposed design: Pin a canonical Component describing the queue, database or other holding resource separately from the entity stored or carried there.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:30.420443Z",
+  "to": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+  "to_revision": "sha256:222a3e3f40dfa008a13c16d39a92e7913e9f231ba62822ab39a0109e5def66a8",
+  "type": "explains",
+  "version": 5
 }

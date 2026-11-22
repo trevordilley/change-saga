@@ -67,9 +67,7 @@ func TestAppRecordsValidateAgainstTheirPublishedSchemas(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"v5/feature.schema.json", "v5/persona.schema.json", "v5/persona-revision.schema.json", "v5/persona-event.schema.json",
-		"v5/flag.schema.json", "v5/flag-revision.schema.json", "v5/flag-event.schema.json", "v3/story-revision.schema.json",
-		"v5/term.schema.json", "v5/term-revision.schema.json", "v5/term-event.schema.json"} {
+	for _, name := range []string{"v5/feature.schema.json", "v5/persona.schema.json", "v5/flag.schema.json", "v5/term.schema.json", "v3/story.schema.json", "v5/current-record.schema.json"} {
 		if !checked[name] {
 			t.Errorf("no written record exercised %s", name)
 		}

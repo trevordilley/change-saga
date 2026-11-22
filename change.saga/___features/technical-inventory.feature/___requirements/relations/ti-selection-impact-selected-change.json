@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-selection-impact-selected-change",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:selected-change",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
-  "scope": "self",
-  "rationale": "When selected bytes change or disappear, expose the stale selection and implicated Item. The continued existence of a System grants no current credit.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:01:04.408901Z",
-  "superseded_at": "2026-09-27T10:27:34.817212Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:selected-change",
+  "id": "ti-selection-impact-selected-change",
+  "rationale": "When selected bytes change or disappear, expose the stale selection and implicated Item. The continued existence of a System grants no current credit.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:34.817212Z",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "explains",
+  "version": 5
 }

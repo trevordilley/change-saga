@@ -31,7 +31,15 @@
       "$ref": "#/$defs/test_case_urn"
     },
     "test_revision": {
-      "$ref": "#/$defs/revision_urn"
+      "anyOf": [
+        {
+          "$ref": "#/$defs/revision_urn"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      ]
     },
     "role": {
       "enum": [
@@ -40,7 +48,15 @@
         "execution_artifact"
       ]
     },
-    "steps": { "type": "array", "maxItems": 10000, "uniqueItems": true, "items": { "$ref": "#/$defs/id" }, "description": "Stable step IDs in test_revision. Omit for case-level evidence." },
+    "steps": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "description": "Stable step IDs in test_revision. Omit for case-level evidence."
+    },
     "code": {
       "type": "array",
       "maxItems": 20000,
@@ -139,7 +155,9 @@
       },
       "then": {
         "properties": {
-          "steps": { "maxItems": 0 },
+          "steps": {
+            "maxItems": 0
+          },
           "code": {
             "maxItems": 0
           }

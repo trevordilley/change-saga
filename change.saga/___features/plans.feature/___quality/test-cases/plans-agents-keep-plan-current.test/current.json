@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Mark Tasks done with task done, by id and by URN.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:agents-keep-plan-current:criterion:agent-marks-done"
+        ],
+        "expected_result": "The Tasks read as done, and what they unblocked can start.",
+        "id": "agent-marks-done"
+      },
+      {
+        "action": "Publish, update and print a Plan slide, write its essay, and try an Item naming a missing Task.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:agents-keep-plan-current:criterion:agent-updates-plan"
+        ],
+        "expected_result": "The content changes through the CLI, and the invalid slide is refused.",
+        "id": "agent-updates-plan"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-agents-keep-plan-current",
+    "title": "An agent keeps a Plan current through the CLI"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-agents-keep-plan-current"
+  }
+}

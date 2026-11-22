@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Saved width and height both increase.",
+    "preconditions": [
+      "Open greeting slide in pr-1 with annotation toolbar and a writable review."
+    ],
+    "steps": [
+      {
+        "action": "Choose Rectangle and drag from 32%,28% to 62%,58%; enter a comment and save.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:shapes"
+        ],
+        "expected_result": "A visible rectangle annotation with normalized numeric coordinates is saved.",
+        "id": "draw"
+      },
+      {
+        "action": "Select its stroke and drag the resize handle outward.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:shapes"
+        ],
+        "expected_result": "Saved width and height both increase.",
+        "id": "resize"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-rectangle-place-resize",
+    "title": "Place and resize a rectangular review annotation"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-rectangle-place-resize"
+  }
+}

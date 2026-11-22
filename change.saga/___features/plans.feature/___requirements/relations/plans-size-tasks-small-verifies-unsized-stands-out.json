@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-size-tasks-small-verifies-unsized-stands-out",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:19:15.078375Z",
   "from": "urn:change-saga:change-saga:test-case:plans-size-tasks-small",
-  "to": "urn:change-saga:change-saga:story:size-tasks-small:criterion:unsized-stands-out",
-  "scope": "self",
+  "from_revision": "sha256:f5f22f029f77ca9f137778c3bf91becfa5322fa7e5cb03d3a45c00f3d73c0135",
+  "id": "plans-size-tasks-small-verifies-unsized-stands-out",
   "rationale": "Step unsized-stands-out checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-size-tasks-small:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:size-tasks-small:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:19:15.078375Z"
+  "to": "urn:change-saga:change-saga:story:size-tasks-small:criterion:unsized-stands-out",
+  "to_revision": "sha256:7ef6cb4d07cc0eecec6b95b71116b7b78ee423da0cfccdf2fc3677f1e59337d3",
+  "type": "verifies",
+  "version": 5
 }

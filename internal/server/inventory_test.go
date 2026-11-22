@@ -36,9 +36,12 @@ func TestDocumentationPinnedPage(t *testing.T) {
 	}
 	definition := requirements.TechnicalDefinition{Name: "Store", Explanation: "The shared typed implementation.", Code: []requirements.Evidence{{Reference: coderef.Reference{Commit: commit, Path: "kinds.go", Start: 6, End: 6, Digest: digest, Note: "Exact declaration provenance."}}}}
 	target := "urn:change-saga:test:component:store"
-	if _, err := requirements.WriteTechnical(root, "test", "component", "store", "r1", nil, definition, true); err != nil {
+	first, err := requirements.WriteTechnical(root, "test", "component", "store", "", nil, definition, true)
+	if err != nil {
 		t.Fatal(err)
 	}
+	serverGit(t, repo, "add", ".")
+	serverGit(t, repo, "commit", "-m", "Document Store definition")
 	definition.Name = "NewStore"
 	if _, err := requirements.WriteTechnical(root, "test", "component", "store", "r2", []string{target + ":revision:r1"}, definition, false); err != nil {
 		t.Fatal(err)
@@ -47,16 +50,16 @@ func TestDocumentationPinnedPage(t *testing.T) {
 	get := func(pin string) (int, string) {
 		t.Helper()
 		rr := httptest.NewRecorder()
-		mux.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/documentation?"+url.Values{"target": {target}, "revision": {pin}}.Encode(), nil))
+		mux.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/documentation?"+url.Values{"target": {target}, "content_digest": {pin}}.Encode(), nil))
 		return rr.Code, rr.Body.String()
 	}
-	status, body := get(target + ":revision:r1")
-	for _, want := range []string{`data-documentation-status="stale"`, `<h2>Store</h2>`, "Exact declaration provenance.", "KindTesttaker", target + ":revision:r1"} {
+	status, body := get(first.ContentDigest)
+	for _, want := range []string{`data-documentation-status="stale"`, `<h2>Store</h2>`, "Exact declaration provenance.", "KindTesttaker", first.ContentDigest} {
 		if status != 200 || !strings.Contains(body, want) {
 			t.Fatalf("saved revision lost %s: %d %s", want, status, body)
 		}
 	}
-	status, _ = get(target + ":revision:missing")
+	status, _ = get("sha256:" + strings.Repeat("0", 64))
 	if status != 404 {
 		t.Fatalf("missing revision: %d", status)
 	}
@@ -67,7 +70,7 @@ func TestDocumentationPinnedPage(t *testing.T) {
 	if _, err := requirements.SetTechnicalState(root, "test", "component", "store", "retired", "retired", "Replaced", []string{target + ":event:active"}); err != nil {
 		t.Fatal(err)
 	}
-	status, body = get(target + ":revision:r1")
+	status, body = get(first.ContentDigest)
 	if status != 200 || !strings.Contains(body, `data-documentation-status="retired"`) {
 		t.Fatalf("retirement hidden: %d %s", status, body)
 	}

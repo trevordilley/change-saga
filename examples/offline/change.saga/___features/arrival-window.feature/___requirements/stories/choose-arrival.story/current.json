@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "bulletin",
+        "statement": "The visitor can read the bulletin timestamp and its stated arrival window."
+      },
+      {
+        "id": "uncertain",
+        "statement": "Missing or outdated information is shown as uncertain; it is never presented as safe navigation advice."
+      }
+    ],
+    "citations": [],
+    "overview": "This is deliberately authored sample intent, not a built product or evidence of safe navigation. The Plan below remains planned and its review gate is unpassed.",
+    "personas": [
+      "urn:change-saga:harbor-watch:persona:harbor-visitor"
+    ],
+    "statement": "As a harbor visitor I can read the next tide bulletin so that I can discuss an arrival window with the harbor office.",
+    "story": "urn:change-saga:harbor-watch:story:choose-arrival",
+    "title": "Choose an arrival window"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:harbor-watch:story:choose-arrival"
+  }
+}

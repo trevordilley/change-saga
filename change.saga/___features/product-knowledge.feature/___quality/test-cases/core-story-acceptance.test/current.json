@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "Keep unfinished intent proposed until a criterion exists.",
+    "preconditions": [
+      "A disposable Saga is available for authoring a criterion-free story."
+    ],
+    "steps": [
+      {
+        "action": "Create a proposed story with no criteria and load it.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:draft-without-criteria"
+        ],
+        "expected_result": "The story is valid in proposed state without invented criteria.",
+        "id": "check-draft-without-criteria"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-story-acceptance",
+    "title": "Keep unfinished intent proposed until a criterion exists"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-story-acceptance"
+  }
+}

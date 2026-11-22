@@ -459,6 +459,16 @@ func ReadPinnedStyle(repositoryRoot string, style StyleSource) ([]byte, error) {
 }
 
 func validateRevisionGraph(prototype *Prototype, sagaID string) error {
+	if prototype.current {
+		if len(prototype.Revisions) == 0 {
+			return fmt.Errorf("prototype requires current content")
+		}
+		prototype.CurrentRevision = &prototype.Revisions[len(prototype.Revisions)-1]
+		pin, _ := RevisionURN(sagaID, prototype.Identity.ID, prototype.CurrentRevision.ID)
+		prototype.RevisionHeads = []string{pin}
+		return nil
+	}
+
 	var p validationErrors
 	values := map[string]Revision{}
 	parents := map[string][]string{}

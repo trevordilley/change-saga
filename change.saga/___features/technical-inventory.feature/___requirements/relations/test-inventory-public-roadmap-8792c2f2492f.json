@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-public-roadmap-8792c2f2492f",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-public-roadmap",
-  "to": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
-  "scope": "self",
-  "rationale": "Steps scope define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-public-roadmap:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:10:12.074754Z",
-  "request_id": "test-inventory-public-roadmap-8792c2f2492f"
+  "from": "urn:change-saga:change-saga:test-case:inventory-public-roadmap",
+  "from_revision": "sha256:64481c580cf98ef4d6559ec0ceba69e7a1d4da06cb97bfa112fb65832020b859",
+  "id": "test-inventory-public-roadmap-8792c2f2492f",
+  "rationale": "Steps scope define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-public-roadmap-8792c2f2492f",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+  "to_revision": "sha256:4143a2f5553c33ee576fa3f6c476a0fcfa6a0a4189ea7fc12ee826f228b39114",
+  "type": "verifies",
+  "version": 5
 }

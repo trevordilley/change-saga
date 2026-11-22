@@ -126,7 +126,7 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 		}
 		prefix := "urn:change-saga:" + manifest.ID + ":whiteboard:"
 		if strings.HasPrefix(target, prefix) {
-			revision := q.Get("revision")
+			revision := q.Get("content_digest")
 			if board, e := requirements.LoadResolvedWhiteboard(a.root, manifest.ID, strings.TrimPrefix(target, prefix), revision); e == nil && board != nil {
 				if description, e := board.Composition.Describe(""); e == nil {
 					for _, instance := range append(description.Elements, description.Connections...) {
@@ -171,8 +171,8 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 		panel.Records = panel.Records[:100]
 		panel.Truncated = true
 	}
-	if q.Get("revision") != "" && len(panel.Records) > 0 {
-		panel.Note = fmt.Sprintf("Reading saved revision %s. Annotations retain their authored pins; current target health is shown separately.", q.Get("revision"))
+	if q.Get("content_digest") != "" && len(panel.Records) > 0 {
+		panel.Note = fmt.Sprintf("Selected content digest %s. Annotations retain their authored pins; current target health is shown separately.", q.Get("content_digest"))
 	}
 	render()
 }

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Historical b1 renders identical SVG to its original content and its original source pins remain intact.",
+    "preconditions": [
+      "Disposable board erd b1 pins jobs ERD r1 with Original detail; retain its rendered SVG and exact child pins."
+    ],
+    "steps": [
+      {
+        "action": "Revise jobs to r2 with New detail and reload unchanged board b1.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:history"
+        ],
+        "expected_result": "The existing board does not follow the newer child revision.",
+        "id": "child"
+      },
+      {
+        "action": "Publish board b2 using jobs r2, then resolve exact b1.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:history"
+        ],
+        "expected_result": "Historical b1 renders identical SVG to its original content and its original source pins remain intact.",
+        "id": "history"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-historical-pins",
+    "title": "Reopen an exact historical board after newer publication"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-historical-pins"
+  }
+}

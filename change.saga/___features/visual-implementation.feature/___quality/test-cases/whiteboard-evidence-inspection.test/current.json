@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "All defined steps retain exact context, report currency honestly and respect native element ownership.",
+    "preconditions": [
+      "Publish a board with direct code, criterion/record/definition links and an explicit inventory selection in an isolated repository."
+    ],
+    "steps": [
+      {
+        "action": "Click Technical design and Architecture, select the element, then open Code, Story, Definition and Record in light and dark.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect"
+        ],
+        "expected_result": "Each action opens its corresponding saved code, criterion, exact definition/selection or record page.",
+        "id": "actions"
+      },
+      {
+        "action": "Change referenced code, observe stale reader/status/health/reconcile, then publish new exact pins with the observed parent.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+        ],
+        "expected_result": "The old element is stale; the new revision becomes current, and the old revision retains its evidence.",
+        "id": "reassess"
+      },
+      {
+        "action": "List direct and selected references, inspect documented code and inventory uses.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
+        ],
+        "expected_result": "Direct evidence and eligible selected code belong to the stable native element; references and reverse uses include that element.",
+        "id": "owners"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-inspection",
+    "title": "Inspect exact whiteboard evidence and publish a reassessed successor"
+  },
+  "state": {
+    "reason": "The defined scenarios are implemented by the linked CLI, server and browser tests; this activates the definition without recording an execution verdict.",
+    "state": "active",
+    "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-inspection"
+  }
+}

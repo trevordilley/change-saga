@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The first ordered slide A is displayed.",
+    "preconditions": [
+      "A feature has one implementation deck with ordered slides A and B; begin from a different feature.",
+      "Intent clarification pending: the recorded criterion expects the first slide, while existing deck-header browser assertions require an overview. This planned check preserves the criterion and does not claim the current entry point implements it."
+    ],
+    "steps": [
+      {
+        "action": "Open the feature Implementation section.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide"
+        ],
+        "expected_result": "The first ordered slide A is displayed.",
+        "id": "open"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-implementation-opening",
+    "title": "Open the first slide from a feature Implementation section"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-implementation-opening"
+  }
+}

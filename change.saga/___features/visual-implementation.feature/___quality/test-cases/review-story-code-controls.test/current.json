@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Story drawer contains only corresponding intent and Code drawer only corresponding code, without unrelated drawer content.",
+    "preconditions": [
+      "Use implementation-deck browser fixture with surprise Item referencing src/app.go; add an explains relation from that Item to Understand a request."
+    ],
+    "steps": [
+      {
+        "action": "Open the Item details and choose its Story control.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls",
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+        ],
+        "expected_result": "Both Story and Code controls exist; Linked stories drawer shows the one linked story and authored rationale.",
+        "id": "story"
+      },
+      {
+        "action": "Close Linked stories, reopen Item details and choose Code.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls"
+        ],
+        "expected_result": "Linked code drawer opens for the Item.",
+        "id": "code"
+      },
+      {
+        "action": "Inspect each drawer while opening it in turn.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:separate-controls"
+        ],
+        "expected_result": "Story drawer contains only corresponding intent and Code drawer only corresponding code, without unrelated drawer content.",
+        "id": "exclusive"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-story-code-controls",
+    "title": "Inspect intent and code independently from one Item"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-story-code-controls"
+  }
+}

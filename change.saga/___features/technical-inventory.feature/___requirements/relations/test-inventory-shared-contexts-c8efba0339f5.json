@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-shared-contexts-c8efba0339f5",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-shared-contexts",
-  "to": "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding",
-  "scope": "self",
-  "rationale": "Steps saved define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-shared-contexts:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-compose-designs:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:50.600045Z",
-  "request_id": "test-inventory-shared-contexts-c8efba0339f5"
+  "from": "urn:change-saga:change-saga:test-case:inventory-shared-contexts",
+  "from_revision": "sha256:7e26718e622809fcb1b1e6a4a666a2db937493e34c1a350bfc58d8e3ce27339d",
+  "id": "test-inventory-shared-contexts-c8efba0339f5",
+  "rationale": "Steps saved define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-shared-contexts-c8efba0339f5",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding",
+  "to_revision": "sha256:db0d0d128a449c99996482976f65fcc689e515a7b272ecf23e08ea4f10fff10e",
+  "type": "verifies",
+  "version": 5
 }

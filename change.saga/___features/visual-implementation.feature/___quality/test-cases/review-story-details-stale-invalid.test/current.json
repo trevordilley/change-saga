@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Stale and invalid links remain distinguishable; invalid-fixture browser feasibility is an open verification gap.",
+    "preconditions": [
+      "Use exact Item relation fixture with one story relation and one criterion relation.",
+      "Use disposable test fixtures only: public authoring can create a stale pin after a valid revision, but rejects a nonexistent target. Invalid-endpoint browser fixture support remains unproven."
+    ],
+    "steps": [
+      {
+        "action": "Change the stored source content pin to a nonmatching digest and make the second target missing in the test fixture; rebuild the story projection.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+        ],
+        "expected_result": "The first link is stale and the missing-target link is invalid.",
+        "id": "stale"
+      },
+      {
+        "action": "In a browser, inspect an Item relation made stale by a supported public revision.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+        ],
+        "expected_result": "The link is visibly stale and retains story/criterion and rationale context.",
+        "id": "drawer"
+      },
+      {
+        "action": "With an explicitly supplied malformed or externally broken disposable reader fixture, inspect the missing-endpoint Item link; first establish that the reader supports loading this fixture.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details"
+        ],
+        "expected_result": "If the broken document can be loaded, the drawer exposes invalid currency rather than hiding or presenting the link as current. Public authoring continues to reject missing endpoints.",
+        "id": "invalid-drawer"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-story-details-stale-invalid",
+    "title": "Expose stale and invalid Item intent links"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-story-details-stale-invalid"
+  }
+}

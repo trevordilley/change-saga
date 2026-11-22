@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "harbor-watch-technical-design",
+  "title": "Technical design",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 40
+}

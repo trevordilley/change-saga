@@ -1,0 +1,75 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "document": {
+      "version": 1,
+      "width": 1200,
+      "height": 600,
+      "elements": [
+        {
+          "id": "intro",
+          "kind": "text",
+          "label": "An illustrative arrival-window conversation",
+          "x": 50,
+          "y": 40,
+          "width": 1100,
+          "height": 80,
+          "style": "normal",
+          "decorative": true
+        },
+        {
+          "id": "bulletin",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Read the tide bulletin",
+          "note": "Check the timestamp and uncertainty. This example supplies no real navigation data.",
+          "x": 90,
+          "y": 190,
+          "width": 380,
+          "height": 180,
+          "style": "normal"
+        },
+        {
+          "id": "discussion",
+          "kind": "node",
+          "shape": "rect",
+          "label": "Discuss an arrival window",
+          "note": "The fictional visitor consults the harbor office. The example makes no safety or implementation claim.",
+          "x": 730,
+          "y": 190,
+          "width": 380,
+          "height": 180,
+          "style": "normal"
+        },
+        {
+          "id": "informs",
+          "kind": "edge",
+          "label": "informs the visit",
+          "x": 0,
+          "y": 0,
+          "style": "normal",
+          "from": "bulletin",
+          "to": "discussion",
+          "points": [
+            {
+              "x": 470,
+              "y": 280
+            },
+            {
+              "x": 730,
+              "y": 280
+            }
+          ],
+          "label_box": {
+            "x": 480,
+            "y": 235,
+            "width": 240,
+            "height": 35
+          }
+        }
+      ]
+    },
+    "name": "Arrival-window example"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Opening identifies companion layout and cursor equals resolved head commit.",
+    "preconditions": [
+      "Create source checkout and separate documentation repository; document source commit H."
+    ],
+    "steps": [
+      {
+        "action": "Sync companion Saga against source and commit the documentation.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-or-companion:criterion:companion-cursor"
+        ],
+        "expected_result": "The companion cursor is exactly H.",
+        "id": "sync"
+      },
+      {
+        "action": "Advance source, update documentation, sync again and read compared status with --repo.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-or-companion:criterion:companion-cursor"
+        ],
+        "expected_result": "Opening identifies companion layout and cursor equals resolved head commit.",
+        "id": "advance"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-companion-cursor",
+    "title": "Record the exact commit documented by a companion Saga"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-companion-cursor"
+  }
+}

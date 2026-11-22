@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The same comment is visible in slide A context.",
+    "preconditions": [
+      "Open a review with at least two slides and no existing discussion on slide A."
+    ],
+    "steps": [
+      {
+        "action": "Use slide A's Add comment control and submit a distinct body.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context"
+        ],
+        "expected_result": "The comment is associated with slide A rather than slide B or an unrelated Item.",
+        "id": "comment"
+      },
+      {
+        "action": "Reload and open slide A discussion.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context"
+        ],
+        "expected_result": "The same comment is visible in slide A context.",
+        "id": "reload"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-slide-comment",
+    "title": "Attach an ordinary discussion to a whole review slide"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-slide-comment"
+  }
+}

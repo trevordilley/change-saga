@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-evidence-enrichment-history-b0ca17878008",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history",
-  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:evidence-provenance",
-  "scope": "self",
-  "rationale": "Steps check-evidence-provenance, check-exposed-provenance-fields define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:definitions-20261016",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:34.091275Z",
-  "request_id": "test-core-evidence-enrichment-history-b0ca17878008"
+  "from": "urn:change-saga:change-saga:test-case:core-evidence-enrichment-history",
+  "from_revision": "sha256:4f47ed05dc557faa434042d6de589b85dae95d1bb80fda368d673ead2300033f",
+  "id": "test-core-evidence-enrichment-history-b0ca17878008",
+  "rationale": "Steps check-evidence-provenance, check-exposed-provenance-fields define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-evidence-enrichment-history-b0ca17878008",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:evidence-provenance",
+  "to_revision": "sha256:19c5b9e1aea31424ce435cd778db05e19775cf1ad520c2a1c67672c63dd3c342",
+  "type": "verifies",
+  "version": 5
 }

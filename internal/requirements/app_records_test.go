@@ -52,7 +52,7 @@ func TestMovingAStoryKeepsEveryRelationCurrent(t *testing.T) {
 	}
 	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core", ID: "child-refines-parent", Type: RelationRefines,
 		From: "urn:change-saga:test:story:child", To: "urn:change-saga:test:story:parent", Rationale: "narrows it",
-		FromRevision: "urn:change-saga:test:story:child:revision:r1", ToRevision: "urn:change-saga:test:story:parent:revision:r1", CreatedAt: testTime}); err != nil {
+		FromRevision: currentFixtureStoryPin(t, root, "urn:change-saga:test:story:child"), ToRevision: currentFixtureStoryPin(t, root, "urn:change-saga:test:story:parent"), CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	result, err := MoveStory(root, "test", MoveStoryInput{Story: "urn:change-saga:test:story:parent", Feature: "billing"})
@@ -120,15 +120,15 @@ func TestPersonaLifecycleAndRevisions(t *testing.T) {
 	if _, err := SetPersonaState(root, "test", SetPersonaStateInput{Persona: persona, ID: "retired", Parents: []string{persona + ":event:active"}, State: PersonaRetired, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := SetPersonaState(root, "test", SetPersonaStateInput{Persona: persona, ID: "again", Parents: []string{persona + ":event:retired"}, State: PersonaRetired, CreatedAt: testTime}); err == nil {
-		t.Fatal("repeating a persona state was accepted")
+	if _, err := SetPersonaState(root, "test", SetPersonaStateInput{Persona: persona, ID: "again", Parents: []string{persona + ":event:retired"}, State: PersonaRetired, CreatedAt: testTime}); err != nil {
+		t.Fatal("identical current state retry failed", err)
 	}
 	document, err := Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
 	found := document.FindPersona("buyer")
-	if found.Active() || found.CurrentRevision.ID != "r2" {
+	if found.Active() || found.CurrentRevision.Description != "Buys and returns things" {
 		t.Fatalf("persona = %+v", found)
 	}
 }

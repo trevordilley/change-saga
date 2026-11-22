@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "All defined steps retain exact context, report currency honestly and respect native element ownership.",
+    "preconditions": [
+      "Start with current board content and exact evidence saved in a real Git commit."
+    ],
+    "steps": [
+      {
+        "action": "Request element actions without a content digest, then with an unavailable saved digest.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:inspect"
+        ],
+        "expected_result": "Requests return 400 and 404 respectively; missing historical context never substitutes current content.",
+        "id": "exact"
+      },
+      {
+        "action": "Submit a relative diagram edit using an outdated base content digest.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:currency"
+        ],
+        "expected_result": "The edit is rejected before applying its delta; reread current content before retrying.",
+        "id": "parent"
+      },
+      {
+        "action": "Attempt to publish a selection whose evidence ID is absent from its saved definition.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:whiteboard-element-evidence:criterion:coverage"
+        ],
+        "expected_result": "Publication fails instead of accepting an undeclared evidence selector for coverage.",
+        "id": "selection"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections",
+    "title": "Reject missing saved context and invalid whiteboard evidence publication"
+  },
+  "state": {
+    "reason": "The defined scenarios are implemented by the linked CLI, server and browser tests; this activates the definition without recording an execution verdict.",
+    "state": "active",
+    "test_case": "urn:change-saga:change-saga:test-case:whiteboard-evidence-rejections"
+  }
+}

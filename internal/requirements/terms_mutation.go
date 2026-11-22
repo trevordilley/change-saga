@@ -3,6 +3,7 @@ package requirements
 import (
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"path/filepath"
 	"reflect"
@@ -10,7 +11,6 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
-	"github.com/twentyideas/changesaga/internal/store"
 )
 
 // TermDefinition is the complete content of one term revision.
@@ -87,6 +87,12 @@ func termRevision(urn, id string, parents []string, definition TermDefinition, c
 // AddTerm publishes a term's identity, first revision, and active event
 // atomically.
 func AddTerm(root, sagaID string, input AddTermInput) (MutationResult, error) {
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
+	if input.EventID == "" {
+		input.EventID = "current"
+	}
 	createdAt := mutationTime(input.CreatedAt)
 	urn, err := TermURN(sagaID, input.ID)
 	if err != nil {
@@ -113,8 +119,8 @@ func AddTerm(root, sagaID string, input AddTermInput) (MutationResult, error) {
 	err = mutate(root, sagaID, func(document *Document) error {
 		if existing := document.FindTerm(input.ID); existing != nil {
 			identity.CreatedAt, revision.CreatedAt, event.CreatedAt = existing.Identity.CreatedAt, existing.Identity.CreatedAt, existing.Identity.CreatedAt
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && len(existing.Revisions) > 0 && len(existing.Events) > 0 &&
-				reflect.DeepEqual(existing.Identity, identity) && reflect.DeepEqual(existing.Revisions[0], revision) && reflect.DeepEqual(existing.Events[0], event) {
+			if existing.CurrentRevision != nil && existing.CurrentLifecycle != nil &&
+				currentrecord.Equal(*existing.CurrentRevision, revision) && currentrecord.Equal(*existing.CurrentLifecycle, event) {
 				result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...), Replayed: true}
 				return nil
 			}
@@ -136,12 +142,16 @@ func AddTerm(root, sagaID string, input AddTermInput) (MutationResult, error) {
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: []string{revisionURN, eventURN}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // ReviseTerm appends a complete term revision. Its parents must name every
 // current revision head, so several parents reconcile competing heads.
 func ReviseTerm(root, sagaID string, input ReviseTermInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParseTermURN(sagaID, input.Term)
 	if err != nil {
 		return MutationResult{}, err
@@ -170,9 +180,6 @@ func ReviseTerm(root, sagaID string, input ReviseTermInput) (MutationResult, err
 			}
 			return fmt.Errorf("revision id %q already exists", input.ID)
 		}
-		if !sameSet(revision.Parents, term.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", revision.Parents, term.RevisionHeads)
-		}
 		if err := validateTermLinks(document, revision); err != nil {
 			return err
 		}
@@ -181,17 +188,21 @@ func ReviseTerm(root, sagaID string, input ReviseTermInput) (MutationResult, err
 		if err := resolveTerm(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), revision, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), revision); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // SetTermState retires or restores a term.
 func SetTermState(root, sagaID string, input SetTermStateInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParseTermURN(sagaID, input.Term)
 	if err != nil {
 		return MutationResult{}, err
@@ -209,31 +220,21 @@ func SetTermState(root, sagaID string, input SetTermStateInput) (MutationResult,
 		if term == nil {
 			return fmt.Errorf("term %q does not exist", id)
 		}
-		for _, existing := range term.Events {
-			if existing.ID != input.ID {
-				continue
-			}
-			wanted := event
-			wanted.CreatedAt = existing.CreatedAt
-			if input.RequestID != "" && existing.RequestID == input.RequestID && reflect.DeepEqual(existing, wanted) {
-				result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: copyStrings(term.LifecycleHeads), Replayed: true}
-				return nil
-			}
-			return fmt.Errorf("lifecycle event id %q already exists", input.ID)
-		}
-		if !sameSet(event.Parents, term.LifecycleHeads) {
-			return fmt.Errorf("lifecycle parents must name every current head (got %v, want %v)", event.Parents, term.LifecycleHeads)
+
+		if term.CurrentLifecycle != nil && term.CurrentLifecycle.State == event.State && term.CurrentLifecycle.Reason == event.Reason {
+			result = MutationResult{URN: urn, Path: path, Replayed: true}
+			return nil
 		}
 		candidate := *term
 		candidate.Events = append(append([]TermEvent{}, term.Events...), event)
 		if err := resolveTerm(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), event, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), event); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "slide-lists-tasks",
+        "statement": "A Plan slide can reference Tasks, and the reader shows which ones with a link to each."
+      },
+      {
+        "id": "done-shown-on-slide",
+        "statement": "A referenced Task's done state shows on the slide."
+      },
+      {
+        "id": "done-without-republishing",
+        "statement": "Marking a Task done changes what its slides show without anyone republishing those slides."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can see on a Plan's slides which Tasks they reference and which of those are done, so the deck itself tells me how far the work has come.",
+    "story": "urn:change-saga:change-saga:story:see-done-on-slides",
+    "title": "See progress on the slides"
+  },
+  "state": {
+    "reason": "Verified against the code and tests on 2026-11-02. A slide lists its Tasks and how many are done, worked out when it renders.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:see-done-on-slides"
+  }
+}

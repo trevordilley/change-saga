@@ -21,11 +21,11 @@ type whiteboardView struct {
 	ID, Href, CurrentHref string
 	Role                  string
 	DeprecationTarget     string
-	History               []whiteboardRevisionView
 	Metadata              string
 	Viewport              string
 	Visual                template.HTML
 	Name, Revision        string
+	Historical            bool
 	Note                  string
 	Frames                []whiteboardFrameView
 	Sections              []whiteboardSectionView
@@ -97,7 +97,11 @@ func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revi
 	enhanced, capabilities := a.enhanceWhiteboardSources(inventory, resolved, template.HTML(visual))
 	enhanced, staleElements := a.enhanceWhiteboardElements(inventory, id, resolved, enhanced)
 	boardTarget, _ := requirements.WhiteboardURN(inventory.SagaID, id)
-	view := &whiteboardView{DeprecationTarget: boardTarget, ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	view := &whiteboardView{DeprecationTarget: boardTarget, ID: id, Href: whiteboardMetadataHref(metadata, id, revision), CurrentHref: whiteboardMetadataHref(metadata, id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: whiteboardContentDigest(resolved.Revision)}
+	if revision != "" {
+		current, err := requirements.LoadWhiteboard(a.root, inventory.SagaID, id, "")
+		view.Historical = err != nil || current == nil || whiteboardContentDigest(*current) != view.Revision
+	}
 	view.StaleElements = staleElements
 	view.Role = metadata.Role(id)
 	if revision == "" && metadata.Boards[id].Name != "" {
@@ -107,7 +111,7 @@ func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revi
 		camera, _ := json.Marshal(resolved.Revision.Document.Viewport)
 		view.Viewport = string(camera)
 	}
-	view.History = a.whiteboardHistoryView(inventory.SagaID, id, resolved.Revision.ID)
+
 	geometry := []whiteboardGeometry{}
 	for _, item := range append(description.Elements, description.Connections...) {
 		if item.Element.Note != "" && !item.Element.Decorative {
@@ -130,7 +134,7 @@ func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revi
 		}
 		pin := saga.DocumentationLink{Target: item.Source.Target, Revision: item.Source.Revision}
 		frame := whiteboardFrameView{Path: item.Path, Title: item.Element.Label, Summary: item.Element.Summary,
-			Target: pin.Target, Href: technicalPinHref(pin), Revision: pin.Revision, Status: inventory.LinkStatus(pin), Opaque: item.Opaque,
+			Target: pin.Target, Href: technicalPinHref(pin, inventory), Revision: pin.Revision, Status: inventory.LinkStatus(pin), Opaque: item.Opaque,
 			X: item.Bounds.X, Y: item.Bounds.Y, Width: item.Bounds.Width, Height: item.Bounds.Height}
 		if capability, ok := capabilities[item.Path]; ok {
 			switch capability.Mode {
@@ -285,18 +289,18 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 
 const whiteboardTemplates = `
 {{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
-<section class="whiteboard whiteboard-canvas" data-whiteboard-view data-whiteboard-id="{{.ID}}" data-whiteboard-url="{{.Href}}" data-whiteboard-revision="{{.Revision}}" data-technical-page="{{if eq .Role "erd"}}erd{{else}}whiteboard{{end}}"{{if eq .Role "erd"}} data-technical-data-model{{end}} aria-label="{{.Name}} whiteboard">
+<section class="whiteboard whiteboard-canvas" data-whiteboard-view data-whiteboard-id="{{.ID}}" data-whiteboard-url="{{.Href}}" data-whiteboard-content-digest="{{.Revision}}"{{if .Historical}} data-whiteboard-historical="true"{{end}} data-technical-page="{{if eq .Role "erd"}}erd{{else}}whiteboard{{end}}"{{if eq .Role "erd"}} data-technical-data-model{{end}} aria-label="{{.Name}} whiteboard">
 <div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}{{range .Notes}}<template data-diagram-note-template="{{.Path}}">{{template "element-note-popover" .Popover}}</template>{{end}}</div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Whiteboard{{end}}</h1>
-<div class="whiteboard-deprecations whiteboard-overlay" data-deprecation-load hx-get="/api/deprecations?compact=1&amp;target={{urlquery .DeprecationTarget}}&amp;children=1&amp;revision={{urlquery .Revision}}" hx-trigger="load, saga:deprecations" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>
-{{if .StaleElements}}<details class="whiteboard-stale-elements"><summary>{{len .StaleElements}} stale {{if eq (len .StaleElements) 1}}element{{else}}elements{{end}} · reassessment required</summary><p>Referenced code changed. Reassess each element and publish a new whiteboard revision.</p><ul>{{range .StaleElements}}<li><button type="button" data-whiteboard-focus-frame="{{.Path}}">{{.Label}}</button></li>{{end}}</ul></details>{{end}}
+<div class="whiteboard-deprecations whiteboard-overlay" data-deprecation-load hx-get="/api/deprecations?compact=1&amp;target={{urlquery .DeprecationTarget}}&amp;children=1&amp;content_digest={{urlquery .Revision}}" hx-trigger="load, saga:deprecations" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>
+{{if .StaleElements}}<details class="whiteboard-stale-elements"><summary>{{len .StaleElements}} stale {{if eq (len .StaleElements) 1}}element{{else}}elements{{end}} · reassessment required</summary><p>Referenced code changed. Reassess each element and update the whiteboard.</p><ul>{{range .StaleElements}}<li><button type="button" data-whiteboard-focus-frame="{{.Path}}">{{.Label}}</button></li>{{end}}</ul></details>{{end}}
 <details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">
 {{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Focus a section to explore this document. Linked entities open their saved definitions.</p>{{end}}
 <p class="whiteboard-help">Scroll or drag to pan · Shift + scroll pans sideways · Ctrl/Cmd + scroll or + / − to zoom · 0 to fit</p>
-<p class="whiteboard-help">Whiteboard · saved revision <code>{{.Revision}}</code></p>
-{{if .History}}<nav aria-label="Whiteboard revision history"><a href="{{.CurrentHref}}">Current document</a>{{range .History}} · <a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}>Revision {{.ID}}</a>{{end}}</nav>{{end}}
+<p class="whiteboard-help">{{if .Historical}}Saved whiteboard content from Git · <a href="{{.CurrentHref}}">Read the current whiteboard</a>{{else}}Current whiteboard · history is recorded in Git{{end}}</p>
+
 </div></details></header>
 <div class="whiteboard-toolbar whiteboard-overlay" role="toolbar" aria-label="Whiteboard navigation" hidden data-whiteboard-toolbar>
 <button type="button" data-whiteboard-zoom="-1" aria-label="Zoom out whiteboard" title="Zoom out (-)">−</button>

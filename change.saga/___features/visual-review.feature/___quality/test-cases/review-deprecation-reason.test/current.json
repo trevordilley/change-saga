@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The authored reason and exactly selected replacement are visible.",
+    "preconditions": [
+      "Use a content target with a deprecation reason and an independently addressable replacement."
+    ],
+    "steps": [
+      {
+        "action": "Open deprecation inspection for a reason containing literal \u003cscript\u003eunsafe\u003c/script\u003e.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:reason"
+        ],
+        "expected_result": "The reason is rendered as escaped text without executing authored markup.",
+        "id": "reason"
+      },
+      {
+        "action": "Author a deprecation naming the replacement explicitly and inspect it.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:reason"
+        ],
+        "expected_result": "The authored reason and exactly selected replacement are visible.",
+        "id": "replacement"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-reason",
+    "title": "Show the authored reason and explicitly chosen replacement"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-reason"
+  }
+}

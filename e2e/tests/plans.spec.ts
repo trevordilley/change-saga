@@ -14,6 +14,27 @@ function run(saga: SagaFixture, ...args: string[]): void {
   expect(result.status, `${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
 }
 
+test("checkpoint gates hold later tasks and the board expands by clicking", async ({ page, saga }, testInfo) => {
+  run(saga, "plan", "create", "--id", "gated", "--title", "Review before implementation");
+  run(saga, "plan", "add-phase", "--plan", "gated", "--id", "design", "--title", "Design");
+  run(saga, "plan", "add-phase", "--plan", "gated", "--id", "security", "--title", "Security review", "--checkpoint");
+  run(saga, "plan", "expect", "--plan", "gated", "--checkpoint", "security", "--id", "approved", "--statement", "The designated person approved the access design");
+  run(saga, "plan", "add-phase", "--plan", "gated", "--id", "implement", "--title", "Implement");
+  for (const [id, phase] of [["design-work", "design"], ["implementation", "implement"]]) {
+    run(saga, "task", "add", "--plan", "gated", "--id", id, "--title", id, "--phase", phase,
+      "--story", "urn:change-saga:wave-one:story:read-the-tide");
+  }
+  await page.goto(`${saga.baseURL}/plans/gated/tasks`);
+  await waitForSettledSaga(page);
+  await expect(page.locator('[data-plan-node="checkpoint:security"]')).toHaveCount(1);
+  await expect(page.locator('[data-plan-node="stretch:later"]')).toHaveCount(1);
+  await page.getByRole("link", { name: "Show every task" }).click();
+  await expect(page.locator('[data-plan-node="task:implementation"]')).toHaveCount(1);
+  await page.locator('[data-plan-node="task:implementation"]').click();
+  await expect(page.locator('.diff-drawer.open')).toContainText("Held by checkpoint Security review");
+  await page.screenshot({ path: testInfo.outputPath("checkpoint-board.png"), fullPage: true });
+});
+
 test("a Plan's tabs can be followed, and back returns to the last one", async ({ page, saga }) => {
   run(saga, "plan", "create", "--id", "tides", "--title", "Plan the tides");
   run(saga, "task", "add", "--plan", "tides", "--id", "read-tides", "--title", "Read the tide table",
@@ -240,4 +261,24 @@ test("a Task's references open from its page and the board, and an unreadable on
     await taskCode.click();
     await expect(drawer.locator("[data-task-code-view]")).toContainText("could not be read from this checkout", { timeout: 2000 });
   }).toPass();
+});
+
+
+test("inline Plan essay images load by short ID and full Plan slide URN", async ({ page, saga }, testInfo) => {
+  planWithInteractiveSlide(saga);
+  const overview = join(saga.tempDir, "inline-plan-overview.json");
+  writeFileSync(overview, JSON.stringify({
+    body: "![Plan by ID](slide:the-nodes)\n\n![Plan by URN](slide:urn:change-saga:wave-one:plan:tides:slide:the-nodes)\n\n[The nodes](annotation:nodes)",
+    annotations: [{ id: "nodes", label: "The nodes", slide: "the-nodes" }],
+  }));
+  run(saga, "deck", "overview", "--plan", "tides", "--file", overview);
+  await page.goto(`${saga.baseURL}/plans/tides`);
+  await waitForSettledSaga(page);
+  await expect(page.locator("[data-plan-deck] [data-deck-viewer]")).toHaveAttribute("data-deck-face", "overview");
+  for (const alt of ["Plan by ID", "Plan by URN"]) {
+    const image = page.getByAltText(alt, { exact: true });
+    await expect(image).toHaveAttribute("src", "/plans/tides/visual/the-nodes");
+    await expect.poll(() => image.evaluate((node) => (node as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  }
+  await page.screenshot({ path: testInfo.outputPath("inline-plan-images.png"), fullPage: true });
 });

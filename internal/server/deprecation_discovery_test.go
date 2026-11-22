@@ -86,18 +86,18 @@ func TestDeprecationCompactSummaryDefersProvenanceAndKeepsHistoricalContext(t *t
 		}
 		return w.Body.String()
 	}
-	body := get("/api/deprecations?compact=1&target=" + url.QueryEscape(target) + "&revision=r1")
+	body := get("/api/deprecations?compact=1&target=" + url.QueryEscape(target) + "&content_digest=sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	if !strings.Contains(body, "data-deprecation-summary") || strings.Contains(body, "data-deprecations ") || strings.Contains(body, "Authored assertion") || strings.Contains(body, "<script>unsafe") {
 		t.Fatal(body)
 	}
 	if application.files.current.deprecationsView != nil {
 		t.Fatal("compact discovery resolved target health")
 	}
-	if !strings.Contains(body, "revision=r1") || !strings.Contains(body, "&lt;script&gt;") {
+	if !strings.Contains(body, "content_digest=sha256%3A") || !strings.Contains(body, "&lt;script&gt;") {
 		t.Fatal("lost context or escaping")
 	}
-	body = get("/api/deprecations?deprecation=old&revision=r1")
-	if !strings.Contains(body, "Reading saved revision r1") || !strings.Contains(body, "Authored assertion and target pin") {
+	body = get("/api/deprecations?deprecation=old&content_digest=sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	if !strings.Contains(body, "Selected content digest sha256:") || !strings.Contains(body, "Authored assertion and target pin") {
 		t.Fatal(body)
 	}
 	body = get("/deprecations")
@@ -107,8 +107,8 @@ func TestDeprecationCompactSummaryDefersProvenanceAndKeepsHistoricalContext(t *t
 }
 
 func TestDeprecationTechnicalLinksUseRevisionIDsAndEscapedPresentation(t *testing.T) {
-	place := deprecationPlaceLink(deprecationPlace{Target: "urn:change-saga:test:erd:model", Revision: "urn:change-saga:test:erd:model:revision:r1"}, nil, requirements.WhiteboardMetadata{})
-	if place.Href != "/technical/erd/model?revision=r1" {
+	place := deprecationPlaceLink(deprecationPlace{Target: "urn:change-saga:test:erd:model", Revision: "sha256:" + strings.Repeat("a", 64)}, nil, requirements.WhiteboardMetadata{})
+	if place.Href != "/technical/erd/model?content_digest=sha256%3A"+strings.Repeat("a", 64) {
 		t.Fatal(place.Href)
 	}
 	var out bytes.Buffer

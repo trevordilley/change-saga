@@ -57,7 +57,7 @@ func TestWhiteboardLatestRoutesAndFallback(t *testing.T) {
 			t.Fatalf("boosted=%v: %d %v", boosted, response.Code, response.Header())
 		}
 	}
-	for _, path := range []string{"/technical/erd/sqlite?revision=r1", "/technical/erd/sqlite?revision=r2", "/technical/data-entity/local-edit"} {
+	for _, path := range []string{"/technical/data-entity/local-edit"} {
 		status, body := technicalGet(t, mux, path)
 		if status != 200 || !strings.Contains(body, "data-technical-entity=") {
 			t.Fatalf("historical/entity route %s: %d", path, status)
@@ -66,17 +66,17 @@ func TestWhiteboardLatestRoutesAndFallback(t *testing.T) {
 	if status, _ := technicalGet(t, mux, "/technical/erd/missing"); status != 404 {
 		t.Fatalf("missing source: %d", status)
 	}
-	path := filepath.Join(root, "___whiteboards", "data-model", "revisions", "r1.json")
+	path := serverBoardCurrentPath(root, "data-model")
 	if err := os.WriteFile(path, []byte(`{}`), 0600); err != nil {
 		t.Fatal(err)
 	}
-	if status, body := technicalGet(t, mux, "/technical/erd/sqlite"); status != 200 || !strings.Contains(body, `data-erd-revision="r2"`) {
+	if status, body := technicalGet(t, mux, "/technical/erd/sqlite"); status != 200 || !strings.Contains(body, `data-erd-view="urn:change-saga:test:erd:sqlite"`) {
 		t.Fatalf("broken board fallback: %d", status)
 	}
 	if err := os.RemoveAll(filepath.Join(root, "___whiteboards")); err != nil {
 		t.Fatal(err)
 	}
-	if status, body := technicalGet(t, mux, "/technical/erd/sqlite"); status != 200 || !strings.Contains(body, `data-erd-revision="r2"`) {
+	if status, body := technicalGet(t, mux, "/technical/erd/sqlite"); status != 200 || !strings.Contains(body, `data-erd-view="urn:change-saga:test:erd:sqlite"`) {
 		t.Fatalf("no board fallback: %d", status)
 	}
 }
@@ -192,6 +192,7 @@ func TestWhiteboardSidebarCacheTracksBoardAndSourceFiles(t *testing.T) {
 	}
 	source := inventory.Pinned(pins["sqlite"])
 	definition := source.TechnicalDefinition
+	commitServerDocumentation(t, root)
 	definition.Name = "Updated source"
 	if _, err := requirements.WriteTechnicalRevision(context.Background(), root, "test", requirements.TechnicalWrite{Kind: requirements.KindERD, ID: "sqlite", RevisionID: "r3", Parents: []string{pins["sqlite"].Revision}, Definition: definition}); err != nil {
 		t.Fatal(err)
@@ -199,7 +200,7 @@ func TestWhiteboardSidebarCacheTracksBoardAndSourceFiles(t *testing.T) {
 	open()
 	third := application.files.current.whiteboardView
 	if third == second || third.Visual == "" {
-		t.Fatal("changed source reused its old presentation")
+		t.Fatalf("changed source presentation unavailable: %s", third.Note)
 	}
 	found := false
 	for _, frame := range third.Frames {

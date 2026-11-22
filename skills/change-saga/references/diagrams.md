@@ -43,7 +43,7 @@ append `?focus=SECTION_PATH` for a specific section.
 
 Use long-form essays for Product overviews, features and user stories, and slide
 decks for implementation and code reviews. All whiteboards share the same diagram
-grammar, nested sections, cross-section connections and revision contract.
+grammar, nested sections, cross-section connections and current-record contract.
 
 Every deck has a Deck -> Slide -> Item spine. A feature's single living
 implementation deck explains the domain's current implementation. Update its
@@ -93,15 +93,15 @@ conceptual flows from recorded relationships and use declared crow's-foot
 cardinalities. Existing ERD frames are optional imports. Component and system inventory pins are not
 supported whiteboard composition sources; use an element's `documentation` pin to inspect a Component or System.
 
-Use `change-saga whiteboard publish --id ID --revision r1 --name TITLE --from board.json PATH`
-for the complete document. Subsequent publications require `--parent` naming
-the current board revision; source adoption is explicit. Use `whiteboard describe
---id ID [--revision ID] [--focus PATH] --format json PATH`, `whiteboard get
---id ID [--revision ID] [--focus PATH] PATH` and `whiteboard check --id ID PATH`
+Use `change-saga whiteboard publish --id ID --name TITLE --from board.json PATH`
+for the complete current document. Source adoption requires explicit reassessment;
+Git owns earlier board content. Use `whiteboard describe
+--id ID [--focus PATH] --format json PATH`, `whiteboard get
+--id ID [--focus PATH] PATH` and `whiteboard check --id ID PATH`
 to inspect and validate it. `--id` always selects the document; `--focus` selects
 an element inside it. There is no kind selector or `diagram` command alias.
-A whiteboard has no `diagram edit` transaction; it uses immutable complete
-publications. Distinct instance paths identify repeated appearances. Opaque
+A whiteboard has no `diagram edit` transaction; publish its complete current
+source in place. Distinct instance paths identify repeated appearances. Opaque
 imported SVGs remain whole diagrams; do not infer internal geometry or fabricate
 slide Items for them.
 
@@ -114,7 +114,7 @@ reader; `change-saga serve status SCRATCH_SAGA` finds it and `change-saga serve
 stop SCRATCH_SAGA` stops it. Always supply the scratch path so unrelated readers
 are left running.
 
-Revisions live at `___whiteboards/<board-id>/revisions/<revision-id>.json`;
+Current documents live at `___whiteboards/<board-id>/current.json`;
 each document has independent history and must satisfy the shared whiteboard
 JSON contract. Read it at `/technical/whiteboards/<id>`. Use `data-model` for
 the document shown by convention at `/technical/erd`; other names can explain
@@ -135,7 +135,7 @@ Whiteboard elements own optional `evidence`, `criterion_links`, `record`, and
 
 Use an actual verified path/range. `whiteboard publish --repo CHECKOUT` resolves
 the commit-ish and authors the digest; if a digest is supplied, it must match.
-The stored revision contains full exact references. `code` still means code-block
+The current document contains full exact references. `code` still means code-block
 text. `criterion_links` uses the same `{id, criterion, story_revision, rationale}`
 shape as complete-slide Items. `record` names a canonical same-Saga record.
 `documentation` uses `{target, revision}` for a Component, System or data entity;
@@ -158,9 +158,8 @@ The viewer reuses the slide action strip and drawer for code, stories and
 records. When referenced code changes, the element is stale in the reader,
 `references`, `status`, health and `reconcile`, even when the comparison base
 still matches. Reassess the explanation and code, get the complete source, then
-publish a new revision with `--parent CURRENT --revision NEW`; previous revisions
-stay exact and inspectable. A move of unchanged bytes follows ordinary code
-reference remapping. Only current active board revisions contribute living
+publish the current board in place; Git retains the earlier content. A move of unchanged bytes follows ordinary code
+reference remapping. Only current active boards contribute living
 documented-code coverage. A review's own deck retains independent coverage.
 `whiteboard check` warns about repository links in notes without blocking or
 rewriting them. Keep the opening view legible; readers can pan and focus detail.
@@ -429,11 +428,10 @@ an implementation or review deck: the visual asset or diagram source, slide
 metadata, and ordered semantic Items and selectors; an implementation slide's
 Items also carry exact code evidence and pinned Item-level criterion links.
 Create requires `expected_snapshot: "absent"`; update requires the exact snapshot from the preceding result or
-`query slide`. Inspect authoring heads and preserve every conflicting head.
-For divergent history, use `operation: "reconcile"` with `expected_snapshots`
-containing every reported head, omitting the singular `expected_snapshot`.
-Preview with `--dry-run` before publishing. Preserve the stable `request_id`:
-an identical retry is a no-op and reuse with different content is rejected.
+`query slide`. Inspect current content and preserve independent edits in Git.
+Resolve authored file conflicts with Git. Legacy competing heads stop
+normalization without discarding content; inspect and combine them explicitly.
+Complete-slide requests support create/update and store one current value.
 
 A request supplies exactly one of `asset` or `diagram`; with a diagram,
 `media_type` is `image/svg+xml` and may be omitted.
@@ -717,7 +715,7 @@ When the requested work involves those existing records, start with
 logic/transformation with exact code; Systems pin Components and explain their
 directed interactions with scoped evidence. Discover the JSON contract through
 `spec --json` and command help. Update definitions with `add|revise --from` and
-lifecycle with `set-state`, preserving parent heads and provenance.
+lifecycle with `set-state`, preserving stable identity and source provenance.
 
 Use data entities for meaningful persisted/domain records and their evidenced
 relationships; explain them together in one cohesive data-model whiteboard.
@@ -739,7 +737,7 @@ within the requested scope; do not fill an inventory quota, invent relationships
 or claim whole-codebase impact coverage from an unconnected set of decks.
 
 An implementation Item may link a canonical definition with `--documentation`
-and `--documentation-revision`, or the optional `documentation` field of an
+and `--documentation-content-digest`, or the optional `documentation` field of an
 `apply-slide` Item. Keep contextual labels and exact Item evidence: a System
 link grants no coverage of that System's code. Read the saved revision before
 explicitly repinning; never rewrite old review content or approve a slide as a
@@ -758,14 +756,13 @@ Before inventory authoring, run the idempotent initialization command
 without a format-choice interview. Reads and ordinary slide authoring need no
 inventory initialization.
 
-Every new Component, System or data-entity revision states `intent`. Record a
-design as `proposed` (with `baseline` naming the implemented revision it changes,
-or `none`) before code
-exists; record delivery with a new `implemented` revision and `--delivery` at
-the commit whose code you verified, keeping the proposal in history. Give each
+Every current Component, System or data-entity definition states `intent`. Record a
+design as `proposed` (with `baseline` naming the implemented content digest it
+changes, or `none`) before code exists. Update current content to `implemented`
+with `--delivery` at the commit whose code you verified; Git retains the proposal. Give each
 reference a stable evidence `id`. Leave a relationship or interaction
 `proposed` until its own evidence exists; nothing is promoted by implication.
 To show only the relevant code of a documented entity, add `--selections`
 naming the path of saved pins, the evidence ID and the subset range. Pin an
-older revision only with `--documentation-view` naming the saved Saga commit
+older content digest only with `--documentation-view` naming the saved Saga commit
 that bound it. Intent and selections are never approval or proof of coverage.

@@ -1,18 +1,18 @@
 {
+  "description": "The area table names each area's path, title and definition kinds. An area page builds only its own directory, or the ERD page's data model, and its filter submits to that page.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:technical-design-page",
-    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+    "revision": "sha256:6732de30ae7320cdc20bc73836543806833a3aa8dcbadd0d4bb9c0e8cbe34cb1",
+    "target": "urn:change-saga:change-saga:component:technical-design-page"
   },
-  "version": 4,
   "id": "areas",
-  "slide": "tdsp-review-pages",
-  "rank": 20,
   "kind": "node",
   "label": "Area pages",
-  "description": "The area table names each area's path, title and definition kinds. An area page builds only its own directory, or the ERD page's data model, and its filter submits to that page.",
+  "rank": 20,
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-areas",
   "selector": {
-    "type": "element",
-    "element_id": "areas"
+    "element_id": "areas",
+    "type": "element"
   },
-  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-areas"
+  "slide": "tdsp-review-pages",
+  "version": 4
 }

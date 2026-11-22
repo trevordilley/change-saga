@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:8c69da31cc1dded09fe839bae98e991b6c165e6d9e83a6da6c37a2cf73af45d4",
+        "end": 137,
+        "path": "internal/changeview/layers.go",
+        "start": 122
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:b0af2ca38f14306622a4f8e414c07c4a0d847f867c44f34f4eab555af5d573ad",
+        "end": 300,
+        "path": "internal/changeview/layers.go",
+        "start": 273
+      }
+    ],
+    "definition": "A Saga record that a comparison did not edit but may have invalidated. It is listed separately from Changed records and carries causes from changed code, a changed revision pin, or propagation through the traceability chain, so downstream review work stays visible without calling the record directly changed.",
+    "name": "Affected record",
+    "stories": [
+      "urn:change-saga:change-saga:story:change-impact-layers"
+    ],
+    "term": "urn:change-saga:change-saga:term:affected-record"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:affected-record"
+  }
+}

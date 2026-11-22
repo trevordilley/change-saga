@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-stale-coverage-9859b02007c4",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-stale-coverage",
-  "to": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:deduplicate",
-  "scope": "self",
-  "rationale": "Steps initial define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-stale-coverage:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:48.42541Z",
-  "request_id": "test-inventory-stale-coverage-9859b02007c4"
+  "from": "urn:change-saga:change-saga:test-case:inventory-stale-coverage",
+  "from_revision": "sha256:5be780bef66dbf671c59be383715c2ff3039d7f5c50701ae71af0dbbf47991aa",
+  "id": "test-inventory-stale-coverage-9859b02007c4",
+  "rationale": "Steps initial define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-stale-coverage-9859b02007c4",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:deduplicate",
+  "to_revision": "sha256:47f8d6d87d160d433f34d3723c8b2d80b77a6a86b8eb0eab2645f4af7669e579",
+  "type": "verifies",
+  "version": 5
 }

@@ -61,13 +61,9 @@ func TestATermIsALivingRecordThatNamesItsStoriesRecordsAndCode(t *testing.T) {
 		t.Fatalf("a persona reaches the terms that name it: %v", naming)
 	}
 
-	// A revision is a complete snapshot from every current head.
+	// The current definition is a complete editable value; Git preserves the old value.
 	revise := ReviseTermInput{Term: testTermURN, ID: "r2", Parents: []string{}, CreatedAt: testTime,
 		TermDefinition: TermDefinition{Name: "Testtaker", Definition: "One sitting of an assessment."}}
-	if _, err := ReviseTerm(root, "test", revise); err == nil || !strings.Contains(err.Error(), "every current head") {
-		t.Fatalf("a revision without its parent head was accepted: %v", err)
-	}
-	revise.Parents = []string{testTermURN + ":revision:r1"}
 	if _, err := ReviseTerm(root, "test", revise); err != nil {
 		t.Fatal(err)
 	}
@@ -79,7 +75,7 @@ func TestATermIsALivingRecordThatNamesItsStoriesRecordsAndCode(t *testing.T) {
 		t.Fatal(err)
 	}
 	term = document.FindTerm("testtaker")
-	if term.Active() || term.CurrentRevision.ID != "r2" || len(term.CurrentRevision.Stories) != 0 {
+	if term.Active() || term.CurrentRevision.Definition != "One sitting of an assessment." || len(term.CurrentRevision.Stories) != 0 {
 		t.Fatalf("revised and retired term = %+v", term.CurrentRevision)
 	}
 	if len(document.TermsNaming()) != 0 {
@@ -142,6 +138,7 @@ func TestLegacyTermSemanticAxesDefaultToUnknown(t *testing.T) {
 	if _, err := AddTerm(root, "test", input); err != nil {
 		t.Fatal(err)
 	}
+	legacyPackageFixture(t, filepath.Join(root, TermPackagePath("testtaker")), "term", testTermURN, TermRevisionSchemaURL, TermEventSchemaURL, 5, "r1", "active")
 	path := filepath.Join(root, filepath.FromSlash(TermPackagePath("testtaker")), "revisions", "r1.json")
 	data, err := os.ReadFile(path)
 	if err != nil {

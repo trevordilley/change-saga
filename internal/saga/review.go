@@ -75,6 +75,10 @@ type ReviewManifest struct {
 	// Head is the ref the review follows as commits are pushed, such as the
 	// pull request's branch. Empty follows the checkout's HEAD.
 	Head string `json:"head,omitempty"`
+	// Since is a commit the review shows changes from, instead of its merge-base
+	// with Base: a checkpoint's review widened back to an earlier checkpoint. It
+	// changes what is reviewed, never what the pull request merges into.
+	Since string `json:"since,omitempty"`
 	// Merged freezes the exact commits once the change has landed, so the
 	// review stays viewable after its branch is gone.
 	Merged    *ReviewMerge `json:"merged,omitempty"`
@@ -310,6 +314,8 @@ func ValidateReviewManifest(manifest ReviewManifest) error {
 		return fmt.Errorf("base must name the revision the pull request merges into")
 	case strings.ContainsAny(manifest.Head, " \t\n") || strings.HasPrefix(manifest.Head, "-"):
 		return fmt.Errorf("head must be a ref name")
+	case manifest.Since != "" && !coderef.ValidCommit(manifest.Since):
+		return fmt.Errorf("since must be a full immutable Git commit")
 	case manifest.CreatedAt.IsZero():
 		return fmt.Errorf("created_at is required")
 	}

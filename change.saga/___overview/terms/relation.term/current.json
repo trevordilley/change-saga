@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+        "digest": "sha256:65476888a2c260d2e8482958944923979d33e558360f6ac0baa2a06d44416037",
+        "end": 170,
+        "path": "internal/requirements/model.go",
+        "start": 127
+      }
+    ],
+    "definition": "A typed, directional link between Saga records, such as a design addressing a story or a test verifying a criterion. It pins mutable endpoints so only current links participate in traceability. A relation connects documented intent; a code reference instead anchors documentation to source bytes.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Relation",
+    "stories": [
+      "urn:change-saga:change-saga:story:product-intent-path",
+      "urn:change-saga:change-saga:story:design-usage-path"
+    ],
+    "term": "urn:change-saga:change-saga:term:relation"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:relation"
+  }
+}

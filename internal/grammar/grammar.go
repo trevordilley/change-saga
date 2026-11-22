@@ -98,7 +98,7 @@ func Commands() []Command {
 		copied.Flags = append([]Flag(nil), command.Flags...)
 		copied.Writes = append([]string{}, command.Writes...)
 		copied.Positionals = append([]string{}, command.Positionals...)
-		result = append(result, copied)
+		result = append(result, currentCommand(copied))
 	}
 	sort.Slice(result, func(i, j int) bool { return result[i].Name < result[j].Name })
 	return result
@@ -108,7 +108,7 @@ func Commands() []Command {
 func Lookup(name string) (Command, bool) {
 	for _, command := range commands {
 		if command.Name == name {
-			return command, true
+			return currentCommand(command), true
 		}
 	}
 	return Command{}, false
@@ -123,6 +123,13 @@ func Invoke(name, sagaPath string, values ...Value) (Invocation, error) {
 	if !ok {
 		return Invocation{}, fmt.Errorf("grammar does not declare command %q", name)
 	}
+	filtered := make([]Value, 0, len(values))
+	for _, value := range values {
+		if !obsoleteContentFlag(name, value.Flag) {
+			filtered = append(filtered, value)
+		}
+	}
+	values = filtered
 	known := map[string]bool{}
 	for _, value := range values {
 		flag, declared := command.Flag(value.Flag)

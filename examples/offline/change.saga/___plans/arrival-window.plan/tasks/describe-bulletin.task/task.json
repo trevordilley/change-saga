@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/task.schema.json",
+  "version": 5,
+  "id": "describe-bulletin",
+  "title": "Describe the bulletin and its uncertainty",
+  "phase": "understand",
+  "story": "urn:change-saga:harbor-watch:story:choose-arrival",
+  "state": "planned",
+  "created_at": "2026-11-20T23:09:08.668831Z"
+}

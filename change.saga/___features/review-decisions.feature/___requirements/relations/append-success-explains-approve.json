@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "append-success-explains-approve",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T03:33:23.204601Z",
   "from": "urn:change-saga:change-saga:slide:decision-failure-boundaries:item:append-success",
-  "to": "urn:change-saga:change-saga:story:review-decision:criterion:approve",
-  "scope": "self",
+  "id": "append-success-explains-approve",
   "rationale": "The successful branch shows that a validated approved state is appended before success is returned.",
-  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T03:33:23.204601Z"
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:approve",
+  "to_revision": "sha256:121d2c551ffdaa7a8268f1daa8cc5c348d63ec76d3b1f1a7284a5ff66c363456",
+  "type": "explains",
+  "version": 5
 }

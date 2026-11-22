@@ -170,20 +170,24 @@ func TestFeatureRemoveRefusesThemeAndHistoricalDependencies(t *testing.T) {
 	if !reflect.DeepEqual(before, entityFiles(t, root)) {
 		t.Fatal("refusal changed files")
 	}
-	// An immutable flag revision remains a dependency after its current revision changes.
+	// A current flag reference blocks deletion. Git retains older authored values
+	// after the current flag stops naming this feature.
 	if err := FeatureTheme(context.Background(), []string{"set-features", "--theme", "group", root}, io.Discard); err != nil {
 		t.Fatal(err)
 	}
 	target := applayout.FeatureURN("atomic", "held")
-	if err := FeatureFlag(context.Background(), []string{"add", "--id", "gate", "--revision", "r1", "--event", "off", "--description", "Gates held", "--target", target, root}, io.Discard); err != nil {
+	if err := FeatureFlag(context.Background(), []string{"add", "--id", "gate", "--description", "Gates held", "--target", target, root}, io.Discard); err != nil {
 		t.Fatal(err)
 	}
-	if err := FeatureFlag(context.Background(), []string{"revise", "--flag", "urn:change-saga:atomic:flag:gate", "--revision", "r2", "--parent", "urn:change-saga:atomic:flag:gate:revision:r1", "--description", "Now gates core", "--target", applayout.FeatureURN("atomic", testFeature), root}, io.Discard); err != nil {
+	if result, err := runEntity(t, root, "feature", "remove", "--feature", "held", "--dry-run"); err == nil {
+		t.Fatalf("current flag dependency was ignored: %+v", result)
+	}
+	if err := FeatureFlag(context.Background(), []string{"revise", "--flag", "urn:change-saga:atomic:flag:gate", "--description", "Now gates core", "--target", applayout.FeatureURN("atomic", testFeature), root}, io.Discard); err != nil {
 		t.Fatal(err)
 	}
 	result, err := runEntity(t, root, "feature", "remove", "--feature", "held", "--dry-run")
-	if err == nil || !strings.Contains(result.Error.Message, "revisions/r1.json") {
-		t.Fatalf("historical dependency accepted: %+v %v", result, err)
+	if err != nil || !result.OK || !result.DryRun {
+		t.Fatalf("obsolete content history blocked current removal: %+v %v", result, err)
 	}
 }
 

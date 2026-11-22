@@ -1,0 +1,98 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+        "digest": "sha256:942246439f730a5feea6e9ebc7cc1c83b07d525c321c243fbb6bb0b1d58ba20f",
+        "end": 90,
+        "id": "manifest",
+        "note": "The slide record.",
+        "path": "internal/saga/model.go",
+        "start": 75
+      }
+    ],
+    "delivery": {
+      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "One ordered visual argument with a flash-card Front summary and a detailed visual Back using the existing SVG, HTML or raster asset. Both faces retain one stable slide identity and the same semantic Items, exact evidence and reading order. Transaction-managed slides are an append-only history of complete snapshots.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "note": "Unique across the whole Saga.",
+        "type": "string"
+      },
+      {
+        "id": "deck",
+        "keys": [
+          "foreign"
+        ],
+        "name": "deck",
+        "type": "deck ID"
+      },
+      {
+        "id": "intent",
+        "name": "intent",
+        "type": "string"
+      },
+      {
+        "id": "entrypoint",
+        "name": "entrypoint",
+        "note": "The detailed Back visual; changing faces creates no new evidence owner.",
+        "type": "asset file"
+      },
+      {
+        "id": "reading_order",
+        "name": "reading_order",
+        "type": "Item IDs"
+      },
+      {
+        "id": "front",
+        "name": "front",
+        "note": "Authored summary bullets; older slides derive them from the takeaway and Item labels. The existing entrypoint remains the Back.",
+        "type": "optional string[]"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Slide",
+    "record": "urn:change-saga:change-saga:data-entity:slide",
+    "relationships": [
+      {
+        "cardinality": {
+          "destination": "1",
+          "owner": "0..many"
+        },
+        "code": [
+          {
+            "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+            "digest": "sha256:06d76c201ff5201a06ab1b912a1bcc5f5b1ec77ecbd239abbc0b7090e4ae43d1",
+            "end": 63,
+            "id": "in-deck-field",
+            "note": "SlideManifest.DeckID.",
+            "path": "internal/saga/model.go",
+            "start": 63
+          }
+        ],
+        "destination": {
+          "revision": "sha256:171dd1b49c020d17234d5879d9298d149e6f436f18e635feb939a2fbe996a9c1",
+          "target": "urn:change-saga:change-saga:data-entity:deck"
+        },
+        "explanation": "Each slide names its deck; a deck may have no slides yet.",
+        "id": "in-deck",
+        "intent": "implemented",
+        "label": "in",
+        "meaning": "association"
+      }
+    ]
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:slide",
+    "state": "active"
+  }
+}

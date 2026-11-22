@@ -1,8 +1,7 @@
 # Persona and term query contract
 
-Status: shipped query contract. The guarded rename proposal in
-[cli-ergonomics-plan.md](cli-ergonomics-plan.md) remains blocked as described
-below.
+Status: shipped query contract, updated for [Git-owned history](git-owned-history.md).
+Name-only rename commands remain unimplemented; `revise` edits current content.
 
 These operations extend the existing `change-saga.ai/v1` envelope. They use
 Saga's current records, canonical typed references, source/Saga snapshot, and
@@ -23,14 +22,14 @@ usage, and pagination fields. `change-saga spec --json` publishes the same
 query schema and operation registry under `query`.
 
 `personas` returns stable identity, immutable creation time, complete current
-name and description, lifecycle state, revision and lifecycle heads, current
-records when uniquely resolvable, and explicit conflict booleans. `terms`
+name and description, current state and content digest, and explicit legacy
+conflict diagnostics. Content revision and lifecycle head arrays are omitted. `terms`
 returns the corresponding term fields plus aliases, applicability, semantic
 maturity/evidence axes, and code-reference health. Exact selectors accept only
 a stable ID or canonical URN in the opened Saga. They never select by display
 name. A missing identity is `not_found`; malformed and foreign-Saga selectors
-are `invalid_argument`. Retired records remain readable. Competing heads remain
-visible and no current definition is synthesized.
+are `invalid_argument`. Retired records remain readable. Legacy competing heads remain
+visible as unresolved diagnostics and no current definition is synthesized.
 
 Persona enumeration and all reference queries are bounded (default 100,
 maximum 1000). For compatibility, `query terms` without `--limit` or
@@ -82,35 +81,18 @@ between the primary and conflict channels is
 `stale_snapshot` with `retryable: true`; restart traversal instead of mixing
 pages.
 
-## Guarded rename safety decision
+## Current editing and the earlier rename proposal
 
-Name-only persona and term edits are not shipped in this milestone. Existing
-single-revision writes already reload under the cross-process Saga writer lock
-and publish one exclusive, durable JSON file, so a real append can be atomic
-and concurrent attempts can be serialized. Existing replay detection is tied
-to the revision file and caller-supplied revision ID, however.
+Use `persona revise` and `term revise` for deliberate current-content edits.
+Writers reload under the Saga lock and atomically replace `current.json`.
+Equal-content retries are no-ops; there is no revision-ID or request-receipt
+ledger. Renaming does not change stable identities or rewrite story/prose/SVG
+text, create aliases, repin relations, or record approvals. Relation currency
+continues to follow endpoint-specific content comparisons.
 
-The proposed operation also requires all of these properties at once:
-
-- internally allocated revision IDs;
-- a stable request ID that survives an uncertain outcome;
-- rejection when that request ID is reused with different payload; and
-- a true equal-name no-op that creates no unnecessary semantic revision.
-
-For a no-op, the current Git-native format has nowhere to durably reserve the
-request ID. Writing a revision would violate no-op behavior; remembering it
-only in memory would make retries unsafe; and adding operation-receipt records
-would be a persisted format change requiring its own design, schema, merge,
-retention, and compatibility review. The implementation therefore stops at
-the query milestone rather than weakening idempotency or silently redesigning
-the format. Existing explicit `persona revise` and `term revise` commands
-remain available for deliberate authoring.
-
-No query or proposed rename changes URNs, rewrites story/prose/SVG text,
-creates aliases, repins relations, records approvals, or changes semantic
-currency policy. Today a persona name/description or term definition change
-creates a normal new record revision; relation currency continues to follow
-the existing endpoint-specific comparison rules.
+The earlier guarded rename proposal and its persisted replay-receipt design
+were not shipped. Their history machinery is superseded by Git-owned history;
+this is not a format blocker for ordinary current-content editing.
 
 ## Measured eight-story read
 

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Replace a nonempty label set.",
+    "preconditions": [
+      "A fresh feature is assigned DevOps and Reliability; a third shared label Operations exists."
+    ],
+    "steps": [
+      {
+        "action": "Supply only Operations as the new label set.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:preserve-or-clear"
+        ],
+        "expected_result": "The feature has exactly Operations; DevOps and Reliability assignments are removed.",
+        "id": "check-nonempty-replacement"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-label-replacement",
+    "title": "Replace a nonempty label set"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-label-replacement"
+  }
+}

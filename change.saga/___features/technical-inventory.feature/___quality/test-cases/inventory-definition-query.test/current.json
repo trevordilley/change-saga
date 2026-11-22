@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Code health reports stale after the selected source bytes change.",
+    "preconditions": [
+      "Use TestInventoryPublic fixture: store/reader Components and FeatureFlag System with flags.go evidence pinned at line 2, then revise store while retaining the System member pin."
+    ],
+    "steps": [
+      {
+        "action": "Query inventory and inspect the first current revision's code.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:discover-definitions",
+          "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:transitive-navigation"
+        ],
+        "expected_result": "Evidence retains the original full commit and digest.",
+        "id": "code"
+      },
+      {
+        "action": "Query the System with --history after revising store.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding"
+        ],
+        "expected_result": "The saved member pin reports stale instead of silently following the newer Component.",
+        "id": "link"
+      },
+      {
+        "action": "Change flags.go line 2 in the disposable source, commit, and query store.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+          "urn:change-saga:change-saga:story:inventory-compose-designs:criterion:code-grounding"
+        ],
+        "expected_result": "Code health reports stale after the selected source bytes change.",
+        "id": "drift"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-definition-query",
+    "title": "Read canonical definitions, exact code and stale link health"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-definition-query"
+  }
+}

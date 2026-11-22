@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "plans-section",
+        "statement": "The reader has a Plans section beside Documentation and Reviews that lists the Plans."
+      },
+      {
+        "id": "reads-as-a-plan",
+        "statement": "A reader on a Plan's page can tell from that page that it describes intended work and is not a Review."
+      },
+      {
+        "id": "plan-crosses-features",
+        "statement": "A Plan's Tasks can link to stories in more than one feature."
+      },
+      {
+        "id": "change-stays-one-plan",
+        "statement": "Changing a Plan and committing it updates that Plan and does not create another."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can find Plans in their own section beside Documentation and Reviews, so I can tell what we intend to do from what exists and what has changed.",
+    "story": "urn:change-saga:change-saga:story:find-plans-in-their-section",
+    "title": "Find Plans in their own section"
+  },
+  "state": {
+    "reason": "Verified against the code and tests on 2026-11-02. The Plans section lists Plans, a Plan's page says what it is, and a Plan crosses features and keeps one identity.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:find-plans-in-their-section"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Living currency reports one regression while comparison evidence for deleted base lines stays valid.",
+    "preconditions": [
+      "Use shopSaga; branch from main, edit the behavior within its pinned queue reference and commit the code change."
+    ],
+    "steps": [
+      {
+        "action": "Reconcile the behavior change against main and compare status layers.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency"
+        ],
+        "expected_result": "Living currency reports one regression/stale reference, while valid deleted-line comparison evidence is not marked stale.",
+        "id": "regression"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-currency-regression",
+    "title": "Distinguish living currency regression from base-side coverage"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-currency-regression"
+  }
+}

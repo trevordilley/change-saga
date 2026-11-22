@@ -7,7 +7,7 @@ test("Roadmap reuses feature essays, stories and themes and preserves links when
  cli("milestone","add","--id","v2","--title","v2 Launch");
  cli("feature","set-plan","--feature","next","--milestone","v2");
  cli("feature","set-overview","--feature","next","--subtext","The next planned capability.","--abstract","A clear outcome for the team.","--text","## Approach\n\nUse the **same feature model** throughout delivery.");
- cli("story","add","--feature","next","--id","next-story","--revision","r1","--event","proposed","--title","Use the next capability","--statement","As a reader I can use the next capability","--criterion","works=The planned outcome is observable.");
+ cli("story", "add", "--feature", "next", "--id", "next-story", "--title", "Use the next capability", "--statement", "As a reader I can use the next capability", "--criterion", "works=The planned outcome is observable.");
  cli("feature-theme","add","--id","growth","--title","Product growth","--text","Bring related capabilities together.","--feature","next","--feature","wave-one");
  const server=await startSagaServer(repo);
  try {

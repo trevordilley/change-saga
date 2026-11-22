@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "story-required",
+        "statement": "A Task that neither links to a user story nor unblocks a Task that leads to one is refused, whatever kind of work it describes."
+      },
+      {
+        "id": "plan-stories-from-tasks",
+        "statement": "A Plan's page lists the stories its Tasks lead to, grouped by feature."
+      },
+      {
+        "id": "follow-the-chain",
+        "statement": "A reader can follow links from a Plan to a Task, through any Tasks it unblocks, to a story, and to that story's feature."
+      },
+      {
+        "id": "stranding-refused",
+        "statement": "A change that would leave a Task with no path to a story is refused, and names the Tasks it would strand."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect, I can rely on every Task leading to a user story, directly or through the Tasks it unblocks, so all planned work traces back to why we are doing it and the chain of dependencies is clear.",
+    "story": "urn:change-saga:change-saga:story:link-tasks-to-stories",
+    "title": "Trace every Task to a user story"
+  },
+  "state": {
+    "reason": "Verified against the code and tests on 2026-11-02. A Task with no path to a story is refused, a stranding change names what it strands, and a reader can follow the chain.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:link-tasks-to-stories"
+  }
+}

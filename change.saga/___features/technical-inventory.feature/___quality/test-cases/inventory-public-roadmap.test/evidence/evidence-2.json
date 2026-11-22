@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:785c57c96ee58985550e33f54f4391de9789eb5cde47b67625fd2a12a28c8e10",
+      "end": 104,
+      "path": "internal/cli/inventory_format2_test.go",
+      "start": 97
+    }
+  ],
+  "created_at": "2026-10-16T23:23:50Z",
   "id": "evidence-2",
-  "test_case": "urn:change-saga:change-saga:test-case:inventory-public-roadmap",
-  "test_revision": "urn:change-saga:change-saga:test-case:inventory-public-roadmap:revision:r1",
+  "request_id": "saga-evidence-inventory-public-roadmap-evidence-2",
   "role": "test_implementation",
   "steps": [
     "new"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/inventory_format2_test.go",
-      "start": 97,
-      "end": 104,
-      "digest": "sha256:785c57c96ee58985550e33f54f4391de9789eb5cde47b67625fd2a12a28c8e10"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:23:50Z",
-  "request_id": "saga-evidence-inventory-public-roadmap-evidence-2"
+  "test_case": "urn:change-saga:change-saga:test-case:inventory-public-roadmap",
+  "test_revision": "sha256:64481c580cf98ef4d6559ec0ceba69e7a1d4da06cb97bfa112fb65832020b859",
+  "verifications": [],
+  "version": 5
 }

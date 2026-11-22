@@ -1,5 +1,10 @@
 # Living Change Saga API
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Status: implementation contract for the first living-Saga delivery.
 
 A Change Saga is a living specification from the
@@ -286,7 +291,7 @@ change-saga prototype add-style SAGA --prototype URN --path REPO_CSS
 
 change-saga relation add SAGA --type TYPE --from URN --to URN
 change-saga relation supersede SAGA --relation URN
-change-saga reference refresh SAGA --relation URN --revision OID
+change-saga reference refresh SAGA --relation URN
 
 change-saga design add-chapter SAGA NAME
 change-saga design add-section SAGA PATH

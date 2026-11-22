@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -67,7 +68,7 @@ func (a *app) enhanceWhiteboardElements(inventory requirements.Inventory, boardI
 		}
 		node.set("data-whiteboard-element", e.ID)
 		node.set("data-whiteboard-board", boardID)
-		node.set("data-whiteboard-revision", resolved.Revision.ID)
+		node.set("data-whiteboard-content-digest", whiteboardContentDigest(resolved.Revision))
 		node.set("tabindex", "0")
 		isStale := false
 		for _, ref := range e.Evidence {
@@ -118,7 +119,7 @@ func boardElementPath(doc diagram.Document, id string) string {
 	return path
 }
 
-// The revision is mandatory: actions from an old page cannot accidentally open
+// The digest is mandatory: actions from an old page cannot accidentally open
 // the current element's replacement evidence. Code rendering stays lazy and uses
 // the same pinned-code renderer and drawer protocol as diagram/slide controls.
 func (a *app) whiteboardElement(w http.ResponseWriter, r *http.Request) {
@@ -128,14 +129,24 @@ func (a *app) whiteboardElement(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	q := r.URL.Query()
-	boardID, revisionID, elementID := q.Get("board"), q.Get("revision"), q.Get("element")
-	if !livingid.ValidID(boardID) || !livingid.ValidID(revisionID) || !saga.ValidMarkdownAnchor(elementID) {
-		http.Error(w, "An exact whiteboard revision and element are required.", 400)
+	boardID, digest, elementID := q.Get("board"), q.Get("content_digest"), q.Get("element")
+	if !livingid.ValidID(boardID) || !currentrecord.ValidDigest(digest) || !saga.ValidMarkdownAnchor(elementID) {
+		http.Error(w, "An exact whiteboard content digest and element are required.", 400)
 		return
 	}
-	revision, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, boardID, revisionID)
+	selected := ""
+	if q.Get("saved") == "1" {
+		// Only an explicitly opened historical page may retrieve exact bytes
+		// from Git. A stale current page still receives a conflict below.
+		selected = digest
+	}
+	revision, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, boardID, selected)
 	if err != nil || revision == nil {
-		http.Error(w, "The saved whiteboard revision is unavailable. Nothing was substituted.", 404)
+		http.Error(w, "The whiteboard is unavailable. Nothing was substituted.", 404)
+		return
+	}
+	if whiteboardContentDigest(*revision) != digest {
+		http.Error(w, "The whiteboard changed since this page was opened. Reload it before inspecting replacement evidence.", http.StatusConflict)
 		return
 	}
 	e, ok := revision.Document.Element(elementID)
@@ -144,9 +155,9 @@ func (a *app) whiteboardElement(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	item := requirements.WhiteboardItem(document.Manifest.ID, boardID, *revision, e)
-	appearance := "urn:change-saga:" + document.Manifest.ID + ":whiteboard:" + boardID + ":revision:" + revisionID + ":element:" + elementID
+	appearance := requirements.WhiteboardElementTarget(document.Manifest.ID, boardID, elementID)
 	count := len(e.Evidence) + len(e.Selections)
-	id := domID(item.Target + ":revision:" + revision.ID)
+	id := domID(requirements.ContentPin(item.Target, revision.ID))
 	if q.Get("panel") == "code" {
 		refs := make([]requirements.Evidence, len(e.Evidence))
 		for i, ref := range e.Evidence {
@@ -179,7 +190,10 @@ func (a *app) whiteboardElement(w http.ResponseWriter, r *http.Request) {
 		view.Documentation.Relationship = e.Source.Relationship
 	}
 	if count > 0 {
-		query := url.Values{"board": {boardID}, "revision": {revisionID}, "element": {elementID}, "panel": {"code"}}
+		query := url.Values{"board": {boardID}, "content_digest": {digest}, "element": {elementID}, "panel": {"code"}}
+		if q.Get("saved") == "1" {
+			query.Set("saved", "1")
+		}
 		view.CodeHref = "/api/whiteboard-element?" + query.Encode()
 	}
 	if e.Record != "" {
@@ -214,4 +228,12 @@ func whiteboardElementStories(records requirements.Document, item saga.Item, id 
 	}
 	view.summarize()
 	return view
+}
+
+func whiteboardContentDigest(value requirements.WhiteboardRevision) string {
+	if digest := requirements.ContentPin("", value.ID); currentrecord.ValidDigest(digest) {
+		return digest
+	}
+	digest, _ := currentrecord.Digest(value)
+	return digest
 }

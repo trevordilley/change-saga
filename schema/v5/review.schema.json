@@ -50,6 +50,12 @@
       "type": "string",
       "pattern": "^[^-\\s][^\\s]*$"
     },
+    "since": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+      "description": "A full immutable Git commit the review shows changes from instead of its merge-base with base: a checkpoint's review widened back to an earlier checkpoint."
+    },
     "merged": {
       "type": "object",
       "additionalProperties": false,

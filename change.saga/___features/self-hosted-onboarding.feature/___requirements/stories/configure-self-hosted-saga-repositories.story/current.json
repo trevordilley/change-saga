@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "configure-target",
+        "statement": "The onboarding UI lets the user configure the target repository for the self-hosted Saga."
+      },
+      {
+        "id": "setup-saga-repository",
+        "statement": "The onboarding UI lets the user set up the repository that will hold the Saga separately from the target repository."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:roadmap-scope-20261016"
+    ],
+    "overview": "Depends on self-hostable server mode. The target repository contains the application; the Saga repository holds its documentation. Creating a remote repository versus connecting or initializing one, credentials, and the completion check remain open.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can configure the target repository and set up the Saga repository through a UI so that establishing our self-hosted Change Saga is less confusing.",
+    "story": "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories",
+    "title": "Configure the repositories through the UI"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories"
+  }
+}

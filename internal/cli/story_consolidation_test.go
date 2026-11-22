@@ -13,8 +13,6 @@ func TestStoryWithdrawReplaysIdenticalRequestAndStillRefusesAcceptedIntent(t *te
 	withdrawn := addStory(t, root, testFeature, "duplicate").Resource
 	args := []string{
 		"--story", withdrawn,
-		"--parent", withdrawn + ":event:proposed",
-		"--event", "withdrawn-as-duplicate",
 		"--reason", "The canonical proposal already preserves this intent",
 		"--request-id", "withdraw-duplicate-v1",
 		"--json", root,
@@ -41,8 +39,6 @@ func TestStoryWithdrawReplaysIdenticalRequestAndStillRefusesAcceptedIntent(t *te
 	output.Reset()
 	err := storyWithdraw(context.Background(), []string{
 		"--story", accepted,
-		"--parent", accepted + ":event:accepted",
-		"--event", "withdraw-accepted",
 		"--reason", "Must not discard accepted intent",
 		"--request-id", "withdraw-accepted-v1",
 		root,

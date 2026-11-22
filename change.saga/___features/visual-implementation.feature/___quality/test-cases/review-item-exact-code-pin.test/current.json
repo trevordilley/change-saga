@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The reference names H, README.md and exactly line 1; it resolves from that source commit.",
+    "preconditions": [
+      "Use change-overview SVG Item premise and a source commit H containing README.md line 1."
+    ],
+    "steps": [
+      {
+        "action": "Attach H:README.md#L1 evidence to premise.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence"
+        ],
+        "expected_result": "Item-target coverage is accepted while a whole-slide coverage request is rejected.",
+        "id": "cover"
+      },
+      {
+        "action": "Query the Item evidence and inspect the pin.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence"
+        ],
+        "expected_result": "The reference names H, README.md and exactly line 1; it resolves from that source commit.",
+        "id": "read"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-item-exact-code-pin",
+    "title": "Attach exact committed source evidence to an addressable Item"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-item-exact-code-pin"
+  }
+}

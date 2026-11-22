@@ -44,9 +44,8 @@ assessed. Current and stale code-link health also remain separate from the
 availability value.
 
 The terms query always projects both semantic axes; missing values are
-`unknown`. When revision heads conflict, preserve
-`revision_heads`, omit `current_revision`, and treat both axes as `unknown`
-rather than fabricating a merged state or choosing a winner.
+`unknown`. When legacy content is ambiguous, preserve the authored files and resolve its
+meaning explicitly before normalization. Never choose a value by timestamp.
 
 Use `query term-references --term ID|URN` for direct incoming and outgoing
 typed uses with exact owners and selectors. Its completeness metadata excludes
@@ -56,17 +55,14 @@ pages with `--conflict-cursor`, even when no primary references resolve.
 Use `query terms --limit N` for bounded enumeration and follow
 every cursor at one snapshot.
 
-A generated stale-term revision action carries the current values of both
+A generated stale-term edit action carries the current values of both
 axes forward while asking for the repaired code reference. Preserve those
 values unless the task also has evidence for a semantic change; repairing a
 stale selector must not reset either axis to `unknown`.
 
-A rename, changed definition, or changed semantic axis creates a new immutable
-revision with explicit parentage; update its exact defining reference when
-needed rather than rewriting the old record. There is no guarded name-only
-rename command yet, so do not invent one or edit metadata directly. Preserve
-competing revision or lifecycle heads until intent is known. Do not infer a
-winner from timestamps, filenames, or branch order.
+A rename, definition edit, or semantic-axis change updates the current record.
+Preserve its identity and exact defining source references. Git records prior
+values. Do not introduce a separate content revision or lifecycle graph.
 
 Status may suggest vocabulary for added enum values or typed constants. Treat
 the suggestion as a question: confirm that the identifier represents a word
@@ -79,8 +75,8 @@ derived name into a fabricated domain definition.
    snapshot.
 2. Confirm wording and provenance from the user or authoritative source.
 3. Use the focused overview or term command, preserving stable identity,
-   explicit parents, aliases, record links, and exact defining code.
-4. Re-query current heads and stale references, then validate.
+   aliases, record links, and exact defining code.
+4. Re-query current content and stale references, then validate.
 
 Overview and term work does not obligate the user to add unrelated stories,
 designs, tests, or decks.

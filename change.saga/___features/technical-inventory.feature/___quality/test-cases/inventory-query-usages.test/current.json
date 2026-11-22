@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Zero uses is confirmed only with exists=true and complete=true.",
+    "preconditions": [
+      "Use newInventoryQueryFixture with store declared by flags System, a feature Item referencing flags, and unused later Component."
+    ],
+    "steps": [
+      {
+        "action": "Query inventory-uses for store with default depth.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:usage-navigation"
+        ],
+        "expected_result": "The direct System member use is returned and depth_cut is true.",
+        "id": "direct"
+      },
+      {
+        "action": "Query store uses at depth 1 with limit 1 and follow the returned cursor; then filter implementation_item.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:usage-navigation",
+          "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses"
+        ],
+        "expected_result": "The second page has the same snapshot, implementation Item role, feature identity, two-hop path and slide identity.",
+        "id": "transitive"
+      },
+      {
+        "action": "Query later's uses and inspect subject/completeness.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results"
+        ],
+        "expected_result": "Zero uses is confirmed only with exists=true and complete=true.",
+        "id": "absence"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-query-usages",
+    "title": "Follow declared reverse usages to their implementation Items"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-query-usages"
+  }
+}

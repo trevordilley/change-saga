@@ -3,9 +3,11 @@ package requirements
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
@@ -172,15 +174,21 @@ type TechnicalEvent struct {
 }
 
 type TechnicalRecord struct {
+	contentDigest    string
+	gitSource        *currentrecord.GitSource
+	root             string
+	historical       map[string]*TechnicalRevision
+	historyMu        *sync.Mutex
+	current          bool
 	Kind             string              `json:"kind"`
 	Target           string              `json:"target"`
 	Identity         RecordIdentity      `json:"identity"`
-	Revisions        []TechnicalRevision `json:"revisions"`
-	Events           []TechnicalEvent    `json:"events"`
-	RevisionHeads    []string            `json:"revision_heads"`
-	LifecycleHeads   []string            `json:"lifecycle_heads"`
-	CurrentRevision  *TechnicalRevision  `json:"current_revision"`
-	CurrentLifecycle *TechnicalEvent     `json:"current_lifecycle"`
+	Revisions        []TechnicalRevision `json:"-"`
+	Events           []TechnicalEvent    `json:"-"`
+	RevisionHeads    []string            `json:"-"`
+	LifecycleHeads   []string            `json:"-"`
+	CurrentRevision  *TechnicalRevision  `json:"content"`
+	CurrentLifecycle *TechnicalEvent     `json:"state"`
 }
 
 type Inventory struct {
@@ -237,8 +245,58 @@ func (d *Inventory) Find(target string) *TechnicalRecord {
 }
 func (r *TechnicalRecord) Revision(pin string) *TechnicalRevision {
 	for i := range r.Revisions {
-		if r.Target+":revision:"+r.Revisions[i].ID == pin {
+		if technicalPin(r.Target, r.Revisions[i].ID) == pin {
 			return &r.Revisions[i]
+		}
+	}
+	if r.root != "" && contentDigestPattern.MatchString(pin) {
+		if r.historyMu != nil {
+			r.historyMu.Lock()
+			defer r.historyMu.Unlock()
+		}
+		if value, looked := r.historical[pin]; looked {
+			return value
+		}
+		if r.historical == nil {
+			r.historical = map[string]*TechnicalRevision{}
+		}
+		r.historical[pin] = nil
+		if !r.current {
+			if pins, err := currentrecord.AuditPins(r.root); err == nil {
+				for _, legacy := range r.Revisions {
+					sourcePin := r.Target + ":revision:" + legacy.ID
+					digest, err := pins.Resolve(sourcePin)
+					if err != nil || digest != pin {
+						continue
+					}
+					data, err := pins.ContentAtPin(sourcePin)
+					if err != nil {
+						continue
+					}
+					value := TechnicalRevision{Schema: TechnicalSchema(r.Kind, "-revision"), Version: 5, ID: "sha256-" + strings.TrimPrefix(pin, "sha256:"), Parents: []string{}, CreatedAt: r.Identity.CreatedAt}
+					if err := currentrecord.Project(data, &value); err == nil {
+						r.historical[pin] = &value
+						return &value
+					}
+				}
+			}
+		}
+		var source currentrecord.GitContent
+		var err error
+		if r.gitSource != nil {
+			source, err = currentrecord.FindGitContentAt(*r.gitSource, TechnicalPath(r.Kind, r.Identity.ID), pin)
+		} else {
+			source, err = currentrecord.FindGitContent(r.root, TechnicalPath(r.Kind, r.Identity.ID), pin)
+		}
+		if err == nil {
+			value := TechnicalRevision{Schema: TechnicalSchema(r.Kind, "-revision"), Version: 5, ID: "sha256-" + strings.TrimPrefix(pin, "sha256:"), Parents: []string{}, CreatedAt: r.Identity.CreatedAt}
+			if err := currentrecord.Project(source.Content, &value); err == nil {
+				if r.historical == nil {
+					r.historical = map[string]*TechnicalRevision{}
+				}
+				r.historical[pin] = &value
+				return &value
+			}
 		}
 	}
 	return nil
@@ -293,7 +351,13 @@ func (v *TechnicalRevision) EvidenceByID(id string) (*Evidence, string) {
 // LinkStatus never picks a winner, repins a reference, or grants coverage.
 func (d *Inventory) LinkStatus(link DocumentationLink) string {
 	r := d.Find(link.Target)
-	if r == nil || r.Revision(link.Revision) == nil {
+	if r == nil {
+		return "missing"
+	}
+	if r.Revision(link.Revision) == nil && contentDigestPattern.MatchString(link.Revision) {
+		return "stale"
+	}
+	if r.Revision(link.Revision) == nil {
 		return "missing"
 	}
 	if r.CurrentRevision == nil || r.CurrentLifecycle == nil {
@@ -302,13 +366,19 @@ func (d *Inventory) LinkStatus(link DocumentationLink) string {
 	if r.CurrentLifecycle.State == "retired" {
 		return "retired"
 	}
-	if r.Target+":revision:"+r.CurrentRevision.ID != link.Revision {
+	current := technicalPin(r.Target, r.CurrentRevision.ID)
+	if currentrecord.ValidDigest(link.Revision) {
+		if digest, err := r.CurrentContentDigest(); err == nil {
+			current = digest
+		}
+	}
+	if current != link.Revision {
 		return "stale"
 	}
 	return "current"
 }
 
-func LoadInventory(root, sagaID string) (Inventory, error) {
+func LoadInventory(root, sagaID string, sources ...currentrecord.GitSource) (Inventory, error) {
 	d := Inventory{SagaID: sagaID, Format: 1, Records: []TechnicalRecord{}}
 	dir := filepath.Join(root, InventoryDir)
 	if present, err := realDirectory(dir); err != nil {
@@ -346,7 +416,32 @@ func LoadInventory(root, sagaID string) (Inventory, error) {
 		}
 		for _, p := range packages {
 			urn, _ := TechnicalURN(sagaID, k.Kind, p.id)
-			r := TechnicalRecord{Kind: k.Kind, Target: urn, Identity: p.identity}
+			r := TechnicalRecord{root: root, historical: map[string]*TechnicalRevision{}, historyMu: &sync.Mutex{}, Kind: k.Kind, Target: urn, Identity: p.identity}
+			if len(sources) > 0 {
+				r.gitSource = &sources[0]
+			}
+			if p.current {
+				var content TechnicalRevision
+				var state TechnicalEvent
+				if err := projectCurrent(p.record, p.identity.CreatedAt, TechnicalSchema(k.Kind, "-revision"), TechnicalSchema(k.Kind, "-event"), 5, &content, &state); err != nil {
+					return d, err
+				}
+				if err := validateTechnicalRevision(content, k.Kind, urn, content.ID); err != nil {
+					return d, err
+				}
+				if err := validateTechnicalEvent(state, k.Kind, urn, state.ID); err != nil {
+					return d, err
+				}
+				if content.Visual != nil {
+					if err := checkVisualAsset(p.dir, *content.Visual, content.Bindings); err != nil {
+						return d, err
+					}
+				}
+				r.current = true
+				r.Revisions = []TechnicalRevision{content}
+				r.Events = []TechnicalEvent{state}
+			}
+
 			if err := readInventoryJSON(filepath.Join(p.dir, k.Kind+".json"), &r.Identity); err != nil {
 				return d, err
 			}
@@ -384,6 +479,42 @@ func LoadInventory(root, sagaID string) (Inventory, error) {
 			d.Records = append(d.Records, r)
 			if len(d.Records) > MaxInventoryRecords {
 				return d, fmt.Errorf("inventory record limit reached")
+			}
+		}
+	}
+	// Compute compatibility digests while raw legacy bytes still exist. This
+	// also lets saved views release their extraction after loading. The index
+	// and projected values live only in this read, never in Saga storage.
+	var legacyPins *currentrecord.Pins
+	for i := range d.Records {
+		r := &d.Records[i]
+		if r.current {
+			continue
+		}
+		if legacyPins == nil {
+			legacyPins, _ = currentrecord.AuditPins(root)
+		}
+		if legacyPins == nil {
+			continue
+		}
+		for _, legacy := range r.Revisions {
+			pin := technicalPin(r.Target, legacy.ID)
+			digest, err := legacyPins.Resolve(pin)
+			if err != nil {
+				continue
+			}
+			data, err := legacyPins.ContentAtPin(pin)
+			if err != nil {
+				continue
+			}
+			value := TechnicalRevision{Schema: TechnicalSchema(r.Kind, "-revision"), Version: 5, ID: "sha256-" + strings.TrimPrefix(digest, "sha256:"), Parents: []string{}, CreatedAt: r.Identity.CreatedAt}
+			if currentrecord.Project(data, &value) != nil {
+				continue
+			}
+			r.historical[digest] = &value
+			r.historical[pin] = &value
+			if r.CurrentRevision != nil && legacy.ID == r.CurrentRevision.ID {
+				r.contentDigest = digest
 			}
 		}
 	}
@@ -427,15 +558,24 @@ func validateTechnicalEvent(v TechnicalEvent, kind, urn, id string) error {
 	if v.Schema != TechnicalSchema(kind, "-event") || v.Version != 5 || !livingid.ValidID(v.ID) || v.ID != id || v.Record != urn || v.Parents == nil || v.CreatedAt.IsZero() || (v.State != "active" && v.State != "retired") {
 		return fmt.Errorf("invalid %s lifecycle event", kind)
 	}
-	if len(v.Parents) == 0 && v.State != "active" {
-		return fmt.Errorf("initial lifecycle must be active")
-	}
-	if len(v.Parents) > 0 && strings.TrimSpace(v.Reason) == "" {
+	if v.State == "retired" && strings.TrimSpace(v.Reason) == "" {
 		return fmt.Errorf("lifecycle change requires a reason")
 	}
 	return nil
 }
 func resolveTechnical(r *TechnicalRecord, sagaID string) error {
+	if r.current {
+		if len(r.Revisions) == 0 || len(r.Events) == 0 {
+			return fmt.Errorf("current record requires content and state")
+		}
+		r.CurrentRevision = &r.Revisions[len(r.Revisions)-1]
+		r.CurrentLifecycle = &r.Events[len(r.Events)-1]
+		pin, _ := appMemberURN(sagaID, r.Kind, r.Identity.ID, "revision", r.CurrentRevision.ID)
+		r.RevisionHeads = []string{pin}
+		r.LifecycleHeads = memberURNs(sagaID, r.Kind, r.Identity.ID, "event", []string{r.CurrentLifecycle.ID})
+		return nil
+	}
+
 	var problems validationErrors
 	revs := []graphMember{}
 	events := []graphMember{}
@@ -472,6 +612,12 @@ func resolveTechnical(r *TechnicalRecord, sagaID string) error {
 		eventStates[r.Target+":event:"+v.ID] = v.State
 	}
 	for _, v := range r.Events {
+		if len(v.Parents) == 0 && v.State != "active" {
+			problems.add("initial lifecycle must be active")
+		}
+		if len(v.Parents) > 0 && strings.TrimSpace(v.Reason) == "" {
+			problems.add("lifecycle change requires a reason")
+		}
 		if len(v.Parents) == 1 && eventStates[v.Parents[0]] == v.State {
 			problems.add("lifecycle event %q repeats state %s", v.ID, v.State)
 		}
@@ -506,4 +652,61 @@ func technicalAncestor(parentsOf map[string][]string, prefix, from, target strin
 		queue = append(queue, parentsOf[next]...)
 	}
 	return false
+}
+
+func technicalPin(target, id string) string {
+	if contentDigestPattern.MatchString(id) {
+		return id
+	}
+	if strings.HasPrefix(id, "sha256-") && contentDigestPattern.MatchString("sha256:"+strings.TrimPrefix(id, "sha256-")) {
+		return "sha256:" + strings.TrimPrefix(id, "sha256-")
+	}
+	return target + ":revision:" + id
+}
+
+// ContentPin returns the digest of a current record projection, or the legacy
+// URN while reading old storage. New authors obtain the digest through queries.
+func ContentPin(target, id string) string { return technicalPin(target, id) }
+
+func (r *TechnicalRecord) CurrentContentDigest() (string, error) {
+	if r.contentDigest != "" {
+		return r.contentDigest, nil
+	}
+	if r.CurrentRevision == nil {
+		return "", fmt.Errorf("record has no unambiguous current content")
+	}
+	pin := technicalPin(r.Target, r.CurrentRevision.ID)
+	if currentrecord.ValidDigest(pin) {
+		return pin, nil
+	}
+	if r.root == "" {
+		return currentrecord.Digest(*r.CurrentRevision)
+	}
+	pins, err := currentrecord.AuditPins(r.root)
+	if err != nil {
+		return "", err
+	}
+	return pins.Resolve(pin)
+}
+
+// CanonicalPin converts a legacy reference to its exact normalized content
+// digest for a public link. Aliases are ephemeral projections of the loaded
+// files, including saved Git views; this never writes or follows current data.
+func (d *Inventory) CanonicalPin(pin DocumentationLink) (DocumentationLink, error) {
+	if currentrecord.ValidDigest(pin.Revision) {
+		return pin, nil
+	}
+	record := d.Find(pin.Target)
+	if record == nil || !strings.HasPrefix(pin.Revision, pin.Target+":revision:") {
+		return pin, fmt.Errorf("legacy source pin is unavailable")
+	}
+	if record.historyMu != nil {
+		record.historyMu.Lock()
+		defer record.historyMu.Unlock()
+	}
+	if value := record.historical[pin.Revision]; value != nil {
+		pin.Revision = technicalPin(pin.Target, value.ID)
+		return pin, nil
+	}
+	return pin, fmt.Errorf("legacy source pin has no exact digest projection")
 }

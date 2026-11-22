@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "readiness-explains-reverse-path",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:readiness-boundary",
-  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path",
-  "scope": "descendants",
-  "rationale": "Reverse lookup source and tests are evidenced, but the criterion remains undelivered under the immutable-evidence contract.",
-  "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-23T03:27:55.384218Z",
-  "superseded_at": "2026-09-23T16:34:55.781273Z"
+  "from": "urn:change-saga:change-saga:slide:readiness-boundary",
+  "id": "readiness-explains-reverse-path",
+  "rationale": "Reverse lookup source and tests are evidenced, but the criterion remains undelivered under the immutable-evidence contract.",
+  "scope": "descendants",
+  "state": "superseded",
+  "superseded_at": "2026-09-23T16:34:55.781273Z",
+  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path",
+  "to_revision": "sha256:6f9602129de42db65f97980600da438d3adb5fad79d92128bcd4f000e5cb1b73",
+  "type": "explains",
+  "version": 5
 }

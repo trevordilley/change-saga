@@ -97,35 +97,41 @@ func TestDeprecationPublicScopeHistoryAndStoryRelations(t *testing.T) {
 	if len(relationData["relations"].([]any)) != 1 {
 		t.Fatalf("normal relation discovery: %v", relationData)
 	}
-	if err := Story(ctx, []string{"set-state", "--story", depPrefix + "story:sit-assessment", "--event", "deferred", "--parent", depPrefix + "story:sit-assessment:event:proposed", "--state", "deferred", "--reason", "Historical migration", root}, &out); err != nil {
+	if err := Story(ctx, []string{"set-state", "--story", depPrefix + "story:sit-assessment", "--state", "deferred", "--reason", "Historical migration", root}, &out); err != nil {
 		t.Fatal(err)
 	}
-	if err := Story(ctx, []string{"set-state", "--story", depPrefix + "story:sit-assessment", "--event", "retired", "--parent", depPrefix + "story:sit-assessment:event:deferred", "--state", "retired", "--reason", "Historical migration", root}, &out); err != nil {
+	if err := Story(ctx, []string{"set-state", "--story", depPrefix + "story:sit-assessment", "--state", "retired", "--reason", "Historical migration", root}, &out); err != nil {
 		t.Fatal(err)
 	}
 	if got := deprecationQuery(t, root, repo, "--story", "sit-assessment"); got[0].Stories[0].Lifecycle != "retired" {
 		t.Fatalf("retired story hidden: %v", got)
 	}
 	story := depPrefix + "story:sit-assessment"
-	if err := Story(ctx, []string{"revise", "--story", story, "--revision", "changed", "--parent", story + ":revision:r1", "--title", "Changed historical context", root}, &out); err != nil {
+	storyPin := currentTestPin(t, root, story)
+	commitCurrentTestDocumentation(t, root, "original story and deprecation assertions")
+	if err := Story(ctx, []string{"revise", "--story", story, "--title", "Changed historical context", root}, &out); err != nil {
 		t.Fatal(err)
 	}
-	if got := deprecationQuery(t, root, repo, "--story", "sit-assessment"); got[0].Stories[0].Currency.Status == "current" || got[0].Stories[0].Relation.ToRevision != story+":revision:r1" {
+	if got := deprecationQuery(t, root, repo, "--story", "sit-assessment"); got[0].Stories[0].Currency.Status == "current" || got[0].Stories[0].Relation.ToRevision != storyPin {
 		t.Fatalf("changed story lost its historical pin: %v", got)
 	}
-	before, err := os.ReadFile(filepath.Join(root, requirements.DeprecationPackagePath("code"), "revisions/r1.json"))
+	before, err := os.ReadFile(filepath.Join(root, requirements.DeprecationPackagePath("code"), "current.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	deprecationRun(t, root, repo, "set-state", "--deprecation", subject, "--event", "a-withdrawn", "--parent", subject+":event:active", "--state", "withdrawn", "--reason", "Mistaken assertion; the code remains supported.")
-	deprecationRun(t, root, repo, "add", "--id", "code", "--target", depDescription, "--scope", "code", "--reason", "Use the supported API.", "--ref", "HEAD:old.go#L2", "--request-id", "code")
-	history := deprecationQuery(t, root, repo, "--deprecation", "code", "--history")[0]
-	if history.State != "withdrawn" || len(history.History.Events) != 2 || len(history.History.Revisions) != 1 || len(history.Stories) != 1 {
-		t.Fatalf("history lost: %v", history)
+	deprecationRun(t, root, repo, "set-state", "--deprecation", subject, "--state", "withdrawn", "--reason", "Mistaken assertion; the code remains supported.")
+	current := deprecationQuery(t, root, repo, "--deprecation", "code")[0]
+	if current.State != "withdrawn" || current.CurrentRevision.Scope != "code" || len(current.Stories) != 1 {
+		t.Fatalf("withdrawal lost assertion/evidence: %#v", current)
 	}
-	after, _ := os.ReadFile(filepath.Join(root, requirements.DeprecationPackagePath("code"), "revisions/r1.json"))
-	if !bytes.Equal(before, after) {
-		t.Fatal("withdrawal rewrote assertion")
+	after, _ := os.ReadFile(filepath.Join(root, requirements.DeprecationPackagePath("code"), "current.json"))
+	var oldRecord, newRecord struct {
+		Content json.RawMessage `json:"content"`
+	}
+	json.Unmarshal(before, &oldRecord)
+	json.Unmarshal(after, &newRecord)
+	if !bytes.Equal(oldRecord.Content, newRecord.Content) {
+		t.Fatal("state edit changed assertion content")
 	}
 	assertValid(t, root)
 }
@@ -172,12 +178,14 @@ func TestDeprecationStaleMissingConflictAndPagination(t *testing.T) {
 		t.Fatal(err)
 	}
 	original := doc.FindDeprecation("legacy").Revisions[0]
+	legacyCurrentTestPackage(t, root, requirements.DeprecationPackagePath("legacy"), "deprecation", subject, requirements.DeprecationRevisionSchemaURL, requirements.DeprecationEventSchemaURL, 5, "r1", "active")
+	type legacyDeprecation requirements.DeprecationRevision
 	for _, id := range []string{"branch-a", "branch-b"} {
 		r := original
 		r.ID = id
 		r.Parents = []string{subject + ":revision:r1"}
 		r.Reason = id
-		if err := store.WriteJSON(filepath.Join(root, requirements.DeprecationPackagePath("legacy"), "revisions", id+".json"), r, true); err != nil {
+		if err := store.WriteJSON(filepath.Join(root, requirements.DeprecationPackagePath("legacy"), "revisions", id+".json"), legacyDeprecation(r), true); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -185,43 +193,19 @@ func TestDeprecationStaleMissingConflictAndPagination(t *testing.T) {
 	if conflict.State != "conflicted" || conflict.CurrentRevision != nil || len(conflict.Assertions) != 2 {
 		t.Fatalf("conflict fabricated a winner: %#v", conflict)
 	}
-	if err := Deprecation(context.Background(), []string{"revise", "--deprecation", subject, "--revision", "bad", "--parent", subject + ":revision:branch-a", "--scope", "content", "--target", depDescription, "--reason", "partial heads", root}, &bytes.Buffer{}); err == nil {
+	if err := Deprecation(context.Background(), []string{"revise", "--deprecation", subject, "--scope", "content", "--target", depDescription, "--reason", "partial heads", root}, &bytes.Buffer{}); err == nil {
 		t.Fatal("accepted partial heads")
 	}
-	deprecationRun(t, root, repo, "revise", "--deprecation", subject, "--revision", "reconciled", "--parent", subject+":revision:branch-a", "--parent", subject+":revision:branch-b", "--target", depDescription, "--scope", "content", "--reason", "Corrected: only the explanation is deprecated.")
-	if got := deprecationQuery(t, root, repo); got[0].CurrentRevision.Scope != "content" || got[0].Assertions[0].TargetHealth.Status != "current" {
-		t.Fatalf("reconcile: %v", got)
+	// A complete ordinary edit cannot choose among independently authored heads.
+	if err := Deprecation(context.Background(), []string{"revise", "--deprecation", subject, "--target", depDescription, "--scope", "content", "--reason", "Complete new payload", root}, &bytes.Buffer{}); err == nil {
+		t.Fatal("current writer chose a legacy branch")
 	}
-	deprecationRun(t, root, repo, "add", "--id", "second", "--target", depDescription, "--scope", "content", "--reason", "Second annotation")
-	var out bytes.Buffer
-	args := []string{"deprecations", "--saga", root, "--repo", repo, "--limit", "1"}
-	if err := Query(context.Background(), args, &out); err != nil {
-		t.Fatal(err)
+	for _, id := range []string{"branch-a", "branch-b"} {
+		if _, err := os.Stat(filepath.Join(root, requirements.DeprecationPackagePath("legacy"), "revisions", id+".json")); err != nil {
+			t.Fatal("legacy content was lost", err)
+		}
 	}
-	var page struct {
-		Snapshot string            `json:"snapshot"`
-		Page     queryPageEnvelope `json:"page"`
-	}
-	json.Unmarshal(out.Bytes(), &page)
-	if page.Page.NextCursor == nil {
-		t.Fatal("missing cursor")
-	}
-	out.Reset()
-	if err := Query(context.Background(), append(args, "--cursor", *page.Page.NextCursor), &out); err != nil {
-		t.Fatalf("next page: %v %s", err, out.String())
-	}
-	deprecationRun(t, root, repo, "set-state", "--deprecation", subject, "--event", "withdraw", "--parent", subject+":event:active", "--state", "withdrawn", "--reason", "Correction")
-	out.Reset()
-	if err := Query(context.Background(), append(args, "--cursor", *page.Page.NextCursor), &out); err == nil {
-		t.Fatal("cursor survived metadata change")
-	}
-	if err := RemoveFragment(context.Background(), []string{"--target", depDescription, root}, &bytes.Buffer{}); err != nil {
-		t.Fatal(err)
-	}
-	if got := deprecationQuery(t, root, repo, "--target", depDescription); len(got) != 2 || got[0].Assertions[0].TargetHealth.Status != "missing" {
-		t.Fatalf("missing target lost assertion: %v", got)
-	}
-	assertValid(t, root)
+
 }
 
 func TestDeprecationWhiteboardAppearanceAndValidation(t *testing.T) {
@@ -234,7 +218,7 @@ func TestDeprecationWhiteboardAppearanceAndValidation(t *testing.T) {
 	target := depPrefix + "whiteboard:systems"
 	deprecationRun(t, root, repo, "add", "--id", "board", "--target", target, "--element", "old", "--scope", "content", "--reason", "This appearance is obsolete.")
 	row := deprecationQuery(t, root, repo, "--target", target)[0]
-	if row.CurrentRevision.Target.Revision != target+":revision:b1" || row.CurrentRevision.Target.Element != "old" {
+	if !strings.HasPrefix(row.CurrentRevision.Target.Revision, "sha256:") || row.CurrentRevision.Target.Element != "old" {
 		t.Fatalf("appearance not pinned: %v", row)
 	}
 	for _, args := range [][]string{
@@ -256,7 +240,7 @@ func TestDeprecationWhiteboardAppearanceAndValidation(t *testing.T) {
 	}
 	assertValid(t, root)
 	// Unknown JSON fields and invalid lifecycle are rejected by normal validation.
-	path := filepath.Join(root, requirements.DeprecationPackagePath("board"), "events/active.json")
+	path := filepath.Join(root, requirements.DeprecationPackagePath("board"), "current.json")
 	data, _ := os.ReadFile(path)
 	data = bytes.Replace(data, []byte(`"state": "active"`), []byte(`"state": "erased"`), 1)
 	os.WriteFile(path, data, 0600)

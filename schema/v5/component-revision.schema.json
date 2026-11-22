@@ -57,8 +57,16 @@
       ]
     },
     "baseline": {
-      "type": "string",
-      "minLength": 1
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      ]
     },
     "delivery": {
       "type": "object",

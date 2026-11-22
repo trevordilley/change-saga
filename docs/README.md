@@ -16,7 +16,7 @@ remove, or archive existing content and assign whiteboards to navigation roles.
 | [deprecations.md](deprecations.md) | Authored deprecation scope, exact code evidence, optional story context, discovery and withdrawal. |
 | [feature-themes.md](feature-themes.md) | Optional product themes, authored rationale decks, and Theme/Persona feature grouping. |
 | [whiteboards.md](whiteboards.md) | Technical design: an approach essay, supporting pages, and ERD, Infrastructure, Data flows and Architecture whiteboards. |
-| [erd-whiteboard-guide.md](erd-whiteboard-guide.md) | Current ERD whiteboard authoring, shared grammar, source evidence, immutable revisions and focused inspection. |
+| [erd-whiteboard-guide.md](erd-whiteboard-guide.md) | Current ERD whiteboard authoring, shared grammar, source evidence, current content, Git history and focused inspection. |
 | [code-examples.md](code-examples.md) | Author API and library usage examples as measured code elements inside visual slides. |
 | [deck-overview.md](deck-overview.md) | Current deck Overview, Front/Back, evidence citations, Viewed state, and compatibility guide. |
 | [SPEC.md](../SPEC.md) | The one Saga format: layout, requirements, design, quality, the Technical deck, diff URIs, claims, and the review overlay. Normative. |
@@ -27,6 +27,9 @@ remove, or archive existing content and assign whiteboards to navigation roles.
 
 | | |
 | --- | --- |
+| [checkpoint-integration.md](checkpoint-integration.md) | Native checkpoint integration and explicit whiteboard editing with history retained only in Git. |
+| [plan-cli-compatibility.md](plan-cli-compatibility.md) | Plan authoring versus queries, waves versus phases, checkpoint limits, current-record compatibility, executable diagnostics and pinned builds. |
+| [support-access-proposal.md](support-access-proposal.md) | Proposed operational log/metric access, separate deployment triggers and temporary customer-data elevation; unresolved approval and revocation owners. |
 | [CI and review ownership setup](../internal/cli/setup_ci_prompt.md) | The guide printed by `change-saga setup-ci`: no CI or CODEOWNERS for Saga-only changes by default, with checks and review ownership as opt-ins. |
 | [releasing.md](releasing.md) | How a release is built, signed, notarized, checksummed, and published, plus the [versioning policy](releasing.md#versioning-policy) and release checklist. |
 | [../CHANGELOG.md](../CHANGELOG.md) | Curated release history. |

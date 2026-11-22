@@ -1,5 +1,10 @@
 # CLI ergonomics: record access and deliberate edits
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Status: implementation plan, not a description of shipped commands. Proposed
 syntax below must be reconciled with the existing query registry before release.
 

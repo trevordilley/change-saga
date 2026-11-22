@@ -19,8 +19,8 @@ const (
 	v5Criterion   = "urn:change-saga:test:story:checkout:criterion:fast"
 	v5StoryR1     = "urn:change-saga:test:story:checkout:revision:r1"
 	v5TestCase    = "urn:change-saga:test:test-case:fast-path"
-	v5TestCaseR1  = "urn:change-saga:test:test-case:fast-path:revision:r1"
-	v5TestCaseR2  = "urn:change-saga:test:test-case:fast-path:revision:r2"
+	v5TestCaseR1  = "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	v5TestCaseR2  = "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
 	v5RelationURN = "urn:change-saga:test:relation:fast-path-verifies-fast"
 )
 
@@ -33,17 +33,17 @@ func newV5Saga(t *testing.T) string {
 	return root
 }
 
-func verifiesInput() AddRelationInput {
+func verifiesInput(storyPin string) AddRelationInput {
 	return AddRelationInput{Feature: "core",
 		ID: "fast-path-verifies-fast", Type: RelationVerifies, From: v5TestCase, To: v5Criterion,
-		Rationale: "The case exercises the fast path.", FromRevision: v5TestCaseR1, ToRevision: v5StoryR1, CreatedAt: testTime,
+		Rationale: "The case exercises the fast path.", FromRevision: v5TestCaseR1, ToRevision: storyPin, CreatedAt: testTime,
 	}
 }
 
 func compileV5RelationSchema(t *testing.T) *jsonschema.Schema {
 	t.Helper()
 	_, source, _, _ := runtime.Caller(0)
-	path := filepath.Join(filepath.Dir(source), "..", "..", "schema", "v5", "relation.schema.json")
+	path := filepath.Join(filepath.Dir(source), "..", "..", "schema", "v5", "relation-current.schema.json")
 	schema, err := jsonschema.NewCompiler().Compile(path)
 	if err != nil {
 		t.Fatal(err)
@@ -53,7 +53,8 @@ func compileV5RelationSchema(t *testing.T) *jsonschema.Schema {
 
 func TestV5SagaWritesSchemaValidTestCaseVerifiesRelation(t *testing.T) {
 	root := newV5Saga(t)
-	result, err := AddRelation(root, "test", verifiesInput())
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
+	result, err := AddRelation(root, "test", verifiesInput(v5StoryR1))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -76,7 +77,7 @@ func TestV5SagaWritesSchemaValidTestCaseVerifiesRelation(t *testing.T) {
 		t.Fatal(err)
 	}
 	relation := document.Relations[0]
-	if relation.Version != V5RelationVersion || relation.Schema != V5RelationSchemaURL || relation.Scope != ScopeSelf {
+	if relation.Version != V5RelationVersion || relation.Schema != "https://changesaga.dev/schema/v5/relation-current.schema.json" || relation.Scope != ScopeSelf {
 		t.Fatalf("relation = %#v", relation)
 	}
 	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core", ID: "fast-path-verifies-fast", Type: RelationVerifies, From: v5TestCase, To: v5Criterion,
@@ -106,7 +107,8 @@ func TestV5GoldenRelationExampleLoads(t *testing.T) {
 
 func TestV3RelationRecordsStillLoad(t *testing.T) {
 	root := newV5Saga(t)
-	if _, err := AddRelation(root, "test", verifiesInput()); err != nil {
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
+	if _, err := AddRelation(root, "test", verifiesInput(v5StoryR1)); err != nil {
 		t.Fatal(err)
 	}
 	// rebase-evidence records claim supersession as a version-3 relation, so
@@ -137,6 +139,7 @@ func TestV3RelationRecordsStillLoad(t *testing.T) {
 
 func TestV5RelationMatrixAndScope(t *testing.T) {
 	root := newV5Saga(t)
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
 	cases := []struct {
 		name   string
 		mutate func(*AddRelationInput)
@@ -146,7 +149,7 @@ func TestV5RelationMatrixAndScope(t *testing.T) {
 		{"criterion revision pin required", func(in *AddRelationInput) { in.ToRevision = "" }, "target criterion revision pin"},
 		{"test case revision must be its own", func(in *AddRelationInput) {
 			in.FromRevision = "urn:change-saga:test:test-case:other:revision:r1"
-		}, "from_revision does not pin the test-case endpoint"},
+		}, "has no source"},
 		{"test case cannot carry a digest", func(in *AddRelationInput) {
 			in.FromContentDigest = "sha256:" + strings.Repeat("a", 64)
 		}, "cannot use a content digest"},
@@ -160,7 +163,7 @@ func TestV5RelationMatrixAndScope(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			input := verifiesInput()
+			input := verifiesInput(v5StoryR1)
 			tc.mutate(&input)
 			if _, err := AddRelation(root, "test", input); err == nil || !strings.Contains(err.Error(), tc.want) {
 				t.Fatalf("error = %v, want %q", err, tc.want)
@@ -180,7 +183,8 @@ func TestV5RelationMatrixAndScope(t *testing.T) {
 
 func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 	root := newV5Saga(t)
-	if _, err := AddRelation(root, "test", verifiesInput()); err != nil {
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
+	if _, err := AddRelation(root, "test", verifiesInput(v5StoryR1)); err != nil {
 		t.Fatal(err)
 	}
 	document, err := Load(root, "test")
@@ -255,7 +259,7 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 	}
 	shared = NewRelationEvaluator(document)
 	got = evaluate(current)
-	if got.Status != CurrencyStale || got.Current() || !reflect.DeepEqual(got.Reasons, []CurrencyReason{{Endpoint: "to", Code: ReasonCriterionStatementChanged, Pinned: v5StoryR1, Current: []string{"urn:change-saga:test:story:checkout:revision:r2"}, Message: "to criterion content changed"}}) {
+	if got.Status != CurrencyStale || got.Current() || !reflect.DeepEqual(got.Reasons, []CurrencyReason{{Endpoint: "to", Code: ReasonCriterionStatementChanged, Pinned: v5StoryR1, Current: []string{currentFixtureStoryPin(t, root, v5Story)}, Message: "to criterion content changed"}}) {
 		t.Fatalf("revised story = %#v", got)
 	}
 
@@ -269,4 +273,23 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 	if got := evaluate(current); got.Status != CurrencySuperseded || got.Current() || len(got.Reasons) != 0 {
 		t.Fatalf("superseded = %#v", got)
 	}
+}
+
+// Capture the actual authored value before edits, and retain that value in Git
+// when a test later asks whether old evidence still applies.
+func currentFixtureStoryPin(t *testing.T, root, urn string) string {
+	t.Helper()
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, story := range document.Stories {
+		if "urn:change-saga:test:story:"+story.Identity.ID == urn {
+			digest := ContentPin(urn, story.CurrentRevision.ID)
+			commitCurrencyFixture(t, root)
+			return digest
+		}
+	}
+	t.Fatalf("fixture story %s is missing", urn)
+	return ""
 }

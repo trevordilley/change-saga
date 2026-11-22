@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-record-contract-bindings",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-record-contract:item:bindings",
-  "to": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
-  "scope": "self",
-  "rationale": "Proposed design: Bind the authored diagram, expandable directory and deck Items to canonical identity plus exact revision, preserving contextual explanation without duplicating definitions.",
-  "to_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:14:59.439165Z",
-  "superseded_at": "2026-09-27T10:27:29.360846Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-record-contract:item:bindings",
+  "id": "ti-record-contract-bindings",
+  "rationale": "Proposed design: Bind the authored diagram, expandable directory and deck Items to canonical identity plus exact revision, preserving contextual explanation without duplicating definitions.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:29.360846Z",
+  "to": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+  "to_revision": "sha256:222a3e3f40dfa008a13c16d39a92e7913e9f231ba62822ab39a0109e5def66a8",
+  "type": "explains",
+  "version": 5
 }

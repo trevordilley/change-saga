@@ -1,5 +1,10 @@
 # Technical inventory: cold handoff check
 
+> Historical implementation contract or report. Its content revision graphs and
+> parent/head workflows are superseded by [Git-owned history](git-owned-history.md).
+> Exact source evidence, implementation assertions, and saved Git view rules
+> retain their meaning; use current content digests for new authoring.
+
 ## Experiment
 
 Assess whether a fresh implementation agent can recover the intended feature

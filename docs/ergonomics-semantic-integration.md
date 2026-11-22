@@ -25,8 +25,8 @@ working-tree copy. The report contains:
   immutable identity bytes or, for Decks and Slides, different stable owners
   in the compared refs; ordinary title, rank, asset, or other content edits do
   not constitute a visual identity collision;
-- `competing_heads`: a story has different revision or lifecycle heads across
-  refs; and
+- `competing_heads`: a story has different current content or state across
+  refs (the legacy diagnostic name remains); and
 - `overlapping_intent_candidates`: different story IDs reach a token Jaccard
   score of at least `0.60` over their current title and statement.
 
@@ -38,30 +38,26 @@ decision and no “winner” is selected. The Go API is
 ## Withdrawing and consolidating proposals
 
 Withdraw a proposal directly instead of routing it through a false acceptance
-or defer event:
+or deferred state:
 
 ```sh
 change-saga story withdraw \
   --story urn:change-saga:app:story:duplicate \
-  --parent urn:change-saga:app:story:duplicate:event:proposed \
-  --event withdrawn-as-duplicate \
   --reason "The canonical checkout proposal already covers this intent" \
   change.saga
 ```
 
 Withdrawal accepts only a uniquely current `proposed` or `deferred` story and
-appends a `rejected` event. It refuses accepted intent.
+updates current state to `rejected`; Git records its previous state. It refuses accepted intent.
 
-Consolidation is preview-first. Every criterion on the duplicate's unique
-current revision must be mapped exactly once to a distinct criterion on the
-canonical story's unique current revision:
+Consolidation is preview-first. Every criterion on the duplicate's
+current content must be mapped exactly once to a distinct criterion on the
+canonical story's current content:
 
 ```sh
 change-saga story consolidate \
   --duplicate urn:change-saga:app:story:duplicate \
   --canonical urn:change-saga:app:story:checkout \
-  --parent urn:change-saga:app:story:duplicate:event:proposed \
-  --event consolidated-into-checkout \
   --map urn:change-saga:app:story:duplicate:criterion:fast=urn:change-saga:app:story:checkout:criterion:responsive \
   --reason "Both proposals express the same confirmed checkout behavior" \
   --json \
@@ -73,14 +69,14 @@ nothing. Add `--apply` to reload and revalidate current Saga state, then commit
 the decision only if it is still valid. A preview is not a persisted snapshot
 or a promise that later state will pass. Applying:
 
-1. appends `rejected` for a proposed/deferred duplicate;
-2. appends `retired` for an accepted duplicate only when the canonical story
+1. sets current state to `rejected` for a proposed/deferred duplicate;
+2. sets current state to `retired` for an accepted duplicate only when the canonical story
    is also accepted, preserving accepted intent;
 3. creates replacement relations whose exact non-requirement endpoints (for
    example, slide Item URNs) are unchanged and whose story/criterion endpoints
-   and revision pins name current canonical revisions; and
+   and content pins name current canonical digests; and
 4. marks only the replaced relations superseded, retaining their original
-   endpoints and pins as history.
+   endpoints and pins as an explicit replacement decision; Git owns content history.
 
 Missing mappings, many-to-one mappings, conflicted heads, terminal canonical
 stories, replacement-ID collisions, invalid resulting relations, and any

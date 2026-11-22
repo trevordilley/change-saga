@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Publish a slide in a section and open the Plan.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-plan-by-phase:criterion:deck-groups-phases"
+        ],
+        "expected_result": "The rail shows the section over its slides.",
+        "id": "deck-groups-phases"
+      },
+      {
+        "action": "Open the Tasks view, and try a dependency inside a phase.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-plan-by-phase:criterion:says-what-runs-together"
+        ],
+        "expected_result": "The view says a phase runs in parallel, and the dependency is refused.",
+        "id": "says-what-runs-together"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-read-plan-by-phase",
+    "title": "A Plan reads by phase"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-read-plan-by-phase"
+  }
+}

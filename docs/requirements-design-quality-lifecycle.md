@@ -1,5 +1,10 @@
 # Requirements, Design, Implementation, and Quality in One Change Saga
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Status: the plan behind the one Change Saga format.
 
 ## Decision
@@ -260,8 +265,8 @@ Example existing v3 revision, unchanged on disk:
 Keep the implemented commands and their semantics:
 
 ```text
-change-saga story add SAGA --id ID --revision REV --event EVENT ...
-change-saga story revise SAGA --story STORY --revision REV --parent HEAD ...
+change-saga story add SAGA --id ID --event EVENT ...
+change-saga story revise SAGA --story STORY --parent HEAD ...
 change-saga story set-state SAGA --story STORY --event EVENT --parent HEAD --state STATE
 ```
 
@@ -273,14 +278,14 @@ story revision, and refuses a stale `--parent`:
 change-saga criterion add SAGA \
   --story urn:change-saga:checkout-refund:story:refund-window \
   --parent urn:change-saga:checkout-refund:story:refund-window:revision:r1 \
-  --revision r2 --id at-or-after-deadline \
+  --id at-or-after-deadline \
   --statement "At 30 days or later, reject with the documented reason."
 
 change-saga criterion revise SAGA --story STORY --criterion CRITERION \
-  --parent REVISION --revision NEW_REVISION --statement TEXT
+  --parent REVISION --statement TEXT
 
 change-saga criterion remove SAGA --story STORY --criterion CRITERION \
-  --parent REVISION --revision NEW_REVISION --reason TEXT
+  --parent REVISION --reason TEXT
 ```
 
 `remove` records the reason in the mutation result and commit guidance; the
@@ -709,7 +714,7 @@ required.
 
 ```text
 change-saga query quality --saga SAGA --feature FEATURE --limit 20
-change-saga query quality-history --saga SAGA --test TEST_URN
+change-saga query quality-runs --saga SAGA --test TEST_URN
 change-saga status --json SAGA
 ```
 
@@ -754,14 +759,14 @@ no Requirement -> Quality -> test-code Diff path exists.
 ### Quality CLI
 
 ```text
-change-saga quality test add SAGA --id ID --revision r1 --event proposed --from test.json
-change-saga quality test revise SAGA --test TEST_URN --parent REV --revision r2 --from test.json
+change-saga quality test add SAGA --id ID --event proposed --from test.json
+change-saga quality test revise SAGA --test TEST_URN --parent REV --from test.json
 change-saga quality test set-state SAGA --test TEST_URN --parent EVENT --event active --state active
-change-saga quality policy set SAGA --criterion CRITERION --story-revision REV \
+change-saga quality policy set SAGA --criterion CRITERION --story-content-digest REV \
   --require positive --require negative --require edge
-change-saga quality evidence add SAGA --test TEST_URN --test-revision REV \
+change-saga quality evidence add SAGA --test TEST_URN --test-content-digest REV \
   --role test_implementation --diff SAGA_DIFF_URI
-change-saga quality run record SAGA --test TEST_URN --test-revision REV \
+change-saga quality run record SAGA --test TEST_URN --test-content-digest REV \
   --parent RUN_HEAD --result passed --evidence EVIDENCE_URN --command COMMAND
 ```
 
@@ -799,7 +804,7 @@ change makes it stale.
 
 ```text
 change-saga coverage-exception add SAGA --axis technical --criterion CRITERION \
-  --story-revision REV --rationale TEXT --citation CITATION
+  --story-content-digest REV --rationale TEXT --citation CITATION
 change-saga coverage-exception supersede SAGA --exception EXCEPTION --with NEW_EXCEPTION
 ```
 
@@ -1001,7 +1006,7 @@ unmerged parallel branch to compile.
 - Add v5 manifest loading and `___quality` strict loader/validator in new
   `internal/quality` and `internal/qualityid` leaf packages.
 - Extend the composition layer and snapshot fingerprint; expose read-only
-  `criteria`, `criterion-history`, `quality`, and `quality-history` queries.
+  `criteria`, `criterion-history`, `quality`, and `quality-runs` queries.
 - Exit: hand-authored v5 fixtures load/query; all operations are read-only and
   bounded; old formats remain unchanged.
 

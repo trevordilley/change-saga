@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The original revision bytes are unchanged.",
+    "preconditions": [
+      "Create code-scoped deprecation code with one r1 revision and active event."
+    ],
+    "steps": [
+      {
+        "action": "Append withdrawal with explicit active event parent and query history.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:withdrawal"
+        ],
+        "expected_result": "State is withdrawn; history contains both lifecycle events and the original revision.",
+        "id": "withdraw"
+      },
+      {
+        "action": "Compare the original assertion before and after withdrawal in the repository fixture.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:criterion:withdrawal"
+        ],
+        "expected_result": "The original revision bytes are unchanged.",
+        "id": "immutable"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal",
+    "title": "Withdraw an assertion while preserving its original revision"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-deprecation-withdrawal"
+  }
+}

@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/livingid"
 )
 
@@ -294,7 +295,7 @@ func validateRelationMatrix(problems *validationErrors, relation Relation, from,
 func validateEndpointPins(problems *validationErrors, side string, endpoint endpoint, revision, digest string) {
 	switch endpoint.Kind {
 	case endpointStory, endpointCriterion:
-		if revision != "" {
+		if revision != "" && !contentDigestPattern.MatchString(revision) {
 			storyID, err := parseStoryRevision(revision, endpoint.SagaID)
 			if err != nil || (endpoint.Kind == endpointStory && storyID != endpoint.ID) || (endpoint.Kind == endpointCriterion && storyID != endpoint.StoryID) {
 				problems.add("%s_revision does not pin the endpoint's story", side)
@@ -315,6 +316,28 @@ func validateEndpointPins(problems *validationErrors, side string, endpoint endp
 }
 
 func validateStoryGraphs(story *Story, sagaID string, citationIDs, personaIDs map[string]bool) error {
+	if story.current {
+		if len(story.Revisions) == 0 || len(story.Events) == 0 {
+			return fmt.Errorf("current story requires content and state")
+		}
+		story.CurrentRevision = &story.Revisions[len(story.Revisions)-1]
+		story.CurrentLifecycle = &story.Events[len(story.Events)-1]
+		if err := validateRevision(*story.CurrentRevision, sagaID, story.Identity.ID); err != nil {
+			return err
+		}
+		if err := validateEvent(*story.CurrentLifecycle, sagaID, story.Identity.ID); err != nil {
+			return err
+		}
+		if story.CurrentLifecycle.State == StateAccepted && len(story.CurrentRevision.AcceptanceCriteria) == 0 {
+			return fmt.Errorf("accepted story requires an acceptance criterion")
+		}
+		pin, _ := revisionURN(sagaID, story.Identity.ID, story.CurrentRevision.ID)
+		story.RevisionHeads = []string{pin}
+		event, _ := StoryEventURN(sagaID, story.Identity.ID, story.CurrentLifecycle.ID)
+		story.LifecycleHeads = []string{event}
+		return nil
+	}
+
 	var problems validationErrors
 	revisions := make(map[string]Revision, len(story.Revisions))
 	for _, revision := range story.Revisions {
@@ -508,7 +531,17 @@ func validateRelationSet(document *Document) error {
 				problems.add("relation %q references missing story %q", relation.ID, endpoint)
 			}
 			if parsed.Kind == endpointCriterion && !knownCriteria[endpoint] {
-				problems.add("relation %q references unknown criterion %q", relation.ID, endpoint)
+				// A current record keeps existing evidence about a removed
+				// criterion. Currency reports the removal; reading it must not
+				// require retaining the old story inside Saga.
+				pin := relation.FromRevision
+				if endpoint == relation.To {
+					pin = relation.ToRevision
+				}
+				owner, _ := storyURN(document.SagaID, parsed.StoryID)
+				if relation.Schema != currentrecord.RelationSchema || !currentrecord.ValidDigest(pin) || !knownStories[owner] {
+					problems.add("relation %q references unknown criterion %q", relation.ID, endpoint)
+				}
 			}
 		}
 		for _, revision := range []string{relation.FromRevision, relation.ToRevision} {

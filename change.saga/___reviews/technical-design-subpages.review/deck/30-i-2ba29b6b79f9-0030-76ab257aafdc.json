@@ -1,17 +1,17 @@
 {
+  "description": "GET /technical/{area} routes only erd, systems and components; other segments are 404s. The landing page skips the reverse index and comparison newness that area and definition pages load.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:technical-design-page",
-    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+    "revision": "sha256:6732de30ae7320cdc20bc73836543806833a3aa8dcbadd0d4bb9c0e8cbe34cb1",
+    "target": "urn:change-saga:change-saga:component:technical-design-page"
   },
-  "version": 4,
   "id": "routes",
-  "slide": "tdsp-review-pages",
-  "rank": 30,
   "kind": "edge",
   "label": "Area route and shell",
-  "description": "GET /technical/{area} routes only erd, systems and components; other segments are 404s. The landing page skips the reverse index and comparison newness that area and definition pages load.",
+  "rank": 30,
   "selector": {
-    "type": "element",
-    "element_id": "routes"
-  }
+    "element_id": "routes",
+    "type": "element"
+  },
+  "slide": "tdsp-review-pages",
+  "version": 4
 }

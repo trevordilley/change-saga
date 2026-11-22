@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-authored-erd-queue",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:queue",
-  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:logical-and-persisted",
-  "scope": "self",
-  "rationale": "Illustrative containing resource for the job payload; the queue is distinct from the data entity it carries.",
-  "to_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T22:40:10.632251Z",
-  "superseded_at": "2026-09-27T10:27:22.415117Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:queue",
+  "id": "ti-authored-erd-queue",
+  "rationale": "Illustrative containing resource for the job payload; the queue is distinct from the data entity it carries.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:22.415117Z",
+  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:logical-and-persisted",
+  "to_revision": "sha256:d0f98c335eecab015058b9df75d15c18ce81a532497a8e32083bf97fb90975bf",
+  "type": "explains",
+  "version": 5
 }

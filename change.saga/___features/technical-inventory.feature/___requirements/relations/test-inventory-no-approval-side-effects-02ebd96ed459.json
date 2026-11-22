@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-no-approval-side-effects-02ebd96ed459",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-no-approval-side-effects",
-  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval",
-  "scope": "self",
-  "rationale": "Steps coverage define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-no-approval-side-effects:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:41.489992Z",
-  "request_id": "test-inventory-no-approval-side-effects-02ebd96ed459"
+  "from": "urn:change-saga:change-saga:test-case:inventory-no-approval-side-effects",
+  "from_revision": "sha256:0847f31f6ac7bef08fbd257ed427b4336923d4629dbd35f832af990bd0f5e42e",
+  "id": "test-inventory-no-approval-side-effects-02ebd96ed459",
+  "rationale": "Steps coverage define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-no-approval-side-effects-02ebd96ed459",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval",
+  "to_revision": "sha256:38376e153e063b30f56fe8950ce7e10c1e9dead4fd322189419312913a36cbfc",
+  "type": "verifies",
+  "version": 5
 }

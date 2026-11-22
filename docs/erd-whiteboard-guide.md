@@ -8,7 +8,7 @@ Use the document ID `data-model` for the system's **one data-model explanation**
 It is a named whiteboard using the same grammar as infrastructure and data-flow
 documents, not a special board kind. Author its entities, relationships, nested
 sections and explanations directly using the
-existing diagram grammar. Importing exact ERD revisions is optional and useful
+existing diagram grammar. Importing exact ERD content is optional and useful
 for migrating existing artwork; separate ERD documents are not a prerequisite.
 
 The AI authors the positions, sizes, narrative, annotations and connections.
@@ -20,8 +20,7 @@ for the title and navigation controls. The full document can extend well beyond
 one screen. Select entities and relationships to explain the system clearly;
 a complete table or column inventory is not required. Every depicted concept
 and relationship needs evidence. Use abstraction deliberately and distinguish
-conceptual flows from recorded associations. Source revisions and historical
-routes remain available internally for provenance and compatibility. Groups
+conceptual flows from recorded associations. Exact source digests retain provenance, and Git commit views retain historical content. Groups
 are ordinary drawing groups; this feature does not change
 entity holders or add inventory kinds.
 
@@ -29,18 +28,16 @@ Scroll with a mouse wheel or trackpad, or drag, to pan. Shift + scroll pans
 sideways on a vertical mouse wheel. Ctrl/Cmd + scroll (including trackpad pinch)
 zooms around the pointer; the toolbar and keyboard controls remain available.
 
-## Revision policy
+## Current content and exact sources
 
-Publishing the complete document creates an immutable JSON revision under
-`___whiteboards/data-model/revisions/`. Other document IDs have their own
-independent revision directories and histories. Depicted entities and relationships
-use exact source pins. Every optional imported frame also names an exact `target` and
-`revision`.
-An update names the current board revision as its parent. A board never follows
-the latest revision of a child implicitly: adopting a revised ERD means changing
-the frame's pin and publishing a new board revision. Older boards and ERDs stay
-readable with their original pins. Repeated appearances can share a source pin
-while retaining distinct instance paths.
+Publishing replaces `___whiteboards/<id>/current.json` atomically. The board and
+its element IDs remain stable; Git owns earlier content, attribution and merges.
+Sources identify a stable target and content digest in the compatibility-named
+`revision` field. Repeated appearances retain distinct instance paths.
+Source adoption requires reassessment and an explicit pin edit; a stale pin
+never follows current content. Historical source content comes from Git, and
+an unavailable source remains unresolved. See [migration](git-owned-history.md).
+
 
 Whiteboard storage is optional in v5. Current readers accept Sagas without it;
 older readers reject the `___whiteboards` root directory. Upgrade readers before
@@ -55,12 +52,12 @@ instance paths. Optional `frame` elements import existing ERD content. Publish
 the one document with:
 
 ```sh
-change-saga whiteboard publish --id data-model --revision r1 \
+change-saga whiteboard publish --id data-model \
   --name "Application data" --from board.json change.saga
 change-saga whiteboard describe --id data-model change.saga
 change-saga whiteboard describe --id data-model \
   --focus cloud/identity/organization change.saga
-change-saga whiteboard get --id data-model --revision r1 change.saga
+change-saga whiteboard get --id data-model change.saga
 change-saga whiteboard check --id data-model change.saga
 ```
 
@@ -70,28 +67,27 @@ alias. This example opens at `/technical/whiteboards/data-model`; the existing
 Data model page at `/technical/erd` also selects `data-model` by convention.
 Other named documents open at `/technical/whiteboards/<id>`.
 
-Source adapters currently support exact ERD and data-entity revisions and ERD
+Source adapters currently support exact ERD and data-entity content digests and ERD
 imports. Component and system inventory pins are not supported sources, even
 when the board explains infrastructure or data flows. Existing feature
 `___design` fragments are not automatically converted to whiteboards.
 
-For a subsequent revision, add `--parent r1` and choose a new revision ID.
-The `--revision` option on reading commands selects historical board content.
-Publication is atomic and rejects an update whose parent is no longer the
-current revision. Structured `describe` preserves focused instance paths,
+Publish subsequent complete current documents with the same board and element
+IDs. Do not supply revision or parent IDs. Reading commands show current
+content; use Git commit views for historical documentation. Structured `describe` preserves focused instance paths,
 fields, semantic endpoints and exact source pins. The current whiteboard CLI
 supports whole-document `publish`, `get`, `describe` and `check`; it does not yet
 support the slide diagram transaction-based `edit` command.
 
-`whiteboard check --id data-model` checks only that document's history and current
+`whiteboard check --id data-model` checks that document's current content and
 composition. Use `change-saga validate change.saga` to validate every named board.
-A Saga can contain at most 10,000 whiteboards, each with at most 10,000 revisions;
-each revision is limited to 1 MiB.
+A Saga can contain at most 10,000 whiteboards;
+each current document is limited to 1 MiB.
 
 ## Native sections and relationships
 
 A document can contain its own sections and entities without any `frame` or
-ERD source record. This abbreviated example assumes the named entity revisions
+ERD source record. This abbreviated example assumes the named entity content digests
 and the `materializes` relationship already exist; substitute real source pins:
 
 ```json
@@ -106,16 +102,16 @@ and the `materializes` relationship already exist; substitute real source pins:
       "label": "Job", "style": "normal", "x": 100, "y": 160, "width": 600, "height": 300,
       "fields": [{ "name": "id", "type": "uuid", "key": "pk" }],
       "source": { "target": "urn:change-saga:app:data-entity:job",
-        "revision": "urn:change-saga:app:data-entity:job:revision:r1" } },
+        "revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" } },
     { "id": "document", "parent": "search", "kind": "node", "shape": "entity",
       "label": "Search document", "style": "normal", "x": 100, "y": 160, "width": 600, "height": 300,
       "source": { "target": "urn:change-saga:app:data-entity:document",
-        "revision": "urn:change-saga:app:data-entity:document:revision:r1" } },
+        "revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" } },
     { "id": "materializes", "kind": "connection", "style": "normal",
       "from": "capture/job", "to": "search/document", "label": "materializes",
       "label_box": { "x": 1160, "y": 380, "width": 440, "height": 100 },
       "source": { "target": "urn:change-saga:app:data-entity:job",
-        "revision": "urn:change-saga:app:data-entity:job:revision:r1", "relationship": "materializes" } }
+        "revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "relationship": "materializes" } }
   ]
 }
 ```
@@ -143,7 +139,7 @@ A frame uses ordinary geometry plus its exact source pin:
   "style": "normal",
   "source": {
     "target": "urn:change-saga:app:erd:identity",
-    "revision": "urn:change-saga:app:erd:identity:revision:r3"
+    "revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   }
 }
 ```
@@ -167,7 +163,7 @@ instead describe its meaning without claiming a recorded relationship.
 Use the same `diagram.Document` grammar and renderer used for slide diagrams:
 styles, text, groups, annotations, notes, entities and source references remain
 shared capabilities. Directly authored sections and optional imported content
-share one spatial explanation and one revision history.
+share one spatial explanation and one Git history.
 
 Start with a large headline, a short explanation of the system, and three or
 four primary areas connected by meaningful relationships. Place the high-level
@@ -382,7 +378,7 @@ annotation. It deliberately repeats the same entity sources across views.
 Review the opening camera, an optional fit-to-board atlas, and a focused detail
 view in a real browser. From the opening view, a reader should be able to explain
 what happens and choose the next area. At detail, fields and local explanations
-should be readable, with a path back to the system and original source revision.
+should be readable, with a path back to the system and original pinned source content.
 Verify all embedded appearances remain reachable, including repeated pins with
 distinct instance paths. Check the opening after navigation controls are present;
 a standalone diagnostic SVG does not verify viewer interaction.
@@ -436,5 +432,5 @@ text contrast; source diagrams remain visible.
 Then use the application viewer for real connector routing, camera, Details,
 inspection and focus checks. A standalone shared-renderer SVG is only a layout
 proof, not a viewer-interaction check. Publishing is a separate delivery step
-after that review. Preserve the observed parent revision when publishing the
+after that review. Edit the current board in place when publishing the
 approved update.

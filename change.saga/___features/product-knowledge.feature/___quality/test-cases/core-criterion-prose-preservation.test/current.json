@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Preserve omitted criterion prose.",
+    "preconditions": [
+      "A fresh story has two criteria with titles, overview and subtext."
+    ],
+    "steps": [
+      {
+        "action": "Revise only a criterion statement, then revise title, then explicitly clear optional prose.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-authored-criterion-context:criterion:preservation"
+        ],
+        "expected_result": "Omitted fields and sibling criteria remain unchanged; only explicitly cleared fields disappear.",
+        "id": "check-preservation"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-criterion-prose-preservation",
+    "title": "Preserve omitted criterion prose"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-criterion-prose-preservation"
+  }
+}

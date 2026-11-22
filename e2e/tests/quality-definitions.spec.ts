@@ -17,15 +17,15 @@ test("Roadmap verification gains step evidence on the same case without run outc
     return JSON.parse(result.stdout).data.test_cases[0];
   };
   cli("feature", "add", "--id", "planned-quality", "--title", "Planned Quality", "--status", "planned");
-  cli("story", "add", "--feature", "planned-quality", "--id", "planned-story", "--revision", "r1", "--event", "proposed", "--title", "Inspect the greeting", "--statement", "As a reader I can inspect the greeting", "--criterion", "works=The greeting includes the supplied name.");
+  cli("story", "add", "--feature", "planned-quality", "--id", "planned-story", "--title", "Inspect the greeting", "--statement", "As a reader I can inspect the greeting", "--criterion", "works=The greeting includes the supplied name.");
   const steps = [
     { id: "setup", action: "Choose a caller name.", expected_result: "A name is available." },
     { id: "assert", action: "Inspect the greeting.", expected_result: "The greeting includes the supplied name.", criteria: [criterion] }
   ];
   cli("quality", "test-case", "add", "--feature", "planned-quality", "--id", "planned-check", "--title", "Verify the named greeting", "--kind", "positive", "--automation", "hybrid", "--precondition", "A caller name is available.", ...steps.flatMap(step => ["--step", JSON.stringify(step)]), "--expected-result", "The name is visible.");
   cli("relation", "add", "--feature", "planned-quality", "--id", "planned-verifies", "--type", "verifies", "--from", testURN, "--to", criterion, "--rationale", "The assertion checks the named greeting.");
-  const revisionPath = join(repo.sagaRoot, "___features/planned-quality.feature/___quality/test-cases/planned-check.test/revisions/r1.json");
-  const originalRevision = readFileSync(revisionPath, "utf8");
+  const definitionPath = join(repo.sagaRoot, "___features/planned-quality.feature/___quality/test-cases/planned-check.test/current.json");
+  const originalDefinition = readFileSync(definitionPath, "utf8");
   expect(query().definition).toBe("planned");
   const server = await startSagaServer(repo);
   try {
@@ -58,12 +58,12 @@ test("Roadmap verification gains step evidence on the same case without run outc
     await expectNoSeriousAccessibilityViolations(page);
     await page.screenshot({ path: testInfo.outputPath("planned-definition.png"), fullPage: true });
     cli("quality", "evidence", "add", "--test", testURN, "--id", "assertion-code", "--role", "test_implementation", "--step", "assert", "--repo", repo.sourceRepo, "--code", `${repo.identity.head}:src/app.go#L3-L5`);
-    expect(readFileSync(revisionPath, "utf8")).toBe(originalRevision);
+    expect(readFileSync(definitionPath, "utf8")).toBe(originalDefinition);
     expect(query().definition).toBe("implementation_linked");
     expect(query().steps[1].evidence).toEqual([testURN + ":evidence:assertion-code"]);
     cli("quality", "run", "record", "--test", testURN, "--id", "legacy-ci", "--result", "failed", "--summary", "Historical CI result", "--command", "touch SHOULD_NEVER_EXECUTE", "--commit", repo.identity.head, "--evidence", testURN + ":evidence:assertion-code");
     expect(query().definition).toBe("implementation_linked");
-    expect(query("quality-history").legacy_runs[0].result).toBe("failed");
+    expect(query("quality-runs").legacy_runs[0].result).toBe("failed");
     expect(existsSync(join(repo.sagaRepo, "SHOULD_NEVER_EXECUTE"))).toBe(false);
     cli("feature", "set-plan", "--feature", "planned-quality", "--status", "built");
     await page.goto(server.baseURL + "/features/planned-quality");
@@ -88,7 +88,7 @@ test("Roadmap verification gains step evidence on the same case without run outc
     await expect(page.locator('[data-test-case-page]')).not.toContainText("Historical CI result");
     await expect(page.locator('[data-test-case-page]')).not.toContainText("SHOULD_NEVER_EXECUTE");
     await page.screenshot({ path: testInfo.outputPath("implemented-definition.png"), fullPage: true });
-    cli("quality", "test-case", "revise", "--test", testURN, "--parent", testURN + ":revision:r1", "--revision", "r2", "--title", "Verify the named greeting precisely");
+    cli("quality", "test-case", "revise", "--test", testURN, "--title", "Verify the named greeting precisely");
     expect(query().definition).toBe("stale_evidence");
     expect(query().steps[1].issues.join(" ")).toContain("stale");
     await page.goto(server.baseURL + "/tests/planned-check");
@@ -126,7 +126,7 @@ test("Quality lists focused positive, negative, and edge definitions", async ({ 
     expect(result.status, result.stdout + result.stderr).toBe(0);
   };
   cli("feature", "add", "--id", "kind-examples", "--title", "Verification purposes", "--status", "planned");
-  cli("story", "add", "--feature", "kind-examples", "--id", "bounded-name", "--revision", "r1", "--event", "proposed", "--title", "Validate a caller name", "--statement", "As a caller I can supply a name of one to twenty characters.", "--criterion", "length=Names of one to twenty characters are accepted; other lengths are rejected without saving them.");
+  cli("story", "add", "--feature", "kind-examples", "--id", "bounded-name", "--title", "Validate a caller name", "--statement", "As a caller I can supply a name of one to twenty characters.", "--criterion", "length=Names of one to twenty characters are accepted; other lengths are rejected without saving them.");
   const cases = [
     { kind: "positive", title: "Accept a valid name", action: "Supply a five-character name.", expected: "The name is accepted." },
     { kind: "negative", title: "Reject an empty name", action: "Supply an empty name.", expected: "A validation message appears and nothing is saved." },

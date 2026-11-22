@@ -14,10 +14,40 @@ version, a root `00-saga.json`, and a manifest `presentation` member. A Saga may
 live in the code repository or in a companion repository; code references
 resolve against the repository the manifest declares.
 
-Git is the outer audit log. Saga records add the semantic history inside it:
-immutable identities, append-only revisions and lifecycle events, relations
-that pin the revisions they rely on, supersession, evidence, and review
-decisions. Staleness is always derived from pins, never from Git history.
+Git is the revision history. Saga stores editable current documentation and
+stable identities, not an independent version-control graph. Git supplies
+historical versions, attribution, branching, merging, and conflict resolution.
+Actual review decisions and evidence remain domain facts; source commit and
+content-digest pins preserve what an assertion relied on. Staleness is derived
+from those pins.
+
+### Current records and legacy normalization
+
+The normative current layout and compatibility procedure are specified in
+[Git owns documentation history](docs/git-owned-history.md). Record packages
+retain their identity file and store authored `content` and current `state` in
+one `current.json`, validated by
+[current-record.schema.json](schema/v5/current-record.schema.json). Whiteboards
+store `name` and `document` as content; prototypes include their state in their
+content. No current content contains revision IDs, parent lists, head pointers,
+or historical content arrays. Nested element identities remain stable.
+
+A complete slide retains its `25-t-*.json` atomic publication path and stores one
+`content` value under [slide-current.schema.json](schema/v5/slide-current.schema.json),
+version 2. Asset and source digests remain evidence pins. Content edits replace
+that record in place. Requests support `create` and `update`; an optional
+expected digest checks concurrent edits without creating history.
+
+Reads never persist normalization. Writers normalize encountered legacy record
+packages under the Saga lock; `change-saga normalize PATH` does so explicitly.
+References are converted from exact legacy revision URNs to content digests
+before historical source files can be discarded. Legacy competing heads or
+missing pin sources stop conversion without discarding authored content.
+Publication precedes idempotent cleanup. A partial run can be retried; no
+permanent migration history store is created. Older readers reject the new
+component layout. Historical content remains available through Git commit
+views and `query history`; Saga graph-history selectors and reconciliation are
+not part of current authoring.
 
 ### Layout
 
@@ -48,13 +78,13 @@ one Saga is neither invalid nor reported as a problem.
   ___feature-themes/<id>.theme/ # optional product categories
     theme.json                  # authored Markdown overview and feature URN set
     ___slides/                  # normal rationale deck, role feature-theme
-  ___whiteboards/<board-id>/revisions/<revision-id>.json  # optional named whiteboards
-  ___deprecations/<id>.deprecation/{deprecation.json,revisions/<id>.json,events/<id>.json}
+  ___whiteboards/<board-id>/current.json  # optional named whiteboards
+  ___deprecations/<id>.deprecation/{deprecation.json,current.json}
   ___features/<id>.feature/
     feature.json
     <report content>           # chapters, sections, fragments
     ___requirements/
-      prototypes/              # revisioned interactive prototypes
+      prototypes/              # editable prototype definitions and pinned source assets
       stories/                 # stories and their acceptance criteria
       citations/
       relations/               # typed, pinned edges between resources
@@ -89,14 +119,14 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
 | Product theme | `v5/feature-theme.schema.json` | mutable Markdown overview and many-to-many feature URN membership; Git history | optional; same-Saga members exist; one normal rationale deck |
 | Feature | `v5/feature.schema.json` | immutable ID and creation time; mutable display title | directory name equals ID |
-| Persona identity, revision, event | `v5/persona*.schema.json` | name and description; lifecycle `active` or `retired` | one root, acyclic revision and event graphs |
-| Term identity, revision, event | `v5/term*.schema.json` | name and definition; optional aliases, story and record links, and code references; lifecycle `active` or `retired` | linked stories and records exist; aliases distinct from the name |
-| Flag identity, revision, event | `v5/flag*.schema.json` | description and at least one story or feature target; state `off`, `on`, or `retired` | targets exist; `retired` is terminal |
+| Persona | `v5/current-record.schema.json` | stable persona identity, name, description, active/retired state | referenced personas exist |
+| Term | `v5/current-record.schema.json` | name, definition, optional aliases, links and code, current state | distinct aliases, valid links |
+| Flag | `v5/current-record.schema.json` | description, story/feature targets, off/on/retired state | targets exist; retirement is terminal |
 | Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
 | Coverage exception | `v5/coverage-exception.schema.json` | one of six axes, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head per criterion/axis |
 | Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
-| Test-case revision | `v5/test-case-revision.schema.json` | full definition, parents, kinds, automation, ordered steps | one root, reachable acyclic graph, unique/non-reused step IDs |
-| Test lifecycle | `v5/test-case-event.schema.json` | parents and proposed/active/deprecated/retired state | one root, reachable acyclic graph, explicit multi-head conflicts |
+| Test-case definition | `v5/current-record.schema.json` | current definition, kinds, automation, ordered stable steps | unique step IDs |
+| Test state | `v5/current-record.schema.json` | proposed/active/deprecated/retired | current domain transition rules |
 | Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | current code references, resolved local URNs, acyclic supersession |
 | Test run (deprecated history) | `v5/test-run.schema.json` | test revision, parents, source identity, result, evidence, execution time | immutable history, one root, acyclic graph; never a coverage/readiness input |
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
@@ -164,7 +194,7 @@ should not exist is deleted, never left for other records to point at. `story
 remove`, `persona remove`, `term remove`, `flag remove`, `citation remove`,
 `prototype remove`, `quality test-case remove`, and `feature remove
 --with-content` delete the record and every record that exists only to link to
-it or to something beneath it (a story's criteria and revisions): relations in
+it or to something beneath it (a story's criteria): relations in
 any state with their repin directories, prototype annotations, quality
 policies, coverage exceptions, and theme membership. The removal runs under
 the Saga lock and is kept only if it introduces no validation error.
@@ -175,7 +205,7 @@ they are. Status reports each current one as a dangling reference with the
 command that adjusts it, and `check --covers health` counts it as unhealthy
 until it is fixed. To make that possible, whether a term's, flag's, or story's
 links and an onboarding Item's record still exist is not a load rule; it is
-checked when a revision is written, and only current revisions are judged.
+checked when current content is written; only current content is judged.
 Every remove accepts `--dry-run`, which writes nothing and reports the same
 removals, rewrites, and adjustments.
 
@@ -195,19 +225,17 @@ or All, retaining ungrouped features and stable deep links. See
 **Personas** are the people who get value from the application: the "As a
 <persona>" of a user story. A tool, an agent, or a system that operates the
 product is not a persona, however much the product is built to work with it.
-Personas are application-level living records with an immutable identity,
-append-only revisions (`name`, `description`), and lifecycle events whose root
-state is `active`; a persona can be retired and restored. URNs are
-`urn:change-saga:<saga>:persona:<id>`, with `:revision:<id>` and `:event:<id>`.
-A story revision may name the personas it serves in `personas`; the list is
+Personas are application-level current records containing `name`, `description`,
+and `active` or `retired` state; they can be restored. Their stable URNs are
+`urn:change-saga:<saga>:persona:<id>`. Git holds earlier content and state.
+A story may name the personas it serves in `personas`; the list is
 optional, but any persona it names must exist. A story's `priority` is optional
 free text that the reviewer shows; the tool gives it no meaning. Persona coverage (which active
 personas an accepted story serves, and which stories served only a retired
 persona) is reported and never blocks.
 
-**Feature flags** have an immutable identity, revisions that name at least one
-story or feature target, and lifecycle events with states `off`, `on`, and
-`retired`. A current `off` or conflicted flag gates its targets, and a story is
+**Feature flags** have a stable identity, current target list naming at least
+one story or feature, and current state `off`, `on`, or `retired`. A current `off` or conflicted flag gates its targets, and a story is
 gated directly or through its feature; a retired flag gates nothing. Status
 reports each story as `not_implemented`, `implemented_not_enabled`, or
 `implemented_enabled`, where implemented means every current criterion's
@@ -226,10 +254,9 @@ Nothing else may live in
 never blocks.
 
 A **term** names a word the project uses that a newcomer would not know. Terms
-are living records like personas: an immutable identity, append-only revisions
-(`name`, `definition`, and optional `aliases`, `stories`, `records`, and `code`),
-and lifecycle events whose root state is `active`. URNs are
-`urn:change-saga:<saga>:term:<id>`, with `:revision:<id>` and `:event:<id>`.
+are current records like personas, containing `name`, `definition`, optional
+`aliases`, `stories`, `records`, and `code`, and active/retired state. Their URNs
+are `urn:change-saga:<saga>:term:<id>`. Git holds their earlier values.
 `stories` and `records` link the term to the stories, personas, features, flags, or
 other terms it relates to, and must exist. `code` holds code references
 (section 5) to the lines that define the term, usually an enum value or a
@@ -237,7 +264,7 @@ constant. The links run both ways: a term reaches its stories and code, and a
 line of code or a story reports the terms that reference it.
 
 Term code references never count toward coverage; they are watched instead. A
-term's references are judged at the head, so renaming the enum or constant it
+term's current references are judged, so renaming the enum or constant it
 names makes the term stale, naming exactly which term to update. When a
 comparison adds an enum value or a typed constant that no term references, and
 no term's name or alias matches it, a growth suggestion proposes defining it;
@@ -269,16 +296,12 @@ before claiming connected impact coverage; record counts alone do not establish
 completeness.
 
 Records live under `___inventory/components/<id>.component/` and
-`___inventory/systems/<id>.system/`, with an immutable identity, complete
-append-only revisions, and active/retired lifecycle events. URNs are
-`urn:change-saga:<saga>:component:<id>` or `:system:<id>`, followed by
-`:revision:<id>` or `:event:<id>` for history. Exactly one root and acyclic
-parent graphs are required; multiple heads are conflicts, never a fabricated
-winner. Component and System schemas are `v5/component*.schema.json` and
-`v5/system*.schema.json`. Each record is at most one MiB, each revision requires
-1–64 exact line-range code references with notes, and each System has 2–32
-unique Component pins and 1–64 directed interactions with unique IDs and
-member endpoints. Each interaction requires 1–64 exact code references.
+`___inventory/systems/<id>.system/`, with stable identity files and editable
+`current.json`. Their stable URNs identify the Component or System, while
+semantic links pin exact content digests. Components require 1–64 exact code
+references in inventory format 1; Systems have 2–32 unique Component pins and
+1–64 directed interactions with stable IDs and member endpoints. Each
+interaction requires 1–64 scoped code references.
 These evidence minimums describe legacy inventory format 1; current format 2
 distinguishes proposed designs from implemented definitions as described below.
 
@@ -289,22 +312,15 @@ Item must still explain its own exact scoped evidence. Pins enter the existing
 Item/slide content digest; changing a definition does not mutate existing pins,
 slide content, historical review content, or approval currency. New pins must
 be current, active and unconflicted. Reads retain stale/retired/conflicted pins
-and their historical definitions; validation errors on missing pins and warns
+with unresolved historical sources explicitly labelled; validation errors on missing pins and warns
 on other noncurrent states. `query inventory` reports exact code health using
-the existing code resolver, with snapshot-bound pagination and optional
-selected-record history. `query slide` returns its Items' documentation pins.
+the existing code resolver, with snapshot-bound pagination; historical records come from Git. `query slide` returns its Items' documentation pins.
 
-Public writers are `component|system add|revise|set-state`; complete revision
-JSON is specified by `v5/technical-definition.schema.json`. The CLI resolves
-symbolic source commits and computes/verifies digests before publishing.
-Initial publication is atomic; later revisions/events are immutable files
-under the Saga lock. Explicit parent sets must match all current heads.
-Identical ID/content retries are no-ops; conflicting content is rejected.
-
-This extension needs no migration of existing valid Sagas. Older readers
-reject its new root/fields; upgrade readers before adoption. See
-[Component and System documentation](docs/component-system-inventory.md) for
-compatibility details, UI behavior, and deferred integration surfaces.
+Public writers are `component|system add|revise|set-state`. Complete authored
+content follows `v5/technical-definition.schema.json`; revision and parent IDs
+are not inputs. The CLI resolves source commits and verifies digests before
+atomically replacing current content under the Saga lock. See
+[compatibility and migration](docs/git-owned-history.md#legacy-normalization).
 
 ### Technical inventory format 2
 
@@ -322,37 +338,36 @@ initialization.
 Inventory format 2 is adopted only by `change-saga inventory adopt-format
 --format 2`, which writes `___inventory/format.json`
 (`v5/inventory-format.schema.json`: `$schema`, `format: 2`, `created_at`). Its
-absence means format 1. Adoption rewrites nothing: legacy revisions keep their
+absence means format 1. Adoption rewrites nothing: legacy definitions keep their
 bytes, read as `unspecified` intent, and their references have no evidence IDs.
 Readers refuse format-2 records or Item fields without the marker, and refuse
 any other marker value. Older readers reject the marker, the new directories
 and the new Item fields, so they refuse rather than drop content. The Saga
 manifest and every record `version` remain 5.
 
-**Intent.** Component, System and data-entity revisions state `intent`:
+**Intent.** Component, System and data-entity definitions state `intent`:
 `proposed` or `implemented`. After adoption every new Component/System
-revision must state it. A proposed revision names `baseline`: the URN of an
-implemented revision of the same record that is an ancestor through `parents`,
-or `"none"` (required for an initial revision). Baseline is separate from
-parents; no baseline is inferred. A proposed revision may have no code. An
-implemented revision names `delivery: {repository, commit}`: the Saga's
+definition must state it. A proposed definition names `baseline`: the digest of
+implemented content of the same record, pinned by digest,
+or `"none"` (required for an initial definition). Git retains the earlier implementation; no baseline is inferred. A proposed definition may have no code. An
+implemented definition names `delivery: {repository, commit}`: the Saga's
 canonical source repository and the full commit, resolved once by the command,
 at which its evidence was validated. It needs 1–64 references per owner. Each
 interaction (System) and relationship (data entity) has its own `intent`; an
 implemented edge requires an implemented owner and implemented endpoint
-revisions, and nothing is promoted by cascade. Evidence code is health, not
-intent: later drift does not demote an implemented revision, and intent never
+definitions, and nothing is promoted by cascade. Evidence code is health, not
+intent: later drift does not demote an implemented definition, and intent never
 implies verification, integration or approval.
 
-**Evidence IDs.** In format-2 revisions every reference carries `id`, unique
-across the whole revision (entity code, interactions and relationships). A
-selection names a revision pin and an evidence ID, never an array position.
+**Evidence IDs.** In format-2 definitions every reference carries `id`, unique
+across the whole definition (entity code, interactions and relationships). A
+selection names a definition pin and an evidence ID, never an array position.
 
-**Implementation assertion.** Publishing an implemented revision, or any
+**Implementation assertion.** Publishing an implemented definition, or any
 implemented edge, verifies every such reference's original bytes and digest at
 its own commit and resolves it at the delivery commit: pure movement is
 accepted and the original reference is kept; changed, deleted or unavailable
-bytes refuse the revision. Any refusal writes nothing.
+bytes refuse the definition. Any refusal writes nothing.
 
 **Data entities** (`___inventory/data-entities/<id>.data-entity/`,
 `urn:change-saga:<saga>:data-entity:<id>`, `v5/data-entity*.schema.json`)
@@ -377,7 +392,7 @@ attributes, links only to same-document `#fragments`, no `javascript:` or
 `data:` values, no SMIL animation, DTDs, CDATA sections, prefixed element
 names or processing instructions other than one leading XML declaration, and
 no external `url()`/`@import`. **Overlays** (`erd-overlays/<id>.erd-overlay/`) name an exact `erd`
-revision as their baseline, an optional `feature`, `pins` that replace a
+definition as their baseline, an optional `feature`, `pins` that replace a
 baseline entity's pin or add an entity, `removals {target, explanation}`, and
 an optional visual whose bindings resolve against the composed directory. An
 overlay never modifies the ERD, and a removal does not retire an entity. The
@@ -391,25 +406,24 @@ The immutable Feature identity is unchanged; fragment identity and Git history
 retain normal query and deep-link semantics. `query context` exposes an optional
 `feature.overview {target,path,media_type}` descriptor.
 
-Story revisions have optional authored Markdown `overview`. Title is the short
+Story definitions have optional authored Markdown `overview`. Title is the short
 value in navigation, and Statement the full authored need, normally “As a
 <persona> I can <value>”; existing wording is never transformed. `story add|revise`
-accepts `--overview MARKDOWN` or `--overview-source FILE|-`. Single-parent flag
-revisions inherit omitted prose; explicit empty clears. Structured revisions
-remain complete snapshots and multi-parent reconciliation never guesses prose.
+accepts `--overview MARKDOWN` or `--overview-source FILE|-`. Flag-based edits preserve omitted prose; explicit empty clears. Structured
+requests replace the complete current content.
 Criterion conveniences preserve overview. It participates in whole-story
 obligation currency and changed-record context, without changing independent
 criterion-content carry-forward or lifecycle acceptance semantics. Queries
-expose current and historical snapshots. Both additions are optional: existing
+expose current and Git-backed historical views. Both additions are optional: existing
 Sagas remain readable without migration. See [authoring and reading](docs/feature-story-reading.md).
 
-Acceptance criteria in a complete v3 story revision may have optional `title`
+Acceptance criteria in a complete v3 story definition may have optional `title`
 and Markdown `overview` strings alongside required `id` and `statement`.
 Omission means absent; no generated title or prose is persisted. Criterion
 add/revise commands accept `--title`, `--overview`, and `--overview-source`.
-A criterion revise is a patch: omitted fields preserve parent values, explicit
+A criterion revise is a patch: omitted fields preserve current values, explicit
 empty title/overview clears them, and an empty statement is invalid. Full story
-revisions retain their complete-snapshot semantics. Criterion titles, statements,
+edits replace the complete current definition. Criterion titles, statements,
 and overviews all participate in criterion and whole-story obligation currency;
 unchanged siblings carry forward. The stable `criterion_statement_changed` code
 also covers title/overview changes. Queries expose historical and current prose,
@@ -419,9 +433,9 @@ before adopting them. Existing records require no migration.
 
 **Multiple ERD documents and shared overview.** An app may have any number of
 independently named ERD records: for example `sqlite`, `postgres`, and
-`cross-store`. Each owns its name, explanation, revision graph, SVG, directory,
+`cross-store`. Each owns its name, explanation, current definition, SVG, directory,
 and bindings. The ID `application` has no special priority. Documents can share
-exact entity revision pins; a cross-store document can show production flows
+exact entity definition pins; a cross-store document can show production flows
 between entities held by different store Components without inventing
 cross-database foreign keys. An ERD remains one diagram document, not a mutable
 collection of diagrams.
@@ -429,8 +443,7 @@ collection of diagrams.
 `overview set-data-model (--text TEXT | --source FILE|-)` authors the optional
 shared Markdown overview. It describes how the separate documents relate.
 Ordinary Markdown links are navigation, not validated inventory pins or evidence;
-use canonical document routes (`/technical/erd/<id>`) and an explicit
-`?revision=<id>` when linking to an immutable ERD revision. Actual entity and
+use canonical document routes (`/technical/erd/<id>`) and a stable target and digest when linking to exact ERD content. Actual entity and
 relationship pins remain in ERD records. `query inventory` exposes the app-wide
 `data_model_overview` fragment target, path and media type (or `null` when absent),
 independently of inventory filters and pagination; `query fragment --target URN`
@@ -440,10 +453,10 @@ Without a `data-model` whiteboard, the viewer's `/technical/erd` page shows shar
 equal ERD document links, followed by overlays and data entities. Documents precede entities in
 sidebar navigation. One unambiguous active ERD may additionally render inline;
 multiple ERDs never select a primary by ID or ordering. Every document keeps
-its existing `/technical/erd/<id>` route, revision history and exact pins.
+its existing `/technical/erd/<id>` route and exact content pins.
 
 Compatibility: existing v5 Sagas and inventory formats 1 and 2 remain readable,
-including old ERD revisions and SVG assets. Adopting this optional overview slot
+including old ERD definitions and SVG assets. Adopting this optional overview slot
 changes the allowed v5 layout but adds no record fields or global/inventory
 version bump. Older readers report the new slot as an unknown overview entry;
 they do not silently discard it. Upgrade readers before adopting the slot.
@@ -454,23 +467,22 @@ for authoring and discovery.
 `documentation_view` is the full commit of a saved Saga view that admitted a
 non-current pin: the Saga must be committed inside its canonical source
 repository at that commit, with the same identity and source, and the pin must
-be that view's unambiguous active current revision. Sagas kept in a companion
+be that view's unambiguous active current definition. Sagas kept in a companion
 repository cannot use saved views. `selections` (0–64, `v5/item-selection.schema.json`)
 each hold a unique `id`, a `path` of 1–8 pins starting at the documentation pin
-where each hop is declared by the previous hop's saved revision (System member,
+where each hop is declared by the previous hop's saved definition (System member,
 data-entity holder or relationship destination), an `evidence` ID in the last
-hop's revision, and `code`: the same commit and path as that evidence, a
+hop's definition, and `code`: the same commit and path as that evidence, a
 contained line range and the digest of the selected bytes only. Selections
-never substitute newer revisions or widen ranges; validation errors when one no
+never substitute newer definitions or widen ranges; validation errors when one no
 longer resolves. Documentation and selections transfer no coverage by
 themselves.
 
 Public writers: `data-entity|erd|erd-overlay add|revise|set-state` alongside
-`component|system`, with `--delivery REV` for implemented revisions and
+`component|system`, with `--delivery REV` for implemented definitions and
 `--visual SVG` for ERD kinds; `add-item`/`revise-item` `--documentation-view`
 and `--selections`; `apply-slide` item `documentation_view`/`selections`.
-Writers keep the lock, all-head parent, new-pin currency and idempotent
-revision rules above. See the
+Writers keep the lock and require explicit current or Git-backed evidence pins. See the
 [records implementation note](docs/technical-inventory-records-implementation.md).
 
 ### Whiteboards for technical design
@@ -493,7 +505,7 @@ With `--page ID`, it writes `technical-design-<ID>.fragment`, served at
 `/technical/pages/<ID>`; `--title` sets a new page's title. All these fragments
 must be Markdown. They use normal fragment identity and Git history. Essays
 link to supporting pages and to board sections with `?focus=PATH`; boards retain
-their independent immutable revision histories. Missing essays and boards are
+their histories in Git. Missing essays and boards are
 visible authoring gaps. Other named boards remain available as supporting material.
 
 
@@ -505,28 +517,19 @@ topology and system design are authoring applications of the same shared grammar
 not whiteboard types. There is no kind discriminator.
 This adds no inventory kind, entity holder semantics or slide Item ownership.
 
-**Storage and publication.** The optional root
-`___whiteboards/<board-id>/revisions/<revision-id>.json` contains complete
-immutable snapshots validated by [whiteboard-revision.schema.json](schema/v5/whiteboard-revision.schema.json).
-Each record contains `$schema`, `version: 1`, `id`, `parents`, `name`, `document`
-and `created_at`. `document` uses the shared
-[diagram schema](schema/v5/diagram.schema.json). The containing directory names
-the whiteboard; the filename and record `id` identify its revision. Each document
-has its own history. `parents` is empty for the root and contains one revision ID
-from the same whiteboard for an update. History must be acyclic with one root;
-reading the current board requires
-one unambiguous head. Directories must be real directories and revision files
-regular JSON files. A Saga may have at most 10,000 named whiteboards. Each board
-may have at most 10,000 revisions, and each revision is limited to 1 MiB.
-Every named document must satisfy the whiteboard revision and
-diagram JSON contracts; a document name does not select a different schema.
+**Storage and publication.** The optional
+`___whiteboards/<board-id>/current.json` contains one editable document,
+validated by [current-record.schema.json](schema/v5/current-record.schema.json).
+Its content has `name` and a shared [diagram](schema/v5/diagram.schema.json)
+`document`. The directory gives the board its stable identity. Directories must
+be real and record files regular JSON. There may be at most 10,000 boards; a
+board's authored diagram is limited to 1 MiB.
 
-`whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE] [--repo CHECKOUT]
---from FILE|- PATH` validates and publishes the complete diagram under the Saga
-write lock. A new update requires the current head as its parent. Repeating an
-identical publication is idempotent; changing content under an existing revision
-ID is rejected. Publication is atomic and does not rewrite historical snapshots.
-Whiteboards do not currently support the slide `diagram edit` transaction.
+`whiteboard publish --id ID [--name TITLE] [--repo CHECKOUT] --from FILE|- PATH`
+validates and atomically replaces current content under the Saga lock. Reads use
+`whiteboard get|describe|check --id ID`; `--focus` selects an element appearance,
+not a historical version. Git owns prior board versions. Whiteboards do not
+currently support slide `diagram edit` transactions.
 
 **Presentation metadata and navigation roles.** Optional
 `___whiteboards/.metadata.json` is validated by
@@ -545,9 +548,8 @@ records those effective assignments. An explicit empty role never falls back
 to a conventional ID. Subsequent publication does not override explicit role
 metadata. Older readers reject metadata containing the new `architecture` key;
 upgrade readers before assigning it. New readers accept existing three-role
-metadata without migration. Source histories and URNs are unchanged.
-Names and archival are presentation properties and do not rewrite
-immutable revisions or change whiteboard URNs.
+metadata without migration. Stable whiteboard URNs are unchanged. Names and archival are presentation
+properties; Git records earlier content and presentation values.
 
 `whiteboard assign-role --id ID --role ROLE --expect ID|URN|none` replaces the
 observed role owner under the Saga lock. A different current owner rejects the
@@ -558,19 +560,17 @@ owner before clearing it. `rename --id ID --name TITLE`, `archive --id ID`, and
 `restore --id ID` change presentation only. All metadata writes support
 `--dry-run`, `--json`, and an optional `--expected-snapshot`; they replace one
 file atomically. Archive refuses an assigned board and preserves direct and
-historical reads. No operation physically deletes whiteboard history.
+historical reads. Git retains whiteboard history; normalization removes obsolete Saga graph files.
 
 **Composition and sources.** Native elements use the shared diagram grammar,
-styles, icons, groups, annotations and renderer. Ordinary groups can nest;
-optional frames embed ERD revisions. Source references have exact `target` and
-`revision` pins, with optional `element` or `relationship` selectors. Supported
-source kinds are ERDs and data entities; a relationship selector names a
-relationship owned by the pinned data-entity revision. Frames pin a whole ERD.
-Component and system inventory pins are not supported source adapters; authoring
-an infrastructure or system-design document does not add those adapters.
-Sources never resolve implicitly to a newer revision. Adopting new source
-revisions requires publishing a new board snapshot. Existing ERD revisions and
-assets remain readable.
+styles, icons, groups, annotations and renderer. Groups can nest; frames may
+embed ERDs. Sources identify a stable `target` and exact content digest in the
+compatibility-named `revision` field, with optional `element` or owned
+`relationship` selectors. Supported composition sources are ERDs and data entities.
+A frame pins a whole ERD. Component and System inspection uses an element's
+`documentation` link instead. Source updates replace the current board only
+after explicit reassessment. A stale pin never follows current content; exact
+historical sources are read from Git when available, otherwise unresolved.
 
 Repeated appearances have distinct instance paths. Connections address those
 paths, retain their semantic endpoints at overview scale and may have authored
@@ -580,7 +580,7 @@ bindings can support inspection, but internal targeting requires recorded bounds
 **Element references.** Semantic elements may carry optional `evidence` (code
 references), `criterion_links` (the complete-slide Item link shape: stable `id`,
 exact `criterion`, `story_revision`, and `rationale`), `record` (a same-Saga record
-URN), and `documentation` (an exact Component, System or data-entity revision
+URN), and `documentation` (an exact Component, System or data-entity content
 pin). Inventory-format-2 `selections` and optional `documentation_view` reuse
 Item syntax and validation: exact declared pin paths, evidence IDs, contained
 line subsets and selected-byte digests. Eligible selections contribute inherited
@@ -595,47 +595,40 @@ rejects a supplied digest that disagrees. Saved references contain full commit
 OIDs and digests. Each stable owner is
 `urn:change-saga:<saga>:whiteboard:<board>:element:<element>`.
 
-Element code opens in the shared slide-out drawer at the exact saved revision.
-Changed code makes the element stale in the reader, `references`, `status`,
-health, and `reconcile`; a match at the comparison base cannot hide HEAD
-staleness. Reassessment publishes a new complete board revision with the observed
-current parent and reviewed replacement evidence; immutable historical pins are
-preserved. No automatic repair or in-place repin rewrites these revisions.
-Unchanged moved bytes use ordinary reference remapping. Current active board
-heads participate in living documented-code coverage and changed-line ownership;
-previous revisions do not inflate coverage or keep reassessed debt active.
-Review-deck coverage stays independent. Documentation inspection pins do not
-implicitly transfer their definitions' code ownership.
+Element code opens in the shared drawer at its exact saved Git commit and
+range. Changed code makes the element stale in the reader, `references`,
+`status`, health, and `reconcile`. Reassessment edits current content and its
+explicit evidence pins. Git retains the earlier explanation; Saga stores no
+board parent graph. Unchanged moved bytes use ordinary reference remapping.
+Only current active boards contribute living documented-code coverage and
+changed-line ownership. Review-deck coverage stays independent, and a
+`documentation` link does not transfer its definition's code ownership.
+Actions from an already-open page carry the board content digest and refuse a
+changed board instead of substituting replacement evidence.
 
 No internal structure is inferred from SVG artwork.
 
-**Reading and validation.** `whiteboard get|describe|check --id ID PATH`
-reads the named board; `--revision ID` selects its history. `get` returns the source
-document, while `get` or `describe` with `--focus PATH` describes a particular
-appearance and its context. `describe --format json` provides structured output.
-`check` without a revision validates only the selected board's complete history
-and resolves its current composition. It also reports repository web links found
-in notes as non-blocking warnings with element IDs; it never rewrites links or
-infers code ranges from URLs. `change-saga validate PATH` validates all
-named whiteboards in the Saga. `--id` always identifies the document, including on `get`;
-`--focus PATH` selects an element appearance. There is no kind selector or
-`diagram` whiteboard command alias.
+**Reading and validation.** `whiteboard get|describe|check --id ID PATH` reads
+current content. `--focus PATH` describes an appearance and its context;
+`describe --format json` returns structured output. `check` validates the
+current composition and reports repository links in notes as non-blocking
+warnings; it does not infer code ranges or rewrite prose. `validate PATH`
+checks all named whiteboards. `--id` identifies the document; `--focus` selects
+an element appearance. There is no kind selector or diagram command alias.
 
-The reader at `/technical/whiteboards/<id>` presents each named document with
-pan, zoom, fit, focus and shared annotation actions for source inspection.
-The existing Data model page at `/technical/erd` without a revision selector
-selects the effective ERD-role board, defaulting to document ID `data-model`
-only when metadata is absent. Historical `/technical/erd?revision=ID` URLs
-continue to select the original `data-model` document, preserving saved links.
-Another assigned board's history uses `/technical/whiteboards/<id>?revision=ID`.
+The reader at `/technical/whiteboards/<id>` provides pan, zoom, fit, focus and
+shared source inspection. `/technical/erd` selects the effective ERD-role board,
+defaulting to `data-model` only without metadata. Old `?revision=ID` page links
+return an explicit removed-selector response; they never silently display
+current content. Historical documentation is viewed at its real Git commit.
 Technical Design navigation has ERD, Infrastructure, Data flows, and Architecture entries;
 an assigned board has no duplicate sidebar entry. Other active named boards
 and supporting essay pages remain discoverable from the overview. Named board URLs continue to identify
 their original document regardless of its current role.
 Whiteboard sources do not supply slide or review line coverage.
 
-Display-name overrides apply to current views; explicit historical reads retain
-the immutable revision's name. Archived boards are omitted from overview
+Display-name overrides apply to current views; Git views retain the name saved
+at that commit. Archived boards are omitted from overview
 discovery but remain in `whiteboard list` and `query whiteboards` with
 `archived: true`, so authors can inspect and restore them. The query's
 `data.snapshot` is the metadata CAS token, whereas its envelope snapshot binds
@@ -661,36 +654,20 @@ Quality URNs are canonical and local to the manifest Saga ID:
 
 ```text
 urn:change-saga:<saga>:test-case:<test>
-urn:change-saga:<saga>:test-case:<test>:revision:<revision>
 urn:change-saga:<saga>:test-case:<test>:step:<step>
-urn:change-saga:<saga>:test-case:<test>:event:<event>
 urn:change-saga:<saga>:test-case:<test>:evidence:<evidence>
 urn:change-saga:<saga>:test-case:<test>:run:<run>
 urn:change-saga:<saga>:quality-policy:<policy>
 urn:change-saga:<saga>:coverage-exception:<exception>
 ```
 
-A test identity is immutable. Revisions are append-only complete snapshots;
-their `steps` array is execution order. `coverage_kinds` is a non-empty unique
-subset of `positive`, `negative`, and `edge`; `automation` is `manual`,
-`automated`, or `hybrid`. Positive cases define intended behavior for valid input;
-negative cases define rejection or recovery for invalid input or disallowed actions;
-edge cases define boundary, empty-state, duplicate, concurrency, or partial-failure
-behavior. These are verification purposes, never execution verdicts. Prefer a
-single purpose per case; multiple kinds remain valid when its steps exercise each.
-Lifecycle is a separate append-only event graph with
-states `proposed`, `active`, `deprecated`, and `retired`. Definition state does
-not imply a run result. A proposed or active definition can satisfy coverage when its
-current revision contains at least one step and a current direct `verifies`
-relation.
-
-The unique lifecycle root MUST be `proposed`. For a single-parent event, the
-allowed transitions are `proposed -> active|deprecated|retired`,
-`active -> deprecated|retired`, and `deprecated -> active|retired`; `retired`
-is terminal. A multi-parent event is an explicit head reconciliation and may
-choose any lifecycle state. Duplicate or missing parents, multiple roots, and
-cycles are invalid. Multiple heads remain a loadable, blocking conflict rather
-than being ordered by timestamp.
+A test has a stable identity and one editable definition. Its `steps` array is
+execution order and preserves stable step IDs. `coverage_kinds` is a nonempty
+unique subset of `positive`, `negative`, and `edge`; `automation` is `manual`,
+`automated`, or `hybrid`. Current state is `proposed`, `active`, `deprecated`, or
+`retired`; state does not imply a run result. Definition and state edits replace
+`current.json` without an event graph. A proposed or active definition can
+satisfy coverage with a step and a current direct `verifies` relation.
 
 Quality evidence roles are `test_implementation`,
 `implementation_under_test`, and `execution_artifact`. The first two require
@@ -724,13 +701,13 @@ a revision/evidence cycle: author the definition, link criteria, then append
 evidence. One evidence record can map several steps; no code records are copied.
 An absent step, duplicate ID, foreign/malformed criterion, or execution artifact
 with step mappings is rejected before publishing. Evidence and relation pins do
-not advance automatically after a definition edit. Superseded records and old
-revisions remain immutable; step IDs cannot be removed and then reused.
+not advance automatically after a definition edit. Actual evidence records are retained; Git owns earlier definitions. Step IDs
+continue to identify the same authored steps across edits.
 
 Runs and `execution_artifact` evidence are deprecated historical metadata. The
 `quality run record` compatibility writer and schemas remain supported, including
 immutable parent graphs and all four original result literals. `query
-quality-history` exposes them under `legacy_runs`. Runs, their results, missing
+quality-runs` exposes them under `legacy_runs`. Runs, their results, missing
 runs, conflicts, or stale pins MUST NOT affect coverage, readiness, health,
 delivery evidence, or the Quality reader. Recorded commands MUST NOT be executed.
 `query quality` returns definitions, requirement/step mappings, and implementation
@@ -773,12 +750,12 @@ Every digest is lowercase `sha256:` followed by 64 hexadecimal digits.
 
 | Type | Source | Target | Required pins |
 | --- | --- | --- | --- |
-| `refines` | story or criterion | story or criterion | source and target story revisions |
-| `addresses` | report design, Deck, Slide, or Item | story or criterion | source content digest and target story revision |
-| `explains` | Deck, Slide, or Item | story or criterion | target story revision; source digest is recommended |
-| `verifies` | claim, verification, or test case | criterion | target story revision; test cases also pin their revision |
+| `refines` | story or criterion | story or criterion | source and target story content digests |
+| `addresses` | report design, Deck, Slide, or Item | story or criterion | source content digest and target story content digest |
+| `explains` | Deck, Slide, or Item | story or criterion | target story content digest; source digest is recommended |
+| `verifies` | claim, verification, or test case | criterion | target story content digest; test cases also pin their definition digest |
 | `supersedes` | resource | same resource kind | pins applicable to each mutable endpoint |
-| `conflicts_with` | story or criterion | story or criterion | both story revisions |
+| `conflicts_with` | story or criterion | story or criterion | both story content digests |
 
 All endpoints MUST use the same Saga ID. Self-relations are invalid. Active
 `refines` and `supersedes` graphs are acyclic. A `conflicts_with` edge is stored
@@ -824,7 +801,8 @@ The closed response contract is
 [`schema/v5/query-v2.schema.json`](schema/v5/query-v2.schema.json). V2 uses the
 existing query envelope with `schema: "change-saga.ai/v2"`, snapshot-bound
 cursor pagination, deterministic ordering, and operation-specific closed
-`data`. V1 responses remain byte-compatible.
+`data`. The current-record format changes definition payloads to current content and
+state; clients using the removed history operations must use Git-backed history.
 
 Every transitive path is an ordered array of typed hops. Hop types are
 `relation`, `contains`, `owns_diff`, `has_quality_evidence`, and
@@ -894,19 +872,16 @@ implementation's explanation. Its `addresses` relations cover a criterion's
 `ux` axis. The reviewer shows each feature's sections in a fixed order, omitting
 any that are empty: Stories, Prototypes, UX, UI, Technical, then Quality.
 
-A prototype is a reading surface of its own. The reviewer opens it at
-`/prototypes/<id>`: the current revision (or `?revision=ID`) framed in a
-sandbox, its revisions, and the annotations that pin it to stories and
-criteria, with a link that opens the app in its own tab. Prototype files are
-served under `/p/` on the authored-content policy, whose `sandbox` directive
-gives them an opaque origin wherever they load, so a prototype's scripts run
-but cannot reach the reviewer. A revision's source is one of four kinds:
-`html` copies the app into the revision package; `repo` leaves it in the source
-repository and pins its `entrypoint`, the `root` directory served beside it
-(omitted for a single file), the `commit`, and the package's Git `object` at
-that commit; `external` and `embed` name an app hosted elsewhere. A `repo`
-revision is read from its pinned commit and reads as stale once the package's
-object at HEAD differs; `prototype update` appends a revision that re-pins it.
+A prototype is a reading surface of its own. `/prototypes/<id>` frames the
+current app in a sandbox and lists its requirement annotations. Its files are
+served under `/p/` with an opaque origin so scripts cannot reach the reviewer.
+`html` sources are copied into content-addressed package assets; `repo` sources
+pin an entrypoint, optional root, full Git commit and package Git object;
+`external` and `embed` sources identify an app hosted elsewhere. Repository
+sources continue to serve their pinned bytes and become stale when HEAD's
+package differs. `prototype update` replaces the current definition after
+reassessment. Earlier definitions are Git history, and old revision selectors
+never fall back to today's app.
 
 ### Deck overview and slide Front/Back
 
@@ -972,43 +947,20 @@ those readers before authoring them. Do not silently strip authored content.
 
 ### Complete-slide transactions and diagram sources
 
-`apply-slide` publishes one complete slide of an implementation or review deck
-atomically: its visual and Items and, for an implementation slide, each Item's
-exact evidence and pinned criterion links. The slide's single
-`25-t-<deck-key>-<slide-key>.json` record holds its immutable revision history
-and names the current revision; visuals are content-addressed
-`24-a-<digest-prefix>.<ext>` sidecars committed before the record that
-references them. A legacy flat slide becomes the first revision the first time
-`apply-slide` updates it, and its flat records remain as migration history.
+`apply-slide` atomically replaces one complete slide: its visual, Items,
+scoped evidence, and criterion links. The `25-t-<deck-key>-<slide-key>.json`
+record follows [slide-current.schema.json](schema/v5/slide-current.schema.json)
+and contains one editable `content` value. Content-addressed `24-a-*` sidecars
+are published before the record references them. Legacy transactions collapse
+to their selected current content; ambiguous legacy heads require explicit
+non-destructive resolution before normalization.
 
-`remove-slide` supports these published implementation slides: under the Saga
-lock it appends a revision with `deleted: true`, a new snapshot and request ID,
-and exactly one parent (the current snapshot). All of the parent's content,
-Items, evidence, criterion links, and asset pins remain in that revision. The
-stored record follows [slide-transaction.schema.json](schema/v5/slide-transaction.schema.json).
-Deleted revisions do not project active slides, Items, evidence, or criterion
-links; historical flat records cannot bring them back. Optional
-`--expected-snapshot` refuses a removal if the observed snapshot changed.
-Divergent histories must be reconciled before removal. A Git merge between a
-removal and a live edit exposes the live head with an authoring conflict, so
-`apply-slide` reconciliation can explicitly resolve it.
-
-`remove-deck` removes every active slide. If the bundle contains transaction
-history (including previously removed slides), it retains the bundle and marks
-the deck record `deleted: true`; otherwise it removes the bundle. A deleted
-deck is excluded from discovery and must contain no active slides. Its overview
-is retained as history without requiring its references to remain active.
-If Git merges a live slide into a deleted deck, validation reports the conflict.
-The existing removal commands still report surviving relations left dangling.
-Review decks and review slides cannot be removed by these commands.
-
-Compatibility: `deleted` is optional and omitted on live records, so existing
-snapshots and Sagas require no migration. Upgrade readers before using removal:
-older strict readers reject these fields; readers that ignore unknown fields
-may show removed content. Retained bundles and slide records reserve their
-storage locations; author a replacement under a new ID instead of overwriting
-history. Removing a transaction Item alone still requires a complete
-`apply-slide` update that omits it and adjusts the reading order.
+`remove-slide` updates the current removal state; `remove-deck` removes active
+slides and updates deck state. Assets and actual review evidence are preserved.
+Git supplies historical content. An optional `--expected-snapshot` is a current
+content-digest concurrency check, not a parent pointer. Review slides cannot be
+removed by these commands. Updates to a transaction-managed Item use a complete
+slide request that preserves stable Item IDs and reading order.
 
 A revision's visual is either an authored asset (SVG, HTML, or raster image)
 or a **diagram source**. A diagram source is a
@@ -1203,43 +1155,34 @@ A pull request review's deck uses the same transaction. A request that names
 `deck/` directory, and the slide and its Items are named inside the review.
 A review Item carries no evidence or criterion links in the request; `cover`
 writes its code references as ordinary `40-e-` records keyed by the Item's
-URN, and readers attach them to the current revision's Items, so coverage
-survives later revisions and diagram edits. A revision that would drop a
+URN, and readers attach them to the current slide's Items, so coverage
+survives later slide and diagram edits. An edit that would drop a
 covered Item is refused. The diagram commands take `--review` or a review
 slide's URN, and a merged review's slides are read-only.
 
 Stories and their acceptance criteria are the traceability backbone. A deck,
 slide, or Item relates to a story or criterion through an active relation that
-pins the exact story revision it relied on. Linking a story applies to every
-acceptance criterion in that pinned revision; linking a criterion is the
+pins the exact story content it relied on. Linking a story applies to every
+acceptance criterion in that pinned content; linking a criterion is the
 narrower form. A stale relation is never coverage, and relations never move
 exact diff ownership away from Items.
 
-A relation is judged by **what it points at**, not by a revision id. It is
-stale when its visual source disappears, when a pinned criterion's title, statement, or overview is
-no longer byte-identical to the one confirmed, or when a pinned story no longer
-obliges what it did: its title, statement, overview, or acceptance criteria changed.
-A story's priority, personas, and citations do not stale a relation, because
-none of them changes what a design must address, a slide must explain, or a
-test must verify. The comparison is exact: a typo fix or a capitalization
-change is stale, because deciding which edits "do not count" is the judgment
-the reader is there to make.
+A relation names stable endpoints and pins exact authored content digests.
+Pins remain what an author confirmed. An edited source or target can make the
+link stale; a reader never silently moves an old digest to current content.
+Reassessment updates the relation's current pins and rationale in place.
+Git supplies earlier values and attribution. Actual review decisions, code
+evidence and recorded verification facts remain separate domain records.
 
-When a relation still holds but its revision moved on, the pin is **carried
-forward, never silently re-affirmed**. The record keeps the revision a person
-confirmed, and the report names both that revision and the one the relation was
-carried to, so a confirmation somebody made is always distinguishable from one
-the tool carried past. This matters because a staleness signal that fires when
-nothing it asserts has changed trains readers to re-pin without reading, which
-destroys the only thing pinning is for.
-
-`relation repin` records a person's confirmation that a relation still holds
-after what it points at genuinely changed. It appends an immutable record under
-`___requirements/relation-repins/<relation>/<id>.json`; the relation itself is
-never rewritten, keeping its id, its rationale, and the pins its author
-confirmed. A relation's confirmed pins are its own folded with its repins,
-oldest first. Re-pinning a relation nothing has moved under is refused, and a
-superseded relation is retired rather than re-affirmed.
+Legacy relation confirmations define a sequential effective-state projection:
+readers order them by `created_at`, then ID, and fold each nonempty endpoint pin
+over its predecessor. Normalization MUST preserve that effective projection
+exactly, convert surviving legacy revision pins to exact content digests, and
+publish the current relation before removing `relation-repins/`. It retains the
+relation's original rationale, as the legacy projection does. It MUST NOT choose
+the confirmation that matches current content or freshly confirm stale evidence.
+This legacy fold is distinct from competing content revision heads, which remain
+an explicit, non-destructive migration error.
 
 `query traceability` returns the complete current paths from each accepted
 criterion through its linked review targets to Item-owned code references. It can be
@@ -1893,8 +1836,8 @@ technical design for a change, as a slide deck, and the **Tasks** that carry it
 out. A review explains what a change did; a Plan says what it will do. A Plan
 belongs to no feature; its stories and features are derived from its Tasks. Git
 is a Plan's history: a change rewrites the same small `plan.json` or `task.json`,
-with no revisions or events. Its slides keep the revision record any deck's
-slides keep.
+with no revisions or events. Its slides use the same editable current-slide
+layout as other decks; Git retains their earlier content.
 
 ```text
 ___plans/<id>.plan/
@@ -1968,6 +1911,32 @@ Tasks, and a deck without slides or an essay. None of these is invalid.
 a Plan's deck essay and a Task's essay. `query plans` omits delivered Plans unless
 `--all` is given. `query prototype` reads a prototype's HTML the same way, in
 byte-range pages.
+
+### Checkpoints
+
+A phase MAY have a `checkpoint` object. A checkpoint MUST NOT hold Tasks; it
+covers the Tasks in phases since the previous checkpoint. The first unpassed
+checkpoint holds later work out of readiness in the CLI, queries and reader.
+Optional `expectations` contain stable `id` and `statement` pairs; `review` names
+the review covering that stretch. A null checkpoint is invalid, and unknown
+fields MUST be rejected rather than silently discarded.
+
+The Plan's optional `checkpoint_passer` is `person` (the default) or `agent`.
+`plan pass` requires completed covered Tasks, all earlier checkpoints passed,
+confirmation of every expectation through `--met ID=HOW`, and the caller's name
+and reason. An agent pass requires explicit permission in the Plan. The saved
+`passed` object records `at`, `by`, `reason`, optional `agent`, confirmed `met`
+expectations, the exact review `base` when available, and `to_come` Task/phase
+pairs. These are actual recorded judgments, not a content revision graph.
+Reading, validating, editing slides or normalizing MUST NOT pass a checkpoint.
+A pass does not itself merge code, deploy or grant permissions.
+
+`plan checkpoint` reports the stretch and its expectations, current evidence,
+estimated review size and material surprises. `plan expect`, `plan set`, and
+`plan link-review --checkpoint` author its requirements and review association.
+`plan widen --to PHASE` records a review's optional `since` base; it changes the
+reviewed range, never its merge destination. A delivered Plan requires every
+checkpoint passed. Git retains earlier wording, diagram content and Plan states.
 
 ### Plan decks
 
@@ -2154,34 +2123,31 @@ changed lines, is a finding. `check` exits 0 when every named area is covered,
 
 ## Deprecation annotations
 
-The optional app-level `___deprecations` root stores first-class authored
-assertions. Each package has an immutable identity, complete immutable revision
-snapshots and an independent append-only `active`/`withdrawn` lifecycle. Revision
-and event parents name every observed current head; merges preserve competing
-heads until an explicit multi-parent correction. Initial state is active;
-subsequent lifecycle changes require reasons. `deprecation add`, `revise`, and
-`set-state` are the public writers. No operation rewrites or deletes the target.
+The optional app-level `___deprecations` root stores authored assertions with a
+stable identity and editable content plus active/withdrawn state in `current.json`.
+`deprecation add`, `revise`, and `set-state` are the public writers. State changes
+require reasons. Git owns earlier assertions and states; editing an assertion
+never edits its target.
 
-A revision requires `reason`, explicit `scope` (`content` or `code`) and a
+Current assertion content requires `reason`, explicit `scope` (`content` or `code`) and a
 self-scoped target pin. Code scope requires exact digest-bearing `code`
 references and applies only to those references. Content scope's references and
 direct evidence reached from its target remain related evidence, never implied
 code deprecation. An optional replacement is independently pinned. Evidence is
 not changed-line coverage. `references` includes active unconflicted assertions;
-repairs append deprecation revisions instead of rewriting their evidence.
+repairs edit the current assertion while retaining its exact evidence pins.
 
 Targets are existing fragments/landmarks, decks/slides/Items (including review
 URNs), technical inventory identities, and named whiteboard identities
 `urn:change-saga:<saga>:whiteboard:<board>`. Narrative and visual targets pin the
-existing canonical authored-content digest; technical targets pin their own
-revision URNs. Whiteboards pin
-`urn:change-saga:<saga>:whiteboard:<board>:revision:<revision>` and optionally an
+existing canonical authored-content digest; technical and whiteboard targets pin content digests. Whiteboards name
+`urn:change-saga:<saga>:whiteboard:<board>` and optionally an
 exact composition appearance `element` path. Paths do not create independent
 technical entities. Target changes, removal and conflicts are reported as health;
 they never rewrite historical assertions. Replacement links do not expand scope.
 
 V5 `explains` relations additionally accept a deprecation source, with `self`
-scope and both source deprecation and target story/criterion revision pins.
+scope and exact source deprecation and target story/criterion content pins.
 The v3 relation grammar is unchanged. Stories are optional and may be historical
 or retired; normal relation currency and traversal apply. Withdrawal does not
 remove story relations. V5 `supersedes` permits deprecation-to-deprecation
@@ -2189,13 +2155,13 @@ relations as same-kind history links, but lifecycle withdrawal remains explicit.
 
 `query deprecations` uses the standard snapshot and pagination envelope, with
 global, annotation, target, story, scope, state and exact code-location filters.
-All lifecycle states are included by default. Every competing head is returned
-as an assertion; no winner is inferred. `--history` selects one identity's full
-immutable history. Code matches distinguish verified overlap from uncertain
+All current states are included by default. Competing legacy heads are exposed
+as a migration ambiguity; no winner is inferred. `query history` reads the identity's history from Git. Code matches distinguish verified overlap from uncertain
 same-path stale evidence, retain exact provenance, and label related evidence
 separately. No rows means no recorded deprecation, never proof of non-deprecation.
 See [deprecations.md](docs/deprecations.md) for authoring and interpretation.
 
-Schemas: `v5/deprecation.schema.json`, `v5/deprecation-revision.schema.json`,
-`v5/deprecation-event.schema.json`. Existing Sagas without the root retain their
+Schemas: `v5/deprecation.schema.json` for stable identity and
+`v5/current-record.schema.json` with embedded deprecation content/state schemas.
+Existing Sagas without the root retain their
 behavior; older strict readers must upgrade to read the new records/endpoints.

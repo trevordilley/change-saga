@@ -28,7 +28,7 @@ func TestConsolidationPreviewsThenRemapsSevenExactItemLinks(t *testing.T) {
 		_, err := AddRelation(root, "test", AddRelationInput{
 			Feature: "core", ID: fmt.Sprintf("item-%d-explains-duplicate", index), Type: RelationExplains,
 			From: fmt.Sprintf("urn:change-saga:test:slide:flow:item:item-%d", index), To: duplicateCriterion,
-			ToRevision: duplicateURN + ":revision:r1", Rationale: "This exact diagram item explains the criterion.",
+			ToRevision: currentFixtureStoryPin(t, root, duplicateURN), Rationale: "This exact diagram item explains the criterion.",
 		})
 		if err != nil {
 			t.Fatal(err)
@@ -65,7 +65,7 @@ func TestConsolidationPreviewsThenRemapsSevenExactItemLinks(t *testing.T) {
 		t.Fatal(err)
 	}
 	story := after.FindStory("duplicate")
-	if story.CurrentLifecycle == nil || story.CurrentLifecycle.State != StateRejected || len(story.Events) != 2 {
+	if story.CurrentLifecycle == nil || story.CurrentLifecycle.State != StateRejected || len(story.Events) != 1 {
 		t.Fatalf("duplicate lifecycle = %#v, history %d", story.CurrentLifecycle, len(story.Events))
 	}
 	active, superseded := 0, 0
@@ -73,7 +73,7 @@ func TestConsolidationPreviewsThenRemapsSevenExactItemLinks(t *testing.T) {
 		switch relation.State {
 		case RelationActive:
 			active++
-			if relation.To != canonicalCriterion || relation.ToRevision != canonicalURN+":revision:r1" || !strings.Contains(relation.From, ":item:item-") {
+			if relation.To != canonicalCriterion || relation.ToRevision != currentFixtureStoryPin(t, root, canonicalURN) || !strings.Contains(relation.From, ":item:item-") {
 				t.Fatalf("unsafe replacement = %#v", relation)
 			}
 		case RelationSuperseded:
@@ -121,7 +121,7 @@ func TestConsolidationRefusesAmbiguousMappingAndAcceptedIntentLoss(t *testing.T)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if after.FindStory("duplicate").CurrentLifecycle.State != StateAccepted || len(after.FindStory("duplicate").Events) != 2 {
+	if after.FindStory("duplicate").CurrentLifecycle.State != StateAccepted || len(after.FindStory("duplicate").Events) != 1 {
 		t.Fatal("failed consolidation changed accepted lifecycle")
 	}
 }
@@ -133,7 +133,7 @@ func TestConsolidationRequiresCurrentExternalPinsAndWritesFreshPins(t *testing.T
 	if _, err := AddRelation(root, "test", AddRelationInput{
 		Feature: "core", ID: "validator-addresses-duplicate", Type: RelationAddresses,
 		From: item, To: duplicateCriterion, FromContentDigest: digest,
-		ToRevision: duplicateURN + ":revision:r1", Rationale: "The current Item addresses this exact criterion.",
+		ToRevision: currentFixtureStoryPin(t, root, duplicateURN), Rationale: "The current Item addresses this exact criterion.",
 	}); err != nil {
 		t.Fatal(err)
 	}
@@ -158,7 +158,7 @@ func TestConsolidationRequiresCurrentExternalPinsAndWritesFreshPins(t *testing.T
 	}
 	for _, relation := range document.Relations {
 		if relation.State == RelationActive {
-			if relation.To != canonicalCriterion || relation.ToRevision != canonicalURN+":revision:r1" || relation.FromContentDigest != digest {
+			if relation.To != canonicalCriterion || relation.ToRevision != currentFixtureStoryPin(t, root, canonicalURN) || relation.FromContentDigest != digest {
 				t.Fatalf("replacement did not carry verified current pins: %#v", relation)
 			}
 		}
@@ -168,18 +168,18 @@ func TestConsolidationRequiresCurrentExternalPinsAndWritesFreshPins(t *testing.T
 func TestConsolidationRefusesConflictedAffectedRelation(t *testing.T) {
 	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
 	testCase := "urn:change-saga:test:test-case:checkout-flow"
-	testCaseRevision := testCase + ":revision:r1"
+	testCaseRevision := "sha256:" + strings.Repeat("a", 64)
 	if _, err := AddRelation(root, "test", AddRelationInput{
 		Feature: "core", ID: "test-verifies-duplicate", Type: RelationVerifies,
 		From: testCase, To: duplicateCriterion, FromRevision: testCaseRevision,
-		ToRevision: duplicateURN + ":revision:r1", Rationale: "The test case verifies the criterion.",
+		ToRevision: currentFixtureStoryPin(t, root, duplicateURN), Rationale: "The test case verifies the criterion.",
 	}); err != nil {
 		t.Fatal(err)
 	}
 	input := ConsolidateInput{
 		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
 		CriterionMap:   map[string]string{duplicateCriterion: canonicalCriterion},
-		CurrencyInputs: StaleInputs{TestCasesSupplied: true, ConflictedRevisions: map[string][]string{testCase: {testCaseRevision, testCase + ":revision:r2"}}},
+		CurrencyInputs: StaleInputs{TestCasesSupplied: true, ConflictedRevisions: map[string][]string{testCase: {testCaseRevision, "sha256:" + strings.Repeat("b", 64)}}},
 	}
 	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "relation is conflicted") {
 		t.Fatalf("conflicted relation refusal = %v", err)
@@ -192,8 +192,8 @@ func TestConsolidationRefusesTransactionOwnedCriterionLinks(t *testing.T) {
 	if err := os.MkdirAll(slides, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	record := fmt.Sprintf(`{"current":"sha256:current","revisions":[{"snapshot":"sha256:current","items":[{"criterion_links":[{"id":"validator-link","criterion":%q,"story_revision":%q,"rationale":"Exact link"}]}]}]}`,
-		duplicateCriterion, duplicateURN+":revision:r1")
+	record := fmt.Sprintf(`{"version":1,"current":"sha256:current","revisions":[{"snapshot":"sha256:current","items":[{"criterion_links":[{"id":"validator-link","criterion":%q,"story_revision":%q,"rationale":"Exact link"}]}]}]}`,
+		duplicateCriterion, currentFixtureStoryPin(t, root, duplicateURN))
 	path := filepath.Join(slides, "25-t-aaaaaaaaaaaa-bbbbbbbbbbbb.json")
 	if err := os.WriteFile(path, []byte(record), 0o644); err != nil {
 		t.Fatal(err)
@@ -233,7 +233,7 @@ func TestConsolidationRefusesDivergentTransactionHeads(t *testing.T) {
 	}
 	// Current selects one branch, but the other branch must not be silently
 	// ignored when retiring intent. The transaction API owns reconciliation.
-	record := `{"current":"left","revisions":[{"snapshot":"root"},{"snapshot":"left","parent_snapshots":["root"]},{"snapshot":"right","parent_snapshots":["root"]}]}`
+	record := `{"version":1,"current":"left","revisions":[{"snapshot":"root"},{"snapshot":"left","parent_snapshots":["root"]},{"snapshot":"right","parent_snapshots":["root"]}]}`
 	if err := os.WriteFile(filepath.Join(directory, "25-t-aaaaaaaaaaaa-bbbbbbbbbbbb.json"), []byte(record), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -241,7 +241,7 @@ func TestConsolidationRefusesDivergentTransactionHeads(t *testing.T) {
 		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
 		CriterionMap: map[string]string{duplicateCriterion: canonicalCriterion},
 	}
-	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "authoring heads") {
+	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "legacy") {
 		t.Fatalf("divergent transaction refusal = %v", err)
 	}
 }

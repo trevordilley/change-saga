@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-decision-current-2a0cc989fd53",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-decision-current",
-  "to": "urn:change-saga:change-saga:story:review-decision-freshness:criterion:current",
-  "scope": "self",
-  "rationale": "Steps current, isolation define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-decision-current:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:review-decision-freshness:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:43.950547Z",
-  "request_id": "test-review-decision-current-2a0cc989fd53"
+  "from": "urn:change-saga:change-saga:test-case:review-decision-current",
+  "from_revision": "sha256:ec14b41b8df825afa740886c418520512e1bf4d89e25bd99472a48e3760113b9",
+  "id": "test-review-decision-current-2a0cc989fd53",
+  "rationale": "Steps current, isolation define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-decision-current-2a0cc989fd53",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:review-decision-freshness:criterion:current",
+  "to_revision": "sha256:b2ee96bc8339fb200b13034bcce2486bcdfd05be3042b0df1d3bba6034e6703a",
+  "type": "verifies",
+  "version": 5
 }

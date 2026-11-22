@@ -1,24 +1,24 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "digest": "sha256:a9c04aab30375e79608d33ba70998e36dafcadef97ae4a08961ca0c4a9b4326f",
+      "end": 179,
+      "path": "internal/server/plans_test.go",
+      "start": 137
+    }
+  ],
+  "created_at": "2026-11-02T22:19:15Z",
   "id": "evidence-unsized-stands-out",
-  "test_case": "urn:change-saga:change-saga:test-case:plans-size-tasks-small",
-  "test_revision": "urn:change-saga:change-saga:test-case:plans-size-tasks-small:revision:r1",
   "role": "test_implementation",
   "steps": [
     "unsized-stands-out"
   ],
-  "code": [
-    {
-      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
-      "path": "internal/server/plans_test.go",
-      "start": 137,
-      "end": 179,
-      "digest": "sha256:a9c04aab30375e79608d33ba70998e36dafcadef97ae4a08961ca0c4a9b4326f"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-11-02T22:19:15Z"
+  "test_case": "urn:change-saga:change-saga:test-case:plans-size-tasks-small",
+  "test_revision": "sha256:f5f22f029f77ca9f137778c3bf91becfa5322fa7e5cb03d3a45c00f3d73c0135",
+  "verifications": [],
+  "version": 5
 }

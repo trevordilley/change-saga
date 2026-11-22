@@ -1,17 +1,17 @@
 {
+  "description": "The endpoint loads the requested saved definition and generates its directed Component diagram with explicit noncurrent status.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:system:technical-documentation",
-    "revision": "urn:change-saga:change-saga:system:technical-documentation:revision:r1"
+    "revision": "sha256:74c03b2e34a9fdcf653086d3453f02386fd47c73004e342a1c4ecaf069708492",
+    "target": "urn:change-saga:change-saga:system:technical-documentation"
   },
-  "version": 4,
   "id": "fetch",
-  "slide": "technical-inventory-navigation",
-  "rank": 10,
   "kind": "node",
   "label": "Saved explanation",
-  "description": "The endpoint loads the requested saved definition and generates its directed Component diagram with explicit noncurrent status.",
+  "rank": 10,
   "selector": {
-    "type": "element",
-    "element_id": "fetch"
-  }
+    "element_id": "fetch",
+    "type": "element"
+  },
+  "slide": "technical-inventory-navigation",
+  "version": 4
 }

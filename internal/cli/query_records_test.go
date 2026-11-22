@@ -24,7 +24,7 @@ func TestPersonaQueriesTraverseEightStoriesWithExactIdentityAndPortablePaths(t *
 		addStory(t, root, testFeature, "persona-use-"+string(rune('a'+index-1)), persona)
 	}
 	mustLiving(t, "duplicate-name persona", personaCommand, "add", root, "--id", "second-user", "--name", "User", "--description", "A distinct identity")
-	mustLiving(t, "retire persona", personaCommand, "set-state", root, "--persona", persona, "--event", "retired", "--parent", persona+":event:active", "--state", "retired", "--reason", "fixture")
+	mustLiving(t, "retire persona", personaCommand, "set-state", root, "--persona", persona, "--state", "retired", "--reason", "fixture")
 
 	var read bytes.Buffer
 	if err := Query(context.Background(), []string{"personas", "--saga", root, "--repo", repo, "--persona", testPersona, "--limit", "1"}, &read); err != nil {
@@ -44,7 +44,7 @@ func TestPersonaQueriesTraverseEightStoriesWithExactIdentityAndPortablePaths(t *
 		t.Fatalf("selected persona = %#v", selected)
 	}
 	other := queryData(t, "personas", "--saga", root, "--repo", repo, "--persona", "second-user")["personas"].([]any)[0].(map[string]any)
-	if other["persona"] == selected.Persona || other["id"] != "second-user" || other["current_revision"].(map[string]any)["name"] != "User" {
+	if other["persona"] == selected.Persona || other["id"] != "second-user" || other["content"].(map[string]any)["name"] != "User" {
 		t.Fatalf("duplicate display names were not identity-selected: %#v", other)
 	}
 
@@ -89,7 +89,7 @@ func TestPersonaQueriesTraverseEightStoriesWithExactIdentityAndPortablePaths(t *
 		t.Fatalf("tampered cursor status=%d envelope=%#v", status, bad)
 	}
 	second := "urn:change-saga:batch:persona:second-user"
-	mustLiving(t, "revise another persona", personaCommand, "revise", root, "--persona", second, "--revision", "r2", "--parent", second+":revision:r1", "--name", "User", "--description", "A changed distinct identity")
+	mustLiving(t, "revise another persona", personaCommand, "revise", root, "--persona", second, "--name", "User", "--description", "A changed distinct identity")
 	stale, status, _ := runRealQuery(t, []string{"persona-references", "--saga", root, "--repo", repo, "--persona", testPersona, "--limit", "3", "--cursor", cursor})
 	if status == 0 || stale.Error == nil || stale.Error.Code != "stale_snapshot" || !stale.Error.Retryable {
 		t.Fatalf("stale cursor status=%d envelope=%#v", status, stale)

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "plan-lists-prototypes",
+        "statement": "A Plan's page lists its prototypes and opens each one."
+      },
+      {
+        "id": "several-prototypes",
+        "statement": "A Plan can have more than one prototype."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect, I can attach prototypes to a Plan, so readers can see the experience being planned before it is built.",
+    "story": "urn:change-saga:change-saga:story:show-plan-prototypes",
+    "title": "See what a Plan will build"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:show-plan-prototypes"
+  }
+}

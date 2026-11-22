@@ -202,12 +202,13 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 	}
 	prefix := "urn:change-saga:" + document.SagaID
 	story, testCase, relation := prefix+":story:checkout", prefix+":test-case:fast", prefix+":relation:fast-verifies"
-	mustRun("accept", Story(ctx, []string{"set-state", root, "--story", story, "--event", "accepted", "--parent", story + ":event:proposed", "--state", "accepted", "--json"}, &output), &output)
+	mustRun("accept", Story(ctx, []string{"set-state", root, "--story", story, "--state", "accepted", "--json"}, &output), &output)
 	runQuality(t, "", "test-case", "add", root, "--feature", testFeature, "--id", "fast", "--title", "Fast checkout", "--kind", "positive",
 		"--automation", "automated", "--step", `{"id":"s1","action":"Check out","expected_result":"Done"}`, "--expected-result", "Done")
 	mustRun("relation add", Relation(ctx, []string{"add", root, "--feature", testFeature, "--id", "fast-verifies", "--type", "verifies", "--from", testCase,
 		"--to", story + ":criterion:fast", "--rationale", "Exercises the fast path.", "--json"}, &output), &output)
-	mustRun("story revise", Story(ctx, []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1",
+	commitCurrentTestDocumentation(t, root, "confirmed criterion before edit")
+	mustRun("story revise", Story(ctx, []string{"revise", root, "--story", story,
 		"--persona", personaURNFor(document.SagaID), "--title", "Checkout", "--statement", "As a buyer I can check out quickly", "--priority", "must",
 		"--criterion", "fast=Checkout finishes in two seconds", "--json"}, &output), &output)
 
@@ -275,7 +276,7 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 		}
 		argv := strings.Join(action.Question.Options[0].Commands[0].Argv, " ")
 		if !strings.Contains(argv, "relation repin") || !strings.Contains(argv, "--relation "+relation) ||
-			!strings.Contains(argv, "--to-revision "+story+":revision:r2") {
+			!strings.Contains(argv, "--to-definition-digest "+currentTestPin(t, root, story)) {
 			t.Fatalf("the re-pin advances the relation it already has: %s", argv)
 		}
 	}

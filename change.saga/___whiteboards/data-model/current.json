@@ -1,0 +1,683 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "document": {
+      "elements": [
+        {
+          "height": 65,
+          "id": "title",
+          "kind": "text",
+          "label": "Records that preserve intent and evidence",
+          "style": "title",
+          "width": 2500,
+          "wrap": true,
+          "x": 70,
+          "y": 45
+        },
+        {
+          "height": 75,
+          "id": "intro",
+          "kind": "text",
+          "label": "Logical ERD of file-backed records. Crow's feet show multiplicity; circles show optionality. Source pins retain the exact definitions that informed each association.",
+          "style": "body",
+          "width": 2500,
+          "wrap": true,
+          "x": 70,
+          "y": 120
+        },
+        {
+          "color": "blue",
+          "height": 1120,
+          "id": "product",
+          "kind": "group",
+          "label": "Product knowledge",
+          "shape": "section",
+          "style": "boundary",
+          "width": 1250,
+          "x": 60,
+          "y": 240
+        },
+        {
+          "color": "green",
+          "height": 1120,
+          "id": "evidence",
+          "kind": "group",
+          "label": "Implementation and evidence",
+          "shape": "section",
+          "style": "boundary",
+          "width": 1250,
+          "x": 1390,
+          "y": 240
+        },
+        {
+          "fields": [
+            {
+              "name": "id",
+              "type": "stable namespace"
+            },
+            {
+              "name": "repository",
+              "type": "source identity"
+            }
+          ],
+          "height": 175,
+          "id": "saga-manifest",
+          "kind": "node",
+          "label": "Saga",
+          "parent": "product",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:78ee5005a78a5523eb832609455fb08a7a11e41c80b288bfe23d582b2dc1d562",
+            "target": "urn:change-saga:change-saga:data-entity:saga-manifest"
+          },
+          "style": "normal",
+          "summary": "Namespace and source identity for one application.",
+          "width": 420,
+          "wrap": true,
+          "x": 65,
+          "y": 100
+        },
+        {
+          "fields": [
+            {
+              "name": "id",
+              "type": "durable domain"
+            },
+            {
+              "name": "title",
+              "type": "reader label"
+            }
+          ],
+          "height": 175,
+          "id": "feature",
+          "kind": "node",
+          "label": "Feature",
+          "parent": "product",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:2bac2b531b39078dc2c7ea67ff21b12bf728158f0dbb0add4c1d7ce44354c56c",
+            "target": "urn:change-saga:change-saga:data-entity:feature"
+          },
+          "style": "normal",
+          "summary": "A durable product area containing related stories and explanations.",
+          "width": 420,
+          "wrap": true,
+          "x": 65,
+          "y": 415
+        },
+        {
+          "fields": [
+            {
+              "name": "story + id",
+              "type": "identity / revision"
+            },
+            {
+              "name": "parents[]",
+              "type": "explicit history"
+            },
+            {
+              "name": "criteria[]",
+              "type": "embedded obligations"
+            }
+          ],
+          "height": 175,
+          "id": "story",
+          "kind": "node",
+          "label": "Story revision",
+          "parent": "product",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+            "target": "urn:change-saga:change-saga:data-entity:story"
+          },
+          "style": "normal",
+          "summary": "Complete intent snapshot with explicit parents and embedded criteria.",
+          "width": 420,
+          "wrap": true,
+          "x": 65,
+          "y": 760
+        },
+        {
+          "fields": [
+            {
+              "name": "id",
+              "type": "beneficiary identity"
+            },
+            {
+              "name": "name",
+              "type": "human role"
+            }
+          ],
+          "height": 175,
+          "id": "persona",
+          "kind": "node",
+          "label": "Persona",
+          "parent": "product",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:fa71b597e86c31c3cf15ddc69f73cd1d1cefdfbe50b8f5cb1dcff75a3f281c59",
+            "target": "urn:change-saga:change-saga:data-entity:persona"
+          },
+          "style": "normal",
+          "summary": "The human beneficiary whose outcome a story serves.",
+          "width": 420,
+          "wrap": true,
+          "x": 740,
+          "y": 415
+        },
+        {
+          "fields": [
+            {
+              "name": "id",
+              "type": "within a story"
+            },
+            {
+              "name": "statement",
+              "type": "pass / fail"
+            }
+          ],
+          "height": 175,
+          "id": "criterion",
+          "kind": "node",
+          "label": "Criterion",
+          "parent": "product",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:a388a8323328ff5201714ec4896f62b7f1f37d0a2116677fc5c93d1d1b9da380",
+            "target": "urn:change-saga:change-saga:data-entity:criterion"
+          },
+          "style": "normal",
+          "summary": "An independent observable obligation, owned by its story revision.",
+          "width": 420,
+          "wrap": true,
+          "x": 740,
+          "y": 760
+        },
+        {
+          "from": "feature",
+          "head": "only-one",
+          "id": "feature-in-saga",
+          "kind": "edge",
+          "label": "belongs to",
+          "label_box": {
+            "height": 45,
+            "width": 210,
+            "x": 300,
+            "y": 320
+          },
+          "parent": "product",
+          "points": [
+            {
+              "x": 275,
+              "y": 415
+            },
+            {
+              "x": 275,
+              "y": 275
+            }
+          ],
+          "source": {
+            "relationship": "in-saga",
+            "revision": "sha256:2bac2b531b39078dc2c7ea67ff21b12bf728158f0dbb0add4c1d7ce44354c56c",
+            "target": "urn:change-saga:change-saga:data-entity:feature"
+          },
+          "style": "secondary",
+          "tail": "zero-or-many",
+          "to": "saga-manifest",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "from": "story",
+          "head": "only-one",
+          "id": "story-in-feature",
+          "kind": "edge",
+          "label": "lives in",
+          "label_box": {
+            "height": 45,
+            "width": 210,
+            "x": 300,
+            "y": 650
+          },
+          "parent": "product",
+          "points": [
+            {
+              "x": 275,
+              "y": 760
+            },
+            {
+              "x": 275,
+              "y": 590
+            }
+          ],
+          "source": {
+            "relationship": "in-feature",
+            "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+            "target": "urn:change-saga:change-saga:data-entity:story"
+          },
+          "style": "secondary",
+          "tail": "zero-or-many",
+          "to": "feature",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "from": "story",
+          "head": "zero-or-many",
+          "id": "story-serves",
+          "kind": "edge",
+          "label": "serves",
+          "label_box": {
+            "height": 45,
+            "width": 190,
+            "x": 530,
+            "y": 575
+          },
+          "parent": "product",
+          "points": [
+            {
+              "x": 485,
+              "y": 820
+            },
+            {
+              "x": 610,
+              "y": 820
+            },
+            {
+              "x": 610,
+              "y": 500
+            },
+            {
+              "x": 740,
+              "y": 500
+            }
+          ],
+          "source": {
+            "relationship": "serves",
+            "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+            "target": "urn:change-saga:change-saga:data-entity:story"
+          },
+          "style": "secondary",
+          "tail": "zero-or-many",
+          "to": "persona",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "from": "criterion",
+          "head": "only-one",
+          "id": "criterion-of-story",
+          "kind": "edge",
+          "label": "criterion of",
+          "label_box": {
+            "height": 45,
+            "width": 240,
+            "x": 505,
+            "y": 930
+          },
+          "parent": "product",
+          "points": [
+            {
+              "x": 740,
+              "y": 900
+            },
+            {
+              "x": 485,
+              "y": 900
+            }
+          ],
+          "source": {
+            "relationship": "of-story",
+            "revision": "sha256:a388a8323328ff5201714ec4896f62b7f1f37d0a2116677fc5c93d1d1b9da380",
+            "target": "urn:change-saga:change-saga:data-entity:criterion"
+          },
+          "style": "secondary",
+          "tail": "zero-or-many",
+          "to": "story",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "height": 85,
+          "id": "criterion-context",
+          "kind": "text",
+          "label": "Current criteria also support a short title and Markdown overview. Their full obligation remains visible.",
+          "parent": "product",
+          "style": "small",
+          "width": 475,
+          "wrap": true,
+          "x": 700,
+          "y": 990
+        },
+        {
+          "fields": [
+            {
+              "name": "id",
+              "type": "ordered explanation"
+            },
+            {
+              "name": "role",
+              "type": "implementation / review"
+            },
+            {
+              "name": "overview",
+              "type": "authored account"
+            }
+          ],
+          "height": 175,
+          "id": "deck",
+          "kind": "node",
+          "label": "Deck",
+          "parent": "evidence",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:171dd1b49c020d17234d5879d9298d149e6f436f18e635feb939a2fbe996a9c1",
+            "target": "urn:change-saga:change-saga:data-entity:deck"
+          },
+          "style": "normal",
+          "summary": "An authored account supported by ordered visual slides.",
+          "width": 420,
+          "wrap": true,
+          "x": 65,
+          "y": 110
+        },
+        {
+          "fields": [
+            {
+              "name": "id",
+              "type": "stable identity"
+            },
+            {
+              "name": "front",
+              "type": "summary bullets"
+            },
+            {
+              "name": "visual",
+              "type": "diagram or asset"
+            }
+          ],
+          "height": 175,
+          "id": "slide",
+          "kind": "node",
+          "label": "Slide",
+          "parent": "evidence",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:7e48da8e2cb253785b4fc0745b71282d3fa85967a7ca968fa98510865aa43307",
+            "target": "urn:change-saga:change-saga:data-entity:slide"
+          },
+          "style": "normal",
+          "summary": "One focused explanation with a summary Front and detailed Back.",
+          "width": 420,
+          "wrap": true,
+          "x": 740,
+          "y": 110
+        },
+        {
+          "fields": [
+            {
+              "name": "commit + path",
+              "type": "source identity"
+            },
+            {
+              "name": "lines",
+              "type": "exact selection"
+            },
+            {
+              "name": "digest",
+              "type": "selected bytes"
+            }
+          ],
+          "height": 175,
+          "id": "code-reference",
+          "kind": "node",
+          "label": "Code reference",
+          "parent": "evidence",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:c91052d855422ea6e712628299af5f3b60364dfa46e5f3dad235ec9adf478de4",
+            "target": "urn:change-saga:change-saga:data-entity:code-reference"
+          },
+          "style": "normal",
+          "summary": "Commit-pinned source selection with a digest of its bytes.",
+          "width": 420,
+          "wrap": true,
+          "x": 65,
+          "y": 640
+        },
+        {
+          "fields": [
+            {
+              "name": "id",
+              "type": "semantic element"
+            },
+            {
+              "name": "selector",
+              "type": "visual location"
+            },
+            {
+              "name": "code[]",
+              "type": "owned evidence"
+            }
+          ],
+          "height": 175,
+          "id": "item",
+          "kind": "node",
+          "label": "Item",
+          "parent": "evidence",
+          "shape": "entity",
+          "source": {
+            "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+            "target": "urn:change-saga:change-saga:data-entity:item"
+          },
+          "style": "normal",
+          "summary": "An addressable visual element that owns its exact evidence.",
+          "width": 420,
+          "wrap": true,
+          "x": 740,
+          "y": 640
+        },
+        {
+          "from": "slide",
+          "head": "only-one",
+          "id": "slide-in-deck",
+          "kind": "edge",
+          "label": "in",
+          "label_box": {
+            "height": 50,
+            "width": 230,
+            "x": 500,
+            "y": 220
+          },
+          "parent": "evidence",
+          "points": [
+            {
+              "x": 740,
+              "y": 195
+            },
+            {
+              "x": 485,
+              "y": 195
+            }
+          ],
+          "source": {
+            "relationship": "in-deck",
+            "revision": "sha256:7e48da8e2cb253785b4fc0745b71282d3fa85967a7ca968fa98510865aa43307",
+            "target": "urn:change-saga:change-saga:data-entity:slide"
+          },
+          "style": "secondary",
+          "tail": "zero-or-many",
+          "to": "deck",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "from": "item",
+          "head": "only-one",
+          "id": "item-on-slide",
+          "kind": "edge",
+          "label": "on",
+          "label_box": {
+            "height": 50,
+            "width": 220,
+            "x": 975,
+            "y": 440
+          },
+          "parent": "evidence",
+          "points": [
+            {
+              "x": 950,
+              "y": 640
+            },
+            {
+              "x": 950,
+              "y": 285
+            }
+          ],
+          "source": {
+            "relationship": "on-slide",
+            "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+            "target": "urn:change-saga:change-saga:data-entity:item"
+          },
+          "style": "secondary",
+          "tail": "zero-or-many",
+          "to": "slide",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "from": "code-reference",
+          "head": "zero-or-one",
+          "id": "code-reference-owned-by-item",
+          "kind": "edge",
+          "label": "evidence of",
+          "label_box": {
+            "height": 50,
+            "width": 240,
+            "x": 495,
+            "y": 750
+          },
+          "parent": "evidence",
+          "points": [
+            {
+              "x": 485,
+              "y": 725
+            },
+            {
+              "x": 740,
+              "y": 725
+            }
+          ],
+          "source": {
+            "relationship": "owned-by-item",
+            "revision": "sha256:c91052d855422ea6e712628299af5f3b60364dfa46e5f3dad235ec9adf478de4",
+            "target": "urn:change-saga:change-saga:data-entity:code-reference"
+          },
+          "style": "secondary",
+          "tail": "zero-or-many",
+          "to": "item",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "height": 160,
+          "id": "evidence-note",
+          "kind": "text",
+          "label": "An Item belongs to exactly one slide. Code references can also belong to narrative targets, so an Item is optional for a reference. Criterion links connect Items to Product; code coverage remains on the exact evidence owner.",
+          "parent": "evidence",
+          "style": "body",
+          "width": 1100,
+          "wrap": true,
+          "x": 65,
+          "y": 890
+        },
+        {
+          "color": "purple",
+          "height": 360,
+          "id": "documents",
+          "kind": "group",
+          "label": "Current document contracts",
+          "shape": "section",
+          "style": "boundary",
+          "width": 2580,
+          "x": 60,
+          "y": 1430
+        },
+        {
+          "detail": "id, parents[], name, complete diagram document. A named board has independent immutable history.",
+          "height": 210,
+          "id": "whiteboard-revision",
+          "kind": "node",
+          "label": "Whiteboard revision",
+          "parent": "documents",
+          "shape": "document",
+          "style": "normal",
+          "width": 740,
+          "wrap": true,
+          "x": 55,
+          "y": 80
+        },
+        {
+          "detail": "target, scope, reason, optional replacement and exact code references. Withdrawal is a lifecycle event.",
+          "height": 210,
+          "id": "deprecation-revision",
+          "kind": "node",
+          "label": "Deprecation revision",
+          "parent": "documents",
+          "shape": "document",
+          "style": "normal",
+          "width": 740,
+          "wrap": true,
+          "x": 930,
+          "y": 80
+        },
+        {
+          "height": 215,
+          "id": "record-key",
+          "kind": "text",
+          "label": "These native record summaries describe the current contracts. Existing ERD associations above retain their original entity revision pins; the diagram is a selected logical model, not a relational database.",
+          "parent": "documents",
+          "style": "body",
+          "width": 660,
+          "wrap": true,
+          "x": 1830,
+          "y": 80
+        }
+      ],
+      "height": 1860,
+      "styles": {
+        "body": {
+          "fill": "none",
+          "font_size": 22,
+          "ink": "@diagram-normal-ink",
+          "stroke": "none",
+          "stroke_width": 1
+        },
+        "entity": {
+          "fill": "@diagram-normal-fill",
+          "font_size": 21,
+          "ink": "@diagram-normal-ink",
+          "stroke": "@diagram-normal-stroke",
+          "stroke_width": 2
+        },
+        "small": {
+          "fill": "none",
+          "font_size": 18,
+          "ink": "@diagram-secondary-ink",
+          "stroke": "none",
+          "stroke_width": 1
+        }
+      },
+      "version": 1,
+      "viewport": {
+        "height": 1320,
+        "width": 1380,
+        "x": 0,
+        "y": 0
+      },
+      "width": 2700
+    },
+    "name": "Change Saga record model"
+  }
+}

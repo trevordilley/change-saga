@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-decision-code-stale-e9269e7921a5",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-decision-code-stale",
-  "to": "urn:change-saga:change-saga:story:review-decision-freshness:criterion:out-of-date",
-  "scope": "self",
-  "rationale": "Steps change-code define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-decision-code-stale:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:review-decision-freshness:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:44.779803Z",
-  "request_id": "test-review-decision-code-stale-e9269e7921a5"
+  "from": "urn:change-saga:change-saga:test-case:review-decision-code-stale",
+  "from_revision": "sha256:4c1f4daac3bcb23cb6e729a18bdc02c9bef03d18f309b10ae5573a51ce9c224c",
+  "id": "test-review-decision-code-stale-e9269e7921a5",
+  "rationale": "Steps change-code define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-decision-code-stale-e9269e7921a5",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:review-decision-freshness:criterion:out-of-date",
+  "to_revision": "sha256:b2ee96bc8339fb200b13034bcce2486bcdfd05be3042b0df1d3bba6034e6703a",
+  "type": "verifies",
+  "version": 5
 }

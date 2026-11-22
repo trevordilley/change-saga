@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-whiteboard-stale-parent-56885de3665b",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent",
-  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:parent",
-  "scope": "self",
-  "rationale": "Steps reject define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:13.704389Z",
-  "request_id": "test-inventory-whiteboard-stale-parent-56885de3665b"
+  "from": "urn:change-saga:change-saga:test-case:inventory-whiteboard-stale-parent",
+  "from_revision": "sha256:95a16c2ca2bb34e9fc6b9a71a3add69aa4403836c69c40ca6127f484186bd0ac",
+  "id": "test-inventory-whiteboard-stale-parent-56885de3665b",
+  "rationale": "Steps reject define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-whiteboard-stale-parent-56885de3665b",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:parent",
+  "to_revision": "sha256:0fb0937c3f8389662d322b20055d2ed0f28ee83203c5ad7ebabd1946fee36ba7",
+  "type": "verifies",
+  "version": 5
 }

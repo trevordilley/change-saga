@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Both the AI and the human principal are identifiable.",
+    "preconditions": [
+      "A review is open at a committed head; a named AI reviewer acts on behalf of an identified human whose Git identity is configured."
+    ],
+    "steps": [
+      {
+        "action": "Record an AI decision with distinct reviewer name, agent and model, then commit as the human principal.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:delegated-ai"
+        ],
+        "expected_result": "The action records the AI identity and remains attributable to the principal.",
+        "id": "record"
+      },
+      {
+        "action": "Read the decision label and its provenance.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:delegated-ai"
+        ],
+        "expected_result": "Both the AI and the human principal are identifiable.",
+        "id": "inspect"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-delegated-provenance",
+    "title": "Display both an AI reviewer and its human principal"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-delegated-provenance"
+  }
+}

@@ -1,7 +1,6 @@
 package requirements
 
 import (
-	"errors"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -10,6 +9,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -106,13 +106,16 @@ func loadRelationRepins(document *Document, feature applayout.Feature) error {
 		if !livingid.ValidID(entry.Name()) {
 			return fmt.Errorf("relation-repins entry %q is not a stable relation id", entry.Name())
 		}
-		repins, err := loadRepinsOf(document, feature, filepath.Join(dir, entry.Name()), entry.Name())
-		if err != nil {
-			return fmt.Errorf("relation-repins/%s: %w", entry.Name(), err)
-		}
 		relation := document.relation(entry.Name())
 		if relation == nil {
 			return fmt.Errorf("relation-repins/%s: relation %q does not exist", entry.Name(), entry.Name())
+		}
+		if relation.Schema == currentrecord.RelationSchema {
+			continue // published current pins take precedence over interrupted cleanup
+		}
+		repins, err := loadRepinsOf(document, feature, filepath.Join(dir, entry.Name()), entry.Name())
+		if err != nil {
+			return fmt.Errorf("relation-repins/%s: %w", entry.Name(), err)
 		}
 		relation.Repins = repins
 		// A repin never makes a relation invalid, whoever wrote the bytes.
@@ -212,84 +215,52 @@ type RepinRelationInput struct {
 	RequestID         string
 }
 
-// RepinRelation appends one confirmation that a relation still holds against
-// the pins it names. It writes no change to the relation record: the relation
-// keeps its id, its rationale, and the pins its author confirmed, and the repin
-// says who advanced it and to what.
+// RepinRelation updates the current relation after the author reassesses it.
+// Git records the previous pins and rationale; no confirmation overlay is saved.
 func RepinRelation(root, sagaID string, input RepinRelationInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
 	ref, err := livingid.Parse(input.Relation)
 	if err != nil || ref.Kind != livingid.KindRelation || ref.SagaID != sagaID {
 		return MutationResult{}, fmt.Errorf("relation must be a canonical relation URN in saga %q", sagaID)
 	}
-	if input.RequestID != "" && !livingid.ValidID(input.RequestID) {
-		return MutationResult{}, fmt.Errorf("request_id must be a stable identifier")
+	if strings.TrimSpace(input.Rationale) == "" {
+		return MutationResult{}, fmt.Errorf("rationale must explain the reassessment")
 	}
 	var result MutationResult
 	err = mutate(root, sagaID, func(document *Document) error {
 		existing := document.relation(ref.ID)
-		if existing == nil {
-			return fmt.Errorf("relation %q does not exist", ref.ID)
+		if existing == nil || existing.State != RelationActive {
+			return fmt.Errorf("relation %q must exist and be active", ref.ID)
 		}
-		if existing.State != RelationActive {
-			return fmt.Errorf("relation %q is superseded; a retired relation is not re-affirmed", ref.ID)
-		}
-		if existing.Version != V5RelationVersion {
-			return fmt.Errorf("relation %q is a version-%d record; only a v5 relation is repinned", ref.ID, existing.Version)
-		}
-		id := strings.TrimSpace(input.ID)
-		if id == "" {
-			id = fmt.Sprintf("r%d", len(existing.Repins)+2)
-		}
-		value := RelationRepin{
-			Schema: RelationRepinSchemaURL, Version: V5RelationVersion, ID: id, Relation: input.Relation,
-			FromRevision: input.FromRevision, ToRevision: input.ToRevision,
-			FromContentDigest: input.FromContentDigest, ToContentDigest: input.ToContentDigest,
-			Rationale: strings.TrimSpace(input.Rationale), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
-		}
-		urn, err := RelationRepinURN(sagaID, ref.ID, id)
-		if err != nil {
-			return err
-		}
-		for _, known := range existing.Repins {
-			if known.ID != id {
-				continue
+		candidate := existing.Confirmed()
+		candidate.Schema = currentrecord.RelationSchema
+		candidate.Repins = nil
+		for target, value := range map[*string]string{
+			&candidate.FromRevision: input.FromRevision, &candidate.ToRevision: input.ToRevision,
+			&candidate.FromContentDigest: input.FromContentDigest, &candidate.ToContentDigest: input.ToContentDigest,
+		} {
+			if value != "" {
+				*target = value
 			}
-			if input.RequestID != "" && known.RequestID == input.RequestID && equalRepinIgnoringTime(known, value) {
-				result = MutationResult{URN: urn, Path: repinPath(known.Feature, ref.ID, id), Replayed: true}
-				return nil
-			}
-			return fmt.Errorf("repin id %q already exists on relation %q", id, ref.ID)
 		}
-		candidate := *existing
-		candidate.Repins = append(append([]RelationRepin{}, existing.Repins...), value)
-		// A repin says somebody read a revision and confirmed the relation
-		// against it. Recording the pins it already confirms says nothing, and
-		// these records are immutable, so the noise would be permanent. The
-		// refusal belongs here rather than where omitted pins are defaulted:
-		// naming the pin explicitly is exactly what the stale next action
-		// prints, so it must not be a way around the check.
-		if samePins(candidate.Confirmed(), existing.Confirmed()) {
-			return fmt.Errorf("relation %q is already confirmed against every pin this would record; there is nothing to re-pin", ref.ID)
+		if samePins(candidate, existing.Confirmed()) {
+			return fmt.Errorf("relation %q already has those pins; there is nothing to re-pin", ref.ID)
 		}
-		if err := validateRelationRepin(value, sagaID, ref.ID, id); err != nil {
+		candidate.Rationale = strings.TrimSpace(input.Rationale)
+		if err := validateRelation(candidate, sagaID, ref.ID); err != nil {
 			return err
 		}
-		// A repin may never make a relation invalid: the folded record has to
-		// pass exactly the checks the relation passed when it was written.
-		if err := validateRelation(candidate.Confirmed(), sagaID, ref.ID); err != nil {
+		*existing = candidate
+		if err := validateRelationSet(document); err != nil {
 			return err
 		}
-		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(applayout.FeatureDir(document.Root, existing.Feature), applayout.RequirementsDir, RepinsDir, ref.ID))
-		if err != nil {
+		path := relationPath(existing.Feature, ref.ID)
+		if err := store.WriteJSON(filepath.Join(root, filepath.FromSlash(path)), candidate, false); err != nil {
 			return err
 		}
-		path := filepath.Join(dir, id+".json")
-		if err := store.WriteJSON(path, value, true); errors.Is(err, fs.ErrExist) {
-			return fmt.Errorf("repin id %q already exists on relation %q", id, ref.ID)
-		} else if err != nil {
-			return err
-		}
-		result = MutationResult{URN: urn, Path: repinPath(existing.Feature, ref.ID, id)}
+		result = MutationResult{URN: input.Relation, Path: path}
 		return nil
 	})
 	return result, err
@@ -299,10 +270,4 @@ func RepinRelation(root, sagaID string, input RepinRelationInput) (MutationResul
 func samePins(left, right Relation) bool {
 	return left.FromRevision == right.FromRevision && left.ToRevision == right.ToRevision &&
 		left.FromContentDigest == right.FromContentDigest && left.ToContentDigest == right.ToContentDigest
-}
-
-func equalRepinIgnoringTime(left, right RelationRepin) bool {
-	left.CreatedAt, right.CreatedAt = time.Time{}, time.Time{}
-	left.Feature, right.Feature = "", ""
-	return left == right
 }

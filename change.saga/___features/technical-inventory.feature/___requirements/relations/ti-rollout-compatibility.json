@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-rollout-compatibility",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:compatibility",
-  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
-  "scope": "self",
-  "rationale": "Proposed design: Agree explicit format gating and legacy reading before adding new records. Preserve old pins and reviews; unsupported readers must refuse rather than drop fields or rewrite history.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:15:03.082446Z",
-  "superseded_at": "2026-09-27T10:27:30.822975Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:compatibility",
+  "id": "ti-rollout-compatibility",
+  "rationale": "Proposed design: Agree explicit format gating and legacy reading before adding new records. Preserve old pins and reviews; unsupported readers must refuse rather than drop fields or rewrite history.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:30.822975Z",
+  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+  "to_revision": "sha256:38376e153e063b30f56fe8950ce7e10c1e9dead4fd322189419312913a36cbfc",
+  "type": "explains",
+  "version": 5
 }

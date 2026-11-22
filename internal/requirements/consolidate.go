@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -47,7 +48,7 @@ type ConsolidationPlan struct {
 	Canonical       string            `json:"canonical"`
 	CriterionMap    map[string]string `json:"criterion_map"`
 	LifecycleState  LifecycleState    `json:"lifecycle_state"`
-	LifecycleEvent  string            `json:"lifecycle_event"`
+	LifecycleEvent  string            `json:"-"`
 	RelationRemaps  []RelationRemap   `json:"relation_remaps"`
 	PreservesIntent bool              `json:"preserves_accepted_intent"`
 	Applied         bool              `json:"applied"`
@@ -120,10 +121,23 @@ func ConsolidateProposal(root, sagaID string, input ConsolidateInput) (Consolida
 				return err
 			}
 		}
-		eventPath := filepath.Join(document.Root, filepath.FromSlash(eventPath(prepared.duplicate.Feature, prepared.duplicate.Identity.ID, prepared.event.ID)))
-		if err := appendJSON(eventPath, prepared.event, true); err != nil {
+		dir := filepath.Join(document.Root, filepath.FromSlash(storyPackagePath(prepared.duplicate.Feature, prepared.duplicate.Identity.ID)))
+		current, err := currentrecord.Read(dir)
+		if err != nil {
 			return err
 		}
+		if current == nil {
+			return fmt.Errorf("consolidation requires current storage")
+		}
+		state, err := currentrecord.Content(prepared.event)
+		if err != nil {
+			return err
+		}
+		current.State = state
+		if err := appendJSON(filepath.Join(dir, currentrecord.Name), current, false); err != nil {
+			return err
+		}
+
 		if err := store.WriteBatch(entries); err != nil {
 			return fmt.Errorf("commit consolidation batch: %w", err)
 		}
@@ -135,6 +149,9 @@ func ConsolidateProposal(root, sagaID string, input ConsolidateInput) (Consolida
 }
 
 func prepareConsolidation(document *Document, input ConsolidateInput) (preparedConsolidation, error) {
+	if input.EventID == "" {
+		input.EventID = "edit"
+	}
 	duplicateRef, err := livingid.Parse(input.Duplicate)
 	if err != nil || duplicateRef.Kind != livingid.KindStory || duplicateRef.SagaID != document.SagaID {
 		return preparedConsolidation{}, fmt.Errorf("duplicate must be a canonical story URN in saga %q", document.SagaID)
@@ -153,9 +170,7 @@ func prepareConsolidation(document *Document, input ConsolidateInput) (preparedC
 	if duplicate.CurrentRevision == nil || canonical.CurrentRevision == nil || duplicate.CurrentLifecycle == nil || canonical.CurrentLifecycle == nil {
 		return preparedConsolidation{}, fmt.Errorf("consolidation refuses revision or lifecycle ambiguity; both stories must have one current head")
 	}
-	if !sameSet(input.Parents, duplicate.LifecycleHeads) {
-		return preparedConsolidation{}, fmt.Errorf("lifecycle parents must name every current duplicate head (got %v, want %v)", input.Parents, duplicate.LifecycleHeads)
-	}
+
 	if strings.TrimSpace(input.Reason) == "" {
 		return preparedConsolidation{}, fmt.Errorf("consolidation reason is required")
 	}
@@ -398,7 +413,7 @@ func transactionOwnedCriterionLinks(document *Document, duplicateStoryID string)
 				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: %w", relative(document.Root, path), err)
 			}
 			if len(heads) != 1 || heads[0] != record.Current {
-				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: reconcile conflicting or non-current authoring heads with apply-slide first", relative(document.Root, path))
+				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: legacy slide content is ambiguous; explicitly select complete current content before retiring intent", relative(document.Root, path))
 			}
 			current, err := record.CurrentRevision()
 			if err != nil {

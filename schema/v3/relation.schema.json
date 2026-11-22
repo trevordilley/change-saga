@@ -4,44 +4,160 @@
   "title": "Living Change Saga typed relation",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "version", "id", "type", "from", "to", "rationale", "state", "created_at"],
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "type",
+    "from",
+    "to",
+    "rationale",
+    "state",
+    "created_at"
+  ],
   "properties": {
-    "$schema": { "const": "https://changesaga.dev/schema/v3/relation.schema.json" },
-    "version": { "const": 3 },
-    "id": { "$ref": "#/$defs/id" },
-    "type": { "enum": ["refines", "addresses", "explains", "verifies", "supersedes", "conflicts_with"] },
-    "from": { "$ref": "#/$defs/urn" },
-    "to": { "$ref": "#/$defs/urn" },
-    "rationale": { "type": "string", "minLength": 1 },
-    "from_revision": { "$ref": "#/$defs/revision_urn" },
-    "to_revision": { "$ref": "#/$defs/revision_urn" },
-    "from_content_digest": { "$ref": "#/$defs/digest" },
-    "to_content_digest": { "$ref": "#/$defs/digest" },
-    "state": { "enum": ["active", "superseded"] },
-    "created_at": { "type": "string", "format": "date-time" },
-    "request_id": { "$ref": "#/$defs/id" },
-    "superseded_at": { "type": "string", "format": "date-time" },
-    "supersede_request_id": { "$ref": "#/$defs/id" }
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v3/relation.schema.json"
+    },
+    "version": {
+      "const": 3
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "type": {
+      "enum": [
+        "refines",
+        "addresses",
+        "explains",
+        "verifies",
+        "supersedes",
+        "conflicts_with"
+      ]
+    },
+    "from": {
+      "$ref": "#/$defs/urn"
+    },
+    "to": {
+      "$ref": "#/$defs/urn"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_revision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/revision_urn"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "to_revision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/revision_urn"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "from_content_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "to_content_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "state": {
+      "enum": [
+        "active",
+        "superseded"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_id": {
+      "$ref": "#/$defs/id"
+    },
+    "superseded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersede_request_id": {
+      "$ref": "#/$defs/id"
+    }
   },
   "allOf": [
     {
-      "if": { "properties": { "state": { "const": "superseded" } }, "required": ["state"] },
-      "then": { "required": ["superseded_at"] },
-      "else": { "not": { "anyOf": [{ "required": ["superseded_at"] }, { "required": ["supersede_request_id"] }] } }
+      "if": {
+        "properties": {
+          "state": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_at"
+        ]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "superseded_at"
+              ]
+            },
+            {
+              "required": [
+                "supersede_request_id"
+              ]
+            }
+          ]
+        }
+      }
     }
   ],
   "$defs": {
-    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
     "urn": {
       "type": "string",
       "oneOf": [
-        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|citation|relation|chapter|section|fragment|deck|slide|claim|verification):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" }
+        {
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|citation|relation|chapter|section|fragment|deck|slide|claim|verification):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        {
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        {
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        {
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
       ]
     },
-    "revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+    "revision_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
   }
 }

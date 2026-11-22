@@ -9,10 +9,13 @@ import (
 )
 
 // Latest ERD links enter an authored board when that source is embedded there.
-// Explicit saved revisions remain independently addressable for compatibility.
+// Exact content pins remain independently addressable through Git.
 // A missing or invalid board never takes a working definition page away.
 func (a *app) technicalDefinitionPage(w http.ResponseWriter, r *http.Request) {
-	if r.PathValue("kind") == requirements.KindERD && r.URL.Query().Get("revision") == "" {
+	if rejectLegacyContentSelector(w, r) {
+		return
+	}
+	if r.PathValue("kind") == requirements.KindERD && r.URL.Query().Get("content_digest") == "" {
 		if document := a.outlineDocument(r.Context()); document != nil {
 			if inventory, err := requirements.LoadInventory(a.root, document.Manifest.ID); err == nil {
 				if destination := whiteboardSourceDestination(a.makeWhiteboardView(inventory), r.PathValue("id")); destination != "" {
@@ -57,7 +60,8 @@ const whiteboardNavigationJavaScript = `
     const signal = pageScope.signal;
     const boardURL = new URL(board.dataset.whiteboardUrl || location.href, location.href);
     const sameDocument = url => url.pathname === boardURL.pathname &&
-      (url.searchParams.get('revision') || '') === (boardURL.searchParams.get('revision') || '');
+      !url.searchParams.has('revision') &&
+      (url.searchParams.get('content_digest') || '') === (boardURL.searchParams.get('content_digest') || '');
     const entries = qa('[data-whiteboard-frame]', board).map(row => {
       const link = q('a[href]', row);
       const href = row.dataset.whiteboardSourceHref || link?.dataset.whiteboardSourceHref || link?.getAttribute('href');
@@ -70,8 +74,9 @@ const whiteboardNavigationJavaScript = `
     const destination = (path, fitAll = false) => {
       const url = new URL(location.href);
       url.pathname = boardURL.pathname;
-      const revision = boardURL.searchParams.get('revision');
-      if (revision) url.searchParams.set('revision', revision); else url.searchParams.delete('revision');
+      url.searchParams.delete('revision');
+      const digest = boardURL.searchParams.get('content_digest');
+      if (digest) url.searchParams.set('content_digest', digest); else url.searchParams.delete('content_digest');
       if (fitAll) url.searchParams.set('view', 'all'); else url.searchParams.delete('view');
       url.hash = '';
       if (path) url.searchParams.set('focus', path); else url.searchParams.delete('focus');
@@ -83,15 +88,16 @@ const whiteboardNavigationJavaScript = `
       if (target?.length === 5 && target[3] === 'erd') {
         url = new URL('/technical/erd/' + encodeURIComponent(target[4]), location.href);
         const revision = link.dataset.documentationRevision;
-        if (revision) url.searchParams.set('revision', revision.split(':revision:').pop());
+        if (revision) url.searchParams.set('content_digest', revision);
       } else {
         const href = link.dataset.whiteboardSourceHref || link.getAttribute('href');
         if (!href) return null;
         try { url = new URL(href, location.href); } catch { return null; }
       }
       if (url.origin !== location.origin) return null;
+      if (url.searchParams.has('revision')) return null;
       const matches = entries.filter(entry => entry.source.pathname === url.pathname &&
-        (!url.searchParams.get('revision') || entry.source.searchParams.get('revision') === url.searchParams.get('revision')));
+        (!url.searchParams.get('content_digest') || entry.source.searchParams.get('content_digest') === url.searchParams.get('content_digest')));
       const owner = link.closest('[data-whiteboard-frame]')?.dataset.whiteboardFrame;
       const instance = link.dataset.instancePath;
       const enclosing = instance && matches.filter(entry => instance.startsWith(entry.path + '/')).sort((a,b) => b.path.length - a.path.length)[0];
@@ -162,6 +168,9 @@ const whiteboardNavigationJavaScript = `
       let path = entry?.path;
       if (path === undefined && link.matches('a[href]')) {
         const url = new URL(link.getAttribute('href'), location.href);
+        // Folding a Plan changes its server-rendered diagram. It is not a
+        // focus move within the board, even though the pathname is identical.
+        if (url.searchParams.get('fold') !== new URL(location.href).searchParams.get('fold')) return;
         if (url.origin === location.origin && sameDocument(url)) {
           path = url.searchParams.get('focus') || '';
           if (path && !paths.has(path)) return;

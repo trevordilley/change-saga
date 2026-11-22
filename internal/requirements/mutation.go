@@ -3,6 +3,7 @@ package requirements
 import (
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -17,6 +18,12 @@ import (
 )
 
 func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) {
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
+	if input.EventID == "" {
+		input.EventID = "current"
+	}
 	createdAt := mutationTime(input.CreatedAt)
 	identity := StoryIdentity{Schema: StorySchemaURL, Version: Version, ID: input.ID, CreatedAt: createdAt, RequestID: input.RequestID}
 	storyID, urnErr := storyURN(sagaID, input.ID)
@@ -52,7 +59,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 			if existing.Identity.ID != input.ID {
 				continue
 			}
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && existing.Feature == input.Feature && equalStoryCreation(existing, identity, revision, event) {
+			if existing.Feature == input.Feature && equalStoryCreation(existing, identity, revision, event) {
 				heads := append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...)
 				result = MutationResult{URN: storyID, Path: storyPackagePath(input.Feature, input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: heads, Replayed: true}
 				return nil
@@ -81,18 +88,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 			if err := store.WriteJSON(filepath.Join(stage, "story.json"), identity, true); err != nil {
 				return err
 			}
-			revisionsDir := filepath.Join(stage, "revisions")
-			eventsDir := filepath.Join(stage, "events")
-			if err := ensureStageDir(revisionsDir); err != nil {
-				return err
-			}
-			if err := ensureStageDir(eventsDir); err != nil {
-				return err
-			}
-			if err := store.WriteJSON(filepath.Join(revisionsDir, revision.ID+".json"), revision, true); err != nil {
-				return err
-			}
-			return store.WriteJSON(filepath.Join(eventsDir, event.ID+".json"), event, true)
+			return currentrecord.Write(stage, revision, event)
 		}); errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("story id %q already exists", input.ID)
 		} else if err != nil {
@@ -101,10 +97,14 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 		result = MutationResult{URN: storyID, Path: storyPackagePath(input.Feature, input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: []string{revisionID, eventID}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	storyRef, err := livingid.Parse(input.Story)
 	if err != nil || storyRef.Kind != livingid.KindStory || storyRef.SagaID != sagaID {
 		return MutationResult{}, fmt.Errorf("story must be a canonical story URN in saga %q", sagaID)
@@ -119,7 +119,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 	}
 	revisionID, _ := revisionURN(sagaID, storyRef.ID, revision.ID)
 	var result MutationResult
-	err = mutate(root, sagaID, func(document *Document) error {
+	err = mutateStoryContent(root, sagaID, storyRef.ID, func(document *Document) error {
 		story := findStory(document, storyRef.ID)
 		if story == nil {
 			return fmt.Errorf("story %q does not exist", storyRef.ID)
@@ -137,9 +137,6 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 		if len(story.Revisions) >= MaxRevisionsPerStory {
 			return fmt.Errorf("revision limit of %d reached", MaxRevisionsPerStory)
 		}
-		if !sameSet(revision.Parents, story.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", revision.Parents, story.RevisionHeads)
-		}
 		if err := requireCitations(document, revision.Citations); err != nil {
 			return err
 		}
@@ -152,7 +149,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 			return err
 		}
 		path := filepath.Join(document.Root, filepath.FromSlash(revisionPath(story.Feature, storyRef.ID, revision.ID)))
-		if err := store.WriteJSON(path, revision, true); errors.Is(err, fs.ErrExist) {
+		if err := currentrecord.WriteMember(path, revision); errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("revision id %q already exists", revision.ID)
 		} else if err != nil {
 			return err
@@ -160,7 +157,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 		result = MutationResult{URN: revisionID, Path: revisionPath(story.Feature, storyRef.ID, revision.ID), Created: []string{revisionID}, Paths: []string{revisionPath(story.Feature, storyRef.ID, revision.ID)}, CurrentHeads: []string{revisionID}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // AddCriterion is a single-head convenience over an immutable, complete story
@@ -231,13 +228,13 @@ type criterionMutation struct {
 }
 
 func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResult, error) {
+	if input.revisionID == "" {
+		input.revisionID = "edit"
+	}
+	input.parent = ""
 	storyRef, err := livingid.Parse(input.story)
 	if err != nil || storyRef.Kind != livingid.KindStory || storyRef.SagaID != sagaID {
 		return MutationResult{}, fmt.Errorf("story must be a canonical story URN in saga %q", sagaID)
-	}
-	parentStory, err := parseStoryRevision(input.parent, sagaID)
-	if err != nil || parentStory != storyRef.ID {
-		return MutationResult{}, fmt.Errorf("parent must be a canonical revision URN for story %q", storyRef.ID)
 	}
 	if !livingid.ValidID(input.revisionID) {
 		return MutationResult{}, fmt.Errorf("revision id is not a stable identifier")
@@ -261,35 +258,15 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		if story == nil {
 			return fmt.Errorf("story %q does not exist", storyRef.ID)
 		}
-		var parent *Revision
-		for index := range story.Revisions {
-			revisionURNValue, _ := revisionURN(sagaID, storyRef.ID, story.Revisions[index].ID)
-			if revisionURNValue == input.parent {
-				parent = &story.Revisions[index]
-				break
-			}
-		}
+		parent := story.CurrentRevision
 		if parent == nil {
-			return fmt.Errorf("parent revision %q does not exist", input.parent)
+			return fmt.Errorf("story current content is unavailable")
 		}
+		input.parent = story.RevisionHeads[0]
 		var existingRevision *Revision
-		for index := range story.Revisions {
-			if story.Revisions[index].ID == input.revisionID {
-				existingRevision = &story.Revisions[index]
-				break
-			}
-		}
-		if existingRevision == nil {
-			if len(story.RevisionHeads) != 1 {
-				return fmt.Errorf("criterion mutation requires one current story revision head; found %v; reconcile with story revise first", story.RevisionHeads)
-			}
-			if story.RevisionHeads[0] != input.parent {
-				return fmt.Errorf("criterion parent is stale (got %q, current head is %q)", input.parent, story.RevisionHeads[0])
-			}
-		}
 		revision := Revision{
 			Schema: RevisionSchemaURL, Version: Version, ID: input.revisionID, Story: input.story,
-			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement, Overview: parent.Overview, Subtext: parent.Subtext,
+			Parents: []string{}, Title: parent.Title, Statement: parent.Statement, Overview: parent.Overview, Subtext: parent.Subtext,
 			Priority: parent.Priority, Personas: append([]string(nil), parent.Personas...), Citations: copyStrings(parent.Citations),
 			AcceptanceCriteria: copyCriteria(parent.AcceptanceCriteria), CreatedAt: mutationTime(input.createdAt),
 			RequestID: input.requestID,
@@ -303,9 +280,6 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		}
 		switch input.kind {
 		case criterionAdd:
-			if found >= 0 {
-				return fmt.Errorf("criterion id %q already exists in the current story revision", criterionID)
-			}
 			criterion := Criterion{ID: criterionID, Statement: strings.TrimSpace(input.statement)}
 			if input.subtext != nil {
 				criterion.Subtext = *input.subtext
@@ -315,6 +289,13 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 			}
 			if input.overview != nil {
 				criterion.Overview = *input.overview
+			}
+			if found >= 0 {
+				if revision.AcceptanceCriteria[found] != criterion {
+					return fmt.Errorf("criterion id %q already exists with different current content", criterionID)
+				}
+				result = MutationResult{URN: criterionIDURN, Path: revisionPath(story.Feature, storyRef.ID, input.revisionID), Replayed: true}
+				return nil
 			}
 			revision.AcceptanceCriteria = append(revision.AcceptanceCriteria, criterion)
 		case criterionRevise:
@@ -335,7 +316,8 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 				revision.AcceptanceCriteria[found].Overview = *input.overview
 			}
 			if revision.AcceptanceCriteria[found] == previous {
-				return fmt.Errorf("criterion %q content is unchanged", criterionID)
+				result = MutationResult{URN: criterionIDURN, Path: revisionPath(story.Feature, storyRef.ID, input.revisionID), Replayed: true}
+				return nil
 			}
 		case criterionRemove:
 			if found < 0 {
@@ -378,7 +360,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 			return err
 		}
 		fullPath := filepath.Join(document.Root, filepath.FromSlash(path))
-		if err := store.WriteJSON(fullPath, revision, true); errors.Is(err, fs.ErrExist) {
+		if err := currentrecord.WriteMember(fullPath, revision); errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("revision id %q already exists", revision.ID)
 		} else if err != nil {
 			return err
@@ -389,10 +371,14 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	storyRef, err := livingid.Parse(input.Story)
 	if err != nil || storyRef.Kind != livingid.KindStory || storyRef.SagaID != sagaID {
 		return MutationResult{}, fmt.Errorf("story must be a canonical story URN in saga %q", sagaID)
@@ -411,21 +397,16 @@ func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResul
 		if story == nil {
 			return fmt.Errorf("story %q does not exist", storyRef.ID)
 		}
-		for _, existing := range story.Events {
-			if existing.ID != event.ID {
-				continue
-			}
-			if input.RequestID != "" && existing.RequestID == input.RequestID && equalEventIgnoringTime(existing, event) {
-				result = MutationResult{URN: eventURN, Path: eventPath(story.Feature, storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(story.Feature, storyRef.ID, event.ID)}, CurrentHeads: copyStrings(story.LifecycleHeads), Replayed: true}
-				return nil
-			}
-			return fmt.Errorf("lifecycle event id %q already exists", event.ID)
+
+		if story.CurrentLifecycle != nil && story.CurrentLifecycle.State != event.State && !allowedLifecycleTransition(story.CurrentLifecycle.State, event.State, false) {
+			return fmt.Errorf("cannot change story state from %s to %s", story.CurrentLifecycle.State, event.State)
+		}
+		if story.CurrentLifecycle != nil && story.CurrentLifecycle.State == event.State && story.CurrentLifecycle.Reason == event.Reason {
+			result = MutationResult{URN: eventURN, Path: eventPath(story.Feature, storyRef.ID, event.ID), Replayed: true}
+			return nil
 		}
 		if len(story.Events) >= MaxEventsPerStory {
 			return fmt.Errorf("lifecycle event limit of %d reached", MaxEventsPerStory)
-		}
-		if !sameSet(event.Parents, story.LifecycleHeads) {
-			return fmt.Errorf("lifecycle parents must name every current head (got %v, want %v)", event.Parents, story.LifecycleHeads)
 		}
 		candidate := *story
 		candidate.Events = append(append([]LifecycleEvent{}, story.Events...), event)
@@ -433,7 +414,7 @@ func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResul
 			return err
 		}
 		path := filepath.Join(document.Root, filepath.FromSlash(eventPath(story.Feature, storyRef.ID, event.ID)))
-		if err := store.WriteJSON(path, event, true); errors.Is(err, fs.ErrExist) {
+		if err := currentrecord.WriteMember(path, event); errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("lifecycle event id %q already exists", event.ID)
 		} else if err != nil {
 			return err
@@ -441,7 +422,7 @@ func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResul
 		result = MutationResult{URN: eventURN, Path: eventPath(story.Feature, storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(story.Feature, storyRef.ID, event.ID)}, CurrentHeads: []string{eventURN}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func AddCitation(root, sagaID string, input AddCitationInput) (MutationResult, error) {
@@ -486,17 +467,21 @@ func AddCitation(root, sagaID string, input AddCitationInput) (MutationResult, e
 		result = MutationResult{URN: urn, Path: citationPath(input.Feature, input.ID)}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
+
 	if input.Type == RelationConflictsWith && input.To < input.From {
 		input.From, input.To = input.To, input.From
 		input.FromRevision, input.ToRevision = input.ToRevision, input.FromRevision
 		input.FromContentDigest, input.ToContentDigest = input.ToContentDigest, input.FromContentDigest
 	}
 	value := Relation{
-		Schema: V5RelationSchemaURL, Version: V5RelationVersion, ID: input.ID, Type: input.Type,
+		Schema: currentrecord.RelationSchema, Version: V5RelationVersion, ID: input.ID, Type: input.Type,
 		From: input.From, To: input.To, Rationale: strings.TrimSpace(input.Rationale),
 		FromRevision: input.FromRevision, ToRevision: input.ToRevision,
 		FromContentDigest: input.FromContentDigest, ToContentDigest: input.ToContentDigest,
@@ -537,6 +522,22 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 		if err != nil {
 			return err
 		}
+		for _, endpoint := range []string{value.From, value.To} {
+			parsed, err := parseEndpoint(endpoint)
+			if err != nil || parsed.Kind != endpointCriterion {
+				continue
+			}
+			story := findStory(document, parsed.StoryID)
+			found := false
+			if story != nil && story.CurrentRevision != nil {
+				for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+					found = found || criterion.ID == parsed.ID
+				}
+			}
+			if !found {
+				return fmt.Errorf("new relation references unknown current criterion %q", endpoint)
+			}
+		}
 		candidate := *document
 		candidate.Relations = append(append([]Relation{}, document.Relations...), value)
 		if err := validateRelationSet(&candidate); err != nil {
@@ -555,7 +556,7 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 		result = MutationResult{URN: urn, Path: relationPath(input.Feature, input.ID)}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // SupersedeRelation explicitly deactivates one relation without retargeting it.
@@ -601,7 +602,7 @@ func SupersedeRelation(root, sagaID, relation string, at time.Time, requestID st
 		result = MutationResult{URN: relation, Path: relationPath(existing.Feature, ref.ID)}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func mutate(root, sagaID string, operation func(*Document) error) error {
@@ -609,9 +610,39 @@ func mutate(root, sagaID string, operation func(*Document) error) error {
 		return fmt.Errorf("cannot mutate requirements: %w", err)
 	}
 	return store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		if err := currentrecord.Normalize(root); err != nil {
+			return err
+		}
 		document, err := Load(root, sagaID)
 		if err != nil {
 			return fmt.Errorf("cannot mutate requirements after locking: %w", err)
+		}
+		return operation(&document)
+	})
+}
+
+// An existing current story needs no format migration. Keep its content edit
+// local instead of making unrelated legacy packages migrate (and potentially
+// choose a conflicting value) as a side effect. Legacy targets still take the
+// full, pin-preserving normalization path before anything is replaced.
+func mutateStoryContent(root, sagaID, storyID string, operation func(*Document) error) error {
+	return store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		document, err := Load(root, sagaID)
+		if err != nil {
+			return fmt.Errorf("cannot mutate requirements: %w", err)
+		}
+		story := findStory(&document, storyID)
+		if story == nil {
+			return fmt.Errorf("story %q does not exist", storyID)
+		}
+		if !story.current {
+			if err := currentrecord.Normalize(root); err != nil {
+				return fmt.Errorf("legacy story %q requires normalization before editing: %w", storyID, err)
+			}
+			document, err = Load(root, sagaID)
+			if err != nil {
+				return fmt.Errorf("cannot mutate requirements after normalization: %w", err)
+			}
 		}
 		return operation(&document)
 	})
@@ -723,6 +754,9 @@ func copyStrings(values []string) []string        { return append([]string{}, va
 func copyCriteria(values []Criterion) []Criterion { return append([]Criterion{}, values...) }
 
 func equalStoryCreation(existing Story, identity StoryIdentity, revision Revision, event LifecycleEvent) bool {
+	if existing.current && existing.CurrentRevision != nil && existing.CurrentLifecycle != nil {
+		return currentrecord.Equal(*existing.CurrentRevision, revision) && currentrecord.Equal(*existing.CurrentLifecycle, event)
+	}
 	identity.CreatedAt = existing.Identity.CreatedAt
 	if !reflect.DeepEqual(existing.Identity, identity) {
 		return false

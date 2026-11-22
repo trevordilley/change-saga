@@ -54,7 +54,7 @@ const deprecationJavaScript = `
       const row = document.createElement('li');
       row.append(...Array.from(entry.children).filter(child => !child.hasAttribute('data-deprecation-target')).map(child => child.cloneNode(true)));
       for (const target of qa('[data-deprecation-target]', entry)) {
-        if (board && target.dataset.deprecationElement && target.dataset.deprecationRevision?.endsWith(':revision:' + board.dataset.whiteboardRevision)) {
+        if (board && target.dataset.deprecationElement && target.dataset.deprecationRevision === board.dataset.whiteboardContentDigest) {
           const link = document.createElement('a');
           const url = new URL(board.dataset.whiteboardUrl, location.origin); url.searchParams.set('focus', target.dataset.deprecationElement);
           link.href = url.pathname + url.search; link.textContent = 'Show ' + target.dataset.deprecationElement;
@@ -110,7 +110,7 @@ const deprecationJavaScript = `
       const boardTarget = 'urn:change-saga:' + target.dataset.deprecationTarget.split(':')[2] + ':whiteboard:' + board.dataset.whiteboardId;
       let nodes = [];
       if (target.dataset.deprecationTarget === boardTarget && target.dataset.deprecationElement) {
-        if (!target.dataset.deprecationRevision.endsWith(':revision:' + board.dataset.whiteboardRevision)) continue;
+        if (target.dataset.deprecationRevision !== board.dataset.whiteboardContentDigest) continue;
         nodes = qa('[data-instance-path]', svg).filter(node => node.dataset.instancePath === target.dataset.deprecationElement);
       } else if (target.dataset.deprecationTarget !== boardTarget) {
         nodes = qa('[data-instance-path][data-documentation-target]', svg).filter(node => node.dataset.documentationTarget === target.dataset.deprecationTarget);

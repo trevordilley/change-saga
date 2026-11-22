@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Attach two prototypes to a Plan.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:show-plan-prototypes:criterion:several-prototypes"
+        ],
+        "expected_result": "It holds both.",
+        "id": "several-prototypes"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-show-plan-prototypes",
+    "title": "A Plan holds several prototypes"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-show-plan-prototypes"
+  }
+}

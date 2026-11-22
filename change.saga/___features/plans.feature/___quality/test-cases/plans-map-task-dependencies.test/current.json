@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Add Tasks to a Plan and load it.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:map-task-dependencies:criterion:tasks-belong-to-plan"
+        ],
+        "expected_result": "The Tasks are held by that Plan.",
+        "id": "tasks-belong-to-plan"
+      },
+      {
+        "action": "Open a Task that unblocks another, and the Task it unblocks.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:map-task-dependencies:criterion:dependencies-shown-both-ways"
+        ],
+        "expected_result": "Each page lists its side of the dependency.",
+        "id": "dependencies-shown-both-ways"
+      },
+      {
+        "action": "Open the Tasks view and list ready Tasks with two parallel prerequisites.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:map-task-dependencies:criterion:graph-shows-parallel"
+        ],
+        "expected_result": "Both can start now, and what they block starts after them.",
+        "id": "graph-shows-parallel"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-map-task-dependencies",
+    "title": "Dependencies say what can run now"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-map-task-dependencies"
+  }
+}

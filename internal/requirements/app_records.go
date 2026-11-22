@@ -2,6 +2,7 @@ package requirements
 
 import (
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"path/filepath"
 	"slices"
@@ -13,13 +14,9 @@ import (
 	"github.com/twentyideas/changesaga/internal/livingid"
 )
 
-// Personas and feature flags are app-level living records. Like stories they
-// have an immutable identity, append-only complete revisions, and an
-// append-only lifecycle graph; the current value is the unique head of each
-// graph and several heads are a visible conflict, never ordered by time.
-//
-//	___personas/<id>.persona/{persona.json, revisions/<id>.json, events/<id>.json}
-//	___featureflags/<id>.flag/{flag.json, revisions/<id>.json, events/<id>.json}
+// Compatibility projections retain legacy Go type names for readers. Current
+// documentation is stored in one editable current.json; identity stays stable,
+// and Git supplies earlier values. Legacy graphs are read only for migration.
 const (
 	AppRecordVersion = 5
 
@@ -79,14 +76,15 @@ type PersonaEvent struct {
 }
 
 type Persona struct {
+	current   bool
 	Identity  RecordIdentity
-	Revisions []PersonaRevision
-	Events    []PersonaEvent
+	Revisions []PersonaRevision `json:"-"`
+	Events    []PersonaEvent    `json:"-"`
 
-	RevisionHeads    []string
-	LifecycleHeads   []string
-	CurrentRevision  *PersonaRevision
-	CurrentLifecycle *PersonaEvent
+	RevisionHeads    []string         `json:"-"`
+	LifecycleHeads   []string         `json:"-"`
+	CurrentRevision  *PersonaRevision `json:"content"`
+	CurrentLifecycle *PersonaEvent    `json:"state"`
 }
 
 // Active reports whether the persona's unique current lifecycle is active.
@@ -130,14 +128,15 @@ type FlagEvent struct {
 }
 
 type Flag struct {
+	current   bool
 	Identity  RecordIdentity
-	Revisions []FlagRevision
-	Events    []FlagEvent
+	Revisions []FlagRevision `json:"-"`
+	Events    []FlagEvent    `json:"-"`
 
-	RevisionHeads    []string
-	LifecycleHeads   []string
-	CurrentRevision  *FlagRevision
-	CurrentLifecycle *FlagEvent
+	RevisionHeads    []string      `json:"-"`
+	LifecycleHeads   []string      `json:"-"`
+	CurrentRevision  *FlagRevision `json:"content"`
+	CurrentLifecycle *FlagEvent    `json:"state"`
 }
 
 // PersonaURN returns the canonical URN of a persona.
@@ -183,6 +182,9 @@ func appRecordURN(sagaID, kind, id string) (string, error) {
 }
 
 func appMemberURN(sagaID, kind, id, member, memberID string) (string, error) {
+	if member == "revision" && contentDigestPattern.MatchString("sha256:"+strings.TrimPrefix(memberID, "sha256-")) && strings.HasPrefix(memberID, "sha256-") {
+		return "sha256:" + strings.TrimPrefix(memberID, "sha256-"), nil
+	}
 	base, err := appRecordURN(sagaID, kind, id)
 	if err != nil {
 		return "", err
@@ -205,6 +207,9 @@ func parseAppRecordURN(sagaID, kind, value string) (string, error) {
 // parseMemberURN returns the member ID of a revision or event URN of one
 // record, or "" when value names another record or kind.
 func parseMemberURN(sagaID, kind, id, member, value string) string {
+	if member == "revision" && contentDigestPattern.MatchString(value) {
+		return "sha256-" + strings.TrimPrefix(value, "sha256:")
+	}
 	prefix := "urn:change-saga:" + sagaID + ":" + kind + ":" + id + ":" + member + ":"
 	memberID := strings.TrimPrefix(value, prefix)
 	if memberID == value || !livingid.ValidID(memberID) {
@@ -246,6 +251,8 @@ func (document *Document) FindStory(id string) *Story { return findStory(documen
 
 // appPackage is one loaded <id>.<kind> directory before its members are typed.
 type appPackage struct {
+	current   bool
+	record    *currentrecord.Record
 	id        string
 	dir       string
 	identity  RecordIdentity
@@ -277,13 +284,14 @@ func loadAppPackages(root, dir, suffix, identityName, schemaURL string, maximum 
 			return nil, fmt.Errorf("%s: package name is not a stable id", rel)
 		}
 		value := appPackage{id: id, dir: filepath.Join(dir, entry.Name())}
-		members, err := boundedReadDir(value.dir, 3+len(extra))
+		members, err := boundedReadDir(value.dir, 4+len(extra))
 		if err != nil {
 			return nil, err
 		}
 		for _, member := range members {
 			switch {
 			case member.Name() == identityName && member.Type().IsRegular():
+			case member.Name() == currentrecord.Name && member.Type().IsRegular():
 			case (member.Name() == "revisions" || member.Name() == "events" || slices.Contains(extra, member.Name())) && member.IsDir() && member.Type()&fs.ModeSymlink == 0:
 			default:
 				return nil, fmt.Errorf("%s: unknown entry %q", rel, member.Name())
@@ -307,6 +315,16 @@ func loadAppPackages(root, dir, suffix, identityName, schemaURL string, maximum 
 		validateRequestID(&problems, value.identity.RequestID)
 		if err := problems.err(); err != nil {
 			return nil, fmt.Errorf("%s: %w", relative(root, identityPath), err)
+		}
+		record, err := currentrecord.Read(value.dir)
+		if err != nil {
+			return nil, err
+		}
+		if record != nil {
+			value.current = true
+			value.record = record
+			packages = append(packages, value)
+			continue
 		}
 		for _, member := range []string{"revisions", "events"} {
 			memberDir := filepath.Join(value.dir, member)
@@ -407,6 +425,22 @@ func loadPersonas(document *Document) error {
 	}
 	for _, value := range packages {
 		persona := Persona{Identity: value.identity}
+		if value.current {
+			var content PersonaRevision
+			var state PersonaEvent
+			if err := projectCurrent(value.record, value.identity.CreatedAt, PersonaRevisionSchemaURL, PersonaEventSchemaURL, AppRecordVersion, &content, &state); err != nil {
+				return err
+			}
+			if err := validatePersonaRevision(content, document.SagaID, value.id, content.ID); err != nil {
+				return err
+			}
+			if err := validatePersonaEvent(state, document.SagaID, value.id, state.ID); err != nil {
+				return err
+			}
+			persona.current = true
+			persona.Revisions = []PersonaRevision{content}
+			persona.Events = []PersonaEvent{state}
+		}
 		for _, path := range value.revisions {
 			var revision PersonaRevision
 			if err := readStrictJSON(path, &revision); err != nil {
@@ -491,6 +525,18 @@ func validatePersonaEvent(value PersonaEvent, sagaID, personaID, expectedID stri
 // resolvePersona computes the heads of both graphs. A persona starts active;
 // it may be retired and later restored.
 func resolvePersona(persona *Persona, sagaID string) error {
+	if persona.current {
+		if len(persona.Revisions) == 0 || len(persona.Events) == 0 {
+			return fmt.Errorf("current record requires content and state")
+		}
+		persona.CurrentRevision = &persona.Revisions[len(persona.Revisions)-1]
+		persona.CurrentLifecycle = &persona.Events[len(persona.Events)-1]
+		pin, _ := appMemberURN(sagaID, "persona", persona.Identity.ID, "revision", persona.CurrentRevision.ID)
+		persona.RevisionHeads = []string{pin}
+		persona.LifecycleHeads = memberURNs(sagaID, "persona", persona.Identity.ID, "event", []string{persona.CurrentLifecycle.ID})
+		return nil
+	}
+
 	var problems validationErrors
 	id := persona.Identity.ID
 	revisions := make([]graphMember, 0, len(persona.Revisions))
@@ -541,6 +587,22 @@ func loadFlags(document *Document) error {
 	}
 	for _, value := range packages {
 		flag := Flag{Identity: value.identity}
+		if value.current {
+			var content FlagRevision
+			var state FlagEvent
+			if err := projectCurrent(value.record, value.identity.CreatedAt, FlagRevisionSchemaURL, FlagEventSchemaURL, AppRecordVersion, &content, &state); err != nil {
+				return err
+			}
+			if err := validateFlagRevision(content, document, value.id, content.ID, false); err != nil {
+				return err
+			}
+			if err := validateFlagEvent(state, document.SagaID, value.id, state.ID); err != nil {
+				return err
+			}
+			flag.current = true
+			flag.Revisions = []FlagRevision{content}
+			flag.Events = []FlagEvent{state}
+		}
 		for _, path := range value.revisions {
 			var revision FlagRevision
 			if err := readStrictJSON(path, &revision); err != nil {
@@ -665,6 +727,18 @@ func validateFlagEvent(value FlagEvent, sagaID, flagID, expectedID string) error
 // resolveFlag computes the heads of both graphs. A flag starts off or on and
 // toggles between them; retired is terminal.
 func resolveFlag(flag *Flag, sagaID string) error {
+	if flag.current {
+		if len(flag.Revisions) == 0 || len(flag.Events) == 0 {
+			return fmt.Errorf("current record requires content and state")
+		}
+		flag.CurrentRevision = &flag.Revisions[len(flag.Revisions)-1]
+		flag.CurrentLifecycle = &flag.Events[len(flag.Events)-1]
+		pin, _ := appMemberURN(sagaID, "flag", flag.Identity.ID, "revision", flag.CurrentRevision.ID)
+		flag.RevisionHeads = []string{pin}
+		flag.LifecycleHeads = memberURNs(sagaID, "flag", flag.Identity.ID, "event", []string{flag.CurrentLifecycle.ID})
+		return nil
+	}
+
 	var problems validationErrors
 	id := flag.Identity.ID
 	revisions := make([]graphMember, 0, len(flag.Revisions))

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-authored-erd-job",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:job",
-  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
-  "scope": "self",
-  "rationale": "Illustrative logical JSON entity showing only identity, correlation and input location. These example fields are not a committed product schema.",
-  "to_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T22:40:11.093794Z",
-  "superseded_at": "2026-09-27T10:27:22.188632Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-authored-erd:item:job",
+  "id": "ti-authored-erd-job",
+  "rationale": "Illustrative logical JSON entity showing only identity, correlation and input location. These example fields are not a committed product schema.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:22.188632Z",
+  "to": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+  "to_revision": "sha256:d0f98c335eecab015058b9df75d15c18ce81a532497a8e32083bf97fb90975bf",
+  "type": "explains",
+  "version": 5
 }

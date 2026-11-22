@@ -57,12 +57,12 @@ func TestPrototypeFamilyHelpListsTheAuthoringGrammar(t *testing.T) {
 	}
 }
 
-func TestPrototypeAddHTMLCopiesAnImmutableRevisionAndReplays(t *testing.T) {
+func TestPrototypeAddHTMLCopiesAssetsAndRetriesCurrentContent(t *testing.T) {
 	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
 	args := []string{
-		"add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout",
+		"add-html", root, "--feature", testFeature, "--id", "checkout", "--title", "Checkout",
 		"--source", source, "--state", "ready", "--request-id", "checkout-request",
 	}
 	created := runPrototype(t, args...)
@@ -89,7 +89,7 @@ func TestPrototypeAddHTMLCopiesAnImmutableRevisionAndReplays(t *testing.T) {
 	if revision.Source.Kind != prototypes.SourceHTML || revision.State != prototypes.StateReady {
 		t.Fatalf("revision = %#v", revision)
 	}
-	packaged, err := os.ReadFile(filepath.Join(testFeatureDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html"))
+	packaged, err := os.ReadFile(currentPrototypeTestHTML(t, root, "checkout"))
 	if err != nil || !strings.Contains(string(packaged), "id=\"buy\"") {
 		t.Fatalf("packaged html = %q, err = %v", packaged, err)
 	}
@@ -100,7 +100,7 @@ func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
 	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><main id=\"explore\">Exploring</main>")
-	created := runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "explore", "--revision", "r1",
+	created := runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "explore",
 		"--title", "Exploration", "--source", source)
 	if !created.OK {
 		t.Fatalf("unlinked prototype was rejected: %#v", created)
@@ -119,7 +119,7 @@ func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
 	// Story authoring must keep working beside the sibling capability root.
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{
-		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "buyer", "--revision", "s1", "--event", "proposed", "--title", "Buyer",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "buyer", "--title", "Buyer",
 		"--statement", "As a buyer I can explore", "--priority", "must", "--json",
 	}, &output); err != nil {
 		t.Fatalf("story authoring broke beside prototypes: %v\n%s", err, output.String())
@@ -129,13 +129,13 @@ func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
 func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 	t.Parallel()
 	root := newLivingSaga(t)
-	reference := runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "figma-link", "--revision", "r1",
+	reference := runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "figma-link",
 		"--title", "Figma", "--url", "https://www.figma.com/file/abc")
 	if !reference.OK || reference.Resource != "urn:change-saga:atomic:prototype:figma-link" {
 		t.Fatalf("external reference result = %#v", reference)
 	}
 
-	embed := runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "figma-embed", "--revision", "r1",
+	embed := runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "figma-embed",
 		"--title", "Embedded Figma", "--url", "https://www.figma.com/file/abc",
 		"--embed-url", "https://embed.figma.com/proto/abc", "--provider", "figma",
 		"--embed-origin", "https://embed.figma.com", "--sandbox", "allow-scripts",
@@ -162,7 +162,7 @@ func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 
 	var output bytes.Buffer
 	err = Prototype(context.Background(), []string{
-		"add-external", root, "--feature", testFeature, "--id", "implicit", "--revision", "r1", "--title", "Implicit",
+		"add-external", root, "--feature", testFeature, "--id", "implicit", "--title", "Implicit",
 		"--url", "https://www.figma.com/file/abc", "--embed-url", "https://embed.figma.com/proto/abc",
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "explicit allowlist") {
@@ -170,7 +170,7 @@ func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 	}
 	output.Reset()
 	err = Prototype(context.Background(), []string{
-		"add-external", root, "--feature", testFeature, "--id", "stray", "--revision", "r1", "--title", "Stray",
+		"add-external", root, "--feature", testFeature, "--id", "stray", "--title", "Stray",
 		"--url", "https://www.figma.com/file/abc", "--provider", "figma",
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "require --embed-url") {
@@ -179,17 +179,19 @@ func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 	assertValid(t, root)
 }
 
-func TestPrototypeReviseIsAppendOnlyAndReconcilesHeads(t *testing.T) {
+func TestPrototypeReviseEditsCurrentContentAndPreservesCommittedAssets(t *testing.T) {
 	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
-	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--title", "Checkout", "--source", source)
 
+	originalAsset := currentPrototypeTestHTML(t, root, "checkout")
+	commitCurrentTestDocumentation(t, root, "original prototype")
 	prototypeURN := "urn:change-saga:atomic:prototype:checkout"
 	revised := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy now</button>")
-	result := runPrototype(t, "revise", root, "--prototype", prototypeURN, "--revision", "r2",
-		"--parent", prototypeURN+":revision:r1", "--title", "Checkout", "--state", "ready", "--source", revised)
-	if !result.OK || result.Resource != prototypeURN+":revision:r2" {
+	result := runPrototype(t, "revise", root, "--prototype", prototypeURN,
+		"--title", "Checkout", "--state", "ready", "--source", revised)
+	if !result.OK || result.Resource != prototypeURN {
 		t.Fatalf("revise result = %#v", result)
 	}
 
@@ -197,26 +199,22 @@ func TestPrototypeReviseIsAppendOnlyAndReconcilesHeads(t *testing.T) {
 	if err != nil {
 		t.Fatalf("load prototypes: %v", err)
 	}
-	if len(document.Prototypes[0].Revisions) != 2 || document.Prototypes[0].CurrentRevision.ID != "r2" {
+	if len(document.Prototypes[0].Revisions) != 1 || document.Prototypes[0].CurrentRevision.State != prototypes.StateReady {
 		t.Fatalf("revision graph = %#v", document.Prototypes[0])
 	}
-	original, err := os.ReadFile(filepath.Join(testFeatureDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html"))
+	original, err := os.ReadFile(originalAsset)
 	if err != nil || strings.Contains(string(original), "Buy now") {
 		t.Fatalf("the earlier revision was not immutable: %q, err = %v", original, err)
 	}
 
 	var output bytes.Buffer
-	err = Prototype(context.Background(), []string{
-		"revise", root, "--prototype", prototypeURN, "--revision", "r3", "--title", "Checkout",
-		"--parent", prototypeURN + ":revision:r1", "--source", revised,
-	}, &output)
-	if err == nil || !strings.Contains(err.Error(), "every current head") {
-		t.Fatalf("a stale parent must be refused, error = %v", err)
+	if replay := runPrototype(t, "revise", root, "--prototype", prototypeURN, "--title", "Checkout", "--state", "ready", "--source", revised); !replay.Replayed {
+		t.Fatalf("identical current update not idempotent: %#v", replay)
 	}
 	output.Reset()
 	err = Prototype(context.Background(), []string{
-		"revise", root, "--prototype", prototypeURN, "--revision", "r3", "--title", "Checkout",
-		"--parent", prototypeURN + ":revision:r2", "--source", revised, "--url", "https://example.test/p",
+		"revise", root, "--prototype", prototypeURN, "--title", "Checkout",
+		"--source", revised, "--url", "https://example.test/p",
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "exactly one revised source") {
 		t.Fatalf("two revised sources must be refused, error = %v", err)
@@ -228,11 +226,11 @@ func TestPrototypeAnnotatePinsSelectorsToStoriesAndCriteria(t *testing.T) {
 	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
-	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--title", "Checkout", "--source", source)
 
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{
-		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "buyer", "--revision", "s1", "--event", "proposed", "--title", "Buyer",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "buyer", "--title", "Buyer",
 		"--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--json",
 	}, &output); err != nil {
@@ -241,17 +239,18 @@ func TestPrototypeAnnotatePinsSelectorsToStoriesAndCriteria(t *testing.T) {
 
 	prototypeURN := "urn:change-saga:atomic:prototype:checkout"
 	storyURN := "urn:change-saga:atomic:story:buyer"
-	storyRevision := storyURN + ":revision:s1"
+	storyRevision := currentTestPin(t, root, storyURN)
+	prototypePin := currentTestPin(t, root, prototypeURN)
 	element := runPrototype(t, "annotate", root, "--prototype", prototypeURN, "--id", "buy-button",
 		"--target", storyURN, "--rationale", "The buy button is the primary action.",
-		"--prototype-revision", prototypeURN+":revision:r1", "--story-revision", storyRevision,
+		"--prototype-definition-digest", prototypePin, "--story-content-digest", storyRevision,
 		"--element-id", "buy")
 	if !element.OK || element.Resource != prototypeURN+":annotation:buy-button" {
 		t.Fatalf("element annotation result = %#v", element)
 	}
 	region := runPrototype(t, "annotate", root, "--prototype", prototypeURN, "--id", "summary-area",
 		"--target", storyURN+":criterion:fast", "--rationale", "The order summary shows the promptness.",
-		"--prototype-revision", prototypeURN+":revision:r1", "--story-revision", storyRevision,
+		"--prototype-definition-digest", prototypePin, "--story-content-digest", storyRevision,
 		"--region", "0.1,0.2,0.3,0.4")
 	if !region.OK {
 		t.Fatalf("region annotation result = %#v", region)
@@ -275,8 +274,8 @@ func TestPrototypeAnnotatePinsSelectorsToStoriesAndCriteria(t *testing.T) {
 	output.Reset()
 	err = Prototype(context.Background(), []string{
 		"annotate", root, "--prototype", prototypeURN, "--id", "ambiguous", "--target", storyURN,
-		"--rationale", "Ambiguous.", "--prototype-revision", prototypeURN + ":revision:r1",
-		"--story-revision", storyRevision, "--element-id", "buy", "--text", "Buy",
+		"--rationale", "Ambiguous.", "--prototype-definition-digest", prototypePin,
+		"--story-content-digest", storyRevision, "--element-id", "buy", "--text", "Buy",
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "exactly one selector") {
 		t.Fatalf("two selectors must be refused, error = %v", err)
@@ -284,7 +283,7 @@ func TestPrototypeAnnotatePinsSelectorsToStoriesAndCriteria(t *testing.T) {
 	output.Reset()
 	err = Prototype(context.Background(), []string{
 		"annotate", root, "--prototype", prototypeURN, "--id", "unpinned", "--target", storyURN,
-		"--rationale", "Unpinned.", "--story-revision", storyRevision, "--element-id", "buy",
+		"--rationale", "Unpinned.", "--story-content-digest", storyRevision, "--element-id", "buy",
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "exactly one prototype pin") {
 		t.Fatalf("a missing prototype pin must be refused, error = %v", err)
@@ -297,7 +296,7 @@ func TestPrototypeMutationFailureReportsJSONAndExitStatus(t *testing.T) {
 	root := newLivingSaga(t)
 	var output bytes.Buffer
 	err := Prototype(context.Background(), []string{
-		"add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout",
+		"add-html", root, "--feature", testFeature, "--id", "checkout", "--title", "Checkout",
 		"--source", filepath.Join(t.TempDir(), "missing"), "--json",
 	}, &output)
 	var status *StatusError
@@ -317,14 +316,14 @@ func TestValidateCoversPrototypeRecords(t *testing.T) {
 	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
-	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--title", "Checkout", "--source", source)
 
 	var output bytes.Buffer
 	if err := Validate(context.Background(), []string{"--json", root}, &output); err != nil {
 		t.Fatalf("validate a sound prototype: %v\n%s", err, output.String())
 	}
 
-	packaged := filepath.Join(testFeatureDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html")
+	packaged := currentPrototypeTestHTML(t, root, "checkout")
 	writeFile(t, packaged, "tampered after the revision was sealed")
 	output.Reset()
 	err := Validate(context.Background(), []string{"--json", root}, &output)
@@ -358,7 +357,7 @@ func TestRepoPrototypePinsCommittedFilesAndRefreshesAfterTheyChange(t *testing.T
 	root, repo := coveredSaga(t)
 	writeFile(t, filepath.Join(repo, "prototypes", "sidebar", "index.html"), `<link rel="stylesheet" href="app.css"><h1 id="go">Go</h1>`)
 	writeFile(t, filepath.Join(repo, "prototypes", "sidebar", "app.css"), `h1{color:red}`)
-	add := []string{"add", root, "--feature", testFeature, "--id", "sidebar", "--revision", "r1", "--title", "Sidebar", "--path", "prototypes/sidebar/index.html", "--repo", repo}
+	add := []string{"add", root, "--feature", testFeature, "--id", "sidebar", "--title", "Sidebar", "--path", "prototypes/sidebar/index.html", "--repo", repo}
 	var refused bytes.Buffer
 	if err := Prototype(context.Background(), add, &refused); err == nil || !strings.Contains(err.Error(), "commit the prototype first") {
 		t.Fatalf("an uncommitted prototype = %v", err)
@@ -399,7 +398,7 @@ func TestRepoPrototypePinsCommittedFilesAndRefreshesAfterTheyChange(t *testing.T
 		t.Fatal(err)
 	}
 	head := document.Find("sidebar").CurrentRevision
-	if head.ID != "r2" || head.Source.Commit != second || head.Title != "Sidebar" || len(head.Parents) != 1 {
+	if head.Source.Commit != second || head.Title != "Sidebar" || len(head.Parents) != 0 || len(document.Find("sidebar").Revisions) != 1 {
 		t.Fatalf("updated revision = %#v", head)
 	}
 	// The first revision still shows what it pinned.
@@ -437,12 +436,12 @@ func TestQueryPrototypeReturnsItsHTML(t *testing.T) {
 	root, repo := coveredSaga(t)
 	source := newPrototypeSource(t, "<h1>Copied \u00e9</h1>")
 	writeFile(t, filepath.Join(source, "app.css"), "h1{color:red}")
-	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "copied", "--revision", "r1", "--title", "Copied", "--source", source)
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "copied", "--title", "Copied", "--source", source)
 	writeFile(t, filepath.Join(repo, "prototypes", "live", "index.html"), "<h1>Pinned</h1>")
 	writeFile(t, filepath.Join(repo, "prototypes", "live", "app.css"), "h1{color:blue}")
 	commitAll(t, repo, "add a prototype")
 	runPrototype(t, "add", root, "--feature", testFeature, "--id", "live", "--title", "Live", "--path", "prototypes/live/index.html", "--repo", repo)
-	runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "hosted", "--revision", "r1", "--title", "Hosted", "--url", "https://example.test/app")
+	runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "hosted", "--title", "Hosted", "--url", "https://example.test/app")
 	query := func(args ...string) (map[string]any, string) {
 		t.Helper()
 		var output bytes.Buffer
@@ -490,7 +489,11 @@ func TestQueryPrototypeReturnsItsHTML(t *testing.T) {
 	if hosted["content"] != nil || hosted["source"].(map[string]any)["url"] != "https://example.test/app" {
 		t.Fatalf("hosted prototype = %#v", hosted)
 	}
-	for _, args := range [][]string{{"--prototype", "missing"}, {"--prototype", "copied", "--revision", "r9"}, {"--prototype", "copied", "--file", "../revision.json"}} {
+	var obsolete bytes.Buffer
+	if err := Query(context.Background(), []string{"prototype", "--saga", root, "--prototype", "copied", "--revision", "r9"}, &obsolete); err == nil || !strings.Contains(obsolete.String(), "invalid_argument") {
+		t.Fatalf("removed selector accepted: %s", obsolete.String())
+	}
+	for _, args := range [][]string{{"--prototype", "missing"}, {"--prototype", "copied", "--file", "../revision.json"}} {
 		if _, output := query(args...); !strings.Contains(output, "not_found") {
 			t.Fatalf("%v = %s", args, output)
 		}

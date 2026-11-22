@@ -32,10 +32,10 @@ func TestStoryRemoveDeletesTheStoryAndItsLinksAndReportsWhatToAdjust(t *testing.
 		t.Fatalf("term add: %v\n%s", err, output.String())
 	}
 	mustLiving(t, "flag add", flagCommand, "add", root, "--id", "new-checkout", "--description", "Gates checkout", "--target", checkout, "--target", keep)
-	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "cart-page", "--revision", "r1", "--title", "Cart", "--source", newPrototypeSource(t, `<button id="buy">Buy</button>`))
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "cart-page", "--title", "Cart", "--source", newPrototypeSource(t, `<button id="buy">Buy</button>`))
 	runPrototype(t, "annotate", root, "--prototype", "urn:change-saga:atomic:prototype:cart-page", "--id", "buy",
-		"--target", checkout+":criterion:fast", "--rationale", "Buying is prompt.", "--prototype-revision", "urn:change-saga:atomic:prototype:cart-page:revision:r1",
-		"--story-revision", checkout+":revision:r1", "--element-id", "buy")
+		"--target", checkout+":criterion:fast", "--rationale", "Buying is prompt.", "--prototype-definition-digest", currentTestPin(t, root, "urn:change-saga:atomic:prototype:cart-page"),
+		"--story-content-digest", currentTestPin(t, root, checkout), "--element-id", "buy")
 	assertValid(t, root)
 
 	// The dry run names everything and writes nothing.
@@ -112,7 +112,7 @@ func TestRemovingEachRecordKindCleansItsLinksAndReportsTheRest(t *testing.T) {
 	citation := mustLiving(t, "citation add", func(ctx context.Context, args []string, out *bytes.Buffer) error { return Citation(ctx, args, out) },
 		"add", root, "--feature", testFeature, "--id", "interview", "--kind", "url", "--title", "Interview", "--reference", "https://example.test/interview").Resource
 	var output bytes.Buffer
-	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay",
+	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "pay", "--title", "Pay",
 		"--statement", "As a buyer I can pay", "--priority", "must", "--criterion", "fast=It finishes promptly", "--persona", persona, "--citation", citation, "--json"}, &output); err != nil {
 		t.Fatalf("story add: %v\n%s", err, output.String())
 	}
@@ -129,9 +129,9 @@ func TestRemovingEachRecordKindCleansItsLinksAndReportsTheRest(t *testing.T) {
 	if err := Term(ctx, []string{"add", "--id", "checkout", "--name", "Checkout", "--definition", "Paying.", "--record", "urn:change-saga:atomic:term:wallet", "--json", root}, &output); err != nil {
 		t.Fatalf("term add: %v\n%s", err, output.String())
 	}
-	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "pay-page", "--revision", "r1", "--title", "Pay", "--source", newPrototypeSource(t, `<button id="pay">Pay</button>`))
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "pay-page", "--title", "Pay", "--source", newPrototypeSource(t, `<button id="pay">Pay</button>`))
 	runPrototype(t, "annotate", root, "--prototype", "urn:change-saga:atomic:prototype:pay-page", "--id", "pay", "--target", story,
-		"--rationale", "Paying.", "--prototype-revision", "urn:change-saga:atomic:prototype:pay-page:revision:r1", "--story-revision", story+":revision:r1", "--element-id", "pay")
+		"--rationale", "Paying.", "--prototype-definition-digest", currentTestPin(t, root, "urn:change-saga:atomic:prototype:pay-page"), "--story-content-digest", currentTestPin(t, root, story), "--element-id", "pay")
 	assertValid(t, root)
 
 	remove := func(run func(context.Context, []string, io.Writer) error, args ...string) removalOutput {

@@ -164,7 +164,7 @@ func Coverage(ctx context.Context, inventory *requirements.Inventory, in Coverag
 				report.Excluded = append(report.Excluded, ExcludedOwner{r.Target, r.Kind, []string{ExcludedProposed}})
 				continue
 			}
-			revision := r.Target + ":revision:" + r.CurrentRevision.ID
+			revision := requirements.ContentPin(r.Target, r.CurrentRevision.ID)
 			visit := func(owner string, ref coderef.Reference) {
 				o := CoverageOwner{Owner: owner, Revision: revision, Kind: r.Kind, Reference: ref.Location().String()}
 				report.Summary.References++

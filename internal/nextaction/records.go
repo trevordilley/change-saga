@@ -27,31 +27,31 @@ func (b *builder) staleRecords() {
 		case "prototype_annotation":
 			action.Question = question("Does the annotated prototype element still express "+b.subjects(record.Affects)+" as currently worded?", NeedProductJudgment,
 				option("yes", "a new annotation pinned to the current story and prototype revisions replaces it",
-					b.invoke("prototype annotate", grammar.V("target", firstOr(record.Affects, "")), grammar.V("story-revision", current(record.Pins, "story_revision")))),
+					b.invoke("prototype annotate", grammar.V("target", firstOr(record.Affects, "")), grammar.V("story-content-digest", current(record.Pins, "story_revision")))),
 				option("no", "the stale annotation stays as history and no longer counts; the prototype axis shows the gap"))
 		case "coverage_exception":
 			criterion := firstOr(record.Affects, "")
 			action.Question = question("Does the recorded exclusion still hold for "+b.describe(criterion)+" as currently worded?", NeedExplicitExclusion,
 				option("yes", "a new exception pinned to the current story revision supersedes the stale one",
-					b.invoke("coverage-exception add", grammar.V("axis", record.Axis), grammar.V("criterion", criterion), grammar.V("story-revision", current(record.Pins, "story_revision"))),
+					b.invoke("coverage-exception add", grammar.V("axis", record.Axis), grammar.V("criterion", criterion), grammar.V("story-content-digest", current(record.Pins, "story_revision"))),
 					b.invoke("coverage-exception supersede", grammar.V("exception", record.Record), grammar.V("with", ""))),
 				option("no", "the axis becomes a gap that needs coverage"))
 		case "quality_policy":
 			criterion := firstOr(record.Affects, "")
 			action.Question = question("Which test kinds does "+b.describe(criterion)+" require as currently worded?", NeedProductJudgment,
 				option("record the kinds", "a policy pinned to the current story revision supersedes the stale one",
-					b.invoke("quality policy set", grammar.V("criterion", criterion), grammar.V("story-revision", current(record.Pins, "story_revision")), grammar.V("supersedes", record.Record))))
+					b.invoke("quality policy set", grammar.V("criterion", criterion), grammar.V("story-content-digest", current(record.Pins, "story_revision")), grammar.V("supersedes", record.Record))))
 		case "quality_evidence":
 			testCase := testCaseOf(record.Record)
 			action.Question = question("Which exact lines now implement the evidence "+record.Record+" described?", NeedProductJudgment,
 				option("re-record the evidence", "new evidence for the current test revision supersedes the stale record",
-					b.invoke("quality evidence add", grammar.V("test", testCase), grammar.V("test-revision", current(record.Pins, "test_revision")),
+					b.invoke("quality evidence add", grammar.V("test", testCase), grammar.V("test-content-digest", current(record.Pins, "test_revision")),
 						grammar.V("role", ""), grammar.V("code", ""), grammar.V("supersedes", record.Record))))
 		default:
 			// No writer in the grammar re-pins this kind, so the honest answer
 			// is where to read its pins rather than a command that would not
 			// run. Every other kind names the command that records the answer.
-			action.Question = question("Does "+record.Record+" still hold against the current heads?", NeedProductJudgment,
+			action.Question = question("Does "+record.Record+" still hold against current content?", NeedProductJudgment,
 				option("read its pins", "the tool publishes no re-pin writer for this kind; read the record, then re-pin or retire it and re-evaluate",
 					b.invoke("status", grammar.V("json", "true"))))
 		}
@@ -66,10 +66,17 @@ func (b *builder) relationQuestion(record livingapp.StaleRecord) *Question {
 		if pin.Current == "" {
 			continue
 		}
-		repin = append(repin, grammar.V(strings.ReplaceAll(pin.Field, "_", "-"), pin.Current))
+		flag := strings.ReplaceAll(pin.Field, "_", "-")
+		if flag == "from-revision" {
+			flag = "from-definition-digest"
+		}
+		if flag == "to-revision" {
+			flag = "to-definition-digest"
+		}
+		repin = append(repin, grammar.V(flag, pin.Current))
 	}
-	return question("Does the relation still hold for "+subject+" against the current revision and content?", NeedProductJudgment,
-		option("yes", "the relation keeps its id and its history, and records the revision you read it against",
+	return question("Does the relation still hold for "+subject+" against current content?", NeedProductJudgment,
+		option("yes", "update the confirmed digest in place; Git preserves the previous assertion",
 			b.invoke("relation repin", repin...)),
 		option("no", "retire the stale relation; the axis it covered becomes a visible gap",
 			b.invoke("relation supersede", grammar.V("relation", record.Record))))
@@ -179,8 +186,8 @@ func (b *builder) requirements() {
 			Reason: "\"" + story.Title + "\" has no acceptance criteria, so nothing can say when it is met", Practice: practiceCriteria,
 			value: b.valueOf(story.Story),
 			Question: question("What observable acceptance criteria does \""+story.Title+"\" have?", NeedProductJudgment,
-				option("add a criterion", "a complete story revision with the new criterion",
-					b.invoke("criterion add", grammar.V("story", story.Story), grammar.V("parent", story.CurrentRevision)))),
+				option("add a criterion", "the current story with the new criterion",
+					b.invoke("criterion add", grammar.V("story", story.Story)))),
 		})
 	}
 }
@@ -211,7 +218,7 @@ func (b *builder) testCases() {
 			value: b.valueOf(testCase.TestCase),
 			Question: question("Which criterion does "+testCase.TestCase+" verify, or should it be retired?", NeedProductJudgment,
 				option("it verifies a criterion", "a pinned verifies relation",
-					b.invoke("relation add", grammar.V("type", "verifies"), grammar.V("from", testCase.TestCase), grammar.V("from-revision", testCase.CurrentRevision), grammar.V("to", ""), grammar.V("to-revision", ""))),
+					b.invoke("relation add", grammar.V("type", "verifies"), grammar.V("from", testCase.TestCase), grammar.V("from-definition-digest", testCase.CurrentRevision), grammar.V("to", ""), grammar.V("to-definition-digest", ""))),
 				option("retire it", "it stays as history and leaves the queue",
 					b.invoke("quality test-case set-state", grammar.V("test", testCase.TestCase), grammar.V("state", "retired")))),
 		})

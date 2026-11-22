@@ -1,0 +1,74 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:9e30a7c3076b5f50780bcd442b2d925bfbfb85fa29f5725b25a77ac01c59169e",
+        "end": 87,
+        "id": "manifest",
+        "note": "review.json, its pull request and the frozen merge.",
+        "path": "internal/saga/review.go",
+        "start": 56
+      },
+      {
+        "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+        "digest": "sha256:1dbe712a1ecff648889d74b2daf21b28df9ca14707ab1b723b065f60513d0ff7",
+        "end": 62,
+        "id": "one-per-pr",
+        "note": "One review per pull request number.",
+        "path": "internal/reviewstore/reviewstore.go",
+        "start": 56
+      }
+    ],
+    "delivery": {
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "repository": "https://github.com/trevordilley/change-saga.git"
+    },
+    "explanation": "One pull request's review: ___reviews/\u003cid\u003e.review/review.json names the pull request, the base it merges into and the head it follows; repin freezes the exact commits once it lands. Its deck, approvals and comments live beside it.",
+    "fields": [
+      {
+        "id": "id",
+        "keys": [
+          "primary"
+        ],
+        "name": "id",
+        "type": "string"
+      },
+      {
+        "id": "pr",
+        "keys": [
+          "unique"
+        ],
+        "name": "pull_request.number",
+        "note": "Review creation refuses a second review for the same pull request.",
+        "type": "int"
+      },
+      {
+        "id": "base",
+        "name": "base",
+        "type": "ref"
+      },
+      {
+        "id": "head",
+        "name": "head",
+        "note": "Empty follows the checkout HEAD.",
+        "type": "ref"
+      },
+      {
+        "id": "merged",
+        "name": "merged",
+        "note": "Written by repin after the change lands.",
+        "type": "base/head/landed commits"
+      }
+    ],
+    "intent": "implemented",
+    "name": "Review",
+    "record": "urn:change-saga:change-saga:data-entity:review"
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:data-entity:review",
+    "state": "active"
+  }
+}

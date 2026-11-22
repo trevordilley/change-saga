@@ -1811,7 +1811,7 @@ const appJavaScript = `(() => {
     body.textContent = 'Loading explanation…';
     showDrawer(opener);
     const url = new URL('/api/documentation', location.origin);
-    url.searchParams.set('target', pin.target); url.searchParams.set('revision', pin.revision);
+    url.searchParams.set('target', pin.target); url.searchParams.set('content_digest', pin.revision);
     if (pin.item) url.searchParams.set('item', pin.item);
     if (pin.relationship) url.searchParams.set('relationship', pin.relationship);
     try {

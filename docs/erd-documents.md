@@ -1,7 +1,7 @@
 # Existing ERD source documents
 
 For new data-model authoring, use [one cohesive ERD whiteboard](erd-whiteboard-guide.md).
-This guide covers independently revisioned ERD source records and the reading
+This guide covers independently editable ERD source records and the reading
 experience when no `data-model` whiteboard is present. Existing records remain
 useful as optional imports and evidence; readers need not navigate a collection of them
 to understand the whiteboard.
@@ -9,15 +9,15 @@ to understand the whiteboard.
 Separate named ERD records can describe different concerns. A local SQLite database,
 a cloud Postgres database, and their synchronization diagram can each have their
 own name, explanation, SVG and entity directory. Shared Markdown introduces the
-whole data model. These documents use the existing ERD identities and append-only
-revision history; `application` is an ordinary ID.
+whole data model. Each document keeps its stable ERD identity and editable current
+content. Git stores earlier values; `application` is an ordinary ID.
 
 ## Authoring
 
 1. Record each store as a Component, then record its data entities with exact
    `holders` pins to that Component. Data entities own fields and relationships.
 2. Prepare one complete ERD definition JSON and offline SVG per document.
-   `directory` lists exact data-entity revision pins. `bindings` attach SVG element
+   `directory` lists exact data-entity content digests. `bindings` attach SVG element
    IDs to entities or to relationships owned by a pinned entity. See the
    [format contract](../SPEC.md#technical-inventory-format-2) for field details.
 3. Publish each diagram independently:
@@ -42,15 +42,16 @@ each store. [Data flow](/technical/erd/cross-store) explains synchronization.
 ```
 
 Markdown links navigate; they are not inventory pins and do not confer evidence
-or coverage. To link to an exact diagram revision, use
-`/technical/erd/sqlite?revision=r1`. Structured entity pins in each ERD continue
+or coverage. To link to exact diagram content, use
+`/technical/erd/sqlite?content_digest=sha256:HEX_DIGEST`. Historical content must
+be available in Git; an unresolved pin never falls back to current content. Structured entity pins in each ERD continue
 to control what the viewer shows and validates. Raw HTML and dangerous URL
 schemes use the existing safe Markdown renderer.
 
 Repeat `overview set-data-model` to edit the shared prose. It preserves the
 fragment identity and updates Markdown content; Git records its history. Use
-`erd revise --id sqlite --revision r2 --parent <r1-URN> --from ...` to append an
-ERD revision. Neither operation rewrites older ERD revisions or SVG assets.
+`erd revise --id sqlite --from ...` to edit the current ERD definition.
+Git retains earlier definitions; pinned SVG assets remain content addressed.
 
 ## Reading
 
@@ -58,7 +59,7 @@ ERD revision. Neither operation rewrites older ERD revisions or SVG assets.
 change-saga query inventory --saga change.saga --kind erd
 change-saga query fragment --saga change.saga --target <data_model_overview.target>
 change-saga query history --saga change.saga --node <data_model_overview.target>
-change-saga query inventory --saga change.saga --target <erd-URN> --history
+change-saga query history --saga change.saga --node <erd-URN>
 ```
 
 `data.data_model_overview` is the app-wide overview descriptor (`target`, package
@@ -70,8 +71,8 @@ Without a `data-model` whiteboard, the Data model page at `/technical/erd` shows
 equal document links, proposed overlays, and the entity directory. Documents come before entities in
 the sidebar. A single unambiguous active ERD also renders inline; with multiple
 ERDs no document is automatically elevated. Each document retains its canonical
-route and historical `?revision=` links. Retired or conflicted records stay
-visible with their status.
+route and exact `?content_digest=` links. Legacy `?revision=` selectors are
+removed. Retired or unresolved legacy records remain visible with their status.
 
 ## Format and compatibility
 
@@ -83,10 +84,10 @@ Its content appears on Data model, without duplication on the application
 Overview. Absence is valid and does not trigger a generated document.
 
 This extends the allowed v5 layout without changing any ERD schema or inventory
-format. New readers accept preexisting Sagas unchanged. Older readers reject an
-adopted data-model overview slot as an unknown overview entry. Upgrade those
-readers before authoring the new slot. No automatic migration or rewriting of
-records is performed.
+format. New readers accept legacy Sagas without writing. Record writes or
+`normalize` persist the current-record layout after converting exact evidence
+pins. Upgrade readers before normalization; see [Git-owned history](git-owned-history.md).
+Older readers may also reject an adopted data-model overview slot.
 
 The [multi-document fixture](../internal/testfixture/erd_documents.go) is a
 runnable example used by the CLI and viewer tests. It describes a proposed

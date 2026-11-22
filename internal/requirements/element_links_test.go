@@ -10,6 +10,7 @@ import (
 
 func TestNewVisualStoryLinksRequireItemsButLegacyLinksRemainReadable(t *testing.T) {
 	root := newV5Saga(t)
+	v5StoryR1 := currentFixtureStoryPin(t, root, v5Story)
 	for _, kind := range []string{"deck", "slide"} {
 		for _, relationType := range []RelationType{RelationExplains, RelationAddresses} {
 			input := AddRelationInput{Feature: "core", ID: kind + "-" + string(relationType), Type: relationType,

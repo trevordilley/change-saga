@@ -7,11 +7,14 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingapp"
+	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -42,7 +45,7 @@ func newSlideTransactionFixture(t *testing.T) (root, repo, base, commit, sagaID 
 			t.Fatal(err)
 		}
 		if err := Story(context.Background(), []string{
-			"add", root, "--feature", testFeature, "--persona", personaURNFor(manifest.ID), "--id", "run", "--revision", "r1", "--event", "proposed",
+			"add", root, "--feature", testFeature, "--persona", personaURNFor(manifest.ID), "--id", "run",
 			"--title", "Run safely", "--statement", "As a user I run the service", "--criterion", "returns=Run returns without error", "--request-id", "story-run",
 		}, &output); err != nil {
 			t.Fatal(err)
@@ -69,6 +72,13 @@ func slideTransactionRequest(t *testing.T, repo, base, commit, sagaID, requestID
 	if err != nil {
 		t.Fatal(err)
 	}
+	sagaRoot := filepath.Join(filepath.Dir(repo), "saga", "transaction.saga")
+	records, err := requirements.Load(sagaRoot, sagaID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	story := records.FindStory("run")
+	storyPin, _ := livingid.Revision(sagaID, "run", story.CurrentRevision.ID)
 	return SlideTransactionRequest{
 		Version: 1, Operation: operation, RequestID: requestID, Deck: "implementation", ExpectedSnapshot: expected,
 		Slide: SlideTransactionSlide{ID: "flow", Title: "Atomic flow", Intent: "explain", Layout: "diagram", MediaType: "image/svg+xml", Takeaway: "The complete visual changes together.", ReadingOrder: []string{"worker"}},
@@ -76,7 +86,7 @@ func slideTransactionRequest(t *testing.T, repo, base, commit, sagaID, requestID
 		Items: []SlideTransactionItemRequest{{
 			ID: "worker", Kind: "node", Label: "Worker", Description: "The worker performs the operation.", Selector: saga.LandmarkSelector{Type: "element", ElementID: element},
 			Evidence:       []saga.CodeFile{{Version: saga.CurrentVersion, References: []coderef.Reference{{Commit: commit, Path: "service.go", Start: 3, End: 3, Digest: digest, Note: "Run is the exact implementation entrypoint."}}}},
-			CriterionLinks: []saga.CriterionLink{{ID: "worker-explains-returns", Criterion: "urn:change-saga:" + sagaID + ":story:run:criterion:returns", StoryRevision: "urn:change-saga:" + sagaID + ":story:run:revision:r1", Rationale: "This Item shows the code path that satisfies the criterion."}},
+			CriterionLinks: []saga.CriterionLink{{ID: "worker-explains-returns", Criterion: "urn:change-saga:" + sagaID + ":story:run:criterion:returns", StoryRevision: storyPin, Rationale: "This Item shows the code path that satisfies the criterion."}},
 		}},
 	}
 }
@@ -109,18 +119,18 @@ func TestApplySlideTransactionCreateUpdateRetryAndGuards(t *testing.T) {
 		t.Fatalf("create = %#v", created)
 	}
 	createRetry, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)
-	if err != nil || !createRetry.Replayed || createRetry.Snapshot != created.Snapshot || createRetry.PreviousSnapshot != "" || len(createRetry.ChangedIDs) != 0 {
+	if err != nil || !createRetry.Replayed || createRetry.Snapshot != created.Snapshot || createRetry.PreviousSnapshot != created.Snapshot || len(createRetry.ChangedIDs) != 0 {
 		t.Fatalf("create retry = %#v err=%v", createRetry, err)
 	}
 	changedCreate := create
 	changedCreate.Slide.Title = "Different create payload"
-	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, changedCreate, false); err == nil || !strings.Contains(err.Error(), "different complete-slide payload") {
+	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, changedCreate, false); err == nil || !strings.Contains(err.Error(), "already exists") {
 		t.Fatalf("changed create retry error = %v", err)
 	}
 	differentCreateID := create
 	differentCreateID.RequestID = "slide-create-again"
-	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, differentCreateID, false); err == nil || !strings.Contains(err.Error(), "already exists") {
-		t.Fatalf("existing slide create error = %v", err)
+	if result, err := ApplySlideTransaction(context.Background(), root, base, repo, differentCreateID, false); err != nil || !result.Unchanged {
+		t.Fatalf("identical content with another request id = %#v %v", result, err)
 	}
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
@@ -150,7 +160,7 @@ func TestApplySlideTransactionCreateUpdateRetryAndGuards(t *testing.T) {
 	}
 
 	replayed, err := ApplySlideTransaction(context.Background(), root, base, repo, update, false)
-	if err != nil || !replayed.Replayed || replayed.Snapshot != updated.Snapshot || replayed.PreviousSnapshot != created.Snapshot || len(replayed.ChangedIDs) != 0 {
+	if err != nil || !replayed.Replayed || replayed.Snapshot != updated.Snapshot || replayed.PreviousSnapshot != updated.Snapshot || len(replayed.ChangedIDs) != 0 {
 		t.Fatalf("retry = %#v err=%v", replayed, err)
 	}
 	stale := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-stale", "update", created.Snapshot, "node-c")
@@ -160,20 +170,20 @@ func TestApplySlideTransactionCreateUpdateRetryAndGuards(t *testing.T) {
 
 	reused := update
 	reused.Slide.Title = "Different payload"
-	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, reused, false); err == nil || !strings.Contains(err.Error(), "different complete-slide payload") {
+	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, reused, false); err == nil || !strings.Contains(err.Error(), "expected_snapshot mismatch") {
 		t.Fatalf("request reuse error = %v", err)
 	}
 	reused = update
 	reused.ExpectedSnapshot = "sha256:" + strings.Repeat("0", 64)
-	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, reused, false); err == nil || !strings.Contains(err.Error(), "different complete-slide payload") {
-		t.Fatalf("request expectation reuse error = %v", err)
+	if result, err := ApplySlideTransaction(context.Background(), root, base, repo, reused, false); err != nil || !result.Unchanged {
+		t.Fatalf("a value retry should need no saved request ledger: %#v %v", result, err)
 	}
 
 	var record saga.SlideTransactionRecord
 	if err := readStrictJSONPath(filepath.Join(root, filepath.FromSlash(updated.Path)), &record); err != nil {
 		t.Fatal(err)
 	}
-	if len(record.Revisions) != 2 || record.Current != updated.Snapshot {
+	if len(record.Revisions) != 1 || record.Current != updated.Snapshot {
 		t.Fatalf("history = %#v", record)
 	}
 }
@@ -211,7 +221,7 @@ func TestApplySlideTransactionRejectsBrokenSelectorAndRollsBackInjectedFailure(t
 		t.Fatalf("invalid code reference error = %v", err)
 	}
 	staleCriterion := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-stale-criterion", "update", created.Snapshot, "node-criterion")
-	staleCriterion.Items[0].CriterionLinks[0].StoryRevision = "urn:change-saga:" + sagaID + ":story:run:revision:r9"
+	staleCriterion.Items[0].CriterionLinks[0].StoryRevision = "sha256:" + strings.Repeat("f", 64)
 	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, staleCriterion, false); err == nil || !strings.Contains(err.Error(), "story_revision is stale") {
 		t.Fatalf("stale criterion error = %v", err)
 	}
@@ -338,7 +348,7 @@ func TestApplySlideTransactionMigratesLegacySlideWithoutChangingStableIDs(t *tes
 	if err := readStrictJSONPath(filepath.Join(root, filepath.FromSlash(result.Path)), &record); err != nil {
 		t.Fatal(err)
 	}
-	if len(record.Revisions) != 2 || !strings.HasPrefix(record.Revisions[0].RequestID, "legacy-") {
+	if len(record.Revisions) != 1 || record.Revisions[0].RequestID != "" || len(record.Revisions[0].ParentSnapshots) != 0 {
 		t.Fatalf("migration history = %#v", record)
 	}
 	beforeRemoval := snapshotFiles(t, root)
@@ -447,8 +457,7 @@ func TestTransactionLinksUseCanonicalQueryTraceabilityAuditAndCurrencyGraph(t *t
 		t.Fatal(err)
 	}
 	story := "urn:change-saga:" + sagaID + ":story:run"
-	parent, _ := requirements.StoryEventURN(sagaID, "run", "proposed")
-	if err := Story(context.Background(), []string{"set-state", root, "--story", story, "--event", "accepted", "--parent", parent, "--state", "accepted", "--reason", "ready"}, &bytes.Buffer{}); err != nil {
+	if err := Story(context.Background(), []string{"set-state", root, "--story", story, "--state", "accepted", "--reason", "ready"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 
@@ -507,7 +516,7 @@ func TestTransactionLinksUseCanonicalQueryTraceabilityAuditAndCurrencyGraph(t *t
 		}
 	}
 
-	if err := Story(context.Background(), []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1", "--criterion", "returns=Run now returns a detailed result", "--request-id", "revise-run"}, &bytes.Buffer{}); err != nil {
+	if err := Story(context.Background(), []string{"revise", root, "--story", story, "--criterion", "returns=Run now returns a detailed result", "--request-id", "revise-run"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	living = openLiving()
@@ -521,86 +530,90 @@ func TestTransactionLinksUseCanonicalQueryTraceabilityAuditAndCurrencyGraph(t *t
 	}
 }
 
-func TestDivergentTransactionHistoriesPreserveHeadsAndReconcile(t *testing.T) {
+func TestLegacyDivergentTransactionsRequireExplicitContentResolution(t *testing.T) {
 	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
-	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
+	create := slideTransactionRequest(t, repo, base, commit, sagaID, "base", "create", "absent", "node-base")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)
 	if err != nil {
 		t.Fatal(err)
 	}
 	recordPath := filepath.Join(root, filepath.FromSlash(created.Path))
-	var baseRecord saga.SlideTransactionRecord
-	if err := readStrictJSONPath(recordPath, &baseRecord); err != nil {
-		t.Fatal(err)
-	}
-	leftRequest := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-left", "update", created.Snapshot, "node-left")
-	left, err := ApplySlideTransaction(context.Background(), root, base, repo, leftRequest, false)
+	baseBytes, err := os.ReadFile(recordPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	var leftRecord saga.SlideTransactionRecord
-	if err := readStrictJSONPath(recordPath, &leftRecord); err != nil {
+	var revisions []saga.SlideTransactionRevision
+	readRevision := func() saga.SlideTransactionRevision {
+		var record saga.SlideTransactionRecord
+		if err := readStrictJSONPath(recordPath, &record); err != nil {
+			t.Fatal(err)
+		}
+		return record.Revisions[0]
+	}
+	rootRevision := readRevision()
+	rootRevision.RequestID = "base"
+	rootRevision.CreatedAt = time.Now().UTC()
+	rootRevision.Snapshot, _ = saga.SlideRevisionSnapshot(rootRevision)
+	revisions = append(revisions, rootRevision)
+	for _, side := range []string{"left", "right"} {
+		if err := os.WriteFile(recordPath, baseBytes, 0644); err != nil {
+			t.Fatal(err)
+		}
+		request := slideTransactionRequest(t, repo, base, commit, sagaID, side, "update", created.Snapshot, "node-"+side)
+		if _, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false); err != nil {
+			t.Fatal(err)
+		}
+		revision := readRevision()
+		revision.RequestID, revision.CreatedAt = side, time.Now().UTC()
+		revision.ParentSnapshots = []string{rootRevision.Snapshot}
+		revision.Snapshot, _ = saga.SlideRevisionSnapshot(revision)
+		revisions = append(revisions, revision)
+	}
+	// Encode an actual legacy graph, bypassing the current-only marshaler.
+	type legacyRecord saga.SlideTransactionRecord
+	legacy := legacyRecord{Version: 1, DeckID: "implementation", SlideID: "flow", Current: revisions[1].Snapshot, Revisions: revisions}
+	if err := store.WriteJSON(recordPath, legacy, false); err != nil {
 		t.Fatal(err)
 	}
-	leftAssetPath := filepath.Join(filepath.Dir(recordPath), leftRecord.Revisions[1].Asset)
-	leftAsset, err := os.ReadFile(leftAssetPath)
+	before := snapshotFiles(t, root)
+	request := slideTransactionRequest(t, repo, base, commit, sagaID, "edit", "update", "", "node-new")
+	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false); err == nil || !strings.Contains(err.Error(), "competing") && !strings.Contains(err.Error(), "divergent") {
+		t.Fatalf("ambiguous legacy update = %v", err)
+	}
+	after := snapshotFiles(t, root)
+	if !reflect.DeepEqual(before, after) {
+		t.Fatal("ambiguity refusal changed authored content or assets")
+	}
+	// The author explicitly chooses left content. The on-disk current value is
+	// the resolution; no Saga reconcile operation or parent/head ledger is added.
+	selected := revisions[1]
+	selected.ParentSnapshots = nil
+	selected.Snapshot, err = saga.SlideContentDigest(selected)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := store.WriteJSON(recordPath, baseRecord, false); err != nil {
+	current := saga.SlideTransactionRecord{Version: 1, DeckID: "implementation", SlideID: "flow", Current: selected.Snapshot, Revisions: []saga.SlideTransactionRevision{selected}}
+	if err := store.WriteJSON(recordPath, current, false); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Remove(leftAssetPath); err != nil {
-		t.Fatal(err)
-	}
-	rightRequest := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-right", "update", created.Snapshot, "node-right")
-	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, rightRequest, false); err != nil {
-		t.Fatal(err)
-	}
-	var merged saga.SlideTransactionRecord
-	if err := readStrictJSONPath(recordPath, &merged); err != nil {
-		t.Fatal(err)
-	}
-	if err := store.WriteFile(leftAssetPath, leftAsset, 0o644, true); err != nil {
-		t.Fatal(err)
-	}
-	merged.Revisions = append(merged.Revisions, leftRecord.Revisions[1])
-	merged.Current = left.Snapshot
-	if err := store.WriteJSON(recordPath, merged, false); err != nil {
-		t.Fatal(err)
-	}
-
 	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid {
-		t.Fatalf("merged divergent load: %v issues=%#v", err, validation.Issues)
+	if err != nil || !validation.Valid || document.Decks[0].Slides[0].Items[0].Selector.ElementID != "node-left" {
+		t.Fatalf("explicit current resolution: %v %#v", err, validation.Issues)
 	}
-	slide := document.Decks[0].Slides[0]
-	if !slide.AuthoringConflict || len(slide.AuthoringHeads) != 2 {
-		t.Fatalf("divergent authoring state = %#v", slide)
+	for _, revision := range revisions {
+		if _, err := os.Stat(filepath.Join(filepath.Dir(recordPath), revision.Asset)); err != nil {
+			t.Fatal("resolution removed an authored asset:", err)
+		}
 	}
-	normal := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-normal", "update", slide.AuthoringSnapshot, "node-normal")
-	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, normal, false); err == nil || !strings.Contains(err.Error(), "divergent heads") || !strings.Contains(err.Error(), "expected_snapshots") {
-		t.Fatalf("normal update on divergence error = %v", err)
-	}
-	reconcile := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-reconcile", "reconcile", "", "node-reconciled")
-	reconcile.ExpectedSnapshots = append([]string{}, slide.AuthoringHeads...)
-	reconciled, err := ApplySlideTransaction(context.Background(), root, base, repo, reconcile, false)
-	if err != nil {
+	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false); err != nil {
 		t.Fatal(err)
-	}
-	if reconciled.Operation != "reconcile" || reconciled.Snapshot == "" {
-		t.Fatalf("reconcile result = %#v", reconciled)
 	}
 	var final saga.SlideTransactionRecord
 	if err := readStrictJSONPath(recordPath, &final); err != nil {
 		t.Fatal(err)
 	}
-	if len(final.Revisions) != 4 || !sameSnapshotSet(final.Revisions[3].ParentSnapshots, slide.AuthoringHeads) {
-		t.Fatalf("reconciled history = %#v", final)
-	}
-	document, validation, err = saga.Load(root)
-	if err != nil || !validation.Valid || document.Decks[0].Slides[0].AuthoringConflict || document.Decks[0].Slides[0].Items[0].Selector.ElementID != "node-reconciled" {
-		t.Fatalf("reconciled load: err=%v issues=%#v slide=%#v", err, validation.Issues, document.Decks[0].Slides[0])
+	if len(final.Revisions) != 1 || len(final.Revisions[0].ParentSnapshots) != 0 {
+		t.Fatal("current edit recreated internal history")
 	}
 }

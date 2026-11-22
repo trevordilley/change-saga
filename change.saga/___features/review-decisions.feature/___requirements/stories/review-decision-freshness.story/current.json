@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "current",
+        "statement": "A decision is shown as current when its reviewed slide and referenced code have not changed at the review head."
+      },
+      {
+        "id": "out-of-date",
+        "statement": "If the slide or code referenced by the slide changes after the decision, the decision is shown out of date with a reason naming what changed."
+      },
+      {
+        "id": "unknown",
+        "statement": "If the decision commit or current review head cannot be read, the decision is shown with unknown currency and a diagnostic instead of being presented as current."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer reviewing an evolving change, I can see whether each decision still applies and why it does not so I know which feedback must be revisited.",
+    "story": "urn:change-saga:change-saga:story:review-decision-freshness",
+    "title": "Know whether a review decision still applies"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:review-decision-freshness"
+  }
+}

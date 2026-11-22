@@ -1,31 +1,31 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "digest": "sha256:024da264c4ce6d257c6c732230d8d9bb1969b2032982024113d49e399d5ba37f",
+      "end": 205,
+      "path": "internal/server/plans_test.go",
+      "start": 181
+    },
+    {
+      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
+      "digest": "sha256:840faf434d40321156f911e0835eee647353688699df8e5982cc87e670bad7a0",
+      "end": 443,
+      "path": "internal/cli/plans_test.go",
+      "start": 410
+    }
+  ],
+  "created_at": "2026-11-02T22:18:43Z",
   "id": "evidence-delivered-stays-readable",
-  "test_case": "urn:change-saga:change-saga:test-case:plans-hide-done-plans",
-  "test_revision": "urn:change-saga:change-saga:test-case:plans-hide-done-plans:revision:r1",
   "role": "test_implementation",
   "steps": [
     "delivered-stays-readable"
   ],
-  "code": [
-    {
-      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
-      "path": "internal/server/plans_test.go",
-      "start": 181,
-      "end": 205,
-      "digest": "sha256:024da264c4ce6d257c6c732230d8d9bb1969b2032982024113d49e399d5ba37f"
-    },
-    {
-      "commit": "44c095ef6ee8e255a781fe73329640a4343d9b3f",
-      "path": "internal/cli/plans_test.go",
-      "start": 410,
-      "end": 443,
-      "digest": "sha256:840faf434d40321156f911e0835eee647353688699df8e5982cc87e670bad7a0"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-11-02T22:18:43Z"
+  "test_case": "urn:change-saga:change-saga:test-case:plans-hide-done-plans",
+  "test_revision": "sha256:f8d9f9cc800d85175aa12dff13de174ddc0678fa6b2e624eb85a44d4d0443e6a",
+  "verifications": [],
+  "version": 5
 }

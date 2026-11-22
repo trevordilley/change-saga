@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-annotation-source-immutable-c4c70b7d8b76",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-annotation-source-immutable",
-  "to": "urn:change-saga:change-saga:story:visual-annotation:criterion:preserves-source",
-  "scope": "self",
-  "rationale": "Steps annotate, compare define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-annotation-source-immutable:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:visual-annotation:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:17.526782Z",
-  "request_id": "test-review-annotation-source-immutable-c4c70b7d8b76"
+  "from": "urn:change-saga:change-saga:test-case:review-annotation-source-immutable",
+  "from_revision": "sha256:ef7a8bc4b4065834d46578325411b9c6b4de5e5784918fadef92732d03faaf56",
+  "id": "test-review-annotation-source-immutable-c4c70b7d8b76",
+  "rationale": "Steps annotate, compare define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-annotation-source-immutable-c4c70b7d8b76",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:visual-annotation:criterion:preserves-source",
+  "to_revision": "sha256:177e6ced70af19b8beb56f1ec6f29a1a3b9f7bbd2b9bcd8963a7eaf29336423b",
+  "type": "verifies",
+  "version": 5
 }

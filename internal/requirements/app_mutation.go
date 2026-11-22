@@ -3,6 +3,7 @@ package requirements
 import (
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -100,19 +101,17 @@ func createAppPackage(root, final, identityName string, identity, revision, even
 		if err := store.WriteJSON(filepath.Join(stage, identityName), identity, true); err != nil {
 			return err
 		}
-		for _, dir := range []string{"revisions", "events"} {
-			if err := ensureStageDir(filepath.Join(stage, dir)); err != nil {
-				return err
-			}
-		}
-		if err := store.WriteJSON(filepath.Join(stage, "revisions", revisionID+".json"), revision, true); err != nil {
-			return err
-		}
-		return store.WriteJSON(filepath.Join(stage, "events", eventID+".json"), event, true)
+		return currentrecord.Write(stage, revision, event)
 	})
 }
 
 func AddPersona(root, sagaID string, input AddPersonaInput) (MutationResult, error) {
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
+	if input.EventID == "" {
+		input.EventID = "current"
+	}
 	createdAt := mutationTime(input.CreatedAt)
 	urn, err := PersonaURN(sagaID, input.ID)
 	if err != nil {
@@ -140,8 +139,8 @@ func AddPersona(root, sagaID string, input AddPersonaInput) (MutationResult, err
 	err = mutate(root, sagaID, func(document *Document) error {
 		if existing := document.FindPersona(input.ID); existing != nil {
 			identity.CreatedAt, revision.CreatedAt, event.CreatedAt = existing.Identity.CreatedAt, existing.Identity.CreatedAt, existing.Identity.CreatedAt
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && len(existing.Revisions) > 0 && len(existing.Events) > 0 &&
-				reflect.DeepEqual(existing.Identity, identity) && reflect.DeepEqual(existing.Revisions[0], revision) && reflect.DeepEqual(existing.Events[0], event) {
+			if existing.CurrentRevision != nil && existing.CurrentLifecycle != nil &&
+				currentrecord.Equal(*existing.CurrentRevision, revision) && currentrecord.Equal(*existing.CurrentLifecycle, event) {
 				result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...), Replayed: true}
 				return nil
 			}
@@ -160,10 +159,14 @@ func AddPersona(root, sagaID string, input AddPersonaInput) (MutationResult, err
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: []string{revisionURN, eventURN}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func RevisePersona(root, sagaID string, input RevisePersonaInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParsePersonaURN(sagaID, input.Persona)
 	if err != nil {
 		return MutationResult{}, err
@@ -193,24 +196,25 @@ func RevisePersona(root, sagaID string, input RevisePersonaInput) (MutationResul
 			}
 			return fmt.Errorf("revision id %q already exists", input.ID)
 		}
-		if !sameSet(revision.Parents, persona.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", revision.Parents, persona.RevisionHeads)
-		}
 		candidate := *persona
 		candidate.Revisions = append(append([]PersonaRevision{}, persona.Revisions...), revision)
 		if err := resolvePersona(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), revision, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), revision); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func SetPersonaState(root, sagaID string, input SetPersonaStateInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParsePersonaURN(sagaID, input.Persona)
 	if err != nil {
 		return MutationResult{}, err
@@ -228,36 +232,32 @@ func SetPersonaState(root, sagaID string, input SetPersonaStateInput) (MutationR
 		if persona == nil {
 			return fmt.Errorf("persona %q does not exist", id)
 		}
-		for _, existing := range persona.Events {
-			if existing.ID != input.ID {
-				continue
-			}
-			wanted := event
-			wanted.CreatedAt = existing.CreatedAt
-			if input.RequestID != "" && existing.RequestID == input.RequestID && reflect.DeepEqual(existing, wanted) {
-				result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: copyStrings(persona.LifecycleHeads), Replayed: true}
-				return nil
-			}
-			return fmt.Errorf("lifecycle event id %q already exists", input.ID)
-		}
-		if !sameSet(event.Parents, persona.LifecycleHeads) {
-			return fmt.Errorf("lifecycle parents must name every current head (got %v, want %v)", event.Parents, persona.LifecycleHeads)
+
+		if persona.CurrentLifecycle != nil && persona.CurrentLifecycle.State == event.State && persona.CurrentLifecycle.Reason == event.Reason {
+			result = MutationResult{URN: urn, Path: path, Replayed: true}
+			return nil
 		}
 		candidate := *persona
 		candidate.Events = append(append([]PersonaEvent{}, persona.Events...), event)
 		if err := resolvePersona(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), event, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), event); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func AddFlag(root, sagaID string, input AddFlagInput) (MutationResult, error) {
+	if input.RevisionID == "" {
+		input.RevisionID = "current"
+	}
+	if input.EventID == "" {
+		input.EventID = "current"
+	}
 	createdAt := mutationTime(input.CreatedAt)
 	urn, err := FlagURN(sagaID, input.ID)
 	if err != nil {
@@ -291,8 +291,8 @@ func AddFlag(root, sagaID string, input AddFlagInput) (MutationResult, error) {
 		}
 		if existing := document.FindFlag(input.ID); existing != nil {
 			identity.CreatedAt, revision.CreatedAt, event.CreatedAt = existing.Identity.CreatedAt, existing.Identity.CreatedAt, existing.Identity.CreatedAt
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && len(existing.Revisions) > 0 && len(existing.Events) > 0 &&
-				reflect.DeepEqual(existing.Identity, identity) && reflect.DeepEqual(existing.Revisions[0], revision) && reflect.DeepEqual(existing.Events[0], event) {
+			if existing.CurrentRevision != nil && existing.CurrentLifecycle != nil &&
+				currentrecord.Equal(*existing.CurrentRevision, revision) && currentrecord.Equal(*existing.CurrentLifecycle, event) {
 				result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...), Replayed: true}
 				return nil
 			}
@@ -311,10 +311,14 @@ func AddFlag(root, sagaID string, input AddFlagInput) (MutationResult, error) {
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn, revisionURN, eventURN}, Paths: paths, CurrentHeads: []string{revisionURN, eventURN}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func ReviseFlag(root, sagaID string, input ReviseFlagInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParseFlagURN(sagaID, input.Flag)
 	if err != nil {
 		return MutationResult{}, err
@@ -344,24 +348,25 @@ func ReviseFlag(root, sagaID string, input ReviseFlagInput) (MutationResult, err
 			}
 			return fmt.Errorf("revision id %q already exists", input.ID)
 		}
-		if !sameSet(revision.Parents, flag.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", revision.Parents, flag.RevisionHeads)
-		}
 		candidate := *flag
 		candidate.Revisions = append(append([]FlagRevision{}, flag.Revisions...), revision)
 		if err := resolveFlag(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), revision, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), revision); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func SetFlagState(root, sagaID string, input SetFlagStateInput) (MutationResult, error) {
+	if input.ID == "" {
+		input.ID = "edit"
+	}
+	input.Parents = nil
 	id, err := ParseFlagURN(sagaID, input.Flag)
 	if err != nil {
 		return MutationResult{}, err
@@ -379,33 +384,26 @@ func SetFlagState(root, sagaID string, input SetFlagStateInput) (MutationResult,
 		if flag == nil {
 			return fmt.Errorf("flag %q does not exist", id)
 		}
-		for _, existing := range flag.Events {
-			if existing.ID != input.ID {
-				continue
-			}
-			wanted := event
-			wanted.CreatedAt = existing.CreatedAt
-			if input.RequestID != "" && existing.RequestID == input.RequestID && reflect.DeepEqual(existing, wanted) {
-				result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: copyStrings(flag.LifecycleHeads), Replayed: true}
-				return nil
-			}
-			return fmt.Errorf("lifecycle event id %q already exists", input.ID)
+
+		if flag.CurrentLifecycle != nil && flag.CurrentLifecycle.State == FlagRetired && event.State != FlagRetired {
+			return fmt.Errorf("retired flag cannot change state")
 		}
-		if !sameSet(event.Parents, flag.LifecycleHeads) {
-			return fmt.Errorf("lifecycle parents must name every current head (got %v, want %v)", event.Parents, flag.LifecycleHeads)
+		if flag.CurrentLifecycle != nil && flag.CurrentLifecycle.State == event.State && flag.CurrentLifecycle.Reason == event.Reason {
+			result = MutationResult{URN: urn, Path: path, Replayed: true}
+			return nil
 		}
 		candidate := *flag
 		candidate.Events = append(append([]FlagEvent{}, flag.Events...), event)
 		if err := resolveFlag(&candidate, sagaID); err != nil {
 			return err
 		}
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(path)), event, true); err != nil {
+		if err := currentrecord.WriteMember(filepath.Join(document.Root, filepath.FromSlash(path)), event); err != nil {
 			return err
 		}
 		result = MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}, CurrentHeads: []string{urn}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // MoveStory renames the story package into another feature's stories directory.
@@ -445,7 +443,7 @@ func MoveStory(root, sagaID string, input MoveStoryInput) (MutationResult, error
 		result = MutationResult{URN: input.Story, Path: to, Paths: []string{from, to}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 func parseStoryURN(sagaID, value string) (string, error) {

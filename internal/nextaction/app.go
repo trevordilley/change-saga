@@ -63,12 +63,12 @@ func (b *builder) personas() {
 			row := b.stories[story]
 			if row.State == "proposed" && len(row.LifecycleHeads) == 1 {
 				options = append(options, option("accept "+story, "the proposed story already serves the persona",
-					b.invoke("story set-state", grammar.V("story", story), grammar.V("parent", row.LifecycleHeads[0]), grammar.V("state", "accepted")).With("feature", row.Feature)))
+					b.invoke("story set-state", grammar.V("story", story), grammar.V("state", "accepted")).With("feature", row.Feature)))
 			}
 		}
 		if persona.LifecycleHead != "" {
 			options = append(options, option("the app no longer serves them", "retire the persona; it stops needing a story",
-				b.invoke("persona set-state", grammar.V("persona", persona.Persona), grammar.V("parent", persona.LifecycleHead), grammar.V("state", "retired"))))
+				b.invoke("persona set-state", grammar.V("persona", persona.Persona), grammar.V("state", "retired"))))
 		}
 		b.add(Action{
 			ID: "growth:persona:" + persona.Persona, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaPersonas, Resource: persona.Persona,
@@ -83,7 +83,7 @@ func (b *builder) personas() {
 		for _, story := range group.Stories {
 			row := b.stories[story]
 			if len(row.LifecycleHeads) == 1 {
-				retire = append(retire, b.invoke("story set-state", grammar.V("story", story), grammar.V("parent", row.LifecycleHeads[0]), grammar.V("state", "retired")).With("feature", row.Feature))
+				retire = append(retire, b.invoke("story set-state", grammar.V("story", story), grammar.V("state", "retired")).With("feature", row.Feature))
 			}
 			reassign = append(reassign, b.reviseStory(row, []string{""}))
 		}

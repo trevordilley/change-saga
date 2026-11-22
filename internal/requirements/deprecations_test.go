@@ -12,7 +12,6 @@ import (
 	"github.com/santhosh-tekuri/jsonschema/v6"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/diagram"
-	"github.com/twentyideas/changesaga/internal/store"
 )
 
 func TestDeprecationSchemasLifecycleAndTechnicalPins(t *testing.T) {
@@ -36,13 +35,17 @@ func TestDeprecationSchemasLifecycleAndTechnicalPins(t *testing.T) {
 	}
 	input.DeprecationDefinition.Scope = "code"
 	input.DeprecationDefinition.Code = []coderef.Reference{{Commit: strings.Repeat("a", 40), Path: "src/old.go", Start: 2, End: 4, Digest: "sha256:" + strings.Repeat("b", 64)}}
+	input.DeprecationDefinition.Target, err = (&DeprecationTargets{Root: root, SagaID: "test"}).Pin(record, "")
+	if err != nil {
+		t.Fatal(err)
+	}
 	if _, err := ReviseDeprecation(root, "test", ReviseDeprecationInput{Deprecation: urn, ID: "r2", Parents: []string{urn + ":revision:r1"}, DeprecationDefinition: input.DeprecationDefinition, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddStory(root, "test", storyInput("context", "r1", "proposed", nil)); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core", ID: "context", Type: RelationExplains, From: urn, To: "urn:change-saga:test:story:context", FromRevision: urn + ":revision:r2", ToRevision: "urn:change-saga:test:story:context:revision:r1", Rationale: "Migration context", CreatedAt: testTime}); err != nil {
+	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core", ID: "context", Type: RelationExplains, From: urn, To: "urn:change-saga:test:story:context", FromRevision: currentFixtureDeprecationPin(t, root, "legacy"), ToRevision: currentFixtureStoryPin(t, root, "urn:change-saga:test:story:context"), Rationale: "Migration context", CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	compiler := jsonschema.NewCompiler()
@@ -64,7 +67,7 @@ func TestDeprecationSchemasLifecycleAndTechnicalPins(t *testing.T) {
 			return err
 		}
 		schemaURL, _ := record["$schema"].(string)
-		if !strings.Contains(schemaURL, "deprecation") && !strings.HasSuffix(schemaURL, "v5/relation.schema.json") {
+		if !strings.Contains(schemaURL, "deprecation") && !strings.HasSuffix(schemaURL, "v5/relation-current.schema.json") && !strings.HasSuffix(schemaURL, "v5/current-record.schema.json") {
 			return nil
 		}
 		name := strings.TrimPrefix(schemaURL, "https://changesaga.dev/schema/")
@@ -85,33 +88,18 @@ func TestDeprecationSchemasLifecycleAndTechnicalPins(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(checked) != 4 {
+	if len(checked) != 3 {
 		t.Fatalf("missing schema coverage: %v", checked)
 	}
-	// A concurrent withdrawal is kept as a conflict, even when both branches
-	// agree on the state. Resolving it explicitly must name every event head.
-	doc, err := Load(root, "test")
+	// Only the selected current state remains; exact earlier values belong to Git.
+	document, err := Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
-	event := doc.FindDeprecation("legacy").Events[0]
-	event.ID = "parallel"
-	event.Parents = []string{urn + ":event:withdraw"}
-	event.State = DeprecationActive
-	event.Reason = "Parallel restoration"
-	if err := store.WriteJSON(filepath.Join(root, DeprecationPackagePath("legacy"), "events/parallel.json"), event, true); err != nil {
-		t.Fatal(err)
+	if got := document.FindDeprecation("legacy"); got.CurrentLifecycle.State != DeprecationActive || got.CurrentLifecycle.Reason != "Confirmed with the owner" || len(got.Events) != 1 {
+		t.Fatalf("current deprecation state lost: %#v", got)
 	}
-	doc, err = Load(root, "test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if doc.FindDeprecation("legacy").CurrentLifecycle != nil {
-		t.Fatal("chose conflicting lifecycle head")
-	}
-	if _, err := SetDeprecationState(root, "test", SetDeprecationStateInput{Deprecation: urn, ID: "resolve", Parents: doc.FindDeprecation("legacy").LifecycleHeads, State: DeprecationWithdrawn, Reason: "Resolve both branches", CreatedAt: testTime}); err != nil {
-		t.Fatal(err)
-	}
+
 }
 
 func TestDeprecationRejectsGraphAndStorageCorruption(t *testing.T) {
@@ -130,6 +118,7 @@ func TestDeprecationRejectsGraphAndStorageCorruption(t *testing.T) {
 			if _, err := AddDeprecation(root, "test", AddDeprecationInput{ID: "a", RevisionID: "r1", EventID: "active", DeprecationDefinition: DeprecationDefinition{Reason: "Obsolete", Scope: "content", Target: pin}, CreatedAt: testTime}); err != nil {
 				t.Fatal(err)
 			}
+			legacyPackageFixture(t, filepath.Join(root, DeprecationPackagePath("a")), "deprecation", "urn:change-saga:test:deprecation:a", DeprecationRevisionSchemaURL, DeprecationEventSchemaURL, 5, "r1", "active")
 			path := filepath.Join(root, DeprecationPackagePath("a"), "revisions/r1.json")
 			bytes, err := os.ReadFile(path)
 			if err != nil {
@@ -161,4 +150,13 @@ func TestDeprecationRejectsGraphAndStorageCorruption(t *testing.T) {
 			}
 		})
 	}
+}
+
+func currentFixtureDeprecationPin(t *testing.T, root, id string) string {
+	t.Helper()
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	return ContentPin("urn:change-saga:test:deprecation:"+id, document.FindDeprecation(id).CurrentRevision.ID)
 }

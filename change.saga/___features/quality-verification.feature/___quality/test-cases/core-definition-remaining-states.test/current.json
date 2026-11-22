@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Keep unsupported definition states explicit.",
+    "preconditions": [
+      "Use separate copies of a valid accepted-criterion fixture with each policy-required kind mapped by proposed or active cases."
+    ],
+    "steps": [
+      {
+        "action": "In separate copies introduce inactive definitions, invalid links, conflicting definition or relation heads, disallowed automation and stale mappings. Inspect Quality for each copy.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
+          "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty"
+        ],
+        "expected_result": "Only current proposed/active definitions with allowed automation and current mappings cover every required kind; each invalid/inactive/conflicted/disallowed/stale state remains an explicit gap, without an execution verdict.",
+        "id": "check-definition-state-matrix"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-definition-remaining-states",
+    "title": "Keep unsupported definition states explicit"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-definition-remaining-states"
+  }
+}

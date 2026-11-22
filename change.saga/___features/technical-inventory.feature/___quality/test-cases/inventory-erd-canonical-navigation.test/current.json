@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The current ERD entry exposes an expandable entity directory and both routes reach the same canonical definition; record a gap if the named-board surface only provides instance focus.",
+    "preconditions": [
+      "Use the public CLI-authored PDF job/report ERD fixture from the browser test; report is drawn and job is directory-only."
+    ],
+    "steps": [
+      {
+        "action": "Open Data model and inspect its sidebar entity directory.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory"
+        ],
+        "expected_result": "Application data, PDF job and PDF report are discoverable.",
+        "id": "directory"
+      },
+      {
+        "action": "Activate the report drawing by keyboard, close it, and activate the report directory explanation control.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+          "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code"
+        ],
+        "expected_result": "Both open report revision r1; closing restores drawing focus and the undrawn proposed job remains in the directory.",
+        "id": "same-pin"
+      },
+      {
+        "action": "Repeat entity discovery from the currently assigned ERD named whiteboard and its directory, if provided; compare diagram/directory entity pins.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory"
+        ],
+        "expected_result": "The current ERD entry exposes an expandable entity directory and both routes reach the same canonical definition; record a gap if the named-board surface only provides instance focus.",
+        "id": "named-board"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-canonical-navigation",
+    "title": "Open the same canonical entity from drawing and directory"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-erd-canonical-navigation"
+  }
+}

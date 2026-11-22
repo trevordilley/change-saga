@@ -1,5 +1,10 @@
 # Change Saga AI instruction ergonomics
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 ## Outcome
 
 The shipped `change-saga` skill now loads a short mandatory safety/domain

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "The user can inspect explanation, evidence and confirmed absent implementation uses; explicit proposal is exempt.",
+    "preconditions": [
+      "Use newInventoryQueryFixture: later Component introduced between base and head, no implementation usages; store has an Item use and source edit, reader conflicted."
+    ],
+    "steps": [
+      {
+        "action": "Reconcile against base and inspect exemptions.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:explicit-proposal"
+        ],
+        "expected_result": "Later is exempt as new_in_comparison; no unreferenced user choice is requested.",
+        "id": "new-exemption"
+      },
+      {
+        "action": "Reconcile against head where later already existed.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:ask-user",
+          "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:actionable-context"
+        ],
+        "expected_result": "Later becomes needs_user_choice and guidance says Ask the user; the report offers a specific revision repair.",
+        "id": "existing-choice"
+      },
+      {
+        "action": "Repeat against unreadable baseline and inspect source status after reconciliation.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:explicit-proposal",
+          "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:ask-user"
+        ],
+        "expected_result": "Newness exemption is not invented; later still needs reconciliation and Saga files are unchanged.",
+        "id": "unknown"
+      },
+      {
+        "action": "Follow the gap's identity to its explanation, evidence health and complete reverse-use report; repeat with an explicitly proposed unreferenced entity.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:actionable-context",
+          "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:explicit-proposal"
+        ],
+        "expected_result": "The user can inspect explanation, evidence and confirmed absent implementation uses; explicit proposal is exempt.",
+        "id": "context"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice",
+    "title": "Ask for reconciliation of existing unreferenced entities"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice"
+  }
+}

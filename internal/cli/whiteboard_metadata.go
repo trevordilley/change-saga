@@ -67,7 +67,7 @@ type whiteboardListEntry struct {
 	ID       string `json:"id"`
 	Target   string `json:"target"`
 	Name     string `json:"name"`
-	Revision string `json:"revision"`
+	Revision string `json:"content_digest"`
 	Role     string `json:"role,omitempty"`
 	Archived bool   `json:"archived"`
 }
@@ -101,7 +101,11 @@ func loadWhiteboardList(root, sagaID string) (whiteboardList, error) {
 			title = metadata.Boards[id].Name
 		}
 		target, _ := requirements.WhiteboardURN(sagaID, id)
-		rows = append(rows, whiteboardListEntry{ID: id, Target: target, Name: title, Revision: revision.ID, Role: metadata.Role(id), Archived: metadata.Boards[id].Archived})
+		digest, err := requirements.WhiteboardContentDigest(*revision)
+		if err != nil {
+			return whiteboardList{}, err
+		}
+		rows = append(rows, whiteboardListEntry{ID: id, Target: target, Name: title, Revision: digest, Role: metadata.Role(id), Archived: metadata.Boards[id].Archived})
 	}
 	return whiteboardList{Snapshot: metadata.Snapshot(), Roles: metadata.Roles, Whiteboards: rows}, nil
 }

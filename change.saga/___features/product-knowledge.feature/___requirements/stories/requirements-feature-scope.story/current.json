@@ -1,0 +1,23 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "feature-in-query",
+        "statement": "Every requirement query row includes the owning feature of the story it represents."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:product-manager"
+    ],
+    "statement": "As a product manager reviewing product knowledge, I can see the feature that owns each story in requirement query results so I can separate one product area from another.",
+    "story": "urn:change-saga:change-saga:story:requirements-feature-scope",
+    "title": "Scope requirements by product area"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:requirements-feature-scope"
+  }
+}

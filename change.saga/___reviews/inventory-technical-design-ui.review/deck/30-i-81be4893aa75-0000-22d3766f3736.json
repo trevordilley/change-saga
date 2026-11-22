@@ -1,17 +1,17 @@
 {
+  "description": "Adds /technical and /technical/{kind}/{id} to the app shell, the overview part and sidebar rows, the usages endpoint, and the template functions the pages use.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:technical-design-page",
-    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+    "revision": "sha256:97eecfa2f1cf02b4b5427a43c974f7f5245060b032fc9ff0ec3ed867a9335aa8",
+    "target": "urn:change-saga:change-saga:component:technical-design-page"
   },
-  "version": 4,
   "id": "routes",
-  "slide": "ti-ui-review-pages",
-  "rank": 0,
   "kind": "region",
   "label": "Shell, navigation and routes",
-  "description": "Adds /technical and /technical/{kind}/{id} to the app shell, the overview part and sidebar rows, the usages endpoint, and the template functions the pages use.",
+  "rank": 0,
   "selector": {
-    "type": "element",
-    "element_id": "routes"
-  }
+    "element_id": "routes",
+    "type": "element"
+  },
+  "slide": "ti-ui-review-pages",
+  "version": 4
 }

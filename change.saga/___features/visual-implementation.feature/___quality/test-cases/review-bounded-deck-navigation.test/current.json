@@ -1,0 +1,54 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Request enters displays at 1 / 2, Previous is disabled, and each URL anchor names the active slide without entering another deck.",
+    "preconditions": [
+      "Implementation fixture has Request flow with Request enters and Response returns, and a separate one-slide Failure path deck."
+    ],
+    "steps": [
+      {
+        "action": "Select Request enters thumbnail.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation"
+        ],
+        "expected_result": "Request enters displays at 1 / 2.",
+        "id": "thumbnail"
+      },
+      {
+        "action": "Choose Next slide.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation"
+        ],
+        "expected_result": "Response returns displays at 2 / 2 and Next is disabled.",
+        "id": "next"
+      },
+      {
+        "action": "Select Failure path thumbnail.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation"
+        ],
+        "expected_result": "Failure path displays at 1 / 1; Previous and Next are disabled.",
+        "id": "other-deck"
+      },
+      {
+        "action": "Return to Request flow, select its second slide and choose Previous; inspect each transition URL.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation"
+        ],
+        "expected_result": "Request enters displays at 1 / 2, Previous is disabled, and each URL anchor names the active slide without entering another deck.",
+        "id": "previous-anchor"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation",
+    "title": "Navigate slides within deck boundaries and keep position and anchor in sync"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation"
+  }
+}

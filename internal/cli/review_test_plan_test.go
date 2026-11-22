@@ -20,7 +20,7 @@ func TestReviewTestPlanCommandUsesReviewRangeAndNeverExecutes(t *testing.T) {
 	ctx := context.Background()
 	story := "urn:change-saga:app:story:queue"
 	test := "urn:change-saga:app:test-case:queue"
-	run(t, Story, "add", "--feature", testFeature, "--id", "queue", "--revision", "r1", "--event", "proposed", "--persona", personaURNFor("app"),
+	run(t, Story, "add", "--feature", testFeature, "--id", "queue", "--persona", personaURNFor("app"),
 		"--title", "Durable jobs", "--statement", "As a user I can submit durable jobs", "--priority", "must", "--criterion", "durable=Jobs survive restart", f.root)
 	for _, entry := range []struct{ slide, path string }{{"queue", "queue.go"}, {"table", "store.go"}} {
 		item := saga.ReviewItemTarget("app", "pr-7", entry.slide, "node")

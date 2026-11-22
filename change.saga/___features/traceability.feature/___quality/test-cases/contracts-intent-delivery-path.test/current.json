@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The criterion's path reaches the verification.",
+    "preconditions": [
+      "Use livingFixture checkout/fast with current design and a Task; record a verified verification before querying."
+    ],
+    "steps": [
+      {
+        "action": "Query checkout traceability after recording a verified verification.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths"
+        ],
+        "expected_result": "The criterion is delivered and exposes the verification as its one evidence reference.",
+        "id": "delivered"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path",
+    "title": "Expose verified evidence on a criterion's delivery path"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-delivery-path"
+  }
+}

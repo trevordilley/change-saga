@@ -105,7 +105,7 @@ func (a *app) diagramAnnotation(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The saga could not be loaded.", 500)
 		return
 	}
-	pin := saga.DocumentationLink{Target: r.URL.Query().Get("target"), Revision: r.URL.Query().Get("revision")}
+	pin := saga.DocumentationLink{Target: r.URL.Query().Get("target"), Revision: r.URL.Query().Get("content_digest")}
 	if !saga.ValidDocumentationLink(document.Manifest.ID, pin) && !saga.ValidPinOfKinds(document.Manifest.ID, pin, requirements.KindERD) {
 		http.Error(w, "Invalid documentation reference", 400)
 		return
@@ -160,7 +160,7 @@ func (a *app) diagramAnnotation(w http.ResponseWriter, r *http.Request) {
 		renderHTML(w, a.template, "diagram-annotation-code", view, "Linked code could not be rendered.")
 		return
 	}
-	query := url.Values{"target": {pin.Target}, "revision": {pin.Revision}, "panel": {"code"}}
+	query := url.Values{"target": {pin.Target}, "content_digest": {pin.Revision}, "panel": {"code"}}
 	if relationship != "" {
 		query.Set("relationship", relationship)
 	}

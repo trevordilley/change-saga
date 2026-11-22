@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Resolved output equals the companion output, reports current evidence and app.go.",
+    "preconditions": [
+      "Use portable Saga with ready-check Item pinned to HEAD:app.go#L3 in its canonical source checkout."
+    ],
+    "steps": [
+      {
+        "action": "While the Saga is outside the source checkout, query slide-diffs with --repo pointing to source.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout"
+        ],
+        "expected_result": "The source-backed query succeeds.",
+        "id": "companion"
+      },
+      {
+        "action": "Move the Saga into its source checkout and repeat the same query without --repo.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-checkout-context:criterion:in-repository-checkout",
+          "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout"
+        ],
+        "expected_result": "Resolved output equals the companion output, reports current evidence and app.go.",
+        "id": "inside"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-source-relocation",
+    "title": "Resolve the same Item evidence from companion and in-repository layouts"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-source-relocation"
+  }
+}

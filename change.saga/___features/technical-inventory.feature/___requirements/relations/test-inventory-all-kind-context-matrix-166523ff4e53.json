@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-all-kind-context-matrix-166523ff4e53",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-all-kind-context-matrix",
-  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
-  "scope": "self",
-  "rationale": "Steps filters define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-all-kind-context-matrix:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:20.619445Z",
-  "request_id": "test-inventory-all-kind-context-matrix-166523ff4e53"
+  "from": "urn:change-saga:change-saga:test-case:inventory-all-kind-context-matrix",
+  "from_revision": "sha256:8c9b0abfa4fabfef237795cfae0a9f5d7e75bf73cd5996c53bbd7e59ef122dbe",
+  "id": "test-inventory-all-kind-context-matrix-166523ff4e53",
+  "rationale": "Steps filters define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-all-kind-context-matrix-166523ff4e53",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+  "to_revision": "sha256:c77327374a3046a5074f428c7d2c645f1a49e71b45b7091454650221e91e68cf",
+  "type": "verifies",
+  "version": 5
 }

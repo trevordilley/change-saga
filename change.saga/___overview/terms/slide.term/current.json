@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "visual slide"
+    ],
+    "code": [
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:942246439f730a5feea6e9ebc7cc1c83b07d525c321c243fbb6bb0b1d58ba20f",
+        "end": 90,
+        "path": "internal/saga/model.go",
+        "start": 75
+      },
+      {
+        "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+        "digest": "sha256:3d1a158507af292d421874757bcfa3c9f5f4f7aaa12703e7fe0655f0c99d4771",
+        "end": 30,
+        "path": "internal/saga/review.go",
+        "start": 19
+      }
+    ],
+    "definition": "One ordered visual argument inside a deck, with an intent, layout and takeaway. Its Front is a flash-card bullet summary; its Back is the existing detailed SVG, raster-image or sandboxed HTML asset. Both faces share stable semantic Items and exact evidence. Slide comments and decisions apply only within pull-request reviews; Viewed is separate local reading progress.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Slide",
+    "stories": [
+      "urn:change-saga:change-saga:story:visual-technical-explanation",
+      "urn:change-saga:change-saga:story:visual-deck-navigation"
+    ],
+    "term": "urn:change-saga:change-saga:term:slide"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:slide"
+  }
+}

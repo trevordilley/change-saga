@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
-import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
+import { currentRecordPin, runCLI, type SagaFixture } from "../support/fixture-builder.js";
 
 function author(saga: SagaFixture, name: string, data: unknown, ...args: string[]) {
   const path = join(saga.root, name + ".json");
@@ -24,7 +24,7 @@ const model = {
 };
 
 test("hover and keyboard trace declared edges without hiding columns or changing the document @critical", async ({page,saga},testInfo) => {
-  author(saga,"trace-board",model,"whiteboard","publish","--id","data-model","--name","Relationship tracing","--revision","r1");
+  author(saga,"trace-board",model,"whiteboard","publish","--id","data-model","--name","Relationship tracing",);
   await page.goto(saga.baseURL+"/technical/erd"); await waitForSettledSaga(page);
   const board=page.locator('[data-whiteboard-view]'),viewport=board.locator('[data-whiteboard-viewport]');
   const edge=(id:string)=>board.locator(`[data-instance-path="${id}"]`);
@@ -67,7 +67,7 @@ test("hover and keyboard trace declared edges without hiding columns or changing
   await expect(ab).toHaveAttribute('data-diagram-trace','active');
   await viewport.dispatchEvent('wheel',{deltaX:10,bubbles:true,cancelable:true});
   await expect(ab).not.toHaveAttribute('data-diagram-trace');
-  await expect(board).toHaveAttribute('data-whiteboard-revision','r1');
+  await expect(board).toHaveAttribute('data-whiteboard-content-digest',/^sha256:[0-9a-f]{64}$/);
   expect(requests).toEqual([]);
   await expectNoSeriousAccessibilityViolations(page,'[data-whiteboard-view]');
 });
@@ -77,7 +77,7 @@ for (const id of ['ab','b']) test("hover annotations stay nearby and retain the 
     ...element,note:'Inspect this relationship without losing its context. [Saved definition](https://example.test/definition)',
     evidence:[{commit:saga.identity.head,path:'src/app.go',start:3,end:3,note:'The saved implementation.'}]
   } : element)};
-  author(saga,'annotated-board',annotated,'whiteboard','publish','--id','data-model','--name','Hover annotations','--revision','r1');
+  author(saga,'annotated-board',annotated,'whiteboard','publish','--id','data-model','--name','Hover annotations',);
   await page.goto(saga.baseURL+'/technical/erd'); await waitForSettledSaga(page);
   const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
   const owner=board.locator(`[data-instance-path="${id}"]`);
@@ -127,19 +127,19 @@ test("repeated native imports trace their own instance paths and cross-frame con
   let result=runCLI(saga,['inventory','adopt-format','--format','2',saga.sagaRoot]);
   expect(result.status,result.stdout+result.stderr).toBe(0);
   author(saga,'record-definition',{name:'Record',explanation:'A reusable record.',intent:'proposed',baseline:'none',fields:[{id:'id',name:'id',type:'uuid'}]},'data-entity','add','--id','trace-record');
-  const pin={target:'urn:change-saga:wave-one:data-entity:trace-record',revision:'urn:change-saga:wave-one:data-entity:trace-record:revision:r1'};
+  const pin=currentRecordPin(saga,'data-entity','trace-record');
   const source={version:1,width:600,height:300,elements:[
     {id:'a',kind:'node',shape:'rect',label:'Source',x:20,y:80,width:180,height:120,style:'normal'},
     {id:'b',kind:'node',shape:'rect',label:'Destination',x:400,y:80,width:180,height:120,style:'normal'},
     {id:'link',kind:'edge',from:'a',to:'b',points:[{x:200,y:140},{x:400,y:140}],style:'normal',head:'arrow'}
   ]};
   author(saga,'trace-source',{name:'Shared model',explanation:'Repeated instances keep separate relationship paths.',directory:[pin],diagram:source},'erd','add','--id','trace-model');
-  const erd={target:'urn:change-saga:wave-one:erd:trace-model',revision:'urn:change-saga:wave-one:erd:trace-model:revision:r1'};
+  const erd=currentRecordPin(saga,'erd','trace-model');
   author(saga,'copies',{version:1,width:1800,height:1000,elements:[
     {id:'first',kind:'frame',label:'First model',x:50,y:100,width:700,height:350,style:'normal',source:erd},
     {id:'second',kind:'frame',label:'Second model',x:1000,y:100,width:700,height:350,style:'normal',source:erd},
     {id:'cross',kind:'connection',from:'first/a',to:'second/a',style:'normal',head:'arrow'}
-  ]},'whiteboard','publish','--id','data-model','--name','Repeated relationship models','--revision','r1');
+  ]},'whiteboard','publish','--id','data-model','--name','Repeated relationship models',);
   await page.goto(saga.baseURL+'/technical/erd?focus=first'); await waitForSettledSaga(page);
   const board=page.locator('[data-whiteboard-view]');
   await expect(board).toHaveAttribute('data-whiteboard-moving','false');

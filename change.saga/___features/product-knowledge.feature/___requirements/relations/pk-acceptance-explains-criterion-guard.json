@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "pk-acceptance-explains-criterion-guard",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:41:15.255686Z",
   "from": "urn:change-saga:change-saga:slide:story-lifecycle-runtime:item:acceptance-guard",
-  "to": "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:acceptance-requires-criterion",
-  "scope": "self",
+  "id": "pk-acceptance-explains-criterion-guard",
   "rationale": "The guarded transition rejects acceptance when the current story definition has no criterion.",
-  "to_revision": "urn:change-saga:change-saga:story:product-intent-lifecycle:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:41:15.255686Z"
+  "to": "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:acceptance-requires-criterion",
+  "to_revision": "sha256:c6b7137bfd2d80ee54fbd80f8984ad0556b87e41ce5356e1c84d779b4866416c",
+  "type": "explains",
+  "version": 5
 }

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-policy-foundation-intent",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-25T00:03:12.528607Z",
   "from": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation:item:intent",
-  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
-  "scope": "self",
+  "id": "ti-policy-foundation-intent",
   "rationale": "Bounded implemented helper foundation: Each implemented edge needs implemented source/destination revisions and its own valid evidence. The candidate supplies its post-transition self intent; proposed edges stay in input-order remaining work. No status cascades. Public integration remains proposed.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-25T00:03:12.528607Z"
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+  "to_revision": "sha256:c77327374a3046a5074f428c7d2c645f1a49e71b45b7091454650221e91e68cf",
+  "type": "explains",
+  "version": 5
 }

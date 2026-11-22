@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
@@ -29,10 +30,11 @@ func TestWhiteboardElementActionsStayPinnedAndCodeBecomesStale(t *testing.T) {
 		t.Fatal(err)
 	}
 	doc := diagram.Document{Version: 1, Width: 800, Height: 500, Elements: []diagram.Element{{ID: "owner", Kind: "node", Shape: "rect", X: 100, Y: 100, Width: 240, Height: 120, Style: "normal", Label: "Testtaker", Record: "urn:change-saga:test:feature:core", Evidence: []coderef.Reference{ref}}}}
-	if _, err := requirements.PublishWhiteboard(ctx, root, "test", "architecture", "r1", "", "Architecture", doc); err != nil {
+	published, err := requirements.PublishWhiteboard(ctx, root, "test", "architecture", "", "", "Architecture", doc)
+	if err != nil {
 		t.Fatal(err)
 	}
-	request := url.Values{"board": {"architecture"}, "revision": {"r1"}, "element": {"owner"}}
+	request := url.Values{"board": {"architecture"}, "content_digest": {whiteboardContentDigest(*published)}, "element": {"owner"}}
 	href := "/api/whiteboard-element?" + request.Encode()
 	// Hover actions do not need the source checkout, nor eagerly render code.
 	lazyMux := newMux(&app{root: root, sourceDir: filepath.Join(t.TempDir(), "absent"), template: serverTemplate(t)})
@@ -75,11 +77,47 @@ func TestWhiteboardElementActionsStayPinnedAndCodeBecomesStale(t *testing.T) {
 	if !found {
 		t.Fatal("whiteboard missing from documented code")
 	}
-	request.Set("revision", "absent")
-	if status, _ := technicalGet(t, mux, "/api/whiteboard-element?"+request.Encode()); status != 404 {
-		t.Fatal("missing revision fell back to current")
+	request.Set("content_digest", "sha256:"+strings.Repeat("f", 64))
+	if status, _ := technicalGet(t, mux, "/api/whiteboard-element?"+request.Encode()); status != 409 {
+		t.Fatal("stale page silently opened current evidence")
 	}
 	if status, _ := technicalGet(t, mux, "/api/whiteboard-element?board=architecture&element=owner"); status != 400 {
 		t.Fatal("unversioned actions accepted")
+	}
+}
+
+// Repeated traceability links must describe one loaded page snapshot, including
+// under concurrent reads. A new graph picks up the next current publication.
+func TestWhiteboardTraceLinksShareOnePageSnapshot(t *testing.T) {
+	root, _ := termSaga(t)
+	doc := diagram.Document{Version: 1, Width: 800, Height: 500, Elements: []diagram.Element{
+		{ID: "owner", Kind: "node", Shape: "rect", X: 100, Y: 100, Width: 240, Height: 120, Style: "normal", Label: "Original owner"},
+	}}
+	publish := func() {
+		t.Helper()
+		if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "architecture", "", "", "Architecture", doc); err != nil {
+			t.Fatal(err)
+		}
+	}
+	publish()
+	graph := &appGraph{document: &saga.Saga{Root: root}}
+	target := "urn:change-saga:test:whiteboard:architecture:element:owner"
+	var readers sync.WaitGroup
+	for range 20 {
+		readers.Go(func() {
+			if got := graph.link(target); got.Title != "Original owner" || !strings.Contains(got.Href, "focus=owner") {
+				t.Errorf("inconsistent linked board: %+v", got)
+			}
+		})
+	}
+	readers.Wait()
+	doc.Elements[0].Label = "Updated owner"
+	publish()
+	if got := graph.link(target); got.Title != "Original owner" {
+		t.Fatalf("a loaded page mixed publications: %+v", got)
+	}
+	fresh := &appGraph{document: &saga.Saga{Root: root}}
+	if got := fresh.link(target); got.Title != "Updated owner" {
+		t.Fatalf("new page retained a stale board: %+v", got)
 	}
 }

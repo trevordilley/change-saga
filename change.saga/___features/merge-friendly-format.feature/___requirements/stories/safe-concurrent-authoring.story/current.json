@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "serialized-writes",
+        "statement": "When two supported writers overlap, one completes its persisted mutation before the other changes Saga state; a writer that cannot proceed within the configured timeout returns a busy error."
+      },
+      {
+        "id": "stale-parent-rejected",
+        "statement": "A relative content edit whose expected digest differs from current content is rejected without applying its delta; the author must reread the current value."
+      }
+    ],
+    "citations": [],
+    "overview": "Independent records can be authored separately. Cooperative locks serialize supported writers; relative diagram edits require the content digest the author read. Complete content replacements edit current values, and Git handles branch history and merge conflicts.\n\nEach current record is published atomically. Multi-file normalization preserves legacy sources until converted references and current publications succeed, then removes obsolete metadata. This is not a global crash-atomic transaction. A retry completes interrupted normalization without inventing another history store.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer collaborating in parallel, I can submit a Saga mutation without overwriting another writer's newer work so concurrent edits remain recoverable.",
+    "story": "urn:change-saga:change-saga:story:safe-concurrent-authoring",
+    "title": "Author safely alongside concurrent writers"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:safe-concurrent-authoring"
+  }
+}

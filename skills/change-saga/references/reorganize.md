@@ -12,7 +12,7 @@ operations; do not create a duplicate to simulate a rename or move.
 | Rename a shared label or milestone | Existing `label rename` or `milestone rename`; assignments retain the same identity |
 | Rename or order ordinary deck content | Existing `revise-deck`, `revise-slide`, `revise-item` with their title/label and rank fields |
 | Rename or order narrative | Existing `revise-chapter`, `revise-section`, `revise-fragment` with `--target`, `--title`, `--order` |
-| Revise transaction-authored slides or Items | Existing `apply-slide` or `diagram edit`; retain observed snapshot and history |
+| Revise transaction-authored slides or Items | Existing `apply-slide` or `diagram edit`; retain stable identities and use the current digest for concurrency |
 | Reparent narrative | `move-chapter`, `move-section`, `move-fragment` with `--target` and `--parent` |
 | Transfer an implementation deck to another feature | `move-deck --deck TARGET --feature ID` |
 | Move an ordinary implementation slide | `move-slide --slide TARGET --deck TARGET`; transaction-authored and review slides are refused |
@@ -22,16 +22,15 @@ operations; do not create a duplicate to simulate a rename or move.
 | Add planned stories to an existing feature, then land them | `feature add --status planned --augments EXISTING` (or `feature set-plan --augments`); when built, `feature deliver --feature ROADMAP_ID --dry-run`, then without `--dry-run`, then `feature set-overview` on the recipient. See Delivering a Roadmap feature below. |
 | Hide a feature that holds content | `feature archive --feature ID [--reason TEXT]` keeps every record and its status; `feature restore --feature ID` brings it back |
 | Remove ordinary content | Existing `remove-deck`, `remove-slide`, `remove-item`, `remove-chapter`, `remove-section`, `remove-fragment`; inspect contained targets and dependencies |
-| Remove transaction-managed technical content | `remove-deck` and `remove-slide` append removal history and hide content; use `--dry-run --json` first and optionally `remove-slide --expected-snapshot SHA256`. Review slides remain protected; removing a transaction Item alone requires an `apply-slide` update. |
-| Retire an inventory entity | Its existing lifecycle command; preserve revisions, events, pins and evidence |
-| Remove a criterion | `criterion remove` appends a story revision without it |
-| Change whiteboard title or discovery | `whiteboard rename --id ID --name TITLE`, `archive`, `restore`; content and history remain intact |
+| Remove transaction-managed technical content | `remove-deck` and `remove-slide` remove current content; Git retains earlier values; use `--dry-run --json` first and optionally `remove-slide --expected-snapshot SHA256`. Review slides remain protected; removing a transaction Item alone requires an `apply-slide` update. |
+| Retire an inventory entity | Its existing lifecycle command; edit current state while preserving pins and evidence |
+| Remove a criterion | `criterion remove` edits the current story without changing other criterion IDs |
+| Change whiteboard title or discovery | `whiteboard rename --id ID --name TITLE`, `archive`, `restore`; content and stable references remain intact |
 
 New moves and metadata edits support `--dry-run` and `--json`. Preview changes,
 then repeat without `--dry-run`. Query the resulting ownership and run
 `change-saga validate --json change.saga`. A refusal is a model boundary, not
-permission to move files manually. Whole-deck moves retain complete-slide
-history; moving one transaction-authored slide between decks is unsupported.
+permission to move files manually. Whole-deck moves preserve current slides and stable identities; moving one transaction-authored slide between decks is unsupported.
 Use explicit positions to reorder; a sequence of commands is not an atomic
 shuffle operation. Do not change identity just to change a title or position.
 
@@ -122,4 +121,4 @@ If the board belongs to another role, explicitly unassign it first using
 `whiteboard unassign-role --id OBSERVED_OWNER --role ROLE`, or use the documented
 move option with the observed metadata snapshot. Re-read after a concurrency
 failure. Archive only an unassigned board; restore makes it discoverable again.
-Archival never deletes its content, old revision URLs, or references.
+Archival preserves current content and references; Git retains earlier content.

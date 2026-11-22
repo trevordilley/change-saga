@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Currency is unknown with a diagnostic explaining that the review head could not be read.",
+    "preconditions": [
+      "An approved slide and its code are unchanged; prepare separate checkouts where either the decision commit is unavailable or the followed review head cannot resolve."
+    ],
+    "steps": [
+      {
+        "action": "Read the decision in the checkout missing its original commit.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision-freshness:criterion:unknown"
+        ],
+        "expected_result": "Currency is unknown with a diagnostic naming the missing decision commit.",
+        "id": "missing-commit"
+      },
+      {
+        "action": "In the independent missing-head checkout, read the decision.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision-freshness:criterion:unknown"
+        ],
+        "expected_result": "Currency is unknown with a diagnostic explaining that the review head could not be read.",
+        "id": "missing-head"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-unreadable",
+    "title": "Report unknown currency when the decision commit or head is unreadable"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-unreadable"
+  }
+}

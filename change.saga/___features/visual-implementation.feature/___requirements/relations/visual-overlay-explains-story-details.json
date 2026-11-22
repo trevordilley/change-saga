@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "visual-overlay-explains-story-details",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:45:35.09124Z",
   "from": "urn:change-saga:change-saga:slide:reviewer-runtime:item:item-overlay",
-  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details",
-  "scope": "self",
+  "id": "visual-overlay-explains-story-details",
   "rationale": "The focused Item overlay is the origin for inspecting linked story details, rationale, and currency.",
-  "to_revision": "urn:change-saga:change-saga:story:diagram-element-intent:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:45:35.09124Z"
+  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details",
+  "to_revision": "sha256:9f72f94edae56e8fbd4f4d20ac9ad8557193dab69ec0cbe0162fb63ab2e7c2e4",
+  "type": "explains",
+  "version": 5
 }

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-hide-done-plans-verifies-delivered-hidden-in-reader",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:18:39.288553Z",
   "from": "urn:change-saga:change-saga:test-case:plans-hide-done-plans",
-  "to": "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-hidden-in-reader",
-  "scope": "self",
+  "from_revision": "sha256:f8d9f9cc800d85175aa12dff13de174ddc0678fa6b2e624eb85a44d4d0443e6a",
+  "id": "plans-hide-done-plans-verifies-delivered-hidden-in-reader",
   "rationale": "Step delivered-hidden-in-reader checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-hide-done-plans:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:hide-done-plans:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:18:39.288553Z"
+  "to": "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-hidden-in-reader",
+  "to_revision": "sha256:ae53b8689b3aa59deed5209492f8b3657e8984bb76574ad0616fd865ff45dff0",
+  "type": "verifies",
+  "version": 5
 }

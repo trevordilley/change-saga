@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-implementation-opening-ae7bbffd47a1",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-implementation-opening",
-  "to": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
-  "scope": "self",
-  "rationale": "Steps open define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-implementation-opening:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:18.763283Z",
-  "request_id": "test-review-implementation-opening-ae7bbffd47a1"
+  "from": "urn:change-saga:change-saga:test-case:review-implementation-opening",
+  "from_revision": "sha256:86a7713aa97e2aa2da6ad26a9fe907e4984318e96840f7a77e5b7a33df04f41b",
+  "id": "test-review-implementation-opening-ae7bbffd47a1",
+  "rationale": "Steps open define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-implementation-opening-ae7bbffd47a1",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+  "to_revision": "sha256:488cbfea8d21d935f35d33c706b9acfeef110f878114f9f02646ad2b79e2afad",
+  "type": "verifies",
+  "version": 5
 }

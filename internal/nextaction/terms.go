@@ -19,10 +19,9 @@ func (b *builder) terms() {
 			continue
 		}
 		values := []grammar.Value{
-			grammar.V("term", term.Term), grammar.V("revision", ""), grammar.V("name", term.Name), grammar.V("definition", term.Definition),
+			grammar.V("term", term.Term), grammar.V("name", term.Name), grammar.V("definition", term.Definition),
 			grammar.V("definition-maturity", string(term.DefinitionMaturity)), grammar.V("implementation-evidence", string(term.ImplementationEvidence)),
 		}
-		values = append(values, parents(term.RevisionHeads)...)
 		for _, alias := range term.Aliases {
 			values = append(values, grammar.V("alias", alias))
 		}

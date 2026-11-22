@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:731088d10d70c2cd8a510d4deb4eed963563041a4c3c97a8541f206e17a95ced",
+      "end": 114,
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 105
+    }
+  ],
+  "created_at": "2026-10-16T23:24:10Z",
   "id": "baseline",
-  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-baseline-debt",
-  "test_revision": "urn:change-saga:change-saga:test-case:contracts-reconcile-baseline-debt:revision:r1",
+  "request_id": "saga-evidence-contracts-reconcile-baseline-debt-baseline",
   "role": "test_implementation",
   "steps": [
     "debt"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/reconciliation_test.go",
-      "start": 105,
-      "end": 114,
-      "digest": "sha256:731088d10d70c2cd8a510d4deb4eed963563041a4c3c97a8541f206e17a95ced"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:10Z",
-  "request_id": "saga-evidence-contracts-reconcile-baseline-debt-baseline"
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-reconcile-baseline-debt",
+  "test_revision": "sha256:b6c04c234cc5f36f376e59c975f739aea5162af33d616510a912b4175da2035f",
+  "verifications": [],
+  "version": 5
 }

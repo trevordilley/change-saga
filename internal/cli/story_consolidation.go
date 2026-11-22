@@ -15,18 +15,18 @@ func storyConsolidate(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags(name, commandUsage[name], out)
 	duplicate := flags.String("duplicate", "", "canonical duplicate story URN")
 	canonical := flags.String("canonical", "", "canonical existing story URN that preserves the proposal")
-	event := flags.String("event", "", "stable rejected or retired lifecycle event id")
+	event := new(string)
 	reason := flags.String("reason", "", "why these proposals are being consolidated")
 	apply := flags.Bool("apply", false, "apply the validated preview; omitted is read-only")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable plan")
 	feature := featureIDFlag(flags)
 	var parents, mappings stringList
-	flags.Var(&parents, "parent", "current duplicate lifecycle head URN; repeatable")
+
 	flags.Var(&mappings, "map", "exact DUPLICATE_CRITERION_URN=CANONICAL_CRITERION_URN mapping; repeat for every current duplicate criterion")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if flags.NArg() != 1 || *duplicate == "" || *canonical == "" || *event == "" || *reason == "" || len(parents) == 0 {
+	if flags.NArg() != 1 || *duplicate == "" || *canonical == "" || *reason == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
 	}
 	criterionMap := map[string]string{}
@@ -83,17 +83,17 @@ func storyWithdraw(_ context.Context, args []string, out io.Writer) error {
 	name := "story withdraw"
 	flags := commandFlags(name, commandUsage[name], out)
 	storyURN := flags.String("story", "", "canonical proposed or deferred story URN")
-	event := flags.String("event", "", "stable rejected lifecycle event id")
+	event := new(string)
 	reason := flags.String("reason", "", "why the proposal is withdrawn")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	var parents stringList
-	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if flags.NArg() != 1 || *storyURN == "" || *event == "" || strings.TrimSpace(*reason) == "" || len(parents) == 0 {
+	if flags.NArg() != 1 || *storyURN == "" || strings.TrimSpace(*reason) == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
 	}
 	root := flags.Arg(0)
@@ -110,8 +110,8 @@ func storyWithdraw(_ context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("withdrawal refuses missing or conflicted story lifecycle")
 	}
 	if story.CurrentLifecycle.State != requirements.StateProposed && story.CurrentLifecycle.State != requirements.StateDeferred {
-		replay := *requestID != "" && story.CurrentLifecycle.State == requirements.StateRejected &&
-			story.CurrentLifecycle.ID == *event && story.CurrentLifecycle.RequestID == *requestID
+		replay := story.CurrentLifecycle.State == requirements.StateRejected &&
+			story.CurrentLifecycle.Reason == "withdrawn: "+strings.TrimSpace(*reason)
 		if !replay {
 			return fmt.Errorf("only a proposed or deferred story can be withdrawn; %q is %s", ref.ID, story.CurrentLifecycle.State)
 		}
@@ -123,5 +123,5 @@ func storyWithdraw(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	return writeRequirementsMutation(out, name, result, []string{*event}, *jsonOutput)
+	return writeRequirementsMutation(out, name, result, nil, *jsonOutput)
 }

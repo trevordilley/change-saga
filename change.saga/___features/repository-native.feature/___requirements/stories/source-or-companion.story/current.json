@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "repository-identity",
+        "statement": "Initialization records a portable canonical source-repository identity."
+      },
+      {
+        "id": "companion-cursor",
+        "statement": "A companion Saga records the exact source commit its current documentation describes."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can keep a Saga in the source repository or a companion repository while retaining the canonical identity and exact version of the source it documents.",
+    "story": "urn:change-saga:change-saga:story:source-or-companion",
+    "title": "Keep documentation with its source identity"
+  },
+  "state": {
+    "reason": "Confirmed after the initial implementation investigation.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:source-or-companion"
+  }
+}

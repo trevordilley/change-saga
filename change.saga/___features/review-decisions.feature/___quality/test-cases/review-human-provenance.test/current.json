@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The visible action identifies Other as the human actor.",
+    "preconditions": [
+      "Commit a human slide decision as Other, with a distinct name and email."
+    ],
+    "steps": [
+      {
+        "action": "Read the decision report.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:human"
+        ],
+        "expected_result": "The human decision names Other.",
+        "id": "report"
+      },
+      {
+        "action": "Inspect the same action in the review.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:human"
+        ],
+        "expected_result": "The visible action identifies Other as the human actor.",
+        "id": "display"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-human-provenance",
+    "title": "Show the human actor on a human-authored action"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-human-provenance"
+  }
+}

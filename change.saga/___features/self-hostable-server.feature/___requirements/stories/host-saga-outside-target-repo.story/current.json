@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "serve-ui",
+        "statement": "A Change Saga server deployed in the host's own cloud serves the Saga UI."
+      },
+      {
+        "id": "separate-saga",
+        "statement": "The server can serve a Saga maintained outside the target repository."
+      },
+      {
+        "id": "remote-references",
+        "statement": "Readers can follow the Saga's remote references to the corresponding material in the configured target repository."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:roadmap-scope-20261016"
+    ],
+    "overview": "The host is responsible for authentication and access controls. Editor attribution is a possible requirement, not yet a confirmed acceptance criterion. Deployment packaging, repository authentication, and reference revision behavior remain open.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can host a Change Saga server in our own cloud and maintain its Saga outside the target repository while retaining remote references to that repository.",
+    "story": "urn:change-saga:change-saga:story:host-saga-outside-target-repo",
+    "title": "Host the Saga in our own cloud"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:host-saga-outside-target-repo"
+  }
+}

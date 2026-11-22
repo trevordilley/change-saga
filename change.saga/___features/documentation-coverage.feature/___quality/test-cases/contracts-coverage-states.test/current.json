@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each distinct coverage condition remains separately inspectable.",
+    "preconditions": [
+      "Use TestEvaluateMatchesEachSideAtItsOwnCommit fixture: eight changed atoms; current evidence covers seven, app.go new line 9 has no owner, line 5 has two owners, and one reference is pinned outside both sides."
+    ],
+    "steps": [
+      {
+        "action": "Evaluate coverage at the fixture base/head with Pinned resolver.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states"
+        ],
+        "expected_result": "Covered=7, uncovered=1 at line 9, one overlap at line 5, one stale reference with ordinal 2, and complete=false.",
+        "id": "evaluate"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-states",
+    "title": "Distinguish covered lines, gaps, overlaps and stale references"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-states"
+  }
+}

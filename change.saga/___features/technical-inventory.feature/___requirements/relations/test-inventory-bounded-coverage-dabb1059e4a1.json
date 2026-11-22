@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-bounded-coverage-dabb1059e4a1",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage",
-  "to": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:separate-health",
-  "scope": "self",
-  "rationale": "Steps owners define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:47.251143Z",
-  "request_id": "test-inventory-bounded-coverage-dabb1059e4a1"
+  "from": "urn:change-saga:change-saga:test-case:inventory-bounded-coverage",
+  "from_revision": "sha256:bf076ba85f7a8e01380c3a485d0115568c6757bbcf79468ac9dacea6f25544ef",
+  "id": "test-inventory-bounded-coverage-dabb1059e4a1",
+  "rationale": "Steps owners define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-bounded-coverage-dabb1059e4a1",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:separate-health",
+  "to_revision": "sha256:47f8d6d87d160d433f34d3723c8b2d80b77a6a86b8eb0eab2645f4af7669e579",
+  "type": "verifies",
+  "version": 5
 }

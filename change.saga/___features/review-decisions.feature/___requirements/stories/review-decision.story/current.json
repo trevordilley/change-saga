@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "approve",
+        "statement": "Choosing Approve records an approved decision."
+      },
+      {
+        "id": "request-changes",
+        "statement": "Choosing Request changes records a changes-requested decision."
+      },
+      {
+        "id": "identifies-author",
+        "statement": "The recorded decision identifies its author."
+      },
+      {
+        "id": "preserves-history",
+        "statement": "A reviewer can replace an earlier decision with a later decision without erasing its history."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer reviewing a change, I can approve it or request changes so my review decision is explicit.",
+    "story": "urn:change-saga:change-saga:story:review-decision",
+    "title": "Record a review decision"
+  },
+  "state": {
+    "reason": "Confirmed during the initial product interview.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:review-decision"
+  }
+}

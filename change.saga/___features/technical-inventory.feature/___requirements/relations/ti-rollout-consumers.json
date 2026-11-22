@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-rollout-consumers",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:consumers",
-  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
-  "scope": "self",
-  "rationale": "Proposed design: Use one evidence-path resolver across queries, ERD navigation, deck drawers, coverage and reconciliation so reused inventory does not silently grant full-entity coverage.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:15:03.865471Z",
-  "superseded_at": "2026-09-27T10:27:31.221031Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:consumers",
+  "id": "ti-rollout-consumers",
+  "rationale": "Proposed design: Use one evidence-path resolver across queries, ERD navigation, deck drawers, coverage and reconciliation so reused inventory does not silently grant full-entity coverage.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:31.221031Z",
+  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+  "to_revision": "sha256:38376e153e063b30f56fe8950ce7e10c1e9dead4fd322189419312913a36cbfc",
+  "type": "explains",
+  "version": 5
 }

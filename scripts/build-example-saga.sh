@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Package this repository's Saga, change.saga, as a deterministic, platform-neutral
-# release asset.
+# Package the deliberately authored offline example as a deterministic,
+# platform-neutral release asset. The canonical change.saga keeps its Git pins.
 #
 # Usage: scripts/build-example-saga.sh [dist-dir]
 #
@@ -22,6 +22,7 @@ case "$dist" in
 *) dist="$caller_dir/$dist" ;;
 esac
 cd "$repo_root"
+example_source="examples/offline/change.saga"
 
 checkout_commit="$(git rev-parse --verify 'HEAD^{commit}' 2>/dev/null)" || {
 	echo "error: cannot determine release commit" >&2
@@ -40,9 +41,9 @@ if [ "$resolved_commit" != "$checkout_commit" ]; then
 	echo "error: release commit does not match the checked-out source" >&2
 	exit 2
 fi
-if ! git diff --quiet HEAD -- change.saga ||
-	[ -n "$(git ls-files --others --exclude-standard -- change.saga)" ]; then
-	echo "error: example Saga packaging requires a clean change.saga at the checked-out commit" >&2
+if ! git diff --quiet HEAD -- "$example_source" ||
+	[ -n "$(git ls-files --others --exclude-standard -- "$example_source")" ]; then
+	echo "error: example Saga packaging requires a clean examples/offline/change.saga at the checked-out commit" >&2
 	exit 1
 fi
 
@@ -106,7 +107,7 @@ trap cleanup EXIT
 trap 'exit 130' INT TERM HUP
 
 "${go_env[@]}" go run -mod=readonly ./internal/cmd/sagaarchive \
-	"$bundle_stage/$archive" "$source_date_epoch" change.saga change.saga
+	"$bundle_stage/$archive" "$source_date_epoch" "$example_source" change.saga
 "$repo_root/scripts/sha256.sh" "$bundle_stage/$archive" > "$bundle_stage/$sidecar"
 chmod 0644 "$bundle_stage/$sidecar"
 

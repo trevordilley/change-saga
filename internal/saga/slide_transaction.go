@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/sagaref"
@@ -72,6 +73,7 @@ type DiagramSource struct {
 // complete slide. Revisions retain lifecycle history; Current names exactly
 // one revision by snapshot digest.
 type SlideTransactionRecord struct {
+	canonical bool
 	Version   int                        `json:"version"`
 	DeckID    string                     `json:"deck"`
 	SlideID   string                     `json:"slide"`
@@ -192,11 +194,14 @@ func (record SlideTransactionRecord) ActiveRevision() (*SlideTransactionRevision
 	return nil, nil
 }
 
-// Heads returns the leaf snapshots in the immutable revision DAG. A normal
-// record has one head. More than one means Git combined divergent histories;
-// Current remains a published pointer for read compatibility, but callers
-// must surface the conflict and reconcile every head before another update.
+// Heads is a compatibility projection. Current records have a single digest;
+// legacy records validate their old parent graph and expose every leaf so an
+// ambiguous migration cannot discard independently authored content. Resolve
+// legacy ambiguity explicitly before normalization; new writes create no graph.
 func (record SlideTransactionRecord) Heads() ([]string, error) {
+	if record.canonical {
+		return []string{record.Current}, nil
+	}
 	known, parents := map[string]int{}, map[string]bool{}
 	for index, revision := range record.Revisions {
 		if revision.Snapshot == "" || known[revision.Snapshot] != 0 {
@@ -266,7 +271,7 @@ func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck 
 	seenSnapshots, seenRequests := map[string]bool{}, map[string]bool{}
 	for revisionIndex := range record.Revisions {
 		revision := &record.Revisions[revisionIndex]
-		if revision.Deleted {
+		if revision.Deleted && !record.canonical {
 			parents := record.revisionParents(revisionIndex)
 			validRemoval := false
 			if len(parents) == 1 {
@@ -290,15 +295,18 @@ func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck 
 			problem("every revision must preserve the record's deck and slide ids")
 		}
 		wantSnapshot, digestErr := SlideRevisionSnapshot(*revision)
+		if record.canonical {
+			wantSnapshot, digestErr = SlideContentDigest(*revision)
+		}
 		if digestErr != nil || revision.Snapshot != wantSnapshot || seenSnapshots[revision.Snapshot] {
 			problem("every revision needs a unique snapshot matching its complete content")
 		}
 		seenSnapshots[revision.Snapshot] = true
-		if !livingid.ValidID(revision.RequestID) || seenRequests[revision.RequestID] {
+		if !record.canonical && (!livingid.ValidID(revision.RequestID) || seenRequests[revision.RequestID]) {
 			problem("every revision needs a unique stable request_id")
 		}
 		seenRequests[revision.RequestID] = true
-		if revision.CreatedAt.IsZero() {
+		if !record.canonical && revision.CreatedAt.IsZero() {
 			problem("every revision needs created_at")
 		}
 		legacyAsset := revisionIndex == 0 && strings.HasPrefix(revision.RequestID, "legacy-") && flatSlideName.MatchString(strings.TrimSuffix(revision.Asset, filepath.Ext(revision.Asset))+".json")
@@ -324,7 +332,7 @@ func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck 
 	if headsErr != nil {
 		problem(headsErr.Error())
 	} else if len(heads) > 1 {
-		addIssue(validation, "warning", name, fmt.Sprintf("slide transaction has divergent revision heads %s; preserve every revision and reconcile with apply-slide operation reconcile using expected_snapshots", strings.Join(heads, ", ")))
+		problem(fmt.Sprintf("legacy slide has competing heads %s; preserve its file in Git and combine the authored content explicitly before normalization", strings.Join(heads, ", ")))
 	} else if record.Current != heads[0] {
 		problem("current snapshot is not the unique revision head")
 	}
@@ -402,6 +410,9 @@ func ValidateCriterionLink(sagaID string, link CriterionLink) error {
 	criterion, err := sagaref.ParseTarget(link.Criterion)
 	if err != nil || criterion.Kind != sagaref.TargetCriterion || criterion.SagaID != sagaID {
 		return fmt.Errorf("criterion link %q must name an exact criterion in this Saga", link.ID)
+	}
+	if currentrecord.ValidDigest(link.StoryRevision) {
+		return nil
 	}
 	revision, err := livingid.Parse(link.StoryRevision)
 	if err != nil || revision.Kind != livingid.KindRevision || revision.SagaID != sagaID || revision.ParentID != criterion.ParentID {

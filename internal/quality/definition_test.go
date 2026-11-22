@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/qualityid"
 )
 
 func TestPlannedCaseEnrichesSameIdentityWithPinnedStepEvidence(t *testing.T) {
@@ -21,10 +22,11 @@ func TestPlannedCaseEnrichesSameIdentityWithPinnedStepEvidence(t *testing.T) {
 		t.Fatalf("mapped replay: %+v %v", replay, err)
 	}
 	test := loadDeadline(t, root)
+	initialPin, _ := qualityid.Revision("checkout", "deadline", test.CurrentRevision.ID)
 	if DefinitionStage(test) != "planned" || len(test.Evidence) != 0 || len(test.Runs) != 0 {
 		t.Fatalf("planned: %+v", test)
 	}
-	path := filepath.Join(root, "___features/core.feature/___quality/test-cases/deadline.test/revisions/r1.json")
+	path := filepath.Join(root, "___features/core.feature/___quality/test-cases/deadline.test/current.json")
 	original, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
@@ -37,7 +39,7 @@ func TestPlannedCaseEnrichesSameIdentityWithPinnedStepEvidence(t *testing.T) {
 		t.Fatalf("evidence replay: %+v %v", replay, err)
 	}
 	test = loadDeadline(t, root)
-	if DefinitionStage(test) != "implementation_linked" || test.CurrentRevision.ID != "r1" || test.Evidence[0].TestRevision != deadlineURN+":revision:r1" {
+	if DefinitionStage(test) != "implementation_linked" || test.Evidence[0].TestRevision != initialPin {
 		t.Fatalf("enriched: %+v", test)
 	}
 	after, _ := os.ReadFile(path)
@@ -59,12 +61,12 @@ func TestPlannedCaseEnrichesSameIdentityWithPinnedStepEvidence(t *testing.T) {
 		t.Fatal(err)
 	}
 	test = loadDeadline(t, root)
-	if DefinitionStage(test) != "implementation_linked" || len(test.Revisions) != 2 || len(test.Evidence) != 2 {
+	if DefinitionStage(test) != "implementation_linked" || len(test.Revisions) != 1 || len(test.Evidence) != 2 {
 		t.Fatalf("history lost: %+v", test)
 	}
 	after, _ = os.ReadFile(path)
-	if !reflect.DeepEqual(original, after) {
-		t.Fatal("revision rewrote history")
+	if reflect.DeepEqual(original, after) {
+		t.Fatal("definition edit did not replace current content")
 	}
 }
 

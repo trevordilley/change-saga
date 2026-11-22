@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Normalization stops without choosing a content head or deleting either authored legacy definition.",
+    "preconditions": [
+      "Prepare a legacy test package with distinct concurrent r2 and r2b children of r1. Preserve the fixture in Git."
+    ],
+    "steps": [
+      {
+        "action": "Run normalization, inspect both legacy definitions, then explicitly combine their content in Git and retry normalization.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment"
+        ],
+        "expected_result": "The ambiguous attempt preserves all files; the explicit resolution produces one current definition, with previous values retained by Git.",
+        "id": "check-definition-head-guards"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads",
+    "title": "Reject ambiguous legacy test definitions without losing content"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-case-conflicting-heads"
+  }
+}

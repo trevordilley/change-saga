@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The unedited relation is affected with a changed-pin cause.",
+    "preconditions": [
+      "Use shop Saga with pay revision r1 and design-pay relation pinned to r1; main contains that baseline."
+    ],
+    "steps": [
+      {
+        "action": "Revise pay to r2 with changed charged criterion and inspect status against main.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records"
+        ],
+        "expected_result": "pay is revised with before and after text showing the old and new criterion.",
+        "id": "revision"
+      },
+      {
+        "action": "Inspect Affected for design-pay without changing that relation.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:change-impact-layers:criterion:affected-records"
+        ],
+        "expected_result": "The unedited relation is affected with a changed-pin cause.",
+        "id": "pin"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin",
+    "title": "Separate a revised story from the relation pinned to its previous revision"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-revised-record-and-pin"
+  }
+}

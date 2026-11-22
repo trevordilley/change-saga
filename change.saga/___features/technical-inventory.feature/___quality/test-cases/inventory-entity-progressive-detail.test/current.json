@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The feature behavior and deeper code remain linked to the same canonical report identity.",
+    "preconditions": [
+      "Disposable format-2 Saga using the PDF inventory fixture: implemented PDF report held by Record store, proposed JSON PDF job held by Job queue, report-to-job production relationship, application ERD, and pdf-jobs overlay; the reporting ERD also includes a job association with owner 0..many and destination unknown.",
+      "An implementation deck Item explicitly uses the report entity and selects its exact report code; a second deck reuses that identity."
+    ],
+    "steps": [
+      {
+        "action": "Open report from the ERD, inspect its code location and currency, and expand reverse usages.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-entity-context:criterion:code-and-usages"
+        ],
+        "expected_result": "Details show source commit/path/range and health; usages name feature, deck, slide and Item.",
+        "id": "entity"
+      },
+      {
+        "action": "Follow a usage to its slide and Item, read the feature-specific explanation, then open the selected code.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:erd-entity-context:criterion:progressive-detail"
+        ],
+        "expected_result": "The feature behavior and deeper code remain linked to the same canonical report identity.",
+        "id": "feature"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-entity-progressive-detail",
+    "title": "Follow an ERD entity to its feature behavior and code"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-entity-progressive-detail"
+  }
+}

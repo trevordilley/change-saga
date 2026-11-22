@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-policy-foundation-boundary",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-25T00:03:10.272235Z",
   "from": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation:item:boundary",
-  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
-  "scope": "self",
+  "id": "ti-policy-foundation-boundary",
   "rationale": "Bounded implemented helper foundation: This internal helper requires snapshot-consistent resolved views, exact endpoint facts and a resolver bound to the canonical source. It owns no loading, publication, locks, parent races, approval or coverage. Public integration remains proposed.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-25T00:03:10.272235Z"
+  "to": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+  "to_revision": "sha256:38376e153e063b30f56fe8950ce7e10c1e9dead4fd322189419312913a36cbfc",
+  "type": "explains",
+  "version": 5
 }

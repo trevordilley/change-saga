@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The saved comment target is the canonical why/node Item identity.",
+    "preconditions": [
+      "Use pr-7 with slide why and exact Item why/node."
+    ],
+    "steps": [
+      {
+        "action": "Submit Why here? on why/node in pr-7 and reload the review.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context"
+        ],
+        "expected_result": "The saved comment target is the canonical why/node Item identity.",
+        "id": "comment"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-item-comment",
+    "title": "Attach a comment to an exact review Item"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-item-comment"
+  }
+}

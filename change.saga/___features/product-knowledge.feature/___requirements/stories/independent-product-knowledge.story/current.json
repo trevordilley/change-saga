@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "independent-histories",
+        "statement": "Changing a requirement, prototype, or quality record leaves the current histories in the other product-knowledge areas unchanged."
+      },
+      {
+        "id": "validated-composition",
+        "statement": "If any product-knowledge domain document is invalid, opening the composed view fails instead of returning partial or silently corrected data."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect maintaining product knowledge, I can change requirements, prototypes, or quality evidence independently and then inspect one validated view so a change in one area does not silently rewrite or hide another.",
+    "story": "urn:change-saga:change-saga:story:independent-product-knowledge",
+    "title": "Keep product knowledge areas isolated"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:independent-product-knowledge"
+  }
+}

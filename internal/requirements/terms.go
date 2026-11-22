@@ -81,14 +81,15 @@ type TermEvent struct {
 }
 
 type Term struct {
+	current   bool
 	Identity  RecordIdentity
-	Revisions []TermRevision
-	Events    []TermEvent
+	Revisions []TermRevision `json:"-"`
+	Events    []TermEvent    `json:"-"`
 
-	RevisionHeads    []string
-	LifecycleHeads   []string
-	CurrentRevision  *TermRevision
-	CurrentLifecycle *TermEvent
+	RevisionHeads    []string      `json:"-"`
+	LifecycleHeads   []string      `json:"-"`
+	CurrentRevision  *TermRevision `json:"content"`
+	CurrentLifecycle *TermEvent    `json:"state"`
 }
 
 // Active reports whether the term's unique current lifecycle is active.
@@ -150,6 +151,22 @@ func loadTerms(document *Document) error {
 	}
 	for _, value := range packages {
 		term := Term{Identity: value.identity}
+		if value.current {
+			var content TermRevision
+			var state TermEvent
+			if err := projectCurrent(value.record, value.identity.CreatedAt, TermRevisionSchemaURL, TermEventSchemaURL, AppRecordVersion, &content, &state); err != nil {
+				return err
+			}
+			if err := validateTermRevision(content, document.SagaID, value.id, content.ID); err != nil {
+				return err
+			}
+			if err := validateTermEvent(state, document.SagaID, value.id, state.ID); err != nil {
+				return err
+			}
+			term.current = true
+			term.Revisions = []TermRevision{content}
+			term.Events = []TermEvent{state}
+		}
 		for _, path := range value.revisions {
 			var revision TermRevision
 			if err := readStrictJSON(path, &revision); err != nil {
@@ -347,6 +364,18 @@ func validateTermEvent(value TermEvent, sagaID, termID, expectedID string) error
 // resolveTerm computes the heads of both graphs. A term starts active; it may
 // be retired and later restored.
 func resolveTerm(term *Term, sagaID string) error {
+	if term.current {
+		if len(term.Revisions) == 0 || len(term.Events) == 0 {
+			return fmt.Errorf("current record requires content and state")
+		}
+		term.CurrentRevision = &term.Revisions[len(term.Revisions)-1]
+		term.CurrentLifecycle = &term.Events[len(term.Events)-1]
+		pin, _ := appMemberURN(sagaID, "term", term.Identity.ID, "revision", term.CurrentRevision.ID)
+		term.RevisionHeads = []string{pin}
+		term.LifecycleHeads = memberURNs(sagaID, "term", term.Identity.ID, "event", []string{term.CurrentLifecycle.ID})
+		return nil
+	}
+
 	var problems validationErrors
 	id := term.Identity.ID
 	revisions := make([]graphMember, 0, len(term.Revisions))

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "approach-addresses-deprecations",
-  "type": "addresses",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-10-16T03:22:39.616546Z",
   "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design",
-  "to": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope",
-  "scope": "self",
+  "from_content_digest": "sha256:51a66321d2e79e9cff3e9c99030c3bbde682d8c3cff1b805140f0b98c44f13cd",
+  "id": "approach-addresses-deprecations",
   "rationale": "The trust-boundary section explains exact scope, replacement limits and uncertainty.",
-  "to_revision": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope:revision:r1",
-  "from_content_digest": "sha256:147e91161dc85aab0b7be05e57fcb93f6f8e342ce4f230b61c67e181f858ffa8",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-10-16T03:22:39.616546Z"
+  "to": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope",
+  "to_revision": "sha256:a4bf8405ffe4621abb8a80fb164fd0e65e6476985c16e36c09855f3ffda8340e",
+  "type": "addresses",
+  "version": 5
 }

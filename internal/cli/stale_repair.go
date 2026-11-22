@@ -762,7 +762,7 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 		return SlideTransactionRequest{}, fmt.Errorf("slide %s is not managed by apply-slide", slide.Target)
 	}
 	if slide.AuthoringConflict || len(slide.AuthoringHeads) > 1 {
-		return SlideTransactionRequest{}, fmt.Errorf("slide %s has divergent heads %s; reconcile them with apply-slide first", slide.Target, strings.Join(slide.AuthoringHeads, ", "))
+		return SlideTransactionRequest{}, fmt.Errorf("slide %s has competing legacy content %s; preserve it in Git and explicitly select complete current content before editing", slide.Target, strings.Join(slide.AuthoringHeads, ", "))
 	}
 	var deck *saga.Deck
 	for _, candidate := range allDecks(document) {

@@ -10,7 +10,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"sort"
 	"strings"
 	"time"
 
@@ -27,10 +26,6 @@ import (
 
 func prototypeHref(id string) string { return "/prototypes/" + url.PathEscape(id) }
 
-func prototypeRevisionHref(id, revision string) string {
-	return prototypeHref(id) + "?revision=" + url.QueryEscape(revision)
-}
-
 // prototypeFileHref is where one revision's files are served. Relative links
 // inside the app resolve beneath it, so its own assets load as authored.
 func prototypeFileHref(id, revision, entry string) string {
@@ -45,10 +40,6 @@ type prototypePageView struct {
 	FeatureID string
 	Feature   traceLink
 	Conflict  bool
-	Revisions []prototypeRevisionView
-	// Revision is the one shown: the current head unless ?revision= names
-	// another.
-	Revision prototypeRevisionView
 	// FrameURL is the sandboxed app; OpenURL opens the same app in its own
 	// tab. Both are empty for a prototype that lives outside the Saga.
 	FrameURL string
@@ -62,16 +53,6 @@ type prototypePageView struct {
 	Stale       string
 	Unavailable string
 	Annotations []prototypeAnnotationView
-}
-
-type prototypeRevisionView struct {
-	ID       string
-	Title    string
-	State    string
-	Href     string
-	Created  string
-	Current  bool
-	Selected bool
 }
 
 type prototypeAnnotationView struct {
@@ -103,26 +84,7 @@ func (a *app) prototypePage(ctx context.Context, graph *appGraph, sagaID, id, re
 	}
 	selected := current
 	if requested != "" {
-		if prototype.Revision(requested) == nil {
-			return nil, errAppPageNotFound
-		}
-		selected = requested
-	}
-	revisions := append([]prototypes.Revision(nil), prototype.Revisions...)
-	sort.SliceStable(revisions, func(i, j int) bool { return revisions[i].CreatedAt.Before(revisions[j].CreatedAt) })
-	for _, revision := range revisions {
-		row := prototypeRevisionView{
-			ID: revision.ID, Title: revision.Title, State: string(revision.State),
-			Href: prototypeRevisionHref(id, revision.ID), Created: revision.CreatedAt.Format("2006-01-02"),
-			Current: revision.ID == current, Selected: revision.ID == selected,
-		}
-		if row.Current {
-			row.Href = prototypeHref(id)
-		}
-		view.Revisions = append(view.Revisions, row)
-		if row.Selected {
-			view.Revision = row
-		}
+		return nil, fmt.Errorf("use a Git commit to view historical documentation")
 	}
 	if revision := prototype.Revision(selected); revision != nil {
 		view.Title, view.State = revision.Title, string(revision.State)
@@ -138,10 +100,10 @@ func (a *app) prototypePage(ctx context.Context, graph *appGraph, sagaID, id, re
 		case prototypes.SourceExternal, prototypes.SourceEmbed:
 			view.ExternalURL = revision.Source.URL
 		default:
-			view.Unavailable = "This revision's source cannot be shown here."
+			view.Unavailable = "This prototype source cannot be shown here."
 		}
 	} else {
-		view.Unavailable = "This prototype has no single current revision to show."
+		view.Unavailable = "Legacy prototype content is ambiguous. Preserve the files in Git and select complete current content explicitly."
 	}
 	selectedURN, _ := prototypes.RevisionURN(sagaID, id, selected)
 	for _, annotation := range document.Annotations {
@@ -153,7 +115,7 @@ func (a *app) prototypePage(ctx context.Context, graph *appGraph, sagaID, id, re
 			Target: graph.link(annotation.Target), OnRevision: annotation.PrototypeRevision == "" || annotation.PrototypeRevision == selectedURN,
 		}
 		if revision := annotation.PrototypeRevision; revision != "" {
-			row.Revision = revision[strings.LastIndex(revision, ":")+1:]
+			row.Revision = revision
 		}
 		view.Annotations = append(view.Annotations, row)
 	}

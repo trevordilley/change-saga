@@ -1,0 +1,27 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "all-heads-required",
+        "statement": "Legacy normalization encountering competing content or state heads stops before deleting independently authored files; no timestamp or current-source match chooses a winner."
+      },
+      {
+        "id": "current-restored",
+        "statement": "After an author explicitly preserves and combines competing legacy content in Git, normalization produces one current record; Git retains both branches and their prior content."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer resolving legacy competing story heads, I can preserve and combine their content explicitly in Git before normalization so no independently authored intent disappears.",
+    "story": "urn:change-saga:change-saga:story:recover-competing-heads",
+    "title": "Resolve legacy ambiguity without losing authored content"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:recover-competing-heads"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "bidirectional-path",
+        "statement": "A design exposes its current requirement links and its paths to implementation evidence."
+      },
+      {
+        "id": "pinned-context",
+        "statement": "Each relationship identifies the exact design content and requirement revision it relied on."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:designer"
+    ],
+    "statement": "As a designer, I can see which stories a design addresses and which implementation evidence uses it so I know whether the delivered work reflects the design.",
+    "story": "urn:change-saga:change-saga:story:design-usage-path",
+    "title": "Follow a design in both directions"
+  },
+  "state": {
+    "reason": "Confirmed after the initial implementation investigation.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:design-usage-path"
+  }
+}

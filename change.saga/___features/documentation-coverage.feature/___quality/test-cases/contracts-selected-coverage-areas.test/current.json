@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The check answers exactly the selected documentation questions.",
+    "preconditions": [
+      "Use coveredSaga and cover all six changed implementation lines; leave stories incomplete."
+    ],
+    "steps": [
+      {
+        "action": "Run check --covers stories,implementation --json --against main.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-areas"
+        ],
+        "expected_result": "Only two areas are returned in exactly stories,implementation order and covered=false.",
+        "id": "select"
+      },
+      {
+        "action": "Run check --covers implementation,stories in text mode.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-areas"
+        ],
+        "expected_result": "Output describes the story gap and does not include personas or Next actions.",
+        "id": "text"
+      },
+      {
+        "action": "Repeat with selected permutations of design,quality,health,personas and compare returned names to requested names.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-areas"
+        ],
+        "expected_result": "Each supported requested area is returned once in requested order; unrelated gaps do not decide result.",
+        "id": "all-names"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-areas",
+    "title": "Return only requested coverage areas in caller order"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-areas"
+  }
+}

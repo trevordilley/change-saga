@@ -91,8 +91,8 @@ with a blank template:
 
 1. Before proposing an "As a ...", query the existing personas. If the ID is
    unknown, enumerate `query personas --saga PATH` and page to completion;
-   otherwise select the known ID or URN. Read definitions, current revision
-   heads, and lifecycle state. Match by responsibilities and needs, not just
+   otherwise select the known ID or URN. Read definitions, current content
+   and state. Match by responsibilities and needs, not just
    the name. Name the selected persona and give its stable ID or URN alongside
    a candidate story. Do not replace a defined persona with a generic role.
 2. Query the relevant feature context and existing requirements before
@@ -173,7 +173,7 @@ human or organizational beneficiary, not the mechanism performing work.
 A story captures an outcome for that persona and why it matters. Criteria are
 independent, observable pass/fail obligations. A proposed story may remain
 criterion-free while its intent is uncertain. Before moving it to `accepted`,
-every current revision head needs at least one criterion. When only one
+the current definition needs at least one criterion. When only one
 obligation is confirmed, add exactly that narrow obligation; never invent
 broader behavior to make acceptance valid.
 
@@ -204,38 +204,31 @@ Pin the parts that matter to criteria with `prototype annotate` (an element
 id, exact text, or a region). The reviewer opens each prototype on its own
 page, sandboxed, with an "Open in new tab" link.
 
-## Preserve revisions and conflicts
+## Preserve identities and evidence
 
-A revision is a complete immutable snapshot. A single-parent revision may
-inherit fields that the command does not replace; a multi-parent conflict
-reconciliation must state the complete intended definition. Use dedicated
-criterion commands for criterion-only changes when offered by the CLI.
+Edit a story's current content in place. Flag-based edits preserve fields not
+supplied; structured input is a complete replacement. Preserve criterion IDs
+and the exact source evidence behind their obligations. State changes edit the
+current state and reason. Git records previous wording, attribution, states,
+branching and merges. Use its normal merge tools for conflicting edits.
 
-Lifecycle transitions are append-only events with explicit parents, state,
-and reason. Never rewrite or delete a previous revision or event to simplify
-history. Queries may report several current definition or lifecycle heads;
-preserve them all and do not infer a winner. Reconcile competing heads only
-when the user or authoritative source establishes the intended result, naming
-every required parent through the public command.
-
-After each mutation, query the requirement and its history. Confirm the new
-head, all parents, lifecycle state, and any remaining conflicts rather than
-trusting filenames or a mutation message alone.
+Legacy competing heads are a migration ambiguity. Keep every file, inspect and
+combine authored intent explicitly, then retry normalization. Never pick by
+filename or timestamp. Do not create another revision graph to resolve new work.
 
 ## Withdrawing or consolidating duplicate proposals
 
 Use these focused operations only when
 `change-saga story -h` lists `withdraw` and `consolidate`; otherwise stop with
-the current heads and candidate evidence instead of simulating either action
+current content and candidate evidence instead of simulating either action
 with metadata edits or a false lifecycle transition.
 
-When available, `story withdraw` appends a reasoned `rejected` lifecycle event
-to a uniquely current `proposed` or `deferred` story. It refuses accepted
-intent. Supply the exact story URN, current lifecycle parent, new event ID, and
-reason.
+When available, `story withdraw` edits a proposed or deferred story to the
+`rejected` state with a reason. It refuses accepted intent. Supply the stable
+story URN and reason; Git records the previous state.
 
 `story consolidate` is preview-first and requires the duplicate and canonical
-story URNs, the duplicate's current lifecycle parent, a new event ID, a reason,
+story URNs, a reason,
 and an exhaustive one-to-one mapping from every current duplicate criterion to
 a current canonical criterion. Add `--apply` only after reviewing the preview.
 Applying rejects a proposed/deferred duplicate, or retires an accepted
@@ -282,8 +275,8 @@ through its public append-only operation rather than deleting its record.
    in scope. Leave uncertainty proposed instead of filling it with guesses.
 3. Use the smallest public authoring command: add, revise, criterion change,
    lifecycle transition, move, relation mutation, or citation addition.
-4. Re-query current heads, history, conflicts, stale relations, and relevant
-   traceability. Preserve every competing head until explicitly reconciled.
+4. Re-query current content, state, Git history, stale relations, and relevant
+   traceability. Resolve legacy ambiguities without discarding independently authored content.
 5. Run validation. Treat optional design, quality, and implementation growth
    as optional unless the user requested those lifecycle areas.
 
@@ -301,22 +294,22 @@ never strip a prefix, infer a persona, or rewrite history to force this format.
 Use `feature set-overview --feature ID --source overview.md <saga>` for a
 substantial description, purpose, rationale, and boundaries. This writes the
 optional `overview.fragment/content.md` inside the feature's existing report;
-`feature.json` remains immutable. The fragment has normal stable links and Git
+The feature identity and creation time remain stable. The fragment has normal stable links and Git
 history. `--text MARKDOWN` and `--source -` also work.
 
 Use `story add|revise --overview-source overview.md` (or `--overview MARKDOWN`)
-for detailed Markdown in a story revision. `--overview-source -` reads stdin;
-it cannot share stdin with `--from -`. Omission on single-parent flag revisions
+for detailed Markdown in current story content. `--overview-source -` reads stdin;
+it cannot share stdin with `--from -`. Omission on flag-based current edits
 inherits the overview, including criterion conveniences. Explicit `--overview
-""` clears it. Structured `--from` revisions are complete snapshots: omitted
-`overview` means absent. Multi-parent reconciliation needs deliberate authored
-content, never an inferred winner. Editor revisions preserve prose unless the
-author changes it. Prior snapshots remain immutable. Overview changes require
+""` clears it. Structured `--from` requests replace current content: omitted
+`overview` means absent. Resolve Git conflicts with deliberate authored
+content. Competing legacy heads require explicit content resolution. Editor changes preserve prose unless the
+author changes it. Git retains earlier content. Overview changes require
 whole-story relation reassessment; unchanged criterion statements retain their
 existing carry-forward semantics. Author only confirmed intent, not filler.
 
-Read `query requirements` or `query requirement-history` for story overview
-snapshots. `query context --feature ID` exposes `feature.overview` when present;
+Read `query requirements` for current story content and `query history --node
+URN` for its Git history. `query context --feature ID` exposes `feature.overview` when present;
 read its prose with `query fragment --target URN` and its Git history with
 `query history --node URN`. The page renders safe Markdown, keeps full criterion
 statements visible as bullets, and expands supporting traceability through
@@ -326,7 +319,7 @@ Acceptance criteria may also carry an optional short title and Markdown overview
 Use `criterion add|revise --title TEXT --overview-source FILE|-` (or `--overview`)
 to explain rationale, examples, and boundaries while keeping the required
 statement an independent pass/fail obligation. Do not derive titles by truncating
-existing statements. Criterion revisions preserve omitted fields; explicit empty
+existing statements. Criterion edits preserve omitted fields; explicit empty
 title or overview clears them. Full story snapshots still specify all fields.
 Changing any authored criterion field makes its own evidence pins and whole-story
 pins stale; unchanged sibling criteria continue to carry forward. The viewer

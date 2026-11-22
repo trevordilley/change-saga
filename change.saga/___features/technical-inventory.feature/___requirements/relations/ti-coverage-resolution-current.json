@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-coverage-resolution-current",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-coverage-resolution:item:current",
-  "to": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:deduplicate",
-  "scope": "self",
-  "rationale": "Count current selected locations once even when several Items or entities select them. Retain every owner path and report overlaps.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:00:59.776246Z",
-  "superseded_at": "2026-09-27T10:27:23.215204Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-coverage-resolution:item:current",
+  "id": "ti-coverage-resolution-current",
+  "rationale": "Count current selected locations once even when several Items or entities select them. Retain every owner path and report overlaps.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:23.215204Z",
+  "to": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:deduplicate",
+  "to_revision": "sha256:47f8d6d87d160d433f34d3723c8b2d80b77a6a86b8eb0eab2645f4af7669e579",
+  "type": "explains",
+  "version": 5
 }

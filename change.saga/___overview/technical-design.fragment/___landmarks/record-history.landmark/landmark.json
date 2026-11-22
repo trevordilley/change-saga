@@ -1,10 +1,10 @@
 {
   "version": 2,
   "id": "record-history",
-  "label": "Complete definitions and separate lifecycle",
+  "label": "Current definitions and Git history",
   "selector": {
     "type": "text",
-    "exact": "Story definitions are complete immutable snapshots; lifecycle events form a separate history."
+    "exact": "Story definitions and product state are edited in one current record; Git is their history."
   },
   "target": ""
 }

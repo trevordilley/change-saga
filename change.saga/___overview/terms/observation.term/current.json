@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "observe mode"
+    ],
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:7f383f1ab2084630b831e465e176dd365437f051d740143d5ac1b2788fc15dbd",
+        "end": 29,
+        "path": "internal/gitdiff/opening.go",
+        "start": 5
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:0c2e1b6879140a966d9c97a23e65248a6e12be32ac5432d7ab5b73d8fb8519de",
+        "end": 57,
+        "path": "internal/gitdiff/opening.go",
+        "start": 40
+      }
+    ],
+    "definition": "The read mode used when no against revision is supplied. The selected head is compared with itself, so evidence is evaluated at one commit and there are no changed atoms or change layers. Observation inspects current documentation; it does not store comparison state in the Saga.",
+    "name": "Observation",
+    "stories": [
+      "urn:change-saga:change-saga:story:comparison-context"
+    ],
+    "term": "urn:change-saga:change-saga:term:observation"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:observation"
+  }
+}

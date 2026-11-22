@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -40,6 +41,23 @@ type appGraph struct {
 	// inbound and outbound are the active relations by endpoint.
 	inbound  map[string][]requirements.Relation
 	outbound map[string][]requirements.Relation
+	// Whiteboard labels share this loaded graph's snapshot. In particular, a
+	// legacy pin audit must not rescan the Saga once per relation or element.
+	whiteboards sync.Map // map[string]*graphWhiteboard
+}
+
+type graphWhiteboard struct {
+	once  sync.Once
+	value *requirements.WhiteboardRevision
+}
+
+func (graph *appGraph) whiteboard(sagaID, id string) *requirements.WhiteboardRevision {
+	entry, _ := graph.whiteboards.LoadOrStore(sagaID+":"+id, &graphWhiteboard{})
+	board := entry.(*graphWhiteboard)
+	board.once.Do(func() {
+		board.value, _ = requirements.LoadWhiteboard(graph.document.Root, sagaID, id, "")
+	})
+	return board.value
 }
 
 func newAppGraph(document *saga.Saga, records requirements.Document, tests quality.Document) *appGraph {
@@ -164,7 +182,7 @@ func (graph *appGraph) link(urn string) traceLink {
 		link.Kind, link.Title, link.Href = "Whiteboard element", id, whiteboardHref(id, "")
 		if len(parts) == 7 && parts[5] == "element" {
 			link.Title = parts[6]
-			if revision, err := requirements.LoadWhiteboard(graph.document.Root, parts[2], id, ""); err == nil && revision != nil {
+			if revision := graph.whiteboard(parts[2], id); revision != nil {
 				if e, ok := revision.Document.Element(parts[6]); ok {
 					link.Title = e.Label
 					link.Href = whiteboardFocusHref(link.Href, boardElementPath(revision.Document, e.ID))

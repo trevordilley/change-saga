@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:b7a832837864dd4f075c78950ae89421e4e515f6633748bd39c568f5d41ef846",
+      "end": 251,
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 227
+    }
+  ],
+  "created_at": "2026-10-16T23:24:08Z",
   "id": "evidence-2",
-  "test_case": "urn:change-saga:change-saga:test-case:review-decision-withdrawal",
-  "test_revision": "urn:change-saga:change-saga:test-case:review-decision-withdrawal:revision:r1",
+  "request_id": "saga-evidence-review-decision-withdrawal-evidence-2",
   "role": "implementation_under_test",
   "steps": [
     "withdraw"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/reviewstate/reviewstate.go",
-      "start": 227,
-      "end": 251,
-      "digest": "sha256:b7a832837864dd4f075c78950ae89421e4e515f6633748bd39c568f5d41ef846"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:08Z",
-  "request_id": "saga-evidence-review-decision-withdrawal-evidence-2"
+  "test_case": "urn:change-saga:change-saga:test-case:review-decision-withdrawal",
+  "test_revision": "sha256:a6416078e2d917e327a37742f9897c3a4ef8198fee113ff52d3ce79f058aa932",
+  "verifications": [],
+  "version": 5
 }

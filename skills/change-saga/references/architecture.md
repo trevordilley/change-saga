@@ -115,8 +115,7 @@ important limitations visible without hovering. Readers explore sections through
    generated metadata back into the real Saga. Publish generated diagram JSON to
    the scratch Saga. Read overflow errors and adjust the named element, its
    containing section and affected routes together. Failed validation is not a
-   reason to shrink everything. Successful scratch updates need fresh revision
-   IDs and the current scratch `--parent`. Bound automated repair retries; if
+   reason to shrink everything. Scratch updates replace current content without revision IDs or parent lists. Bound automated repair retries; if
    fitting stalls, redesign the section rather than growing boxes indefinitely.
 4. **Inspect the reader, every time.** Whiteboards currently have no `visual-qa`
    selector or publish dry-run. Open the scratch Saga with `change-saga open
@@ -139,9 +138,9 @@ important limitations visible without hovering. Readers explore sections through
    recheck changed sections. If no fresh reader is available, disclose that limit
    and perform a separate evidence pass yourself.
 6. **Publish the stable result through the CLI.** Recheck the real board's current
-   revision and role owner; reconcile concurrent changes rather than overwriting
-   them. Publish the final source once with a new revision and that real
-   `--parent` (omit it for a new board). Scratch parents are not real parents.
+   content and role owner; resolve concurrent file changes through Git.
+   Publish the final current source in place; preserve its stable board and element
+   identities. Git records the edit.
    Run `whiteboard check`, validate the Saga and verify final section links.
 
 ## Connect the board to the Saga
@@ -177,8 +176,7 @@ Use the narrowest meaningful range and explain its relevance in the reference's
 
 Changed referenced code makes the element visibly stale and counts against
 health. Read the changed code and intent, export with `whiteboard get`, update
-the element's explanation and evidence, then publish a new revision with the
-observed `--parent`. Never rewrite history or silently accept replacement code.
+the element's explanation and evidence, then update current content in place and let Git record the change. Never silently accept replacement code.
 `references` and `reconcile` include these references; current element evidence
 contributes living documented-code coverage independently of review decks.
 `whiteboard check` reports repository links found in notes as warnings only.

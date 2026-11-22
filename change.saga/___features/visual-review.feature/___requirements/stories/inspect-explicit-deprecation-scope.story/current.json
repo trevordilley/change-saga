@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "scope",
+        "overview": "An annotation on content does not automatically deprecate the code that the content explains.",
+        "statement": "A code-scoped deprecation identifies explicit code references rather than inferring a deprecated region from related evidence.",
+        "title": "Exact scope"
+      },
+      {
+        "id": "reason",
+        "overview": "The replacement is guidance for the selected target; it is not an assertion about every dependency.",
+        "statement": "A deprecation exposes an authored reason and any explicitly selected replacement.",
+        "title": "Explain the decision"
+      },
+      {
+        "id": "withdrawal",
+        "overview": "A reader must be able to distinguish withdrawn guidance from an active assertion instead of relying on deletion.",
+        "statement": "Withdrawing a deprecation edits current withdrawal state and reason; Git preserves its earlier assertion and state.",
+        "title": "Preserve withdrawal history"
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:reading-design-implementation"
+    ],
+    "overview": "A deprecation is an authored statement with a reason. Content scope names the explanation that should no longer be used; code scope identifies the exact referenced source. Optional replacement links guide the reader without expanding the deprecated region.\n\nGit preserves earlier assertions and withdrawal reasons. Stale evidence and unresolved legacy ambiguity remain visible. Absence of an annotation means no recorded deprecation, not proof that a record is current. This is a code-derived proposal.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can inspect an explicit deprecation annotation and its exact scope so I can avoid the deprecated content or code without guessing that nearby code is also deprecated.",
+    "story": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope",
+    "title": "See what is deprecated and why"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:inspect-explicit-deprecation-scope"
+  }
+}

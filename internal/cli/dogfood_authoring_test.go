@@ -79,7 +79,7 @@ func TestCitationIsCitableFromAnyFeature(t *testing.T) {
 	if err := Citation(context.Background(), []string{"add", "--feature", testFeature, "--id", "rfc", "--kind", "url", "--title", "RFC", "--reference", "https://example.test/rfc", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Story(context.Background(), []string{"add", "--feature", "billing", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a buyer I want to pay so that I get the goods", "--priority", "must", "--citation", "urn:change-saga:batch:citation:rfc", root}, &output); err != nil {
+	if err := Story(context.Background(), []string{"add", "--feature", "billing", "--id", "pay", "--title", "Pay", "--statement", "As a buyer I want to pay so that I get the goods", "--priority", "must", "--citation", "urn:change-saga:batch:citation:rfc", root}, &output); err != nil {
 		t.Fatalf("a story in another feature could not cite the citation: %v\n%s", err, output.String())
 	}
 	assertValid(t, root)

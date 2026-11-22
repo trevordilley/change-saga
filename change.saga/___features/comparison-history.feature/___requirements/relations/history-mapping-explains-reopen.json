@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "history-mapping-explains-reopen",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:39:39.964501Z",
   "from": "urn:change-saga:change-saga:slide:record-history-sequence:item:comparison-mapping",
-  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:reopen-comparison",
-  "scope": "self",
+  "id": "history-mapping-explains-reopen",
   "rationale": "The comparison-mapping step derives the against and head revisions used by each open command.",
-  "to_revision": "urn:change-saga:change-saga:story:record-change-history:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:39:39.964501Z"
+  "to": "urn:change-saga:change-saga:story:record-change-history:criterion:reopen-comparison",
+  "to_revision": "sha256:cc5c106da8e7d428ea9e394e87143867bea8f592fc124600a5afab99bbb62453",
+  "type": "explains",
+  "version": 5
 }

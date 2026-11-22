@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "All three kinds are usable in a design without implementation evidence.",
+    "preconditions": [
+      "Disposable Saga adopts inventory format 2; Record store proposal has name, explanation, intent proposed, baseline none and no code."
+    ],
+    "steps": [
+      {
+        "action": "Publish the Component proposal and query its inventory target.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:proposal-without-code"
+        ],
+        "expected_result": "The proposal is accepted and query current_revision.intent is proposed.",
+        "id": "create"
+      },
+      {
+        "action": "Repeat code-free creation for a System and data entity and reference each from an implementation design Item.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:proposal-without-code"
+        ],
+        "expected_result": "All three kinds are usable in a design without implementation evidence.",
+        "id": "all-kinds"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-code-free-proposal",
+    "title": "Create and reference a proposal before implementation"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-code-free-proposal"
+  }
+}

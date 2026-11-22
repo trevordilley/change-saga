@@ -29,7 +29,7 @@ func queryDeprecations(ctx context.Context, args []string, out io.Writer) error 
 	story := flags.String("story", "", "related story ID or URN, including retired stories")
 	ref := flags.String("ref", "", "code location at any revision")
 	head := flags.String("head", "HEAD", "source revision for evidence health")
-	history := flags.Bool("history", false, "include immutable history; requires --deprecation")
+	history := new(bool)
 	limit := flags.Int("limit", 50, "page size")
 	cursor := flags.String("cursor", "", "snapshot-bound cursor")
 	fail := func(code string, err error) error {

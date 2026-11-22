@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "description": "Explores prototypes, conducts product research and user interviews, and drafts stories for others to consume. Needs confidence that product intent is reflected in technical design and the implemented application.",
+    "name": "Product Manager",
+    "persona": "urn:change-saga:change-saga:persona:product-manager"
+  },
+  "state": {
+    "persona": "urn:change-saga:change-saga:persona:product-manager",
+    "state": "active"
+  }
+}

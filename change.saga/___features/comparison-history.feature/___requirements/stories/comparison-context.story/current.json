@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "observe-zero-diff",
+        "statement": "Opening a Saga without an against revision reports observe mode at the selected head and reports no comparison layers or changed lines."
+      },
+      {
+        "id": "merge-base-range",
+        "statement": "Opening with against and head revisions reports compare mode using their actual merge base as the base commit and the resolved head commit as the head."
+      },
+      {
+        "id": "committed-head-only",
+        "statement": "Requesting WORKTREE as the source head is rejected with guidance to commit the work before comparing it."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer inspecting a Saga, I can open one committed revision or compare a committed change so evidence and change layers are evaluated against an explicit, reproducible range.",
+    "story": "urn:change-saga:change-saga:story:comparison-context",
+    "title": "Choose observation or comparison context"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:comparison-context"
+  }
+}

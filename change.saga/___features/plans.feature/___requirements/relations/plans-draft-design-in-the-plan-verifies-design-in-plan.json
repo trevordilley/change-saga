@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "plans-draft-design-in-the-plan-verifies-design-in-plan",
-  "type": "verifies",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-11-02T22:18:29.361406Z",
   "from": "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan",
-  "to": "urn:change-saga:change-saga:story:draft-design-in-the-plan:criterion:design-in-plan",
-  "scope": "self",
+  "from_revision": "sha256:9568c4d6b2d7c450af6217668d4ef71df1b38d057471d81df638f5e9706b9ec7",
+  "id": "plans-draft-design-in-the-plan-verifies-design-in-plan",
   "rationale": "Step design-in-plan checks this criterion. This relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:plans-draft-design-in-the-plan:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:draft-design-in-the-plan:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-11-02T22:18:29.361406Z"
+  "to": "urn:change-saga:change-saga:story:draft-design-in-the-plan:criterion:design-in-plan",
+  "to_revision": "sha256:731ed94b4f04e0172c3b4dfd84a4a7557eeb85a123214722b712ab7da837ceba",
+  "type": "verifies",
+  "version": 5
 }

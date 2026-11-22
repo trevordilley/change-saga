@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Refuse acceptance without criteria.",
+    "preconditions": [
+      "A fresh Saga contains a proposed story with no criteria."
+    ],
+    "steps": [
+      {
+        "action": "Attempt to append an accepted event to that criterion-free story.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-lifecycle:criterion:acceptance-requires-criterion"
+        ],
+        "expected_result": "The request fails and no accepted event is written.",
+        "id": "check-acceptance-requires-criterion"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection",
+    "title": "Refuse acceptance without criteria"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-story-acceptance-rejection"
+  }
+}

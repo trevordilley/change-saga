@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Both the earlier approval and later changes-requested action remain recorded in time order.",
+    "preconditions": [
+      "Use a valid review slide and one human reviewer seat at a fixed committed head."
+    ],
+    "steps": [
+      {
+        "action": "Approve the slide, then submit changes requested with a reason.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history"
+        ],
+        "expected_result": "The current seat decision is changes requested.",
+        "id": "replace"
+      },
+      {
+        "action": "After the two-action replacement scenario, inspect the review decision history.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history"
+        ],
+        "expected_result": "Both the earlier approval and later changes-requested action remain recorded in time order.",
+        "id": "history"
+      },
+      {
+        "action": "Separately run the store fixture sequence of human and AI decisions at two heads plus withdrawals, then load all seven events.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history"
+        ],
+        "expected_result": "Seven events remain and the original human approval retains its ID, state and actor.",
+        "id": "retention-fixture"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-replacement-history",
+    "title": "Replace an approval with changes requested without losing the approval"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-replacement-history"
+  }
+}

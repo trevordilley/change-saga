@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The UI identifies Other as the human who authored that decision.",
+    "preconditions": [
+      "A review has queue slide; Git users Dev and Other have distinct emails."
+    ],
+    "steps": [
+      {
+        "action": "Create a human approval and commit it with Git user Other; inspect its decision after Dev withdraws only Dev's own later decision.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:identifies-author"
+        ],
+        "expected_result": "Other's decision remains and the report identifies Other.",
+        "id": "other"
+      },
+      {
+        "action": "Open the review as Dev and inspect the remaining decision author.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:identifies-author"
+        ],
+        "expected_result": "The UI identifies Other as the human who authored that decision.",
+        "id": "visible"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-author",
+    "title": "Keep a committed human decision attributed to its author"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-author"
+  }
+}

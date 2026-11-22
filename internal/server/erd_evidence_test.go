@@ -42,7 +42,7 @@ func TestERDEvidenceDrawerPreservesMemberAndRelationshipPins(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return saga.DocumentationLink{Target: result.URN, Revision: result.Created[0]}
+		return saga.DocumentationLink{Target: result.URN, Revision: result.ContentDigest}
 	}
 	entity := inventory.Pinned(pins["report"]).TechnicalDefinition
 	commit := entity.Code[0].Commit
@@ -57,6 +57,7 @@ func TestERDEvidenceDrawerPreservesMemberAndRelationshipPins(t *testing.T) {
 	erd.Bindings[0].Entity = &report
 	diagram := write(requirements.KindERD, "reporting", pins["reporting"], erd)
 	// A newer entity definition must never replace the ERD's saved member.
+	commitServerDocumentation(t, root)
 	entity.Name = "Do not substitute this newer definition"
 	_, err = requirements.WriteTechnicalRevision(ctx, root, "test", requirements.TechnicalWrite{Kind: requirements.KindDataEntity, ID: "pdf-report", RevisionID: "newer", Parents: []string{report.Revision}, Definition: entity, Repository: manifest.Source.Repository, Resolver: resolver})
 	if err != nil {
@@ -75,7 +76,7 @@ func TestERDEvidenceDrawerPreservesMemberAndRelationshipPins(t *testing.T) {
 	serverGit(t, repo, "commit", "-m", "move declarations")
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	drawer := func(pin saga.DocumentationLink, relationship string) (int, string) {
-		return technicalGet(t, mux, "/api/documentation?"+url.Values{"target": {pin.Target}, "revision": {pin.Revision}, "relationship": {relationship}}.Encode())
+		return technicalGet(t, mux, "/api/documentation?"+url.Values{"target": {pin.Target}, "content_digest": {pin.Revision}, "relationship": {relationship}}.Encode())
 	}
 	if saga.ValidDocumentationLink("test", diagram) {
 		t.Fatal("ERD inspection must not widen Item documentation admission")

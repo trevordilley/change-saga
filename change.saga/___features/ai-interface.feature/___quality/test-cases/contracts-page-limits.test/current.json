@@ -1,0 +1,64 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive",
+      "negative",
+      "edge"
+    ],
+    "expected_result": "Cursor collection limits default to 100, accept 1..1000, and reject out-of-range values.",
+    "preconditions": [
+      "Use a fixed Saga with 1001 queryable requirements; use cursor-paginated requirements, not byte-offset fragment/slide reads."
+    ],
+    "steps": [
+      {
+        "action": "Inspect the executable documented-bound assertions for DefaultPageLimit and MaxPageLimit.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit"
+        ],
+        "expected_result": "The asserted constants are 100 and 1000.",
+        "id": "constants"
+      },
+      {
+        "action": "Query requirements without --limit.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit"
+        ],
+        "expected_result": "Exactly 100 requirements are returned and has_more is true.",
+        "id": "default"
+      },
+      {
+        "action": "Query independently with limits 1 and 1000, then representative interior limits 2 and 100.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit"
+        ],
+        "expected_result": "Each valid limit is accepted and returns that many rows from the 1001-row fixture.",
+        "id": "bounds"
+      },
+      {
+        "action": "Query gaps with --limit 0, 1001 and NaN.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit"
+        ],
+        "expected_result": "Each request fails with invalid_argument without opening or changing the Saga.",
+        "id": "invalid"
+      },
+      {
+        "action": "Query requirements with --limit -1.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit"
+        ],
+        "expected_result": "The request fails as invalid_argument.",
+        "id": "negative"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-page-limits",
+    "title": "Check cursor-page defaults and limit boundaries"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-page-limits"
+  }
+}

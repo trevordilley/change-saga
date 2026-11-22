@@ -41,6 +41,109 @@
           "title": {
             "type": "string",
             "minLength": 1
+          },
+          "checkpoint": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Makes the phase a checkpoint: it holds no Tasks and covers every Task since the previous checkpoint, reviewed together before the work after it starts.",
+            "properties": {
+              "expectations": {
+                "type": "array",
+                "description": "What must be true by the time the checkpoint is reached: invariants and characteristics of the work, not user stories.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "statement"
+                  ],
+                  "properties": {
+                    "id": {
+                      "$ref": "#/$defs/id"
+                    },
+                    "statement": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "review": {
+                "$ref": "#/$defs/id"
+              },
+              "passed": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "at",
+                  "by",
+                  "reason"
+                ],
+                "properties": {
+                  "at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "by": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "agent": {
+                    "type": "boolean"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "to_come": {
+                    "type": "array",
+                    "description": "The work after the checkpoint when it passed.",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "task",
+                        "phase"
+                      ],
+                      "properties": {
+                        "task": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "phase": {
+                          "$ref": "#/$defs/id"
+                        }
+                      }
+                    }
+                  },
+                  "base": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The commit the checkpoint's review started from when it passed."
+                  },
+                  "met": {
+                    "type": "array",
+                    "description": "How each expectation was shown to hold.",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "expectation",
+                        "how"
+                      ],
+                      "properties": {
+                        "expectation": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "how": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -57,6 +160,13 @@
       "items": {
         "$ref": "#/$defs/id"
       }
+    },
+    "checkpoint_passer": {
+      "enum": [
+        "person",
+        "agent"
+      ],
+      "description": "Who passes the Plan's checkpoints: a person, or an agent unless what it found is surprising or urgent. Absent means a person."
     },
     "delivered_at": {
       "type": "string",

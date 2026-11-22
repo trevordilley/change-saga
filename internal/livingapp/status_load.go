@@ -16,6 +16,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -38,10 +39,11 @@ const (
 // Document is optional; when supplied it must be the same snapshot the
 // comparison was evaluated against.
 type StatusOptions struct {
-	SagaRoot string
-	Document *saga.Saga
-	Report   coverage.Report
-	Changes  gitdiff.ChangeSet
+	InventorySources []currentrecord.GitSource
+	SagaRoot         string
+	Document         *saga.Saga
+	Report           coverage.Report
+	Changes          gitdiff.ChangeSet
 	// Resolver views quality-evidence and term code references in Changes.
 	// Without it every such reference is reported stale. When it can also read
 	// file content (Blobs), a comparison suggests new terminology.
@@ -86,7 +88,7 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 	}
 	inputs.WhiteboardProblems = map[string][]string{}
 	if len(inputs.WhiteboardItems) > 0 {
-		inventory, err := requirements.LoadInventory(root, doc.Manifest.ID)
+		inventory, err := requirements.LoadInventory(root, doc.Manifest.ID, options.InventorySources...)
 		if err != nil {
 			return StatusInputs{}, err
 		}
@@ -140,7 +142,7 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 		for _, testCase := range inputs.Quality.TestCases {
 			heads[testCase.Identity.ID] = copyStrings(testCase.RevisionHeads)
 		}
-		graph, err := loadLivingGraph(root, doc, heads)
+		graph, err := loadLivingGraph(root, doc, heads, options.InventorySources...)
 		if err != nil {
 			return StatusInputs{}, err
 		}
@@ -225,7 +227,7 @@ func revisionHeads(document quality.Document) map[string][]string {
 // Relation currency comes only from requirements.EvaluateRelations; this
 // function supplies the heads other domains own, including test-case heads,
 // so a test-case link is never judged without them.
-func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string) (livingGraph, error) {
+func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string, sources ...currentrecord.GitSource) (livingGraph, error) {
 	designDigests, err := saga.CurrentDesignContentDigests(doc)
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the technical design could not be indexed", false, nil, err)
@@ -234,7 +236,11 @@ func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string)
 	if testCases != nil {
 		stale.SetTestCaseHeads(doc.Manifest.ID, testCases)
 	}
-	document, err := requirements.LoadWithOptions(root, doc.Manifest.ID, requirements.LoadOptions{StaleInputs: stale})
+	loadOptions := requirements.LoadOptions{StaleInputs: stale}
+	if len(sources) > 0 {
+		loadOptions.GitSource = &sources[0]
+	}
+	document, err := requirements.LoadWithOptions(root, doc.Manifest.ID, loadOptions)
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the requirements could not be loaded", false, nil, err)
 	}
@@ -400,7 +406,7 @@ func validateCoverageException(record coverageExceptionRecord, sagaID, expectedI
 	if ref, err := livingid.Parse(record.Criterion); err != nil || ref.Kind != livingid.KindCriterion || ref.SagaID != sagaID {
 		problems = append(problems, "criterion must be a criterion URN in this Saga")
 	}
-	if ref, err := livingid.Parse(record.Revision); err != nil || ref.Kind != livingid.KindRevision || ref.SagaID != sagaID {
+	if ref, err := livingid.Parse(record.Revision); !currentrecord.ValidDigest(record.Revision) && (err != nil || ref.Kind != livingid.KindRevision || ref.SagaID != sagaID) {
 		problems = append(problems, "story_revision must be a story revision URN in this Saga")
 	}
 	if record.Supersedes == nil {

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "query-slide-explains-ai-contract",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:structured-query",
-  "to": "urn:change-saga:change-saga:story:structured-ai-contract",
-  "scope": "descendants",
-  "rationale": "The command grammar and query envelopes provide bounded discovery and stable structured responses for AI callers.",
-  "to_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-22T23:41:07.19118Z",
-  "superseded_at": "2026-09-23T16:39:34.176757Z"
+  "from": "urn:change-saga:change-saga:slide:structured-query",
+  "id": "query-slide-explains-ai-contract",
+  "rationale": "The command grammar and query envelopes provide bounded discovery and stable structured responses for AI callers.",
+  "scope": "descendants",
+  "state": "superseded",
+  "superseded_at": "2026-09-23T16:39:34.176757Z",
+  "to": "urn:change-saga:change-saga:story:structured-ai-contract",
+  "to_revision": "sha256:3b2841b06ec70b1a1bf19bbc6059a4e28e6d6841902e5176950754021a097142",
+  "type": "explains",
+  "version": 5
 }

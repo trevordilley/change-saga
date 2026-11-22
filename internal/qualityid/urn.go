@@ -125,6 +125,9 @@ func TestCase(sagaID, testCaseID string) (string, error) {
 }
 
 func Revision(sagaID, testCaseID, revisionID string) (string, error) {
+	if regexp.MustCompile(`^sha256-[0-9a-f]{64}$`).MatchString(revisionID) {
+		return "sha256:" + strings.TrimPrefix(revisionID, "sha256-"), nil
+	}
 	return nested(sagaID, testCaseID, KindRevision, revisionID)
 }
 

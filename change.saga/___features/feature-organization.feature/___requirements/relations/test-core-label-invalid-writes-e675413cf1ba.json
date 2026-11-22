@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-label-invalid-writes-e675413cf1ba",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-label-invalid-writes",
-  "to": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:duplicate-name",
-  "scope": "self",
-  "rationale": "Steps check-duplicate-name, check-duplicate-diagnostic define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-label-invalid-writes:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:18:16.260576Z",
-  "request_id": "test-core-label-invalid-writes-e675413cf1ba"
+  "from": "urn:change-saga:change-saga:test-case:core-label-invalid-writes",
+  "from_revision": "sha256:e31e6e96e9341f0d458bb5c49dd1da2b28e78975086fb567304cb02f23e2369f",
+  "id": "test-core-label-invalid-writes-e675413cf1ba",
+  "rationale": "Steps check-duplicate-name, check-duplicate-diagnostic define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-label-invalid-writes-e675413cf1ba",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:duplicate-name",
+  "to_revision": "sha256:6961a862af4838d5dac5d2a81754277d39242f579c1193ed4a43be26450a36fd",
+  "type": "verifies",
+  "version": 5
 }

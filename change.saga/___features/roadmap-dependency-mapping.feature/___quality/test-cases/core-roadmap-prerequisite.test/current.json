@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Read prerequisite direction between planned features.",
+    "preconditions": [
+      "Use disposable planned features representing onboarding and server mode; this case describes planned dependency authoring and does not alter hosting work."
+    ],
+    "steps": [
+      {
+        "action": "When a supported feature-dependency authoring surface exists, record that onboarding depends on server mode and inspect both feature views.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:map-roadmap-prerequisites:criterion:directed-prerequisite"
+        ],
+        "expected_result": "A reader can identify server mode as the prerequisite and onboarding as the dependent feature.",
+        "id": "check-directed-prerequisite"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-roadmap-prerequisite",
+    "title": "Read prerequisite direction between planned features"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-roadmap-prerequisite"
+  }
+}

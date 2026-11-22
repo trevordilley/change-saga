@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Refuse reuse of a removed step ID.",
+    "preconditions": [
+      "A separate case r1 contains step inspect; append r2 removing inspect and save package paths."
+    ],
+    "steps": [
+      {
+        "action": "Attempt r3 reusing inspect for a different action.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:record-test-proof:criterion:immutable-enrichment"
+        ],
+        "expected_result": "The request is refused for removed-step reuse and no package paths change.",
+        "id": "check-step-id-reuse"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-case-removed-step-id",
+    "title": "Refuse reuse of a removed step ID"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-case-removed-step-id"
+  }
+}

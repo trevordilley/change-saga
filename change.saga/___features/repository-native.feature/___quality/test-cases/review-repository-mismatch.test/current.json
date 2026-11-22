@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive",
+      "negative"
+    ],
+    "expected_result": "Comparison returns the actual checkout changes.",
+    "preconditions": [
+      "Source checkout origin is acme/actual.git, while declared Saga source identity is acme/other.git; source has two commits with a changed file."
+    ],
+    "steps": [
+      {
+        "action": "Read source-backed comparison without a mismatch override.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-checkout-context:criterion:mismatch-refused"
+        ],
+        "expected_result": "Comparison refuses the checkout and does not leak credentials from origin.",
+        "id": "refuse"
+      },
+      {
+        "action": "Repeat using AllowRepositoryMismatch explicitly.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-checkout-context:criterion:mismatch-refused"
+        ],
+        "expected_result": "Comparison returns the actual checkout changes.",
+        "id": "override"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-repository-mismatch",
+    "title": "Refuse a different source repository unless override is explicit"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-repository-mismatch"
+  }
+}

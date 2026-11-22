@@ -24,8 +24,17 @@ func TestInventoryItemSelectionsAndSavedViews(t *testing.T) {
 		t.Fatal(err)
 	}
 	urn := "urn:change-saga:app:"
+	capturedPins := map[string]string{}
 	pin := func(kind, id, rev string) saga.DocumentationLink {
-		return saga.DocumentationLink{Target: urn + kind + ":" + id, Revision: urn + kind + ":" + id + ":revision:" + rev}
+		target := urn + kind + ":" + id
+		if rev == "r9" {
+			return saga.DocumentationLink{Target: target, Revision: "sha256:" + strings.Repeat("f", 64)}
+		}
+		key := target + "/" + rev
+		if capturedPins[key] == "" {
+			capturedPins[key] = currentTestPin(t, f.root, target)
+		}
+		return saga.DocumentationLink{Target: target, Revision: capturedPins[key]}
 	}
 	code := func(id, path string, start, end int) []map[string]any {
 		return []map[string]any{{"id": id, "commit": "HEAD", "path": path, "start": start, "end": end, "note": "Exact behavior."}}
@@ -61,7 +70,7 @@ func TestInventoryItemSelectionsAndSavedViews(t *testing.T) {
 	sysPath := []saga.DocumentationLink{pin("system", "storage", "r1"), pin("component", "store", "r1")}
 	addReviewItem := func(id string, doc saga.DocumentationLink, extra ...string) error {
 		out.Reset()
-		args := []string{"--review", "pr-7", "--slide", "queue", "--id", id, "--kind", "node", "--element-id", "node", "--description", "Uses shared storage.", "--documentation", doc.Target, "--documentation-revision", doc.Revision, "--repo", f.repo}
+		args := []string{"--review", "pr-7", "--slide", "queue", "--id", id, "--kind", "node", "--element-id", "node", "--description", "Uses shared storage.", "--documentation", doc.Target, "--documentation-content-digest", doc.Revision, "--repo", f.repo}
 		return AddItem(ctx, append(append(args, extra...), f.root), &out)
 	}
 	refusals := map[string]struct {
@@ -95,7 +104,7 @@ func TestInventoryItemSelectionsAndSavedViews(t *testing.T) {
 
 	// A definition successor never rewrites the saved pin or selection.
 	if err := h.run("component", "revise", "store", map[string]any{"name": "store", "explanation": "Implemented store with jobs.", "intent": "implemented", "code": code("table", "store.go", 2, 3)},
-		"--revision", "r2", "--parent", urn+"component:store:revision:r1", "--delivery", "HEAD"); err != nil {
+		"--delivery", "HEAD"); err != nil {
 		t.Fatalf("revise store: %v %s", err, h.out.String())
 	}
 	out.Reset()
@@ -135,12 +144,12 @@ func TestInventoryItemSelectionsAndSavedViews(t *testing.T) {
 	}
 	system["explanation"] = "Queue writes into the store (r2)."
 	system["components"] = []saga.DocumentationLink{pin("component", "store", "r2"), pin("component", "queue", "r1")}
-	if err := h.run("system", "revise", "storage", system, "--revision", "r2", "--parent", urn+"system:storage:revision:r1", "--delivery", "HEAD"); err != nil {
+	if err := h.run("system", "revise", "storage", system, "--delivery", "HEAD"); err != nil {
 		t.Fatalf("system r2: %v %s", err, h.out.String())
 	}
 	writeSelections([]saga.DocumentationLink{pin("system", "storage", "r2"), pin("component", "store", "r2")}, "table", 2, 3, "")
 	out.Reset()
-	if err := AddItem(ctx, []string{"--slide", "storage-flow", "--id", "store", "--kind", "node", "--element-id", "slide-title", "--description", "Stores jobs.", "--documentation", urn + "system:storage", "--documentation-revision", urn + "system:storage:revision:r2", "--selections", selectionsFile, "--repo", f.repo, f.root}, &out); err != nil {
+	if err := AddItem(ctx, []string{"--slide", "storage-flow", "--id", "store", "--kind", "node", "--element-id", "slide-title", "--description", "Stores jobs.", "--documentation", urn + "system:storage", "--documentation-content-digest", pin("system", "storage", "r2").Revision, "--selections", selectionsFile, "--repo", f.repo, f.root}, &out); err != nil {
 		t.Fatalf("implementation selection: %v %s", err, out.String())
 	}
 	assertValid(t, f.root)
@@ -182,7 +191,7 @@ func TestInventoryTransactionSelections(t *testing.T) {
 		t.Fatalf("worker: %v %s", err, h.out.String())
 	}
 	target := "urn:change-saga:" + id + ":component:worker"
-	pin := saga.DocumentationLink{Target: target, Revision: target + ":revision:r1"}
+	pin := saga.DocumentationLink{Target: target, Revision: currentTestPin(t, root, target)}
 	request := slideTransactionRequest(t, repo, base, commit, id, "with-selection", "create", "absent", "node")
 	request.Items[0].Documentation = &pin
 	request.Items[0].Selections = []saga.ItemSelection{{ID: "run-fn", Path: []saga.DocumentationLink{pin}, Evidence: "run", Code: coderefAt("", "service.go", 3, 3, "Run is what this Item explains.")}}

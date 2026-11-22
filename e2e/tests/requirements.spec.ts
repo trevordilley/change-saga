@@ -8,17 +8,7 @@ test("requirements remain canonical while stories and criteria get dedicated rev
   const persona = runCLI(saga, ["persona", "add", "--id", "reviewer", "--name", "Reviewer", "--description", "Reads the Saga to approve a change.", saga.sagaRoot]);
   expect(persona.status, persona.stderr).toBe(0);
   const result = runCLI(saga, [
-    "story", "add",
-    "--feature", "wave-one",
-    "--persona", "urn:change-saga:wave-one:persona:reviewer",
-    "--id", "canonical-review",
-    "--revision", "r1",
-    "--event", "proposed",
-    "--title", "Review canonical requirements",
-    "--statement", statement,
-    "--priority", "must",
-    "--criterion", "stable-targets=Every story and criterion keeps its canonical stable target.",
-    saga.sagaRoot
+    "story", "add", "--feature", "wave-one", "--persona", "urn:change-saga:wave-one:persona:reviewer", "--id", "canonical-review", "--title", "Review canonical requirements", "--statement", statement, "--priority", "must", "--criterion", "stable-targets=Every story and criterion keeps its canonical stable target.", saga.sagaRoot
   ]);
   expect(result.status, result.stderr).toBe(0);
 
@@ -80,8 +70,8 @@ test("an active requirement opens its implementation Item and exact linked sourc
   const criterion = `${story}:criterion:opens-source`;
   const item = "urn:change-saga:wave-one:slide:requirement-implementation:item:implementation-node";
 
-  run("story", "add", "--feature", "wave-one", "--id", "trace-code", "--revision", "r1", "--event", "proposed", "--title", "Trace intent to exact code", "--statement", "As a reviewer, I can follow a requirement to the implementation that fulfills it.", "--criterion", "opens-source=The implementation Item opens the exact linked source.", saga.sagaRoot);
-  run("story", "set-state", "--feature", "wave-one", "--story", story, "--event", "accepted", "--parent", `${story}:event:proposed`, "--state", "accepted", "--reason", "The reviewer path is implemented and testable.", saga.sagaRoot);
+  run("story", "add", "--feature", "wave-one", "--id", "trace-code", "--title", "Trace intent to exact code", "--statement", "As a reviewer, I can follow a requirement to the implementation that fulfills it.", "--criterion", "opens-source=The implementation Item opens the exact linked source.", saga.sagaRoot);
+  run("story", "set-state", "--feature", "wave-one", "--story", story, "--state", "accepted", "--reason", "The reviewer path is implemented and testable.", saga.sagaRoot);
   run("add-deck", "--feature", "wave-one", "--objective", "Explain how the requirement reaches its implementation.", saga.sagaRoot, "requirement-path");
   run("add-slide", "--deck", "requirement-path", "--intent", "trace", "--layout", "diagram", "--title", "Requirement implementation", "--takeaway", "The requirement reaches one exact implementation Item.", saga.sagaRoot, "requirement-implementation");
   const visual = join(saga.root, "requirement-path.svg");
@@ -122,15 +112,15 @@ test("retired stories and criteria distinguish explicit replacements from prose"
   };
   const addAccepted = (id: string, title: string, criterion: string): string => {
     const urn = `urn:change-saga:wave-one:story:${id}`;
-    run("story", "add", "--feature", "wave-one", "--id", id, "--revision", "r1", "--event", "proposed", "--title", title, "--statement", `As a reviewer, I can use ${title.toLowerCase()}.`, "--criterion", criterion, saga.sagaRoot);
-    run("story", "set-state", "--feature", "wave-one", "--story", urn, "--event", "accepted", "--parent", `${urn}:event:proposed`, "--state", "accepted", "--reason", "The behavior is current.", saga.sagaRoot);
+    run("story", "add", "--feature", "wave-one", "--id", id, "--title", title, "--statement", `As a reviewer, I can use ${title.toLowerCase()}.`, "--criterion", criterion, saga.sagaRoot);
+    run("story", "set-state", "--feature", "wave-one", "--story", urn, "--state", "accepted", "--reason", "The behavior is current.", saga.sagaRoot);
     return urn;
   };
   const current = addAccepted("current-route", "Current review route", "current-entry=The current route opens the review.");
   const legacy = addAccepted("legacy-route", "Legacy review route", "legacy-entry=The legacy route opens the review.");
   const proseOnly = addAccepted("prose-only-route", "Prose-only legacy route", "prose-entry=The prose-only route opens the review.");
-  run("story", "set-state", "--feature", "wave-one", "--story", legacy, "--event", "retired", "--parent", `${legacy}:event:accepted`, "--state", "retired", "--reason", "Use current-route instead.", saga.sagaRoot);
-  run("story", "set-state", "--feature", "wave-one", "--story", proseOnly, "--event", "retired", "--parent", `${proseOnly}:event:accepted`, "--state", "retired", "--reason", "This prose mentions current-route but no graph edge exists.", saga.sagaRoot);
+  run("story", "set-state", "--feature", "wave-one", "--story", legacy, "--state", "retired", "--reason", "Use current-route instead.", saga.sagaRoot);
+  run("story", "set-state", "--feature", "wave-one", "--story", proseOnly, "--state", "retired", "--reason", "This prose mentions current-route but no graph edge exists.", saga.sagaRoot);
   run("relation", "add", "--feature", "wave-one", "--id", "current-route-replaces-legacy", "--type", "supersedes", "--from", current, "--to", legacy, "--rationale", "The current route explicitly replaces the legacy route.", saga.sagaRoot);
   run("relation", "add", "--feature", "wave-one", "--id", "current-entry-replaces-legacy-entry", "--type", "supersedes", "--from", `${current}:criterion:current-entry`, "--to", `${legacy}:criterion:legacy-entry`, "--rationale", "The current entry criterion explicitly replaces the legacy one.", saga.sagaRoot);
 

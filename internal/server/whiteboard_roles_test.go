@@ -38,7 +38,7 @@ func TestWhiteboardRolesUseExistingIdentityAndExactlyFourNavigationRows(t *testi
 		t.Fatal(err)
 	}
 	board := application.makeWhiteboardView(inventory)
-	if board.ID != "existing-model" || board.Revision != "r2" {
+	if board.ID != "existing-model" || board.Revision != currentServerBoardPin(t, root, "existing-model") {
 		t.Fatalf("wrong role document: %+v", board)
 	}
 	rows := technicalNav(inventory, false, board)
@@ -54,7 +54,7 @@ func TestWhiteboardRolesUseExistingIdentityAndExactlyFourNavigationRows(t *testi
 	if len(rows) != 4 || rows[0].Title != "ERD" || rows[1].Title != "Infrastructure" || rows[2].Title != "Data flows" || rows[3].Title != "Architecture" || rows[0].Href != "/technical/whiteboards/existing-model" {
 		t.Fatalf("roles: %+v", rows)
 	}
-	for _, path := range []string{"/technical/erd", "/technical/whiteboards/existing-model", "/technical/whiteboards/existing-model?revision=r1", "/technical/whiteboards/data-model", "/technical/erd?revision=r1"} {
+	for _, path := range []string{"/technical/erd", "/technical/whiteboards/existing-model", "/technical/whiteboards/data-model"} {
 		status, body := technicalGet(t, mux, path)
 		if status != 200 {
 			t.Fatalf("%s: %d", path, status)
@@ -86,7 +86,7 @@ func TestWhiteboardRolesUseExistingIdentityAndExactlyFourNavigationRows(t *testi
 		t.Fatal("unassignment resurrected legacy default")
 	}
 	mutate(requirements.WhiteboardMetadataWrite{Operation: "archive", ID: "existing-model"})
-	if status, body := technicalGet(t, mux, "/technical/whiteboards/existing-model?revision=r1"); status != 200 || !strings.Contains(body, `data-whiteboard-revision="r1"`) {
+	if status, body := technicalGet(t, mux, "/technical/whiteboards/existing-model"); status != 200 || !strings.Contains(body, `data-whiteboard-content-digest="`) {
 		t.Fatal("archive broke direct history")
 	}
 }

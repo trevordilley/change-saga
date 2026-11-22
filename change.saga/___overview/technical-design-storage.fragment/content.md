@@ -4,15 +4,15 @@ The repository owns authored truth. `change.saga` holds the app identity, Produc
 
 ## Identity and revisions {#identity-and-revisions}
 
-A stable identity answers which story, entity, board or review is being discussed. A revision answers which definition was read. Story revisions include complete acceptance criteria and optional authored overviews; a criterion ID is never reused after removal. Lifecycle is separate: a new explanation does not silently accept a proposed story. Relations and whiteboard sources retain explicit revision pins.
+A stable identity answers which story, entity, board or review is being discussed. Current records store the editable authored definition and product state. Stable criterion IDs retain their meaning across edits. A new explanation does not silently accept a proposed story. References retain stable targets and exact content digests; source commits remain separate evidence pins.
 
-Whiteboard revision parents are IDs within one named board. Story and inventory references use canonical URNs. Updating a board requires the current parent and creates a complete new document. Readers can reopen the original revision; source adoption is explicit. Concurrent heads remain a conflict until an author supplies an intentional reconciliation.
+Whiteboards store one complete current document. Publication replaces that value; relative diagram edits require its current digest. Git owns earlier versions, attribution, branches, merging and conflict resolution. Historical readers use real Git content and preserve its original pins. Legacy competing heads stop normalization without deleting content; an author explicitly preserves and combines them in Git.
 
 ## Publication and recovery {#publication-and-recovery}
 
 CLI authoring validates before publishing through `internal/store`. Cooperative domain locks protect mutations from simultaneous writers. File replacement and new-directory publication use staged filesystem operations. A multi-file batch prepares its entries and attempts rollback if publication fails, but it does not promise atomic visibility of the entire batch or crash-atomicity across every file. Recovery errors identify retained recovery content.
 
-A busy writer should retry after contention; a mismatched parent requires rereading current state. Do not bypass the boundary by editing generated metadata. Git then records coherent changes with the source, retaining the reason for a design decision and allowing ordinary branch merges.
+A busy writer retries after contention; a stale digest on a relative edit requires rereading current content. Normalization converts exact legacy pins before atomically publishing current records, then removes obsolete revision/event metadata. Reads never persist normalization. Git records coherent documentation and source changes, preserving design reasons and ordinary branch merges.
 
 ## Stored evidence and derived answers {#stored-evidence-and-derived-answers}
 

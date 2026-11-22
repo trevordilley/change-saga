@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Sibling current documents and original committed content remain byte-identical.",
+    "preconditions": [
+      "A disposable Saga has zeta, Architecture.v2 and data-model current boards with valid pins, preserved in a real Git commit."
+    ],
+    "steps": [
+      {
+        "action": "Publish updated complete data-model content and reload each named board.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:named"
+        ],
+        "expected_result": "Only data-model current content changes; sibling contents and identities remain unchanged.",
+        "id": "publish"
+      },
+      {
+        "action": "Compare sibling current bytes and inspect the original committed board content through Git.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inspect-named-whiteboard-history:criterion:named"
+        ],
+        "expected_result": "Sibling bytes are unchanged and historical Git content retains its original pins.",
+        "id": "sibling"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-independent-history",
+    "title": "Publish named whiteboards without changing their siblings"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-whiteboard-independent-history"
+  }
+}

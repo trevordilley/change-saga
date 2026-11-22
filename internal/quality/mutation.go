@@ -3,6 +3,7 @@ package quality
 import (
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -118,6 +119,12 @@ type RecordRunInput struct {
 // revision, and the proposed lifecycle root. The package appears atomically.
 func AddTestCase(root string, input AddTestCaseInput) (MutationResult, error) {
 	if input.EventID == "" {
+		input.EventID = "current"
+	}
+	if input.RevisionID == "" {
+		input.RevisionID = "edit"
+	}
+	if input.EventID == "" {
 		input.EventID = string(StateProposed)
 	}
 	var result MutationResult
@@ -173,18 +180,10 @@ func AddTestCase(root string, input AddTestCaseInput) (MutationResult, error) {
 			return err
 		}
 		err = store.CommitDir(document.Root, filepath.Join(parent, input.ID+".test"), func(stage string) error {
-			for _, dir := range []string{"revisions", "events"} {
-				if err := os.Mkdir(filepath.Join(stage, dir), 0o755); err != nil {
-					return err
-				}
-			}
 			if err := store.WriteJSON(filepath.Join(stage, "test-case.json"), identity, true); err != nil {
 				return err
 			}
-			if err := store.WriteJSON(filepath.Join(stage, "revisions", revision.ID+".json"), revision, true); err != nil {
-				return err
-			}
-			return store.WriteJSON(filepath.Join(stage, "events", event.ID+".json"), event, true)
+			return currentrecord.Write(stage, revision, event)
 		})
 		if err != nil {
 			rollback.undo()
@@ -196,12 +195,16 @@ func AddTestCase(root string, input AddTestCaseInput) (MutationResult, error) {
 		result = MutationResult{URN: testCaseURN, Path: paths[0], Created: created, Paths: paths, CurrentHeads: []string{revisionURN, eventURN}}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // ReviseTestCase appends one complete immutable revision. Parents must name
 // every current revision head, so concurrent edits are reconciled explicitly.
 func ReviseTestCase(root string, input ReviseTestCaseInput) (MutationResult, error) {
+	input.Parents = nil
+	if input.RevisionID == "" {
+		input.RevisionID = "edit"
+	}
 	var result MutationResult
 	err := mutateTestCase(root, input.TestCase, func(document *Document, testCase *TestCase) error {
 		sagaID, testCaseID := document.SagaID, testCase.Identity.ID
@@ -224,9 +227,6 @@ func ReviseTestCase(root string, input ReviseTestCaseInput) (MutationResult, err
 		if len(testCase.Revisions) >= MaxRevisionsPerTest {
 			return fmt.Errorf("revision limit of %d reached", MaxRevisionsPerTest)
 		}
-		if !sameSet(revision.Parents, testCase.RevisionHeads) {
-			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", revision.Parents, testCase.RevisionHeads)
-		}
 		candidate := *testCase
 		candidate.Revisions = append(append([]Revision{}, testCase.Revisions...), revision)
 		if err := validateCandidate(&candidate, document); err != nil {
@@ -238,12 +238,16 @@ func ReviseTestCase(root string, input ReviseTestCaseInput) (MutationResult, err
 		result = singleResult(urn, path, []string{urn}, false)
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // SetTestCaseState appends a lifecycle event. Naming more than one current
 // head is an explicit reconciliation and may choose any state.
 func SetTestCaseState(root string, input SetTestCaseStateInput) (MutationResult, error) {
+	input.Parents = nil
+	if input.EventID == "" {
+		input.EventID = "edit"
+	}
 	var result MutationResult
 	err := mutateTestCase(root, input.TestCase, func(document *Document, testCase *TestCase) error {
 		sagaID, testCaseID := document.SagaID, testCase.Identity.ID
@@ -251,6 +255,9 @@ func SetTestCaseState(root string, input SetTestCaseStateInput) (MutationResult,
 			Schema: LifecycleEventSchemaURL, Version: Version, ID: input.EventID, TestCase: input.TestCase,
 			Parents: copyStrings(input.Parents), State: input.State, Reason: strings.TrimSpace(input.Reason),
 			CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
+		}
+		if testCase.CurrentLifecycle != nil && testCase.CurrentLifecycle.State != event.State && !allowedLifecycleTransition(testCase.CurrentLifecycle.State, event.State, false) {
+			return fmt.Errorf("cannot change test state from %s to %s", testCase.CurrentLifecycle.State, event.State)
 		}
 		if err := validateLifecycleEvent(event, sagaID, testCaseID); err != nil {
 			return err
@@ -270,9 +277,6 @@ func SetTestCaseState(root string, input SetTestCaseStateInput) (MutationResult,
 		if len(testCase.Events) >= MaxEventsPerTest {
 			return fmt.Errorf("lifecycle event limit of %d reached", MaxEventsPerTest)
 		}
-		if !sameSet(event.Parents, testCase.LifecycleHeads) {
-			return fmt.Errorf("lifecycle parents must name every current head (got %v, want %v)", event.Parents, testCase.LifecycleHeads)
-		}
 		candidate := *testCase
 		candidate.Events = append(append([]LifecycleEvent{}, testCase.Events...), event)
 		if err := validateCandidate(&candidate, document); err != nil {
@@ -284,7 +288,7 @@ func SetTestCaseState(root string, input SetTestCaseStateInput) (MutationResult,
 		result = singleResult(urn, path, []string{urn}, false)
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // SetPolicy records an immutable per-criterion kind policy. Supersedes must
@@ -292,6 +296,10 @@ func SetTestCaseState(root string, input SetTestCaseStateInput) (MutationResult,
 // exactly one head remains; it may also retire policies for older revisions.
 // Without an explicit ID the policy is named after its criterion pin.
 func SetPolicy(root string, input SetPolicyInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
+
 	var result MutationResult
 	err := mutate(root, func(document *Document) error {
 		sagaID := document.SagaID
@@ -363,11 +371,15 @@ func SetPolicy(root string, input SetPolicyInput) (MutationResult, error) {
 		result = singleResult(urn, path, []string{urn}, false)
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // AddEvidence records one immutable evidence record.
 func AddEvidence(root string, input AddEvidenceInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
+
 	results, err := AddEvidenceBatch(root, []AddEvidenceInput{input})
 	if err != nil {
 		return MutationResult{}, err
@@ -467,6 +479,10 @@ func AddEvidenceBatch(root string, inputs []AddEvidenceInput) ([]MutationResult,
 // current run head: a failed or conflicting head stays in history and is
 // only ever succeeded by a later run, never replaced.
 func RecordRun(root string, input RecordRunInput) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &input); err != nil {
+		return MutationResult{}, err
+	}
+
 	var result MutationResult
 	err := mutateTestCase(root, input.TestCase, func(document *Document, testCase *TestCase) error {
 		sagaID, testCaseID := document.SagaID, testCase.Identity.ID
@@ -524,7 +540,7 @@ func RecordRun(root string, input RecordRunInput) (MutationResult, error) {
 		result = singleResult(urn, path, []string{urn}, false)
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // mutate validates the Saga before and after taking the writer lock so a
@@ -535,6 +551,9 @@ func mutate(root string, operation func(*Document) error) error {
 		return fmt.Errorf("cannot mutate quality: %w", err)
 	}
 	return store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		if err := currentrecord.Normalize(root); err != nil {
+			return err
+		}
 		document, err := Load(root)
 		if err != nil {
 			return fmt.Errorf("cannot mutate quality after locking: %w", err)
@@ -631,6 +650,9 @@ func DefinitionOf(revision Revision) Definition {
 }
 
 func replayableTestCase(existing TestCase, identity TestCaseIdentity, revision Revision, event LifecycleEvent) bool {
+	if existing.current && existing.CurrentRevision != nil && existing.CurrentLifecycle != nil {
+		return identity.RequestID != "" && existing.Identity.RequestID == identity.RequestID && currentrecord.Equal(*existing.CurrentRevision, revision) && currentrecord.Equal(*existing.CurrentLifecycle, event)
+	}
 	if identity.RequestID == "" || existing.Identity.RequestID != identity.RequestID {
 		return false
 	}
@@ -776,6 +798,13 @@ type pendingRecord struct {
 func writeRecords(root string, records ...pendingRecord) error {
 	var rollback dirRollback
 	for _, record := range records {
+		member := filepath.Base(filepath.Dir(record.path))
+		if member == "revisions" || member == "events" {
+			if err := currentrecord.WriteMember(filepath.Join(root, filepath.FromSlash(record.path)), record.value); err != nil {
+				return err
+			}
+			continue
+		}
 		dir, err := rollback.ensure(root, filepath.Dir(filepath.FromSlash(record.path)))
 		if err == nil {
 			full := filepath.Join(dir, filepath.Base(record.path))

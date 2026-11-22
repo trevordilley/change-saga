@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "partitioned",
+        "statement": "Independently authored records have separate current-content files; Git stores their prior definitions and states."
+      },
+      {
+        "id": "conflicts",
+        "statement": "Concurrent edits to the same current file use normal Git merge conflicts; Saga does not select a winner or create a second revision graph."
+      },
+      {
+        "id": "atomic",
+        "statement": "A supported write publishes a complete record or leaves no partial destination."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer collaborating in parallel, I can merge independently authored Saga records without editing one monolithic document so concurrent work remains reviewable and recoverable.",
+    "story": "urn:change-saga:change-saga:story:parallel-authoring",
+    "title": "Merge independently authored knowledge"
+  },
+  "state": {
+    "reason": "Confirmed after the initial implementation investigation.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:parallel-authoring"
+  }
+}

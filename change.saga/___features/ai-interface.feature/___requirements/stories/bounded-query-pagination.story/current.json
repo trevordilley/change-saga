@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "page-metadata",
+        "statement": "Every paginated query page reports total, returned, has_more, and next_cursor; next_cursor is present exactly when has_more is true."
+      },
+      {
+        "id": "bounded-limit",
+        "statement": "A query with no page limit uses the documented default of 100 items; limits from 1 through 1000 are accepted, and values outside that range fail as invalid_argument."
+      },
+      {
+        "id": "cursor-context",
+        "statement": "A malformed continuation token, or one used with a different operation or normalized filters, fails as non-retryable invalid_argument."
+      },
+      {
+        "id": "snapshot-retry",
+        "statement": "If the Saga snapshot changes after a page is issued, its continuation token fails with retryable stale_snapshot instead of mixing records from different snapshots."
+      },
+      {
+        "id": "complete-traversal",
+        "statement": "Following next_cursor until has_more is false returns each matching record once, and the sum of returned equals total."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer using an AI assistant, I can retrieve a large machine-readable Saga result in bounded pages from one snapshot so my tool can complete the read without unbounded output, duplicates, or mixed-state data.",
+    "story": "urn:change-saga:change-saga:story:bounded-query-pagination",
+    "title": "Page through a large Saga query safely"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:bounded-query-pagination"
+  }
+}

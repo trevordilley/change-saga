@@ -3,6 +3,8 @@ package cli
 import (
 	"bytes"
 	"context"
+	"encoding/json"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -41,7 +43,7 @@ func sourcedStory(t *testing.T, root string) string {
 	}
 	output.Reset()
 	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--persona", testPersonaURN,
-		"--id", "checkout", "--revision", "r1", "--event", "proposed",
+		"--id", "checkout",
 		"--title", "Checkout", "--statement", "As a buyer, I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--criterion", "audited=Every purchase is audited",
 		"--citation", "urn:change-saga:atomic:citation:interview"}, &output); err != nil {
@@ -62,12 +64,12 @@ func TestStoryReviseInheritsWhatASingleParentAlreadySays(t *testing.T) {
 	}
 
 	var output bytes.Buffer
-	if err := Story(context.Background(), []string{"revise", root, "--story", storyURN, "--revision", "r2",
-		"--parent", storyURN + ":revision:r1", "--title", "Checkout, clarified"}, &output); err != nil {
+	if err := Story(context.Background(), []string{"revise", root, "--story", storyURN,
+		"--title", "Checkout, clarified"}, &output); err != nil {
 		t.Fatalf("title-only revise: %v\n%s", err, output.String())
 	}
 	after := currentStoryRevisionForTest(t, root)
-	if after.ID != "r2" || after.Title != "Checkout, clarified" {
+	if after.ID == before.ID || after.Title != "Checkout, clarified" {
 		t.Fatalf("revised title = %#v", after)
 	}
 	if len(after.AcceptanceCriteria) != len(before.AcceptanceCriteria) {
@@ -97,8 +99,8 @@ func TestStoryReviseReplacesOnlyTheFieldsItIsGiven(t *testing.T) {
 	storyURN := sourcedStory(t, root)
 	ctx := context.Background()
 	var output bytes.Buffer
-	if err := Story(ctx, []string{"revise", root, "--story", storyURN, "--revision", "r2",
-		"--parent", storyURN + ":revision:r1", "--statement", "As a buyer, I can check out in one step"}, &output); err != nil {
+	if err := Story(ctx, []string{"revise", root, "--story", storyURN,
+		"--statement", "As a buyer, I can check out in one step"}, &output); err != nil {
 		t.Fatalf("statement-only revise: %v\n%s", err, output.String())
 	}
 	statementOnly := currentStoryRevisionForTest(t, root)
@@ -107,14 +109,14 @@ func TestStoryReviseReplacesOnlyTheFieldsItIsGiven(t *testing.T) {
 	}
 
 	output.Reset()
-	if err := Story(ctx, []string{"revise", root, "--story", storyURN, "--revision", "r3",
-		"--parent", storyURN + ":revision:r2", "--criterion", "fast=Checkout finishes in under a second",
+	if err := Story(ctx, []string{"revise", root, "--story", storyURN,
+		"--criterion", "fast=Checkout finishes in under a second",
 		"--persona", testPersonaURN, "--citation", ""}, &output); err == nil {
 		t.Fatalf("empty citation accepted:\n%s", output.String())
 	}
 	output.Reset()
-	if err := Story(ctx, []string{"revise", root, "--story", storyURN, "--revision", "r3",
-		"--parent", storyURN + ":revision:r2", "--criterion", "fast=Checkout finishes in under a second",
+	if err := Story(ctx, []string{"revise", root, "--story", storyURN,
+		"--criterion", "fast=Checkout finishes in under a second",
 		"--priority", ""}, &output); err != nil {
 		t.Fatalf("criterion revise: %v\n%s", err, output.String())
 	}
@@ -139,9 +141,23 @@ func TestStoryReviseWithCompetingHeadsStillNeedsTheWholeDefinition(t *testing.T)
 	storyURN := sourcedStory(t, root)
 	ctx := context.Background()
 	var output bytes.Buffer
-	if err := Story(ctx, []string{"revise", root, "--story", storyURN, "--revision", "r2",
-		"--parent", storyURN + ":revision:r1", "--title", "Checkout, clarified"}, &output); err != nil {
+	if err := Story(ctx, []string{"revise", root, "--story", storyURN,
+		"--title", "Checkout, clarified"}, &output); err != nil {
 		t.Fatalf("first revise: %v\n%s", err, output.String())
+	}
+	relative := filepath.ToSlash(filepath.Join(testFeatureRel, "___requirements/stories/checkout.story"))
+	legacyCurrentTestPackage(t, root, relative, "story", storyURN, requirements.RevisionSchemaURL, requirements.LifecycleEventSchemaURL, 3, "r1", "proposed")
+	raw, err := os.ReadFile(filepath.Join(root, relative, "revisions/r1.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var branch map[string]any
+	if err = json.Unmarshal(raw, &branch); err != nil {
+		t.Fatal(err)
+	}
+	branch["id"], branch["parents"], branch["title"] = "r2", []string{storyURN + ":revision:r1"}, "First branch"
+	if err := store.WriteJSON(filepath.Join(root, relative, "revisions/r2.json"), branch, true); err != nil {
+		t.Fatal(err)
 	}
 	// A concurrent Git merge leaves two revisions parented on r1.
 	competing := requirements.Revision{
@@ -152,23 +168,23 @@ func TestStoryReviseWithCompetingHeadsStillNeedsTheWholeDefinition(t *testing.T)
 		CreatedAt:          time.Now().UTC(),
 	}
 	path := filepath.Join(testFeatureDir(root), "___requirements", "stories", "checkout.story", "revisions", "r2-other.json")
-	if err := store.WriteJSON(path, competing, true); err != nil {
+	if err := store.WriteJSON(path, legacyStoryForCLI(competing), true); err != nil {
 		t.Fatal(err)
 	}
 
-	parents := []string{"--parent", storyURN + ":revision:r2", "--parent", storyURN + ":revision:r2-other"}
+	parents := []string{}
 	output.Reset()
-	args := append([]string{"revise", root, "--story", storyURN, "--revision", "r3"}, parents...)
-	if err := Story(ctx, append(args, "--title", "Reconciled checkout"), &output); err == nil || !strings.Contains(err.Error(), "usage:") {
+	args := append([]string{"revise", root, "--story", storyURN}, parents...)
+	if err := Story(ctx, append(args, "--title", "Reconciled checkout"), &output); err == nil || !strings.Contains(err.Error(), "legacy") {
 		t.Fatalf("multi-parent revise without a statement = %v\n%s", err, output.String())
 	}
 	output.Reset()
-	if err := Story(ctx, append(args, "--title", "Reconciled checkout", "--statement", "As a buyer, I can check out",
-		"--persona", testPersonaURN, "--criterion", "fast=Checkout finishes promptly"), &output); err != nil {
-		t.Fatalf("multi-parent reconciliation: %v\n%s", err, output.String())
+	if err := Story(ctx, append(args, "--title", "Complete replacement", "--statement", "As a buyer I can check out", "--persona", testPersonaURN, "--criterion", "fast=Checkout finishes promptly"), &output); err == nil {
+		t.Fatal("ordinary current edit selected a competing legacy branch")
 	}
-	reconciled := currentStoryRevisionForTest(t, root)
-	if reconciled.ID != "r3" || len(reconciled.AcceptanceCriteria) != 1 || len(reconciled.Citations) != 0 {
-		t.Fatalf("reconciled revision = %#v", reconciled)
+	if _, err := os.Stat(path); err != nil {
+		t.Fatal("competing authored content was lost", err)
 	}
 }
+
+type legacyStoryForCLI requirements.Revision

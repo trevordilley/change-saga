@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-contracts-page-limits-7dde88e7e26d",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:contracts-page-limits",
-  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit",
-  "scope": "self",
-  "rationale": "Steps constants, default, bounds, invalid, negative define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:contracts-page-limits:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:34.225694Z",
-  "request_id": "test-contracts-page-limits-7dde88e7e26d"
+  "from": "urn:change-saga:change-saga:test-case:contracts-page-limits",
+  "from_revision": "sha256:10a69698edce47af0b2fd78b46f55acc67dde356ba28c8192815c2f947200ef5",
+  "id": "test-contracts-page-limits-7dde88e7e26d",
+  "rationale": "Steps constants, default, bounds, invalid, negative define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-contracts-page-limits-7dde88e7e26d",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit",
+  "to_revision": "sha256:563647473b06d2abf0d329a897d246df0285a5b3b99ffa2bf35da83969fd02a8",
+  "type": "verifies",
+  "version": 5
 }

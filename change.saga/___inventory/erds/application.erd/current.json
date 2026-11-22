@@ -1,0 +1,488 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "bindings": [
+      {
+        "element": "e-saga-manifest",
+        "entity": {
+          "revision": "sha256:78ee5005a78a5523eb832609455fb08a7a11e41c80b288bfe23d582b2dc1d562",
+          "target": "urn:change-saga:change-saga:data-entity:saga-manifest"
+        },
+        "id": "e-saga-manifest"
+      },
+      {
+        "element": "e-feature",
+        "entity": {
+          "revision": "sha256:2bac2b531b39078dc2c7ea67ff21b12bf728158f0dbb0add4c1d7ce44354c56c",
+          "target": "urn:change-saga:change-saga:data-entity:feature"
+        },
+        "id": "e-feature"
+      },
+      {
+        "element": "e-persona",
+        "entity": {
+          "revision": "sha256:fa71b597e86c31c3cf15ddc69f73cd1d1cefdfbe50b8f5cb1dcff75a3f281c59",
+          "target": "urn:change-saga:change-saga:data-entity:persona"
+        },
+        "id": "e-persona"
+      },
+      {
+        "element": "e-review",
+        "entity": {
+          "revision": "sha256:88fa34be111a490d10abf70701d2b8bb72c68bbc0f1f5f11dac9af0adfcff56e",
+          "target": "urn:change-saga:change-saga:data-entity:review"
+        },
+        "id": "e-review"
+      },
+      {
+        "element": "e-deck",
+        "entity": {
+          "revision": "sha256:578f00e61473dda1615eeff84c86f7794e26356ec159342c640e14d520d39a15",
+          "target": "urn:change-saga:change-saga:data-entity:deck"
+        },
+        "id": "e-deck"
+      },
+      {
+        "element": "e-story",
+        "entity": {
+          "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+          "target": "urn:change-saga:change-saga:data-entity:story"
+        },
+        "id": "e-story"
+      },
+      {
+        "element": "e-merge-record",
+        "entity": {
+          "revision": "sha256:1707546cee34065ec34ec7abb0d1f2ff59b9ad0e9eca1a6abf8171f2ffdb0714",
+          "target": "urn:change-saga:change-saga:data-entity:merge-record"
+        },
+        "id": "e-merge-record"
+      },
+      {
+        "element": "e-slide",
+        "entity": {
+          "revision": "sha256:ca75671011ee61dea7ac97136827251d904a7783a02fab2fd4610d05de2467a6",
+          "target": "urn:change-saga:change-saga:data-entity:slide"
+        },
+        "id": "e-slide"
+      },
+      {
+        "element": "e-criterion",
+        "entity": {
+          "revision": "sha256:a388a8323328ff5201714ec4896f62b7f1f37d0a2116677fc5c93d1d1b9da380",
+          "target": "urn:change-saga:change-saga:data-entity:criterion"
+        },
+        "id": "e-criterion"
+      },
+      {
+        "element": "e-technical-definition",
+        "entity": {
+          "revision": "sha256:0181f0d1e680b414035fbba202b8be96d2cdc7f2e6edda7c73540a40894c6463",
+          "target": "urn:change-saga:change-saga:data-entity:technical-definition"
+        },
+        "id": "e-technical-definition"
+      },
+      {
+        "element": "e-item",
+        "entity": {
+          "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+          "target": "urn:change-saga:change-saga:data-entity:item"
+        },
+        "id": "e-item"
+      },
+      {
+        "element": "e-code-reference",
+        "entity": {
+          "revision": "sha256:c91052d855422ea6e712628299af5f3b60364dfa46e5f3dad235ec9adf478de4",
+          "target": "urn:change-saga:change-saga:data-entity:code-reference"
+        },
+        "id": "e-code-reference"
+      },
+      {
+        "element": "e-source-repository",
+        "entity": {
+          "revision": "sha256:99546125c37169b6dc98a82607edcb851b1e29a4a4262cab102feb1f467e6dc5",
+          "target": "urn:change-saga:change-saga:data-entity:source-repository"
+        },
+        "id": "e-source-repository"
+      },
+      {
+        "element": "e-query-response",
+        "entity": {
+          "revision": "sha256:31942654bd33dffe7b89b6dd724e3818cfbc68b19cc09ca8809b3cfd7652192f",
+          "target": "urn:change-saga:change-saga:data-entity:query-response"
+        },
+        "id": "e-query-response"
+      },
+      {
+        "element": "e-snapshot-cache",
+        "entity": {
+          "revision": "sha256:6cc55728d17cd3441dba36173c6a01cae3938192dc8261592d0e185a82fbdb27",
+          "target": "urn:change-saga:change-saga:data-entity:snapshot-cache"
+        },
+        "id": "e-snapshot-cache"
+      },
+      {
+        "element": "e-reconciliation-queue",
+        "entity": {
+          "revision": "sha256:e46778c47c81ed74f7c33a465828f0a851df849195b539548c2e2c5895cd78eb",
+          "target": "urn:change-saga:change-saga:data-entity:reconciliation-queue"
+        },
+        "id": "e-reconciliation-queue"
+      },
+      {
+        "element": "e-coverage-report",
+        "entity": {
+          "revision": "sha256:8485f75eb197333e909b316a68707f685e5337ffb253e985211eaf617c4f2697",
+          "target": "urn:change-saga:change-saga:data-entity:coverage-report"
+        },
+        "id": "e-coverage-report"
+      },
+      {
+        "element": "e-change-set",
+        "entity": {
+          "revision": "sha256:98dcb810cfbff1214d8dd3d271645eb164233e6ec6a0eee75dc17b48a5a16211",
+          "target": "urn:change-saga:change-saga:data-entity:change-set"
+        },
+        "id": "e-change-set"
+      },
+      {
+        "element": "r-feature-in-saga",
+        "id": "r-feature-in-saga",
+        "relationship": {
+          "id": "in-saga",
+          "owner": {
+            "revision": "sha256:2bac2b531b39078dc2c7ea67ff21b12bf728158f0dbb0add4c1d7ce44354c56c",
+            "target": "urn:change-saga:change-saga:data-entity:feature"
+          }
+        }
+      },
+      {
+        "element": "r-story-in-feature",
+        "id": "r-story-in-feature",
+        "relationship": {
+          "id": "in-feature",
+          "owner": {
+            "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+            "target": "urn:change-saga:change-saga:data-entity:story"
+          }
+        }
+      },
+      {
+        "element": "r-story-serves",
+        "id": "r-story-serves",
+        "relationship": {
+          "id": "serves",
+          "owner": {
+            "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+            "target": "urn:change-saga:change-saga:data-entity:story"
+          }
+        }
+      },
+      {
+        "element": "r-criterion-of-story",
+        "id": "r-criterion-of-story",
+        "relationship": {
+          "id": "of-story",
+          "owner": {
+            "revision": "sha256:a388a8323328ff5201714ec4896f62b7f1f37d0a2116677fc5c93d1d1b9da380",
+            "target": "urn:change-saga:change-saga:data-entity:criterion"
+          }
+        }
+      },
+      {
+        "element": "r-deck-in-feature",
+        "id": "r-deck-in-feature",
+        "relationship": {
+          "id": "in-feature",
+          "owner": {
+            "revision": "sha256:578f00e61473dda1615eeff84c86f7794e26356ec159342c640e14d520d39a15",
+            "target": "urn:change-saga:change-saga:data-entity:deck"
+          }
+        }
+      },
+      {
+        "element": "r-deck-of-review",
+        "id": "r-deck-of-review",
+        "relationship": {
+          "id": "of-review",
+          "owner": {
+            "revision": "sha256:578f00e61473dda1615eeff84c86f7794e26356ec159342c640e14d520d39a15",
+            "target": "urn:change-saga:change-saga:data-entity:deck"
+          }
+        }
+      },
+      {
+        "element": "r-slide-in-deck",
+        "id": "r-slide-in-deck",
+        "relationship": {
+          "id": "in-deck",
+          "owner": {
+            "revision": "sha256:ca75671011ee61dea7ac97136827251d904a7783a02fab2fd4610d05de2467a6",
+            "target": "urn:change-saga:change-saga:data-entity:slide"
+          }
+        }
+      },
+      {
+        "element": "r-item-on-slide",
+        "id": "r-item-on-slide",
+        "relationship": {
+          "id": "on-slide",
+          "owner": {
+            "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+            "target": "urn:change-saga:change-saga:data-entity:item"
+          }
+        }
+      },
+      {
+        "element": "r-item-documents",
+        "id": "r-item-documents",
+        "relationship": {
+          "id": "documents",
+          "owner": {
+            "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+            "target": "urn:change-saga:change-saga:data-entity:item"
+          }
+        }
+      },
+      {
+        "element": "r-item-criterion-link",
+        "id": "r-item-criterion-link",
+        "relationship": {
+          "id": "criterion-link",
+          "owner": {
+            "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+            "target": "urn:change-saga:change-saga:data-entity:item"
+          }
+        }
+      },
+      {
+        "element": "r-code-reference-owned-by-item",
+        "id": "r-code-reference-owned-by-item",
+        "relationship": {
+          "id": "owned-by-item",
+          "owner": {
+            "revision": "sha256:c91052d855422ea6e712628299af5f3b60364dfa46e5f3dad235ec9adf478de4",
+            "target": "urn:change-saga:change-saga:data-entity:code-reference"
+          }
+        }
+      },
+      {
+        "element": "r-code-reference-in-definition",
+        "id": "r-code-reference-in-definition",
+        "relationship": {
+          "id": "in-definition",
+          "owner": {
+            "revision": "sha256:c91052d855422ea6e712628299af5f3b60364dfa46e5f3dad235ec9adf478de4",
+            "target": "urn:change-saga:change-saga:data-entity:code-reference"
+          }
+        }
+      },
+      {
+        "element": "r-merge-record-freezes",
+        "id": "r-merge-record-freezes",
+        "relationship": {
+          "id": "freezes",
+          "owner": {
+            "revision": "sha256:1707546cee34065ec34ec7abb0d1f2ff59b9ad0e9eca1a6abf8171f2ffdb0714",
+            "target": "urn:change-saga:change-saga:data-entity:merge-record"
+          }
+        }
+      },
+      {
+        "element": "r-source-repository-documented-by",
+        "id": "r-source-repository-documented-by",
+        "relationship": {
+          "id": "documented-by",
+          "owner": {
+            "revision": "sha256:99546125c37169b6dc98a82607edcb851b1e29a4a4262cab102feb1f467e6dc5",
+            "target": "urn:change-saga:change-saga:data-entity:source-repository"
+          }
+        }
+      },
+      {
+        "element": "r-source-repository-pinned-by",
+        "id": "r-source-repository-pinned-by",
+        "relationship": {
+          "id": "pinned-by",
+          "owner": {
+            "revision": "sha256:99546125c37169b6dc98a82607edcb851b1e29a4a4262cab102feb1f467e6dc5",
+            "target": "urn:change-saga:change-saga:data-entity:source-repository"
+          }
+        }
+      },
+      {
+        "element": "r-merge-record-from-source",
+        "id": "r-merge-record-from-source",
+        "relationship": {
+          "id": "from-source",
+          "owner": {
+            "revision": "sha256:1707546cee34065ec34ec7abb0d1f2ff59b9ad0e9eca1a6abf8171f2ffdb0714",
+            "target": "urn:change-saga:change-saga:data-entity:merge-record"
+          }
+        }
+      },
+      {
+        "element": "r-change-set-from-source",
+        "id": "r-change-set-from-source",
+        "relationship": {
+          "id": "from-source",
+          "owner": {
+            "revision": "sha256:98dcb810cfbff1214d8dd3d271645eb164233e6ec6a0eee75dc17b48a5a16211",
+            "target": "urn:change-saga:change-saga:data-entity:change-set"
+          }
+        }
+      },
+      {
+        "element": "r-coverage-report-from-change-set",
+        "id": "r-coverage-report-from-change-set",
+        "relationship": {
+          "id": "from-change-set",
+          "owner": {
+            "revision": "sha256:8485f75eb197333e909b316a68707f685e5337ffb253e985211eaf617c4f2697",
+            "target": "urn:change-saga:change-saga:data-entity:coverage-report"
+          }
+        }
+      },
+      {
+        "element": "r-coverage-report-from-code-references",
+        "id": "r-coverage-report-from-code-references",
+        "relationship": {
+          "id": "from-code-references",
+          "owner": {
+            "revision": "sha256:8485f75eb197333e909b316a68707f685e5337ffb253e985211eaf617c4f2697",
+            "target": "urn:change-saga:change-saga:data-entity:coverage-report"
+          }
+        }
+      },
+      {
+        "element": "r-reconciliation-queue-from-coverage",
+        "id": "r-reconciliation-queue-from-coverage",
+        "relationship": {
+          "id": "from-coverage",
+          "owner": {
+            "revision": "sha256:e46778c47c81ed74f7c33a465828f0a851df849195b539548c2e2c5895cd78eb",
+            "target": "urn:change-saga:change-saga:data-entity:reconciliation-queue"
+          }
+        }
+      },
+      {
+        "element": "r-snapshot-cache-from-coverage",
+        "id": "r-snapshot-cache-from-coverage",
+        "relationship": {
+          "id": "from-coverage",
+          "owner": {
+            "revision": "sha256:6cc55728d17cd3441dba36173c6a01cae3938192dc8261592d0e185a82fbdb27",
+            "target": "urn:change-saga:change-saga:data-entity:snapshot-cache"
+          }
+        }
+      },
+      {
+        "element": "r-query-response-from-saga",
+        "id": "r-query-response-from-saga",
+        "relationship": {
+          "id": "from-saga",
+          "owner": {
+            "revision": "sha256:31942654bd33dffe7b89b6dd724e3818cfbc68b19cc09ca8809b3cfd7652192f",
+            "target": "urn:change-saga:change-saga:data-entity:query-response"
+          }
+        }
+      }
+    ],
+    "directory": [
+      {
+        "revision": "sha256:78ee5005a78a5523eb832609455fb08a7a11e41c80b288bfe23d582b2dc1d562",
+        "target": "urn:change-saga:change-saga:data-entity:saga-manifest"
+      },
+      {
+        "revision": "sha256:2bac2b531b39078dc2c7ea67ff21b12bf728158f0dbb0add4c1d7ce44354c56c",
+        "target": "urn:change-saga:change-saga:data-entity:feature"
+      },
+      {
+        "revision": "sha256:fa71b597e86c31c3cf15ddc69f73cd1d1cefdfbe50b8f5cb1dcff75a3f281c59",
+        "target": "urn:change-saga:change-saga:data-entity:persona"
+      },
+      {
+        "revision": "sha256:88fa34be111a490d10abf70701d2b8bb72c68bbc0f1f5f11dac9af0adfcff56e",
+        "target": "urn:change-saga:change-saga:data-entity:review"
+      },
+      {
+        "revision": "sha256:578f00e61473dda1615eeff84c86f7794e26356ec159342c640e14d520d39a15",
+        "target": "urn:change-saga:change-saga:data-entity:deck"
+      },
+      {
+        "revision": "sha256:31f105c5c6f4fa3b8d61291805ae127e95573b0f1a9db383c7c4ff8ef033b638",
+        "target": "urn:change-saga:change-saga:data-entity:story"
+      },
+      {
+        "revision": "sha256:1707546cee34065ec34ec7abb0d1f2ff59b9ad0e9eca1a6abf8171f2ffdb0714",
+        "target": "urn:change-saga:change-saga:data-entity:merge-record"
+      },
+      {
+        "revision": "sha256:ca75671011ee61dea7ac97136827251d904a7783a02fab2fd4610d05de2467a6",
+        "target": "urn:change-saga:change-saga:data-entity:slide"
+      },
+      {
+        "revision": "sha256:a388a8323328ff5201714ec4896f62b7f1f37d0a2116677fc5c93d1d1b9da380",
+        "target": "urn:change-saga:change-saga:data-entity:criterion"
+      },
+      {
+        "revision": "sha256:0181f0d1e680b414035fbba202b8be96d2cdc7f2e6edda7c73540a40894c6463",
+        "target": "urn:change-saga:change-saga:data-entity:technical-definition"
+      },
+      {
+        "revision": "sha256:87933c75f0def7391f42f96ea0f19cf68cd3ee87e7449c0a4ec1f52d72685715",
+        "target": "urn:change-saga:change-saga:data-entity:item"
+      },
+      {
+        "revision": "sha256:c91052d855422ea6e712628299af5f3b60364dfa46e5f3dad235ec9adf478de4",
+        "target": "urn:change-saga:change-saga:data-entity:code-reference"
+      },
+      {
+        "revision": "sha256:99546125c37169b6dc98a82607edcb851b1e29a4a4262cab102feb1f467e6dc5",
+        "target": "urn:change-saga:change-saga:data-entity:source-repository"
+      },
+      {
+        "revision": "sha256:31942654bd33dffe7b89b6dd724e3818cfbc68b19cc09ca8809b3cfd7652192f",
+        "target": "urn:change-saga:change-saga:data-entity:query-response"
+      },
+      {
+        "revision": "sha256:6cc55728d17cd3441dba36173c6a01cae3938192dc8261592d0e185a82fbdb27",
+        "target": "urn:change-saga:change-saga:data-entity:snapshot-cache"
+      },
+      {
+        "revision": "sha256:e46778c47c81ed74f7c33a465828f0a851df849195b539548c2e2c5895cd78eb",
+        "target": "urn:change-saga:change-saga:data-entity:reconciliation-queue"
+      },
+      {
+        "revision": "sha256:8485f75eb197333e909b316a68707f685e5337ffb253e985211eaf617c4f2697",
+        "target": "urn:change-saga:change-saga:data-entity:coverage-report"
+      },
+      {
+        "revision": "sha256:98dcb810cfbff1214d8dd3d271645eb164233e6ec6a0eee75dc17b48a5a16211",
+        "target": "urn:change-saga:change-saga:data-entity:change-set"
+      },
+      {
+        "revision": "sha256:eb5ce0ea7f70c2c7f7db0164b60dee13585ecefa0b5e111eb103d53f9d182d4c",
+        "target": "urn:change-saga:change-saga:data-entity:relation"
+      },
+      {
+        "revision": "sha256:cd5a2e1143f05570a4f2313044b3bf05028fee65ff4dfa84e8a2467044919d4d",
+        "target": "urn:change-saga:change-saga:data-entity:review-decision"
+      }
+    ],
+    "explanation": "How Change Saga's data fits together end to end. Persisted in the repository: the change.saga folder's records (manifest, features, personas, stories and criteria, decks, slides, Items, code references, technical definitions, reviews and merge records). In Git: the source repository and its commits, the only copy of the code. Derived on read and never stored in the Saga: the change set, coverage report, reconciliation queue and query responses, plus the disposable reviewer snapshot cache in the user cache directory. Dashed boxes and arrows mark derived data; relations and review decisions are in the directory but not drawn.",
+    "name": "Change Saga data model",
+    "record": "urn:change-saga:change-saga:erd:application",
+    "visual": {
+      "digest": "sha256:3f0a10115f4582489f6382b57c4db71987da02d5d44364a8770c6feb5e547da0",
+      "media_type": "image/svg+xml",
+      "path": "assets/3f0a10115f4582489f6382b57c4db71987da02d5d44364a8770c6feb5e547da0.svg"
+    }
+  },
+  "state": {
+    "record": "urn:change-saga:change-saga:erd:application",
+    "state": "active"
+  }
+}

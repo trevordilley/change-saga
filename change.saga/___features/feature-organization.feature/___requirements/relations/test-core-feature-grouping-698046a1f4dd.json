@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-feature-grouping-698046a1f4dd",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-feature-grouping",
-  "to": "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:independent-preferences",
-  "scope": "self",
-  "rationale": "Steps check-independent-preferences, check-story-preferences define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-feature-grouping:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:group-feature-views-independently:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:16:39.098171Z",
-  "request_id": "test-core-feature-grouping-698046a1f4dd"
+  "from": "urn:change-saga:change-saga:test-case:core-feature-grouping",
+  "from_revision": "sha256:f99de2bd80a79daadb149032eef20fe0896163c050f28bce873082f352c636a5",
+  "id": "test-core-feature-grouping-698046a1f4dd",
+  "rationale": "Steps check-independent-preferences, check-story-preferences define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-feature-grouping-698046a1f4dd",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:group-feature-views-independently:criterion:independent-preferences",
+  "to_revision": "sha256:7ed429c494b1606843bd833d62a8328c381f9a4e040332039be1a0bd5ba40bb3",
+  "type": "verifies",
+  "version": 5
 }

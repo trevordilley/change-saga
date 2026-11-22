@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "draft-without-criteria",
+        "statement": "A story with no acceptance criteria can remain in the proposed state."
+      },
+      {
+        "id": "acceptance-requires-criterion",
+        "statement": "Attempting to set a story accepted without acceptance criteria is rejected without changing its current state."
+      }
+    ],
+    "citations": [],
+    "overview": "Product discovery should preserve uncertainty. A proposed story may describe a useful outcome before the team knows its exact success conditions. Acceptance requires at least one independent, observable criterion; creating a polished page does not move the story into the accepted state.\n\nFeature and story overviews explain purpose and boundaries. Criterion titles and explanations improve readability while keeping the full pass/fail statement visible. Those fields are part of the obligation assessed by current evidence, so current edits may require relationship reassessment. Git records earlier definitions and state; no content parent graph is authored.\n",
+    "personas": [
+      "urn:change-saga:change-saga:persona:product-manager"
+    ],
+    "statement": "As a product manager, I can keep a story proposed while its success conditions are still being shaped and accept it only after observable criteria exist so draft intent is not mistaken for a commitment.",
+    "story": "urn:change-saga:change-saga:story:product-intent-lifecycle",
+    "title": "Mature product intent safely"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:product-intent-lifecycle"
+  }
+}

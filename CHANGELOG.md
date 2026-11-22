@@ -10,12 +10,58 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Changed
+
+- **Format:** Native Plan checkpoints are integrated with Git-owned current
+  records: expectations, explicit passes, held Task readiness, checkpoint reports,
+  linked review context and widened review ranges. Earlier builds reject the new
+  fields; `doctor` now reports checkpoint support. Reads never pass a gate.
+- A complete authored `whiteboard publish` can resolve competing legacy values
+  after their files are committed to Git. It publishes one current record,
+  preserves exact pins and removes legacy storage; Git retains earlier values.
+
+- **Format:** Git owns documentation revision history. Current record content
+  and state are editable in place; legacy content graphs normalize on write
+  after evidence pins are converted to exact content digests. Complete slides
+  store one content value, and graph history selectors and reconciliation are
+  removed. Stable identities, source commit pins, assets, actual review decisions,
+  and evidence remain. Reads do not persist normalization; older readers must
+  upgrade before reading the new current-record layouts. See
+  [migration behavior](docs/git-owned-history.md).
+
 ### Added
 
+- `plan set --title TEXT --objective TEXT` edits an open Plan's displayed scope,
+  keeping the Plan and deck title consistent. Omitted fields and checkpoints
+  remain unchanged; `--dry-run --json` previews the edit.
+- `doctor [--json] [PATH]` reports the executing binary, SHA256, build metadata
+  and separate phased Plan authoring/query, checkpoint and whole-Saga layout
+  capabilities. With a Saga path it validates all record families without writes.
+- Plan compatibility and pinned-build guidance, and a proposed support-access
+  boundary separating operational log/metric reads, deployment triggers and
+  approved temporary customer-data access; approval/revocation owners remain open.
+
 - `query prototype` returns a prototype's HTML in byte-range pages, as recorded
-  in the Saga or at its pinned commit, with its revisions, files, and annotations.
+  in the Saga or at its pinned commit, with its current digest, files, and annotations.
 - `diagram describe` shows the record an Item names, so an agent reading a Plan
   slide can follow a node to its Task or story.
+
+### Fixed
+
+- `story revise` edits an already current story without normalizing unrelated
+  legacy packages. Independent legacy conflicts remain untouched; strict
+  requirements decoding and safe normalization for legacy targets are retained.
+- Inline `slide:` images in Plan essays now resolve to the Plan's own visual
+  routes. Previously the essay retained generic fragment URLs, causing broken
+  images even though the Plan's visual endpoint worked.
+
+- Downloadable example archives use a separately authored current-record Saga
+  that validates and opens without a checkout. The full repository Saga retains
+  its historical Git pins and remains available through a clone.
+
+- Legacy wave fields in Plan/Task JSON explain the reader mismatch while
+  retaining strict rejection and authored data. Unknown nested checkpoint fields
+  and null checkpoints are rejected instead of discarding gate semantics.
 
 ## [0.8.0] - 2026-11-03
 

@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-shared-milestones-b44df938b593",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-shared-milestones",
-  "to": "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:rename-once",
-  "scope": "self",
-  "rationale": "Steps check-rename-once define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-shared-milestones:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:assign-shared-feature-milestones:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:15:03.351652Z",
-  "request_id": "test-core-shared-milestones-b44df938b593"
+  "from": "urn:change-saga:change-saga:test-case:core-shared-milestones",
+  "from_revision": "sha256:c0bdc02d53b4ca445e3374de10333593e0fcd00fe2c2b4d9019647f0f7b12f8b",
+  "id": "test-core-shared-milestones-b44df938b593",
+  "rationale": "Steps check-rename-once define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-shared-milestones-b44df938b593",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:assign-shared-feature-milestones:criterion:rename-once",
+  "to_revision": "sha256:3cc37bc88b2daf29def7f254d6bef09ada026e38d0ec66220bf49bf4c043d451",
+  "type": "verifies",
+  "version": 5
 }

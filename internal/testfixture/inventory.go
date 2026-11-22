@@ -100,8 +100,8 @@ func WriteInventoryFixture(ctx context.Context, root, checkout string) (Inventor
 		if writeErr != nil {
 			return fmt.Errorf("%s %s:%s: %w", kind, id, revision, writeErr)
 		}
-		fixture.Pins[name] = saga.DocumentationLink{Target: result.URN, Revision: result.Created[0]}
-		return nil
+		fixture.Pins[name] = saga.DocumentationLink{Target: result.URN, Revision: result.ContentDigest}
+		return commitFixtureDocumentation(ctx, root, name)
 	}
 	put := ev("put", "fixture/store.go", 3, 6, "Put writes one record.")
 	get := ev("get", "fixture/store.go", 8, 11, "Get reads one record.")

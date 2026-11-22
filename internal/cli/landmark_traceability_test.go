@@ -26,7 +26,7 @@ func twoSidesSaga(t *testing.T) (root, repo string, landmarks []string) {
 			t.Fatalf("%s: %v\n%s", name, err, output.String())
 		}
 	}
-	run("story add", Story, "add", "--feature", testFeature, "--id", "two-sides", "--revision", "r1", "--event", "proposed",
+	run("story add", Story, "add", "--feature", testFeature, "--id", "two-sides",
 		"--title", "The reviewer app has two sides", "--statement", "As a reviewer I read documentation and reviews apart so that neither hides the other",
 		"--persona", personaURNFor("batch"), "--criterion", "reviews-on-one-side=Reviews appear only on the review side.", root)
 	run("design add-chapter", Design, "add-chapter", "--feature", testFeature, "--id", "two-sides-design", "--title", "Two sides", root, "two-sides-design")

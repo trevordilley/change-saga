@@ -196,6 +196,7 @@ type Policy struct {
 }
 
 type TestCase struct {
+	current bool
 	// Feature is the feature whose directory holds the test case. It is where the
 	// package lives, never part of its identity.
 	Feature   string

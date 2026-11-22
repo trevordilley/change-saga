@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:df37b3ccbcb50807e5e9db2a74597dff10b0e3a095658afccb33887662b642ef",
+        "end": 185,
+        "path": "internal/quality/model.go",
+        "start": 174
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:69b85552aff70628e6ea7834e161115f1858810d1bf442f03b48401bf0a329d9",
+        "end": 207,
+        "path": "internal/livingapp/status_quality.go",
+        "start": 178
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:5c3c2f1c1a5abaf817c372d9d751e6e835e5503835d0d9c184f2faa456899a0b",
+        "end": 231,
+        "path": "internal/livingapp/status_quality.go",
+        "start": 210
+      }
+    ],
+    "definition": "An immutable rule pinned to one acceptance-criterion revision that says which test coverage kinds are required and which automation levels are allowed. If the story revision changes, the policy becomes stale but its requirements continue to apply until superseded, preventing an edit from silently weakening assurance.",
+    "name": "quality policy",
+    "stories": [
+      "urn:change-saga:change-saga:story:criterion-quality-policy",
+      "urn:change-saga:change-saga:story:criterion-quality-readiness"
+    ],
+    "term": "urn:change-saga:change-saga:term:quality-policy"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:quality-policy"
+  }
+}

@@ -1,5 +1,7 @@
 package grammar
 
+import "strings"
+
 // Resource describes one living record kind: where it lives, how it is named,
 // which Saga versions carry it, and how it changes over time.
 type Resource struct {
@@ -44,7 +46,37 @@ type AxisRule struct {
 const schemaBase = "https://changesaga.dev/schema/"
 
 // Resources returns the living resource catalogue in stable order.
-func Resources() []Resource { return append([]Resource(nil), resources...) }
+func Resources() []Resource {
+	result := []Resource{}
+	kinds := map[string]bool{"story": true, "persona": true, "term": true, "flag": true, "deprecation": true, "prototype": true, "test-case": true, "component": true, "system": true, "data-entity": true, "erd": true, "erd-overlay": true}
+	for _, record := range resources {
+		if record.Kind == "relation-repin" {
+			continue
+		}
+		base := strings.TrimSuffix(strings.TrimSuffix(record.Kind, "-revision"), "-event")
+		if kinds[base] && record.Kind != base {
+			continue
+		}
+		if kinds[record.Kind] {
+			record.History = "editable current content and state; Git owns revision history"
+			record.Schema = schemaBase + "v5/current-record.schema.json"
+			if at := strings.LastIndex(record.Storage, "/"); at >= 0 {
+				record.Storage = record.Storage[:at+1] + "{" + record.Kind + ".json,current.json}"
+			}
+			record.Notes = "Stable record and element identities survive edits; source commit and content digest pins preserve evidence."
+		}
+		if record.Kind == "criterion" {
+			record.Storage = "current.json content.acceptance_criteria"
+			record.History = "stable criterion identity; Git owns earlier wording"
+		}
+		if record.Kind == "relation" {
+			record.Schema = schemaBase + "v5/relation-current.schema.json"
+			record.History = "editable current relation and explicit pins; Git owns earlier values"
+		}
+		result = append(result, record)
+	}
+	return result
+}
 
 // Relations returns the persisted relation endpoint matrix.
 func Relations() []Relation { return append([]Relation(nil), relations...) }

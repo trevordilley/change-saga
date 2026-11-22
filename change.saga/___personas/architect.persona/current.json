@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "description": "Turns requirements and designs into the technical vision for a change. Needs commit-pinned context, picture-driven explanations of complex work, and direct connections from high-level design to concrete code.",
+    "name": "Architect",
+    "persona": "urn:change-saga:change-saga:persona:architect"
+  },
+  "state": {
+    "persona": "urn:change-saga:change-saga:persona:architect",
+    "state": "active"
+  }
+}

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 )
@@ -249,7 +250,7 @@ func validatePolicy(value Policy, sagaID, expectedID string) error {
 	if !revisionOK {
 		problems.add("story_revision must be a canonical story revision URN in this saga")
 	}
-	if criterionOK && revisionOK && criterion.ParentID != storyID {
+	if criterionOK && revisionOK && !digestPin(value.StoryRevision) && criterion.ParentID != storyID {
 		problems.add("story_revision must pin the criterion's story")
 	}
 	if len(value.RequiredKinds) == 0 {
@@ -318,87 +319,105 @@ func validateTestCaseGraphs(testCase *TestCase, sagaID string, source SourceIden
 	testCaseID := testCase.Identity.ID
 
 	revisions := map[string]Revision{}
-	revisionParents := map[string][]string{}
-	for _, revision := range testCase.Revisions {
-		if _, exists := revisions[revision.ID]; exists {
-			problems.add("revision id %q is duplicated", revision.ID)
+	if testCase.current {
+		if len(testCase.Revisions) == 0 || len(testCase.Events) == 0 {
+			return fmt.Errorf("current test requires content and state")
 		}
-		revisions[revision.ID] = revision
-	}
-	for id, revision := range revisions {
-		for _, parentURN := range revision.Parents {
-			parentID, ok := nestedID(parentURN, qualityid.KindRevision, sagaID, testCaseID)
-			if !ok {
-				continue
-			}
-			if _, exists := revisions[parentID]; !exists {
-				problems.add("revision %q names missing parent %q", id, parentURN)
-			} else {
-				revisionParents[id] = append(revisionParents[id], parentID)
-			}
+		testCase.CurrentRevision = &testCase.Revisions[len(testCase.Revisions)-1]
+		testCase.CurrentLifecycle = &testCase.Events[len(testCase.Events)-1]
+		revisions[testCase.CurrentRevision.ID] = *testCase.CurrentRevision
+		pin, _ := qualityid.Revision(sagaID, testCaseID, testCase.CurrentRevision.ID)
+		testCase.RevisionHeads = []string{pin}
+		event, _ := qualityid.Event(sagaID, testCaseID, testCase.CurrentLifecycle.ID)
+		testCase.LifecycleHeads = []string{event}
+		if testCase.CurrentLifecycle.State == StateActive && (len(testCase.CurrentRevision.Steps) == 0 || len(testCase.CurrentRevision.CoverageKinds) == 0) {
+			return fmt.Errorf("active test requires a step and coverage kind")
 		}
-	}
-	revisionHeads, revisionRoots, revisionCycle := graphHeads(revisionParents, mapKeys(revisions))
-	if len(revisionRoots) != 1 {
-		problems.add("revision graph must have exactly one initial revision; found %d", len(revisionRoots))
-	}
-	if revisionCycle {
-		problems.add("revision graph must be acyclic")
-	}
-	testCase.RevisionHeads = buildNestedURNs(sagaID, testCaseID, qualityid.KindRevision, revisionHeads)
-	if len(revisionHeads) == 1 {
-		value := revisions[revisionHeads[0]]
-		testCase.CurrentRevision = &value
-	}
-	if !revisionCycle {
-		validateStepHistory(&problems, revisions, revisionParents)
-	}
+	} else {
 
-	events := map[string]LifecycleEvent{}
-	eventParents := map[string][]string{}
-	for _, event := range testCase.Events {
-		if _, exists := events[event.ID]; exists {
-			problems.add("lifecycle event id %q is duplicated", event.ID)
+		revisionParents := map[string][]string{}
+		for _, revision := range testCase.Revisions {
+			if _, exists := revisions[revision.ID]; exists {
+				problems.add("revision id %q is duplicated", revision.ID)
+			}
+			revisions[revision.ID] = revision
 		}
-		events[event.ID] = event
-	}
-	for id, event := range events {
-		for _, parentURN := range event.Parents {
-			parentID, ok := nestedID(parentURN, qualityid.KindEvent, sagaID, testCaseID)
-			if !ok {
-				continue
-			}
-			parent, exists := events[parentID]
-			if !exists {
-				problems.add("lifecycle event %q names missing parent %q", id, parentURN)
-				continue
-			}
-			eventParents[id] = append(eventParents[id], parentID)
-			if !allowedLifecycleTransition(parent.State, event.State, len(event.Parents) > 1) {
-				problems.add("lifecycle event %q cannot transition from %s to %s", id, parent.State, event.State)
-			}
-		}
-	}
-	eventHeads, eventRoots, eventCycle := graphHeads(eventParents, mapKeys(events))
-	if len(eventRoots) != 1 {
-		problems.add("lifecycle graph must have exactly one initial event; found %d", len(eventRoots))
-	} else if events[eventRoots[0]].State != StateProposed {
-		problems.add("initial lifecycle state must be proposed")
-	}
-	if eventCycle {
-		problems.add("lifecycle graph must be acyclic")
-	}
-	testCase.LifecycleHeads = buildNestedURNs(sagaID, testCaseID, qualityid.KindEvent, eventHeads)
-	if len(eventHeads) == 1 {
-		value := events[eventHeads[0]]
-		testCase.CurrentLifecycle = &value
-		if value.State == StateActive {
-			for _, head := range revisionHeads {
-				if len(revisions[head].Steps) == 0 || len(revisions[head].CoverageKinds) == 0 {
-					problems.add("active test case requires every current revision head to contain a step and coverage kind")
+		for id, revision := range revisions {
+			for _, parentURN := range revision.Parents {
+				parentID, ok := nestedID(parentURN, qualityid.KindRevision, sagaID, testCaseID)
+				if !ok {
+					continue
+				}
+				if _, exists := revisions[parentID]; !exists {
+					problems.add("revision %q names missing parent %q", id, parentURN)
+				} else {
+					revisionParents[id] = append(revisionParents[id], parentID)
 				}
 			}
 		}
+		revisionHeads, revisionRoots, revisionCycle := graphHeads(revisionParents, mapKeys(revisions))
+		if len(revisionRoots) != 1 {
+			problems.add("revision graph must have exactly one initial revision; found %d", len(revisionRoots))
+		}
+		if revisionCycle {
+			problems.add("revision graph must be acyclic")
+		}
+		testCase.RevisionHeads = buildNestedURNs(sagaID, testCaseID, qualityid.KindRevision, revisionHeads)
+		if len(revisionHeads) == 1 {
+			value := revisions[revisionHeads[0]]
+			testCase.CurrentRevision = &value
+		}
+		if !revisionCycle {
+			validateStepHistory(&problems, revisions, revisionParents)
+		}
+
+		events := map[string]LifecycleEvent{}
+		eventParents := map[string][]string{}
+		for _, event := range testCase.Events {
+			if _, exists := events[event.ID]; exists {
+				problems.add("lifecycle event id %q is duplicated", event.ID)
+			}
+			events[event.ID] = event
+		}
+		for id, event := range events {
+			for _, parentURN := range event.Parents {
+				parentID, ok := nestedID(parentURN, qualityid.KindEvent, sagaID, testCaseID)
+				if !ok {
+					continue
+				}
+				parent, exists := events[parentID]
+				if !exists {
+					problems.add("lifecycle event %q names missing parent %q", id, parentURN)
+					continue
+				}
+				eventParents[id] = append(eventParents[id], parentID)
+				if !allowedLifecycleTransition(parent.State, event.State, len(event.Parents) > 1) {
+					problems.add("lifecycle event %q cannot transition from %s to %s", id, parent.State, event.State)
+				}
+			}
+		}
+		eventHeads, eventRoots, eventCycle := graphHeads(eventParents, mapKeys(events))
+		if len(eventRoots) != 1 {
+			problems.add("lifecycle graph must have exactly one initial event; found %d", len(eventRoots))
+		} else if events[eventRoots[0]].State != StateProposed {
+			problems.add("initial lifecycle state must be proposed")
+		}
+		if eventCycle {
+			problems.add("lifecycle graph must be acyclic")
+		}
+		testCase.LifecycleHeads = buildNestedURNs(sagaID, testCaseID, qualityid.KindEvent, eventHeads)
+		if len(eventHeads) == 1 {
+			value := events[eventHeads[0]]
+			testCase.CurrentLifecycle = &value
+			if value.State == StateActive {
+				for _, head := range revisionHeads {
+					if len(revisions[head].Steps) == 0 || len(revisions[head].CoverageKinds) == 0 {
+						problems.add("active test case requires every current revision head to contain a step and coverage kind")
+					}
+				}
+			}
+		}
+
 	}
 
 	evidence := map[string]Evidence{}
@@ -413,11 +432,14 @@ func validateTestCaseGraphs(testCase *TestCase, sagaID string, source SourceIden
 			problems.add("evidence id %q is duplicated", value.ID)
 		}
 		evidence[value.ID] = value
-		if !knownRevisions[value.TestRevision] {
+		if !knownRevisions[value.TestRevision] && !digestPin(value.TestRevision) {
 			problems.add("evidence %q references missing test revision %q", value.ID, value.TestRevision)
 		}
 	}
 	for _, value := range evidence {
+		if digestPin(value.TestRevision) && !knownRevisions[value.TestRevision] {
+			continue
+		}
 		revisionID, _ := nestedID(value.TestRevision, qualityid.KindRevision, sagaID, testCaseID)
 		steps := map[string]bool{}
 		for _, step := range revisions[revisionID].Steps {
@@ -483,7 +505,7 @@ func validateTestCaseGraphs(testCase *TestCase, sagaID string, source SourceIden
 			problems.add("run id %q is duplicated", run.ID)
 		}
 		runs[run.ID] = run
-		if !knownRevisions[run.TestRevision] {
+		if !knownRevisions[run.TestRevision] && !digestPin(run.TestRevision) {
 			problems.add("run %q references missing test revision %q", run.ID, run.TestRevision)
 		}
 		for _, evidenceURN := range run.Evidence {
@@ -753,6 +775,9 @@ func parseCriterion(value, sagaID string) (livingid.Reference, bool) {
 }
 
 func parseStoryRevision(value, sagaID string) (string, bool) {
+	if digestPin(value) {
+		return "", true
+	}
 	ref, err := livingid.Parse(value)
 	if err != nil || ref.Kind != livingid.KindRevision || ref.SagaID != sagaID || (ref.ParentKind != "" && ref.ParentKind != livingid.KindStory) {
 		return "", false
@@ -766,6 +791,9 @@ func isTestRevision(value, sagaID, testCaseID string) bool {
 }
 
 func nestedID(value string, kind qualityid.Kind, sagaID, testCaseID string) (string, bool) {
+	if kind == qualityid.KindRevision && digestPin(value) {
+		return "sha256-" + strings.TrimPrefix(value, "sha256:"), true
+	}
 	ref, err := qualityid.Parse(value)
 	return ref.ID, err == nil && ref.Kind == kind && ref.SagaID == sagaID && ref.TestCaseID == testCaseID
 }
@@ -870,4 +898,8 @@ func validEvidenceRole(value EvidenceRole) bool {
 
 func validRunResult(value RunResult) bool {
 	return value == RunPassed || value == RunFailed || value == RunBlocked || value == RunSkipped
+}
+
+func digestPin(value string) bool {
+	return currentrecord.ValidDigest(value)
 }

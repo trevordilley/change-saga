@@ -29,9 +29,7 @@ test("a Saga opens several implementation decks without paginating its documenta
 
   // Code-only and story-only elements must have independent affordances.
   const story = "urn:change-saga:wave-one:story:understand-request";
-  run("story", "add", "--feature", "wave-one", "--id", "understand-request", "--revision", "r1", "--event", "proposed",
-    "--title", "Understand a request", "--statement", "As a reviewer I can trace a request to its intent.",
-    "--criterion", "visible=The intent is visible on the element", saga.sagaRoot);
+  run("story", "add", "--feature", "wave-one", "--id", "understand-request", "--title", "Understand a request", "--statement", "As a reviewer I can trace a request to its intent.", "--criterion", "visible=The intent is visible on the element", saga.sagaRoot);
   for (const [id, to] of [["request-story", story], ["request-criterion", `${story}:criterion:visible`]]) {
     run("relation", "add", "--feature", "wave-one", "--id", id, "--type", "explains",
       "--from", "urn:change-saga:wave-one:slide:request-enters:item:no-diff", "--to", to,

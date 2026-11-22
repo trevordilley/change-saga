@@ -12,6 +12,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -23,11 +24,19 @@ func whiteboardFixture(t *testing.T) (string, DocumentationLink, DocumentationLi
 	entity := pinOf(rawTechnical(t, root, KindDataEntity, "job", TechnicalDefinition{Name: "Job", Explanation: "Queued work", Intent: IntentProposed, Baseline: BaselineNone}), "r1")
 	child := diagram.Document{Version: 1, Width: 400, Height: 200, Elements: []diagram.Element{{ID: "job", Kind: "node", Shape: "rect", X: 20, Y: 20, Width: 180, Height: 100, Style: "normal", Label: "Job", Note: "Original detail"}}}
 	def := TechnicalDefinition{Name: "Jobs", Explanation: "Job directory", Directory: []DocumentationLink{entity}, Bindings: []Binding{{ID: "job", Element: "job", Entity: &entity}}, Diagram: &child}
-	if _, err := WriteTechnicalRevision(context.Background(), root, "test", TechnicalWrite{Kind: KindERD, ID: "jobs", RevisionID: "r1", Definition: def, Create: true}); err != nil {
+	created, err := WriteTechnicalRevision(context.Background(), root, "test", TechnicalWrite{Kind: KindERD, ID: "jobs", Definition: def, Create: true})
+	if err != nil {
 		t.Fatal(err)
 	}
-	target, _ := TechnicalURN("test", KindERD, "jobs")
-	return root, pinOf(target, "r1"), entity
+	inventory, err := LoadInventory(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	entity.Revision, err = inventory.Find(entity.Target).CurrentContentDigest()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return root, DocumentationLink{Target: created.URN, Revision: created.ContentDigest}, entity
 }
 
 func boardDocument(pin DocumentationLink) diagram.Document {
@@ -37,7 +46,86 @@ func boardDocument(pin DocumentationLink) diagram.Document {
 	}}
 }
 
-func TestWhiteboardPinnedHistoryAndStructuredERDCompatibility(t *testing.T) {
+func TestExplicitWhiteboardEditResolvesLegacyForkWithHistoryOnlyInGit(t *testing.T) {
+	root, pin, _ := whiteboardFixture(t)
+	base := boardDocument(pin)
+	if _, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "erd", "base", "", "Work", base); err != nil {
+		t.Fatal(err)
+	}
+	left := boardDocument(pin)
+	left.Elements[0].Label = "Reviewed cloud boundary"
+	leftRecord, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "erd", "left", "base", "Work", left)
+	if err != nil {
+		t.Fatal(err)
+	}
+	right := boardDocument(pin)
+	right.Elements[1].Note = "Confirmed storage purpose"
+	rightRecord, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "erd", "right", "base", "Work", right)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := LoadWhiteboard(root, "test", "erd", ""); err == nil {
+		t.Fatal("an ordinary read silently selected a head")
+	}
+	merged := left
+	merged.Elements[1].Note = right.Elements[1].Note
+	// A different, still-legacy package pins an older board value. Its exact
+	// reference must be converted before the board's source files disappear.
+	annotationPath := filepath.Join(root, "___deprecations", "old-board.deprecation", "revisions", "r1.json")
+	if err := os.MkdirAll(filepath.Dir(annotationPath), 0755); err != nil {
+		t.Fatal(err)
+	}
+	annotation := DeprecationRevision{
+		Schema: DeprecationRevisionSchemaURL, Version: 5, ID: "r1",
+		Deprecation: "urn:change-saga:test:deprecation:old-board", Parents: []string{},
+		Reason: "Preserve the original annotation", Scope: "content", CreatedAt: testTime,
+		Target: DeprecationTarget{Target: "urn:change-saga:test:whiteboard:erd", Revision: "urn:change-saga:test:whiteboard:erd:revision:base", Element: "cloud/jobs"},
+	}
+	if err := store.WriteJSON(annotationPath, annotation, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := PublishWhiteboard(context.Background(), root, "test", "erd", "", "", "Work", merged); err == nil || !strings.Contains(err.Error(), "commit the legacy whiteboard") {
+		t.Fatalf("uncommitted legacy inputs were discarded: %v", err)
+	}
+	commitCurrencyFixture(t, root)
+	leftDigest, _ := WhiteboardContentDigest(*leftRecord)
+	rightDigest, _ := WhiteboardContentDigest(*rightRecord)
+	current, err := PublishWhiteboard(context.Background(), root, "test", "erd", "", "", "Work", merged)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if current.Document.Elements[0].Label != left.Elements[0].Label || current.Document.Elements[1].Note != right.Elements[1].Note || *current.Document.Elements[1].Source != *base.Elements[1].Source {
+		t.Fatal("resolved content or an exact source pin was lost")
+	}
+	if _, err := os.Stat(filepath.Join(root, WhiteboardDir, "erd", "revisions")); !os.IsNotExist(err) {
+		t.Fatal("Saga retained a revision store")
+	}
+	data, err := os.ReadFile(annotationPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var converted DeprecationRevision
+	if err := json.Unmarshal(data, &converted); err != nil {
+		t.Fatal(err)
+	}
+	baseDigest, _ := WhiteboardContentDigest(WhiteboardRevision{Name: "Work", Document: base})
+	if converted.Target.Revision != baseDigest || converted.Target.Element != annotation.Target.Element || converted.Reason != annotation.Reason {
+		t.Fatalf("an external legacy pin was lost or refreshed: %+v", converted)
+	}
+	commitCurrencyFixture(t, root)
+	for _, digest := range []string{leftDigest, rightDigest} {
+		saved, err := LoadWhiteboard(root, "test", "erd", digest)
+		if err != nil || saved == nil {
+			t.Fatalf("Git did not retain %s: %v", digest, err)
+		}
+		actual, _ := WhiteboardContentDigest(*saved)
+		if actual != digest {
+			t.Fatal("historical evidence substituted current content")
+		}
+	}
+}
+
+func TestWhiteboardGitHistoryAndStructuredERDCompatibility(t *testing.T) {
 	root, pin, entity := whiteboardFixture(t)
 	inventory, err := LoadInventory(root, "test")
 	if err != nil {
@@ -50,6 +138,7 @@ func TestWhiteboardPinnedHistoryAndStructuredERDCompatibility(t *testing.T) {
 		t.Fatal(err)
 	}
 	board := boardDocument(pin)
+	commitCurrencyFixture(t, root)
 	published, err := PublishWhiteboard(context.Background(), root, "test", "erd", "b1", "", "Work", board)
 	if err != nil {
 		t.Fatal(err)
@@ -70,12 +159,18 @@ func TestWhiteboardPinnedHistoryAndStructuredERDCompatibility(t *testing.T) {
 	if !bytes.Contains(encoded, []byte(entity.Revision)) || !bytes.Contains(encoded, []byte("Original detail")) {
 		t.Fatalf("missing bound detail: %s", encoded)
 	}
+	commitCurrencyFixture(t, root)
+	firstBoardDigest, err := WhiteboardContentDigest(*published)
+	if err != nil {
+		t.Fatal(err)
+	}
 	def := before.TechnicalDefinition
 	doc := *def.Diagram
 	doc.Elements = append([]diagram.Element(nil), doc.Elements...)
 	doc.Elements[0].Note = "New detail"
 	def.Diagram = &doc
-	if _, err := WriteTechnicalRevision(context.Background(), root, "test", TechnicalWrite{Kind: KindERD, ID: "jobs", RevisionID: "r2", Parents: []string{pin.Revision}, Definition: def}); err != nil {
+	updated, err := WriteTechnicalRevision(context.Background(), root, "test", TechnicalWrite{Kind: KindERD, ID: "jobs", Definition: def})
+	if err != nil {
 		t.Fatal(err)
 	}
 	unchanged, err := LoadResolvedWhiteboard(root, "test", "erd", "")
@@ -85,11 +180,11 @@ func TestWhiteboardPinnedHistoryAndStructuredERDCompatibility(t *testing.T) {
 	if !bytes.Equal(loaded.SVG, unchanged.SVG) {
 		t.Fatal("board silently followed newer child")
 	}
-	next := boardDocument(pinOf(pin.Target, "r2"))
+	next := boardDocument(DocumentationLink{Target: pin.Target, Revision: updated.ContentDigest})
 	if _, err := PublishWhiteboard(context.Background(), root, "test", "erd", "b2", "b1", "Work", next); err != nil {
 		t.Fatal(err)
 	}
-	historical, err := LoadResolvedWhiteboard(root, "test", "erd", "b1")
+	historical, err := LoadResolvedWhiteboard(root, "test", "erd", firstBoardDigest)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -108,14 +203,19 @@ func TestWhiteboardPinnedHistoryAndStructuredERDCompatibility(t *testing.T) {
 	if err := ValidateWhiteboards(root, "test"); err != nil {
 		t.Fatal(err)
 	}
-	for _, test := range []struct {
-		id, parent string
-		doc        diagram.Document
-	}{{"b3", "b1", next}, {"b2", "b1", board}, {"../bad", "b2", board}} {
-		if _, err := PublishWhiteboard(context.Background(), root, "test", "erd", test.id, test.parent, "Work", test.doc); err == nil {
-			t.Fatalf("accepted invalid update %s", test.id)
-		}
+	// Old storage labels are ignored by compatibility writers. They neither
+	// establish content identity nor reject a valid current edit.
+	retry, err := PublishWhiteboard(context.Background(), root, "test", "erd", "../ignored", "unknown", "Work", next)
+	if err != nil {
+		t.Fatal(err)
 	}
+	if digest, err := WhiteboardContentDigest(*retry); err != nil || digest == firstBoardDigest {
+		t.Fatalf("current edit did not replace selected content: %s %v", digest, err)
+	}
+	if _, err := PublishWhiteboard(context.Background(), root, "test", "../invalid-board", "", "", "Work", next); err == nil {
+		t.Fatal("invalid stable board identity accepted")
+	}
+
 }
 
 func TestWhiteboardRejectsUnresolvedSourcesWithoutPublishing(t *testing.T) {
@@ -157,11 +257,11 @@ func TestWhiteboardOpaqueBindingsAndNestedERD(t *testing.T) {
 	sum := sha256.Sum256(svg)
 	digest := hex.EncodeToString(sum[:])
 	def := TechnicalDefinition{Name: "Opaque", Explanation: "Imported ERD", Directory: []DocumentationLink{entity}, Bindings: []Binding{{ID: "job", Element: "Job_1", Entity: &entity}}, Visual: &Visual{Path: "assets/" + digest + ".svg", Digest: "sha256:" + digest, MediaType: "image/svg+xml"}}
-	if _, err := WriteTechnicalRevision(context.Background(), root, "test", TechnicalWrite{Kind: KindERD, ID: "opaque", RevisionID: "r1", Definition: def, Visual: svg, Create: true}); err != nil {
+	opaque, err := WriteTechnicalRevision(context.Background(), root, "test", TechnicalWrite{Kind: KindERD, ID: "opaque", Definition: def, Visual: svg, Create: true})
+	if err != nil {
 		t.Fatal(err)
 	}
-	target, _ := TechnicalURN("test", KindERD, "opaque")
-	doc := boardDocument(pinOf(target, "r1"))
+	doc := boardDocument(DocumentationLink{Target: opaque.URN, Revision: opaque.ContentDigest})
 	if _, err := PublishWhiteboard(context.Background(), root, "test", "erd", "b1", "", "Opaque", doc); err != nil {
 		t.Fatal(err)
 	}
@@ -191,7 +291,7 @@ func TestWhiteboardOpaqueBindingsAndNestedERD(t *testing.T) {
 func TestWhiteboardRejectsMalformedHistoryAndSymlink(t *testing.T) {
 	root, pin, _ := whiteboardFixture(t)
 	board := boardDocument(pin)
-	v, err := PublishWhiteboard(context.Background(), root, "test", "erd", "b1", "", "Work", board)
+	v, err := publishLegacyWhiteboardFixture(context.Background(), root, "test", "erd", "b1", "", "Work", board)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -205,7 +305,7 @@ func TestWhiteboardRejectsMalformedHistoryAndSymlink(t *testing.T) {
 			t.Fatal("accepted malformed history")
 		}
 	}
-	if err := store.WriteJSON(path, v, false); err != nil {
+	if err := store.WriteJSON(path, structLegacyWhiteboard(*v), false); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.Remove(path); err != nil {
@@ -245,11 +345,31 @@ func TestStructuredERDRejectsStoredSourceVisualDrift(t *testing.T) {
 	}
 	revision := *inventory.Pinned(pin)
 	revision.Diagram.Elements[0].Label = "Task"
-	path := filepath.Join(root, TechnicalPath(KindERD, "jobs"), "revisions", "r1.json")
-	if err := store.WriteJSON(path, revision, false); err != nil {
+	if err := currentrecord.Write(filepath.Join(root, TechnicalPath(KindERD, "jobs")), revision, inventory.Find(pin.Target).CurrentLifecycle); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := LoadInventory(root, "test"); err == nil || !strings.Contains(err.Error(), "does not match its visual") {
 		t.Fatalf("source/visual disagreement accepted: %v", err)
 	}
 }
+
+// Only compatibility-reader tests write legacy graphs. Current authoring tests
+// use PublishWhiteboard and never ask it to manufacture revision history.
+func publishLegacyWhiteboardFixture(_ context.Context, root, sagaID, boardID, id, parent, name string, document diagram.Document) (*WhiteboardRevision, error) {
+	parents := []string{}
+	if parent != "" {
+		parents = append(parents, parent)
+	}
+	value := WhiteboardRevision{Schema: WhiteboardSchemaURL, Version: 1, ID: id, Parents: parents, Name: name, Document: document, CreatedAt: testTime}
+	type legacyWhiteboard WhiteboardRevision
+	dir := filepath.Join(root, WhiteboardDir, boardID, "revisions")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return nil, err
+	}
+	if err := store.WriteJSON(filepath.Join(dir, id+".json"), legacyWhiteboard(value), true); err != nil {
+		return nil, err
+	}
+	return &value, nil
+}
+
+type structLegacyWhiteboard WhiteboardRevision

@@ -36,6 +36,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 	case "version", "--version":
 		fmt.Fprintln(stdout, cli.VersionString())
 		return 0
+	case "doctor":
+		err = cli.Doctor(ctx, args[1:], stdout)
 	case "init":
 		err = cli.Init(ctx, args[1:], stdout)
 	case "setup-initial-saga":
@@ -158,6 +160,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.AddClaim(ctx, args[1:], stdout)
 	case "verify-claim":
 		err = cli.VerifyClaim(ctx, args[1:], stdout)
+	case "normalize":
+		err = cli.Normalize(ctx, args[1:], stdout)
 	case "validate":
 		err = cli.Validate(ctx, args[1:], stdout)
 	case "reconcile":

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "ti-selected-path-excluded",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:excluded",
-  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
-  "scope": "self",
-  "rationale": "The System's other Components remain discoverable but contribute no inherited evidence to this Item. Membership alone does not imply selection.",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-24T23:00:55.335644Z",
-  "superseded_at": "2026-09-27T10:27:32.205382Z"
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selected-path:item:excluded",
+  "id": "ti-selected-path-excluded",
+  "rationale": "The System's other Components remain discoverable but contribute no inherited evidence to this Item. Membership alone does not imply selection.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-27T10:27:32.205382Z",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "type": "explains",
+  "version": 5
 }

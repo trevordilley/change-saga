@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "review-surface-explains-contextual-discussion",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-22T23:43:06.509771Z",
   "from": "urn:change-saga:change-saga:slide:contextual-review:item:slide",
-  "to": "urn:change-saga:change-saga:story:contextual-comments",
-  "scope": "self",
+  "id": "review-surface-explains-contextual-discussion",
   "rationale": "The rendered review visual and its semantic Items are the context to which comment threads attach.",
-  "to_revision": "urn:change-saga:change-saga:story:contextual-comments:revision:r2",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-22T23:43:06.509771Z"
+  "to": "urn:change-saga:change-saga:story:contextual-comments",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "type": "explains",
+  "version": 5
 }

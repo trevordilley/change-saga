@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Keep historical executions separate from definitions.",
+    "preconditions": [
+      "A case has pinned code evidence and legacy execution history; preserve a copy of its definition query and status."
+    ],
+    "steps": [
+      {
+        "action": "Compare assembled status for the fixture containing passed, failed and absent runs with the same fixture after all run metadata is removed.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin"
+        ],
+        "expected_result": "The full assembled status is equal.",
+        "id": "check-run-removal"
+      },
+      {
+        "action": "Starting from the no-run fixture, use proposed lifecycles, conflicting run heads and a failed stale head run.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin"
+        ],
+        "expected_result": "Quality criterion definition coverage is unchanged.",
+        "id": "check-conflicting-run-coverage"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-quality-boundary",
+    "title": "Keep historical executions separate from definitions"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-quality-boundary"
+  }
+}

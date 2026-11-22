@@ -12,6 +12,9 @@ func PrototypeURN(sagaID, prototypeID string) (string, error) {
 }
 
 func RevisionURN(sagaID, prototypeID, revisionID string) (string, error) {
+	if strings.HasPrefix(revisionID, "sha256-") && digestPattern.MatchString("sha256:"+strings.TrimPrefix(revisionID, "sha256-")) {
+		return "sha256:" + strings.TrimPrefix(revisionID, "sha256-"), nil
+	}
 	if _, err := PrototypeURN(sagaID, prototypeID); err != nil {
 		return "", err
 	}
@@ -54,6 +57,9 @@ func parsePrototypeURN(value, sagaID string) (string, error) {
 }
 
 func parseRevisionURN(value, sagaID, prototypeID string) (string, error) {
+	if digestPattern.MatchString(value) {
+		return "sha256-" + strings.TrimPrefix(value, "sha256:"), nil
+	}
 	parts := strings.Split(value, ":")
 	if len(parts) != 7 || parts[0] != "urn" || parts[1] != "change-saga" || parts[2] != sagaID || parts[3] != "prototype" || parts[4] != prototypeID || parts[5] != "revision" || !livingid.ValidID(parts[6]) {
 		return "", fmt.Errorf("must be a canonical revision URN for prototype %q", prototypeID)
@@ -73,6 +79,9 @@ func parseTargetURN(value, sagaID string) (storyID string, criterion bool, err e
 }
 
 func parseStoryRevision(value, sagaID, storyID string) error {
+	if digestPattern.MatchString(value) {
+		return nil
+	}
 	ref, err := livingid.Parse(value)
 	if err != nil || ref.SagaID != sagaID || ref.Kind != livingid.KindRevision || (ref.ParentKind != "" && ref.ParentKind != livingid.KindStory) || ref.ParentID != storyID {
 		return fmt.Errorf("story_revision must pin target story %q", storyID)

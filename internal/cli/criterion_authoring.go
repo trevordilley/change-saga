@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -64,8 +65,8 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	flags := commandFlags(name, commandUsage[name], out)
 	story := flags.String("story", "", "canonical story URN")
 	criterionURN := flags.String("criterion", "", "canonical criterion URN")
-	parent := flags.String("parent", "", "explicit current story revision head URN")
-	revision := flags.String("revision", "", "stable new story revision id")
+	parent := new(string)
+	revision := new(string)
 	id := flags.String("id", "", "stable criterion id")
 	statement := flags.String("statement", "", "full independent pass/fail statement")
 	title := flags.String("title", "", "optional short authored title; empty clears it on revise")
@@ -112,7 +113,7 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	if operation == "remove" && (request.Statement != nil || request.Title != nil || request.Overview != nil || request.Subtext != nil) {
 		return fmt.Errorf("criterion remove cannot change authored content")
 	}
-	if strings.TrimSpace(request.Story) == "" || strings.TrimSpace(request.Parent) == "" || strings.TrimSpace(request.Revision) == "" {
+	if strings.TrimSpace(request.Story) == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
 	}
 	root := flags.Arg(0)
@@ -186,18 +187,16 @@ func editCriterionRevision(ctx context.Context, root, sagaID string, request cri
 		if document.Stories[index].Identity.ID != storyRef.ID {
 			continue
 		}
-		if len(document.Stories[index].RevisionHeads) != 1 || document.Stories[index].RevisionHeads[0] != request.Parent {
-			return request, fmt.Errorf("criterion parent is not the unique current story revision head")
+		if document.Stories[index].CurrentRevision == nil {
+			return request, fmt.Errorf("story current content is unavailable; resolve legacy ambiguity before editing")
 		}
 		current = document.Stories[index].CurrentRevision
 		break
 	}
 	if current == nil {
-		return request, fmt.Errorf("story %q does not have a unique current revision", storyRef.ID)
+		return request, fmt.Errorf("story %q has competing legacy content; explicitly select complete current content before editing", storyRef.ID)
 	}
 	candidate := *current
-	candidate.ID = request.Revision
-	candidate.Parents = []string{request.Parent}
 	candidate.AcceptanceCriteria = append([]requirements.Criterion{}, current.AcceptanceCriteria...)
 	candidate.CreatedAt = request.CreatedAt
 	if candidate.CreatedAt.IsZero() {
@@ -268,13 +267,18 @@ func runRevisionEditor(ctx context.Context, revision requirements.Revision) (req
 	if len(editorArgs) == 0 {
 		return requirements.Revision{}, fmt.Errorf("$EDITOR is not set")
 	}
-	file, err := os.CreateTemp("", "change-saga-story-revision-*.json")
+	file, err := os.CreateTemp("", "change-saga-story-current-*.json")
 	if err != nil {
 		return requirements.Revision{}, err
 	}
 	path := file.Name()
 	defer os.Remove(path)
-	data, err := json.MarshalIndent(revision, "", "  ")
+	content, err := currentrecord.Content(revision)
+	if err != nil {
+		file.Close()
+		return requirements.Revision{}, err
+	}
+	data, err := json.MarshalIndent(content, "", "  ")
 	if err == nil {
 		_, err = file.Write(append(data, '\n'))
 	}
@@ -289,9 +293,22 @@ func runRevisionEditor(ctx context.Context, revision requirements.Revision) (req
 	if err := command.Run(); err != nil {
 		return requirements.Revision{}, fmt.Errorf("editor failed: %w", err)
 	}
-	var edited requirements.Revision
-	if err := readStrictAuthoringJSON(path, nil, &edited); err != nil {
-		return requirements.Revision{}, fmt.Errorf("edited revision: %w", err)
+	var raw json.RawMessage
+	if err := readStrictAuthoringJSON(path, nil, &raw); err != nil {
+		return requirements.Revision{}, fmt.Errorf("edited content: %w", err)
+	}
+	var fields map[string]json.RawMessage
+	if err := currentrecord.Decode(raw, &fields); err != nil {
+		return requirements.Revision{}, err
+	}
+	for _, key := range []string{"$schema", "version", "id", "parents", "created_at", "request_id"} {
+		if _, exists := fields[key]; exists {
+			return requirements.Revision{}, fmt.Errorf("edit current content only; %s is storage metadata", key)
+		}
+	}
+	edited := requirements.Revision{Schema: revision.Schema, Version: revision.Version, ID: revision.ID, Parents: append([]string{}, revision.Parents...), CreatedAt: revision.CreatedAt, RequestID: revision.RequestID}
+	if err := currentrecord.Project(raw, &edited); err != nil {
+		return requirements.Revision{}, fmt.Errorf("edited content: %w", err)
 	}
 	return edited, nil
 }

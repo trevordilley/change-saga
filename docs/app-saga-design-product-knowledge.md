@@ -1,5 +1,10 @@
 # App Saga design: durable product knowledge
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Status: canonical UX and technical design for the accepted requirement heads at
 main commit `4b847a1`. This wave owns only the `format` and `requirements`
 design roots and their source-owned relations. It deliberately adds no code

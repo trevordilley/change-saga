@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 )
 
 const (
@@ -185,23 +186,25 @@ type Relation struct {
 }
 
 type Story struct {
+	current bool
 	// Feature is the feature whose directory holds the story. Moving a story
 	// between features changes only this; its URN and every pin stay the same.
 	Feature   string
 	Identity  StoryIdentity
-	Revisions []Revision
-	Events    []LifecycleEvent
+	Revisions []Revision       `json:"-"`
+	Events    []LifecycleEvent `json:"-"`
 
-	RevisionHeads    []string
-	LifecycleHeads   []string
-	CurrentRevision  *Revision
-	CurrentLifecycle *LifecycleEvent
+	RevisionHeads    []string        `json:"-"`
+	LifecycleHeads   []string        `json:"-"`
+	CurrentRevision  *Revision       `json:"content"`
+	CurrentLifecycle *LifecycleEvent `json:"state"`
 }
 
 func (story Story) RevisionConflict() bool  { return len(story.RevisionHeads) > 1 }
 func (story Story) LifecycleConflict() bool { return len(story.LifecycleHeads) > 1 }
 
 type Document struct {
+	gitSource    *currentrecord.GitSource
 	Deprecations []Deprecation
 	Root         string
 	SagaID       string
@@ -233,6 +236,8 @@ type StaleInputs struct {
 
 type LoadOptions struct {
 	StaleInputs StaleInputs
+	// GitSource bounds historical evidence lookup for an extracted saved view.
+	GitSource *currentrecord.GitSource
 }
 
 type AddStoryInput struct {
@@ -348,11 +353,12 @@ type AddRelationInput struct {
 }
 
 type MutationResult struct {
-	URN          string
-	Path         string
-	Created      []string
-	Paths        []string
-	CurrentHeads []string
-	Reason       string
-	Replayed     bool
+	ContentDigest string `json:"content_digest,omitempty"`
+	URN           string
+	Path          string
+	Created       []string
+	Paths         []string
+	CurrentHeads  []string
+	Reason        string
+	Replayed      bool
 }

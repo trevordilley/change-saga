@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-unreferenced-choice-325ab00bd188",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice",
-  "to": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:actionable-context",
-  "scope": "self",
-  "rationale": "Steps existing-choice, context define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:revision:r2",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:08.763621Z",
-  "request_id": "test-inventory-unreferenced-choice-325ab00bd188"
+  "from": "urn:change-saga:change-saga:test-case:inventory-unreferenced-choice",
+  "from_revision": "sha256:b7bbb9bce034207b2036b5495aa5b2d0e965ccd53d775c46b42cdfd33748a3da",
+  "id": "test-inventory-unreferenced-choice-325ab00bd188",
+  "rationale": "Steps existing-choice, context define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-unreferenced-choice-325ab00bd188",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:actionable-context",
+  "to_revision": "sha256:e961b23e81473d7854590a511d5477f2fd6aed4e07610333ddb57e817e0ca92c",
+  "type": "verifies",
+  "version": 5
 }

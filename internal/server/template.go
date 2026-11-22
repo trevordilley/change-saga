@@ -185,13 +185,13 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 {{template "related-reviews" (relatedReviews "feature" .RelatedReviews)}}</section>{{end}}
 
 {{define "prototype-page"}}<section class="app-page prototype-page reading-page" data-prototype-page data-prototype-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Prototype breadcrumb">{{with .Feature}}{{if .Href}}<a href="{{.Href}}">{{.Title}}</a><span>/</span>{{end}}{{end}}<span>Prototypes</span><span>/</span><strong>{{.Title}}</strong></nav>
-<header class="requirement-story-hero prototype-hero"><div><p class="app-page-kind">Prototype{{if .State}} · {{.State}}{{end}}</p><h1>{{.Title}}</h1></div>{{if .OpenURL}}<a class="prototype-open" href="{{.OpenURL}}" target="_blank" rel="noopener" data-prototype-open>Open in new tab</a>{{else if .ExternalURL}}<a class="prototype-open" href="{{.ExternalURL}}" target="_blank" rel="noopener noreferrer" data-prototype-open>Open prototype</a>{{end}}</header>{{if .Conflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This prototype has more than one current revision. The newest is not being guessed; choose a revision below.</span></div>{{end}}{{if .Stale}}<div class="requirements-conflict" role="status" data-prototype-stale>{{template "icon" "alert"}}<span>{{.Stale}}</span></div>{{end}}
-{{if gt (len .Revisions) 1}}<nav class="prototype-revisions" aria-label="Revisions">{{range .Revisions}}<a href="{{.Href}}"{{if .Selected}} aria-current="page"{{end}} title="{{.Title}} · {{.Created}}">{{.ID}}{{if .Current}} · current{{end}}</a>{{end}}</nav>{{end}}
+<header class="requirement-story-hero prototype-hero"><div><p class="app-page-kind">Prototype{{if .State}} · {{.State}}{{end}}</p><h1>{{.Title}}</h1></div>{{if .OpenURL}}<a class="prototype-open" href="{{.OpenURL}}" target="_blank" rel="noopener" data-prototype-open>Open in new tab</a>{{else if .ExternalURL}}<a class="prototype-open" href="{{.ExternalURL}}" target="_blank" rel="noopener noreferrer" data-prototype-open>Open prototype</a>{{end}}</header>{{if .Conflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>Legacy prototype content is ambiguous. Preserve every candidate in Git and explicitly select complete current content before normalization.</span></div>{{end}}{{if .Stale}}<div class="requirements-conflict" role="status" data-prototype-stale>{{template "icon" "alert"}}<span>{{.Stale}}</span></div>{{end}}
+
 <div class="prototype-stage">{{if .FrameURL}}<iframe class="prototype-frame" sandbox="allow-scripts" src="{{.FrameURL}}" title="{{.Title}}" data-prototype-frame></iframe>{{else if .ExternalURL}}<p class="app-empty">This prototype lives outside the Saga, at <a href="{{.ExternalURL}}" target="_blank" rel="noopener noreferrer">{{.ExternalURL}}</a>.</p>{{else}}<p class="app-empty">{{.Unavailable}}</p>{{end}}</div>{{if .Location}}<p class="prototype-location">Lives in the repository at <code>{{.Location}}</code>, pinned at <code>{{.Commit}}</code>.</p>{{end}}
-<section class="app-page-section reading-surface" data-prototype-annotations><h2>Annotations</h2>{{if .Annotations}}<ul class="trace-links">{{range .Annotations}}<li data-prototype-annotation="{{.ID}}"><a href="{{.Target.Href}}">{{.Target.Title}}</a> <small class="trace-kind">{{.Target.Kind}} · {{.Selector}}</small>{{if not .OnRevision}}<small class="trace-note">pinned to revision {{.Revision}}</small>{{end}}{{if .Rationale}}<p class="trace-rationale">{{.Rationale}}</p>{{end}}</li>{{end}}</ul>{{else}}<p class="term-empty">No annotation pins this prototype to a story or criterion yet (<code>change-saga prototype annotate</code>).</p>{{end}}</section></section>{{end}}
+<section class="app-page-section reading-surface" data-prototype-annotations><h2>Annotations</h2>{{if .Annotations}}<ul class="trace-links">{{range .Annotations}}<li data-prototype-annotation="{{.ID}}"><a href="{{.Target.Href}}">{{.Target.Title}}</a> <small class="trace-kind">{{.Target.Kind}} · {{.Selector}}</small>{{if not .OnRevision}}<small class="trace-note">pinned to saved content {{.Revision}}</small>{{end}}{{if .Rationale}}<p class="trace-rationale">{{.Rationale}}</p>{{end}}</li>{{end}}</ul>{{else}}<p class="term-empty">No annotation pins this prototype to a story or criterion yet (<code>change-saga prototype annotate</code>).</p>{{end}}</section></section>{{end}}
 
 {{define "test-case-page"}}<section class="app-page test-case-page reading-page" data-test-case-page data-test-case-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Test case breadcrumb">{{with .Feature}}{{if .Href}}<a href="{{.Href}}">{{.Title}}</a><span>/</span>{{end}}{{end}}<span>Test cases</span><span>/</span><strong>{{.Title}}</strong></nav>
-<header class="requirement-story-hero"><div><p class="app-page-kind">Test case</p><h1>{{.Title}}</h1></div></header>{{if .Conflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This test case has more than one current revision or lifecycle state. No state is being guessed.</span></div>{{end}}
+<header class="requirement-story-hero"><div><p class="app-page-kind">Test case</p><h1>{{.Title}}</h1></div></header>{{if .Conflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>Legacy test content or state is ambiguous. Preserve the files in Git and explicitly select complete current content before normalization.</span></div>{{end}}
 
 <section class="app-page-section reading-surface test-walkthrough" data-test-definition><h2>Definition</h2><p data-test-definition-stage>{{.Definition}} · Describes how to verify the outcome; no execution result is implied.</p>{{if .Preconditions}}<h3>Preconditions</h3><ul>{{range .Preconditions}}<li>{{.}}</li>{{end}}</ul>{{end}}<h3>Steps</h3>{{if .Steps}}<ol class="test-steps">{{range .Steps}}<li id="step-{{.ID}}" data-test-step="{{.ID}}"><p>{{.Action}}</p>{{if .ExpectedResult}}<p class="test-step-result"><span>Expect</span> {{.ExpectedResult}}</p>{{end}}{{if .CriteriaLinks}}<h4>Acceptance criteria</h4>{{template "trace-links" .CriteriaLinks}}{{end}}{{if .EvidenceLinks}}<h4>Implementation evidence</h4>{{template "trace-links" .EvidenceLinks}}{{end}}</li>{{end}}</ol>{{else}}<p class="term-empty">No steps recorded.</p>{{end}}{{if .ExpectedResult}}<div class="test-outcome"><h3>Expected result</h3><p>{{.ExpectedResult}}</p></div>{{end}}</section>
 <dl class="feature-summary"><div><dt>Lifecycle</dt><dd>{{.Lifecycle}}</dd></div><div><dt>Automation</dt><dd>{{or .Automation "not stated"}}</dd></div><div data-test-kinds><dt>Test kinds</dt><dd>{{if .CoverageKinds}}{{join .CoverageKinds ", "}}{{else}}not stated{{end}}</dd></div></dl>
@@ -214,7 +214,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <p class="app-page-kind">Term</p><h1>{{.Name}}</h1>{{if .Retired}}<p class="term-state">Retired: the project no longer uses this term.</p>{{end}}
 </div>
 </header>
-{{if .RevisionConflicted}}<div class="alert" role="alert" data-term-revision-conflict><span><strong>Conflicting term revisions</strong> Definition maturity and implementation-evidence availability are unknown until the competing heads are reconciled.</span></div>{{end}}
+{{if .RevisionConflicted}}<div class="alert" role="alert" data-term-revision-conflict><span><strong>Ambiguous legacy term content</strong> Definition maturity and implementation-evidence availability are unknown until complete current content is explicitly selected.</span></div>{{end}}
 
 <section class="term-definition reading-lead">
 {{if .Definition}}<p>{{.Definition}}</p>{{else}}<p class="term-empty">No current definition is available.</p>{{end}}
@@ -313,7 +313,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <h1>{{.Title}}</h1>
 {{template "essay-subtext" .Subtext}}
 </div>
-</header>{{with .Historical}}{{template "historical-requirement" .}}{{end}}{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}multiple revision heads{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}multiple lifecycle heads{{end}}. No state is being guessed.</span>
+</header>{{with .Historical}}{{template "historical-requirement" .}}{{end}}{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}competing legacy definitions{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}competing legacy states{{end}}. No state is being guessed.</span>
 </div>{{end}}
 <section class="requirement-need essay-abstract" data-essay-abstract aria-label="Abstract">
 <p>{{.Statement}}</p>
@@ -361,25 +361,6 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 </dd>
 </div>
 </dl>
-</div>
-<div class="requirement-history-lists">
-<details>
-<summary>{{template "twisty"}}Revision history <span>{{len .Revisions}}</span>
-</summary>
-<ol>{{range .Revisions}}<li{{if .Current}} class="current"{{end}}>
-<strong>{{.ID}}{{if .Current}} · current{{end}}</strong>
-<code>{{.Target}}</code>
-<time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.CreatedAt.Format "2 Jan 2006, 15:04 MST"}}</time>
-</li>{{end}}</ol>
-</details>
-<details>
-<summary>{{template "twisty"}}Lifecycle history <span>{{len .LifecycleEvents}}</span>
-</summary>
-<ol>{{range .LifecycleEvents}}<li{{if .Current}} class="current"{{end}}>
-<strong>{{.State}}{{if .Current}} · current{{end}}</strong>{{if .Reason}}<p>{{.Reason}}</p>{{end}}<code>{{.Target}}</code>
-<time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.CreatedAt.Format "2 Jan 2006, 15:04 MST"}}</time>
-</li>{{end}}</ol>
-</details>
 </div>
 </div>
 </details>

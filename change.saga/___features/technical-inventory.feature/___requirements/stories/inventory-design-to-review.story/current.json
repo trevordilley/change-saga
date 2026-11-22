@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "review-reuse",
+        "statement": "A review deck can reference the same System, Component, and data-entity identities used in the implementation design and identify the code subset relevant to the change."
+      },
+      {
+        "id": "compare-plan",
+        "statement": "The handoff retains the committed proposed design's identity, enabling a reviewer or CLI consumer to inspect it alongside the delivered design and code."
+      },
+      {
+        "id": "visible-evolution",
+        "statement": "New entities, changed definitions, and changed code selections can be traced through the retained history without overwriting the original proposal."
+      },
+      {
+        "id": "no-implied-approval",
+        "statement": "Entity references and inherited implementation coverage do not themselves record a review approval or conceal unexplained changed code."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+      "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect",
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As an Architect or Developer, I can reuse the same technical entities and scoped evidence in review decks and compare the committed proposed design with delivered implementation so additions and departures remain understandable.",
+    "story": "urn:change-saga:change-saga:story:inventory-design-to-review",
+    "title": "Carry technical design into implementation review"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:inventory-design-to-review"
+  }
+}

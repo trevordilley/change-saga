@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:f45e8dc451ac9d3c63393874dab6fc80d378faea47e0ab728eba84cb72144ce9",
+      "end": 79,
+      "path": "e2e/tests/implementation-deck.spec.ts",
+      "start": 73
+    }
+  ],
+  "created_at": "2026-10-16T23:24:08Z",
   "id": "evidence-1",
-  "test_case": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation",
-  "test_revision": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation:revision:r1",
+  "request_id": "saga-evidence-review-bounded-deck-navigation-evidence-1",
   "role": "test_implementation",
   "steps": [
     "thumbnail"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "e2e/tests/implementation-deck.spec.ts",
-      "start": 73,
-      "end": 79,
-      "digest": "sha256:f45e8dc451ac9d3c63393874dab6fc80d378faea47e0ab728eba84cb72144ce9"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:08Z",
-  "request_id": "saga-evidence-review-bounded-deck-navigation-evidence-1"
+  "test_case": "urn:change-saga:change-saga:test-case:review-bounded-deck-navigation",
+  "test_revision": "sha256:8f6eb48666aa3d1d5ebc0acf68daed1101db2f1361733ea49c0b6d6ea7d8f769",
+  "verifications": [],
+  "version": 5
 }

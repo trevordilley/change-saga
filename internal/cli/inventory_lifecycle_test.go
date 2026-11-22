@@ -113,7 +113,7 @@ func TestInventoryProposedToImplementedLifecycle(t *testing.T) {
 		t.Fatalf("legacy record reinterpreted as %s", intent)
 	}
 	legacy["name"] = "View renderer"
-	if err := h.run("component", "revise", "view", legacy, "--revision", "r2", "--parent", "urn:change-saga:atomic:component:view:revision:r1"); err == nil {
+	if err := h.run("component", "revise", "view", legacy); err == nil {
 		t.Fatal("new revision without explicit intent accepted after adoption")
 	}
 
@@ -122,76 +122,68 @@ func TestInventoryProposedToImplementedLifecycle(t *testing.T) {
 		t.Fatalf("proposal: %v %s", err, h.out.String())
 	}
 	records := queryData(t, "inventory", "--saga", h.root, "--repo", h.repo, "--target", urn)["records"].([]any)
-	if records[0].(map[string]any)["current_revision"].(map[string]any)["intent"] != "proposed" {
+	if records[0].(map[string]any)["content"].(map[string]any)["intent"] != "proposed" {
 		t.Fatalf("query does not expose explicit intent: %v", records[0])
 	}
 
-	implemented := map[string]any{"name": "Record store", "explanation": "Persists records through the database client.", "intent": "implemented",
-		"code": []map[string]any{evidence("save", "HEAD", 4, 6, "Save writes one record.")}}
-	parent := "--parent"
-	if err := h.run("component", "revise", "store", implemented, "--revision", "r2", parent, urn+":revision:r1"); err == nil {
-		t.Fatal("implemented revision accepted without a delivery commit")
-	}
-	if err := h.run("component", "revise", "store", implemented, "--revision", "r2", parent, urn+":revision:r0", "--delivery", "HEAD"); err == nil {
-		t.Fatal("parents that omit the current head accepted")
+	proposedPin := currentTestPin(t, h.root, urn)
+	commitCurrentTestDocumentation(t, h.root, "original proposed store")
+	implemented := map[string]any{"name": "Record store", "explanation": "Persists records through the database client.", "intent": "implemented", "code": []map[string]any{evidence("save", "HEAD", 4, 6, "Save writes one record.")}}
+	if err := h.run("component", "revise", "store", implemented); err == nil {
+		t.Fatal("implemented definition accepted without delivery")
 	}
 	head := strings.TrimSpace(git(t, h.repo, "rev-parse", "HEAD"))
-	if err := h.run("component", "revise", "store", implemented, "--revision", "r2", parent, urn+":revision:r1", "--delivery", head); err != nil {
+	if err := h.run("component", "revise", "store", implemented, "--delivery", head); err != nil {
 		t.Fatalf("implementation transition: %v %s", err, h.out.String())
 	}
-	if err := h.run("component", "revise", "store", implemented, "--revision", "r2", parent, urn+":revision:r1", "--delivery", head); err != nil || !strings.Contains(h.out.String(), `"replayed": true`) {
+	if err := h.run("component", "revise", "store", implemented, "--delivery", head); err != nil || !strings.Contains(h.out.String(), `"replayed": true`) {
 		t.Fatalf("identical retry: %v %s", err, h.out.String())
 	}
 	record := h.inventory().Find(urn)
-	r2 := record.CurrentRevision
-	if r2.ID != "r2" || r2.Delivery.Commit != head || r2.Delivery.Repository != "https://example.test/acme/app.git" || r2.Code[0].Commit != head || r2.Code[0].ID != "save" {
-		t.Fatalf("implemented revision not pinned: %+v", r2)
+	current := record.CurrentRevision
+	if current.Delivery.Commit != head || current.Delivery.Repository != "https://example.test/acme/app.git" || current.Code[0].Commit != head || current.Code[0].ID != "save" {
+		t.Fatalf("implementation evidence not pinned: %#v", current)
 	}
-	if record.Revision(urn+":revision:r1").EffectiveIntent() != requirements.IntentProposed {
-		t.Fatal("the original proposal was not preserved")
+	if old := record.Revision(proposedPin); old == nil || old.EffectiveIntent() != requirements.IntentProposed {
+		t.Fatal("Git lost the original proposal")
 	}
-
-	// A same-identity successor proposal keeps its explicit implemented baseline.
-	successor := map[string]any{"name": "Record store", "explanation": "Also batches writes.", "intent": "proposed", "baseline": urn + ":revision:r1",
-		"code": []map[string]any{evidence("save", head, 4, 6, "Save is the extension point.")}}
-	if err := h.run("component", "revise", "store", successor, "--revision", "r3", parent, urn+":revision:r2"); err == nil {
-		t.Fatal("proposed revision accepted as an implemented baseline")
+	implementedPin := currentTestPin(t, h.root, urn)
+	commitCurrentTestDocumentation(t, h.root, "implemented baseline")
+	successor := map[string]any{"name": "Record store", "explanation": "Also batches writes.", "intent": "proposed", "baseline": proposedPin, "code": []map[string]any{evidence("save", head, 4, 6, "Save is the extension point.")}}
+	if err := h.run("component", "revise", "store", successor); err == nil {
+		t.Fatal("unimplemented proposal accepted as an implemented baseline")
 	}
-	successor["baseline"] = urn + ":revision:r2"
-	if err := h.run("component", "revise", "store", successor, "--revision", "r3", parent, urn+":revision:r2"); err != nil {
+	successor["baseline"] = implementedPin
+	if err := h.run("component", "revise", "store", successor); err != nil {
 		t.Fatalf("successor proposal: %v %s", err, h.out.String())
 	}
-
-	// Pin from a slide: only the current revision is admitted by default.
+	successorPin := currentTestPin(t, h.root, urn)
 	if err := AddDeck(h.ctx, []string{"--feature", testFeature, "--objective", "Store design", h.root, "store"}, &out); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddSlide(h.ctx, []string{"--deck", "store", "--intent", "explain", "--layout", "diagram", h.root, "writes"}, &out); err != nil {
 		t.Fatal(err)
 	}
-	addItem := func(id, revision string) error {
+	addItem := func(id, pin string) error {
 		out.Reset()
-		return AddItem(h.ctx, []string{"--slide", "writes", "--id", id, "--kind", "node", "--element-id", "slide-title", "--description", "Uses the shared store.", "--documentation", urn, "--documentation-revision", urn + ":revision:" + revision, h.root}, &out)
+		return AddItem(h.ctx, []string{"--slide", "writes", "--id", id, "--kind", "node", "--element-id", "slide-title", "--description", "Uses the shared store.", "--documentation", urn, "--documentation-content-digest", pin, h.root}, &out)
 	}
-	if err := addItem("baseline", "r2"); err == nil || !strings.Contains(err.Error(), "stale") {
-		t.Fatalf("stale implemented baseline pinned without a saved view: %v", err)
+	if err := addItem("baseline", implementedPin); err == nil || !strings.Contains(err.Error(), "stale") {
+		t.Fatalf("old baseline admitted as current: %v", err)
 	}
-	// This Saga lives outside its source checkout (a companion layout), so no
-	// saved view can be established; the refusal is specific, never a fallback.
 	out.Reset()
-	if err := AddItem(h.ctx, []string{"--slide", "writes", "--id", "viewed", "--kind", "node", "--element-id", "slide-title", "--description", "Uses the baseline.", "--documentation", urn, "--documentation-revision", urn + ":revision:r2", "--documentation-view", "HEAD", "--repo", h.repo, h.root}, &out); err == nil || !strings.Contains(err.Error(), "view_saga_missing") {
-		t.Fatalf("companion-repository view: %v", err)
+	if err := AddItem(h.ctx, []string{"--slide", "writes", "--id", "viewed", "--kind", "node", "--element-id", "slide-title", "--description", "Uses the baseline.", "--documentation", urn, "--documentation-content-digest", implementedPin, "--documentation-view", "HEAD", "--repo", h.repo, h.root}, &out); err == nil || !strings.Contains(err.Error(), "view_saga_missing") {
+		t.Fatalf("companion source view fabricated: %v", err)
 	}
-	if err := addItem("proposal", "r3"); err != nil {
-		t.Fatalf("pin current proposal: %v %s", err, out.String())
+	if err := addItem("proposal", successorPin); err != nil {
+		t.Fatalf("current proposal: %v %s", err, out.String())
 	}
 	slide := queryData(t, "slide", "--saga", h.root, "--repo", h.repo, "--target", "urn:change-saga:atomic:slide:writes")
-	pin := slide["items"].([]any)[0].(map[string]any)["documentation"].(map[string]any)
-	if pin["revision"] != urn+":revision:r3" {
-		t.Fatalf("slide pin: %v", pin)
+	if pin := slide["items"].([]any)[0].(map[string]any)["documentation"].(map[string]any); pin["revision"] != successorPin {
+		t.Fatalf("exact Item pin lost: %v", pin)
 	}
 	if _, validation, err := saga.Load(h.root); err != nil || !validation.Valid {
-		t.Fatalf("saga invalid after lifecycle: %v %v", err, validation.Issues)
+		t.Fatalf("Saga invalid: %v %v", err, validation.Issues)
 	}
 }
 
@@ -248,7 +240,7 @@ func TestInventoryImplementationEvidencePolicy(t *testing.T) {
 	if err := h.run("component", "add", "queue", map[string]any{"name": "Queue", "explanation": "Proposed queue.", "intent": "proposed", "baseline": "none"}); err != nil {
 		t.Fatal(err)
 	}
-	members := []saga.DocumentationLink{{Target: urn + "moved", Revision: urn + "moved:revision:r1"}, {Target: urn + "queue", Revision: urn + "queue:revision:r1"}}
+	members := []saga.DocumentationLink{{Target: urn + "moved", Revision: currentTestPin(t, h.root, urn+"moved")}, {Target: urn + "queue", Revision: currentTestPin(t, h.root, urn+"queue")}}
 	system := map[string]any{"name": "Pipeline", "explanation": "Moves records.", "intent": "implemented", "components": members,
 		"code":         []map[string]any{evidence("wiring", original, 1, 1, "Package.")},
 		"interactions": []map[string]any{{"id": "enqueue", "from": urn + "moved", "to": urn + "queue", "description": "Enqueues saved records.", "intent": "implemented", "code": []map[string]any{evidence("put", original, 5, 5, "Put.")}}}}
@@ -270,7 +262,11 @@ func TestInventoryDataEntitiesAndERDAuthoring(t *testing.T) {
 	}
 	urn := "urn:change-saga:atomic:"
 	pin := func(kind, id, rev string) saga.DocumentationLink {
-		return saga.DocumentationLink{Target: urn + kind + ":" + id, Revision: urn + kind + ":" + id + ":revision:" + rev}
+		target := urn + kind + ":" + id
+		if rev == "r9" {
+			return saga.DocumentationLink{Target: target, Revision: "sha256:" + strings.Repeat("f", 64)}
+		}
+		return saga.DocumentationLink{Target: target, Revision: currentTestPin(t, h.root, target)}
 	}
 	head := strings.TrimSpace(git(t, h.repo, "rev-parse", "HEAD"))
 	if err := h.run("component", "add", "store", map[string]any{"name": "Store", "explanation": "Stores rows.", "intent": "implemented", "code": []map[string]any{evidence("save", "HEAD", 4, 6, "Save.")}}, "--delivery", head); err != nil {
@@ -313,7 +309,7 @@ func TestInventoryDataEntitiesAndERDAuthoring(t *testing.T) {
 	}
 	unsafe := filepath.Join(t.TempDir(), "unsafe.svg")
 	writeFile(t, unsafe, `<svg xmlns="http://www.w3.org/2000/svg"><g id="report" onclick="steal()"/></svg>`)
-	if err := h.run("erd", "revise", "application", erd, "--visual", unsafe, "--revision", "r2", "--parent", urn+"erd:application:revision:r1"); err == nil {
+	if err := h.run("erd", "revise", "application", erd, "--visual", unsafe); err == nil {
 		t.Fatal("unsafe SVG accepted")
 	}
 	overlay := map[string]any{"name": "PDF jobs", "explanation": "Adds jobs.", "erd": pin("erd", "application", "r1"), "pins": []saga.DocumentationLink{pin("data-entity", "job", "r1")},

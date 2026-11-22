@@ -1,19 +1,19 @@
 {
+  "about": "sidebar",
+  "body": "Definition URLs and saved pins never moved; old #fragments land on their area.",
+  "description": "Definition pages keep /technical/{kind}/{id} and ?revision= pins; a definition's view records its area so the breadcrumb passes through it, and the old section ids now mark the landing page's areas.",
   "documentation": {
-    "target": "urn:change-saga:change-saga:component:technical-design-page",
-    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+    "revision": "sha256:6732de30ae7320cdc20bc73836543806833a3aa8dcbadd0d4bb9c0e8cbe34cb1",
+    "target": "urn:change-saga:change-saga:component:technical-design-page"
   },
-  "version": 4,
   "id": "addresses",
-  "slide": "tdsp-review-nav",
-  "rank": 10,
   "kind": "callout",
   "label": "Addresses kept",
-  "description": "Definition pages keep /technical/{kind}/{id} and ?revision= pins; a definition's view records its area so the breadcrumb passes through it, and the old section ids now mark the landing page's areas.",
+  "rank": 10,
   "selector": {
-    "type": "element",
-    "element_id": "addresses"
+    "element_id": "addresses",
+    "type": "element"
   },
-  "about": "sidebar",
-  "body": "Definition URLs and saved pins never moved; old #fragments land on their area."
+  "slide": "tdsp-review-nav",
+  "version": 4
 }

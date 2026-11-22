@@ -1,0 +1,1 @@
+Harbor Watch is a fictional planned product for discussing an arrival window with a harbor office. This offline example shows its visitor, proposed story, data-flow sketch and gated Plan. It records sample intent and leaves all implementation and review work planned.

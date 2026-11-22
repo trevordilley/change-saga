@@ -1,0 +1,52 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Deliver with a Task open and no Review, then with an unmerged Review, then with all done and merged.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:hide-done-plans:criterion:deliver-is-explicit"
+        ],
+        "expected_result": "The first two are refused with their reasons, and only the last delivers.",
+        "id": "deliver-is-explicit"
+      },
+      {
+        "action": "Open the Plans section with a delivered Plan, with and without the filter.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-hidden-in-reader"
+        ],
+        "expected_result": "It is hidden by default and shown by the filter.",
+        "id": "delivered-hidden-in-reader"
+      },
+      {
+        "action": "Run plan list, and plan list --all.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-filtered-in-cli"
+        ],
+        "expected_result": "It is left out and counted, then included.",
+        "id": "delivered-filtered-in-cli"
+      },
+      {
+        "action": "Open a delivered Plan, then try each kind of edit.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:hide-done-plans:criterion:delivered-stays-readable"
+        ],
+        "expected_result": "The page opens and says so, and every edit is refused.",
+        "id": "delivered-stays-readable"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-hide-done-plans",
+    "title": "Delivered Plans are set aside and frozen"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-hide-done-plans"
+  }
+}

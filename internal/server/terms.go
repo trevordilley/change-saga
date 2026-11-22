@@ -159,7 +159,7 @@ func makeTermView(document requirements.Document, term requirements.Term, storie
 // unverified inference, while absent is an explicitly observed gap.
 func implementationEvidenceNote(value requirements.ImplementationEvidence, linked int, stale, conflicted bool) string {
 	if conflicted {
-		return "Unavailable: competing revision heads must be reconciled before a current assessment exists."
+		return "Unavailable: legacy content is ambiguous; preserve the files in Git and select complete current content explicitly."
 	}
 	switch value {
 	case requirements.ImplementationEvidenceAbsent:

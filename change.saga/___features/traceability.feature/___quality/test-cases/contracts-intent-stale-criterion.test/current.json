@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Meaningful requirement endpoint changes require relationship reassessment.",
+    "preconditions": [
+      "Use a design addresses relation from checkout-flow to checkout/fast pinned to story r1 and the original design digest."
+    ],
+    "steps": [
+      {
+        "action": "Revise checkout as r2 with parent r1 and change fast wording to Still fast.",
+        "expected_result": "Revision is appended without changing the existing relation pin.",
+        "id": "revise"
+      },
+      {
+        "action": "Reload relation projection.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths"
+        ],
+        "expected_result": "The relation is stale with criterion content changed in its reasons.",
+        "id": "stale"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-stale-criterion",
+    "title": "Expose stale links when criterion wording changes"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-stale-criterion"
+  }
+}

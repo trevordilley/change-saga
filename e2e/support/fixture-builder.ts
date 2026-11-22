@@ -74,6 +74,25 @@ export function runCLI(fixture: SagaRepositories, args: string[], cwd = dirname(
   return run(binaryPath, args, cwd, { TMPDIR: fixture.tempDir });
 }
 
+/** Obtain an authored source pin from the public query contract. Capture this
+ * before editing a definition: calling it again intentionally selects its new
+ * current content, and must not refresh existing evidence implicitly. */
+export function currentRecordPin(fixture: SagaRepositories, kind: string, id: string): {target: string; revision: string} {
+  const target = `urn:change-saga:wave-one:${kind}:${id}`;
+  const requirement = kind === "story";
+  const result = runCLI(fixture, ["query", requirement ? "requirements" : "inventory",
+    "--saga", fixture.sagaRoot, "--repo", fixture.sourceRepo,
+    requirement ? "--requirement" : "--target", target]);
+  if (result.status !== 0) throw new Error(`query current ${target}: ${result.stdout}${result.stderr}`);
+  const data = JSON.parse(result.stdout).data;
+  const rows = requirement ? data.requirements : data.records;
+  const revision = rows?.[0]?.content_digest;
+  if (rows?.length !== 1 || !/^sha256:[0-9a-f]{64}$/.test(revision ?? "")) {
+    throw new Error(`missing exact current pin for ${target}: ${result.stdout}`);
+  }
+  return {target, revision};
+}
+
 function configureGit(cwd: string, identity: { name: string; email: string }): void {
   git(cwd, "config", "user.name", identity.name);
   git(cwd, "config", "user.email", identity.email);
@@ -205,7 +224,7 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
   runSaga(["feature", "add", "--id", "tide-charts", "--title", "Tide Charts", sagaRoot], sagaRepo);
   runSaga(["feature", "add", "--id", "harbor-lights", "--title", "Harbor Lights", sagaRoot], sagaRepo);
   runSaga([
-    "story", "add", "--feature", "tide-charts", "--id", "read-the-tide", "--revision", "r1", "--event", "proposed",
+    "story", "add", "--feature", "tide-charts", "--id", "read-the-tide",
     "--title", "Read the tide", "--statement", "As a skipper, I can read tonight's tide.", "--priority", "must", sagaRoot
   ], sagaRepo);
 
@@ -215,7 +234,7 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
   // the personas table has to be able to state.
   runSaga(["persona", "add", "--id", "skipper", "--name", "Skipper", "--description", "Sails on the tide and reads the chart before leaving harbour.", sagaRoot], sagaRepo);
   runSaga(["persona", "add", "--id", "harbour-master", "--name", "Harbour master", "--description", "Kept the old paper log; the app no longer serves them.", sagaRoot], sagaRepo);
-  runSaga(["persona", "set-state", "--persona", "urn:change-saga:wave-one:persona:harbour-master", "--event", "e2", "--parent", "urn:change-saga:wave-one:persona:harbour-master:event:active", "--state", "retired", "--reason", "the paper log was retired", sagaRoot], sagaRepo);
+  runSaga(["persona", "set-state", "--persona", "urn:change-saga:wave-one:persona:harbour-master", "--state", "retired", "--reason", "the paper log was retired", sagaRoot], sagaRepo);
   runSaga(["flag", "add", "--id", "tide-charts-beta", "--description", "Gates the tide charts while the data source settles.", "--target", "urn:change-saga:wave-one:feature:tide-charts", "--state", "off", sagaRoot], sagaRepo);
 
   const identity = addCoverage(source.sourceRepo, sagaRoot);

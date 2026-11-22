@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io"
 	"io/fs"
 	"os"
@@ -142,7 +143,7 @@ func loadFeature(doc *Document, feature applayout.Feature, prototypeIDs, annotat
 }
 
 func loadPrototypePackage(doc *Document, dir, id string, options LoadOptions) (Prototype, error) {
-	entries, err := boundedReadDir(dir, 2)
+	entries, err := boundedReadDir(dir, 4)
 	if err != nil {
 		return Prototype{}, err
 	}
@@ -152,6 +153,15 @@ func loadPrototypePackage(doc *Document, dir, id string, options LoadOptions) (P
 			return Prototype{}, fmt.Errorf("prototype %q contains symlink %q", id, entry.Name())
 		}
 		switch entry.Name() {
+		case currentrecord.Name:
+			if !entry.Type().IsRegular() {
+				return Prototype{}, fmt.Errorf("current record must be regular")
+			}
+			foundRevisions = true
+		case "assets":
+			if !entry.IsDir() {
+				return Prototype{}, fmt.Errorf("prototype assets must be a directory")
+			}
 		case "prototype.json":
 			if !entry.Type().IsRegular() {
 				return Prototype{}, fmt.Errorf("prototype %q identity must be a regular file", id)
@@ -176,6 +186,44 @@ func loadPrototypePackage(doc *Document, dir, id string, options LoadOptions) (P
 	}
 	if err := validateIdentity(prototype.Identity, id); err != nil {
 		return Prototype{}, fmt.Errorf("%s: %w", relative(doc.Root, identityPath), err)
+	}
+	record, err := currentrecord.Read(dir)
+	if err != nil {
+		return Prototype{}, err
+	}
+	if record != nil {
+		digest, err := currentrecord.Digest(record.Content)
+		if err != nil {
+			return Prototype{}, err
+		}
+		content := Revision{Schema: RevisionSchemaURL, Version: Version, ID: "sha256-" + strings.TrimPrefix(digest, "sha256:"), Parents: []string{}, CreatedAt: prototype.Identity.CreatedAt}
+		if err := currentrecord.Project(record.Content, &content); err != nil {
+			return Prototype{}, err
+		}
+		if err := validateRevision(content, doc.SagaID, id); err != nil {
+			return Prototype{}, err
+		}
+		if content.Source.Kind == SourceHTML {
+			asset := filepath.Join(dir, "assets", strings.TrimPrefix(content.Source.ContentDigest, "sha256:"))
+			actual, err := digestTree(filepath.Join(asset, "html"))
+			if err != nil {
+				return Prototype{}, err
+			}
+			if actual != content.Source.ContentDigest {
+				return Prototype{}, fmt.Errorf("prototype HTML digest mismatch")
+			}
+			info, err := os.Lstat(filepath.Join(asset, filepath.FromSlash(content.Source.Entrypoint)))
+			if err != nil || !info.Mode().IsRegular() {
+				return Prototype{}, fmt.Errorf("prototype entrypoint is missing or unsafe")
+			}
+		}
+		prototype.current = true
+		checkRepositoryStyles(&content, options)
+		prototype.Revisions = []Revision{content}
+		if err := validateRevisionGraph(&prototype, doc.SagaID); err != nil {
+			return Prototype{}, err
+		}
+		return prototype, nil
 	}
 	prototype.Revisions, err = loadRevisions(doc, filepath.Join(dir, "revisions"), id, options)
 	if err != nil {
@@ -273,6 +321,11 @@ func loadRevisionPackage(doc *Document, dir, prototypeID, id string, options Loa
 	} else if foundHTML {
 		return Revision{}, fmt.Errorf("revision %q external source cannot contain an html package", id)
 	}
+	checkRepositoryStyles(&value, options)
+	return value, nil
+}
+
+func checkRepositoryStyles(value *Revision, options LoadOptions) {
 	if options.RepositoryRoot != "" {
 		for i := range value.Styles {
 			_, digest, err := readRepositoryStyle(options.RepositoryRoot, value.Styles[i].Path)
@@ -285,7 +338,6 @@ func loadRevisionPackage(doc *Document, dir, prototypeID, id string, options Loa
 			}
 		}
 	}
-	return value, nil
 }
 
 func loadAnnotations(doc *Document, featureID, dir string, annotationIDs *applayout.UniqueIDs) error {

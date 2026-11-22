@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "It reports compare mode with resolved R and F.",
+    "preconditions": [
+      "Create root commit R, feature commit F on one branch, then advance main independently with a file absent from F."
+    ],
+    "steps": [
+      {
+        "action": "Read a comparison against main with head F.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range"
+        ],
+        "expected_result": "BaseOID is R and HeadOID is F; only feature-side changes appear.",
+        "id": "range"
+      },
+      {
+        "action": "Inspect the public opening metadata for the same range.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range"
+        ],
+        "expected_result": "It reports compare mode with resolved R and F.",
+        "id": "mode"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-merge-base",
+    "title": "Resolve a diverged comparison to its actual merge base"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-merge-base"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Require criterion-specific assertion mappings.",
+    "preconditions": [
+      "A separate quality fixture has a case-level verifies link, setup without mappings and an assertion explicitly mapped to the target criterion."
+    ],
+    "steps": [
+      {
+        "action": "Inspect coverage, then change only the assertion mapping to a different canonical criterion.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
+          "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:visible-uncertainty"
+        ],
+        "expected_result": "Initial coverage is present; after remapping the original criterion reports missing mapping and the assertion reports missing case-level verifies.",
+        "id": "check-specific-mapping"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-definition-step-mapping",
+    "title": "Require criterion-specific assertion mappings"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-definition-step-mapping"
+  }
+}

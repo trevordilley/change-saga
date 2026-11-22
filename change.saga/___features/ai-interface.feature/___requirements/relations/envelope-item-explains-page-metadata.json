@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "envelope-item-explains-page-metadata",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:39:25.365856Z",
   "from": "urn:change-saga:change-saga:slide:query-runtime:item:envelope",
-  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:page-metadata",
-  "scope": "self",
+  "id": "envelope-item-explains-page-metadata",
   "rationale": "The envelope Item explains where page totals, returned counts, continuation state, and next_cursor are exposed.",
-  "to_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:39:25.365856Z"
+  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:page-metadata",
+  "to_revision": "sha256:563647473b06d2abf0d329a897d246df0285a5b3b99ffa2bf35da83969fd02a8",
+  "type": "explains",
+  "version": 5
 }

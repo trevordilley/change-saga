@@ -18,8 +18,8 @@ an exact boundary). Never add labels unsupported by the scenario to satisfy a
 coverage check. Negative means expected rejection/recovery, not a failed run.
 
 All three kinds are required by default for accepted criteria. If a kind does
-not apply, publish `quality policy set --criterion CRITERION_URN --story-revision
-REVISION_URN --require KIND ... --rationale TEXT --feature ID SAGA` with the
+not apply, publish `quality policy set --criterion CRITERION_URN --story-content-digest
+CONTENT_DIGEST --require KIND ... --rationale TEXT --feature ID SAGA` with the
 applicable set and a specific reason for each omission. Respect existing explicit
 policies; changing one requires superseding all current heads. Use planned cases
 for applicable scenarios that lack code. Do not waive them because implementation
@@ -33,7 +33,7 @@ a set of happy-path cases alone is not sufficient under the default policy.
    ordered `--step` JSON objects, coverage kinds, automation, and expected outcome.
    Each step has stable `id`, `action`, and `expected_result`. Optional `criteria`
    is an array of canonical criterion URNs. Manual/setup steps need no code links.
-2. Add case-level `verifies` relations to the criteria. Their test/story revision
+2. Add case-level `verifies` relations to the criteria. Their test/story content-digest
    pins govern each step's mapping currency. Step criteria refine these relations;
    they do not create relations or replace their pins. When you use explicit step
    mappings, map each criterion exercised by the case to its assertion step.
@@ -41,12 +41,12 @@ a set of happy-path cases alone is not sufficient under the default policy.
    --test TEST_URN --role test_implementation --step STEP_ID --code LOCATION`.
    Repeat `--step` for shared code. Optional `implementation_under_test` evidence
    can identify the product code. Omit `--step` for case-level evidence. Evidence
-   pins the current unique test revision by default; explicit `--test-revision`
-   can pin history. Use `--repo` when source and Saga checkouts differ.
-4. Revise using every current revision head as `--parent`, preserving stable step
-   IDs. Review and repin case relations, and append superseding implementation
-   evidence for the new revision. Never edit historical records or silently move
-   their pins. Evidence can only name steps present in its pinned revision.
+   pins the current test content digest by default. A historical assertion must
+   keep its old digest or an explicit real Git view. Use `--repo` when source and Saga checkouts differ.
+4. Edit the same current definition, preserving stable step IDs. Review and
+   explicitly reassess affected relations and evidence. Old evidence keeps its
+   pinned digest and becomes stale when the definition changes; never silently
+   retarget it. Git owns older definitions.
 5. Read `query quality --saga PATH --feature ID` (or `--test ID|URN`) for current
    definitions, criterion/step/evidence navigation and mapping issues. It uses
    bounded case pagination. `status --json PATH` also resolves code currency in
@@ -58,8 +58,8 @@ kinds/mappings and stale/conflicting pins are omissions to explain, not executio
 results. A definition with no step criteria remains readable with its original
 case-level mapping; optional arrays permit incremental authoring.
 
-`quality run record` is a deprecated compatibility writer. `query quality-history
---saga PATH --test ID|URN` preserves revisions, lifecycle, evidence, and
+`quality run record` is a deprecated compatibility writer. `query quality-runs
+--saga PATH --test ID|URN` reports actual recorded executions, evidence, and
 `legacy_runs`. Historical result literals and command text are inert metadata.
 Never execute a recorded command or use CI results to mark Saga documents
 passed/failed, gate readiness, or claim delivery. Execution artifacts do not

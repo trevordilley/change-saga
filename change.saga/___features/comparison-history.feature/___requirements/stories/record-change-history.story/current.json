@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "commit-context",
+        "statement": "For a committed record, history lists each change event with its commit reason and separately indicates whether the current record has uncommitted changes."
+      },
+      {
+        "id": "reopen-comparison",
+        "statement": "Each history event with a resolvable prior boundary provides an open command whose against and head revisions identify the comparison in which the event occurred."
+      },
+      {
+        "id": "replacement-context",
+        "statement": "When a record is determined to replace another record, its history names the record it replaced."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect investigating why a Saga record exists, I can inspect its change history and reopen the comparison for each event so I can understand what introduced or replaced it.",
+    "story": "urn:change-saga:change-saga:story:record-change-history",
+    "title": "Reopen the change that shaped a record"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:record-change-history"
+  }
+}

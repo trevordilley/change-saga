@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-companion-source-delta-5a9cfcb7dbd0",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-companion-source-delta",
-  "to": "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout",
-  "scope": "self",
-  "rationale": "Steps compare define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-companion-source-delta:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:source-checkout-context:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:22:26.060634Z",
-  "request_id": "test-review-companion-source-delta-5a9cfcb7dbd0"
+  "from": "urn:change-saga:change-saga:test-case:review-companion-source-delta",
+  "from_revision": "sha256:d5487e49c2aa27334df54ee7fe8498f619066bbecda14abb98d038c28b60551c",
+  "id": "test-review-companion-source-delta-5a9cfcb7dbd0",
+  "rationale": "Steps compare define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-companion-source-delta-5a9cfcb7dbd0",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout",
+  "to_revision": "sha256:104ce8eaffb7f3683eeb597a98a4d243052b68649a3e70c8b66624df71aa7d2d",
+  "type": "verifies",
+  "version": 5
 }

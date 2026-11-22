@@ -1,0 +1,3760 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "title": "Editable current documentation; Git owns history",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "content"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/current-record.schema.json"
+    },
+    "version": {
+      "const": 1
+    },
+    "content": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/story"
+        },
+        {
+          "$ref": "#/$defs/prototype"
+        },
+        {
+          "$ref": "#/$defs/persona"
+        },
+        {
+          "$ref": "#/$defs/term"
+        },
+        {
+          "$ref": "#/$defs/flag"
+        },
+        {
+          "$ref": "#/$defs/deprecation"
+        },
+        {
+          "$ref": "#/$defs/component"
+        },
+        {
+          "$ref": "#/$defs/system"
+        },
+        {
+          "$ref": "#/$defs/data-entity"
+        },
+        {
+          "$ref": "#/$defs/erd"
+        },
+        {
+          "$ref": "#/$defs/erd-overlay"
+        },
+        {
+          "$ref": "#/$defs/test-case"
+        },
+        {
+          "$ref": "#/$defs/whiteboard"
+        }
+      ]
+    },
+    "state": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/story-state"
+        },
+        {
+          "$ref": "#/$defs/persona-state"
+        },
+        {
+          "$ref": "#/$defs/term-state"
+        },
+        {
+          "$ref": "#/$defs/flag-state"
+        },
+        {
+          "$ref": "#/$defs/deprecation-state"
+        },
+        {
+          "$ref": "#/$defs/component-state"
+        },
+        {
+          "$ref": "#/$defs/system-state"
+        },
+        {
+          "$ref": "#/$defs/data-entity-state"
+        },
+        {
+          "$ref": "#/$defs/erd-state"
+        },
+        {
+          "$ref": "#/$defs/erd-overlay-state"
+        },
+        {
+          "$ref": "#/$defs/test-case-state"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "story": {
+      "title": "Living Change Saga current story",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "story",
+        "title",
+        "statement",
+        "citations",
+        "acceptance_criteria"
+      ],
+      "properties": {
+        "story": {
+          "$ref": "#/$defs/story/$defs/story_urn"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short authored value used as the navigation title. Existing authored titles are preserved verbatim."
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Full authored need, normally As a <persona> I can <value>; no enforced syntax or inferred persona."
+        },
+        "subtext": {
+          "type": "string"
+        },
+        "overview": {
+          "type": "string",
+          "description": "Optional authored Markdown description, purpose and rationale. Omission in a complete revision means no overview."
+        },
+        "priority": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "personas": {
+          "type": "array",
+          "maxItems": 1000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/story/$defs/persona_urn"
+          }
+        },
+        "citations": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/story/$defs/citation_urn"
+          }
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "statement"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/story/$defs/id"
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "description": "Optional short authored navigation title; the full statement remains visible."
+              },
+              "subtext": {
+                "type": "string"
+              },
+              "overview": {
+                "type": "string",
+                "description": "Optional Markdown rationale, examples and boundaries; part of the criterion obligation."
+              }
+            }
+          }
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "story_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision_urn": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "persona_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:persona:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "citation_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "prototype": {
+      "title": "Living Change Saga full prototype current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prototype",
+        "title",
+        "state",
+        "source",
+        "styles"
+      ],
+      "properties": {
+        "prototype": {
+          "$ref": "#/$defs/prototype/$defs/prototype_urn"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "draft",
+            "ready",
+            "retired"
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "entrypoint",
+                "content_digest"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "html"
+                },
+                "entrypoint": {
+                  "$ref": "#/$defs/prototype/$defs/safe_html_path"
+                },
+                "content_digest": {
+                  "$ref": "#/$defs/prototype/$defs/digest"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "url"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "external"
+                },
+                "url": {
+                  "$ref": "#/$defs/prototype/$defs/http_url"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "embed_url",
+                "fallback_url",
+                "allowlist"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "embed"
+                },
+                "embed_url": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://"
+                },
+                "fallback_url": {
+                  "$ref": "#/$defs/prototype/$defs/http_url"
+                },
+                "allowlist": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "provider",
+                    "embed_origin",
+                    "sandbox",
+                    "permissions"
+                  ],
+                  "properties": {
+                    "provider": {
+                      "$ref": "#/$defs/prototype/$defs/id"
+                    },
+                    "embed_origin": {
+                      "type": "string",
+                      "pattern": "^https://[^/?#]+$"
+                    },
+                    "sandbox": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "items": {
+                        "enum": [
+                          "allow-forms",
+                          "allow-modals",
+                          "allow-popups",
+                          "allow-popups-to-escape-sandbox",
+                          "allow-presentation",
+                          "allow-same-origin",
+                          "allow-scripts"
+                        ]
+                      }
+                    },
+                    "permissions": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "items": {
+                        "enum": [
+                          "clipboard-read",
+                          "clipboard-write",
+                          "fullscreen"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "entrypoint",
+                "commit",
+                "object"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "repo"
+                },
+                "entrypoint": {
+                  "$ref": "#/$defs/prototype/$defs/safe_html_path"
+                },
+                "root": {
+                  "type": "string",
+                  "pattern": "^[^\\\\:\u0000]+$",
+                  "not": {
+                    "anyOf": [
+                      {
+                        "pattern": "^/"
+                      },
+                      {
+                        "pattern": "(^|/)\\.\\.(/|$)"
+                      }
+                    ]
+                  }
+                },
+                "commit": {
+                  "$ref": "#/$defs/prototype/$defs/object_name"
+                },
+                "object": {
+                  "$ref": "#/$defs/prototype/$defs/object_name"
+                }
+              }
+            }
+          ]
+        },
+        "styles": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "digest",
+              "custom_properties",
+              "roles"
+            ],
+            "properties": {
+              "path": {
+                "$ref": "#/$defs/prototype/$defs/safe_css_path"
+              },
+              "digest": {
+                "$ref": "#/$defs/prototype/$defs/digest"
+              },
+              "custom_properties": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^--[A-Za-z0-9_-]+$"
+                }
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "role",
+                    "class"
+                  ],
+                  "properties": {
+                    "role": {
+                      "$ref": "#/$defs/prototype/$defs/id"
+                    },
+                    "class": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z_][A-Za-z0-9_-]{0,127}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "properties": {
+                  "kind": {
+                    "const": "html"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            },
+            "required": [
+              "source"
+            ]
+          },
+          "else": {
+            "properties": {
+              "styles": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ],
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "prototype_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:prototype:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision_urn": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "object_name": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "http_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "safe_html_path": {
+          "type": "string",
+          "pattern": "^[^\\\\:\u0000]+\\.html$",
+          "not": {
+            "anyOf": [
+              {
+                "pattern": "^/"
+              },
+              {
+                "pattern": "(^|/)\\.\\.(/|$)"
+              }
+            ]
+          }
+        },
+        "safe_css_path": {
+          "type": "string",
+          "pattern": "^[^\\\\:\u0000]+\\.css$",
+          "not": {
+            "anyOf": [
+              {
+                "pattern": "^/"
+              },
+              {
+                "pattern": "(^|/)\\.\\.(/|$)"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "persona": {
+      "title": "App Saga complete persona current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "persona",
+        "name",
+        "description"
+      ],
+      "properties": {
+        "persona": {
+          "$ref": "#/$defs/persona/$defs/record_urn"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:persona:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision_urn": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "term": {
+      "title": "App Saga complete term current content",
+      "description": "A term is the project's own vocabulary: a name, a definition, independent definition maturity and implementation-evidence availability, any aliases, and what it names. Omitted maturity/evidence fields on older records mean unknown.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term",
+        "name",
+        "definition"
+      ],
+      "properties": {
+        "term": {
+          "$ref": "#/$defs/term/$defs/record_urn"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition_maturity": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "proposed",
+            "accepted"
+          ],
+          "description": "Maturity of the term's meaning, independent of implementation-evidence availability. Omission means unknown for backward compatibility."
+        },
+        "implementation_evidence": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "absent",
+            "partial",
+            "present"
+          ],
+          "description": "Observed availability of implementation evidence. Evidence availability is not proof of implementation; unknown is unverified, while absent records an observed gap. Omission means unknown."
+        },
+        "aliases": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "stories": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/term/$defs/story_urn"
+          }
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/term/$defs/app_record_urn"
+          }
+        },
+        "code": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/term/$defs/code_reference"
+          }
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:term:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision_urn": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "story_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "app_record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|feature|flag|term):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "code_reference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit",
+            "path",
+            "digest"
+          ],
+          "properties": {
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+              "description": "Full Git object name the reference is pinned at."
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Normalized repository-relative slash path at that commit."
+            },
+            "start": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "First referenced line, 1-based. Absent for a whole file."
+            },
+            "end": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Last referenced line, inclusive. Absent for a whole file."
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+            },
+            "note": {
+              "type": "string",
+              "description": "Optional reviewer-facing note; never part of the reference's identity."
+            }
+          },
+          "dependentRequired": {
+            "start": [
+              "end"
+            ],
+            "end": [
+              "start"
+            ]
+          }
+        }
+      }
+    },
+    "flag": {
+      "title": "App Saga complete feature flag current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "flag",
+        "description",
+        "targets"
+      ],
+      "properties": {
+        "flag": {
+          "$ref": "#/$defs/flag/$defs/record_urn"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/flag/$defs/story_urn"
+              },
+              {
+                "$ref": "#/$defs/flag/$defs/feature_urn"
+              }
+            ]
+          }
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:flag:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision_urn": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "story_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "feature_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:feature:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "deprecation": {
+      "title": "Authored deprecation assertion with explicit scope and exact provenance",
+      "description": "A complete authored assertion with explicit content or code scope, a pinned target, optional replacement, and exact code evidence. Lifecycle withdrawal preserves this immutable revision.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deprecation",
+        "reason",
+        "scope",
+        "target"
+      ],
+      "properties": {
+        "deprecation": {
+          "$ref": "#/$defs/deprecation/$defs/record_urn"
+        },
+        "code": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/deprecation/$defs/code_reference"
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "scope": {
+          "enum": [
+            "content",
+            "code"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/deprecation/$defs/target_pin"
+        },
+        "replacement": {
+          "$ref": "#/$defs/deprecation/$defs/target_pin"
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:deprecation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision_urn": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "code_reference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit",
+            "path",
+            "digest"
+          ],
+          "properties": {
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+              "description": "Full Git object name the reference is pinned at."
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Normalized repository-relative slash path at that commit."
+            },
+            "start": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "First referenced line, 1-based. Absent for a whole file."
+            },
+            "end": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Last referenced line, inclusive. Absent for a whole file."
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+            },
+            "note": {
+              "type": "string",
+              "description": "Optional reviewer-facing note; never part of the reference's identity."
+            }
+          },
+          "dependentRequired": {
+            "start": [
+              "end"
+            ],
+            "end": [
+              "start"
+            ]
+          }
+        },
+        "target_pin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target"
+          ],
+          "properties": {
+            "target": {
+              "type": "string",
+              "pattern": "^(urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:((fragment|deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127})|urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127})$"
+            },
+            "revision": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "content_digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "element": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[A-Za-z_][A-Za-z0-9._-]{0,127}(/[A-Za-z_][A-Za-z0-9._-]{0,127})*$"
+            }
+          },
+          "oneOf": [
+            {
+              "properties": {
+                "target": {
+                  "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:((fragment|deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127})$"
+                }
+              },
+              "required": [
+                "content_digest"
+              ],
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "revision"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "element"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "properties": {
+                "target": {
+                  "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                }
+              },
+              "required": [
+                "revision"
+              ],
+              "not": {
+                "required": [
+                  "content_digest"
+                ]
+              }
+            }
+          ],
+          "allOf": [
+            {
+              "if": {
+                "required": [
+                  "element"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "target": {
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:whiteboard:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "scope": {
+                "const": "code"
+              }
+            },
+            "required": [
+              "scope"
+            ]
+          },
+          "then": {
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "component": {
+      "title": "Technical inventory component current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "name",
+        "explanation"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intent": {
+          "enum": [
+            "proposed",
+            "implemented"
+          ]
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "delivery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repository",
+            "commit"
+          ],
+          "properties": {
+            "repository": {
+              "type": "string",
+              "minLength": 1
+            },
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+            }
+          }
+        },
+        "code": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "commit",
+              "path",
+              "start",
+              "end",
+              "note",
+              "digest"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "intent": {
+                "const": "proposed"
+              }
+            },
+            "required": [
+              "intent"
+            ]
+          },
+          "then": {
+            "required": [
+              "baseline"
+            ],
+            "not": {
+              "required": [
+                "delivery"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "intent": {
+                "const": "implemented"
+              }
+            },
+            "required": [
+              "intent"
+            ]
+          },
+          "then": {
+            "required": [
+              "delivery",
+              "code"
+            ],
+            "not": {
+              "required": [
+                "baseline"
+              ]
+            },
+            "properties": {
+              "code": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "required": [
+                "intent"
+              ]
+            }
+          },
+          "then": {
+            "required": [
+              "code"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "baseline"
+                  ]
+                },
+                {
+                  "required": [
+                    "delivery"
+                  ]
+                }
+              ]
+            },
+            "properties": {
+              "code": {
+                "minItems": 1,
+                "items": {
+                  "not": {
+                    "required": [
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "code": {
+                "items": {
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "system": {
+      "title": "Technical inventory system current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "name",
+        "explanation",
+        "components",
+        "interactions"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:system:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intent": {
+          "enum": [
+            "proposed",
+            "implemented"
+          ]
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "delivery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repository",
+            "commit"
+          ],
+          "properties": {
+            "repository": {
+              "type": "string",
+              "minLength": 1
+            },
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+            }
+          }
+        },
+        "code": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "commit",
+              "path",
+              "start",
+              "end",
+              "note",
+              "digest"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "components": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "revision"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "interactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "from",
+              "to",
+              "description"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "intent": {
+                "enum": [
+                  "proposed",
+                  "implemented"
+                ]
+              },
+              "code": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 64,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "commit",
+                    "path",
+                    "start",
+                    "end",
+                    "note",
+                    "digest"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                    },
+                    "commit": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "note": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "intent": {
+                "const": "proposed"
+              }
+            },
+            "required": [
+              "intent"
+            ]
+          },
+          "then": {
+            "required": [
+              "baseline"
+            ],
+            "not": {
+              "required": [
+                "delivery"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "intent": {
+                "const": "implemented"
+              }
+            },
+            "required": [
+              "intent"
+            ]
+          },
+          "then": {
+            "required": [
+              "delivery",
+              "code"
+            ],
+            "not": {
+              "required": [
+                "baseline"
+              ]
+            },
+            "properties": {
+              "code": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "required": [
+                "intent"
+              ]
+            }
+          },
+          "then": {
+            "required": [
+              "code"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "baseline"
+                  ]
+                },
+                {
+                  "required": [
+                    "delivery"
+                  ]
+                }
+              ]
+            },
+            "properties": {
+              "code": {
+                "minItems": 1,
+                "items": {
+                  "not": {
+                    "required": [
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "interactions": {
+                "items": {
+                  "required": [
+                    "code"
+                  ],
+                  "not": {
+                    "required": [
+                      "intent"
+                    ]
+                  },
+                  "properties": {
+                    "code": {
+                      "minItems": 1,
+                      "items": {
+                        "not": {
+                          "required": [
+                            "id"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "code": {
+                "items": {
+                  "required": [
+                    "id"
+                  ]
+                }
+              },
+              "interactions": {
+                "items": {
+                  "required": [
+                    "intent"
+                  ],
+                  "properties": {
+                    "code": {
+                      "items": {
+                        "required": [
+                          "id"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "data-entity": {
+      "title": "Technical inventory data entity current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "name",
+        "explanation",
+        "intent"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intent": {
+          "enum": [
+            "proposed",
+            "implemented"
+          ]
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "delivery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repository",
+            "commit"
+          ],
+          "properties": {
+            "repository": {
+              "type": "string",
+              "minLength": 1
+            },
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+            }
+          }
+        },
+        "code": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "commit",
+              "path",
+              "start",
+              "end",
+              "note",
+              "digest"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "fields": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "type": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "keys": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "primary",
+                    "foreign",
+                    "unique",
+                    "partition"
+                  ]
+                }
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "holders": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component",
+              "role"
+            ],
+            "properties": {
+              "component": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "target",
+                  "revision"
+                ],
+                "properties": {
+                  "target": {
+                    "type": "string",
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                }
+              },
+              "role": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "meaning",
+              "destination",
+              "explanation",
+              "intent"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "meaning": {
+                "enum": [
+                  "association",
+                  "production"
+                ]
+              },
+              "destination": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "target",
+                  "revision"
+                ],
+                "properties": {
+                  "target": {
+                    "type": "string",
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                }
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cardinality": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "owner",
+                  "destination"
+                ],
+                "properties": {
+                  "owner": {
+                    "enum": [
+                      "unknown",
+                      "0..1",
+                      "1",
+                      "0..many",
+                      "1..many"
+                    ]
+                  },
+                  "destination": {
+                    "enum": [
+                      "unknown",
+                      "0..1",
+                      "1",
+                      "0..many",
+                      "1..many"
+                    ]
+                  }
+                }
+              },
+              "flow": {
+                "enum": [
+                  "owner_to_destination",
+                  "destination_to_owner"
+                ]
+              },
+              "intent": {
+                "enum": [
+                  "proposed",
+                  "implemented"
+                ]
+              },
+              "code": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 64,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "commit",
+                    "path",
+                    "start",
+                    "end",
+                    "note",
+                    "digest"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                    },
+                    "commit": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "note": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "meaning": {
+                      "const": "association"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "cardinality"
+                  ],
+                  "not": {
+                    "required": [
+                      "flow"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "meaning": {
+                      "const": "production"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "flow",
+                    "label"
+                  ],
+                  "not": {
+                    "required": [
+                      "cardinality"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "intent": {
+                      "const": "implemented"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "code"
+                  ],
+                  "properties": {
+                    "code": {
+                      "minItems": 1
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "intent": {
+                "const": "proposed"
+              }
+            },
+            "required": [
+              "intent"
+            ]
+          },
+          "then": {
+            "required": [
+              "baseline"
+            ],
+            "not": {
+              "required": [
+                "delivery"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "intent": {
+                "const": "implemented"
+              }
+            },
+            "required": [
+              "intent"
+            ]
+          },
+          "then": {
+            "required": [
+              "delivery",
+              "code"
+            ],
+            "not": {
+              "required": [
+                "baseline"
+              ]
+            },
+            "properties": {
+              "code": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "erd": {
+      "title": "Technical inventory ERD current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "name",
+        "explanation",
+        "visual",
+        "directory"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "visual": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "media_type",
+            "digest"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": "^assets/[0-9a-f]{64}\\.svg$"
+            },
+            "media_type": {
+              "const": "image/svg+xml"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "directory": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 512,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "revision"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "bindings": {
+          "type": "array",
+          "maxItems": 512,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "element"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "element": {
+                "type": "string",
+                "pattern": "^[A-Za-z_][A-Za-z0-9._-]{0,127}$"
+              },
+              "entity": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "target",
+                  "revision"
+                ],
+                "properties": {
+                  "target": {
+                    "type": "string",
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                }
+              },
+              "relationship": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "owner",
+                  "id"
+                ],
+                "properties": {
+                  "owner": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "target",
+                      "revision"
+                    ],
+                    "properties": {
+                      "target": {
+                        "type": "string",
+                        "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                      },
+                      "revision": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      }
+                    }
+                  },
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  }
+                }
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "entity"
+                ]
+              },
+              {
+                "required": [
+                  "relationship"
+                ]
+              }
+            ]
+          }
+        },
+        "diagram": {
+          "$ref": "#/$defs/resource_v5_diagram_schema_json"
+        }
+      }
+    },
+    "erd-overlay": {
+      "title": "Technical inventory ERD overlay current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "name",
+        "explanation",
+        "erd"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd-overlay:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "erd": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target",
+            "revision"
+          ],
+          "properties": {
+            "target": {
+              "type": "string",
+              "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+            },
+            "revision": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "feature": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:feature:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "pins": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "revision"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "removals": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "explanation"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "visual": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "media_type",
+            "digest"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": "^assets/[0-9a-f]{64}\\.svg$"
+            },
+            "media_type": {
+              "const": "image/svg+xml"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "bindings": {
+          "type": "array",
+          "maxItems": 512,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "element"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "element": {
+                "type": "string",
+                "pattern": "^[A-Za-z_][A-Za-z0-9._-]{0,127}$"
+              },
+              "entity": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "target",
+                  "revision"
+                ],
+                "properties": {
+                  "target": {
+                    "type": "string",
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                }
+              },
+              "relationship": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "owner",
+                  "id"
+                ],
+                "properties": {
+                  "owner": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "target",
+                      "revision"
+                    ],
+                    "properties": {
+                      "target": {
+                        "type": "string",
+                        "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                      },
+                      "revision": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      }
+                    }
+                  },
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  }
+                }
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "entity"
+                ]
+              },
+              {
+                "required": [
+                  "relationship"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "test-case": {
+      "title": "Change Saga v5 full test-case current content",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "test_case",
+        "title",
+        "coverage_kinds",
+        "automation",
+        "preconditions",
+        "steps",
+        "expected_result"
+      ],
+      "properties": {
+        "test_case": {
+          "$ref": "#/$defs/test-case/$defs/test_case_urn"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage_kinds": {
+          "description": "Verification purposes, not run results: positive valid behavior, negative rejection/recovery, edge boundaries. Prefer one purpose per case; declare multiple only when its steps exercise each.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "positive",
+              "negative",
+              "edge"
+            ]
+          }
+        },
+        "automation": {
+          "enum": [
+            "manual",
+            "automated",
+            "hybrid"
+          ]
+        },
+        "preconditions": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "steps": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "action",
+              "expected_result"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/test-case/$defs/id"
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "expected_result": {
+                "type": "string",
+                "minLength": 1
+              },
+              "criteria": {
+                "type": "array",
+                "maxItems": 50000,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                },
+                "description": "Canonical criteria refined by this step; currency inherits the case-level verifies relation pins."
+              }
+            }
+          }
+        },
+        "expected_result": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "test_case_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision_urn": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "whiteboard": {
+      "title": "Immutable whiteboard document current content",
+      "description": "A complete immutable diagram, including optional element-owned code evidence and semantic links. Reassessment publishes a new revision; historical pins are never rewritten.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "document"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "document": {
+          "$ref": "#/$defs/resource_v5_diagram_schema_json"
+        }
+      }
+    },
+    "story-state": {
+      "title": "Living Change Saga story current state",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "story",
+        "state"
+      ],
+      "properties": {
+        "story": {
+          "$ref": "#/$defs/story-state/$defs/story_urn"
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "accepted",
+            "deferred",
+            "rejected",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "story_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "event_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:event:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "persona-state": {
+      "title": "App Saga persona current state",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "persona",
+        "state"
+      ],
+      "properties": {
+        "persona": {
+          "$ref": "#/$defs/persona-state/$defs/record_urn"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:persona:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "event_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:persona:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:event:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "term-state": {
+      "title": "App Saga term current state",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term",
+        "state"
+      ],
+      "properties": {
+        "term": {
+          "$ref": "#/$defs/term-state/$defs/record_urn"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:term:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "event_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:term:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:event:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "flag-state": {
+      "title": "App Saga feature flag current state",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "flag",
+        "state"
+      ],
+      "properties": {
+        "flag": {
+          "$ref": "#/$defs/flag-state/$defs/record_urn"
+        },
+        "state": {
+          "enum": [
+            "off",
+            "on",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:flag:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "event_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:flag:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:event:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "deprecation-state": {
+      "title": "App Saga deprecation current state",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deprecation",
+        "state"
+      ],
+      "properties": {
+        "deprecation": {
+          "$ref": "#/$defs/deprecation-state/$defs/record_urn"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "withdrawn"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "record_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:deprecation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "event_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:deprecation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:event:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "parents": {
+                "minItems": 1
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reason"
+            ],
+            "properties": {
+              "reason": {
+                "type": "string",
+                "pattern": "\\S"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "parents": {
+                "maxItems": 0
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "state": {
+                "const": "active"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "component-state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "state"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "system-state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "state"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:system:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "data-entity-state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "state"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "erd-state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "state"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "erd-overlay-state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "state"
+      ],
+      "properties": {
+        "record": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd-overlay:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "test-case-state": {
+      "title": "Change Saga v5 test-case current state",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "test_case",
+        "state"
+      ],
+      "properties": {
+        "test_case": {
+          "$ref": "#/$defs/test-case-state/$defs/test_case_urn"
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "active",
+            "deprecated",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "test_case_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "event_urn": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:event:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "resource_v5_diagram_schema_json": {
+      "title": "Diagram source",
+      "description": "Shared source for slide diagrams and spacious whiteboard documents. Every element is explicitly positioned in its parent group's coordinates; the CLI renders it deterministically to SVG. Slide Items can select emitted element IDs; whiteboards retain instance paths and source pins. Element order is reading order and breaks ties between equal z values.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "width",
+        "height",
+        "elements"
+      ],
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100000
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100000
+        },
+        "viewport": {
+          "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/box",
+          "description": "Authored opening region within the canvas; the viewer opens here without changing SVG geometry. Omit to fit the board."
+        },
+        "background": {
+          "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/color"
+        },
+        "reveal": {
+          "enum": [
+            "fade"
+          ],
+          "description": "Opt-in staggered entrance: the reviewer fades the drawing in step by step each time its slide is shown. Thumbnails, exports, landmark links, and readers who prefer reduced motion see the finished drawing."
+        },
+        "styles": {
+          "type": "object",
+          "description": "Named styles; a name matching a default (normal, primary, emphasis, secondary, warning, boundary, title, caption, code) replaces it completely.",
+          "patternProperties": {
+            "^[a-z][a-z0-9-]{0,63}$": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/style"
+            }
+          },
+          "additionalProperties": false
+        },
+        "elements": {
+          "type": "array",
+          "maxItems": 500,
+          "items": {
+            "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/element"
+          }
+        }
+      },
+      "$defs": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,63}$"
+        },
+        "instancePath": {
+          "type": "string",
+          "pattern": "^/?[A-Za-z_][A-Za-z0-9._-]{0,127}(/[A-Za-z_][A-Za-z0-9._-]{0,127})*$"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target",
+            "revision"
+          ],
+          "properties": {
+            "target": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^[^\\r\\n\\t]+$"
+            },
+            "revision": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048,
+                  "pattern": "^[^\\r\\n\\t]+$"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                }
+              ]
+            },
+            "element": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "relationship": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          },
+          "not": {
+            "required": [
+              "element",
+              "relationship"
+            ]
+          }
+        },
+        "terminator": {
+          "enum": [
+            "none",
+            "arrow",
+            "open",
+            "triangle",
+            "diamond",
+            "filled-diamond",
+            "circle",
+            "dot",
+            "bar",
+            "one",
+            "only-one",
+            "zero-or-one",
+            "many",
+            "one-or-many",
+            "zero-or-many"
+          ],
+          "description": "An edge end: arrow, open, triangle (UML generalization), diamond and filled-diamond (aggregation, composition), circle, dot, bar, or an ERD crow's-foot cardinality."
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^(#[a-fA-F0-9]{6}|none|@[a-z][a-z0-9-]{0,63})$",
+          "description": "#rrggbb and none stay as authored; @name references a colour token of the theme contract (change-saga spec, theme), such as @diagram-primary-fill or @accent, and follows light and dark mode."
+        },
+        "point": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          }
+        },
+        "box": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "height": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "style": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fill",
+            "stroke",
+            "ink",
+            "stroke_width",
+            "font_size"
+          ],
+          "properties": {
+            "fill": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/color"
+            },
+            "stroke": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/color"
+            },
+            "ink": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/color"
+            },
+            "stroke_width": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 50
+            },
+            "font_size": {
+              "type": "number",
+              "minimum": 8,
+              "maximum": 200
+            },
+            "dash": {
+              "type": "boolean"
+            }
+          }
+        },
+        "field": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "type": {
+              "type": "string",
+              "maxLength": 64
+            },
+            "key": {
+              "enum": [
+                "pk",
+                "fk",
+                "pk,fk"
+              ]
+            }
+          }
+        },
+        "element": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "x",
+            "y",
+            "style"
+          ],
+          "properties": {
+            "id": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/id"
+                },
+                {
+                  "not": {
+                    "pattern": "^diagram-"
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "enum": [
+                "node",
+                "edge",
+                "text",
+                "group",
+                "graphic",
+                "sticky",
+                "annotation",
+                "code",
+                "frame",
+                "connection"
+              ],
+              "description": "A sticky is a palette-coloured square of wrapped label text; an annotation is a bubble, pin, highlight, or bracket. Describe lists both as notes about their about element."
+            },
+            "shape": {
+              "enum": [
+                "service",
+                "datastore",
+                "decision",
+                "rect",
+                "ellipse",
+                "boundary",
+                "triangle",
+                "hexagon",
+                "parallelogram",
+                "document",
+                "cloud",
+                "actor",
+                "queue",
+                "circle",
+                "star",
+                "entity",
+                "section",
+                "bubble",
+                "pin",
+                "highlight",
+                "bracket"
+              ],
+              "description": "Node shape; a group with rect or boundary draws a frame around its children, and with section a tinted frame whose label sits in a title tab. The node shapes after boundary center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height, and an entity draws an ERD table of its fields. An annotation is a bubble, pin, highlight, or bracket."
+            },
+            "label": {
+              "type": "string",
+              "maxLength": 2000
+            },
+            "detail": {
+              "type": "string",
+              "maxLength": 2000
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 4000,
+              "description": "Semantic explanation read by describe and assistive technology; not drawn."
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "description": "Optional depth on demand, not drawn: Markdown limited to bold, italics, inline code, lists, and http, https, or mailto links (no raw HTML, headings, images, tables, or code blocks). The reviewer shows it rendered when a reader hovers, focuses, or taps the element; describe prints it; the SVG carries it as plain text in the element's desc. Not allowed on decorative elements."
+            },
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "width": {
+              "type": "number",
+              "minimum": 0
+            },
+            "height": {
+              "type": "number",
+              "minimum": 0
+            },
+            "z": {
+              "type": "integer"
+            },
+            "parent": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/id"
+            },
+            "style": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/id"
+            },
+            "icon": {
+              "type": "string",
+              "pattern": "^lucide:[a-z0-9-]+$",
+              "description": "A bundled icon; list them with change-saga diagram icons."
+            },
+            "icon_size": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 256
+            },
+            "from": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/instancePath"
+            },
+            "to": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/instancePath"
+            },
+            "points": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/point"
+              }
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\\-\\s]+$"
+            },
+            "head": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/terminator"
+            },
+            "head_size": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "label_box": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/box",
+              "description": "Element-local box for an edge label or a node label placed outside its shape."
+            },
+            "align": {
+              "enum": [
+                "start",
+                "middle",
+                "end"
+              ]
+            },
+            "wrap": {
+              "type": "boolean"
+            },
+            "fragment": {
+              "type": "string",
+              "maxLength": 65536,
+              "description": "Allowlisted SVG drawing markup for a graphic; currentColor follows its style's stroke."
+            },
+            "decorative": {
+              "type": "boolean",
+              "description": "Hidden from describe and assistive technology; may not contain semantic children."
+            },
+            "tail": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/terminator"
+            },
+            "tail_label": {
+              "type": "string",
+              "maxLength": 2000,
+              "description": "Text at the edge's start, such as an ERD cardinality; needs tail_label_box."
+            },
+            "tail_label_box": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/box"
+            },
+            "head_label": {
+              "type": "string",
+              "maxLength": 2000,
+              "description": "Text at the edge's end, such as an ERD cardinality; needs head_label_box."
+            },
+            "head_label_box": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/box"
+            },
+            "curve": {
+              "enum": [
+                "straight",
+                "smooth"
+              ],
+              "description": "smooth draws the edge's points as a curve through every point."
+            },
+            "line": {
+              "enum": [
+                "solid",
+                "dashed",
+                "dotted"
+              ],
+              "description": "Overrides the style's dash for this edge."
+            },
+            "fields": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/field"
+              },
+              "description": "An entity node's rows, in order: each field's key marker, name, and type. Row i spans y = header + 28i inside the node, where header = the style's font_size * 1.25 + 16."
+            },
+            "from_field": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "The field of the from entity this edge ends on; drawing still follows the edge's explicit points or path."
+            },
+            "to_field": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "The field of the to entity this edge ends on."
+            },
+            "color": {
+              "enum": [
+                "yellow",
+                "pink",
+                "blue",
+                "green",
+                "purple",
+                "gray"
+              ],
+              "description": "Renderer-owned palette colour of a sticky, section, or annotation; stickies and highlights default to yellow, the rest to gray."
+            },
+            "about": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/instancePath",
+              "description": "The semantic element a sticky or annotation is about; describe prints it, and a bubble without a target points at its box."
+            },
+            "target": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/point",
+              "description": "Element-local point a bubble's pointer reaches; it must lie outside the bubble."
+            },
+            "side": {
+              "enum": [
+                "left",
+                "right",
+                "top",
+                "bottom"
+              ],
+              "description": "The side of its box a bracket's point faces."
+            },
+            "code": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16000,
+              "pattern": "\\S",
+              "description": "Literal multiline source for a code element. Never executed; indentation and blank lines are preserved."
+            },
+            "language": {
+              "type": "string",
+              "maxLength": 64,
+              "pattern": "^[^\\r\\n\\t]*$",
+              "description": "Optional display label, such as go, Python, TypeScript, or HTTP."
+            },
+            "line_numbers": {
+              "type": "boolean"
+            },
+            "highlight_lines": {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              }
+            },
+            "evidence": {
+              "type": "array",
+              "maxItems": 500,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "commit",
+                  "path",
+                  "digest"
+                ],
+                "properties": {
+                  "commit": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+                  },
+                  "path": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  },
+                  "start": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "end": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "criterion_links": {
+              "type": "array",
+              "maxItems": 500,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "criterion",
+                  "story_revision",
+                  "rationale"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "criterion": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "story_revision": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      }
+                    ]
+                  },
+                  "rationale": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            "record": {
+              "type": "string",
+              "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|feature|story|test-case|deck|slide|chapter|section|fragment):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+              "description": "The record the Item points at. Required on onboarding Items (a persona, feature, or story). Optional on review Items: the documentation record to open beside the change. Implementation Items reference code instead."
+            },
+            "documentation_view": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+              "description": "Full commit of the saved Saga view that admitted a non-current documentation pin (inventory format 2)."
+            },
+            "selections": {
+              "type": "array",
+              "maxItems": 64,
+              "description": "Explicit code subsets reached through declared inventory links (inventory format 2); see v5/item-selection.schema.json.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "path",
+                  "evidence",
+                  "code"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  "path": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "target",
+                        "revision"
+                      ],
+                      "properties": {
+                        "target": {
+                          "type": "string",
+                          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(component|system|data-entity):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                        },
+                        "revision": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(component|system|data-entity):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                            },
+                            {
+                              "type": "string",
+                              "pattern": "^sha256:[0-9a-f]{64}$"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "evidence": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  "code": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "commit",
+                      "path",
+                      "start",
+                      "end",
+                      "note",
+                      "digest"
+                    ],
+                    "properties": {
+                      "commit": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+                      },
+                      "path": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "end": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "note": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "documentation": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "target",
+                "revision"
+              ],
+              "properties": {
+                "target": {
+                  "type": "string",
+                  "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(component|system|data-entity):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                },
+                "revision": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(component|system|data-entity):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    }
+                  ]
+                }
+              }
+            },
+            "source": {
+              "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/source",
+              "description": "Explicit record and pinned revision, with an optional element or relationship selector."
+            },
+            "summary": {
+              "type": "string",
+              "maxLength": 2000,
+              "description": "Authored overview explanation, drawn when frame details are collapsed."
+            },
+            "visibility": {
+              "enum": [
+                "overview",
+                "detail"
+              ],
+              "description": "Viewer visibility metadata; semantics remain inspectable at every scale."
+            },
+            "detail_scale": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Frame detail threshold in screen pixels per child unit; zero or omitted uses 0.6."
+            },
+            "bends": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "$ref": "#/$defs/resource_v5_diagram_schema_json/$defs/point"
+              },
+              "description": "Connection bends in element-local coordinates; endpoints resolve through the composed frame transforms."
+            },
+            "step": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "description": "When the element appears in the document's reveal; requires reveal. Defaults to its reading order among semantic elements; a decorative element without a step appears with its group, or from the start. Equal steps appear together, gaps cost no time, and no element appears before its group."
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "frame"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "source",
+                  "width",
+                  "height"
+                ],
+                "properties": {
+                  "decorative": {
+                    "const": false
+                  },
+                  "width": {
+                    "exclusiveMinimum": 0
+                  },
+                  "height": {
+                    "exclusiveMinimum": 0
+                  },
+                  "source": {
+                    "not": {
+                      "anyOf": [
+                        {
+                          "required": [
+                            "element"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "relationship"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "connection"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "points"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "path"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "else": {
+                "not": {
+                  "required": [
+                    "bends"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "code"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              },
+              "then": {
+                "required": [
+                  "code",
+                  "width",
+                  "height"
+                ],
+                "properties": {
+                  "width": {
+                    "exclusiveMinimum": 0
+                  },
+                  "height": {
+                    "exclusiveMinimum": 0
+                  },
+                  "wrap": {
+                    "const": false
+                  },
+                  "align": {
+                    "const": "start"
+                  }
+                },
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "shape"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "detail"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "label_box"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "else": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "code"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "language"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "line_numbers"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "highlight_lines"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

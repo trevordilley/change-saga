@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "companion repo"
+    ],
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:45a08b9cded920425fa67692585be1447e2ab87384133835757cde0e8e6dbc28",
+        "end": 52,
+        "path": "internal/changeview/open.go",
+        "start": 25
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:aa1a5a672ecf0c236c676a95f851268eceff14cbba0ca5f59fdaa424047ec608",
+        "end": 101,
+        "path": "internal/cli/sync.go",
+        "start": 86
+      }
+    ],
+    "definition": "The Git repository that stores a Saga when it is separate from the source checkout the Saga documents. Because its history cannot implicitly identify source versions, source-backed commands need the source checkout and the Saga uses a sync cursor to say which source commit it describes.",
+    "name": "Companion repository",
+    "stories": [
+      "urn:change-saga:change-saga:story:source-or-companion",
+      "urn:change-saga:change-saga:story:source-checkout-context"
+    ],
+    "term": "urn:change-saga:change-saga:term:companion-repository"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:companion-repository"
+  }
+}

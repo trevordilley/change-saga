@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/xml"
 	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 
@@ -15,7 +14,8 @@ import (
 func TestWhiteboardDataModelSourcesAndExistingERDs(t *testing.T) {
 	t.Parallel()
 	root, repo := termSaga(t)
-	if _, err := testfixture.WriteERDWhiteboardFixture(context.Background(), root, repo); err != nil {
+	pins, err := testfixture.WriteERDWhiteboardFixture(context.Background(), root, repo)
+	if err != nil {
 		t.Fatal(err)
 	}
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
@@ -26,18 +26,21 @@ func TestWhiteboardDataModelSourcesAndExistingERDs(t *testing.T) {
 	if i := strings.Index(body, `data-whiteboard-note`); i >= 0 {
 		t.Fatalf("board unavailable: %s", body[i:i+min(350, len(body)-i)])
 	}
-	for _, want := range []string{`data-whiteboard`, `data-frame-path="local"`, `data-whiteboard-frame="cloud/postgres"`, `data-from="local/local-edit"`, `data-to="cloud/postgres/cloud-record"`, `data-documentation-target="urn:change-saga:test:data-entity:local-edit"`, `href="/technical/erd/sqlite?revision=r2"`, `Select bound entities`, `Source provenance`} {
+	for _, want := range []string{`data-whiteboard`, `data-frame-path="local"`, `data-whiteboard-frame="cloud/postgres"`, `data-from="local/local-edit"`, `data-to="cloud/postgres/cloud-record"`, `data-documentation-target="urn:change-saga:test:data-entity:local-edit"`, `href="` + technicalPinHref(pins["sqlite"]) + `"`, `Select bound entities`, `Source provenance`} {
 		if !strings.Contains(body, want) {
 			t.Errorf("missing %s", want)
 		}
 	}
-	// Pinned sources remain independently readable at the existing route.
-	status, body = technicalGet(t, mux, "/technical/erd/sqlite?revision=r1")
-	if status != 200 || !strings.Contains(body, `data-erd-revision="r1"`) {
-		t.Fatal("saved ERD no longer readable")
+	// Exact source content remains readable independently of the board.
+	status, body = technicalGet(t, mux, technicalPinHref(pins["sqlite"]))
+	if status != 200 || !strings.Contains(body, `data-erd-view="urn:change-saga:test:erd:sqlite"`) {
+		t.Fatal("exact source content unavailable")
+	}
+	if status, _ := technicalGet(t, mux, "/technical/erd/sqlite?revision=r1"); status != 410 {
+		t.Fatal("removed legacy selector was accepted", status)
 	}
 	// Broken composition cannot erase source documents or the entity directory.
-	if err := os.WriteFile(filepath.Join(root, "___whiteboards", "data-model", "revisions", "r1.json"), []byte(`{}`), 0600); err != nil {
+	if err := os.WriteFile(serverBoardCurrentPath(root, "data-model"), []byte(`{}`), 0600); err != nil {
 		t.Fatal(err)
 	}
 	status, body = technicalGet(t, mux, "/technical/erd")

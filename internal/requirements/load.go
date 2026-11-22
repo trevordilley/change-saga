@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io"
 	"io/fs"
 	"os"
@@ -77,6 +78,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		return Document{}, err
 	}
 	document := Document{Root: abs, SagaID: sagaID, Features: features, Personas: []Persona{}, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}, Flags: []Flag{}, Terms: []Term{}}
+	document.gitSource = options.GitSource
 	if err := loadPersonas(&document); err != nil {
 		return Document{}, err
 	}
@@ -193,7 +195,7 @@ func loadStories(document *Document, feature applayout.Feature, ids *applayout.U
 }
 
 func loadStoryPackage(root, sagaID, dir, storyID string) (Story, error) {
-	entries, err := boundedReadDir(dir, 3)
+	entries, err := boundedReadDir(dir, 4)
 	if err != nil {
 		return Story{}, err
 	}
@@ -204,6 +206,10 @@ func loadStoryPackage(root, sagaID, dir, storyID string) (Story, error) {
 			return Story{}, fmt.Errorf("story %q contains symlink %q", storyID, entry.Name())
 		}
 		switch entry.Name() {
+		case currentrecord.Name:
+			if !entry.Type().IsRegular() {
+				return Story{}, fmt.Errorf("current record must be regular")
+			}
 		case "story.json":
 			if !entry.Type().IsRegular() {
 				return Story{}, fmt.Errorf("story %q identity must be a regular file", storyID)
@@ -228,6 +234,27 @@ func loadStoryPackage(root, sagaID, dir, storyID string) (Story, error) {
 	}
 	if err := validateIdentity(story.Identity, storyID); err != nil {
 		return Story{}, fmt.Errorf("%s: %w", relative(root, identityPath), err)
+	}
+	record, err := currentrecord.Read(dir)
+	if err != nil {
+		return Story{}, err
+	}
+	if record != nil {
+		var content Revision
+		var state LifecycleEvent
+		if err := projectCurrent(record, story.Identity.CreatedAt, RevisionSchemaURL, LifecycleEventSchemaURL, Version, &content, &state); err != nil {
+			return Story{}, err
+		}
+		if err := validateRevision(content, sagaID, storyID); err != nil {
+			return Story{}, err
+		}
+		if err := validateEvent(state, sagaID, storyID); err != nil {
+			return Story{}, err
+		}
+		story.current = true
+		story.Revisions = []Revision{content}
+		story.Events = []LifecycleEvent{state}
+		return story, nil
 	}
 	story.Revisions, err = loadRevisions(root, sagaID, storyID, filepath.Join(dir, "revisions"))
 	if err != nil {

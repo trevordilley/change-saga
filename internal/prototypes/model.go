@@ -159,6 +159,7 @@ type Annotation struct {
 }
 
 type Prototype struct {
+	current bool
 	// Feature is the feature whose directory holds the prototype. Its URN and every
 	// pin are independent of it.
 	Feature         string

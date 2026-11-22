@@ -113,8 +113,8 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	usage := commandUsage[name]
 	flags := commandFlags(name, usage, out)
 	id := flags.String("id", "", "stable story id")
-	revision := flags.String("revision", "", "stable initial revision id")
-	event := flags.String("event", "", "stable initial proposed-event id")
+	revision := new(string)
+	event := new(string)
 	title := flags.String("title", "", "short authored value shown in navigation")
 	statement := flags.String("statement", "", "full authored need: As a <persona> I can <value>")
 	subtext := flags.String("subtext", "", "one-line essay subtext; omitted preserves it on single-parent revise")
@@ -168,7 +168,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		request = storyAddRequest{Feature: *feature, ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Overview: *overview, Subtext: *subtext, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
-	if request.ID == "" || request.Revision == "" || request.Event == "" || request.Title == "" || request.Statement == "" {
+	if request.ID == "" || request.Title == "" || request.Statement == "" {
 		return fmt.Errorf("usage: %s", usage)
 	}
 	root := flags.Arg(0)
@@ -196,7 +196,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	usage := commandUsage[name]
 	flags := commandFlags(name, usage, out)
 	story := flags.String("story", "", "canonical story URN")
-	revision := flags.String("revision", "", "stable revision id")
+	revision := new(string)
 	title := flags.String("title", "", "complete revised title; inherited from a single parent when omitted")
 	statement := flags.String("statement", "", "complete revised user-story statement; inherited from a single parent when omitted")
 	subtext := flags.String("subtext", "", "one-line essay subtext; omitted preserves it on single-parent revise")
@@ -209,7 +209,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	var parents, citations, criteria, personas stringList
-	flags.Var(&parents, "parent", "current revision head URN; repeatable")
+
 	flags.Var(&citations, "citation", "citation URN; repeatable; the parent's citations are kept when omitted")
 	flags.Var(&criteria, "criterion", "acceptance criterion as ID=STATEMENT; repeatable; the parent's criteria are kept when omitted")
 	flags.Var(&personas, "persona", "persona URN the revised story serves; repeatable; the parent's personas are kept when omitted")
@@ -241,9 +241,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		if err := readStrictAuthoringJSON(*from, stdin, &value); err != nil {
 			return err
 		}
-		if value.Schema != requirements.RevisionSchemaURL || value.Version != requirements.Version {
-			return fmt.Errorf("structured story revision must use the v3 story-revision schema")
-		}
+
 		request = storyReviseRequest{Story: value.Story, Revision: value.ID, Parents: value.Parents, Title: value.Title, Statement: value.Statement, Overview: value.Overview, Subtext: value.Subtext, Priority: value.Priority, Personas: value.Personas, Citations: value.Citations, AcceptanceCriteria: value.AcceptanceCriteria, CreatedAt: value.CreatedAt, RequestID: value.RequestID}
 	}
 	overrideVisited(flags, map[string]func(){
@@ -270,7 +268,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		}
 	})
 	if *edit {
-		if request.Story == "" || request.Revision == "" {
+		if request.Story == "" {
 			return fmt.Errorf("usage: %s", usage)
 		}
 		request, err = editStoryRevision(ctx, root, sagaID, request)
@@ -281,7 +279,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	// A revision is a complete snapshot, so a flag-built revise that names one
 	// parent inherits every field it was not given. Otherwise changing a title
 	// would silently drop the criteria and citations nobody restated.
-	if *from == "" && !*edit && request.Story != "" && len(request.Parents) == 1 {
+	if *from == "" && !*edit && request.Story != "" {
 		given := map[string]bool{}
 		flags.Visit(func(value *flag.Flag) { given[value.Name] = true })
 		request, err = inheritStoryRevision(root, sagaID, request, given)
@@ -289,7 +287,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 			return err
 		}
 	}
-	if request.Story == "" || request.Revision == "" || request.Title == "" || request.Statement == "" {
+	if request.Story == "" || request.Title == "" || request.Statement == "" {
 		return fmt.Errorf("usage: %s", usage)
 	}
 	if err := assertRecordFeature(root, *feature, request.Story); err != nil {
@@ -311,7 +309,7 @@ func storySetState(_ context.Context, args []string, out io.Writer, stdin io.Rea
 	usage := commandUsage[name]
 	flags := commandFlags(name, usage, out)
 	story := flags.String("story", "", "canonical story URN")
-	event := flags.String("event", "", "stable lifecycle event id")
+	event := new(string)
 	state := flags.String("state", "", "proposed, accepted, deferred, rejected, or retired")
 	reason := flags.String("reason", "", "reason for the lifecycle decision")
 	requestID := flags.String("request-id", "", "idempotency key")
@@ -319,7 +317,7 @@ func storySetState(_ context.Context, args []string, out io.Writer, stdin io.Rea
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	var parents stringList
-	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
+
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -345,7 +343,7 @@ func storySetState(_ context.Context, args []string, out io.Writer, stdin io.Rea
 	if *from == "" {
 		request = storyStateRequest{Story: *story, Event: *event, Parents: parents, State: requirements.LifecycleState(*state), Reason: *reason, RequestID: *requestID}
 	}
-	if request.Story == "" || request.Event == "" || request.State == "" {
+	if request.Story == "" || request.State == "" {
 		return fmt.Errorf("usage: %s", usage)
 	}
 	root := flags.Arg(0)
@@ -410,8 +408,8 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 	from := flags.String("from", "", "source endpoint URN; visual story links require a slide Item")
 	to := flags.String("to", "", "target endpoint URN")
 	rationale := flags.String("rationale", "", "why the endpoints are related")
-	fromRevision := flags.String("from-revision", "", "exact source definition revision URN (v5: defaults to the unique current head)")
-	toRevision := flags.String("to-revision", "", "exact target definition revision URN (v5: defaults to the unique current head)")
+	fromRevision := flags.String("from-definition-digest", "", "exact source definition SHA-256 digest; defaults to current content")
+	toRevision := flags.String("to-definition-digest", "", "exact target definition SHA-256 digest; defaults to current content")
 	fromDigest := flags.String("from-content-digest", "", "exact source design content digest")
 	toDigest := flags.String("to-content-digest", "", "exact target design content digest")
 	scope := flags.String("scope", "", "self (default); new visual story links must belong to an Item, not descendants of a deck or slide")
@@ -500,7 +498,7 @@ func defaultV5RelationPinsWithGuardedSaga(root string, input *requirements.AddRe
 			name     string
 			endpoint string
 			pin      *string
-		}{{"from_revision", input.From, &input.FromRevision}, {"to_revision", input.To, &input.ToRevision}} {
+		}{{"from definition digest", input.From, &input.FromRevision}, {"to definition digest", input.To, &input.ToRevision}} {
 			if *side.pin != "" {
 				continue
 			}
@@ -512,7 +510,7 @@ func defaultV5RelationPinsWithGuardedSaga(root string, input *requirements.AddRe
 				return nil, fmt.Errorf("cannot default %s: %w", side.name, err)
 			}
 			*side.pin = head
-			defaulted = append(defaulted, fmt.Sprintf("%s to current head %s", side.name, head))
+			defaulted = append(defaulted, fmt.Sprintf("%s to current content %s", side.name, head))
 		}
 	}
 	if input.Type == requirements.RelationAddresses {
@@ -577,22 +575,17 @@ func relationSupersede(_ context.Context, args []string, out io.Writer) error {
 	return writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, *jsonOutput)
 }
 
-// relationRepin appends one confirmation that a relation still holds. It is
-// the answer to a stale pin that is still true: the relation keeps its id, its
-// rationale, and the record of every revision anyone read it against, instead
-// of being retired and renamed.
+// relationRepin updates the current confirmed pins after authored reassessment.
 func relationRepin(_ context.Context, args []string, out io.Writer) error {
 	name := "relation repin"
 	usage := commandUsage[name]
 	flags := commandFlags(name, usage, out)
 	relation := flags.String("relation", "", "canonical relation URN")
-	id := flags.String("id", "", "stable repin id; defaults to the next rN")
 	rationale := flags.String("rationale", "", "why the relation still holds against the new pins")
-	fromRevision := flags.String("from-revision", "", "advance the source revision pin")
-	toRevision := flags.String("to-revision", "", "advance the target revision pin")
+	fromRevision := flags.String("from-definition-digest", "", "advance the source definition digest")
+	toRevision := flags.String("to-definition-digest", "", "advance the target definition digest")
 	fromDigest := flags.String("from-content-digest", "", "advance the source content digest")
 	toDigest := flags.String("to-content-digest", "", "advance the target content digest")
-	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	feature := featureIDFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -613,7 +606,7 @@ func relationRepin(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	input := requirements.RepinRelationInput{
-		Relation: *relation, ID: *id, Rationale: *rationale, RequestID: *requestID,
+		Relation: *relation, Rationale: *rationale,
 		FromRevision: *fromRevision, ToRevision: *toRevision,
 		FromContentDigest: *fromDigest, ToContentDigest: *toDigest,
 	}
@@ -695,27 +688,14 @@ func defaultRepinPins(root string, input *requirements.RepinRelationInput) ([]st
 	if record == nil {
 		return nil, fmt.Errorf("relation %q does not exist", input.Relation)
 	}
-	// A replayed request re-states the repin it already wrote, so an agent that
-	// retries gets the same answer instead of "nothing moved".
-	if input.RequestID != "" {
-		for _, known := range record.Repins {
-			if known.RequestID != input.RequestID {
-				continue
-			}
-			input.ID = known.ID
-			input.FromRevision, input.ToRevision = known.FromRevision, known.ToRevision
-			input.FromContentDigest, input.ToContentDigest = known.FromContentDigest, known.ToContentDigest
-			return nil, nil
-		}
-	}
 	confirmed := record.Confirmed()
 	var defaulted []string
 	for _, side := range []struct {
 		name, endpoint, was string
 		pin                 *string
 	}{
-		{"from_revision", confirmed.From, confirmed.FromRevision, &input.FromRevision},
-		{"to_revision", confirmed.To, confirmed.ToRevision, &input.ToRevision},
+		{"from definition digest", confirmed.From, confirmed.FromRevision, &input.FromRevision},
+		{"to definition digest", confirmed.To, confirmed.ToRevision, &input.ToRevision},
 	} {
 		if *side.pin != "" || side.was == "" {
 			continue
@@ -731,7 +711,7 @@ func defaultRepinPins(root string, input *requirements.RepinRelationInput) ([]st
 			continue
 		}
 		*side.pin = head
-		defaulted = append(defaulted, fmt.Sprintf("%s from %s to the current head %s", side.name, side.was, head))
+		defaulted = append(defaulted, fmt.Sprintf("%s from %s to current content %s", side.name, side.was, head))
 	}
 	for _, side := range []struct {
 		name, endpoint, was string

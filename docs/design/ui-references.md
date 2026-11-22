@@ -1,5 +1,10 @@
 # UI references (proposal)
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](../git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Status: proposal, not implemented.
 
 A feature now shows Stories, Prototypes, UX, UI, Technical, then Quality. Every

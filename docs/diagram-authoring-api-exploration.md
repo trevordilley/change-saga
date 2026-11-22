@@ -1,5 +1,10 @@
 # Diagram authoring API exploration
 
+> Historical design or validation record. Its content revision graphs, parent/head
+> workflows, history selectors, and revision/event CLI arguments are superseded by
+> [Git-owned history](git-owned-history.md). Preserve the recorded examples as evidence of the
+> earlier format; use the current contract for authoring.
+
 Status: shipped, 2026-09-24. The exploration below led to diagram-sourced
 slides: `apply-slide` accepts a `diagram`, and the `diagram describe|get|edit|
 icons|check` commands read and revise it (see SPEC.md, "Complete-slide

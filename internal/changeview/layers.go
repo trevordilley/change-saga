@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/impact"
 	"github.com/twentyideas/changesaga/internal/livingapp"
@@ -225,7 +226,7 @@ func Compute(ctx context.Context, options Options) (Layers, *Inventory, error) {
 	if options.Head != "" {
 		root, readErr := extract(ctx, options.Location, options.Head, temp+"/head")
 		if readErr == nil {
-			if at, loadErr := loadSnapshot(ctx, root, nil); loadErr == nil {
+			if at, loadErr := loadSnapshot(ctx, root, nil, currentrecord.GitSource{Repository: options.Location.Repo, SagaPath: options.Location.Path, Commit: options.Head}); loadErr == nil {
 				head, layers.Saga.Head = at, SagaSide{Commit: options.Head, Source: SideGit}
 			} else {
 				readErr = loadErr
@@ -241,7 +242,7 @@ func Compute(ctx context.Context, options Options) (Layers, *Inventory, error) {
 	if options.Base != "" {
 		root, readErr := extract(ctx, options.Location, options.Base, temp+"/base")
 		if readErr == nil {
-			at, loadErr := loadSnapshot(ctx, root, nil)
+			at, loadErr := loadSnapshot(ctx, root, nil, currentrecord.GitSource{Repository: options.Location.Repo, SagaPath: options.Location.Path, Commit: options.Base})
 			if loadErr == nil {
 				base, layers.Saga.Base = at, SagaSide{Commit: options.Base, Source: SideGit}
 			} else {
@@ -318,7 +319,7 @@ func Compute(ctx context.Context, options Options) (Layers, *Inventory, error) {
 	return layers, head.inventory, nil
 }
 
-func loadSnapshot(ctx context.Context, root string, document *saga.Saga) (*snapshot, error) {
+func loadSnapshot(ctx context.Context, root string, document *saga.Saga, sources ...currentrecord.GitSource) (*snapshot, error) {
 	if document == nil {
 		loaded, validation, err := saga.Load(root)
 		if err != nil {
@@ -329,7 +330,7 @@ func loadSnapshot(ctx context.Context, root string, document *saga.Saga) (*snaps
 		}
 		document = loaded
 	}
-	inputs, err := livingapp.LoadStatusInputs(ctx, livingapp.StatusOptions{SagaRoot: root, Document: document})
+	inputs, err := livingapp.LoadStatusInputs(ctx, livingapp.StatusOptions{SagaRoot: root, Document: document, InventorySources: sources})
 	if err != nil {
 		return nil, err
 	}

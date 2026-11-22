@@ -133,7 +133,7 @@ func TestReconciliationRequirementsOnlyImpact(t *testing.T) {
 	mustRun(t, Relation, "add", "--feature", "checkout", "--id", "test-pay", "--type", "verifies", "--from", "urn:change-saga:shop:test-case:charge", "--to", "urn:change-saga:shop:story:pay:criterion:charged", "--rationale", "Checks the charge count", root)
 	commitAll(t, repo, "Declare a test for the requirement")
 	git(t, repo, "checkout", "-b", "intent")
-	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay", "--revision", "r2", "--parent", "urn:change-saga:shop:story:pay:revision:r1", "--title", "Pay once", "--statement", "As a shopper I pay exactly once", "--priority", "must", "--criterion", "charged=The card is charged exactly once", root)
+	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay", "--title", "Pay once", "--statement", "As a shopper I pay exactly once", "--priority", "must", "--criterion", "charged=The card is charged exactly once", root)
 	report := reconciliationOf(t, root)
 	if report.DocumentationCoverage.Areas.Implementation.Total != 0 || report.Currency.Stale != 0 {
 		t.Fatal("requirement-only edit must not fabricate a code change")
@@ -295,7 +295,7 @@ func TestReconciliationPreservesTestEvidenceDiffCoverage(t *testing.T) {
 	writeFile(t, filepath.Join(repo, "src", "queue_test.go"), "package shop\nfunc TestQueue() {}\n")
 	head := commitAll(t, repo, "Add a test")
 	mustRun(t, Quality, "test-case", "add", "--feature", "checkout", "--id", "charge", "--title", "Charge once", "--kind", "positive", "--automation", "automated", "--step", `{"id":"pay","action":"Pay","expected_result":"Charged once"}`, "--expected-result", "Charged once", root)
-	mustRun(t, Quality, "test-case", "set-state", "--test-case", "urn:change-saga:shop:test-case:charge", "--parent", "urn:change-saga:shop:test-case:charge:event:proposed", "--state", "active", "--reason", "Ready", root)
+	mustRun(t, Quality, "test-case", "set-state", "--test-case", "urn:change-saga:shop:test-case:charge", "--state", "active", "--reason", "Ready", root)
 	mustRun(t, Quality, "evidence", "add", "--test", "urn:change-saga:shop:test-case:charge", "--role", "test_implementation", "--repo", repo, "--code", head+":src/queue_test.go#L1-L2", root)
 	report := reconciliationOf(t, root)
 	if report.DocumentationCoverage.Areas.Implementation.Total != 3 || report.DocumentationCoverage.Areas.Implementation.Covered != 2 || report.DocumentationCoverage.Areas.Implementation.Uncovered != 1 {
@@ -345,10 +345,10 @@ func TestReconciliationNewStaleEvidenceDoesNotInheritBaselineDebt(t *testing.T) 
 func TestReconciliationSupersededEvidenceAndLegacyRuns(t *testing.T) {
 	t.Parallel()
 	repo, root := shopSaga(t)
-	mustRun(t, Story, "set-state", "--story", "urn:change-saga:shop:story:pay", "--parent", "urn:change-saga:shop:story:pay:event:proposed", "--state", "accepted", "--reason", "Fixture requirement", "--event", "accepted", root)
+	mustRun(t, Story, "set-state", "--story", "urn:change-saga:shop:story:pay", "--state", "accepted", "--reason", "Fixture requirement", root)
 	test := "urn:change-saga:shop:test-case:charge"
 	mustRun(t, Quality, "test-case", "add", "--feature", "checkout", "--id", "charge", "--title", "Charge once", "--kind", "positive", "--automation", "automated", "--step", `{"id":"pay","action":"Pay","expected_result":"Charged once"}`, "--expected-result", "Charged once", root)
-	mustRun(t, Quality, "test-case", "set-state", "--test", test, "--parent", test+":event:proposed", "--state", "active", "--reason", "Ready", root)
+	mustRun(t, Quality, "test-case", "set-state", "--test", test, "--state", "active", "--reason", "Ready", root)
 	mustRun(t, Relation, "add", "--feature", "checkout", "--id", "test-pay", "--type", "verifies", "--from", test, "--to", "urn:change-saga:shop:story:pay:criterion:charged", "--rationale", "Checks the charge count", root)
 	mustRun(t, Quality, "evidence", "add", "--test", test, "--id", "old", "--role", "implementation_under_test", "--code", "HEAD:src/queue.go#L3-L6", root)
 	commitAll(t, repo, "Document original test")
@@ -366,7 +366,7 @@ func TestReconciliationSupersededEvidenceAndLegacyRuns(t *testing.T) {
 		}
 	}
 	mustRun(t, Quality, "run", "record", "--test", test, "--id", "before", "--result", "passed", "--summary", "Fixture result", "--evidence", test+":evidence:replacement", root)
-	mustRun(t, Quality, "test-case", "revise", "--test", test, "--parent", test+":revision:r1", "--revision", "r2", "--expected-result", "Charged exactly once", root)
+	mustRun(t, Quality, "test-case", "revise", "--test", test, "--expected-result", "Charged exactly once", root)
 	report = reconciliationOf(t, root)
 	found := false
 	for _, task := range report.Queue {

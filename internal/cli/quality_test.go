@@ -94,15 +94,19 @@ func TestQualityHelpListsTheAuthoringGrammar(t *testing.T) {
 	}
 }
 
-func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
+func TestQualityCommandsEditDefinitionsAndPreserveFactualRunsAndEvidence(t *testing.T) {
 	t.Parallel()
 	root := newQualityFixture(t)
+	var storyOutput bytes.Buffer
+	if err := Story(context.Background(), []string{"add", root, "--feature", testFeature, "--id", "refund", "--title", "Refund", "--statement", "As a buyer I can request a refund", "--criterion", "cutoff=The deadline is enforced"}, &storyOutput); err != nil {
+		t.Fatal(err, storyOutput.String())
+	}
 	definition := `{"id":"deadline","title":"Reject at deadline","coverage_kinds":["negative","edge"],"automation":"automated",
 		"preconditions":["A purchase is exactly 30 days old."],
 		"steps":[{"id":"submit","action":"Submit a refund request.","expected_result":"The request is rejected."}],
 		"expected_result":"No refund is created.","request_id":"add-deadline"}`
 	added := runQuality(t, definition, "test-case", "add", root, "--feature", testFeature, "--from", "-")
-	wantCreated := []string{qualityTestURN, qualityTestURN + ":revision:r1", qualityTestURN + ":event:proposed"}
+	wantCreated := []string{qualityTestURN}
 	if !added.OK || added.Resource != qualityTestURN || !reflect.DeepEqual(added.Created, wantCreated) {
 		t.Fatalf("add = %#v", added)
 	}
@@ -111,13 +115,13 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 	}
 
 	// A single-parent revision inherits every omitted field from its parent.
-	revised := runQuality(t, "", "test-case", "revise", root, "--test", qualityTestURN, "--parent", qualityTestURN+":revision:r1",
-		"--revision", "r2", "--step", `{"id":"submit","action":"Submit a refund request.","expected_result":"The request is rejected."}`,
+	revised := runQuality(t, "", "test-case", "revise", root, "--test", qualityTestURN,
+		"--step", `{"id":"submit","action":"Submit a refund request.","expected_result":"The request is rejected."}`,
 		"--step", `{"id":"inspect","action":"Inspect the reason.","expected_result":"The cutoff reason is returned.","criteria":["urn:change-saga:checkout:story:refund:criterion:cutoff"]}`)
-	if !reflect.DeepEqual(revised.CurrentHeads, []string{qualityTestURN + ":revision:r2"}) {
+	if len(revised.CurrentHeads) != 0 || !strings.HasSuffix(revised.Path, "/current.json") {
 		t.Fatalf("revise = %#v", revised)
 	}
-	runQuality(t, "", "test-case", "set-state", root, "--test-case", qualityTestURN, "--parent", qualityTestURN+":event:proposed", "--state", "active", "--reason", "Ready to run.")
+	runQuality(t, "", "test-case", "set-state", root, "--test-case", qualityTestURN, "--state", "active", "--reason", "Ready to run.")
 
 	codeRepo, codeLocation := qualityCode(t, "internal/refund_test.go")
 	evidence := runQuality(t, "", "evidence", "add", root, "--test", qualityTestURN, "--role", "test_implementation", "--repo", codeRepo, "--code", codeLocation, "--step", "inspect")
@@ -128,7 +132,7 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 	passed := runQuality(t, "", "run", "record", root, "--commit", "0123456789abcdef0123456789abcdef01234567", "--test", qualityTestURN, "--id", "ci-2", "--parent", failed.Resource,
 		"--result", "passed", "--summary", "Manual and CI pass.", "--evidence", evidence.Resource, "--evidence", manual.Resource)
 	runQuality(t, "", "policy", "set", root, "--feature", testFeature, "--criterion", "urn:change-saga:checkout:story:refund:criterion:cutoff",
-		"--story-revision", "urn:change-saga:checkout:story:refund:revision:r2", "--require", "positive", "--require", "edge",
+		"--story-content-digest", currentTestPin(t, root, "urn:change-saga:checkout:story:refund"), "--require", "positive", "--require", "edge",
 		"--allow", "automated", "--rationale", "The exact cutoff is a distinct risk.")
 
 	document, err := quality.Load(root)
@@ -144,7 +148,7 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 			t.Fatalf("step evidence: %+v", e)
 		}
 	}
-	if testCase.CurrentRevision.ID != "r2" || len(testCase.CurrentRevision.Steps) != 2 || testCase.CurrentRevision.Title != "Reject at deadline" {
+	if len(testCase.Revisions) != 1 || len(testCase.CurrentRevision.Steps) != 2 || testCase.CurrentRevision.Title != "Reject at deadline" {
 		t.Fatalf("revision = %#v", testCase.CurrentRevision)
 	}
 	if testCase.CurrentLifecycle.State != quality.StateActive || testCase.CurrentLifecycle.Reason != "Ready to run." {

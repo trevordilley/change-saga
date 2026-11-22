@@ -1,0 +1,1 @@
+The [arrival-window conversation](/technical/whiteboards/arrival) sketches information moving from a bulletin to a discussion. It is an illustrative design, with no source-code or historical evidence dependency. The phased Plan keeps later work behind its unpassed assumptions review.

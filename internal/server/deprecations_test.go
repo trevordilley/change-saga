@@ -93,7 +93,7 @@ func TestDeprecationInspectionShowsScopeEvidenceAndWithdrawal(t *testing.T) {
 		t.Fatal(body)
 	}
 	page := get("/technical/whiteboards/systems")
-	if !strings.Contains(page, "data-deprecation-load") || !strings.Contains(page, "revision=b2") {
+	if !strings.Contains(page, "data-deprecation-load") || !strings.Contains(page, "content_digest=sha256") {
 		t.Fatalf("board does not load its annotations: %s", page)
 	}
 	for _, bad := range []string{"/api/deprecations", "/api/deprecations?target=../../../private", "/api/deprecations?ref=HEAD:kinds.go", "/api/deprecations?file=../private"} {

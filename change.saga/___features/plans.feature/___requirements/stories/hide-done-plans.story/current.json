@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "deliver-is-explicit",
+        "statement": "An author marks a Plan delivered with an explicit command, which is refused unless every Task is done and every Review linked to the Plan has merged."
+      },
+      {
+        "id": "delivered-hidden-in-reader",
+        "statement": "A delivered Plan is not listed in the Plans section by default, and a visible filter reveals it."
+      },
+      {
+        "id": "delivered-filtered-in-cli",
+        "statement": "The CLI's list of Plans leaves out delivered Plans by default, and a flag includes them."
+      },
+      {
+        "id": "delivered-stays-readable",
+        "statement": "A delivered Plan can still be opened and compared with its Reviews, and it refuses further edits."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:plans-direction-20261102"
+    ],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer, I can rely on delivered Plans being hidden by default, the way merged Reviews are, so what I see is the work still ahead of us.",
+    "story": "urn:change-saga:change-saga:story:hide-done-plans",
+    "title": "Keep delivered Plans out of the way"
+  },
+  "state": {
+    "reason": "Verified against the code and tests on 2026-11-02. Delivery is explicit and guarded, a delivered Plan is set aside in the reader and CLI, still reads, and refuses edits.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:hide-done-plans"
+  }
+}

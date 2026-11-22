@@ -38,10 +38,10 @@ type PersonaStatus struct {
 	ID              string   `json:"id"`
 	Name            string   `json:"name,omitempty"`
 	State           string   `json:"state"`
-	RevisionHeads   []string `json:"revision_heads"`
-	LifecycleHeads  []string `json:"lifecycle_heads"`
-	CurrentRevision string   `json:"current_revision,omitempty"`
-	LifecycleHead   string   `json:"lifecycle_head,omitempty"`
+	RevisionHeads   []string `json:"-"`
+	LifecycleHeads  []string `json:"-"`
+	CurrentRevision string   `json:"content_pin,omitempty"`
+	LifecycleHead   string   `json:"-"`
 	// ServedBy lists the accepted stories whose current revision serves it.
 	ServedBy []string `json:"served_by"`
 	// Stories lists every story whose current revision serves it.
@@ -72,9 +72,9 @@ type FlagStatus struct {
 	Description     string   `json:"description,omitempty"`
 	Targets         []string `json:"targets"`
 	Stories         []string `json:"stories"`
-	RevisionHeads   []string `json:"revision_heads"`
-	LifecycleHeads  []string `json:"lifecycle_heads"`
-	CurrentRevision string   `json:"current_revision,omitempty"`
+	RevisionHeads   []string `json:"-"`
+	LifecycleHeads  []string `json:"-"`
+	CurrentRevision string   `json:"content_pin,omitempty"`
 }
 
 // appProjection fills the app-level sections of the status and returns the

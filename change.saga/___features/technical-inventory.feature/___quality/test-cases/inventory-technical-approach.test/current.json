@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Supporting prose and return link work; delivery flow opens data-flows board with its current navigation entry.",
+    "preconditions": [
+      "Disposable Saga authors an approach essay with Reliability supporting page and delivery-flow deep link; publishes data-model, infrastructure and data-flows named boards."
+    ],
+    "steps": [
+      {
+        "action": "Open /technical and inspect essay and sidebar.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:approach"
+        ],
+        "expected_result": "The authored essay renders and ERD, Infrastructure and Data flows links are visible.",
+        "id": "approach"
+      },
+      {
+        "action": "Follow Reliability, return to approach, and follow delivery flow.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-application-technical-design:criterion:approach"
+        ],
+        "expected_result": "Supporting prose and return link work; delivery flow opens data-flows board with its current navigation entry.",
+        "id": "support"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-approach",
+    "title": "Read the approach essay and reach its supporting whiteboards"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-technical-approach"
+  }
+}

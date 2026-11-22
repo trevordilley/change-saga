@@ -25,7 +25,7 @@ func newTermSaga(t *testing.T, repo string) string {
 		t.Fatal(err)
 	}
 	addTestApp(t, root)
-	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--id", "sit-assessment", "--revision", "r1", "--event", "proposed",
+	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--id", "sit-assessment",
 		"--title", "Sit an assessment", "--statement", "As a candidate, I sit an assessment", "--priority", "high", root}, &output); err != nil {
 		t.Fatalf("story add: %v\n%s", err, output.String())
 	}
@@ -85,8 +85,8 @@ func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 	}
 	// Revising the term at the renamed line makes it current again.
 	output.Reset()
-	if err := Term(context.Background(), []string{"revise", "--term", "urn:change-saga:atomic:term:testtaker", "--revision", "r2",
-		"--parent", "urn:change-saga:atomic:term:testtaker:revision:r1", "--name", "Testtaker", "--definition", "One sitting of an assessment.",
+	if err := Term(context.Background(), []string{"revise", "--term", "urn:change-saga:atomic:term:testtaker",
+		"--name", "Testtaker", "--definition", "One sitting of an assessment.",
 		"--ref", "HEAD:kinds.go#L6", "--repo", repo, root}, &output); err != nil {
 		t.Fatalf("term revise: %v\n%s", err, output.String())
 	}
@@ -128,6 +128,24 @@ func TestIntentOnlyTermAndSemanticAxisValidation(t *testing.T) {
 		TermDefinition: requirements.TermDefinition{Name: "Review annotation", Definition: "One competing meaning.", DefinitionMaturity: requirements.DefinitionMaturityProposed, ImplementationEvidence: requirements.ImplementationEvidencePartial}}); err != nil {
 		t.Fatal(err)
 	}
+	relative := "___overview/terms/review-annotation.term"
+	legacyCurrentTestPackage(t, root, relative, "term", termURN, requirements.TermRevisionSchemaURL, requirements.TermEventSchemaURL, 5, "r1", "active")
+	raw, err := os.ReadFile(filepath.Join(root, relative, "revisions/r1.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var branch map[string]any
+	if err = json.Unmarshal(raw, &branch); err != nil {
+		t.Fatal(err)
+	}
+	branch["id"], branch["parents"] = "r2", []string{termURN + ":revision:r1"}
+	child, err := json.MarshalIndent(branch, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(filepath.Join(root, relative, "revisions/r2.json"), child, 0644); err != nil {
+		t.Fatal(err)
+	}
 	r2Path := filepath.Join(root, "___overview", "terms", "review-annotation.term", "revisions", "r2.json")
 	data, err := os.ReadFile(r2Path)
 	if err != nil {
@@ -138,10 +156,10 @@ func TestIntentOnlyTermAndSemanticAxisValidation(t *testing.T) {
 		t.Fatal(err)
 	}
 	conflicted := queryData(t, "terms", "--saga", root, "--repo", repo, "--term", "review-annotation")["terms"].([]any)[0].(map[string]any)
-	if conflicted["definition_maturity"] != "unknown" || conflicted["implementation_evidence"] != "unknown" || len(conflicted["revision_heads"].([]any)) != 2 {
+	if conflicted["definition_maturity"] != "unknown" || conflicted["implementation_evidence"] != "unknown" || conflicted["revision_conflict"] != true || conflicted["content_pin"] != nil {
 		t.Fatalf("conflicted semantic projection = %#v", conflicted)
 	}
-	if _, current := conflicted["current_revision"]; current {
+	if _, current := conflicted["content"]; current {
 		t.Fatalf("a conflicted term must not claim a current revision: %#v", conflicted)
 	}
 }
@@ -241,7 +259,7 @@ func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
 	for _, input := range stale[0].Command.Inputs {
 		inputs = append(inputs, input.Flag)
 	}
-	if strings.Join(inputs, ",") != "revision,ref" {
+	if strings.Join(inputs, ",") != "ref" {
 		t.Fatalf("a stale term's revision is prefilled except its new id and code: %v", inputs)
 	}
 	argv := strings.Join(stale[0].Command.Argv, " ")

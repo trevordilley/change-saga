@@ -72,14 +72,15 @@ type PersonaPage struct {
 }
 
 type PersonaRecord struct {
+	ContentDigest     string                        `json:"content_digest,omitempty"`
 	Persona           string                        `json:"persona"`
 	ID                string                        `json:"id"`
 	CreatedAt         time.Time                     `json:"created_at"`
 	State             string                        `json:"state"`
-	RevisionHeads     []string                      `json:"revision_heads"`
-	LifecycleHeads    []string                      `json:"lifecycle_heads"`
-	CurrentRevision   *requirements.PersonaRevision `json:"current_revision,omitempty"`
-	CurrentLifecycle  *requirements.PersonaEvent    `json:"current_lifecycle,omitempty"`
+	RevisionHeads     []string                      `json:"-"`
+	LifecycleHeads    []string                      `json:"-"`
+	CurrentRevision   *requirements.PersonaRevision `json:"content,omitempty"`
+	CurrentLifecycle  *requirements.PersonaEvent    `json:"state_detail,omitempty"`
 	RevisionConflict  bool                          `json:"revision_conflict"`
 	LifecycleConflict bool                          `json:"lifecycle_conflict"`
 }
@@ -237,14 +238,15 @@ type RequirementPage struct {
 	Requirements []Requirement `json:"requirements"`
 }
 type Requirement struct {
+	ContentDigest     string                       `json:"content_digest,omitempty"`
 	Requirement       string                       `json:"requirement"`
 	ID                string                       `json:"id"`
 	Feature           string                       `json:"feature"`
 	CreatedAt         time.Time                    `json:"created_at"`
-	RevisionHeads     []string                     `json:"revision_heads"`
-	LifecycleHeads    []string                     `json:"lifecycle_heads"`
-	CurrentRevision   *requirements.Revision       `json:"current_revision"`
-	CurrentLifecycle  *requirements.LifecycleEvent `json:"current_lifecycle"`
+	RevisionHeads     []string                     `json:"-"`
+	LifecycleHeads    []string                     `json:"-"`
+	CurrentRevision   *requirements.Revision       `json:"content"`
+	CurrentLifecycle  *requirements.LifecycleEvent `json:"state_detail"`
 	RevisionConflict  bool                         `json:"revision_conflict"`
 	LifecycleConflict bool                         `json:"lifecycle_conflict"`
 }

@@ -1,14 +1,14 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "query-runtime-explains-envelope",
-  "type": "explains",
-  "from": "urn:change-saga:change-saga:slide:query-runtime",
-  "to": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
-  "scope": "self",
-  "rationale": "The runtime sequence shows how one query becomes exactly one versioned JSON envelope.",
-  "to_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
-  "state": "superseded",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-09-23T03:23:24.094017Z",
-  "superseded_at": "2026-09-23T16:39:34.338719Z"
+  "from": "urn:change-saga:change-saga:slide:query-runtime",
+  "id": "query-runtime-explains-envelope",
+  "rationale": "The runtime sequence shows how one query becomes exactly one versioned JSON envelope.",
+  "scope": "self",
+  "state": "superseded",
+  "superseded_at": "2026-09-23T16:39:34.338719Z",
+  "to": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+  "to_revision": "sha256:3b2841b06ec70b1a1bf19bbc6059a4e28e6d6841902e5176950754021a097142",
+  "type": "explains",
+  "version": 5
 }

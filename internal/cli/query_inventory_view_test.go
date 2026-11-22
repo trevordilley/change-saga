@@ -68,7 +68,7 @@ func newInventoryQueryFixture(t *testing.T) inventoryQueryFixture {
 	f.base = strings.TrimSpace(git(t, f.repo, "rev-parse", "HEAD"))
 
 	system := def("Flags", ref(3, 5))
-	system.Components = []saga.DocumentationLink{{Target: f.store, Revision: f.store + ":revision:r1"}, {Target: f.reader, Revision: f.reader + ":revision:r1"}}
+	system.Components = []saga.DocumentationLink{{Target: f.store, Revision: currentTestPin(t, f.root, f.store)}, {Target: f.reader, Revision: currentTestPin(t, f.root, f.reader)}}
 	system.Interactions = []requirements.Interaction{{ID: "read", From: f.reader, To: f.store, Description: "Reads the flag.", Code: legacyEvidence(ref(5, 5))}}
 	if _, err := requirements.WriteTechnical(f.root, "atomic", "system", "flags", "r1", nil, system, true); err != nil {
 		t.Fatal(err)
@@ -82,19 +82,14 @@ func newInventoryQueryFixture(t *testing.T) inventoryQueryFixture {
 	if err := AddSlide(ctx, []string{"--deck", "flags", "--intent", "explain", "--layout", "diagram", f.root, "decision"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := AddItem(ctx, []string{"--slide", "decision", "--kind", "node", "--element-id", "slide-title", "--description", "Reuses the flag System.", "--documentation", f.system, "--documentation-revision", f.system + ":revision:r1", f.root}, &output); err != nil {
+	if err := AddItem(ctx, []string{"--slide", "decision", "--kind", "node", "--element-id", "slide-title", "--description", "Reuses the flag System.", "--documentation", f.system, "--documentation-content-digest", currentTestPin(t, f.root, f.system), f.root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	// Simulate a merge of two concurrent reader revisions: both heads remain.
-	if _, err := requirements.WriteTechnical(f.root, "atomic", "component", "reader", "r2", []string{f.reader + ":revision:r1"}, def("reader v2", ref(5, 5)), false); err != nil {
+	if _, err := requirements.WriteTechnical(f.root, "atomic", "component", "reader", "r2", []string{currentTestPin(t, f.root, f.reader)}, def("reader v2", ref(5, 5)), false); err != nil {
 		t.Fatal(err)
 	}
-	revisions := filepath.Join(f.root, filepath.FromSlash(requirements.TechnicalPath("component", "reader")), "revisions")
-	data, err := os.ReadFile(filepath.Join(revisions, "r2.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	writeFile(t, filepath.Join(revisions, "fork.json"), strings.Replace(string(data), `"id": "r2"`, `"id": "fork"`, 1))
+	competingTechnicalTestFixture(t, f.root, f.reader)
 	git(t, f.repo, "add", ".")
 	git(t, f.repo, "commit", "-m", "head inventory")
 	f.head = strings.TrimSpace(git(t, f.repo, "rev-parse", "HEAD"))
@@ -116,6 +111,7 @@ func inventoryEnvelope(t *testing.T, args ...string) (map[string]any, map[string
 		t.Fatalf("%v: %s", err, output.String())
 	}
 	if !envelope.OK {
+		t.Logf("inventory query %v: %s", args, output.String())
 		return nil, envelope.Error, ""
 	}
 	return envelope.Data, envelope.Page, envelope.Snapshot
@@ -261,10 +257,8 @@ func TestInventoryUsesQuery(t *testing.T) {
 	if failure["code"] != "invalid_argument" {
 		t.Fatalf("unbounded depth accepted: %v", failure)
 	}
-	// A changed Saga invalidates the cursor.
-	if _, err := requirements.WriteTechnical(f.root, "atomic", "component", "extra", "r1", nil, requirements.TechnicalDefinition{Name: "extra", Explanation: "x", Code: legacyEvidence(coderef.Reference{Commit: f.absent, Path: "flags.go", Start: 1, End: 1, Digest: coderef.DigestBytes([]byte("package flags\n")), Note: "x"})}, true); err != nil {
-		t.Fatal(err)
-	}
+	// A read-only cursor is bound to all Saga bytes, including authored prose.
+	writeFile(t, filepath.Join(f.root, "README.md"), "Changed current documentation snapshot\n")
 	_, failure, _ = q("--target", f.store, "--depth", "1", "--limit", "1", "--cursor", deepCursor)
 	if failure["code"] != "stale_snapshot" {
 		t.Fatalf("cursor survived a Saga change: %v", failure)

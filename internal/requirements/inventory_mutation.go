@@ -7,10 +7,10 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/currentrecord"
 	"io/fs"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"time"
 
@@ -63,6 +63,9 @@ func AdoptInventoryFormat(root, sagaID string, format int) (MutationResult, erro
 	}
 	result := MutationResult{URN: "urn:change-saga:" + sagaID + ":inventory-format:" + fmt.Sprint(format), Path: InventoryDir + "/" + InventoryFormatName}
 	err := store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		if err := currentrecord.Normalize(root); err != nil {
+			return err
+		}
 		d, err := LoadInventory(root, sagaID)
 		if err != nil {
 			return err
@@ -81,7 +84,7 @@ func AdoptInventoryFormat(root, sagaID string, format int) (MutationResult, erro
 		result.Created = []string{result.Path}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // WriteTechnical publishes a legacy (format 1) Component/System revision.
@@ -94,6 +97,13 @@ func WriteTechnical(root, sagaID, kind, id, revisionID string, parents []string,
 // current head. All validation, including implementation policy against the
 // delivery commit, runs under the Saga lock before any file is written.
 func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w TechnicalWrite) (MutationResult, error) {
+	if err := currentrecord.NormalizeValue(root, &w.Definition); err != nil {
+		return MutationResult{}, err
+	}
+	if w.RevisionID == "" {
+		w.RevisionID = "edit"
+	}
+	w.Parents = nil
 	if w.Definition.Diagram != nil {
 		if w.Kind != KindERD {
 			return MutationResult{}, fmt.Errorf("structured diagram source is supported only for ERDs")
@@ -133,7 +143,14 @@ func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w Technica
 		}
 	}
 	result := MutationResult{URN: urn, Path: TechnicalPath(w.Kind, w.ID)}
+	result.ContentDigest, err = currentrecord.Digest(v)
+	if err != nil {
+		return MutationResult{}, err
+	}
 	err = store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		if err := currentrecord.Normalize(root); err != nil {
+			return err
+		}
 		d, err := LoadInventory(root, sagaID)
 		if err != nil {
 			return err
@@ -142,15 +159,14 @@ func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w Technica
 			return err
 		}
 		found := d.Find(urn)
-		if found != nil {
-			if old := found.Revision(urn + ":revision:" + w.RevisionID); old != nil {
-				v.CreatedAt = old.CreatedAt
-				if reflect.DeepEqual(*old, v) && (w.Create == (len(old.Parents) == 0)) {
-					result.Replayed = true
-					result.CurrentHeads = found.RevisionHeads
-					return nil
-				}
-				return fmt.Errorf("revision %s already exists with different content", w.RevisionID)
+		if found != nil && found.CurrentRevision != nil {
+			previous, err := found.CurrentContentDigest()
+			if err != nil {
+				return err
+			}
+			if previous == result.ContentDigest && (!w.Create || (found.CurrentLifecycle != nil && found.CurrentLifecycle.State == "active" && found.CurrentLifecycle.Reason == "")) {
+				result.Replayed = true
+				return nil
 			}
 		}
 		if w.Create {
@@ -167,14 +183,25 @@ func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w Technica
 			if found == nil {
 				return fmt.Errorf("%s does not exist", urn)
 			}
-			if !sameSet(w.Parents, found.RevisionHeads) {
-				return fmt.Errorf("parents must name every current revision head: %v", found.RevisionHeads)
-			}
 			if len(found.Revisions) >= MaxRevisionsPerStory {
 				return fmt.Errorf("revision limit reached")
 			}
 		}
-		// The candidate must resolve in its record's history (baseline ancestry).
+		// A baseline is a domain assertion about implemented content of this
+		// stable record. Resolve its exact content/Git pin before publishing;
+		// current records have no parent graph to establish that fact.
+		if v.Baseline != "" && v.Baseline != BaselineNone {
+			if found == nil {
+				return fmt.Errorf("an initial proposal cannot name an existing implemented baseline")
+			}
+			baseline := found.Revision(v.Baseline)
+			if baseline == nil || baseline.EffectiveIntent() != IntentImplemented {
+				return fmt.Errorf("baseline must pin implemented content of the same record")
+			}
+		}
+		// The current candidate retains domain validation; legacy graph
+		// validation remains in the compatibility reader.
+
 		candidate := TechnicalRecord{Kind: w.Kind, Target: urn, Identity: RecordIdentity{ID: w.ID}}
 		if found != nil {
 			candidate = *found
@@ -186,7 +213,7 @@ func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w Technica
 		if err := resolveTechnical(&candidate, sagaID); err != nil {
 			return err
 		}
-		self := DocumentationLink{Target: urn, Revision: urn + ":revision:" + w.RevisionID}
+		self := DocumentationLink{Target: urn, Revision: technicalPin(urn, w.RevisionID)}
 		if err := admitDefinitionPins(&d, found, self, v); err != nil {
 			return err
 		}
@@ -210,7 +237,7 @@ func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w Technica
 			if err != nil {
 				return err
 			}
-			if err := store.WriteJSON(filepath.Join(path, "revisions", w.RevisionID+".json"), v, true); err != nil {
+			if err := currentrecord.WriteMember(filepath.Join(path, "revisions", w.RevisionID+".json"), v); err != nil {
 				if created != "" {
 					_ = os.Remove(created)
 				}
@@ -221,7 +248,7 @@ func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w Technica
 		result.CurrentHeads = result.Created
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }
 
 // formatAdmits enforces deliberate adoption. After adoption every new
@@ -389,11 +416,6 @@ func createTechnicalPackage(root, final, kind string, identity RecordIdentity, r
 		if err := store.WriteJSON(filepath.Join(stage, kind+".json"), identity, true); err != nil {
 			return err
 		}
-		for _, dir := range []string{"revisions", "events"} {
-			if err := ensureStageDir(filepath.Join(stage, dir)); err != nil {
-				return err
-			}
-		}
 		if revision.Visual != nil {
 			if err := ensureStageDir(filepath.Join(stage, "assets")); err != nil {
 				return err
@@ -402,10 +424,7 @@ func createTechnicalPackage(root, final, kind string, identity RecordIdentity, r
 				return err
 			}
 		}
-		if err := store.WriteJSON(filepath.Join(stage, "revisions", revision.ID+".json"), revision, true); err != nil {
-			return err
-		}
-		return store.WriteJSON(filepath.Join(stage, "events", event.ID+".json"), event, true)
+		return currentrecord.Write(stage, revision, event)
 	})
 }
 
@@ -438,6 +457,10 @@ func writeVisualAsset(root, packageDir string, visual *Visual, data []byte) (str
 }
 
 func SetTechnicalState(root, sagaID, kind, id, eventID, state, reason string, parents []string) (MutationResult, error) {
+	if eventID == "" {
+		eventID = "edit"
+	}
+	parents = nil
 	urn, err := TechnicalURN(sagaID, kind, id)
 	if err != nil {
 		return MutationResult{}, err
@@ -448,6 +471,9 @@ func SetTechnicalState(root, sagaID, kind, id, eventID, state, reason string, pa
 	}
 	result := MutationResult{URN: urn, Path: TechnicalPath(kind, id)}
 	err = store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		if err := currentrecord.Normalize(root); err != nil {
+			return err
+		}
 		d, err := LoadInventory(root, sagaID)
 		if err != nil {
 			return err
@@ -456,32 +482,22 @@ func SetTechnicalState(root, sagaID, kind, id, eventID, state, reason string, pa
 		if found == nil {
 			return fmt.Errorf("%s does not exist", urn)
 		}
-		for _, old := range found.Events {
-			if old.ID == eventID {
-				v.CreatedAt = old.CreatedAt
-				if reflect.DeepEqual(old, v) {
-					result.Replayed = true
-					result.CurrentHeads = found.LifecycleHeads
-					return nil
-				}
-				return fmt.Errorf("event already exists with different content")
-			}
+		if found.CurrentLifecycle == nil || found.CurrentRevision == nil {
+			return fmt.Errorf("technical current content and state are unavailable")
 		}
-		if !sameSet(parents, found.LifecycleHeads) {
-			return fmt.Errorf("parents must name every current lifecycle head: %v", found.LifecycleHeads)
+		if currentrecord.Equal(*found.CurrentLifecycle, v) {
+			result.Replayed = true
+			return nil
 		}
-		if found.CurrentLifecycle != nil && found.CurrentLifecycle.State == state {
-			return fmt.Errorf("lifecycle state is already %s", state)
+		if found.CurrentLifecycle.State != state && strings.TrimSpace(reason) == "" {
+			return fmt.Errorf("lifecycle change requires a reason")
 		}
-		if len(found.Events) >= MaxRevisionsPerStory {
-			return fmt.Errorf("lifecycle limit reached")
-		}
-		if err := store.WriteJSON(filepath.Join(root, filepath.FromSlash(result.Path), "events", eventID+".json"), v, true); err != nil {
+		if err := currentrecord.Write(filepath.Join(root, filepath.FromSlash(result.Path)), *found.CurrentRevision, v); err != nil {
 			return err
 		}
-		result.Created = []string{urn + ":event:" + eventID}
-		result.CurrentHeads = result.Created
+		result.Path += "/" + currentrecord.Name
+		result.Paths = []string{result.Path}
 		return nil
 	})
-	return result, err
+	return currentMutationResult(result), err
 }

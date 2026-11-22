@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "app Saga",
+      "Change Saga"
+    ],
+    "code": [
+      {
+        "commit": "be5c4bcc28b3313ed11658ac9be7109ed52b0078",
+        "digest": "sha256:5a70d93e22fc371247064a2658bf04f92889b5c4f8717a1d239b36d6be1d5948",
+        "end": 401,
+        "path": "internal/saga/model.go",
+        "start": 374
+      },
+      {
+        "commit": "d16a47f1c2b157832203072d59833b4408792e7a",
+        "digest": "sha256:2584337f20381808af2a8c836dbd7b23c9e550b6ca1ed5bbb5794c0e3bd8cdb7",
+        "end": 19,
+        "path": "internal/saga/model.go",
+        "start": 15
+      }
+    ],
+    "definition": "The versioned, Git-native documentation for one application: its Essays, product intent, design, Quality definitions, implementation evidence and pull-request reviews. Independently authored records compose into a traceable view; the source comparison is selected when the Saga is opened.",
+    "definition_maturity": "unknown",
+    "implementation_evidence": "unknown",
+    "name": "Saga",
+    "stories": [
+      "urn:change-saga:change-saga:story:independent-product-knowledge",
+      "urn:change-saga:change-saga:story:product-intent-path"
+    ],
+    "term": "urn:change-saga:change-saga:term:saga"
+  },
+  "state": {
+    "state": "active",
+    "term": "urn:change-saga:change-saga:term:saga"
+  }
+}

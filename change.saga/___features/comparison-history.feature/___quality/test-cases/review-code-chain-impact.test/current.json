@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "pay is reached through queue-design and shopper through pay, separately from edited records.",
+    "preconditions": [
+      "Use shop Saga where queue-design references src/queue.go and addresses pay, which names shopper."
+    ],
+    "steps": [
+      {
+        "action": "Change and commit only queue.go to add retry; compare against main.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:change-impact-layers:criterion:affected-records"
+        ],
+        "expected_result": "Changed is empty; queue-design is Affected because of code.",
+        "id": "code"
+      },
+      {
+        "action": "Inspect pay and shopper in Affected.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:change-impact-layers:criterion:affected-records"
+        ],
+        "expected_result": "pay is reached through queue-design and shopper through pay, separately from edited records.",
+        "id": "chain"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-code-chain-impact",
+    "title": "Propagate code impact without claiming Saga records were edited"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-code-chain-impact"
+  }
+}

@@ -16,6 +16,16 @@ commercial support, no hosted service, and no paid tier — just this repository
 
 ## Common questions
 
+**Plans work in one shell or build but fail in another.** Run `type -a
+change-saga`, `change-saga version`, and `change-saga query schema plans` in
+the failing environment. v0.7.0 authors phased Plans; v0.8.0 adds Plan queries.
+Neither reads the normalized current-record Saga layouts introduced later.
+Checkpoint fields are another separate capability: this build integrates them,
+while `ce8d796d` and the released readers reject them. Preserve unknown
+fields and capture the exact command/error. This branch's `doctor --json PATH`
+reports the executable and capabilities and validates the whole Saga without
+writing. See [Plan compatibility and pinned-build guidance](docs/plan-cli-compatibility.md).
+
 **`status` exits 3 and I think it's wrong.** Exit 3 means "coverage incomplete",
 not "error". Run `change-saga status --json` to see every unaccounted diff atom
 by path, side, and line. If an atom you have already covered still shows up,
@@ -41,6 +51,9 @@ portable absolute repository URI. Without a usable `origin`, pass
 
 Open a **GitHub issue** using the *Question* template. Include your
 `change-saga version`, your OS, the exact command you ran, and its output.
+For build/Plan compatibility, also include executable resolution and the schema
+probe above. Review diagnostic output for private paths and authored content
+before sharing it.
 
 For bugs, use the *Bug report* template — a reproduction beats a description
 every time. For format or workflow proposals, use *Idea or proposal*; changes to
@@ -59,3 +72,11 @@ Maintainers read everything, but this is not anyone's day job. Expect days, not
 hours. Issues that include a reproduction are answered soonest, and a pull
 request with a failing test attached is the fastest path of all — see
 [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Proposed operational support access
+
+The [support-access proposal](docs/support-access-proposal.md) separates scoped
+operational log/metric reads, separately granted deployment triggers, and
+approved temporary customer-data elevation. CloudWatch Logs reads include log
+contents. The proposal is not an existing access guarantee or permission grant;
+approval, grant/revoke ownership, exact scope and audit coverage remain open.

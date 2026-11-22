@@ -11,6 +11,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/gitexec"
+	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -36,17 +37,17 @@ func technicalOperation(ctx context.Context, kind string, args []string, out io.
 	name := kind + " " + op
 	flags := commandFlags(name, technicalUsage(kind, op), out)
 	id := flags.String("id", "", "stable record ID (never a display name)")
-	revision := flags.String("revision", "r1", "immutable revision ID")
+	revision := new(string)
 	from := flags.String("from", "", "complete definition JSON; code commits may name HEAD and digests may be omitted")
 	repo := flags.String("repo", "", "source checkout")
 	delivery := flags.String("delivery", "", "delivery commit for an implemented revision (resolved once to a full OID)")
 	visual := flags.String("visual", "", "offline SVG for an ERD or overlay revision")
-	event := flags.String("event", "", "new lifecycle event ID")
+	event := new(string)
 	state := flags.String("state", "", "active or retired")
 	reason := flags.String("reason", "", "reason for lifecycle change")
 	jsonOutput := flags.Bool("json", false, "machine-readable mutation result")
 	var parents stringList
-	flags.Var(&parents, "parent", "observed revision or lifecycle head URN; repeat for reconciliation")
+
 	if err := flags.Parse(normalizeLivingArgs(args[1:])); err != nil {
 		return err
 	}
@@ -257,14 +258,10 @@ func inventoryOperation(args []string, out io.Writer) error {
 }
 
 func technicalUsage(kind, op string) string {
-	usage := "change-saga " + kind + " " + op + " --id ID [--from FILE|- --revision ID | --event ID --state STATE --reason TEXT] [--parent URN]"
-	switch kind {
-	case requirements.KindERD, requirements.KindERDOverlay:
-		usage += " [--visual SVG]"
-	default:
-		usage += " [--delivery REV]"
+	if command, ok := grammar.Lookup(kind + " " + op); ok {
+		return command.Usage
 	}
-	return usage + " [--repo PATH] [--json] <saga>"
+	return "change-saga " + kind + " " + op + " <saga>"
 }
 
 func decodeStrictInventory(data []byte, value any) error {
@@ -298,7 +295,7 @@ func appendInventoryIssues(root string, document *saga.Saga, validation *saga.Va
 		for _, rev := range r.Revisions {
 			for _, pin := range rev.Components {
 				if d.LinkStatus(pin) == "missing" {
-					report(r.Target+":revision:"+rev.ID, pin)
+					report(requirements.ContentPin(r.Target, rev.ID), pin)
 				}
 			}
 		}

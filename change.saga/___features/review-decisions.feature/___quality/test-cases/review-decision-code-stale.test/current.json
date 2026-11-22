@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "queue decision is out_of_date with a reason naming queue.go lines 3-3.",
+    "preconditions": [
+      "Approve queue whose Item references queue.go line 3, then commit the decision."
+    ],
+    "steps": [
+      {
+        "action": "Change queue.go line 3, commit, and read the report.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision-freshness:criterion:out-of-date"
+        ],
+        "expected_result": "queue decision is out_of_date with a reason naming queue.go lines 3-3.",
+        "id": "change-code"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-code-stale",
+    "title": "Name the exact changed code that invalidates a decision"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-code-stale"
+  }
+}

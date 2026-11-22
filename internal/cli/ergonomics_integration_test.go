@@ -32,7 +32,7 @@ func TestQuerySlidePreservesAuthoringContract(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &envelope); err != nil {
 		t.Fatal(err)
 	}
-	if !envelope.OK || envelope.Data.AuthoringSnapshot != created.Snapshot || len(envelope.Data.AuthoringHeads) != 1 || envelope.Data.AuthoringConflict {
+	if !envelope.OK || envelope.Data.AuthoringSnapshot != created.Snapshot || len(envelope.Data.AuthoringHeads) != 0 || envelope.Data.AuthoringConflict {
 		t.Fatalf("CLI dropped authoring state: %s", output.String())
 	}
 	if len(envelope.Data.Items) != 1 || len(envelope.Data.Items[0].Evidence) != 1 || len(envelope.Data.Items[0].CriterionLinks) != 1 {
@@ -92,7 +92,7 @@ func TestConsolidationRefusesRealSlideTransactionLinks(t *testing.T) {
 	request.RequestID = "repoint-linked-slide"
 	request.ExpectedSnapshot = created.Snapshot
 	request.Items[0].CriterionLinks[0].Criterion = canonical + ":criterion:returns"
-	request.Items[0].CriterionLinks[0].StoryRevision = canonical + ":revision:r1"
+	request.Items[0].CriterionLinks[0].StoryRevision = currentTestPin(t, root, canonical)
 	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false); err != nil {
 		t.Fatal(err)
 	}

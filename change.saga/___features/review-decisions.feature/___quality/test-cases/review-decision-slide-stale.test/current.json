@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Its decision is out_of_date with a reason that the slide changed.",
+    "preconditions": [
+      "Have a decision on table with unchanged referenced source code."
+    ],
+    "steps": [
+      {
+        "action": "Replace table visual with revised wording and read the report.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision-freshness:criterion:out-of-date"
+        ],
+        "expected_result": "Its decision is out_of_date with a reason that the slide changed.",
+        "id": "change-slide"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-slide-stale",
+    "title": "Name a changed slide that invalidates a decision"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-decision-slide-stale"
+  }
+}

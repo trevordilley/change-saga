@@ -59,8 +59,8 @@ type FeatureContextStory struct {
 	Title             string                    `json:"title,omitempty"`
 	State             string                    `json:"state"`
 	Criteria          []FeatureContextCriterion `json:"criteria"`
-	RevisionHeads     []string                  `json:"revision_heads"`
-	LifecycleHeads    []string                  `json:"lifecycle_heads"`
+	RevisionHeads     []string                  `json:"-"`
+	LifecycleHeads    []string                  `json:"-"`
 	RevisionConflict  bool                      `json:"revision_conflict"`
 	LifecycleConflict bool                      `json:"lifecycle_conflict"`
 }
@@ -90,8 +90,8 @@ type FeatureContextTerm struct {
 	State                  string                              `json:"state"`
 	DefinitionMaturity     requirements.DefinitionMaturity     `json:"definition_maturity"`
 	ImplementationEvidence requirements.ImplementationEvidence `json:"implementation_evidence"`
-	RevisionHeads          []string                            `json:"revision_heads"`
-	LifecycleHeads         []string                            `json:"lifecycle_heads"`
+	RevisionHeads          []string                            `json:"-"`
+	LifecycleHeads         []string                            `json:"-"`
 	RevisionConflict       bool                                `json:"revision_conflict"`
 	LifecycleConflict      bool                                `json:"lifecycle_conflict"`
 	Aliases                []string                            `json:"aliases,omitempty"`
@@ -568,7 +568,7 @@ func (s *session) storyByID(id string) *requirements.Story {
 func (s *session) projectRequirement(story *requirements.Story) Requirement {
 	urn, _ := livingid.Story(s.requirements.SagaID, story.Identity.ID)
 	return Requirement{
-		Requirement: urn, ID: story.Identity.ID, Feature: story.Feature, CreatedAt: story.Identity.CreatedAt,
+		ContentDigest: s.currentContentPin(urn, story.CurrentRevision), Requirement: urn, ID: story.Identity.ID, Feature: story.Feature, CreatedAt: story.Identity.CreatedAt,
 		RevisionHeads: copyStrings(story.RevisionHeads), LifecycleHeads: copyStrings(story.LifecycleHeads),
 		CurrentRevision: story.CurrentRevision, CurrentLifecycle: story.CurrentLifecycle,
 		RevisionConflict: story.RevisionConflict(), LifecycleConflict: story.LifecycleConflict(),

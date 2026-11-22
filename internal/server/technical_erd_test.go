@@ -42,12 +42,13 @@ func dataModelFixture(t *testing.T) (root, repo string, pins map[string]saga.Doc
 	}
 	write := func(w requirements.TechnicalWrite) saga.DocumentationLink {
 		t.Helper()
+		commitServerDocumentation(t, root)
 		w.Repository, w.Resolver = manifest.Source.Repository, resolver
 		result, err := requirements.WriteTechnicalRevision(ctx, root, manifest.ID, w)
 		if err != nil {
 			t.Fatalf("%s %s: %v", w.Kind, w.ID, err)
 		}
-		return saga.DocumentationLink{Target: result.URN, Revision: result.Created[0]}
+		return saga.DocumentationLink{Target: result.URN, Revision: result.ContentDigest}
 	}
 	job, _ := requirements.LoadInventory(root, manifest.ID)
 	previous := job.Pinned(pins["job"])
@@ -132,7 +133,7 @@ func TestTechnicalDataEntityPageShowsStructureResourceAndRelationships(t *testin
 	for _, want := range []string{
 		"<h1>PDF report</h1>", `data-documentation-intent="implemented"`, "Asserted at delivery commit",
 		"<code>JobID</code>", "foreign", "Not an enforced constraint.", "Author-selected fields; this is not an exhaustive schema.",
-		"Held by", `href="/technical/component/record-store?revision=r3"`, "persists report rows",
+		"Held by", `href="` + technicalPinHref(pins["store-r3"]) + `"`, "persists report rows",
 		// Its own production edge, and the job's association derived as incoming.
 		`data-relationship="produced-from-job"`, `data-relationship="for-report"`,
 		`href="/technical/erd/application"`, "The persisted report row type.",
@@ -142,21 +143,21 @@ func TestTechnicalDataEntityPageShowsStructureResourceAndRelationships(t *testin
 		}
 	}
 	status, body = technicalGet(t, mux, "/technical/data-entity/pdf-job")
-	for _, want := range []string{`data-documentation-intent="proposed"`, "A wholly new proposal: no implemented baseline.", "No code yet. A proposal remains visible and usable before implementation.", `data-technical-revision="r2"`} {
+	for _, want := range []string{`data-documentation-intent="proposed"`, "A wholly new proposal: no implemented baseline.", "No code yet. A proposal remains visible and usable before implementation.", `data-technical-revision="` + pins["job-r2"].Revision + `"`} {
 		if status != 200 || !strings.Contains(body, want) {
 			t.Fatalf("code-free proposal lost %q: %d", want, status)
 		}
 	}
 	// The proposed successor of an implemented Component names its baseline.
-	status, body = technicalGet(t, mux, "/technical/component/record-store?revision=r2")
-	for _, want := range []string{`data-documentation-intent="proposed"`, `Proposed successor of the implemented baseline <a href="/technical/component/record-store?revision=r1"><code>r1</code></a>`, `data-technical-pin-status="stale"`} {
+	status, body = technicalGet(t, mux, technicalPinHref(pins["store-r2"]))
+	for _, want := range []string{`data-documentation-intent="proposed"`, `Proposed successor of the implemented baseline <a href="` + technicalPinHref(pins["store-r1"]) + `">`, `data-technical-pin-status="stale"`} {
 		if status != 200 || !strings.Contains(body, want) {
 			t.Fatalf("proposed successor lost %q: %d", want, status)
 		}
 	}
 	// The drawer reads the same definition for an Item pin.
-	status, body = technicalGet(t, mux, "/api/documentation?target="+pins["job"].Target+"&revision="+pins["job"].Revision)
-	if status != 200 || !strings.Contains(body, `data-documentation-intent="proposed"`) || !strings.Contains(body, "carries the job until a worker consumes it") || !strings.Contains(body, `href="/technical/data-entity/pdf-job?revision=r1"`) || !strings.Contains(body, `data-documentation-status="stale"`) {
+	status, body = technicalGet(t, mux, "/api/documentation?target="+pins["job"].Target+"&content_digest="+pins["job"].Revision)
+	if status != 200 || !strings.Contains(body, `data-documentation-intent="proposed"`) || !strings.Contains(body, "carries the job until a worker consumes it") || !strings.Contains(body, `href="`+technicalPinHref(pins["job"])+`"`) || !strings.Contains(body, `data-documentation-status="stale"`) {
 		t.Fatalf("drawer: %d %s", status, body)
 	}
 }
@@ -179,7 +180,7 @@ func TestTechnicalOverlayComposesWithoutRewritingBaseline(t *testing.T) {
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/erd-overlay/pdf-jobs")
 	for _, want := range []string{
-		"The baseline ERD is not rewritten", `href="/technical/erd/application?revision=r1"`,
+		"The baseline ERD is not rewritten", `href="` + technicalPinHref(pins["erd"]) + `"`,
 		`<g id="` + (&erdView{Target: "urn:change-saga:test:erd-overlay:pdf-jobs"}).elementPrefix() + `job">`, `data-overlay-change="adds"`, "added by this overlay",
 		`data-erd-row-pin="` + pins["job"].Revision + `"`, `data-erd-relationship="produced-from-job"`,
 		"2 of 2 directory entities are drawn.",
@@ -282,12 +283,12 @@ func TestWriteTechnicalPreviewFixture(t *testing.T) {
 
 func TestTechnicalUsagesIncludeDeclaredOwners(t *testing.T) {
 	t.Parallel()
-	root, repo, _ := dataModelFixture(t)
+	root, repo, pins := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/component/record-store")
 	for _, want := range []string{
-		`data-usage-role="system_member"`, `member of</small> <a href="/technical/system/pdf-pipeline?revision=r1">PDF pipeline</a>`,
-		`data-usage-role="data_holder"`, `holds data for</small> <a href="/technical/data-entity/pdf-report?revision=r1">PDF report</a>`, "persists report rows",
+		`data-usage-role="system_member"`, `member of</small> <a href="` + technicalPinHref(pins["pipeline"]) + `">PDF pipeline</a>`,
+		`data-usage-role="data_holder"`, `holds data for</small> <a href="` + technicalPinHref(pins["report"]) + `">PDF report</a>`, "persists report rows",
 	} {
 		if status != 200 || !strings.Contains(body, want) {
 			t.Fatalf("owner uses lost %q: %d", want, status)
@@ -323,8 +324,8 @@ func TestMultipleERDDocumentsAndSharedOverview(t *testing.T) {
 		}
 	}
 	for _, id := range []string{"sqlite", "postgres", "cross-store"} {
-		status, body = technicalGet(t, mux, "/technical/erd/"+id+"?revision=r1")
-		if status != 200 || !strings.Contains(body, `data-erd-revision="r1"`) || !strings.Contains(body, `data-erd-view="`+pins[id].Target+`"`) {
+		status, body = technicalGet(t, mux, technicalPinHref(pins[id]))
+		if status != 200 || !strings.Contains(body, `data-erd-revision="sha256-`+strings.TrimPrefix(pins[id].Revision, "sha256:")+`"`) || !strings.Contains(body, `data-erd-view="`+pins[id].Target+`"`) {
 			t.Fatalf("document %s (%d)", id, status)
 		}
 	}

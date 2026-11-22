@@ -1,13 +1,13 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "comparison-evidence-explains-coverage-states",
-  "type": "explains",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "created_at": "2026-09-23T16:39:40.566954Z",
   "from": "urn:change-saga:change-saga:slide:comparison-architecture:item:evidence",
-  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
-  "scope": "self",
+  "id": "comparison-evidence-explains-coverage-states",
   "rationale": "The evidence projection separates owners, stale selectors, overlaps, and uncovered atoms.",
-  "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+  "scope": "self",
   "state": "active",
-  "created_at": "2026-09-23T16:39:40.566954Z"
+  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+  "to_revision": "sha256:179fa5f4d6d90aeadda300d9b2f8df5fcb4b654d840a3744449588f9a6088371",
+  "type": "explains",
+  "version": 5
 }

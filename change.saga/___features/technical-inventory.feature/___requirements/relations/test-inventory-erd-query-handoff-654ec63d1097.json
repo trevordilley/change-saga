@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-inventory-erd-query-handoff-654ec63d1097",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:inventory-erd-query-handoff",
-  "to": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
-  "scope": "self",
-  "rationale": "Steps scope define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:inventory-erd-query-handoff:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:20:05.626804Z",
-  "request_id": "test-inventory-erd-query-handoff-654ec63d1097"
+  "from": "urn:change-saga:change-saga:test-case:inventory-erd-query-handoff",
+  "from_revision": "sha256:1209e3ec26fd43081d22bdeab37a1200abad39057e270404e7b468c8d8d39378",
+  "id": "test-inventory-erd-query-handoff-654ec63d1097",
+  "rationale": "Steps scope define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-inventory-erd-query-handoff-654ec63d1097",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+  "to_revision": "sha256:4143a2f5553c33ee576fa3f6c476a0fcfa6a0a4189ea7fc12ee826f228b39114",
+  "type": "verifies",
+  "version": 5
 }

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "separate-states",
+        "statement": "Coverage separately reports covered, uncovered, overlapping, and stale evidence."
+      },
+      {
+        "id": "no-verdict",
+        "statement": "Coverage reports facts without declaring the change approved."
+      }
+    ],
+    "citations": [],
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a developer preparing a change for review, I can see every changed line that lacks an explanation so I know whether the review documentation accounts for the change.",
+    "story": "urn:change-saga:change-saga:story:changed-code-explained",
+    "title": "Know whether changed code is explained"
+  },
+  "state": {
+    "reason": "Confirmed after the initial implementation investigation.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:changed-code-explained"
+  }
+}

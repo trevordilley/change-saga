@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "aliases": [
+      "story event"
+    ],
+    "code": [
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:906c7ef75ec9080105e553a23f0ab7d8b3b54b814a2086e341410f6dab027fdc",
+        "end": 90,
+        "path": "internal/requirements/model.go",
+        "start": 71
+      },
+      {
+        "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+        "digest": "sha256:a9d772fa858987a156924e608a460a115c3ca63e0c689bfa78495f5fa46a1d7c",
+        "end": 432,
+        "path": "internal/requirements/validate.go",
+        "start": 416
+      }
+    ],
+    "definition": "An earlier record in a separate Saga product-state parent graph. New documentation stores current state and reason together with current content; Git retains prior values. Actual review decisions and evidence remain distinct domain facts.",
+    "name": "Legacy Saga lifecycle event",
+    "stories": [
+      "urn:change-saga:change-saga:story:product-intent-lifecycle",
+      "urn:change-saga:change-saga:story:auditable-requirement-history"
+    ],
+    "term": "urn:change-saga:change-saga:term:lifecycle-event"
+  },
+  "state": {
+    "state": "retired",
+    "term": "urn:change-saga:change-saga:term:lifecycle-event",
+    "reason": "Git-owned current documentation supersedes internal Saga revision and lifecycle graphs; retain this stable term and its original evidence for legacy context."
+  }
+}

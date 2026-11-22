@@ -1,0 +1,52 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Add a Task with no story and no path to one, and one naming a missing story.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:link-tasks-to-stories:criterion:story-required"
+        ],
+        "expected_result": "Both are refused; a Task unblocking one with a story is accepted.",
+        "id": "story-required"
+      },
+      {
+        "action": "Open a Plan's Tasks view.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:link-tasks-to-stories:criterion:plan-stories-from-tasks"
+        ],
+        "expected_result": "Its stories are listed under their feature.",
+        "id": "plan-stories-from-tasks"
+      },
+      {
+        "action": "Open a Task with no story of its own, and one that has a story.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:link-tasks-to-stories:criterion:follow-the-chain"
+        ],
+        "expected_result": "Each step links onward to the story and its feature.",
+        "id": "follow-the-chain"
+      },
+      {
+        "action": "Remove a dependency, a story, or a Task that another Task needs.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:link-tasks-to-stories:criterion:stranding-refused"
+        ],
+        "expected_result": "Each is refused, naming the Task it would strand, and nothing is written.",
+        "id": "stranding-refused"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories",
+    "title": "Every Task reaches a story"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-link-tasks-to-stories"
+  }
+}

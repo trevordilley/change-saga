@@ -18,7 +18,7 @@ func WhiteboardElementTarget(sagaID, boardID, elementID string) string {
 // WhiteboardItem projects only semantic metadata. Geometry and drawing kinds stay
 // in the diagram; this is not a synthetic slide or a second persisted Item.
 func WhiteboardItem(sagaID, boardID string, revision WhiteboardRevision, e diagram.Element) *saga.Item {
-	path := filepath.ToSlash(filepath.Join(WhiteboardDir, boardID, "revisions", revision.ID+".json"))
+	path := filepath.ToSlash(filepath.Join(WhiteboardDir, boardID, "current.json"))
 	return &saga.Item{ItemManifest: saga.ItemManifest{ID: e.ID, Label: diagram.AccessibleName(e), Description: e.Description, Record: e.Record, Documentation: e.Documentation, DocumentationView: e.DocumentationView, Selections: e.Selections}, Target: WhiteboardElementTarget(sagaID, boardID, e.ID), Path: path,
 		Code: []saga.CodeFile{{Path: path + "#element=" + e.ID, References: e.Evidence}}, CriterionLinks: e.CriterionLinks, HasCode: len(e.Evidence) > 0}
 }
@@ -190,7 +190,7 @@ func validateWhiteboardItemPins(root, sagaID, boardID string, doc diagram.Docume
 			found := false
 			if story != nil {
 				for _, revision := range story.Revisions {
-					if link.StoryRevision == "urn:change-saga:"+sagaID+":story:"+story.Identity.ID+":revision:"+revision.ID {
+					if link.StoryRevision == mustStoryPin(sagaID, story.Identity.ID, revision.ID) {
 						for _, criterion := range revision.AcceptanceCriteria {
 							if criterion.ID == parts[6] {
 								found = true
@@ -205,4 +205,9 @@ func validateWhiteboardItemPins(root, sagaID, boardID string, doc diagram.Docume
 		}
 	}
 	return nil
+}
+
+func mustStoryPin(sagaID, id, revision string) string {
+	pin, _ := revisionURN(sagaID, id, revision)
+	return pin
 }

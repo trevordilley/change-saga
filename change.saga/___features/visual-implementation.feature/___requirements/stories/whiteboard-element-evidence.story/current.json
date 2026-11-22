@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "inspect",
+        "statement": "An element can carry exact code evidence, criterion and record links, saved documentation definitions and explicit inventory code selections; its separate reader actions open the corresponding saved content through the shared drawer or record page."
+      },
+      {
+        "id": "currency",
+        "statement": "Changed code leaves the element stale in the reader, references, status and health until an author reassesses and edits its current explanation and pins; Git preserves previously committed evidence."
+      },
+      {
+        "id": "coverage",
+        "statement": "References and documented-code coverage attribute direct evidence and eligible explicit inventory selections from the current active board content to its stable element owner; historical Git content, unselected code and bare definition links do not add inherited coverage."
+      }
+    ],
+    "citations": [
+      "urn:change-saga:change-saga:citation:whiteboard-evidence-decision-20261102"
+    ],
+    "overview": "Whiteboard elements carry the semantic evidence and links that slide Items carry: pinned code, criterion and record links, exact technical-definition pins, and explicit inventory code selections. The element supplies its own geometry and reading context.\n\nChanged code is a reason to reassess the design. Current documentation reports that debt; an author reads the changed code and edits the current complete document. Earlier committed content remains inspectable through Git at its original pins. A bare definition link does not acquire its code ownership, and a review deck retains independent changed-line coverage.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:architect"
+    ],
+    "statement": "As an architect, I can inspect a whiteboard element's exact code and related intent, and see when it needs reassessment, so the design remains trustworthy as the implementation changes.",
+    "story": "urn:change-saga:change-saga:story:whiteboard-element-evidence",
+    "title": "Inspect and reassess whiteboard evidence"
+  },
+  "state": {
+    "reason": "Trevor explicitly requested Item-equivalent whiteboard evidence and mandatory stale-reference reassessment, then requested accepted product records for this completed capability. Acceptance records this confirmed intent; verification definitions and code evidence describe how it is checked.",
+    "state": "accepted",
+    "story": "urn:change-saga:change-saga:story:whiteboard-element-evidence"
+  }
+}

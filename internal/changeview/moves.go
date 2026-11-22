@@ -3,6 +3,8 @@ package changeview
 import (
 	"context"
 	"path"
+	"sort"
+	"strings"
 
 	"github.com/twentyideas/changesaga/internal/sagalineage"
 )
@@ -26,7 +28,11 @@ func recordCommits(ctx context.Context, location Location, files []string) ([]co
 	eras := lineage.Eras(ctx, location.Repo, "HEAD")
 	current := make([]string, 0, len(files))
 	for _, file := range files {
-		current = append(current, path.Join(location.Path, file))
+		joined := path.Join(location.Path, file)
+		if strings.HasSuffix(file, "/") {
+			joined += "/"
+		}
+		current = append(current, joined)
 	}
 	chunks := [][]commitInfo{}
 	for index, era := range eras {
@@ -42,7 +48,7 @@ func recordCommits(ctx context.Context, location Location, files []string) ([]co
 		carried := sagalineage.CarriedBy(ctx, location.Repo, move)
 		older, changed := []string{}, []string{}
 		for _, file := range current {
-			before, exact, ok := carried.Moved(move, file)
+			before, exact, ok := movedRecordPath(carried, move, file)
 			if !exact {
 				changed = append(changed, file)
 			}
@@ -67,4 +73,58 @@ func recordCommits(ctx context.Context, location Location, files []string) ([]co
 		result = append(result, chunks[index]...)
 	}
 	return result, nil
+}
+
+// A current record replaces files that existed only in older Git trees. Query
+// its whole package so deleting revisions during normalization does not erase
+// those commits from the history view. Ordinary single-file records stay exact.
+func recordHistoryFiles(files []string) []string {
+	paths := map[string]bool{}
+	for _, file := range files {
+		parts := strings.Split(file, "/")
+		if len(parts) >= 3 && parts[0] == "___whiteboards" {
+			file = strings.Join(parts[:2], "/") + "/"
+		}
+		for i, part := range parts[:len(parts)-1] {
+			switch path.Ext(part) {
+			case ".story", ".persona", ".term", ".flag", ".deprecation", ".component", ".system", ".data-entity", ".erd", ".erd-overlay", ".prototype", ".test":
+				file = strings.Join(parts[:i+1], "/") + "/"
+			}
+			if strings.HasSuffix(file, "/") {
+				break
+			}
+		}
+		paths[file] = true
+	}
+	result := make([]string, 0, len(paths))
+	for file := range paths {
+		result = append(result, file)
+	}
+	sort.Strings(result)
+	return result
+}
+
+func movedRecordPath(carried sagalineage.Carried, move sagalineage.Move, file string) (string, bool, bool) {
+	if !strings.HasSuffix(file, "/") {
+		return carried.Moved(move, file)
+	}
+	relative := strings.TrimPrefix(file, strings.TrimSuffix(move.To, "/")+"/")
+	if relative == file {
+		return "", false, false
+	}
+	exact, exists := true, false
+	for name, blob := range carried.Before {
+		if strings.HasPrefix(name, relative) {
+			exists = true
+			if carried.After[name] != blob {
+				exact = false
+			}
+		}
+	}
+	for name, blob := range carried.After {
+		if strings.HasPrefix(name, relative) && carried.Before[name] != blob {
+			exact = false
+		}
+	}
+	return path.Join(move.From, relative) + "/", exact, exists
 }

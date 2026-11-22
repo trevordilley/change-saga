@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-core-policy-automation-restriction-0eea60822eef",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:core-policy-automation-restriction",
-  "to": "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:allowed-automation",
-  "scope": "self",
-  "rationale": "Steps check-allowed-automation define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:core-policy-automation-restriction:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-policy:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:19:50.241052Z",
-  "request_id": "test-core-policy-automation-restriction-0eea60822eef"
+  "from": "urn:change-saga:change-saga:test-case:core-policy-automation-restriction",
+  "from_revision": "sha256:5923d473b94fc725dfd2c5dd805e81c3e1e764b36a75bab30c3d2135264f1429",
+  "id": "test-core-policy-automation-restriction-0eea60822eef",
+  "rationale": "Steps check-allowed-automation define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-core-policy-automation-restriction-0eea60822eef",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:allowed-automation",
+  "to_revision": "sha256:8f4baade22e113bd25189d44be52c2401ab50eb6b1b207eb055a43fbb989918e",
+  "type": "verifies",
+  "version": 5
 }

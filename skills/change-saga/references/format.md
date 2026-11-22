@@ -20,7 +20,7 @@ change.saga/
   ___overview/
   ___personas/
   ___designsystem/
-  ___whiteboards/<board-id>/revisions/<revision-id>.json
+  ___whiteboards/<board-id>/current.json
   ___onboarding/
   ___labels/<id>.json       # shared label names; feature plans reference URNs
   ___milestones/<id>.json   # shared milestone names; feature plans reference URNs
@@ -66,12 +66,11 @@ Technical design combines `___overview/technical-design.fragment`, optional
 `technical-design-<page>.fragment` supporting essays, and four whiteboards with
 IDs `data-model`, `infrastructure`, `data-flows`, and `architecture`.
 
-Named technical-design whiteboards use the shared diagram schema and independent
-immutable histories. Their directory placement determines the format; there is
+Named technical-design whiteboards use the shared diagram schema and editable current records whose history is Git. Their directory placement determines the format; there is
 no kind discriminator. Publish and inspect them with the public `whiteboard`
 commands described in [diagrams.md](diagrams.md#named-whiteboards).
 
-For technical definitions, use the [inventory authoring guidance](diagrams.md#reusable-components-and-systems).
+For technical definitions, use the [inventory authoring guidance](diagrams.md#existing-inventory-definitions-components-and-systems).
 
 ## Stable targets
 

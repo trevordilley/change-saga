@@ -1,15 +1,15 @@
 {
-  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
-  "version": 5,
-  "id": "test-review-story-details-current-e66a198488ab",
-  "type": "verifies",
-  "from": "urn:change-saga:change-saga:test-case:review-story-details-current",
-  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details",
-  "scope": "self",
-  "rationale": "Steps drawer, details define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
-  "from_revision": "urn:change-saga:change-saga:test-case:review-story-details-current:revision:r1",
-  "to_revision": "urn:change-saga:change-saga:story:diagram-element-intent:revision:r1",
-  "state": "active",
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
   "created_at": "2026-10-16T23:21:58.089095Z",
-  "request_id": "test-review-story-details-current-e66a198488ab"
+  "from": "urn:change-saga:change-saga:test-case:review-story-details-current",
+  "from_revision": "sha256:2bee3e381725bd785c6048989ba80a3b5f693e4515ad7c8c45f98580edd0c9be",
+  "id": "test-review-story-details-current-e66a198488ab",
+  "rationale": "Steps drawer, details define how this criterion is checked. Implementation links describe only the code they cite; this relation makes no execution claim.",
+  "request_id": "test-review-story-details-current-e66a198488ab",
+  "scope": "self",
+  "state": "active",
+  "to": "urn:change-saga:change-saga:story:diagram-element-intent:criterion:story-details",
+  "to_revision": "sha256:9f72f94edae56e8fbd4f4d20ac9ad8557193dab69ec0cbe0162fb63ab2e7c2e4",
+  "type": "verifies",
+  "version": 5
 }

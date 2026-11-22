@@ -1,25 +1,25 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
-  "version": 5,
+  "citations": [],
+  "code": [
+    {
+      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
+      "digest": "sha256:a006ac0c84a19ef4e11c5384ffa73c12c97676214d99a28ce6c74adfdcb4faea",
+      "end": 47,
+      "path": "internal/cli/check_test.go",
+      "start": 39
+    }
+  ],
+  "created_at": "2026-10-16T23:24:10Z",
   "id": "filtered-text",
-  "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-areas",
-  "test_revision": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-areas:revision:r1",
+  "request_id": "saga-evidence-contracts-selected-coverage-areas-filtered-text",
   "role": "test_implementation",
   "steps": [
     "text"
   ],
-  "code": [
-    {
-      "commit": "cc75d453cd7cd65aa1f675533c07fb34404b1e6c",
-      "path": "internal/cli/check_test.go",
-      "start": 39,
-      "end": 47,
-      "digest": "sha256:a006ac0c84a19ef4e11c5384ffa73c12c97676214d99a28ce6c74adfdcb4faea"
-    }
-  ],
-  "verifications": [],
-  "citations": [],
   "supersedes": [],
-  "created_at": "2026-10-16T23:24:10Z",
-  "request_id": "saga-evidence-contracts-selected-coverage-areas-filtered-text"
+  "test_case": "urn:change-saga:change-saga:test-case:contracts-selected-coverage-areas",
+  "test_revision": "sha256:14d621f5b27b76e038537b01a13f78a9bfea6a6c8bd2f89b570e0b537bc92628",
+  "verifications": [],
+  "version": 5
 }

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Open a slide naming a Task, then its slide-out.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:see-done-on-slides:criterion:slide-lists-tasks"
+        ],
+        "expected_result": "The Task is listed with a link.",
+        "id": "slide-lists-tasks"
+      },
+      {
+        "action": "Read the slide with its Task open and then done.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:see-done-on-slides:criterion:done-shown-on-slide"
+        ],
+        "expected_result": "The slide says how many of its Tasks are done.",
+        "id": "done-shown-on-slide"
+      },
+      {
+        "action": "Mark the Task done without touching the slide, and reload.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:see-done-on-slides:criterion:done-without-republishing"
+        ],
+        "expected_result": "The slide now says 1 of 1 tasks done.",
+        "id": "done-without-republishing"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides",
+    "title": "Slides show their Tasks and progress"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-see-done-on-slides"
+  }
+}

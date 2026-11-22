@@ -26,7 +26,7 @@ func TestQualityQueriesSeparateDefinitionsFromImmutableHistory(t *testing.T) {
 	if strings.Contains(string(data), "run") || !strings.Contains(string(data), `"definition":"implementation_linked"`) || !strings.Contains(string(data), `"current":true`) {
 		t.Fatalf("definition query: %s", data)
 	}
-	history, err := s.Query(context.Background(), Query{Operation: "quality-history", Filters: Filters{TestCase: "happy"}, Limit: 1})
+	history, err := s.Query(context.Background(), Query{Operation: "quality-runs", Filters: Filters{TestCase: "happy"}, Limit: 1})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func TestQualityQueriesSeparateDefinitionsFromImmutableHistory(t *testing.T) {
 	if string(firstJSON) == string(nextJSON) {
 		t.Fatal("cursor repeated case")
 	}
-	if _, err := s.Query(context.Background(), Query{Operation: "quality-history", Limit: 1, Cursor: *page.Page.NextCursor}); err == nil {
+	if _, err := s.Query(context.Background(), Query{Operation: "quality-runs", Limit: 1, Cursor: *page.Page.NextCursor}); err == nil {
 		t.Fatal("history accepted definition cursor")
 	}
 }

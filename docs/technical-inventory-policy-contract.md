@@ -1,5 +1,10 @@
 # Technical inventory: view and implementation policy
 
+> Historical implementation contract or report. Its content revision graphs and
+> parent/head workflows are superseded by [Git-owned history](git-owned-history.md).
+> Exact source evidence, implementation assertions, and saved Git view rules
+> retain their meaning; use current content digests for new authoring.
+
 Status: implementation contract for the first policy slice. These decisions
 resolve the three behavioral gaps found by the
 [cold handoff](technical-inventory-handoff-check.md). They do not claim that
@@ -60,11 +65,11 @@ implemented:
    movement is valid; changed/deleted bytes or unavailable source refuse the
    transition. Old code that still resolves currently at delivery is valid;
    code need not have been introduced by this change.
-4. If any required evidence fails, publish no revision or intent changes.
+4. If any required evidence fails, publish no definition or intent changes.
    Preserve the original reference identity/digest and record the delivery OID;
    do not automatically repin the evidence to conceal its history.
 
-The immutable revision is the implementation assertion and records the delivery
+The current definition is the implementation assertion and records the delivery
 OID, not a mutable global application source setting. Later source drift reports
 unhealthy evidence without demoting that revision to proposed. No assertion
 implies successful tests, merge/integration, review approval or resolved feedback.
@@ -72,13 +77,13 @@ implies successful tests, merge/integration, review approval or resolved feedbac
 The existing `Resolver.Author` supplies original-byte verification and
 `Resolver.Resolve` supplies delivery-view currency. Neither alone establishes
 the entire rule. A public author must also preserve the existing lock, all-head
-parent check and idempotent revision-ID rules when it eventually publishes.
+atomic current publication and value-based retry rules when it eventually publishes.
 
 ## 3. Entity and relationship intent do not cascade
 
 The candidate entity and every outgoing relationship have their own explicit
 `proposed` or `implemented` intent. Legacy omitted intent reads as `unspecified`
-until a deliberate new revision supplies an assessment. It is not inferred from
+until a deliberate current edit supplies an assessment. It is not inferred from
 code, active lifecycle, a name or the age of the identity.
 
 - Implementing an entity validates its own evidence and every relationship

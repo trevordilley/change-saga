@@ -80,7 +80,7 @@ func TestWhiteboardMetadataRoleLifecyclePreservesSourceHistory(t *testing.T) {
 	if _, err := UpdateWhiteboardMetadata(ctx, root, "test", WhiteboardMetadataWrite{Operation: "assign-role", ID: "existing", Role: "erd", Expected: "none"}); err == nil {
 		t.Fatal("assigned archived board")
 	}
-	if _, err := LoadResolvedWhiteboard(root, "test", "existing", "r1"); err != nil {
+	if _, err := LoadResolvedWhiteboard(root, "test", "existing", reference.Revision); err != nil {
 		t.Fatal("archive broke historical references", err)
 	}
 	if health := targets.Observe(reference); health.Status != "current" {
@@ -253,7 +253,7 @@ func TestArchitectureRoleAcceptsLegacyMetadataAndPreservesHistory(t *testing.T) 
 	if err != nil || unassigned.Roles["architecture"] != "" {
 		t.Fatal("explicit unassignment restored default", err)
 	}
-	if _, err := LoadResolvedWhiteboard(root, "test", "codebase-map", "r1"); err != nil {
+	if _, err := LoadResolvedWhiteboard(root, "test", "codebase-map", ""); err != nil {
 		t.Fatal("assignment changed history", err)
 	}
 	if err := ValidateWhiteboards(root, "test"); err != nil {

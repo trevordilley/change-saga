@@ -214,12 +214,11 @@ var queryOperations = []string{
 	"roadmap",
 	"persona-references",
 	"requirements",
-	"requirement-history",
 	"citations",
 	"relations",
 	"traceability",
 	"quality",
-	"quality-history",
+	"quality-runs",
 	"readiness",
 	"audit",
 	"layers",
@@ -243,13 +242,13 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
-	"prototype":            "one prototype's HTML as it was recorded, by byte range, with its revisions, files, and annotations; a prototype hosted elsewhere returns its URLs",
+	"prototype":            "one prototype's HTML as it was recorded, by byte range, with its current source, files, and annotations; a prototype hosted elsewhere returns its URLs",
 	"plans":                "the current Plans with their progress and links; delivered Plans only with --all",
 	"plan":                 "one Plan in full: its essay, phases, compact Tasks with their dependencies and what can start, and its slides",
 	"task":                 "one Task in full: its essay, story, code references, what it depends on and unblocks, and the slides that name it",
-	"whiteboards":          "Whiteboard identities, titles, revisions, lifecycle and technical design role assignments without rendering source",
-	"deprecations":         "authored deprecation assertions, exact content and code scope, target health, optional story relations and immutable history; absence is no recorded deprecation, never proof of non-deprecation",
-	"inventory":            "Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
+	"whiteboards":          "Whiteboard identities, titles, current content and state and technical design role assignments without rendering source",
+	"deprecations":         "authored deprecation assertions, exact content and code scope, target health, optional story relations and current state; absence is no recorded deprecation, never proof of non-deprecation",
+	"inventory":            "Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and current definitions; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
 	"inventory-coverage":   "which tracked code at one source revision the current technical definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
 	"inventory-selections": "saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage",
 	"inventory-uses":       "declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness",
@@ -270,15 +269,15 @@ var queryPurpose = map[string]string{
 	"milestones":           "shared milestone definitions",
 	"roadmap":              "planned features in priority order with optional milestones and theme memberships",
 	"feature-themes":       "optional product themes with authored Markdown overview, feature membership, and rationale decks in the current Saga",
-	"personas":             "current persona definitions and lifecycle heads, selected exactly by stable ID or canonical URN",
+	"personas":             "current persona definitions and state, selected exactly by stable ID or canonical URN",
 	"persona-references":   "direct explicit incoming and outgoing persona references with provenance and declared coverage",
-	"requirements":         "current requirement definitions and lifecycle heads without fabricating winners for conflicts",
+	"requirements":         "current requirement definitions and state without fabricating winners for conflicts",
 	"requirement-history":  "append-only revision and lifecycle history in deterministic graph order",
 	"citations":            "immutable requirement provenance records",
 	"relations":            "typed current, stale, and superseded living-Saga relations",
 	"traceability":         "current story-to-design/task/review/code/test paths (design that addresses the whole story is also listed as broad), and reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit",
 	"quality":              "verification definitions, criterion-to-step mappings, and implementation evidence; no run results",
-	"quality-history":      "immutable case history including deprecated legacy_runs; inert metadata only",
+	"quality-runs":         "recorded executions including deprecated legacy_runs; inert metadata only",
 	"readiness":            "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 	"audit":                "a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts",
 	"history":              "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
@@ -289,20 +288,20 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
-	"prototype":            "change-saga query prototype --saga PATH --prototype ID|URN [--revision ID] [--file PATH] [--offset N] [--limit N] [--repo PATH]",
+	"prototype":            "change-saga query prototype --saga PATH --prototype ID|URN [--file PATH] [--offset N] [--limit N] [--repo PATH]",
 	"plans":                "change-saga query plans --saga PATH [--all] [--cursor TOKEN] [--limit N]",
 	"plan":                 "change-saga query plan --saga PATH --plan ID|URN",
 	"task":                 "change-saga query task --saga PATH --task ID|URN [--plan ID|URN]",
 	"whiteboards":          "change-saga query whiteboards --saga PATH [--cursor TOKEN] [--limit N]",
-	"deprecations":         "change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--history] [--cursor CURSOR] [--limit N]",
+	"deprecations":         "change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--cursor CURSOR] [--limit N]",
 	"labels":               "change-saga query labels --saga PATH [--cursor TOKEN] [--limit N]",
 	"milestones":           "change-saga query milestones --saga PATH [--cursor TOKEN] [--limit N]",
 	"roadmap":              "change-saga query roadmap --saga PATH [--cursor TOKEN] [--limit N]",
 	"feature-themes":       "change-saga query feature-themes --saga PATH [--theme ID|URN] [--cursor TOKEN] [--limit N]",
-	"inventory":            "change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
+	"inventory":            "change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
 	"inventory-coverage":   "change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
 	"inventory-selections": "change-saga query inventory-selections --saga PATH [--feature ID|URN] [--item URN] [--state eligible|ineligible|unresolved] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
-	"inventory-uses":       "change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member|data_holder|relationship_destination|erd_directory|erd_overlay] [--cursor TOKEN] [--limit N] [--repo PATH]",
+	"inventory-uses":       "change-saga query inventory-uses --saga PATH --target URN [--content-digest DIGEST] [--depth N] [--role implementation_item|review_item|system_member|data_holder|relationship_destination|erd_directory|erd_overlay] [--cursor TOKEN] [--limit N] [--repo PATH]",
 	"":                     "change-saga query <operation> --saga PATH [--repo PATH] [--against REV [--head REV]] [operation flags]",
 	"schema":               "change-saga query schema <operation>",
 	"overview":             "change-saga query overview --saga PATH [--deck URN] [--repo PATH] [--against REV [--head REV]]",
@@ -325,7 +324,7 @@ var queryUsage = map[string]string{
 	"relations":            "change-saga query relations --saga PATH [--relation ID|URN] [--type TYPE] [--from URN] [--to URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"traceability":         "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"quality":              "change-saga query quality --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]",
-	"quality-history":      "change-saga query quality-history --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]",
+	"quality-runs":         "change-saga query quality-runs --saga PATH [--feature ID] [--test ID|URN] [--cursor TOKEN] [--limit N]",
 	"readiness":            "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"audit":                "change-saga query audit --saga PATH --feature ID|URN [--repo PATH] [--head REV]",
 	"history":              "change-saga query history --saga PATH --node URN",
@@ -340,6 +339,9 @@ var queryUsage = map[string]string{
 // returned StatusError only communicates the already-rendered exit status to
 // the process entrypoint; callers must not print it.
 func Query(ctx context.Context, args []string, out io.Writer) error {
+	if len(args) > 0 && (args[0] == "requirement-history" || args[0] == "quality-history") {
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "Saga content history is Git history; use query history --node URN. Recorded test executions are available through query quality-runs."})
+	}
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	return queryWithOpener(ctx, args, out, openQuerySession)
@@ -563,7 +565,7 @@ func queryHelpFor(operation string) queryHelp {
 
 func querySchemaFor(operation string) querySchemaDescription {
 	paths := map[string][]string{
-		"deprecations":         {"data.deprecations", "data.deprecations[].assertions", "data.deprecations[].assertions[].target_health", "data.deprecations[].assertions[].code", "data.deprecations[].stories", "data.deprecations[].history", "data.absence_meaning", "data.source_warning"},
+		"deprecations":         {"data.deprecations", "data.deprecations[].assertions", "data.deprecations[].assertions[].target_health", "data.deprecations[].assertions[].code", "data.deprecations[].stories", "data.absence_meaning", "data.source_warning"},
 		"labels":               {"data.labels"},
 		"milestones":           {"data.milestones"},
 		"roadmap":              {"data.features", "data.features[].plan", "data.features[].themes"},
@@ -582,19 +584,19 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"context":              {"data.feature", "data.feature.overview", "data.projection", "data.completeness", "data.stories", "data.neighbors", "data.terms", "data.visuals", "data.gaps", "data.conflicts", "data.expanded"},
 		"personas":             {"data.personas"},
 		"persona-references":   {"data.subject", "data.references", "data.counts", "data.completeness"},
-		"requirements":         {"data.requirements", "data.requirements[].current_revision.overview"},
+		"requirements":         {"data.requirements", "data.requirements[].content.overview", "data.requirements[].content_digest"},
 		"requirement-history":  {"data.events", "data.events[].revision.overview"},
 		"citations":            {"data.citations"},
 		"relations":            {"data.relations"},
 		"traceability":         {"data.criteria", "data.unlinked_code_evidence"},
 		"quality":              {"data.test_cases"},
-		"quality-history":      {"data.test_cases"},
+		"quality-runs":         {"data.test_cases"},
 		"readiness":            {"data.summary", "data.requirements"},
 		"audit":                {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":              {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
 		"review-threads":       {"data.review", "data.range", "data.diagnostics", "data.threads", "data.threads[].code_line", "data.threads[].placement", "data.threads[].comments"},
 		"whiteboards":          {"data.snapshot", "data.roles", "data.whiteboards"},
-		"inventory":            {"data.data_model_overview", "data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
+		"inventory":            {"data.data_model_overview", "data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].content_digest", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
 		"inventory-coverage":   {"data.head_oid", "data.scope", "data.summary", "data.state", "data.entries", "data.completeness"},
 		"inventory-selections": {"data.head_oid", "data.selections", "data.selections[].resolution", "data.completeness"},
 		"inventory-uses":       {"data.subject", "data.uses", "data.uses[].path", "data.completeness"},
@@ -602,8 +604,8 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"term-references":      {"data.subject", "data.references", "data.counts", "data.completeness"},
 		"prototype":            {"data.prototype", "data.prototype.content.data", "data.prototype.content.next_offset", "data.prototype.files", "data.prototype.annotations"},
 		"plans":                {"data.plans", "data.plans[].tasks_done", "data.plans[].reviews"},
-		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.tasks", "data.plan.slides"},
-		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides"},
+		"plan":                 {"data.plan", "data.plan.essay", "data.plan.phases", "data.plan.phases[].checkpoint", "data.plan.checkpoint_passer", "data.plan.tasks", "data.plan.slides"},
+		"task":                 {"data.task", "data.task.essay", "data.task.code", "data.task.depends_on", "data.task.unblocks", "data.task.slides", "data.task.held_by"},
 		"layers":               {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{
@@ -629,7 +631,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"relations":            "data.relations",
 		"traceability":         "data.criteria",
 		"quality":              "data.test_cases",
-		"quality-history":      "data.test_cases",
+		"quality-runs":         "data.test_cases",
 		"readiness":            "data.requirements",
 		"whiteboards":          "data.whiteboards",
 		"inventory":            "data.records",
@@ -777,7 +779,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&commit, "commit", "", "optional Git commit; selects evidence pinned at it")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
-	case "quality", "quality-history":
+	case "quality", "quality-runs":
 		flags.StringVar(&testCase, "test", "", "optional test-case ID or URN")
 		flags.StringVar(&feature, "feature", "", "optional feature ID or URN")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
@@ -918,12 +920,12 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return claimQuery{Target: target, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "verifications":
 		return verificationQuery{Claim: claim, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
-	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "traceability", "quality", "quality-history", "readiness", "audit":
+	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "traceability", "quality", "quality-runs", "readiness", "audit":
 		filters := livingapp.Filters{
 			Feature: feature, Expand: expand, Requirement: requirement, Persona: persona, Term: term, Kind: firstNonempty(kind, criterion), Citation: citation,
 			Relation: relation, From: from, To: to, Ref: ref, Commit: commit,
 		}
-		if operation == "quality" || operation == "quality-history" {
+		if operation == "quality" || operation == "quality-runs" {
 			filters.TestCase = testCase
 		}
 		if operation == "requirements" || operation == "relations" {

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "The Saga base is absent, Changed is nonempty, and every entry is added.",
+    "preconditions": [
+      "Use the shop Saga fixture on feature; main points at the commit before that Saga existed."
+    ],
+    "steps": [
+      {
+        "action": "Read status comparing feature against main.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records"
+        ],
+        "expected_result": "The Saga base is absent, Changed is nonempty, and every entry is added.",
+        "id": "added"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:review-added-records",
+    "title": "Classify records introduced after the comparison base"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:review-added-records"
+  }
+}

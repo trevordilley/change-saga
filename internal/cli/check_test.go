@@ -205,7 +205,7 @@ func TestCheckQualityRequiresKindsOrAnExplicitPolicy(t *testing.T) {
 	addCase("negative")
 	check(true, "required edge test: missing_kind")
 	runQuality(t, "", "policy", "set", root, "--feature", testFeature, "--id", "no-boundary",
-		"--criterion", criterion, "--story-revision", story+":revision:r1", "--require", "positive", "--require", "negative",
+		"--criterion", criterion, "--story-content-digest", currentTestPin(t, root, story), "--require", "positive", "--require", "negative",
 		"--rationale", "This fixed scenario has no boundary condition; success and rejection are distinct.")
 	check(false)
 	addCase("edge")
@@ -213,7 +213,7 @@ func TestCheckQualityRequiresKindsOrAnExplicitPolicy(t *testing.T) {
 	// definitions still satisfy it without code evidence or run records.
 	sagaPrefix := strings.Split(story, ":story:")[0]
 	runQuality(t, "", "policy", "set", root, "--feature", testFeature, "--id", "all-kinds",
-		"--criterion", criterion, "--story-revision", story+":revision:r1", "--require", "positive", "--require", "negative", "--require", "edge",
+		"--criterion", criterion, "--story-content-digest", currentTestPin(t, root, story), "--require", "positive", "--require", "negative", "--require", "edge",
 		"--supersedes", sagaPrefix+":quality-policy:no-boundary", "--rationale", "Boundary behavior is now explicitly defined.")
 	check(false)
 }

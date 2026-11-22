@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Complete coverage conveys no approval verdict.",
+    "preconditions": [
+      "Use isolated comparisons with complete coverage and with an uncovered line; no review approval has been recorded."
+    ],
+    "steps": [
+      {
+        "action": "Read status --json and status text for each comparison, and inspect query overview coverage.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict"
+        ],
+        "expected_result": "Output reports coverage facts, completeness and gaps without claiming the change is approved.",
+        "id": "inspect"
+      },
+      {
+        "action": "Query review state before and after the coverage reads.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict"
+        ],
+        "expected_result": "Coverage reads do not create an approval or reviewer decision.",
+        "id": "compare"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-no-verdict",
+    "title": "Keep factual coverage separate from review approval"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-coverage-no-verdict"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "All alternate current routes appear without silent loss.",
+    "preconditions": [
+      "Use one accepted criterion with two current design addresses relations, two Tasks naming its story, and two verified verifications, plus a direct criterion explains link."
+    ],
+    "steps": [
+      {
+        "action": "In a combined fixture add two designs, two Tasks and two verifications plus direct criterion links, then enumerate public traceability.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths"
+        ],
+        "expected_result": "Every available current path is present without silently dropping alternate routes.",
+        "id": "all-paths"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-alternate-paths",
+    "title": "Enumerate every declared current design and Task path"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:contracts-intent-alternate-paths"
+  }
+}

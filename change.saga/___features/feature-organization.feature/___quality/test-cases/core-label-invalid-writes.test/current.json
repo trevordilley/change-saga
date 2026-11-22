@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "hybrid",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Reject duplicate labels and invalid memberships.",
+    "preconditions": [
+      "A fresh Saga has a feature assigned to a label named Platform operations; save its plan bytes."
+    ],
+    "steps": [
+      {
+        "action": "Attempt to create a label named platform operations.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:duplicate-name"
+        ],
+        "expected_result": "The case-insensitive duplicate name is rejected.",
+        "id": "check-duplicate-name"
+      },
+      {
+        "action": "Attempt missing and cross-Saga label assignments; compare plan bytes.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:valid-references"
+        ],
+        "expected_result": "Both writes fail without changing the plan.",
+        "id": "check-valid-references"
+      },
+      {
+        "action": "Inspect the duplicate-name error from the preceding request.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reuse-shared-feature-labels:criterion:duplicate-name"
+        ],
+        "expected_result": "The diagnostic identifies the existing definition.",
+        "id": "check-duplicate-diagnostic"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:core-label-invalid-writes",
+    "title": "Reject duplicate labels and invalid memberships"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:core-label-invalid-writes"
+  }
+}

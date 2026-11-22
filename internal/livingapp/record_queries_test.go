@@ -360,11 +360,13 @@ func writeConflictingPersonaRevision(t *testing.T, root, id, revisionID, name st
 		Schema: requirements.PersonaRevisionSchemaURL, Version: requirements.AppRecordVersion, ID: revisionID,
 		Persona: persona, Parents: []string{parent}, Name: name, Description: "Conflicting description", CreatedAt: fixtureTime,
 	}
-	data, err := json.Marshal(revision)
+	data, err := json.Marshal(legacyPersonaFixture(revision))
 	if err != nil {
 		t.Fatal(err)
 	}
-	path := filepath.Join(root, applayout.PersonasDir, id+".persona", "revisions", revisionID+".json")
+	dir := filepath.Join(root, applayout.PersonasDir, id+".persona")
+	makeLegacyRecordFixture(t, dir, requirements.PersonaRevisionSchemaURL, "persona", persona, requirements.PersonaEventSchemaURL, "active")
+	path := filepath.Join(dir, "revisions", revisionID+".json")
 	if err := os.WriteFile(path, append(data, '\n'), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -378,12 +380,58 @@ func writeConflictingTermRevision(t *testing.T, root, id, revisionID, name strin
 		Schema: requirements.TermRevisionSchemaURL, Version: requirements.AppRecordVersion, ID: revisionID,
 		Term: term, Parents: []string{parent}, Name: name, Definition: "Conflicting definition", CreatedAt: fixtureTime,
 	}
-	data, err := json.Marshal(revision)
+	data, err := json.Marshal(legacyTermFixture(revision))
 	if err != nil {
 		t.Fatal(err)
 	}
-	path := filepath.Join(root, applayout.TermsDir, id+".term", "revisions", revisionID+".json")
+	dir := filepath.Join(root, applayout.TermsDir, id+".term")
+	makeLegacyRecordFixture(t, dir, requirements.TermRevisionSchemaURL, "term", term, requirements.TermEventSchemaURL, "active")
+	path := filepath.Join(dir, "revisions", revisionID+".json")
 	if err := os.WriteFile(path, append(data, '\n'), 0o644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+type legacyPersonaFixture requirements.PersonaRevision
+type legacyTermFixture requirements.TermRevision
+
+// Deliberately construct old on-disk graphs to retain compatibility/conflict
+// reader coverage. Current authoring never produces this storage.
+func makeLegacyRecordFixture(t *testing.T, dir, schema, ownerKey, owner, eventSchema, state string) {
+	t.Helper()
+	path := filepath.Join(dir, "current.json")
+	data, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		return
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	var current struct {
+		Content map[string]any `json:"content"`
+	}
+	if err := json.Unmarshal(data, &current); err != nil {
+		t.Fatal(err)
+	}
+	value := current.Content
+	value["$schema"], value["version"], value["id"], value["parents"], value["created_at"] = schema, 5, "r1", []string{}, fixtureTime
+	for _, sub := range []string{"revisions", "events"} {
+		if err := os.MkdirAll(filepath.Join(dir, sub), 0755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	write := func(path string, v any) {
+		b, e := json.Marshal(v)
+		if e != nil {
+			t.Fatal(e)
+		}
+		if e = os.WriteFile(path, b, 0644); e != nil {
+			t.Fatal(e)
+		}
+	}
+	write(filepath.Join(dir, "revisions/r1.json"), value)
+	write(filepath.Join(dir, "events/active.json"), map[string]any{"$schema": eventSchema, "version": 5, "id": "active", ownerKey: owner, "parents": []string{}, "state": state, "created_at": fixtureTime})
+	if err := os.Remove(path); err != nil {
 		t.Fatal(err)
 	}
 }

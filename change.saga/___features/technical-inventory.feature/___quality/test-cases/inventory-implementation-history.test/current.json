@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Slide retains exact r3; historical baseline admission requires an explicit saved view.",
+    "preconditions": [
+      "Disposable format-2 Saga has proposed Record store r1 and source store.go lines 4-6; retain exact source delivery commit."
+    ],
+    "steps": [
+      {
+        "action": "Revise store to implemented r2 with parent r1, save evidence at lines 4-6 and delivery commit; retry the identical command.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+          "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal"
+        ],
+        "expected_result": "The retry is idempotent; r2 records delivery repository/commit and pinned evidence; r1 remains proposed.",
+        "id": "implement"
+      },
+      {
+        "action": "Propose r3 under the same identity, first using proposed r1 as baseline, then implemented r2.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor"
+        ],
+        "expected_result": "The proposed baseline is refused and r2 is accepted as the retained implemented baseline.",
+        "id": "successor"
+      },
+      {
+        "action": "Pin current r3 from a slide and query the slide; attempt stale r2 without a saved view.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor"
+        ],
+        "expected_result": "Slide retains exact r3; historical baseline admission requires an explicit saved view.",
+        "id": "pin"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-implementation-history",
+    "title": "Record implementation while preserving the proposed definition"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:inventory-implementation-history"
+  }
+}

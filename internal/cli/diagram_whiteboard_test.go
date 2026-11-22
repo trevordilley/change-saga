@@ -48,12 +48,12 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 		return path
 	}
 	definitionPath := write("definition.json", definition)
-	if err := Technical(ctx, "erd", []string{"revise", "--id", "sqlite", "--revision", "r2", "--parent", pins["sqlite"].Revision, "--from", definitionPath, "--repo", repo, root}, &out); err != nil {
+	if err := Technical(ctx, "erd", []string{"revise", "--id", "sqlite", "--from", definitionPath, "--repo", repo, root}, &out); err != nil {
 		t.Fatal(err)
 	}
 	doc := diagram.Document{Version: 1, Width: 1600, Height: 900, Elements: []diagram.Element{
 		{ID: "cloud", Kind: "group", X: 30, Y: 30, Width: 1500, Height: 800, Style: "boundary", Label: "Cloud"},
-		{ID: "local", Parent: "cloud", Kind: "frame", X: 30, Y: 60, Width: 600, Height: 450, Style: "normal", Label: "Offline", Summary: "Local-first editing", Source: &diagram.SourceReference{Target: pins["sqlite"].Target, Revision: pins["sqlite"].Target + ":revision:r2"}},
+		{ID: "local", Parent: "cloud", Kind: "frame", X: 30, Y: 60, Width: 600, Height: 450, Style: "normal", Label: "Offline", Summary: "Local-first editing", Source: &diagram.SourceReference{Target: pins["sqlite"].Target, Revision: currentTestPin(t, root, pins["sqlite"].Target)}},
 		{ID: "remote", Parent: "cloud", Kind: "frame", X: 750, Y: 60, Width: 600, Height: 450, Style: "normal", Label: "Server", Source: &diagram.SourceReference{Target: pins["postgres"].Target, Revision: pins["postgres"].Revision}},
 	}}
 	path := write("board.json", doc)
@@ -62,7 +62,7 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 		err := Whiteboard(ctx, append(args, root), &out)
 		return out.String(), err
 	}
-	if _, err := run("publish", "--id", "data-model", "--revision", "b1", "--name", "Work board", "--from", path); err != nil {
+	if _, err := run("publish", "--id", "data-model", "--name", "Work board", "--from", path); err != nil {
 		t.Fatal(err)
 	}
 	described, err := run("describe", "--id", "data-model")
@@ -96,30 +96,23 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 	if _, err := run("describe", "--id", "data-model", "--focus", "cloud/missing"); err == nil {
 		t.Fatal("unknown focus accepted")
 	}
-	if _, err := run("publish", "--id", "data-model", "--revision", "b2", "--from", path); err == nil {
-		t.Fatal("update without observed parent accepted")
-	}
-	if _, err := run("publish", "--id", "data-model", "--revision", "b2", "--parent", "b1", "--from", path); err != nil {
+	if _, err := run("publish", "--id", "data-model", "--from", path); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := run("get", "--id", "data-model", "--revision", "b1", "--focus", "cloud/local/local"); err != nil {
+	if _, err := run("get", "--id", "data-model", "--focus", "cloud/local/local"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := run("publish", "--id", "deployment-topology", "--revision", "b1", "--from", path); err != nil {
+	if _, err := run("publish", "--id", "deployment-topology", "--from", path); err != nil {
 		t.Fatal(err)
 	}
 	if other, err := run("describe", "--id", "deployment-topology", "--format", "json"); err != nil || !strings.Contains(other, `"whiteboard": "deployment-topology"`) {
 		t.Fatalf("generic document identity: %v %s", err, other)
 	}
-	if _, err := run("publish", "--id", "deployment-topology", "--revision", "b3", "--parent", "b2", "--from", path); err == nil {
-		t.Fatal("parent from a different document accepted")
-	}
 	assertValid(t, root)
-	// Validation must not ignore a broken historical pin just because the latest
-	// board is valid and no reader has focused the historical frame.
-	historical := filepath.Join(root, requirements.WhiteboardDir, "data-model", "revisions", "b1.json")
+	// Selected current source pins are validated independently for each document.
+	historical := filepath.Join(root, requirements.WhiteboardDir, "data-model", "current.json")
 	data, _ := os.ReadFile(historical)
-	data = bytes.Replace(data, []byte(pins["postgres"].Revision), []byte(pins["postgres"].Target+":revision:missing"), 1)
+	data = bytes.Replace(data, []byte(pins["postgres"].Revision), []byte("sha256:"+strings.Repeat("f", 64)), 1)
 	if err := os.WriteFile(historical, data, 0600); err != nil {
 		t.Fatal(err)
 	}
@@ -214,8 +207,9 @@ func TestWhiteboardMetadataCLIDryRunDiscoveryAndLifecycle(t *testing.T) {
 	if got := run("describe", "--id", "existing-model", "--format", "json"); !strings.Contains(got, `"name": "Renamed board"`) {
 		t.Fatal(got)
 	}
-	if got := run("describe", "--id", "existing-model", "--revision", "r1", "--format", "json"); !strings.Contains(got, `"name": "Original"`) {
-		t.Fatal("rename changed historical title", got)
+	var removed bytes.Buffer
+	if err := Whiteboard(ctx, []string{"describe", "--id", "existing-model", "--revision", "r1", root}, &removed); err == nil {
+		t.Fatal("removed revision selector accepted")
 	}
 	if err := Whiteboard(ctx, []string{"archive", "--id", "existing-model", root}, &out); err == nil {
 		t.Fatal("archived assigned board")

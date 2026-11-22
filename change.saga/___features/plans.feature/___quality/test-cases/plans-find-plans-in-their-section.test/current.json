@@ -1,0 +1,52 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "automated",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each step behaves as its acceptance criterion says.",
+    "preconditions": [],
+    "steps": [
+      {
+        "action": "Open the Plans section.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:find-plans-in-their-section:criterion:plans-section"
+        ],
+        "expected_result": "It lists the Plan and sits beside Documentation and Reviews.",
+        "id": "plans-section"
+      },
+      {
+        "action": "Open a Plan page.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:find-plans-in-their-section:criterion:reads-as-a-plan"
+        ],
+        "expected_result": "It says it is a Plan, not a review.",
+        "id": "reads-as-a-plan"
+      },
+      {
+        "action": "Add Tasks naming stories in two features.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:find-plans-in-their-section:criterion:plan-crosses-features"
+        ],
+        "expected_result": "The Plan reports both features.",
+        "id": "plan-crosses-features"
+      },
+      {
+        "action": "Create a Plan, then create one with the same id.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:find-plans-in-their-section:criterion:change-stays-one-plan"
+        ],
+        "expected_result": "One standalone record exists, and the second create is refused.",
+        "id": "change-stays-one-plan"
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:plans-find-plans-in-their-section",
+    "title": "Plans have their own section and identity"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:plans-find-plans-in-their-section"
+  }
+}
