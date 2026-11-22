@@ -10,6 +10,8 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-22
+
 ### Changed
 
 - **Format:** Native Plan checkpoints are integrated with Git-owned current
