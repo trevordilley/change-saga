@@ -594,7 +594,7 @@ func reconciliationRoute(root, repo, head string, mismatch bool, document *saga.
 			}
 			task.Inspect = append(task.Inspect, query("query slide", grammar.V("target", slide.Target)))
 			if transactionManagedSlide(slide) {
-				task.Guidance = "Read authoring_snapshot, all authoring_heads, Items, evidence and criterion_links. Reassess content; if needed submit complete desired state using apply-slide, preserving exact references and links. Conflicting heads require explicit reconciliation; do not use partial evidence writers."
+				task.Guidance = "Read the current authoring_snapshot, Items, evidence and criterion_links. Reassess content; if needed submit complete desired state using apply-slide, preserving stable IDs and exact references and links. Git owns earlier content and merge conflicts; do not use partial evidence writers."
 				task.Repair = append(task.Repair, reconciliationInvoke("apply-slide", root, repo, mismatch, grammar.V("from", ""), grammar.V("dry-run", "true")))
 			} else if kind != "evidence" {
 				task.Repair = append(task.Repair, grammar.MustInvoke("revise-slide", root, grammar.V("slide", slide.Target), grammar.V("takeaway", "")))
@@ -605,7 +605,7 @@ func reconciliationRoute(root, repo, head string, mismatch bool, document *saga.
 	if strings.Contains(resource, ":whiteboard:") {
 		id := strings.Split(strings.Split(resource, ":whiteboard:")[1], ":")[0]
 		task.Inspect = append(task.Inspect, grammar.MustInvoke("whiteboard get", root, grammar.V("id", id)))
-		task.Guidance = "Reassess the element against the changed code and intent. Export whiteboard get, author exact evidence and links, then whiteboard publish --id " + id + " --parent <observed-current-revision> --revision <new-revision> --from <complete-document>. Never rewrite a saved revision or accept a proposal without reassessment."
+		task.Guidance = "Reassess the element against the changed code and intent. Export whiteboard get, author exact evidence and links, then whiteboard publish --id " + id + " --from <complete-document> <saga>. This replaces complete current content; Git retains previously committed content and original pins. Never accept a proposal without reassessment."
 		return task
 	}
 	switch kind {
