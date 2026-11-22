@@ -10,7 +10,7 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
-## [0.9.0] - 2026-11-22
+## [0.9.1] - 2026-11-22
 
 ### Changed
 
@@ -50,6 +50,8 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- Release-bundle validation fetches full Git history so the canonical Saga can
+  resolve its historical definition pins. The v0.9.0 tag was not published.
 - Reconciliation suggests current-content authoring commands instead of removed
   whiteboard parent/revision flags or slide-head reconciliation.
 - `story revise` edits an already current story without normalizing unrelated

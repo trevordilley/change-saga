@@ -245,6 +245,8 @@ jobs:
         with:
           ref: ${{ needs.meta.outputs.commit }}
           persist-credentials: false
+          # The canonical Saga resolves exact historical definition pins from Git.
+          fetch-depth: 0
 
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
