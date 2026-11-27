@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-7f36b6362f41aa5be4",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-configure-self-hosted-saga-repositories-positive",
+  "to": "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories:criterion:setup-saga-repository",
+  "scope": "self",
+  "rationale": "The positive scenario explicitly maps step setup-saga-repository to this obligation: The resulting setup identifies the documentation repository separately and preserves its source-target association. This records verification intent, not a pass result.",
+  "from_revision": "sha256:9dd1696313c607558126f713a92f86e9eabbd52a5f48582b2ef549bb23f003ff",
+  "to_revision": "sha256:710ecbcf19325e05c9ba8d261ab72f4aa37025a330801f6b745ca9bcc277b02c",
+  "state": "active",
+  "created_at": "2026-11-26T04:06:32.686294Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-588efabfeb5d743423",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-responsive-review-reading-positive",
+  "to": "urn:change-saga:change-saga:story:responsive-review-reading:criterion:bounded-current-reads",
+  "scope": "self",
+  "rationale": "The positive scenario explicitly maps step bounded-current-reads to this obligation: Code reading uses bounded requests with current source context and independently filtered reference views. This records verification intent, not a pass result.",
+  "from_revision": "sha256:c4de7e192a86ff79d68be8a89c7ae6099c9da5578e97eb6965210a69bbddb5a9",
+  "to_revision": "sha256:ed1edea273c94a3bbef29719f7e3d0884ac4ee8ee7a84572e93d8b89866ca48f",
+  "state": "active",
+  "created_at": "2026-11-26T04:14:45.605223Z"
+}

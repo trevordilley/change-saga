@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "guide-researches",
+        "action": "In a fresh isolated scenario: Give the guided workflow a change with unresolved intent or missing source context.",
+        "expected_result": "It reports what is unknown and asks for clarification instead of inventing findings or declaring the Plan ready.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-researches"
+        ]
+      },
+      {
+        "id": "guide-prototypes",
+        "action": "In a fresh isolated scenario: Leave an uncertain interaction unprototyped and inspect the guide’s confidence assessment.",
+        "expected_result": "Uncertainty remains visible; no prototype or confidence judgment is fabricated to complete the guide.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-prototypes"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-plan-with-a-guide-negative",
+    "title": "Plan with a guide — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-plan-with-a-guide-negative"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "media",
+        "action": "In a fresh isolated scenario: Publish a slide with unsupported media or an asset path outside its permitted bundle.",
+        "expected_result": "Publication/serving refuses the invalid asset without exposing another file or accepting it as a valid slide.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media"
+        ]
+      },
+      {
+        "id": "evidence",
+        "action": "In a fresh isolated scenario: Attach evidence to an absent visual selector or an unavailable source location.",
+        "expected_result": "The authoring operation rejects the invalid selector/reference and does not publish false coverage.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-technical-explanation-negative",
+    "title": "Visual technical explanation — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-technical-explanation-negative"
+  }
+}

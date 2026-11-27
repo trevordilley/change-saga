@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-ef1fe30ff527cb1ea8",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-plan-with-a-guide-negative",
+  "to": "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-researches",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step guide-researches to this obligation: It reports what is unknown and asks for clarification instead of inventing findings or declaring the Plan ready. This records verification intent, not a pass result.",
+  "from_revision": "sha256:4bd03b365e7fc5dbf743a2fb39ba9807317cc5266951620f07d02f750e6425ca",
+  "to_revision": "sha256:95835fb6dfe4fa48901b0a909c1020d1cb79859d49838ed25dca18045b50a2f2",
+  "state": "active",
+  "created_at": "2026-11-26T04:09:36.123642Z"
+}

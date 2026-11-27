@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "repository-identity",
+        "action": "In a fresh isolated scenario: Initialize from equivalent credential-bearing transport forms of the same source origin.",
+        "expected_result": "The stored identity is canonical and portable and contains no transport credential or machine checkout path.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-or-companion:criterion:repository-identity"
+        ]
+      },
+      {
+        "id": "companion-cursor",
+        "action": "In a fresh isolated scenario: Sync a companion Saga from a non-root subdirectory at a full verified source commit and read it again.",
+        "expected_result": "Normalized roots still classify it as companion and the exact full source OID is retained without automatic advancement on read.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:source-or-companion:criterion:companion-cursor"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-source-or-companion-edge",
+    "title": "Source or companion — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-source-or-companion-edge"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-e7ec88d81db5424472",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-see-plans-from-stories-negative",
+  "to": "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:story-shows-plans",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step story-shows-plans to this obligation: The writer refuses the invalid Task; the story page does not invent a Plan association. This records verification intent, not a pass result.",
+  "from_revision": "sha256:39015f9940da3ae446c519a06b5beca3f2ef3f19ec704f2c9a97a1457b24a844",
+  "to_revision": "sha256:7918eecef8f1205e7019cbbead0ddaa8a08b249a900576671823ec78028847d8",
+  "state": "active",
+  "created_at": "2026-11-26T04:11:43.716048Z"
+}

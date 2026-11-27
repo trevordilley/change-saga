@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-d278c0eb51409f400a",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-review-decision-edge",
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:approve",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step approve to this obligation: The saved approval remains attributable to that reviewer and slide across reload without changing another reviewer’s seat. This records verification intent, not a pass result.",
+  "from_revision": "sha256:e6f152f88f39d7821dbcaace25810a19dee3abaf6c5fbc8e5c00cb6b0308a4dd",
+  "to_revision": "sha256:121d2c551ffdaa7a8268f1daa8cc5c348d63ec76d3b1f1a7284a5ff66c363456",
+  "state": "active",
+  "created_at": "2026-11-26T04:10:48.753791Z"
+}

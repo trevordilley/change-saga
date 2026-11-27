@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-330c57cf04e1267b10",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:plans-coverage-design",
+  "to": "urn:change-saga:change-saga:story:compare-plan-with-reviews",
+  "scope": "self",
+  "rationale": "This authored approach develops Compare what we said with what we did: it states ownership, the concrete reading/authoring flow and its failure or planning boundary. Proposed hosting and dependency behavior stays explicitly proposed; this is design coverage, not delivery proof.",
+  "to_revision": "sha256:b8b097b1b677d31d8d08f0afd525985944d71cb71c21a62dbd347edc2e96c9d5",
+  "from_content_digest": "sha256:57b1c5b2e7f6feefdb6162f5e6edeb90a7e3d5963a380c3f38a9ac589f5e90bf",
+  "state": "active",
+  "created_at": "2026-11-26T04:01:37.933914Z"
+}

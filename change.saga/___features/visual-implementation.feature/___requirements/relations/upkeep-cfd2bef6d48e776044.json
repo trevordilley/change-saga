@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-cfd2bef6d48e776044",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:pr-request-diff-reuse:item:patch-reuse",
+  "to": "urn:change-saga:change-saga:story:responsive-review-reading",
+  "scope": "self",
+  "rationale": "Request-local raw patch reuse avoids repeated Git work without sharing another reference’s filtered answer or retaining failed reads.",
+  "to_revision": "sha256:ed1edea273c94a3bbef29719f7e3d0884ac4ee8ee7a84572e93d8b89866ca48f",
+  "from_content_digest": "sha256:f33551f5b23bf1ec023f3db72a42372d8ca89e48e9d36608d658f27ed112bd53",
+  "state": "active",
+  "created_at": "2026-11-26T03:27:55.219572Z"
+}

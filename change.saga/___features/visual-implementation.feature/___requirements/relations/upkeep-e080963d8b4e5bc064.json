@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-e080963d8b4e5bc064",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:slide-state:item:drift-transition",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "Complete slide publication and selector validation prevent drift from being mistaken for an addressable valid explanation.",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "from_content_digest": "sha256:2d2209af537170ec5d97ac0aa18861e727e41264e25f13bbcc80296d0eb1b4ba",
+  "state": "active",
+  "created_at": "2026-11-26T03:45:17.422771Z"
+}

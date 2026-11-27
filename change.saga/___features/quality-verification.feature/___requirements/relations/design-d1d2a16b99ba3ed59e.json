@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-d1d2a16b99ba3ed59e",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:evidence-head",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness",
+  "scope": "self",
+  "rationale": "The Optional implementation evidence element develops the design for this outcome: Unsuperseded factual evidence pins an exact test content digest and optional stable steps to code. Definition changes stale old evidence; execution artifacts do not supply definition coverage. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:fb63d3c4a518909efa665fad2040f4262b5337af696439e06596b64be39fea0a",
+  "from_content_digest": "sha256:d69c0f4dd60cb9f35b278671e0f643b235fa2f975f9874d9c41a51a970b84255",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:09.772535Z"
+}

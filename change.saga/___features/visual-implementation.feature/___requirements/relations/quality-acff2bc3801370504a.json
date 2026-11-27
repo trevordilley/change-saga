@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-acff2bc3801370504a",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-visual-technical-explanation-negative",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step evidence to this obligation: The authoring operation rejects the invalid selector/reference and does not publish false coverage. This records verification intent, not a pass result.",
+  "from_revision": "sha256:586807c6c4b108e1bf2dbcf94e9686e54aae4d205eec645aa763a11722f3a644",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "state": "active",
+  "created_at": "2026-11-26T04:14:38.832631Z"
+}

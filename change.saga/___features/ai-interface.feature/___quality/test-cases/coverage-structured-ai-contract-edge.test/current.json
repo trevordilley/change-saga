@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "envelope",
+        "action": "In a fresh isolated scenario: Query an empty result collection and inspect stdout and page metadata.",
+        "expected_result": "Exactly one success envelope reports an empty counted collection, returned zero and no next cursor.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope"
+        ]
+      },
+      {
+        "id": "discovery",
+        "action": "In a fresh isolated scenario: Discover a cursor-paged operation and a byte-paged operation, then read their final pages, including an empty result where supported.",
+        "expected_result": "The published pagination and stable error contract matches each operation’s actual envelope and termination behavior.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-structured-ai-contract-edge",
+    "title": "Structured ai contract — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-structured-ai-contract-edge"
+  }
+}

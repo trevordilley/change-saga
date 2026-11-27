@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-7655ccfde68a28e770",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:pinned-graph:item:explanation",
+  "to": "urn:change-saga:change-saga:story:product-intent-path",
+  "scope": "self",
+  "rationale": "Current requirement definitions and exact endpoint pins support forward explanation paths and visible drift.",
+  "to_revision": "sha256:536b431800e4a2023ee62ecacc12fcc24305cd29de9ab8c64a6e4aaadf1f21e1",
+  "from_content_digest": "sha256:129dd37aa59534fd18766ebe96fe7438724dc25d306abedb42cc39236c8f8249",
+  "state": "active",
+  "created_at": "2026-11-26T03:26:59.808729Z"
+}

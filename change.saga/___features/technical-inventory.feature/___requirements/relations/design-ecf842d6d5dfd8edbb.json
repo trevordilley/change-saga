@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-ecf842d6d5dfd8edbb",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-records-impl-data-model:item:overlay",
+  "to": "urn:change-saga:change-saga:story:erd-design-implications",
+  "scope": "self",
+  "rationale": "The Design overlay element develops the design for this outcome: An overlay names an exact ERD revision and feature, pins replacement or new entities and proposes removals. Composition leaves the canonical ERD unchanged; a removal retires nothing. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:d0f98c335eecab015058b9df75d15c18ce81a532497a8e32083bf97fb90975bf",
+  "from_content_digest": "sha256:8d16ccd693c6eca1050e027c757f583f123f735b70dc7587f082a98bee1dcd01",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:17.282289Z"
+}

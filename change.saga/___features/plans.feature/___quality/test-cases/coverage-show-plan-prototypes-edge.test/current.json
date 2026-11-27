@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "plan-lists-prototypes",
+        "action": "In a fresh isolated scenario: Attach several prototypes, reopen the Plan, and open each listed prototype.",
+        "expected_result": "Every listed prototype opens its own recorded content without replacing another prototype or changing Plan identity.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:show-plan-prototypes:criterion:plan-lists-prototypes"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-show-plan-prototypes-edge",
+    "title": "Show plan prototypes — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-show-plan-prototypes-edge"
+  }
+}

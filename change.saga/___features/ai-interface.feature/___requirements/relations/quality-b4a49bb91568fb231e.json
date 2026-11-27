@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-b4a49bb91568fb231e",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-structured-ai-contract-negative",
+  "to": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step discovery to this obligation: Discovery rejects the unknown name rather than inventing a supported operation or returning a misleading schema. This records verification intent, not a pass result.",
+  "from_revision": "sha256:3f2198eda7bb3ab13989039b723d9a35d3710eb8f720c0b38a57558065c77ebb",
+  "to_revision": "sha256:3b2841b06ec70b1a1bf19bbc6059a4e28e6d6841902e5176950754021a097142",
+  "state": "active",
+  "created_at": "2026-11-26T04:13:01.980917Z"
+}

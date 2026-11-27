@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "envelope",
+        "action": "In a fresh isolated scenario: Query with an invalid cursor or missing Saga and parse all stdout as JSON.",
+        "expected_result": "One versioned error envelope is emitted with ok false and a stable error code, without success-shaped data or extra prose.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope"
+        ]
+      },
+      {
+        "id": "discovery",
+        "action": "In a fresh isolated scenario: Ask query schema for an unknown operation.",
+        "expected_result": "Discovery rejects the unknown name rather than inventing a supported operation or returning a misleading schema.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-structured-ai-contract-negative",
+    "title": "Structured ai contract — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-structured-ai-contract-negative"
+  }
+}

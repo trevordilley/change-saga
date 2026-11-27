@@ -1,0 +1,63 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "freehand",
+        "action": "In a fresh isolated scenario: Draw a minimal valid stroke near the visual boundary, resize the viewport, and reload.",
+        "expected_result": "The normalized stroke remains visible on the same slide within the permitted visual bounds.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:freehand"
+        ]
+      },
+      {
+        "id": "shapes",
+        "action": "In a fresh isolated scenario: Place a rectangle at a visual boundary, resize it to a small valid size, and reload at a different viewport.",
+        "expected_result": "The valid final normalized geometry remains associated with the same slide and is inspectable.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:shapes"
+        ]
+      },
+      {
+        "id": "anchored",
+        "action": "In a fresh isolated scenario: Use equal local element IDs on two slides, annotate one, then navigate away and back after viewport resize.",
+        "expected_result": "The mark returns only on the original fully qualified slide/element context.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:anchored"
+        ]
+      },
+      {
+        "id": "visible-author",
+        "action": "In a fresh isolated scenario: Have two distinct participants annotate the same area and reload from a second reader session.",
+        "expected_result": "Both saved marks are visible with distinct attributable authors, despite overlapping geometry.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:visible-author"
+        ]
+      },
+      {
+        "id": "preserves-source",
+        "action": "In a fresh isolated scenario: Create, update and delete a valid mark through append-only thread actions, then compare source bytes.",
+        "expected_result": "The source visual is byte-identical throughout; only the projected annotation state changes.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:preserves-source"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-annotation-edge",
+    "title": "Visual annotation — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-annotation-edge"
+  }
+}

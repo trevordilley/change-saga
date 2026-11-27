@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-af2f119e54879f8247",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:slide-state:item:draft-state",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "Complete slide publication and selector validation prevent drift from being mistaken for an addressable valid explanation.",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "from_content_digest": "sha256:6f84f7d888efd96eb7c8c2f58c4eec3f12fcbc4a2cb91936df0e4f70ee7c3424",
+  "state": "active",
+  "created_at": "2026-11-26T03:45:11.39279Z"
+}

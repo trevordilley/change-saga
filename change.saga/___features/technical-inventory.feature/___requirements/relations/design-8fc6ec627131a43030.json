@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-8fc6ec627131a43030",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-query-impl-reconcile:item:unreferenced",
+  "to": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced",
+  "scope": "self",
+  "rationale": "The Unreferenced: ask the user element develops the design for this outcome: A definition with no declared implementation use is queued with its identity, explanation and evidence state unless explicitly proposed or new against a readable base; the guidance asks the user. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:e961b23e81473d7854590a511d5477f2fd6aed4e07610333ddb57e817e0ca92c",
+  "from_content_digest": "sha256:7fc838866b2aeea8759cccc291deb4c62e8530466aa4cde4ec42a47ff7a56e8d",
+  "state": "active",
+  "created_at": "2026-11-26T03:56:28.150626Z"
+}

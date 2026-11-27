@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-3784881eab8c348aa9",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-see-plans-from-stories-positive",
+  "to": "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:story-shows-plans",
+  "scope": "self",
+  "rationale": "The positive scenario explicitly maps step story-shows-plans to this obligation: The page lists the Tasks, their prerequisite chains and the Plans those Tasks belong to. This records verification intent, not a pass result.",
+  "from_revision": "sha256:a3cdc699c7ba8439850e3ac035c8bad42cb996ccaac33bf3614343b3fd4ac1b6",
+  "to_revision": "sha256:7918eecef8f1205e7019cbbead0ddaa8a08b249a900576671823ec78028847d8",
+  "state": "active",
+  "created_at": "2026-11-26T04:11:36.72997Z"
+}

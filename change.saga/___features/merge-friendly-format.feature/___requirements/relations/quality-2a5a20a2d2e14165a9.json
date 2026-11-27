@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-2a5a20a2d2e14165a9",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-parallel-authoring-edge",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step partitioned to this obligation: Separate current files and identities survive; equality of content does not merge the identities or create a Saga revision graph. This records verification intent, not a pass result.",
+  "from_revision": "sha256:3b372a70e74d666baa036b5b5fead0435711944ae9a219a93bd6be93d5725bf3",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "state": "active",
+  "created_at": "2026-11-26T04:09:01.68242Z"
+}

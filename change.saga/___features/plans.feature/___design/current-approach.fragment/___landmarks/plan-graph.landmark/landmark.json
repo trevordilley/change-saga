@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "plan-graph",
+  "label": "Plan Task graph validation and checked mutation preserve paths to stories.",
+  "selector": {
+    "type": "text",
+    "exact": "Plan Task graph validation and checked mutation preserve paths to stories."
+  },
+  "target": ""
+}

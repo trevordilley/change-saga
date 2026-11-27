@@ -1,0 +1,55 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "approve",
+        "action": "In a fresh isolated scenario: Submit approval with an invalid session token or stale shown slide digest.",
+        "expected_result": "The server refuses the request and the decision ledger contains no new approval.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:approve"
+        ]
+      },
+      {
+        "id": "request-changes",
+        "action": "In a fresh isolated scenario: Submit request-changes for a review slide outside the selected open review.",
+        "expected_result": "The request is refused before append and cannot alter another review’s decision.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:request-changes"
+        ]
+      },
+      {
+        "id": "identifies-author",
+        "action": "In a fresh isolated scenario: Submit explicit AI reviewer metadata without the required model or agent.",
+        "expected_result": "The action is refused; an incomplete identity cannot appear as a confirmed saved author.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:identifies-author"
+        ]
+      },
+      {
+        "id": "preserves-history",
+        "action": "In a fresh isolated scenario: Attempt to replace a decision against an obsolete shown source/slide context.",
+        "expected_result": "No successor decision is appended and the earlier history remains intact.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-review-decision-negative",
+    "title": "Review decision — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-review-decision-negative"
+  }
+}

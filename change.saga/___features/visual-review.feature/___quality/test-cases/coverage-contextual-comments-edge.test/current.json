@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "element-context",
+        "action": "In a fresh isolated scenario: Give two slides Items with the same local ID and comment on only one fully qualified Item; reload both slides.",
+        "expected_result": "Only the selected slide/Item shows the comment and the saved thread retains that canonical anchor.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-contextual-comments-edge",
+    "title": "Contextual comments — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-contextual-comments-edge"
+  }
+}

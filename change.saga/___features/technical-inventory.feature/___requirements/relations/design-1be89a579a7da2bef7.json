@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-1be89a579a7da2bef7",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-query-impl-reconcile:item:pins",
+  "to": "urn:change-saga:change-saga:story:inventory-design-to-review",
+  "scope": "self",
+  "rationale": "The Item pins element develops the design for this outcome: Implementation Items whose pin is stale, retired, missing or conflicted are routed to their slide for reassessment; saved pins are kept until deliberately repinned. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:38376e153e063b30f56fe8950ce7e10c1e9dead4fd322189419312913a36cbfc",
+  "from_content_digest": "sha256:9e369d3f6a1324929a8642d661b1927c5c361f72260750d4c9ca46f54affd275",
+  "state": "active",
+  "created_at": "2026-11-26T03:56:12.114334Z"
+}

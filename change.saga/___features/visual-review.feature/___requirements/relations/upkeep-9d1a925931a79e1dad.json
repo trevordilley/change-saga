@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-9d1a925931a79e1dad",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:pr-review-performance-evaluation:landmark:pr-loading-baseline",
+  "to": "urn:change-saga:change-saga:story:responsive-review-reading",
+  "scope": "self",
+  "rationale": "The measurement method and recorded limits explain the bounded review-reading implementation; the timings remain historical observations, not a current latency promise.",
+  "to_revision": "sha256:ed1edea273c94a3bbef29719f7e3d0884ac4ee8ee7a84572e93d8b89866ca48f",
+  "from_content_digest": "sha256:b4b9d185468582317522c9e8c3f4b0d8beb73f6afebd0e3aa440c2685b65c1ec",
+  "state": "active",
+  "created_at": "2026-11-26T03:18:42.968369Z"
+}

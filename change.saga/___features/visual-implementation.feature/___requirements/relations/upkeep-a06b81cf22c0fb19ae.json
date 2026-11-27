@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-a06b81cf22c0fb19ae",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:failure-boundaries:item:flat-bundle-boundary",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "Asset confinement, supported media and visual digest validation preserve the integrity of a code-linked visual explanation.",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "from_content_digest": "sha256:d18b63c64ce6475cf493d001050d1fbdde0a2260a27bc66b1556c5177cf7ee1a",
+  "state": "active",
+  "created_at": "2026-11-26T03:25:36.861904Z"
+}

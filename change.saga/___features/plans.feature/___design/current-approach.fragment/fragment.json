@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "plans-coverage-design",
+  "title": "Plan ownership, execution context and review comparison",
+  "media_type": "text/markdown",
+  "entrypoint": "plans.md"
+}

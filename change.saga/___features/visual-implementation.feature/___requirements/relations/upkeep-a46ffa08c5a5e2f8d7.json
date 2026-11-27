@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-a46ffa08c5a5e2f8d7",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:authored-content-origin:item:direct-visit",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "The authored-content sandbox permits visual media without giving authored scripts the authority of the surrounding reader.",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "from_content_digest": "sha256:323841abe27b20f9aefb1c476f5057532bfc449797c9a8cb42dbd925e6783d12",
+  "state": "active",
+  "created_at": "2026-11-26T03:19:44.49732Z"
+}

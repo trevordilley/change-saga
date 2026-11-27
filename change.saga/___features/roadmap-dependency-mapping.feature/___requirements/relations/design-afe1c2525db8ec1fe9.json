@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-afe1c2525db8ec1fe9",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:roadmap-dependency-mapping-coverage-design",
+  "to": "urn:change-saga:change-saga:story:map-roadmap-prerequisites",
+  "scope": "self",
+  "rationale": "This authored approach develops Communicate prerequisites between planned features: it states ownership, the concrete reading/authoring flow and its failure or planning boundary. Proposed hosting and dependency behavior stays explicitly proposed; this is design coverage, not delivery proof.",
+  "to_revision": "sha256:c3ff664030fde9bef7ab95b96364a3b37366434e94f3b12643c3130f03ba3c48",
+  "from_content_digest": "sha256:75acb714277b7cdcff2c8e40c4492374a835d453f00c38e377047ff1a8c32eeb",
+  "state": "active",
+  "created_at": "2026-11-26T04:04:43.956087Z"
+}

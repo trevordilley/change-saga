@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-06739e1d020f1fb54e",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:visual-pipeline:item:bundle",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "Stable visual identities pass through authoring, bundle loading and rendering while the semantic Item retains exact code ownership.",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "from_content_digest": "sha256:9057511bcf490500a9776adeaed270514076ba5814057359de396b51a3a63e8c",
+  "state": "active",
+  "created_at": "2026-11-26T03:52:24.016134Z"
+}

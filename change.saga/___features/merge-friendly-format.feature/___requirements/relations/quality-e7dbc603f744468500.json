@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-e7dbc603f744468500",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-parallel-authoring-edge",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step conflicts to this obligation: The combined current value is readable and both branch contributions remain available through Git history. This records verification intent, not a pass result.",
+  "from_revision": "sha256:3b372a70e74d666baa036b5b5fead0435711944ae9a219a93bd6be93d5725bf3",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "state": "active",
+  "created_at": "2026-11-26T04:09:07.053793Z"
+}

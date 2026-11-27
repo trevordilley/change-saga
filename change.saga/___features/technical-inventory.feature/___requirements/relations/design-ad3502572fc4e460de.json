@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-ad3502572fc4e460de",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-query-impl-reads:item:filters",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing",
+  "scope": "self",
+  "rationale": "The Explicit intent filter element develops the design for this outcome: --intent filters the selected revisions' explicit intent; legacy revisions read unspecified. Filters apply only after unresolved candidates are set aside. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:c77327374a3046a5074f428c7d2c645f1a49e71b45b7091454650221e91e68cf",
+  "from_content_digest": "sha256:38ec61219d675d97497f02aa72f592a2c03f86a987fd0fc3d4229d72f749b6ab",
+  "state": "active",
+  "created_at": "2026-11-26T03:56:20.007167Z"
+}

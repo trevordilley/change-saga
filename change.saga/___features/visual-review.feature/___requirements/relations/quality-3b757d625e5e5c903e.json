@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-3b757d625e5e5c903e",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-contextual-comments-edge",
+  "to": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step element-context to this obligation: Only the selected slide/Item shows the comment and the saved thread retains that canonical anchor. This records verification intent, not a pass result.",
+  "from_revision": "sha256:78d81848c3bdb8f79cf703b805bbafaed5bb646fdde51a51a857911c33bcd2bc",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "state": "active",
+  "created_at": "2026-11-26T04:07:05.966022Z"
+}

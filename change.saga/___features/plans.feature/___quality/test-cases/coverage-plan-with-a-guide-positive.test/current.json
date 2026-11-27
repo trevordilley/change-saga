@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "guide-researches",
+        "action": "In a fresh isolated scenario: Follow plan guide’s research stage against real story and source context in a disposable Plan.",
+        "expected_result": "The workflow presents the queried stories, code findings and gaps before proposing tasks.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-researches"
+        ]
+      },
+      {
+        "id": "guide-prototypes",
+        "action": "In a fresh isolated scenario: At the guided prototype stage, author a small prototype and attach it using plan add-prototype.",
+        "expected_result": "The same Plan lists the prototype and the workflow can use it to examine the uncertain experience.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:plan-with-a-guide:criterion:guide-prototypes"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-plan-with-a-guide-positive",
+    "title": "Plan with a guide — positive verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-plan-with-a-guide-positive"
+  }
+}

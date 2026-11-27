@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-863ecc3ea2c4b6a990",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:story-mutation-sequence:item:cli-request",
+  "to": "urn:change-saga:change-saga:story:safe-concurrent-authoring",
+  "scope": "self",
+  "rationale": "Locked preflight and checked current replacement preserve another writer’s content and explicit migration boundaries.",
+  "to_revision": "sha256:c8f473062154dfe6f9d87178a816b9664c86585260032086056e0820b13ad87f",
+  "from_content_digest": "sha256:4ef19bfdc003f1e8f325c83bd29403ff72fe06beb5cf4e40a888a7e34bff2d85",
+  "state": "active",
+  "created_at": "2026-11-26T03:46:16.343984Z"
+}

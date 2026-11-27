@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "task-cites-code",
+        "action": "In a fresh isolated scenario: Author a Task with a verified exact code range, then open its page and code link.",
+        "expected_result": "The Task page exposes the reference and opens the intended pinned source context.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:understand-a-task:criterion:task-cites-code"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-understand-a-task-positive",
+    "title": "Understand a task — positive verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-understand-a-task-positive"
+  }
+}

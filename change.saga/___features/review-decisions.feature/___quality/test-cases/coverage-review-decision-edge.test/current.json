@@ -1,0 +1,55 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "approve",
+        "action": "In a fresh isolated scenario: Approve a slide, reload, and inspect its current decision and immutable history.",
+        "expected_result": "The saved approval remains attributable to that reviewer and slide across reload without changing another reviewer’s seat.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:approve"
+        ]
+      },
+      {
+        "id": "request-changes",
+        "action": "In a fresh isolated scenario: Replace the reviewer’s approval with request-changes, then reload the slide.",
+        "expected_result": "Changes requested is the current decision and the earlier approval remains in ordered history.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:request-changes"
+        ]
+      },
+      {
+        "id": "identifies-author",
+        "action": "In a fresh isolated scenario: Use two distinct reviewer seats on the same slide and reload their decisions.",
+        "expected_result": "Both authors remain distinct and neither decision is attributed to the other seat.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:identifies-author"
+        ]
+      },
+      {
+        "id": "preserves-history",
+        "action": "In a fresh isolated scenario: Approve, request changes and withdraw from the same reviewer seat in sequence, then inspect history.",
+        "expected_result": "All three actual actions remain ordered and the withdrawn current position does not erase earlier decisions.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-review-decision-edge",
+    "title": "Review decision — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-review-decision-edge"
+  }
+}

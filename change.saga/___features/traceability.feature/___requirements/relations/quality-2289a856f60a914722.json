@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-2289a856f60a914722",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-negative",
+  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step reverse-path to this obligation: The query exposes the missing path rather than inventing a story, design, test or persona association. This records verification intent, not a pass result.",
+  "from_revision": "sha256:9d307cc8340dddcb499f0c8ba358a8effa211046061fb372414b260ea076e9d6",
+  "to_revision": "sha256:6f9602129de42db65f97980600da438d3adb5fad79d92128bcd4f000e5cb1b73",
+  "state": "active",
+  "created_at": "2026-11-26T04:10:35.767127Z"
+}

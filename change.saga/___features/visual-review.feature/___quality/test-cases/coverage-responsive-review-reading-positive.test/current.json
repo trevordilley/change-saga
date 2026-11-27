@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "bounded-current-reads",
+        "action": "In a fresh isolated scenario: Open a large review with multiple references to the same source file and traverse its code pages.",
+        "expected_result": "Code reading uses bounded requests with current source context and independently filtered reference views.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:responsive-review-reading:criterion:bounded-current-reads"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-responsive-review-reading-positive",
+    "title": "Responsive review reading — positive verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-responsive-review-reading-positive"
+  }
+}

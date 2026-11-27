@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "bidirectional-path",
+        "action": "In a fresh isolated scenario: Change a pinned design or requirement endpoint without reassessing its relation and query both directions.",
+        "expected_result": "The relation is identified as stale rather than supplying a current bidirectional path.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path"
+        ]
+      },
+      {
+        "id": "pinned-context",
+        "action": "In a fresh isolated scenario: Request an unavailable design content digest instead of its current digest.",
+        "expected_result": "The missing saved definition is reported unavailable; current content is not substituted for the requested pin.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:design-usage-path:criterion:pinned-context"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-design-usage-path-negative",
+    "title": "Design usage path — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-design-usage-path-negative"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "reverse-path",
+        "action": "In a fresh isolated scenario: Look up a current code location with no persisted evidence owner.",
+        "expected_result": "The query exposes the missing path rather than inventing a story, design, test or persona association.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-negative",
+    "title": "Reverse impact — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-negative"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-1fe6c50cf1eb39c921",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-verification:item:browser",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context",
+  "scope": "self",
+  "rationale": "Public contract and browser evidence document the discovery/navigation boundaries and retain the original report’s limits.",
+  "to_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+  "from_content_digest": "sha256:010a89a8922925c84c38d08445878cd6573833e8468b119be13b4b8b555c67d4",
+  "state": "active",
+  "created_at": "2026-11-26T03:48:36.93013Z"
+}

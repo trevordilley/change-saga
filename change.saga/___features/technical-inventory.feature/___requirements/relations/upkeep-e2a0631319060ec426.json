@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-e2a0631319060ec426",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-technology-stack:landmark:markdown",
+  "to": "urn:change-saga:change-saga:story:read-application-technical-design",
+  "scope": "self",
+  "rationale": "The shared technology reference explains the application approach, rendering choices and disposable caches for an architect reading its design.",
+  "to_revision": "sha256:7d4b17a9f5392660df775ec20a65b9ad14360d4704bd844948dbec4f3bc57999",
+  "from_content_digest": "sha256:145cdb8fa9b31c6cf4cf4d2f1996ff20597f0575b12f251323ad2cc34979013f",
+  "state": "active",
+  "created_at": "2026-11-26T03:18:36.509522Z"
+}

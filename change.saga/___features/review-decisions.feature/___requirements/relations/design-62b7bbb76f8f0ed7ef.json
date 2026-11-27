@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-62b7bbb76f8f0ed7ef",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:decision-currency:item:currency",
+  "to": "urn:change-saga:change-saga:story:review-decision-freshness",
+  "scope": "self",
+  "rationale": "The Currency transitions element develops the design for this outcome: A projected decision is current, out of date, or unknown according to slide digest, referenced code, and commit availability. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:b2ee96bc8339fb200b13034bcce2486bcdfd05be3042b0df1d3bba6034e6703a",
+  "from_content_digest": "sha256:20f562d053ec93ab73c8ecb3570edd4adceee50b44c810fedbb05463cc937bbb",
+  "state": "active",
+  "created_at": "2026-11-26T04:00:22.491937Z"
+}

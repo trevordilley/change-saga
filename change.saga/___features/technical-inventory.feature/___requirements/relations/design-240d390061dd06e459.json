@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-240d390061dd06e459",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-ui-impl-overview:item:facts",
+  "to": "urn:change-saga:change-saga:story:erd-distinguish-proposals",
+  "scope": "self",
+  "rationale": "The Intent, lifecycle and newness are separate element develops the design for this outcome: Intent is explicit or unspecified; newness is new, revised or unchanged only against a named comparison's merge-base, and unknown with its reason when that base cannot be read. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:a88f04bf2e2a4ebcea5edd399e88d14ef0031b4b3f75763de38a67e05d4fc235",
+  "from_content_digest": "sha256:4057b4a4fea31c4f157f3a591af039fa43d05d0f39704b904fd356cc42fe19fa",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:32.957216Z"
+}

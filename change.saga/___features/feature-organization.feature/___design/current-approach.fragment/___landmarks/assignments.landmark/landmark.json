@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "assignments",
+  "label": "Feature plan mutation validates canonical shared classification assignments before publication.",
+  "selector": {
+    "type": "text",
+    "exact": "Feature plan mutation validates canonical shared classification assignments before publication."
+  },
+  "target": ""
+}

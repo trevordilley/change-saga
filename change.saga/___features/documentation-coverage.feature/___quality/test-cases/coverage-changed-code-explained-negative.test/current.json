@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "separate-states",
+        "action": "In a fresh isolated scenario: Change bytes inside one pinned range while leaving another range current, then inspect coverage.",
+        "expected_result": "The changed pin is stale and is not reported as current covered code; unrelated current ownership remains visible.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states"
+        ]
+      },
+      {
+        "id": "no-verdict",
+        "action": "In a fresh isolated scenario: Run a coverage check with an uncovered line and inspect the review decision ledger before and after.",
+        "expected_result": "The check reports a gap and appends no approval or request-changes decision.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-changed-code-explained-negative",
+    "title": "Changed code explained — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-changed-code-explained-negative"
+  }
+}

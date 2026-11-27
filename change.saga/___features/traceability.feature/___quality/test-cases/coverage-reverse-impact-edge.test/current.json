@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "reverse-path",
+        "action": "In a fresh isolated scenario: Select a line reached by multiple Items and tests after a file rename or line-only movement.",
+        "expected_result": "All exact remapped owners and persisted intent paths are returned without conflating the different owners.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path"
+        ]
+      },
+      {
+        "id": "blockers",
+        "action": "In a fresh isolated scenario: Create one valid and one stale path to the same source line and query both together.",
+        "expected_result": "The valid path remains available while the blocked path retains its separate reason; one does not hide the other.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reverse-impact:criterion:blockers"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-edge",
+    "title": "Reverse impact — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-edge"
+  }
+}

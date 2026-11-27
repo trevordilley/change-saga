@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-40e11fcd08855a9a9e",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:storage-ownership:item:uniqueness-guard",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "self",
+  "rationale": "Feature-local files and app-wide stable identities reduce merge overlap without re-identifying records that move.",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "from_content_digest": "sha256:076d85d3acd6e2427c37da57943e3b0501b688eea9cd36cfa96fe93f352b20cc",
+  "state": "active",
+  "created_at": "2026-11-26T03:46:09.984696Z"
+}

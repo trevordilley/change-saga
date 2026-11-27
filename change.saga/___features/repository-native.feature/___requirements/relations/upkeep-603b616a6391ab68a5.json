@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-603b616a6391ab68a5",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:companion-sync-sequence:item:sync-command",
+  "to": "urn:change-saga:change-saga:story:source-or-companion",
+  "scope": "self",
+  "rationale": "Explicit sync records a verified source commit for a companion Saga instead of inferring it from the documentation checkout.",
+  "to_revision": "sha256:006466ef1be41365df4a5f6e40f5ea0b980c08f1cfb955ca42eaf8f4414262c9",
+  "from_content_digest": "sha256:8b0db7a0ff17386b5e92f4c711bf5a840e1bb4bedfa2e7d9447fb34cf0d8f81b",
+  "state": "active",
+  "created_at": "2026-11-26T03:21:44.388111Z"
+}

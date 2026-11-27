@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-5a1949354b9f689581",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:readiness-boundary:item:design-present",
+  "to": "urn:change-saga:change-saga:story:criterion-evidence-confidence",
+  "scope": "self",
+  "rationale": "Design, source and Task presence are independent inputs and cannot manufacture immutable delivery evidence.",
+  "to_revision": "sha256:53f7651cfffc10c19d9b15820cdf910152cf657abe5a5727f7b8d781557a726e",
+  "from_content_digest": "sha256:cc3e96f6e8710d3c59445f2c47627aec11390840bb7ca4c5a73d1acf06cf7a62",
+  "state": "superseded",
+  "created_at": "2026-11-26T03:38:34.071228Z",
+  "superseded_at": "2026-11-26T04:05:06.832524Z"
+}

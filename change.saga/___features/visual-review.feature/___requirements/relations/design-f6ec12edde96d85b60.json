@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-f6ec12edde96d85b60",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:contextual-review:item:annotation-gap",
+  "to": "urn:change-saga:change-saga:story:text-annotation",
+  "scope": "self",
+  "rationale": "The Spatial review annotations element develops the design for this outcome: Drawing and note anchors use normalized geometry on append-only comments. Updates and deletes reply to the create root; reload projects the mark. Prototype annotations remain requirement links. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:8d5a4be04062c0b1852c8a4f4030af10feaeed75d9e205516c0a0e7d2cbdd082",
+  "from_content_digest": "sha256:c3394964710bea40a26d6f5ee933cc7638c2cb852a2de615ee4fb45edb6ecf34",
+  "state": "active",
+  "created_at": "2026-11-26T04:00:51.830473Z"
+}

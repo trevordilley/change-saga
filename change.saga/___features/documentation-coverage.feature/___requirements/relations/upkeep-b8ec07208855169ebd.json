@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-b8ec07208855169ebd",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-health-check-performance:landmark:what-makes-a-cached-comparison-reusable",
+  "to": "urn:change-saga:change-saga:story:scoped-coverage-check",
+  "scope": "self",
+  "rationale": "Independent area evaluation and provenance-aware reuse implement the boundary that only the requested check areas decide a report.",
+  "to_revision": "sha256:ec090768049758fe047b8ca02624755b3036cbaab97a8ee8c2839be47975e82e",
+  "from_content_digest": "sha256:736839009f1d9ad01aafc72ede780abb483264a0068c2ba8a19c679103c8e54f",
+  "state": "active",
+  "created_at": "2026-11-26T03:17:55.085581Z"
+}

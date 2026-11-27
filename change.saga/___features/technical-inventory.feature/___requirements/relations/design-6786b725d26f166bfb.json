@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-6786b725d26f166bfb",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-query-impl-coverage:item:denominators",
+  "to": "urn:change-saga:change-saga:story:inventory-code-coverage",
+  "scope": "self",
+  "rationale": "The Distinct denominators element develops the design for this outcome: Inventory coverage is labeled separately from implementation-deck and review coverage; a covered line proves an explicit reference, not a correct explanation. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:47f8d6d87d160d433f34d3723c8b2d80b77a6a86b8eb0eab2645f4af7669e579",
+  "from_content_digest": "sha256:b8862071107a155847f2aa00bca0307035c9a797a68ecba4dd9942c36fe5df63",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:59.281681Z"
+}

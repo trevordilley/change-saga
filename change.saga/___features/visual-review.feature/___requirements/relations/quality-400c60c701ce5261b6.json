@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-400c60c701ce5261b6",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-responsive-review-reading-negative",
+  "to": "urn:change-saga:change-saga:story:responsive-review-reading:criterion:bounded-current-reads",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step bounded-current-reads to this obligation: The stale reference keeps its independent diagnostic and a later read can retry the failure; another reference’s result is not substituted. This records verification intent, not a pass result.",
+  "from_revision": "sha256:811d354b09f1f80e75468839e8ac98821a67f90b1c413bfa7f933c9b69805c0e",
+  "to_revision": "sha256:ed1edea273c94a3bbef29719f7e3d0884ac4ee8ee7a84572e93d8b89866ca48f",
+  "state": "active",
+  "created_at": "2026-11-26T04:14:51.700594Z"
+}

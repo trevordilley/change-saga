@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-8433e5023bb77f7ba3",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-configure-self-hosted-saga-repositories-negative",
+  "to": "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories:criterion:setup-saga-repository",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step setup-saga-repository to this obligation: The UI reports the failure and preserves the target and any existing Saga repository configuration. This records verification intent, not a pass result.",
+  "from_revision": "sha256:08ff4fc010daa1019997c6acf7284047feac8ee27fd4ab7a4a7bb4e159a65ea4",
+  "to_revision": "sha256:710ecbcf19325e05c9ba8d261ab72f4aa37025a330801f6b745ca9bcc277b02c",
+  "state": "active",
+  "created_at": "2026-11-26T04:06:44.976106Z"
+}

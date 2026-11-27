@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-8ec580ab5d373cb1c0",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:repository-placement:item:companion-version",
+  "to": "urn:change-saga:change-saga:story:source-or-companion",
+  "scope": "self",
+  "rationale": "Normalized placement determines whether source Git or an explicit companion cursor owns the documented source version.",
+  "to_revision": "sha256:006466ef1be41365df4a5f6e40f5ea0b980c08f1cfb955ca42eaf8f4414262c9",
+  "from_content_digest": "sha256:932d8803e12d0ee59b25d2aef5de1e421ef85902d028116066d9f65cb7915435",
+  "state": "active",
+  "created_at": "2026-11-26T03:41:45.436782Z"
+}

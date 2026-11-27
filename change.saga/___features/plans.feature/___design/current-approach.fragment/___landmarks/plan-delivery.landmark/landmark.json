@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "plan-delivery",
+  "label": "Plan delivery and edit guards retain explicit completion boundaries.",
+  "selector": {
+    "type": "text",
+    "exact": "Plan delivery and edit guards retain explicit completion boundaries."
+  },
+  "target": ""
+}

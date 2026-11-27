@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-526d94e86c4e50c652",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:product-knowledge-ownership:item:feature-ownership-gap",
+  "to": "urn:change-saga:change-saga:story:requirements-feature-scope",
+  "scope": "self",
+  "rationale": "The Feature-scoped requirements element develops the design for this outcome: Requirement rows expose the owning feature, and requirement/traceability filters use that value without changing app-global stable identity. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:5b6198e9c3465167f7e7d8c318b7c813399ddc20a6013ad837192b8b7c90a9e1",
+  "from_content_digest": "sha256:81942ee14ec77d7d754a33ff5509fa46db61f8c00f6a823c7b1a42a45a43c4d0",
+  "state": "active",
+  "created_at": "2026-11-26T03:59:58.99816Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-65bc61d392c622551f",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-changed-code-explained-negative",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step separate-states to this obligation: The changed pin is stale and is not reported as current covered code; unrelated current ownership remains visible. This records verification intent, not a pass result.",
+  "from_revision": "sha256:d2b3fd04d3c1d9b37db9f17b43ec3c8edfe999c5cbed4f187df5a45362d01a6c",
+  "to_revision": "sha256:179fa5f4d6d90aeadda300d9b2f8df5fcb4b654d840a3744449588f9a6088371",
+  "state": "active",
+  "created_at": "2026-11-26T04:06:16.177636Z"
+}

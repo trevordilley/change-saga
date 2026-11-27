@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "current-paths",
+        "action": "In a fresh isolated scenario: Supersede or stale the only relation on one path, then query the story and criterion.",
+        "expected_result": "The unavailable current path is not reported as a complete current explanation; its reason remains inspectable.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths"
+        ]
+      },
+      {
+        "id": "stale-paths",
+        "action": "In a fresh isolated scenario: Edit a referenced criterion while retaining its old confirmation pin and query the relation.",
+        "expected_result": "The dependent link is stale and is not silently repinned by reading it.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-product-intent-path-negative",
+    "title": "Product intent path — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-product-intent-path-negative"
+  }
+}

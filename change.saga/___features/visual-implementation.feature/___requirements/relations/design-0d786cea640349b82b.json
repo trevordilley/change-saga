@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-0d786cea640349b82b",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:htmx-shell:item:persistent-shell",
+  "to": "urn:change-saga:change-saga:story:visual-deck-navigation",
+  "scope": "self",
+  "rationale": "The The shell loads once; #page is swapped element develops the design for this outcome: The page body carries hx-boost with #page as target, so links swap only #page; the sidebar and deck viewer persist for the session and htmx keeps no history snapshots, so back and forward ask the server. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:488cbfea8d21d935f35d33c706b9acfeef110f878114f9f02646ad2b79e2afad",
+  "from_content_digest": "sha256:b377ae3e15ffca383abbaddc3218c23ffdfbd1d5370b67969c6a71c18cc3aacb",
+  "state": "active",
+  "created_at": "2026-11-26T04:01:08.581164Z"
+}

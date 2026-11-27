@@ -2,11 +2,11 @@
 
 The repository owns authored truth. `change.saga` holds the app identity, Product records, design essays, whiteboards, feature decks, tests and review history. The [ERD](/technical/erd) shows selected logical associations rather than an exhaustive file listing. There is no required database service.
 
-## Identity and revisions {#identity-and-revisions}
+## Stable identities and current records {#identity-and-revisions}
 
 A stable identity answers which story, entity, board or review is being discussed. Current records store the editable authored definition and product state. Stable criterion IDs retain their meaning across edits. A new explanation does not silently accept a proposed story. References retain stable targets and exact content digests; source commits remain separate evidence pins.
 
-Whiteboards store one complete current document. Publication replaces that value; relative diagram edits require its current digest. Git owns earlier versions, attribution, branches, merging and conflict resolution. Historical readers use real Git content and preserve its original pins. Legacy competing heads stop normalization without deleting content; an author explicitly preserves and combines them in Git.
+Whiteboards store one complete current document. CLI publication replaces that value with a complete document. Relative edits to diagram-sourced slides require the current digest; they are a separate operation from complete whiteboard publication. Git owns earlier versions, attribution, branches, merging and conflict resolution. Historical readers use real Git content and preserve its original pins. Legacy competing heads stop normalization without deleting content; an author explicitly preserves and combines them in Git.
 
 ## Publication and recovery {#publication-and-recovery}
 

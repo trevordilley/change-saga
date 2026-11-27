@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-de832a46ea79427e0b",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-positive",
+  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:blockers",
+  "scope": "self",
+  "rationale": "The positive scenario explicitly maps step blockers to this obligation: The path returns current links and exact evidence without a spurious stale/conflict blocker. This records verification intent, not a pass result.",
+  "from_revision": "sha256:d85b8200bf1c60833a138a43f18cde8f3ccfd90929a205cfa15d273376e8cd61",
+  "to_revision": "sha256:6f9602129de42db65f97980600da438d3adb5fad79d92128bcd4f000e5cb1b73",
+  "state": "active",
+  "created_at": "2026-11-26T04:10:42.306443Z"
+}

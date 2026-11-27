@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-085d0ec473bf74b07a",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-visual-technical-explanation-edge",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step media to this obligation: Supported media remain readable and authored scripts retain sandbox boundaries in both HTML entry paths. This records verification intent, not a pass result.",
+  "from_revision": "sha256:c82175b2abc21138dcceba61b5183b85036b487f39e7714e3105d2014cc62c6b",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "state": "active",
+  "created_at": "2026-11-26T04:14:22.042548Z"
+}

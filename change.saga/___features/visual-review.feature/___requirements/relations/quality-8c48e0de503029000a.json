@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-8c48e0de503029000a",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-visual-annotation-edge",
+  "to": "urn:change-saga:change-saga:story:visual-annotation:criterion:anchored",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step anchored to this obligation: The mark returns only on the original fully qualified slide/element context. This records verification intent, not a pass result.",
+  "from_revision": "sha256:d85a9262a657173522c1529d336b0a881fdc319dcc12024f51013080a23460f0",
+  "to_revision": "sha256:177e6ced70af19b8beb56f1ec6f29a1a3b9f7bbd2b9bcd8963a7eaf29336423b",
+  "state": "active",
+  "created_at": "2026-11-26T04:13:37.4756Z"
+}

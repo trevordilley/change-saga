@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-2e52b84150a05e0f4d",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-source-or-companion-edge",
+  "to": "urn:change-saga:change-saga:story:source-or-companion:criterion:repository-identity",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step repository-identity to this obligation: The stored identity is canonical and portable and contains no transport credential or machine checkout path. This records verification intent, not a pass result.",
+  "from_revision": "sha256:036217d061c47ba4b2aff7433684f9998451143907018c4b59d330de75c5abc7",
+  "to_revision": "sha256:006466ef1be41365df4a5f6e40f5ea0b980c08f1cfb955ca42eaf8f4414262c9",
+  "state": "active",
+  "created_at": "2026-11-26T04:12:16.643294Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-201dcf283604815874",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-records-impl-data-model:item:entity",
+  "to": "urn:change-saga:change-saga:story:erd-entity-context",
+  "scope": "self",
+  "rationale": "The Data entity record element develops the design for this outcome: A data entity has curated fields with key roles, holding Component pins with roles, and explicit intent. Resources are pins, not second identities; exhaustive columns are not required. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:222a3e3f40dfa008a13c16d39a92e7913e9f231ba62822ab39a0109e5def66a8",
+  "from_content_digest": "sha256:82efa2eeaddf682f439af51e7c05b6dc0edc441d28753d65f949db4b0f17b251",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:39.376648Z"
+}

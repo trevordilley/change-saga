@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-6e4fd0095699d137d4",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:comparison-three-layers:item:inputs",
+  "to": "urn:change-saga:change-saga:story:change-impact-layers",
+  "scope": "self",
+  "rationale": "Separate edited, affected and code projections keep direct edits distinct from propagated impact and unexplained source.",
+  "to_revision": "sha256:9c765665c4915bda676f832460c98cf85df299e9fc8e81631add53d74ab418a6",
+  "from_content_digest": "sha256:faa84a10eedc0b79aa30bdfa075c786ef5e1073191b102658663064631e355f4",
+  "state": "active",
+  "created_at": "2026-11-26T03:22:32.289164Z"
+}

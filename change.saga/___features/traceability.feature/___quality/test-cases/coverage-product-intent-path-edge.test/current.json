@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "current-paths",
+        "action": "In a fresh isolated scenario: Give one criterion two independent current design/evidence paths and paginate to completion.",
+        "expected_result": "Both declared paths are returned once with their distinct exact evidence; no path is lost at a page boundary.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:current-paths"
+        ]
+      },
+      {
+        "id": "stale-paths",
+        "action": "In a fresh isolated scenario: Edit an unrelated sibling criterion while preserving the selected criterion’s exact authored fields.",
+        "expected_result": "The unaffected criterion link retains its valid carry-forward semantics while any affected whole-story link is evaluated independently.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-product-intent-path-edge",
+    "title": "Product intent path — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-product-intent-path-edge"
+  }
+}

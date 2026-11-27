@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-c2fc72a5153e6b1443",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-health-check-performance:landmark:source-and-verification-provenance",
+  "to": "urn:change-saga:change-saga:story:scoped-coverage-check",
+  "scope": "self",
+  "rationale": "Independent area evaluation and provenance-aware reuse implement the boundary that only the requested check areas decide a report.",
+  "to_revision": "sha256:ec090768049758fe047b8ca02624755b3036cbaab97a8ee8c2839be47975e82e",
+  "from_content_digest": "sha256:fc496dde1b3588405f789600e550c7cf20c1f4c92969cac2ff900c982790a2f3",
+  "state": "active",
+  "created_at": "2026-11-26T03:17:50.18552Z"
+}

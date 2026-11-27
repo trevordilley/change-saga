@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "bounded-current-reads",
+        "statement": "Code evidence reading uses bounded pages, revalidates the selected source context, and keeps each reference’s filters and diagnostics independent when sharing identical raw Git patches."
+      }
+    ],
+    "citations": [],
+    "overview": "This is a proposed outcome inferred from the existing PR code batching, request-local patch reuse, and recorded performance investigations. It records the reason for those implemented mechanisms without making the historical timings a service-level promise or accepting new product intent.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a Developer reviewing a large change, I can open its code evidence through bounded requests that reuse identical work within a request while checking current source context, so the review remains responsive without showing another reference’s result.",
+    "story": "urn:change-saga:change-saga:story:responsive-review-reading",
+    "title": "Read review evidence without repeated work"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:responsive-review-reading"
+  }
+}

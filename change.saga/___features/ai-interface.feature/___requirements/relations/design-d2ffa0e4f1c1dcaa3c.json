@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-d2ffa0e4f1c1dcaa3c",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:cursor-state:item:issue-cursor",
+  "to": "urn:change-saga:change-saga:story:bounded-query-pagination",
+  "scope": "self",
+  "rationale": "The Save the next cursor element develops the design for this outcome: The token stores the operation, normalized filters, snapshot and next offset as base64url-encoded JSON. Pass it back unchanged; a token from another query is rejected. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:563647473b06d2abf0d329a897d246df0285a5b3b99ffa2bf35da83969fd02a8",
+  "from_content_digest": "sha256:e0b99eb9507416630386d603c84817b6fac91134e9b5081c8e9180d3591659b9",
+  "state": "active",
+  "created_at": "2026-11-26T03:54:53.958074Z"
+}

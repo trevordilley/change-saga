@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-182ee287e3515419c1",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:run-record-sequence:item:result-return",
+  "to": "urn:change-saga:change-saga:story:record-test-proof",
+  "scope": "self",
+  "rationale": "The deprecated run writer retains exact source pins and all-head guards for immutable historical execution records.",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "from_content_digest": "sha256:44d2a90bb696fa54d40f883ad999297c97a013fe5a3611806d35f6f16f2da7a4",
+  "state": "active",
+  "created_at": "2026-11-26T03:43:42.989322Z"
+}

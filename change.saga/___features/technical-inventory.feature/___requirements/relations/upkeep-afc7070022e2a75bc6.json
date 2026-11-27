@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-afc7070022e2a75bc6",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:whiteboard:architecture:element:presentation-diagram",
+  "to": "urn:change-saga:change-saga:story:read-application-technical-design",
+  "scope": "self",
+  "rationale": "The shared diagram grammar and deterministic renderer explain how the application’s technical whiteboards are represented and rendered.",
+  "to_revision": "sha256:7d4b17a9f5392660df775ec20a65b9ad14360d4704bd844948dbec4f3bc57999",
+  "state": "active",
+  "created_at": "2026-11-26T03:54:37.949859Z"
+}

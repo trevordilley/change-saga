@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-9bb3f252e8585c87be",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-show-plan-prototypes-positive",
+  "to": "urn:change-saga:change-saga:story:show-plan-prototypes:criterion:plan-lists-prototypes",
+  "scope": "self",
+  "rationale": "The positive scenario explicitly maps step plan-lists-prototypes to this obligation: The Plan lists it with a working link that opens the intended prototype. This records verification intent, not a pass result.",
+  "from_revision": "sha256:f851ef74f32ce9bfeeffcc2a8f07350e363a5374128e85ad3a2c56d2054fb693",
+  "to_revision": "sha256:646fa2783b4f683d7252d78ec64cb50c904ba1c2cd3d1453774fb2c3523b5d8c",
+  "state": "active",
+  "created_at": "2026-11-26T04:11:56.413484Z"
+}

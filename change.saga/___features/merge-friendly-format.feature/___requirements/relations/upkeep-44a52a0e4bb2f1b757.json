@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-44a52a0e4bb2f1b757",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-storage:landmark:publication-and-recovery",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "self",
+  "rationale": "The storage explanation describes independent current records, cooperative publication and ordinary Git history rather than a second merge graph.",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "from_content_digest": "sha256:d0d0f79a75cae6d0290cec3b7b97ab0d30caf105fab46de4875c523a394df759",
+  "state": "active",
+  "created_at": "2026-11-26T03:18:11.944858Z"
+}

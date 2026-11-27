@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-ccde044073ff271251",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:readiness-boundary:item:design-present",
+  "to": "urn:change-saga:change-saga:story:product-intent-path",
+  "scope": "self",
+  "rationale": "Criterion composition keeps available design and source paths separate from missing Task or delivery evidence, so following product intent does not manufacture missing paths or a delivery verdict.",
+  "to_revision": "sha256:536b431800e4a2023ee62ecacc12fcc24305cd29de9ab8c64a6e4aaadf1f21e1",
+  "from_content_digest": "sha256:cc3e96f6e8710d3c59445f2c47627aec11390840bb7ca4c5a73d1acf06cf7a62",
+  "state": "active",
+  "created_at": "2026-11-26T04:05:39.882451Z"
+}

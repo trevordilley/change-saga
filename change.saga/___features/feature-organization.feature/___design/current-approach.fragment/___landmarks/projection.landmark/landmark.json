@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "projection",
+  "label": "Feature collections and grouping project existing records without changing their identity.",
+  "selector": {
+    "type": "text",
+    "exact": "Feature collections and grouping project existing records without changing their identity."
+  },
+  "target": ""
+}

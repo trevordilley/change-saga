@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-3f306747ec4097b30c",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:pr-code-batching:item:baseline",
+  "to": "urn:change-saga:change-saga:story:responsive-review-reading",
+  "scope": "self",
+  "rationale": "Bounded source pages reduce request overhead while each page still validates its source context; historical measurement remains dated.",
+  "to_revision": "sha256:ed1edea273c94a3bbef29719f7e3d0884ac4ee8ee7a84572e93d8b89866ca48f",
+  "from_content_digest": "sha256:8c01f6fee350098997792f7820ae70d378d52982255e3bcb1cfc47e1a2944ba8",
+  "state": "active",
+  "created_at": "2026-11-26T03:27:09.469508Z"
+}

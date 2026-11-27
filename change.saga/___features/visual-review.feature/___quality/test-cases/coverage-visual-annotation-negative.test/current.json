@@ -1,0 +1,63 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "freehand",
+        "action": "In a fresh isolated scenario: Submit a drawing anchor with malformed points or coordinates outside the normalized drawing contract.",
+        "expected_result": "The mutation is rejected with no mark appended and the source visual is unchanged.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:freehand"
+        ]
+      },
+      {
+        "id": "shapes",
+        "action": "In a fresh isolated scenario: Submit an invalid rectangle extent or malformed drawing payload.",
+        "expected_result": "The server refuses it before persistence and no corrupt shape appears after reload.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:shapes"
+        ]
+      },
+      {
+        "id": "anchored",
+        "action": "In a fresh isolated scenario: Submit an annotation for an unknown slide or an Item on another slide.",
+        "expected_result": "The mutation is refused and no annotation appears on a substitute target.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:anchored"
+        ]
+      },
+      {
+        "id": "visible-author",
+        "action": "In a fresh isolated scenario: Submit contradictory human/AI reviewer provenance on a mark.",
+        "expected_result": "The invalid action is rejected and does not display a falsely attributed annotation.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:visible-author"
+        ]
+      },
+      {
+        "id": "preserves-source",
+        "action": "In a fresh isolated scenario: Attempt an annotation mutation with invalid geometry and compare the underlying slide asset bytes.",
+        "expected_result": "The rejected annotation changes neither source bytes nor a saved valid annotation.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-annotation:criterion:preserves-source"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-annotation-negative",
+    "title": "Visual annotation — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-annotation-negative"
+  }
+}

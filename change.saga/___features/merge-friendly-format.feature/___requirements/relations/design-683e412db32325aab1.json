@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-683e412db32325aab1",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:story-mutation-sequence:item:atomic-publish",
+  "to": "urn:change-saga:change-saga:story:auditable-requirement-history",
+  "scope": "self",
+  "rationale": "The Atomic current replacement element develops the design for this outcome: A validated current content/state value replaces current.json atomically. The identity and unedited state remain stable; Git records earlier committed bytes. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:fd2d5b1c30d554efd998743e7264e8d4cbde6f85e5b174c884e458a90e004c80",
+  "from_content_digest": "sha256:b637739b3bcec73e38b3cce209659980ddde4e0d0e85c66e4bbb630dc417efe9",
+  "state": "active",
+  "created_at": "2026-11-26T03:54:45.630308Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-2e38479bb29e1d018e",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-understand-a-task-positive",
+  "to": "urn:change-saga:change-saga:story:understand-a-task:criterion:task-cites-code",
+  "scope": "self",
+  "rationale": "The positive scenario explicitly maps step task-cites-code to this obligation: The Task page exposes the reference and opens the intended pinned source context. This records verification intent, not a pass result.",
+  "from_revision": "sha256:a138802ebcab018267cbec35efee4ac134062f4e98e58ed5feda4c4c574a017f",
+  "to_revision": "sha256:cf2354b9c7ff434e076f93168e0421a4aef115bc5fe3fe9d63cdd118d0773698",
+  "state": "active",
+  "created_at": "2026-11-26T04:13:08.376863Z"
+}

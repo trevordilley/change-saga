@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "bidirectional-path",
+        "action": "In a fresh isolated scenario: Link two design elements to one criterion and give one element several exact evidence locations.",
+        "expected_result": "Every declared current path is reachable in both directions without losing the other element or evidence.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path"
+        ]
+      },
+      {
+        "id": "pinned-context",
+        "action": "In a fresh isolated scenario: Commit an earlier design, edit current content and inspect links to each digest.",
+        "expected_result": "Each relationship retains its exact authored design and requirement pins and saved Git context remains distinguishable from current context.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:design-usage-path:criterion:pinned-context"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-design-usage-path-edge",
+    "title": "Design usage path — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-design-usage-path-edge"
+  }
+}

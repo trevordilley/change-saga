@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "plan-guide",
+  "label": "The Plan guide makes research, prototypes and sizing an explicit author workflow.",
+  "selector": {
+    "type": "text",
+    "exact": "The Plan guide makes research, prototypes and sizing an explicit author workflow."
+  },
+  "target": ""
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-33f03f86198b853581",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-responsive-review-reading-edge",
+  "to": "urn:change-saga:change-saga:story:responsive-review-reading:criterion:bounded-current-reads",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step bounded-current-reads to this obligation: Each page is bounded and source-bound; successful raw work is reused only within that request and each reference keeps its own output. This records verification intent, not a pass result.",
+  "from_revision": "sha256:35ca62ee53a7989cf05b938fffae0baa0bbf58080d780717033a9240fd739d59",
+  "to_revision": "sha256:ed1edea273c94a3bbef29719f7e3d0884ac4ee8ee7a84572e93d8b89866ca48f",
+  "state": "active",
+  "created_at": "2026-11-26T04:14:59.16956Z"
+}

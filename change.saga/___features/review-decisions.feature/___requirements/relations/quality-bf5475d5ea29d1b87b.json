@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-bf5475d5ea29d1b87b",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-delegated-ai-attribution-edge",
+  "to": "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:human",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step human to this obligation: The direct action identifies the human actor, while only the delegated action carries the AI reviewer identity; sharing a principal does not merge the seats. This records verification intent, not a pass result.",
+  "from_revision": "sha256:35abd7b0f8e7d9d49d8757bc56addba81813fae62898239fc5439ce6a39886ae",
+  "to_revision": "sha256:e5809b16d82f350daa8be45b1e15c3eaeccb8505400534a50032a11bd197e23a",
+  "state": "active",
+  "created_at": "2026-11-26T04:07:18.407142Z"
+}

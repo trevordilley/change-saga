@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-910b09c7e0c05f2f0a",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:revision-conflict-state:item:shortcut-blocked",
+  "to": "urn:change-saga:change-saga:story:recover-competing-heads",
+  "scope": "self",
+  "rationale": "Legacy ambiguity stops conversion until all authored candidates are preserved and deliberately combined in Git.",
+  "to_revision": "sha256:10842cc77567c95edbdd136c00abb2dc69aba7cf7be40efef7ebd11eaf691e43",
+  "from_content_digest": "sha256:4bffa712a13a153c98ae124e8401df66bfa2607ddc0b93ad749cbbe79f11f9bb",
+  "state": "active",
+  "created_at": "2026-11-26T03:43:24.461624Z"
+}

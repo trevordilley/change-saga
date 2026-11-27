@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "serve-ui",
+        "action": "In a fresh isolated scenario: Restart the configured host and request the same stable Saga URL.",
+        "expected_result": "The correct Saga UI remains reachable after restart without relying on a developer’s workstation checkout.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:host-saga-outside-target-repo:criterion:serve-ui"
+        ]
+      },
+      {
+        "id": "separate-saga",
+        "action": "In a fresh isolated scenario: Use separate source and Saga repositories sharing a directory basename and restart the host.",
+        "expected_result": "Distinct repository identities continue to select the correct authored Saga and source context.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:host-saga-outside-target-repo:criterion:separate-saga"
+        ]
+      },
+      {
+        "id": "remote-references",
+        "action": "In a fresh isolated scenario: Follow a historical commit/path reference after current source moves or changes.",
+        "expected_result": "The remote link retains the exact recorded repository and commit context rather than opening an unrelated current file.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:host-saga-outside-target-repo:criterion:remote-references"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-host-saga-outside-target-repo-edge",
+    "title": "Host saga outside target repo — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-host-saga-outside-target-repo-edge"
+  }
+}

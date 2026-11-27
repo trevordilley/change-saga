@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-4a242a30f5bab603b8",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:code-reference-resolution:item:tree-diff",
+  "to": "urn:change-saga:change-saga:story:reverse-impact",
+  "scope": "self",
+  "rationale": "Commit and digest resolution distinguish moved exact evidence from changed evidence when following code back to intent.",
+  "to_revision": "sha256:6f9602129de42db65f97980600da438d3adb5fad79d92128bcd4f000e5cb1b73",
+  "from_content_digest": "sha256:8083eaeed65111c277bdf1d6c2c45d6d52ca737135ac67677cd02ffeb3bea8b0",
+  "state": "active",
+  "created_at": "2026-11-26T03:20:59.052763Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-e787d0f4c351faf7ac",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:quality-ownership:item:external-executor",
+  "to": "urn:change-saga:change-saga:story:record-test-proof",
+  "scope": "self",
+  "rationale": "Feature-owned definitions and optional implementation evidence share one quality domain while CI execution remains external.",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "from_content_digest": "sha256:3fae14147ac39128f1b7201258cffa26bdc8d083180c35d63e2f4c61aefe1ab4",
+  "state": "active",
+  "created_at": "2026-11-26T03:30:52.921969Z"
+}

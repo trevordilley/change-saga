@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/cli/classifications.go",
+      "start": 65,
+      "end": 100,
+      "digest": "sha256:b9f76bd85caa6768bbbf32c662329c876eb5ec20ccd9e527d48f60aa32b5609f",
+      "note": "Shared names are validated once and feature plans retain canonical label/milestone references."
+    },
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/cli/classifications.go",
+      "start": 105,
+      "end": 133,
+      "digest": "sha256:caaf760bae858b9e864651051a40e8cfe5603d33c450ae1d6e3d3d1c64dc0ace",
+      "note": "Shared names are validated once and feature plans retain canonical label/milestone references."
+    }
+  ]
+}

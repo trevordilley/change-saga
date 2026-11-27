@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-439c2a041e25c238ba",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:authoring-sequence:item:asset-write",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "The write sequence validates visual selectors and records exact evidence before an addressable explanation is published.",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "from_content_digest": "sha256:84a88893f19798272381d165fa59d95640eaf9762749908640b64e4035e0449c",
+  "state": "active",
+  "created_at": "2026-11-26T03:20:00.646018Z"
+}

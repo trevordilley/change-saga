@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-ea1171b1600a7cee8f",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-parallel-authoring-negative",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step conflicts to this obligation: Git reports the content conflict; no Saga timestamp or internal head selector chooses a winner. This records verification intent, not a pass result.",
+  "from_revision": "sha256:9755986c6bd289f201beb7c3793d9cbe815eca763c66776b9729b6a93e7f8a24",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "state": "active",
+  "created_at": "2026-11-26T04:09:18.677949Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-ed4dd06e76984f17b6",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:revision-conflict-state:item:unique-head",
+  "to": "urn:change-saga:change-saga:story:recover-competing-heads",
+  "scope": "self",
+  "rationale": "Legacy ambiguity stops conversion until all authored candidates are preserved and deliberately combined in Git.",
+  "to_revision": "sha256:10842cc77567c95edbdd136c00abb2dc69aba7cf7be40efef7ebd11eaf691e43",
+  "from_content_digest": "sha256:937e8cf371a7c9168af7e3c6a28d47e2e38410eb6dc42723f572714fa3cf7c22",
+  "state": "active",
+  "created_at": "2026-11-26T03:43:30.070127Z"
+}

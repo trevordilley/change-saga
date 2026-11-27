@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-9cf05d6eae473ae28a",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:decision-write-path:item:snapshot-decision",
+  "to": "urn:change-saga:change-saga:story:review-decision",
+  "scope": "self",
+  "rationale": "The locked decision write checks the shown snapshot and returns a saved receipt for the actor’s explicit decision.",
+  "to_revision": "sha256:121d2c551ffdaa7a8268f1daa8cc5c348d63ec76d3b1f1a7284a5ff66c363456",
+  "from_content_digest": "sha256:5b8c95cc3ed082f6be1804cf9399d780de4644fe338276b58e439216c77bb4ad",
+  "state": "active",
+  "created_at": "2026-11-26T03:24:18.643284Z"
+}

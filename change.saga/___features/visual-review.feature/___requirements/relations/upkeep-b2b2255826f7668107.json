@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-b2b2255826f7668107",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:thread-lifecycle:item:invalid-target",
+  "to": "urn:change-saga:change-saga:story:review-thread-lifecycle",
+  "scope": "self",
+  "rationale": "Invalid comment targets are rejected before an anchored discussion can be appended or its state projected.",
+  "to_revision": "sha256:dcca775e43ced59141f005a07c6704b2a696734354604a0c0fd4b05df5bd7497",
+  "from_content_digest": "sha256:72ce9b945241ef7b4a305b2a81f5a7112e0aeacea18f044ccb8ab01686990851",
+  "state": "active",
+  "created_at": "2026-11-26T03:49:07.944099Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-7fd83f2b37b3328877",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:directory-scroll-region:item:scroll-region",
+  "to": "urn:change-saga:change-saga:story:read-wide-directories",
+  "scope": "self",
+  "rationale": "The named focusable scroll region retains access to all columns by keyboard or touch while keeping the surrounding page at device width.",
+  "to_revision": "sha256:27e6df98397f8ef0bbde7993dd619d87f68617a1c4829b903e911fbd968063c2",
+  "from_content_digest": "sha256:d64cc424eb7cf63e3709a11ea262851d259b4106e9dc2438bcacc0f6229f8486",
+  "state": "active",
+  "created_at": "2026-11-26T03:25:04.147034Z"
+}

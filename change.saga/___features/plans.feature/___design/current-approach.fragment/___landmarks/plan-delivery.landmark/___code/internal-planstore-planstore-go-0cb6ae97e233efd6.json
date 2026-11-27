@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/planstore/planstore.go",
+      "start": 37,
+      "end": 46,
+      "digest": "sha256:b06dcc91c36409796c54e4790ab294a082a877b368b73282be79b1164cb836be",
+      "note": "Plan delivery and edit guards retain explicit completion boundaries."
+    },
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/planstore/planstore.go",
+      "start": 310,
+      "end": 345,
+      "digest": "sha256:b0a1a9796257ff36b19e6718d946b3c838e2fdebb4435cc9f586511e294cdd50",
+      "note": "Plan delivery and edit guards retain explicit completion boundaries."
+    }
+  ]
+}

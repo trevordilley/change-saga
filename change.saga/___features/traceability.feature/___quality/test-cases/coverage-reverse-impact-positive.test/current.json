@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "blockers",
+        "action": "In a fresh isolated scenario: Query a fully current persisted source-to-criterion path.",
+        "expected_result": "The path returns current links and exact evidence without a spurious stale/conflict blocker.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:reverse-impact:criterion:blockers"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-positive",
+    "title": "Reverse impact — positive verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-reverse-impact-positive"
+  }
+}

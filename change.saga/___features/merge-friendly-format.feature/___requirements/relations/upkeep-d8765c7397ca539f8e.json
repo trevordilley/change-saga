@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-d8765c7397ca539f8e",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:atomic-failure-boundaries:item:windows-gap",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "self",
+  "rationale": "Staging, publication and platform durability limits explain how independently authored records remain complete and recoverable.",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "from_content_digest": "sha256:19dc10bd94687f3647f63e1181fc8c0011784fb254a6999da0cbb394229dfefd",
+  "state": "active",
+  "created_at": "2026-11-26T03:19:28.816495Z"
+}

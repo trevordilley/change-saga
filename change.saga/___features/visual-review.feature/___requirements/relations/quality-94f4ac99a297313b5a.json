@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-94f4ac99a297313b5a",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-contextual-comments-negative",
+  "to": "urn:change-saga:change-saga:story:contextual-comments:criterion:element-context",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step element-context to this obligation: The mutation is refused and no comment is attached to another slide or Item. This records verification intent, not a pass result.",
+  "from_revision": "sha256:d0ff75bde2b93e5f94cec2ec120d52456eb281e6d00a0adfbe8ec0ef4967379b",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "state": "active",
+  "created_at": "2026-11-26T04:07:12.326338Z"
+}

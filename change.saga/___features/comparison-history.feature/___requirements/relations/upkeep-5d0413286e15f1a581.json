@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-5d0413286e15f1a581",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:record-history-sequence:item:history-request",
+  "to": "urn:change-saga:change-saga:story:record-change-history",
+  "scope": "self",
+  "rationale": "Stable-record inventory and Git commits are joined with review context to reopen the comparison that shaped a record.",
+  "to_revision": "sha256:cc5c106da8e7d428ea9e394e87143867bea8f592fc124600a5afab99bbb62453",
+  "from_content_digest": "sha256:98c15947e2029fa16d7a4092c8ecc44f0dca037eae8d0268d16880ae9e9999e1",
+  "state": "active",
+  "created_at": "2026-11-26T03:40:15.08168Z"
+}

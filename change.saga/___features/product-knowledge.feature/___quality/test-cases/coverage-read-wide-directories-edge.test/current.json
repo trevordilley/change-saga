@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "reachable-columns",
+        "action": "In a fresh isolated scenario: Resize from narrow to wide and back, tab into the named scroll region and activate a link in the final column.",
+        "expected_result": "Focus remains usable, horizontal scrolling reaches the final column, and the link opens the canonical record.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:read-wide-directories:criterion:reachable-columns"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-read-wide-directories-edge",
+    "title": "Read wide directories — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-read-wide-directories-edge"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-f56b45240361f28852",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:reconciliation-loop:item:reassess",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation",
+  "scope": "self",
+  "rationale": "The Reassessment boundary element develops the design for this outcome: An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:eb4ef03bbf195b5139e220be46e4d49c341a6d645e8d535056bb7f0414016faf",
+  "from_content_digest": "sha256:35c904b38e1c8237359ef97864ffcf21371a5f594d60806e76179a802630825e",
+  "state": "active",
+  "created_at": "2026-11-26T03:59:35.394029Z"
+}

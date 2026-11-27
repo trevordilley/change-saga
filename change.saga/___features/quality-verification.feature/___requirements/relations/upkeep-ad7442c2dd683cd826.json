@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-ad7442c2dd683cd826",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:quality-state-graphs:item:run-dag",
+  "to": "urn:change-saga:change-saga:story:record-test-proof",
+  "scope": "self",
+  "rationale": "Current definitions and state coexist with immutable evidence supersession and actual run history without rewriting provenance.",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "from_content_digest": "sha256:7fa91535c468525dd23b524dbfe7b7d5fe9b4a837cde259e230b58da3b46c011",
+  "state": "active",
+  "created_at": "2026-11-26T03:34:35.263026Z"
+}

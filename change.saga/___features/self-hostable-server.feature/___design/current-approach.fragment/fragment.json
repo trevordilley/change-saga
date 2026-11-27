@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "self-hostable-server-coverage-design",
+  "title": "Proposed deployment of a separately maintained Saga",
+  "media_type": "text/markdown",
+  "entrypoint": "self-hostable-server.md"
+}

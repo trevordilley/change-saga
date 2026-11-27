@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "self-hosted-onboarding-coverage-design",
+  "title": "Proposed repository setup through onboarding",
+  "media_type": "text/markdown",
+  "entrypoint": "self-hosted-onboarding.md"
+}

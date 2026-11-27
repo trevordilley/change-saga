@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "separate-states",
+        "action": "In a fresh isolated scenario: Compare an empty change and then a change with two owners for one line.",
+        "expected_result": "The empty change has zero units; the shared line is reported as overlap separately from uncovered and stale units.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states"
+        ]
+      },
+      {
+        "id": "no-verdict",
+        "action": "In a fresh isolated scenario: Run the check on a zero-line comparison and on a fully covered change.",
+        "expected_result": "Completeness is factual in both cases and neither result records or asserts a human review approval.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-changed-code-explained-edge",
+    "title": "Changed code explained — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-changed-code-explained-edge"
+  }
+}

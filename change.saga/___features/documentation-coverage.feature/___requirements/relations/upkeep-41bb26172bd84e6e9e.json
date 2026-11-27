@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-41bb26172bd84e6e9e",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:coverage-ownership:item:action-queue",
+  "to": "urn:change-saga:change-saga:story:documentation-gaps-visible",
+  "scope": "self",
+  "rationale": "The ordered authoring queue exposes independent documentation gaps after joining the underlying coverage facts.",
+  "to_revision": "sha256:94c2b8148232ca1ef74b6ccea7baa60f87f4468289794d341a0fda9cbd45af7d",
+  "from_content_digest": "sha256:0a047b5bbd931cb06119dd9dd0a1cbe08cc6796cdfef132181cdebcde9d45982",
+  "state": "active",
+  "created_at": "2026-11-26T03:22:46.510478Z"
+}

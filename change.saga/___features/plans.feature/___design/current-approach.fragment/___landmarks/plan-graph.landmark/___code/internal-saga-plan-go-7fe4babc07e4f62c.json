@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/saga/plan.go",
+      "start": 483,
+      "end": 565,
+      "digest": "sha256:7312c575f69b56a576342b3ee7991458cb61d0e262aaed3113cb7e0f762ffeed",
+      "note": "Plan Task graph validation and checked mutation preserve paths to stories."
+    }
+  ]
+}

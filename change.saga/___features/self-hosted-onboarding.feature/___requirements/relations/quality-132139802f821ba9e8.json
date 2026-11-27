@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-132139802f821ba9e8",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-configure-self-hosted-saga-repositories-edge",
+  "to": "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories:criterion:configure-target",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step configure-target to this obligation: The previously confirmed target remains selected; the unconfirmed draft is not applied. This records verification intent, not a pass result.",
+  "from_revision": "sha256:ae8ad2f6af639046d93d8d552a128b83f1e6db84af0ddd47a2aa864c8c4f89c5",
+  "to_revision": "sha256:710ecbcf19325e05c9ba8d261ab72f4aa37025a330801f6b745ca9bcc277b02c",
+  "state": "active",
+  "created_at": "2026-11-26T04:06:52.585891Z"
+}

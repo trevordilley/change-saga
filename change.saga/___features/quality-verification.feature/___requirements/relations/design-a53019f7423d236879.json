@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-a53019f7423d236879",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:policy-gate",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-policy",
+  "scope": "self",
+  "rationale": "The Policy gate element develops the design for this outcome: A unique current policy can require positive, negative, and edge kinds and restrict automation; stale policy kinds remain required. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:8f4baade22e113bd25189d44be52c2401ab50eb6b1b207eb055a43fbb989918e",
+  "from_content_digest": "sha256:458e41c249d19a48244533960055db1c9637bcd0e3e37a4625b7b833152b7baa",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:02.829648Z"
+}

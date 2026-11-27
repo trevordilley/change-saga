@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-6b114a299902f9b11f",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:plans-coverage-design",
+  "to": "urn:change-saga:change-saga:story:show-plan-prototypes",
+  "scope": "self",
+  "rationale": "This authored approach develops See what a Plan will build: it states ownership, the concrete reading/authoring flow and its failure or planning boundary. Proposed hosting and dependency behavior stays explicitly proposed; this is design coverage, not delivery proof.",
+  "to_revision": "sha256:646fa2783b4f683d7252d78ec64cb50c904ba1c2cd3d1453774fb2c3523b5d8c",
+  "from_content_digest": "sha256:57b1c5b2e7f6feefdb6162f5e6edeb90a7e3d5963a380c3f38a9ac589f5e90bf",
+  "state": "active",
+  "created_at": "2026-11-26T04:02:56.215544Z"
+}

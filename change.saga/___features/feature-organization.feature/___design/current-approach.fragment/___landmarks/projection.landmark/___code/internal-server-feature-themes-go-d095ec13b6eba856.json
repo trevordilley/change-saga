@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/server/feature_themes.go",
+      "start": 36,
+      "end": 72,
+      "digest": "sha256:3b421a3399860e739d7f819da66dcb2c3dc2a4b75ca0eac603f58e86f944ac8f",
+      "note": "Grouping projects canonical feature memberships and shared classification names."
+    },
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/server/feature_themes.go",
+      "start": 108,
+      "end": 178,
+      "digest": "sha256:0ca1c32a99a5a06ad3f3156eeec170b6e8a7bca1da02a386068ac67eead846d6",
+      "note": "Grouping projects canonical feature memberships and shared classification names."
+    },
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/server/feature_themes.go",
+      "start": 191,
+      "end": 215,
+      "digest": "sha256:ad39bac19b42f260b1ae98cacf572816202742ae24e445a2ffb489ce330ba2c3",
+      "note": "Grouping projects canonical feature memberships and shared classification names."
+    }
+  ]
+}

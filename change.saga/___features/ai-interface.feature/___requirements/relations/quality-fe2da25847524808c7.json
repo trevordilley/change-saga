@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-fe2da25847524808c7",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-structured-ai-contract-edge",
+  "to": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step discovery to this obligation: The published pagination and stable error contract matches each operation’s actual envelope and termination behavior. This records verification intent, not a pass result.",
+  "from_revision": "sha256:f9e1ed116167ddb771b62feaf29bab21087a8b22f49e4c5a78a1a9859bbcf426",
+  "to_revision": "sha256:3b2841b06ec70b1a1bf19bbc6059a4e28e6d6841902e5176950754021a097142",
+  "state": "active",
+  "created_at": "2026-11-26T04:12:50.371845Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-267780cb2b4869d25c",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-query-impl-selection:item:eligible",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage",
+  "scope": "self",
+  "rationale": "The Eligibility at head element develops the design for this outcome: Only selections whose structure resolves, whose pins are all current and whose selected bytes are current at head contribute; others contribute nothing and stay visible in query inventory-selections. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:bcedb89d25e4032c4deebccf17c891ebad66f3c53455facfb4c78c002f2b08f1",
+  "from_content_digest": "sha256:0ff08aaa01b92bdbe60a832790b3f2d16724dd5fefd8f38c0305b1883f7f6a09",
+  "state": "active",
+  "created_at": "2026-11-26T03:57:01.467588Z"
+}

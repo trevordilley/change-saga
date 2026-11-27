@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "human",
+        "action": "In a fresh isolated scenario: Have the same human author a direct action on one slide and delegate an AI action on another; inspect both.",
+        "expected_result": "The direct action identifies the human actor, while only the delegated action carries the AI reviewer identity; sharing a principal does not merge the seats.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:human"
+        ]
+      },
+      {
+        "id": "delegated-ai",
+        "action": "In a fresh isolated scenario: Record two AI actions on behalf of the same human using different agent/model identities, then reload attribution.",
+        "expected_result": "Each action retains its own AI identity and human principal; the shared human does not collapse the two AI identities.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:delegated-ai"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-delegated-ai-attribution-edge",
+    "title": "Delegated ai attribution — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-delegated-ai-attribution-edge"
+  }
+}

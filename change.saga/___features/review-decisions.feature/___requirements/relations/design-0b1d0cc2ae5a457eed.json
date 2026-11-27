@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-0b1d0cc2ae5a457eed",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:decision-currency:item:decision",
+  "to": "urn:change-saga:change-saga:story:withdraw-review-decision",
+  "scope": "self",
+  "rationale": "The Latest event per seat element develops the design for this outcome: Approved, changes-requested, and withdrawal events remain stored; only the latest event for the same Git author and declared seat is projected. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:2acae21a211f5e1e741c30c8c5aafb14ed20ed03e4ebc6414b9e5931a245f024",
+  "from_content_digest": "sha256:393be8efd5a6c1aaa4a3319ff69a504fb0e55febf481ce87d0c594cd20ecf432",
+  "state": "active",
+  "created_at": "2026-11-26T04:01:17.148915Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-a6a9014c1e235f3f90",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-show-plan-prototypes-negative",
+  "to": "urn:change-saga:change-saga:story:show-plan-prototypes:criterion:plan-lists-prototypes",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step plan-lists-prototypes to this obligation: The operation is refused and the prior prototype list is unchanged. This records verification intent, not a pass result.",
+  "from_revision": "sha256:1fc334b5b6df9e6bd367b395d182292a4108b527fd66679953a44cc59c74d180",
+  "to_revision": "sha256:646fa2783b4f683d7252d78ec64cb50c904ba1c2cd3d1453774fb2c3523b5d8c",
+  "state": "active",
+  "created_at": "2026-11-26T04:12:03.287321Z"
+}

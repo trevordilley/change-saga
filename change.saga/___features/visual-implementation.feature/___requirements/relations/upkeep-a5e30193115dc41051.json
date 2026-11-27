@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-a5e30193115dc41051",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:reviewer-runtime:item:projector",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "Media-specific rendering and the shared semantic overlay provide exact code and saved-definition drill-down.",
+  "to_revision": "sha256:d76deecff0c3b2806f2e0af2395cedc1375957da0efc26f5b351305f52f3544b",
+  "from_content_digest": "sha256:eef574d3d476b5b9a0b52fa4dde573236935f28ee840d1c236e58ca476f7719b",
+  "state": "active",
+  "created_at": "2026-11-26T03:43:12.485251Z"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "acceptance_criteria": [
+      {
+        "id": "reachable-columns",
+        "statement": "Wide directory tables remain inside a named, keyboard-focusable horizontal scroll region while the document fits the device width and record links remain usable."
+      }
+    ],
+    "citations": [],
+    "overview": "This proposed story is grounded in the existing directory scroll-region implementation and browser assertions. It adds an explicit user outcome for those mechanisms; it does not declare an accessibility conformance level or record a test execution.",
+    "personas": [
+      "urn:change-saga:change-saga:persona:developer"
+    ],
+    "statement": "As a Developer reading the Saga on a narrow screen or with a keyboard, I can reach every directory column without widening the whole page, so I can inspect and open the same records on different devices.",
+    "story": "urn:change-saga:change-saga:story:read-wide-directories",
+    "title": "Read every directory column on a narrow screen"
+  },
+  "state": {
+    "state": "proposed",
+    "story": "urn:change-saga:change-saga:story:read-wide-directories"
+  }
+}

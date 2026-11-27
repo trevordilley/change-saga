@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-1a73e440885c1920c1",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:product-knowledge-ownership:item:composition-flow",
+  "to": "urn:change-saga:change-saga:story:independent-product-knowledge",
+  "scope": "self",
+  "rationale": "The Composition boundary element develops the design for this outcome: The transport-neutral livingapp layer loads valid leaf documents and composes cross-domain currency without moving write ownership. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:6d6d17154dc0a1a7871dc55086486f444209845c45186da2e2ca3d0610795a54",
+  "from_content_digest": "sha256:83852bcaa7c795b5ed6a5e75e97bf2e4a9301262a2da4e226681f62dd1a82db2",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:46.373483Z"
+}

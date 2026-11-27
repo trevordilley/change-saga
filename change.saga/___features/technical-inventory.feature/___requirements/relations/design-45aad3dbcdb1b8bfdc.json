@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-45aad3dbcdb1b8bfdc",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:ti-query-impl-reads:item:scope",
+  "to": "urn:change-saga:change-saga:story:erd-discover-proposed-changes",
+  "scope": "self",
+  "rationale": "The Declared feature scope element develops the design for this outcome: With --feature, candidates are pins reachable from the feature's implementation Items through declared members, holders and relationship destinations at each saved content, with the paths that put them in scope. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:4143a2f5553c33ee576fa3f6c476a0fcfa6a0a4189ea7fc12ee826f228b39114",
+  "from_content_digest": "sha256:e0c757c9a08b0fe1a0ac6a64f3f26eda245de73bd5654db6c7749b754eb526ea",
+  "state": "active",
+  "created_at": "2026-11-26T03:55:25.876931Z"
+}

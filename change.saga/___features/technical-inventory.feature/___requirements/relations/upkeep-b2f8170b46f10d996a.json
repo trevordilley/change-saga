@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-b2f8170b46f10d996a",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-runtime:landmark:workstation-boundary",
+  "to": "urn:change-saga:change-saga:story:read-application-technical-design",
+  "scope": "self",
+  "rationale": "The runtime explanation locates actual local processes, trust boundaries and durable versus disposable resources.",
+  "to_revision": "sha256:7d4b17a9f5392660df775ec20a65b9ad14360d4704bd844948dbec4f3bc57999",
+  "from_content_digest": "sha256:1cb9714f6fc2b4878e71dd3ce2e1c043a0fbdc0a1260d2ecba5d5ad9c7038ffc",
+  "state": "active",
+  "created_at": "2026-11-26T03:18:06.605222Z"
+}

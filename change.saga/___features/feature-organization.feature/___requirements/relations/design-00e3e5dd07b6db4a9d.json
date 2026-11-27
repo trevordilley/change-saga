@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-00e3e5dd07b6db4a9d",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:feature-organization-coverage-design",
+  "to": "urn:change-saga:change-saga:story:group-feature-views-independently",
+  "scope": "self",
+  "rationale": "This authored approach develops Group Features and Roadmap independently: it states ownership, the concrete reading/authoring flow and its failure or planning boundary. Proposed hosting and dependency behavior stays explicitly proposed; this is design coverage, not delivery proof.",
+  "to_revision": "sha256:7ed429c494b1606843bd833d62a8328c381f9a4e040332039be1a0bd5ba40bb3",
+  "from_content_digest": "sha256:9787eed440e7d1d1994f7b0a844625dce8c2a934236dae540108a1e42ed3d580",
+  "state": "active",
+  "created_at": "2026-11-26T04:03:31.918206Z"
+}

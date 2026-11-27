@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-7470af1a965bae258b",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:repository-identity-gate:item:reject",
+  "to": "urn:change-saga:change-saga:story:source-or-companion",
+  "scope": "self",
+  "rationale": "Canonical source identity and checkout admission prevent evidence from silently resolving against another repository.",
+  "to_revision": "sha256:006466ef1be41365df4a5f6e40f5ea0b980c08f1cfb955ca42eaf8f4414262c9",
+  "from_content_digest": "sha256:36e4ba4f52e237953373fa91f916af818d020edf4f962626b1013d7d8e3b7de7",
+  "state": "active",
+  "created_at": "2026-11-26T03:41:27.883704Z"
+}

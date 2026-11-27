@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-1bb0b6c6fea6185ff4",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:plans-coverage-design",
+  "to": "urn:change-saga:change-saga:story:understand-a-task",
+  "scope": "self",
+  "rationale": "This authored approach develops Find everything needed to start a Task: it states ownership, the concrete reading/authoring flow and its failure or planning boundary. Proposed hosting and dependency behavior stays explicitly proposed; this is design coverage, not delivery proof.",
+  "to_revision": "sha256:cf2354b9c7ff434e076f93168e0421a4aef115bc5fe3fe9d63cdd118d0773698",
+  "from_content_digest": "sha256:57b1c5b2e7f6feefdb6162f5e6edeb90a7e3d5963a380c3f38a9ac589f5e90bf",
+  "state": "active",
+  "created_at": "2026-11-26T04:03:09.610873Z"
+}

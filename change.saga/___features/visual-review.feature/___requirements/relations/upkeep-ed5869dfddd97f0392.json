@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-ed5869dfddd97f0392",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:comment-round-trip:item:reload-thread",
+  "to": "urn:change-saga:change-saga:story:contextual-comments",
+  "scope": "self",
+  "rationale": "The review feedback round trip preserves the slide or Item anchor and only projects confirmed saved discussion.",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "from_content_digest": "sha256:0a8e9d49d5c1143674330f81779683e5341ff45aad2f6d7ee07085523fc9ee85",
+  "state": "active",
+  "created_at": "2026-11-26T03:21:17.118312Z"
+}

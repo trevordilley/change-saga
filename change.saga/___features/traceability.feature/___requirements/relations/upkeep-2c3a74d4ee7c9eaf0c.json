@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-2c3a74d4ee7c9eaf0c",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:reverse-impact:item:direct-intersection",
+  "to": "urn:change-saga:change-saga:story:reverse-impact",
+  "scope": "self",
+  "rationale": "Exact evidence ownership and recorded links propagate a source change to affected intent while retaining missing ownership.",
+  "to_revision": "sha256:6f9602129de42db65f97980600da438d3adb5fad79d92128bcd4f000e5cb1b73",
+  "from_content_digest": "sha256:38a6718f51333bc4a7cc54459121e575c62d18bd2c9ad6b844fdce743c80c7c5",
+  "state": "active",
+  "created_at": "2026-11-26T03:42:21.935582Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-19d36c1e6e831277ca",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-understand-a-task-negative",
+  "to": "urn:change-saga:change-saga:story:understand-a-task:criterion:task-cites-code",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step task-cites-code to this obligation: The operation is refused without saving a misleading code reference. This records verification intent, not a pass result.",
+  "from_revision": "sha256:0d888475756e0c8c8ea45293ccc82dfdda0c6375a7ae36f528726aeb38ad9afd",
+  "to_revision": "sha256:cf2354b9c7ff434e076f93168e0421a4aef115bc5fe3fe9d63cdd118d0773698",
+  "state": "active",
+  "created_at": "2026-11-26T04:13:14.923972Z"
+}

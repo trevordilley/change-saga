@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "feature-organization-coverage-design",
+  "title": "One feature identity across planning and delivery",
+  "media_type": "text/markdown",
+  "entrypoint": "feature-organization.md"
+}

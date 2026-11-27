@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-a7ab699a172c0b4bcb",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:atomic-failure-boundaries:item:content-sync",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "self",
+  "rationale": "Staging, publication and platform durability limits explain how independently authored records remain complete and recoverable.",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "from_content_digest": "sha256:5763ba028407c010128b04fb20b8eaec6845f73a3b43b5c16cb02fb04479114a",
+  "state": "active",
+  "created_at": "2026-11-26T03:19:07.731054Z"
+}

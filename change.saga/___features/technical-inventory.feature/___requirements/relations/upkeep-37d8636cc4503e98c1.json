@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-37d8636cc4503e98c1",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-history:item:read",
+  "to": "urn:change-saga:change-saga:story:inventory-documentation-and-usages",
+  "scope": "self",
+  "rationale": "One stable technical identity retains current content and state while exact saved definitions remain inspectable through Git.",
+  "to_revision": "sha256:9a86a80c0861db55fec8b5a34a3d0363dc2a8310e948b081264a2a497077a1fa",
+  "from_content_digest": "sha256:fe5dff6e53f7d757513b28746c5f32957634b51292740df1c6c6fb9e2e81f2b5",
+  "state": "active",
+  "created_at": "2026-11-26T03:47:33.038667Z"
+}

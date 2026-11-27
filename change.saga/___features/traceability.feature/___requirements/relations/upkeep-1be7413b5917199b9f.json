@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-1be7413b5917199b9f",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:traceability-query-runtime:item:ref-remap",
+  "to": "urn:change-saga:change-saga:story:product-intent-path",
+  "scope": "self",
+  "rationale": "One shared snapshot composes current relations and exact source mapping into deterministic, bounded intent paths.",
+  "to_revision": "sha256:536b431800e4a2023ee62ecacc12fcc24305cd29de9ab8c64a6e4aaadf1f21e1",
+  "from_content_digest": "sha256:72a5c9c5476e291be5819590fb2c62d8b24d64da5b15d3540ea390e4c5c80884",
+  "state": "active",
+  "created_at": "2026-11-26T03:50:34.23798Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-81a7b56c65b5638432",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-delegated-ai-attribution-edge",
+  "to": "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:delegated-ai",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step delegated-ai to this obligation: Each action retains its own AI identity and human principal; the shared human does not collapse the two AI identities. This records verification intent, not a pass result.",
+  "from_revision": "sha256:35abd7b0f8e7d9d49d8757bc56addba81813fae62898239fc5439ce6a39886ae",
+  "to_revision": "sha256:e5809b16d82f350daa8be45b1e15c3eaeccb8505400534a50032a11bd197e23a",
+  "state": "active",
+  "created_at": "2026-11-26T04:07:24.331299Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-7ba8c3172f25183b6e",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:observe-compare-state:item:range-decision",
+  "to": "urn:change-saga:change-saga:story:comparison-context",
+  "scope": "self",
+  "rationale": "Explicit observation versus comparison admission chooses a committed range and deterministic diff semantics.",
+  "to_revision": "sha256:595c085b4907c405d21090b8d977eb22ec9abfdd24ccfb22aaae6f30b89665e0",
+  "from_content_digest": "sha256:8cc2b22b44a2c050287622d77964b9737549e159612bf9bd88d3e7d3dc1d9306",
+  "state": "active",
+  "created_at": "2026-11-26T03:26:42.117851Z"
+}

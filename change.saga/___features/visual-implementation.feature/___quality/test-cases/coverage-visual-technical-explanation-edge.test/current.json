@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "media",
+        "action": "In a fresh isolated scenario: Open authored HTML directly and inside a slide frame alongside an SVG and a raster slide.",
+        "expected_result": "Supported media remain readable and authored scripts retain sandbox boundaries in both HTML entry paths.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media"
+        ]
+      },
+      {
+        "id": "evidence",
+        "action": "In a fresh isolated scenario: Pin an exact range, move its lines without changing bytes, then change one byte inside the selected range.",
+        "expected_result": "The move remaps as current, while the byte edit becomes stale and retains its original source pin.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-technical-explanation-edge",
+    "title": "Visual technical explanation — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-visual-technical-explanation-edge"
+  }
+}

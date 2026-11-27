@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "plan-reader",
+  "label": "Plan reader projections join Tasks, stories, prototypes, slides and Reviews.",
+  "selector": {
+    "type": "text",
+    "exact": "Plan reader projections join Tasks, stories, prototypes, slides and Reviews."
+  },
+  "target": ""
+}

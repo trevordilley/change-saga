@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-c9ac632991b80a1ec2",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:comparison-architecture:item:surfaces",
+  "to": "urn:change-saga:change-saga:story:comparison-context",
+  "scope": "self",
+  "rationale": "One commit-pinned ephemeral range gives every comparison surface reproducible source context.",
+  "to_revision": "sha256:595c085b4907c405d21090b8d977eb22ec9abfdd24ccfb22aaae6f30b89665e0",
+  "from_content_digest": "sha256:5b2027c2d4091148dc65d9a84841f5dd8ab92bb3075f7ee640214ed1b8ac91f7",
+  "state": "active",
+  "created_at": "2026-11-26T03:22:19.426889Z"
+}

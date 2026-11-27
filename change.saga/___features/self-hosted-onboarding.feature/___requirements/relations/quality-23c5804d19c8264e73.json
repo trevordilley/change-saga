@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-23c5804d19c8264e73",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-configure-self-hosted-saga-repositories-negative",
+  "to": "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories:criterion:configure-target",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step configure-target to this obligation: The UI reports the configuration failure and does not save a different repository as the selected target. This records verification intent, not a pass result.",
+  "from_revision": "sha256:08ff4fc010daa1019997c6acf7284047feac8ee27fd4ab7a4a7bb4e159a65ea4",
+  "to_revision": "sha256:710ecbcf19325e05c9ba8d261ab72f4aa37025a330801f6b745ca9bcc277b02c",
+  "state": "active",
+  "created_at": "2026-11-26T04:06:39.439342Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-3e1c4a976a35baff35",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:relation-currency:item:superseded-state",
+  "to": "urn:change-saga:change-saga:story:product-intent-path",
+  "scope": "self",
+  "rationale": "Exact pins, semantic carry-forward and distinct stale or superseded states determine which links can join a current intent path.",
+  "to_revision": "sha256:536b431800e4a2023ee62ecacc12fcc24305cd29de9ab8c64a6e4aaadf1f21e1",
+  "from_content_digest": "sha256:b67f8dad578852f5f7986d120255adbd9b570bf4a4e99d6c3b8d8a307bb341b7",
+  "state": "active",
+  "created_at": "2026-11-26T03:41:12.303933Z"
+}

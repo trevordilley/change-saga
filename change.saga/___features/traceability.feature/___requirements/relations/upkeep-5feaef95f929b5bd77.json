@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-5feaef95f929b5bd77",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:readiness-boundary:item:delivery-evidence-gap",
+  "to": "urn:change-saga:change-saga:story:product-intent-path",
+  "scope": "self",
+  "rationale": "Criterion composition keeps available design and source paths separate from missing Task or delivery evidence, so following product intent does not manufacture missing paths or a delivery verdict.",
+  "to_revision": "sha256:536b431800e4a2023ee62ecacc12fcc24305cd29de9ab8c64a6e4aaadf1f21e1",
+  "from_content_digest": "sha256:9faa74ef62afa51a4574f2040d71f5d1003f0547672c4c732a5936dbcec8045d",
+  "state": "active",
+  "created_at": "2026-11-26T04:05:33.993332Z"
+}

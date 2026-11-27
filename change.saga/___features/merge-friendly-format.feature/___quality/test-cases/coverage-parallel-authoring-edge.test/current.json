@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "edge"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "partitioned",
+        "action": "In a fresh isolated scenario: Create different stable record IDs with equal authored values on independent Git branches, then merge.",
+        "expected_result": "Separate current files and identities survive; equality of content does not merge the identities or create a Saga revision graph.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned"
+        ]
+      },
+      {
+        "id": "conflicts",
+        "action": "In a fresh isolated scenario: Resolve that conflict with a deliberate combined value, commit the Git merge, and query each original commit.",
+        "expected_result": "The combined current value is readable and both branch contributions remain available through Git history.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-parallel-authoring-edge",
+    "title": "Parallel authoring — edge verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-parallel-authoring-edge"
+  }
+}

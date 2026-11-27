@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-b34c23380a07971117",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-design-usage-path-edge",
+  "to": "urn:change-saga:change-saga:story:design-usage-path:criterion:bidirectional-path",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step bidirectional-path to this obligation: Every declared current path is reachable in both directions without losing the other element or evidence. This records verification intent, not a pass result.",
+  "from_revision": "sha256:8925507e5cf4fd9078a2a548f472cb1b3fd3c6cafb3c85a56bb5f6af8dab1c1b",
+  "to_revision": "sha256:a4c2bb8595fca3553e62e78fa00ebfe146008283bbef2cc5bbc3cafcbbc25d1c",
+  "state": "active",
+  "created_at": "2026-11-26T04:07:42.939443Z"
+}

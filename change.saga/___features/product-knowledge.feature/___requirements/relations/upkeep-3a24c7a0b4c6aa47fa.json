@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-3a24c7a0b4c6aa47fa",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:progress-boundary",
+  "to": "urn:change-saga:change-saga:story:quality-result-trust",
+  "scope": "self",
+  "rationale": "Execution progress and historical outcomes remain separate from current verification-definition coverage.",
+  "to_revision": "sha256:c29c1f6f3790dc10de090212b289ac06d6fc20a2033ac1386fdc8d733acf8c0d",
+  "from_content_digest": "sha256:f72fa580821966266b74feb1f84976a5c4740c320b717aefd52638b2acaa758f",
+  "state": "active",
+  "created_at": "2026-11-26T03:29:24.49955Z"
+}

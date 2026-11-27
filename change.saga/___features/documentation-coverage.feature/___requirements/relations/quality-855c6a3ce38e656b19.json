@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-855c6a3ce38e656b19",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-changed-code-explained-edge",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step separate-states to this obligation: The empty change has zero units; the shared line is reported as overlap separately from uncovered and stale units. This records verification intent, not a pass result.",
+  "from_revision": "sha256:67495231f2227bbb73619aea19fdae93b412652ee421f6af7edcaed58ad3474d",
+  "to_revision": "sha256:179fa5f4d6d90aeadda300d9b2f8df5fcb4b654d840a3744449588f9a6088371",
+  "state": "active",
+  "created_at": "2026-11-26T04:06:03.280169Z"
+}

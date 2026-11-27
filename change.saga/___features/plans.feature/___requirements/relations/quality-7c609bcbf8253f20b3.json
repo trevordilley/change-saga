@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-7c609bcbf8253f20b3",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-show-plan-prototypes-edge",
+  "to": "urn:change-saga:change-saga:story:show-plan-prototypes:criterion:plan-lists-prototypes",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step plan-lists-prototypes to this obligation: Every listed prototype opens its own recorded content without replacing another prototype or changing Plan identity. This records verification intent, not a pass result.",
+  "from_revision": "sha256:d5c9c03d89cece4fbd3efe34cdfe244c462a7684b450003be2cbf853912be5b8",
+  "to_revision": "sha256:646fa2783b4f683d7252d78ec64cb50c904ba1c2cd3d1453774fb2c3523b5d8c",
+  "state": "active",
+  "created_at": "2026-11-26T04:12:09.630755Z"
+}

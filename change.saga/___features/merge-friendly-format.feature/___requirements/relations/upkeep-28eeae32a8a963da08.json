@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-28eeae32a8a963da08",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:partitioned-storage:item:git",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "self",
+  "rationale": "Independent current records reduce shared edits while ordinary Git history and conflicts preserve contributions.",
+  "to_revision": "sha256:f6e3375de5205dbaff70b46bdf607e23cd01ed9647704d961cabc181c139601f",
+  "from_content_digest": "sha256:1476178ba89dbeed528614b4a08a60ec88595f8428d87d0a77b8490d1a1ebaed",
+  "state": "active",
+  "created_at": "2026-11-26T03:26:48.214821Z"
+}

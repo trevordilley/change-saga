@@ -1,0 +1,47 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "serve-ui",
+        "action": "In a fresh isolated scenario: Remove the cloud deployment’s required Saga access and request a reader page.",
+        "expected_result": "The host returns a clear unavailable/error response rather than serving a different Saga or fabricated content.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:host-saga-outside-target-repo:criterion:serve-ui"
+        ]
+      },
+      {
+        "id": "separate-saga",
+        "action": "In a fresh isolated scenario: Configure a nonexistent Saga repository while leaving the source target accessible.",
+        "expected_result": "The host refuses the invalid configuration instead of treating the source repository as the Saga.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:host-saga-outside-target-repo:criterion:separate-saga"
+        ]
+      },
+      {
+        "id": "remote-references",
+        "action": "In a fresh isolated scenario: Open an unavailable or unauthorized remote source pin from the hosted Saga.",
+        "expected_result": "The failure remains explicit; no other commit or repository is silently substituted.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:host-saga-outside-target-repo:criterion:remote-references"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-host-saga-outside-target-repo-negative",
+    "title": "Host saga outside target repo — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-host-saga-outside-target-repo-negative"
+  }
+}

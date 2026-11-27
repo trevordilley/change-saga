@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-558278f621d57c2d0f",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:quality-trust-gaps:item:readiness-consequence",
+  "to": "urn:change-saga:change-saga:story:quality-result-trust",
+  "scope": "self",
+  "rationale": "Strict loading and explicit absence of delivery proof prevent historical metadata from becoming a current verification verdict.",
+  "to_revision": "sha256:c29c1f6f3790dc10de090212b289ac06d6fc20a2033ac1386fdc8d733acf8c0d",
+  "from_content_digest": "sha256:b21cd0f420c21172015bec59046ce888d6a571e63507efea480a4b5be5cd5238",
+  "state": "active",
+  "created_at": "2026-11-26T03:35:01.479882Z"
+}

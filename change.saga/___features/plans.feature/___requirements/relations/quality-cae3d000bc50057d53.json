@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-cae3d000bc50057d53",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-see-plans-from-stories-edge",
+  "to": "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:story-shows-plans",
+  "scope": "self",
+  "rationale": "The edge scenario explicitly maps step story-shows-plans to this obligation: The story still lists the relevant Tasks and Plans without duplicate Plan identities or broken story links. This records verification intent, not a pass result.",
+  "from_revision": "sha256:6d0f887eae494bb7fc0d3f49371961c670f8448b00c9fde9a92df1c27edc81d8",
+  "to_revision": "sha256:7918eecef8f1205e7019cbbead0ddaa8a08b249a900576671823ec78028847d8",
+  "state": "active",
+  "created_at": "2026-11-26T04:11:50.045039Z"
+}

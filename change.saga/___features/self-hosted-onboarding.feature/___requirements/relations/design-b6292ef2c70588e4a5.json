@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-b6292ef2c70588e4a5",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:self-hosted-onboarding-coverage-design",
+  "to": "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories",
+  "scope": "self",
+  "rationale": "This authored approach develops Configure the repositories through the UI: it states ownership, the concrete reading/authoring flow and its failure or planning boundary. Proposed hosting and dependency behavior stays explicitly proposed; this is design coverage, not delivery proof.",
+  "to_revision": "sha256:710ecbcf19325e05c9ba8d261ab72f4aa37025a330801f6b745ca9bcc277b02c",
+  "from_content_digest": "sha256:ce983b27ea0d083ba748290aba639a147dfa8a712e36c2da192413cbb21632c0",
+  "state": "active",
+  "created_at": "2026-11-26T04:04:27.795593Z"
+}

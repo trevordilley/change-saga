@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/server/plans.go",
+      "start": 307,
+      "end": 365,
+      "digest": "sha256:4d3f07bab360bcb9c588b60ec4a97a90a8aa9884980baf25cc2e17867c5fc94d",
+      "note": "Plan reader projections join Tasks, stories, prototypes, slides and Reviews."
+    },
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/server/plans.go",
+      "start": 1084,
+      "end": 1114,
+      "digest": "sha256:3338e6801ded4a148ba6c478c5a544ebe6115147ba126dd46d5b31efa8b24cdb",
+      "note": "Plan reader projections join Tasks, stories, prototypes, slides and Reviews."
+    },
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/server/plans.go",
+      "start": 1147,
+      "end": 1209,
+      "digest": "sha256:1d9d7d8358de1b67c96542c16b21fd27d4f353d344089d12109bbd3af611a816",
+      "note": "Plan reader projections join Tasks, stories, prototypes, slides and Reviews."
+    },
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/server/plans.go",
+      "start": 1251,
+      "end": 1266,
+      "digest": "sha256:dad977e58a83828807a45e41e71c3f8bcdedbc233731db7172486ddcfef7a77f",
+      "note": "Plan reader projections join Tasks, stories, prototypes, slides and Reviews."
+    }
+  ]
+}

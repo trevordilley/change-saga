@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "quality-c002cb9890f0a46232",
+  "type": "verifies",
+  "from": "urn:change-saga:change-saga:test-case:coverage-source-or-companion-negative",
+  "to": "urn:change-saga:change-saga:story:source-or-companion:criterion:companion-cursor",
+  "scope": "self",
+  "rationale": "The negative scenario explicitly maps step companion-cursor to this obligation: The sync is refused and the prior exact source cursor is unchanged. This records verification intent, not a pass result.",
+  "from_revision": "sha256:203aa060bf8b55922ab41460bd414c3ba49876b8c487f1419a9cc3751b93ac45",
+  "to_revision": "sha256:006466ef1be41365df4a5f6e40f5ea0b980c08f1cfb955ca42eaf8f4414262c9",
+  "state": "active",
+  "created_at": "2026-11-26T04:12:35.045451Z"
+}

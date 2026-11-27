@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-b9db347ea210003091",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:story-lifecycle-runtime:item:acceptance-guard",
+  "to": "urn:change-saga:change-saga:story:product-intent-lifecycle",
+  "scope": "self",
+  "rationale": "The Acceptance guard element develops the design for this outcome: Setting accepted is rejected if the current story has no acceptance criterion; no invalid accepted state is published. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:e3fbededaf5dbe4f109500dc77af7c43a13c8c3b3e0ed914214c19252828f380",
+  "from_content_digest": "sha256:894e92246564b5f990713c0a39c87a565cd14f7f9a9c0c262a6ad3324468957b",
+  "state": "active",
+  "created_at": "2026-11-26T03:57:48.709672Z"
+}

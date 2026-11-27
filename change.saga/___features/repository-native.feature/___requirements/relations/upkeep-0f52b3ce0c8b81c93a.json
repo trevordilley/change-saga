@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-0f52b3ce0c8b81c93a",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:cursor-state-boundaries:item:in-repo",
+  "to": "urn:change-saga:change-saga:story:source-or-companion",
+  "scope": "self",
+  "rationale": "Companion cursor alignment and conservative fallback expose the exact source version and drift without silently advancing it.",
+  "to_revision": "sha256:006466ef1be41365df4a5f6e40f5ea0b980c08f1cfb955ca42eaf8f4414262c9",
+  "from_content_digest": "sha256:b3d5b72e7a41326d6a67d5927737138d939ad93860926ba173d6a8fc75c5584f",
+  "state": "active",
+  "created_at": "2026-11-26T03:23:09.773985Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-ab22725fccad702978",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:mutation-guardrails:item:saga-review",
+  "to": "urn:change-saga:change-saga:story:contextual-comments",
+  "scope": "self",
+  "rationale": "Review and session guards, bounded payloads and durable append keep anchored feedback authoritative and preserve uncertain drafts.",
+  "to_revision": "sha256:492468e331bf2a5bd91d444f3efb5cb1f621517426dc3b3d33afd4dc89a73cb0",
+  "from_content_digest": "sha256:ac91781c0884fc2c328f4a774d84313fee50a0a789add6be863453407f4ec07c",
+  "state": "active",
+  "created_at": "2026-11-26T03:26:08.935914Z"
+}

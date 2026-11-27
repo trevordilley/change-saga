@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "design-13ab6bec6009913746",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:vocabulary-runtime:item:term-record",
+  "to": "urn:change-saga:change-saga:story:shared-product-language",
+  "scope": "self",
+  "rationale": "The Current term record element develops the design for this outcome: A current term stores name, definition, aliases, intent links and exact defining-code pins. Maturity and evidence availability remain independent; Git records earlier content. Its existing criterion explanation remains separately pinned; this relation makes that design responsibility explicit.",
+  "to_revision": "sha256:938089282e2a373870d8170380a32ac3d322b60649abde28e5c82c1a61d96d66",
+  "from_content_digest": "sha256:b537434b439dc09dc8974cfcc969594a25b60e847bc2f45c342f582db8508e4b",
+  "state": "active",
+  "created_at": "2026-11-26T04:00:31.836934Z"
+}

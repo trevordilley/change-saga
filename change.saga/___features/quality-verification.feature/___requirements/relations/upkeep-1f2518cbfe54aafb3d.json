@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-1f2518cbfe54aafb3d",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:quality-ownership:item:executor-gap",
+  "to": "urn:change-saga:change-saga:story:record-test-proof",
+  "scope": "self",
+  "rationale": "Feature-owned definitions and optional implementation evidence share one quality domain while CI execution remains external.",
+  "to_revision": "sha256:f891d25d21b4b3f8f9907a9ca507b0568a8187ed2a487920b42802f7f170a07d",
+  "from_content_digest": "sha256:8449ef435c98c170c565f45888b6442fdae0c1a9cee66040b75990e1d0303470",
+  "state": "active",
+  "created_at": "2026-11-26T03:29:57.711154Z"
+}

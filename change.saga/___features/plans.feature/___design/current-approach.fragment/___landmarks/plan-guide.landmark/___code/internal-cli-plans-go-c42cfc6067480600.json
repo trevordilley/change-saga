@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee5b334c60ea39a0ca01e9858cf9f068a57149a1",
+      "path": "internal/cli/plans.go",
+      "start": 243,
+      "end": 283,
+      "digest": "sha256:7812fe0ebca30c6e63857bc040403d5011e1d6217ea58a0e9167c04fc3f28d7b",
+      "note": "The Plan guide makes research, prototypes and sizing an explicit author workflow."
+    }
+  ]
+}

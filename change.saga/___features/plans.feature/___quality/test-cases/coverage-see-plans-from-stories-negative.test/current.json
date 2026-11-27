@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "negative"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "story-shows-plans",
+        "action": "In a fresh isolated scenario: Create a Task with no permitted direct or transitive story path.",
+        "expected_result": "The writer refuses the invalid Task; the story page does not invent a Plan association.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:see-plans-from-stories:criterion:story-shows-plans"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-see-plans-from-stories-negative",
+    "title": "See plans from stories — negative verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-see-plans-from-stories-negative"
+  }
+}

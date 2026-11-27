@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-c888981e25cd955733",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:pinned-graph:item:requirement",
+  "to": "urn:change-saga:change-saga:story:product-intent-path",
+  "scope": "self",
+  "rationale": "Current requirement definitions and exact endpoint pins support forward explanation paths and visible drift.",
+  "to_revision": "sha256:536b431800e4a2023ee62ecacc12fcc24305cd29de9ab8c64a6e4aaadf1f21e1",
+  "from_content_digest": "sha256:c87af02af837ba8df8c85e02694b41664a20f6a68de2cbb3d677846292e89804",
+  "state": "active",
+  "created_at": "2026-11-26T03:27:04.622467Z"
+}

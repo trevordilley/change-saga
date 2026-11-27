@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-4a8fd158d4b18bab2e",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-health-check-performance:landmark:regression-verification",
+  "to": "urn:change-saga:change-saga:story:scoped-coverage-check",
+  "scope": "self",
+  "rationale": "Independent area evaluation and provenance-aware reuse implement the boundary that only the requested check areas decide a report.",
+  "to_revision": "sha256:ec090768049758fe047b8ca02624755b3036cbaab97a8ee8c2839be47975e82e",
+  "from_content_digest": "sha256:384e7e779b7e595cd35355fa5adc6068073536df3f74dd0b776547a2b8f937e6",
+  "state": "active",
+  "created_at": "2026-11-26T03:17:45.416424Z"
+}

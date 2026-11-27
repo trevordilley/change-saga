@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-56733f958bccc94bfa",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:review-decision-ownership:item:event-store",
+  "to": "urn:change-saga:change-saga:story:delegated-ai-attribution",
+  "scope": "self",
+  "rationale": "Shared append-only decision persistence and actor attribution preserve who performed the action and any human principal.",
+  "to_revision": "sha256:e5809b16d82f350daa8be45b1e15c3eaeccb8505400534a50032a11bd197e23a",
+  "from_content_digest": "sha256:507c24477037aaa99cbd4deed247fdec86e4dfdba3a9317383e737377f1b1473",
+  "state": "active",
+  "created_at": "2026-11-26T03:42:48.15612Z"
+}

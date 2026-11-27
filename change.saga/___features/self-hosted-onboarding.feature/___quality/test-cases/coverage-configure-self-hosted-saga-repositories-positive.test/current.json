@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/current-record.schema.json",
+  "version": 1,
+  "content": {
+    "automation": "manual",
+    "coverage_kinds": [
+      "positive"
+    ],
+    "expected_result": "Each mapped assertion yields its stated observable result. Definition coverage is separate from execution, automation and delivery proof.",
+    "preconditions": [
+      "Use a disposable Saga/source fixture or an authorized staging environment; restore the fixture between independent assertion steps.",
+      "This is a proposed verification definition, not a recorded execution or assertion that planned hosting exists."
+    ],
+    "steps": [
+      {
+        "id": "configure-target",
+        "action": "In a fresh isolated scenario: Use an authorized accessible target in the proposed onboarding UI and confirm it.",
+        "expected_result": "The UI shows and retains the exact configured target repository on the next visit.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories:criterion:configure-target"
+        ]
+      },
+      {
+        "id": "setup-saga-repository",
+        "action": "In a fresh isolated scenario: Set up a Saga repository distinct from the configured target through the proposed onboarding UI.",
+        "expected_result": "The resulting setup identifies the documentation repository separately and preserves its source-target association.",
+        "criteria": [
+          "urn:change-saga:change-saga:story:configure-self-hosted-saga-repositories:criterion:setup-saga-repository"
+        ]
+      }
+    ],
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-configure-self-hosted-saga-repositories-positive",
+    "title": "Configure self hosted saga repositories — positive verification"
+  },
+  "state": {
+    "state": "proposed",
+    "test_case": "urn:change-saga:change-saga:test-case:coverage-configure-self-hosted-saga-repositories-positive"
+  }
+}

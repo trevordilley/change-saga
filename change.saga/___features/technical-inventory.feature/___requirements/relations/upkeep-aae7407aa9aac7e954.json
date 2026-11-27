@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-aae7407aa9aac7e954",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-authoring:item:query",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context",
+  "scope": "self",
+  "rationale": "Public record authoring, strict reference guards and bounded discovery expose exact grounded technical definitions.",
+  "to_revision": "sha256:a8552e41df3364c88a3d96a19b14d162ebaccdc2320468518fe5e3352ba041d2",
+  "from_content_digest": "sha256:142fa35ffc3f0cf2b99bb1f51a0fedb99ad52a704979d6046b9bc426846fa794",
+  "state": "active",
+  "created_at": "2026-11-26T03:46:35.528155Z"
+}

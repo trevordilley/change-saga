@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-f17a0d5887f37518da",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:change-saga-technical-design-storage:landmark:shared-feature-organization",
+  "to": "urn:change-saga:change-saga:story:plan-and-deliver-one-feature",
+  "scope": "self",
+  "rationale": "The shared feature plan separates delivery category from stable identity, so promotion keeps authored knowledge and planning memberships.",
+  "to_revision": "sha256:93a5c7c9372a89bc160bf30f0e0c7f28786ba0a997dc0fb9d6c8fa93079ab189",
+  "from_content_digest": "sha256:a816764a0407295fb2b9a9e96a825ecf94d9db1474a8f9163b3a34194d341fa8",
+  "state": "active",
+  "created_at": "2026-11-26T03:18:16.687462Z"
+}

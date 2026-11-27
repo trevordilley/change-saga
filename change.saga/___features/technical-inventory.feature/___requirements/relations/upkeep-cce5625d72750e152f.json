@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-cce5625d72750e152f",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-identity:item:component",
+  "to": "urn:change-saga:change-saga:story:inventory-compose-designs",
+  "scope": "self",
+  "rationale": "Canonical shared Component or System identity can serve multiple Items while each use owns only its selected evidence.",
+  "to_revision": "sha256:db0d0d128a449c99996482976f65fcc689e515a7b272ecf23e08ea4f10fff10e",
+  "from_content_digest": "sha256:47abfd5c632c728495be36b33e173b97530779525b7c4491c544395ead9bb60a",
+  "state": "active",
+  "created_at": "2026-11-26T03:47:40.27044Z"
+}

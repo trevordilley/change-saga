@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-112cfb00d6abd133fc",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:saga-snapshot-ownership:item:selected-sides",
+  "to": "urn:change-saga:change-saga:story:comparison-context",
+  "scope": "self",
+  "rationale": "Snapshot ownership aligns each selected side to real Git or companion cursors and reports unavailable history explicitly.",
+  "to_revision": "sha256:595c085b4907c405d21090b8d977eb22ec9abfdd24ccfb22aaae6f30b89665e0",
+  "from_content_digest": "sha256:f1eeffc96f7263c8925f316bab04b793f443ded945d3e09d7987a18ff970fc9b",
+  "state": "active",
+  "created_at": "2026-11-26T03:44:58.874357Z"
+}

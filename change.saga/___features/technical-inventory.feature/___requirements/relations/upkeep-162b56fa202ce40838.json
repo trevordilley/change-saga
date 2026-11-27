@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-current.schema.json",
+  "version": 5,
+  "id": "upkeep-162b56fa202ce40838",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-navigation:item:control",
+  "to": "urn:change-saga:change-saga:story:inventory-trace-slide-code",
+  "scope": "self",
+  "rationale": "Contextual definition and code drawers retain the originating slide and support a return without losing place.",
+  "to_revision": "sha256:42f2f91ec65867af5cdb8a295aa2283bbfe0a4c6e862c4ca7da1e5156db339f8",
+  "from_content_digest": "sha256:19bb4390e4e8e46044eb0563323b7909150b094cb7a98de9305e2b444eb599bf",
+  "state": "active",
+  "created_at": "2026-11-26T03:48:15.232902Z"
+}
